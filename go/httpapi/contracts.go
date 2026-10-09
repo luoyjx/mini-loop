@@ -67,6 +67,7 @@ type ApprovalResponse struct {
 	Decision ApprovalDecision `json:"decision"`
 }
 type HealthResponse struct {
+	Posture               agent.RuntimePosture   `json:"posture"`
 	Status                string                 `json:"status"`
 	Model                 string                 `json:"model"`
 	FakeLLM               bool                   `json:"fake_llm"`

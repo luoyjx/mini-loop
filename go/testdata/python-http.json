@@ -18,6 +18,21 @@
           "max_concurrent_tools": 8,
           "model": "claude-sonnet-4-6",
           "pid": 0,
+          "posture": {
+            "action_journal": "InMemoryActionJournal",
+            "authenticated": false,
+            "cache_policy": "DefaultCachePolicy",
+            "sandbox": "NullSandbox",
+            "sandbox_reason": null,
+            "secrets": "NullSecretRegistry",
+            "secrets_unregistered": 0,
+            "state_store": "NullStateStore",
+            "state_store_error": null,
+            "stuck_detector": "DefaultStuckDetector",
+            "trajectories": false,
+            "user_resources": false,
+            "workflows": false
+          },
           "sessions": 0,
           "started_at": 0,
           "status": "ok",
@@ -618,6 +633,21 @@
           "max_concurrent_tools": 8,
           "model": "claude-sonnet-4-6",
           "pid": 0,
+          "posture": {
+            "action_journal": "InMemoryActionJournal",
+            "authenticated": true,
+            "cache_policy": "DefaultCachePolicy",
+            "sandbox": "NullSandbox",
+            "sandbox_reason": null,
+            "secrets": "NullSecretRegistry",
+            "secrets_unregistered": 0,
+            "state_store": "NullStateStore",
+            "state_store_error": null,
+            "stuck_detector": "DefaultStuckDetector",
+            "trajectories": false,
+            "user_resources": false,
+            "workflows": false
+          },
           "sessions": 0,
           "started_at": 0,
           "status": "ok",
@@ -1262,9 +1292,7 @@
       "refused": true
     }
   ],
-  "deferred_health_fields": [
-    "posture"
-  ],
+  "deferred_health_fields": [],
   "http_context": {
     "actor_id": "alice",
     "approved_capabilities": [

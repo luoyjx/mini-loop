@@ -1672,7 +1672,7 @@ def _http_contracts(scratch: Path) -> dict[str, object]:
         if isinstance(value, dict):
             return {key: (0 if key in ("created_at", "pid", "started_at", "uptime_s") else
                           "test-build" if key == "build" else normalize(item))
-                    for key, item in value.items() if key != "posture"}
+                    for key, item in value.items()}
         if isinstance(value, list):
             return [normalize(item) for item in value]
         if isinstance(value, str):
@@ -1766,7 +1766,7 @@ def _http_contracts(scratch: Path) -> dict[str, object]:
                 "bind": [{"host": host, "refused": refuse_open_bind(host, NullAuth()) is not None}
                          for host in ("", "localhost", "127.0.0.1", "::1", "0.0.0.0", "remote")],
                 "http_context": context, "authenticated": run("token", True), "anonymous": run("anon", False),
-                "deferred_health_fields": ["posture"]}
+                "deferred_health_fields": []}
     finally:
         for key, value in saved.items():
             if value is None:

@@ -275,8 +275,11 @@ background/team injection; nil retains selected lifecycle defaults. Workflow and
 core control injection remain appended, and child copies preserve this selection.
 Go `/healthz.features` reports deployment `EnableFeatures`, including caller-backed
 full startup; selecting independent optional groups does not change that flag.
+Go `/healthz.posture` observes live/default runtime components, persisted write
+faults and credential coverage counts without creating a session. Native component
+labels may differ from Python; absent sandbox remains explicitly `None`.
 
-Runtime review baseline: `016c03e` plus actual runtime-posture Source contracts,
+Runtime review baseline: `95f7e2b` plus typed native runtime posture and public health projection,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
@@ -471,11 +474,11 @@ flowchart LR
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment full-feature selection<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
-        GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
+        GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · runtime posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]

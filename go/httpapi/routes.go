@@ -90,9 +90,14 @@ func (s *Server) fork(w http.ResponseWriter, r *http.Request) {
 	writeJSON(s, w, 200, info(child.Info()))
 }
 func (s *Server) health(w http.ResponseWriter, r *http.Request) {
+	posture, err := s.manager.ObserveRuntimePosture(s.auth.Configured(), nil)
+	if err != nil {
+		writeJSON(s, w, 500, ErrorResponse{"runtime posture observation failed"})
+		return
+	}
 	v := s.manager.Summary()
 	uptime := s.now().Sub(s.started).Seconds()
-	writeJSON(s, w, 200, HealthResponse{Features: s.features, ExperimentalWorkflows: s.manager.Workflows() != nil, Trajectories: s.manager.Trajectories() != nil, Status: "ok", Model: v.Model, FakeLLM: s.fake, ModelConcurrency: v.ModelConcurrency, ToolConcurrency: v.ToolConcurrency, Authenticated: s.auth.Configured(), Build: s.build, PID: os.Getpid(), Started: float64(s.started.UnixMicro()) / 1e6, Uptime: uptime, WorkspaceBinding: v.WorkspaceBinding, Sessions: v.Sessions})
+	writeJSON(s, w, 200, HealthResponse{Posture: posture, Features: s.features, ExperimentalWorkflows: s.manager.Workflows() != nil, Trajectories: s.manager.Trajectories() != nil, Status: "ok", Model: v.Model, FakeLLM: s.fake, ModelConcurrency: v.ModelConcurrency, ToolConcurrency: v.ToolConcurrency, Authenticated: s.auth.Configured(), Build: s.build, PID: os.Getpid(), Started: float64(s.started.UnixMicro()) / 1e6, Uptime: uptime, WorkspaceBinding: v.WorkspaceBinding, Sessions: v.Sessions})
 }
 func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	req, ok := decodeBody[CreateRequest](s, w, r)

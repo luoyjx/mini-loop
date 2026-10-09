@@ -13289,3 +13289,72 @@ Exporter `--check` passed all 189 files (dependency deprecation/regex warnings);
 unchanged, so separate invariant/mutation sweeps were not rerun. Go source and
 architecture topology/specification are unchanged; Go gates and architecture
 regeneration/visual inspection were not repeated. Coverage was not refreshed.
+
+## Typed native runtime posture and health — 2026-10-09
+
+Base: 95f7e2b. `agent.RuntimePosture` is a concrete 13-field record with nullable
+persistence error/sandbox reason and named booleans/counts/component labels.
+`ObserveRuntimePosture` snapshots service/first live Agent bindings in Manager
+insertion order, then releases the Manager lock before registry callbacks or
+persistence-status reads. Without a live Agent it uses the same native default
+cache/detector constructors as sessions. It creates no session, resolves no owner
+bundle, performs no model/tool call and resolves no secret value. These bindings
+are immutable after publication; registry contents and persistence errors use
+their existing concurrent snapshot methods. The report is a detached observation,
+not a cross-component atomic snapshot or an authority/durability grant.
+
+`secrets.CountUnregistered` matches Source's nonempty-value, uppercase credential
+pattern and exact registered-name rules. Registered names count regardless of
+short/unresolved values. Default/no-registry paths retain count zero; unknown
+custom maskers without a Names method count all matching environment entries.
+Reflection reads only implementation type metadata from typed seams; no broad
+payload, unchecked data assertion or dependency was introduced. Registry callback
+panics produce an error, never a fabricated healthy report.
+
+Public health now includes the typed posture through its existing masked JSON
+projection. Existing output masking may resolve registered masker values; the
+observation itself reads names only. This native masking extension is retained
+and is not a Source lazy-value HTTP equivalence claim. Actual event-write failures are reported; HTTP tests use an actual
+SQLite store with an injected event-append failure, then an actual native turn.
+Authenticated deployment posture is visible on public health, while credential
+identities/values stay private. A failed registry observation returns a private
+500. Default HTTP Source capture no longer strips posture or lists it as deferred;
+all 13 fields now enter the existing response comparisons.
+
+Native labels intentionally name the actual Go implementation. Native absent
+state/secrets/sandbox use None, unlike Source's NullStateStore/NullSecretRegistry/
+NullSandbox wrappers; explicit secrets.Null has the compatibility NullSecretRegistry
+label. Registry/Store/StoredActionJournal differ from Source's SecretRegistry/
+SQLiteStateStore/DurableActionJournal. Comparisons normalize only the documented
+absent-component labels, not booleans/errors/counts. Nine Manager profiles replay
+Source observations; the live-override profile explicitly retains native sandbox
+absence instead of Source's unavailable-sandbox reason. Native sandbox selection,
+Source unavailable-sandbox parity and broader custom extensions remain open.
+Go persistence errors retain their existing native bounded type prefix.
+
+Tests also prove detached faults, first-live selection after deletion, no extra
+session creation, registry reentry into Manager observation without a held lock,
+private registry failure, unresolved-value nonresolution and exact-case coverage.
+The first fault test changed permission mode, which correctly emitted no event;
+it was replaced by an actual run to exercise the backing-store failure. Focused
+compilation caught a test-local marshal error variable and a root-directory Go
+command; both were corrected. The HTTP export regeneration now uses a new child
+scratch directory, as required by its actual constructor. No runtime default,
+permission policy, dependency or persistent schema changed.
+
+Validation: focused Source/native posture and actual SQLite HTTP fault/privacy
+checks passed. Complete `go test -p=1 -count=1 -timeout=300s ./...` and
+`go test -race -p=1 -count=1 -timeout=300s ./...` from `go/` exited zero;
+`go vet ./...` passed. After narrowing test normalization to known null labels,
+focused final agent/HTTP/secrets race comparisons passed; production code was
+unchanged after the full gates started. Existing macOS CGO linker warnings were
+nonfatal. Exporter `--check` passed all 189 files; it emitted dependency/regex
+warnings and an ignored closed-event-loop subprocess-destructor traceback, then
+exited zero. All 19 scanning anchors passed. Once those and Go jobs were terminal,
+full Python pytest passed 2161 tests, 28 skips and 24 subtests with three warnings
+in 80.63s. Python package modules/mutation anchors are unchanged, so separate
+invariant/guard sweeps were not rerun. README outline and diff checks passed.
+Architecture regeneration passed 9/9 showcase checks with zero errors/warnings;
+receipt byte sizes/SHA256 match specification and HTML. Visual inspection remains
+skipped following the earlier browser denial. Coverage was not refreshed.
+Default Python-syntax backend, native sandbox and the full G0-G7 audit remain open.

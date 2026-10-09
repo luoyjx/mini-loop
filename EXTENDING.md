@@ -3647,3 +3647,16 @@ retains the diagnostics provider lifetime; App.Stop does not close it.
 Launcher forwards `settings.EnableFeatures`. It does not infer the setting from
 a custom catalogue or independently selected workflow/service groups, and it
 never grants tool authority.
+
+### Go runtime posture observation
+
+`SessionManager.ObserveRuntimePosture(authenticated, environment)` returns a
+concrete detached observation or an error. Nil environment uses the current
+process. It reads first-live/default bindings, retains native implementation labels,
+and observes persisted failures without a session/resource construction or model
+call. Custom maskers may expose `Names() []secrets.Name`; this callback runs outside
+Manager locks, must be concurrency safe, and must not resolve credential values.
+Missing Names means no registered names, matching Source. Panics fail the report.
+Health returns a private 500 for observation failures and masks successful output.
+Existing output masking may resolve registered values; observation reads names only.
+No native sandbox seam exists yet; its report remains None with no invented reason.
