@@ -112,6 +112,10 @@ func TestFullFeatureLauncherHTTPPublishesSourceCatalogueAndRepositoryBinding(t *
 			defer stopApp(t, app)
 			server := httptest.NewServer(app.Handler())
 			defer server.Close()
+			code, health := exchange(t, server.Client(), "GET", server.URL+"/healthz", "", "")
+			if code != 200 || !decode[httpapi.HealthResponse](t, health).Features {
+				t.Fatal("full settings hidden by health response", code, string(health))
+			}
 			code, body := exchange(t, server.Client(), "POST", server.URL+"/sessions", `{"mode":"readonly"}`, "")
 			if code != 200 {
 				t.Fatal(code, string(body))

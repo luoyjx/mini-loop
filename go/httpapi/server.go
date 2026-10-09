@@ -29,6 +29,7 @@ type Config struct {
 	Auth               Authenticator
 	RateLimitPerMinute int
 	PingInterval       time.Duration
+	Features           bool // Deployment selection, matching Source settings.enable_features.
 	FakeLLM            bool
 	Build              string
 	Now                func() time.Time
@@ -49,6 +50,7 @@ type Server struct {
 	auth               Authenticator
 	rateLimit          int
 	ping               time.Duration
+	features           bool
 	fake               bool
 	build              string
 	now                func() time.Time
@@ -79,7 +81,7 @@ func New(config Config) (*Server, error) {
 	if config.Build == "" {
 		config.Build = "development"
 	}
-	s := &Server{manager: config.Manager, auth: config.Auth, rateLimit: config.RateLimitPerMinute, ping: config.PingInterval, fake: config.FakeLLM, build: config.Build, now: config.Now, started: config.Now(), mux: http.NewServeMux(), cache: make(map[cacheKey]MessageResponse), running: make(map[agent.SessionID]bool), windows: make(map[agent.OwnerID]rateWindow)}
+	s := &Server{manager: config.Manager, auth: config.Auth, rateLimit: config.RateLimitPerMinute, ping: config.PingInterval, fake: config.FakeLLM, features: config.Features, build: config.Build, now: config.Now, started: config.Now(), mux: http.NewServeMux(), cache: make(map[cacheKey]MessageResponse), running: make(map[agent.SessionID]bool), windows: make(map[agent.OwnerID]rateWindow)}
 	s.routes()
 	s.benchmarkSkillsDir = config.BenchmarkSkillsDir
 	if s.benchmarkSkillsDir == "" {

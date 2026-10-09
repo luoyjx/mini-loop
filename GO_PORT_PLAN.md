@@ -13212,3 +13212,33 @@ and generated HTML. Visual inspection remains skipped following the earlier
 browser denial. Python packages, exported contracts and tool schemas did not
 change in this slice, so Source tests/export/scanner/invariant/guard checks were
 not rerun. Statement coverage was not refreshed for this slice.
+
+## Deployment full-feature health selection — 2026-10-09
+
+Base: e1e4fde. Source server health reads `settings.enable_features`, separately
+from workflow availability and the actual registry. The Go health struct had a
+Features field but never set it, so provider-backed full Launcher startup falsely
+reported features=false. HTTP Config now accepts a concrete Features boolean;
+Launcher forwards the original deployment setting. This is informational selection,
+not authorization, durability or a guarantee that every optional group is enabled.
+
+Existing real HTTP full Launcher tests now assert features=true in both repository
+profiles. Source-derived default/workflow Launcher recipes assert features=false,
+including independently enabled workflows. An isolated Source TestClient lifespan
+probe confirmed both false/true selections against current Python code with the
+fake client and temporary workspace. The first probe lacked PYTHONPATH and failed
+before construction; the corrected `PYTHONPATH=python` probe passed both cases.
+Full health posture and timing/build equivalence remain separate open work.
+
+Validation: focused full-feature/workflow Launcher tests passed; complete
+`go test -p=1 -count=1 -timeout=300s ./...`,
+`go test -race -p=1 -count=1 -timeout=300s ./...`, and `go vet ./...` from `go/`
+all exited zero. Existing macOS CGO linker warnings were nonfatal. Source live
+health probe passed both profiles. Architecture regeneration passed 9/9 showcase
+checks with zero errors/warnings; receipt byte sizes and SHA256 hashes match
+specification/HTML. Visual inspection remains skipped after the earlier browser
+denial. README outline and diff checks passed. Python package code, exported
+contracts, schemas and guarded anchors did not change; full Python tests and
+export/scanner/invariant/guard sweeps were not rerun. Coverage was not refreshed.
+The migration remains incomplete, including the default syntax parser and full
+health posture.

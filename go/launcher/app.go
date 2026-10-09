@@ -340,7 +340,7 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 		}
 		return nil, err
 	}
-	handler, err := httpapi.New(httpapi.Config{Manager: manager, Auth: auth, RateLimitPerMinute: settings.RateLimitPerMinute, FakeLLM: settings.FakeLLM, Build: label, BenchmarkSkillsDir: settings.SkillsDir})
+	handler, err := httpapi.New(httpapi.Config{Manager: manager, Auth: auth, RateLimitPerMinute: settings.RateLimitPerMinute, FakeLLM: settings.FakeLLM, Features: settings.EnableFeatures, Build: label, BenchmarkSkillsDir: settings.SkillsDir})
 	if err != nil {
 		stopCtx, cancel := context.WithTimeout(context.Background(), server.ShutdownTimeout)
 		defer cancel()

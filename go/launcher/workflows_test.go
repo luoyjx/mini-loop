@@ -87,7 +87,7 @@ func TestWorkflowLauncherMatchesActualDefaultSourceLifespan(t *testing.T) {
 			parent := decode[httpapi.SessionInfo](t, data)
 			path := server.URL + "/sessions/" + string(parent.ID)
 			_, data = exchange(t, client, "GET", server.URL+"/healthz", "", token)
-			if decode[httpapi.HealthResponse](t, data).ExperimentalWorkflows != row.Health {
+			if decode[httpapi.HealthResponse](t, data).ExperimentalWorkflows != row.Health || decode[httpapi.HealthResponse](t, data).Features {
 				t.Fatal(string(data))
 			}
 			code, data = exchange(t, client, "GET", path+"/workflows", "", token)

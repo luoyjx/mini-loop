@@ -273,8 +273,10 @@ supplies a diagnostics provider. Default CLI startup still refuses this setting
 pending a default Python syntax backend. Explicit injector lists (including empty lists) replace default
 background/team injection; nil retains selected lifecycle defaults. Workflow and
 core control injection remain appended, and child copies preserve this selection.
+Go `/healthz.features` reports deployment `EnableFeatures`, including caller-backed
+full startup; selecting independent optional groups does not change that flag.
 
-Runtime review baseline: `ba6fcbf` plus provider-backed Launcher full-feature startup,
+Runtime review baseline: `e1e4fde` plus deployment-selected full-feature health reporting,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
@@ -469,7 +471,7 @@ flowchart LR
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment full-feature selection<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]

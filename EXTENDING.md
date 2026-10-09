@@ -3639,3 +3639,11 @@ uses the same rule without invoking providers or allocating state. Configured
 `RepoRoot` supplies the full-mode worktree backend. Plain `New` and the default
 CLI still reject full mode until a default diagnostics parser exists. The caller
 retains the diagnostics provider lifetime; App.Stop does not close it.
+
+### Go HTTP deployment feature reporting
+
+`httpapi.Config.Features` carries the deployment full-feature selection for
+`/healthz`, analogous to `FakeLLM`. Embedding callers supply this setting explicitly;
+Launcher forwards `settings.EnableFeatures`. It does not infer the setting from
+a custom catalogue or independently selected workflow/service groups, and it
+never grants tool authority.
