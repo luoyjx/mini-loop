@@ -14,6 +14,7 @@ import (
 type ServerSettings struct {
 	Host            string        `json:"host"`
 	Port            int           `json:"port"`
+	Reload          bool          `json:"reload"`
 	FakeDelay       time.Duration `json:"-"`
 	ShutdownTimeout time.Duration `json:"-"`
 }
@@ -50,9 +51,7 @@ func LoadServer(env map[string]string) (ServerSettings, error) {
 	if s.Port < 0 || s.Port > 65535 {
 		return s, errors.New("PORT must be between 0 and 65535")
 	}
-	if get("MINILOOP_RELOAD", "") != "" {
-		return s, errors.New("MINILOOP_RELOAD is not implemented in the Go launcher")
-	}
+	s.Reload = get("MINILOOP_RELOAD", "") != ""
 	if raw := get("MINILOOP_FAKE_DELAY", "0"); raw != "" {
 		normalized, err := numberText(raw)
 		if err != nil {

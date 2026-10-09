@@ -4975,15 +4975,15 @@
         <text data-detail="fine" x="990" y="1048" class="t-backend" font-size="7" text-anchor="middle">owned efficiency lifecycle / raw stores</text>
         </g>
 
-        <g id="node-goEntry" data-node-id="goEntry" data-node-label="Go Startup / SDK / Audit / HTTP / SSE" tabindex="0" role="button" aria-label="Focus Go Startup / SDK / Audit / HTTP / SSE, efficiency / Guardian / AST / workflows / owned HTTP, Go startup / HTTP admission" aria-pressed="false" data-node-kind="backend" data-node-sublabel="efficiency / Guardian / AST / workflows / owned HTTP" data-node-tag="public browser / protected data" data-node-context="Go startup / HTTP admission">
-          <title>Go Startup / SDK / Audit / HTTP / SSE · efficiency / Guardian / AST / workflows / owned HTTP · Go startup / HTTP admission · public browser / protected data</title>
+        <g id="node-goEntry" data-node-id="goEntry" data-node-label="Go Startup / SDK / Audit / HTTP / SSE" tabindex="0" role="button" aria-label="Focus Go Startup / SDK / Audit / HTTP / SSE, optional native reload / owned HTTP / feature selection, Go startup / HTTP admission" aria-pressed="false" data-node-kind="backend" data-node-sublabel="optional native reload / owned HTTP / feature selection" data-node-tag="public browser / protected data" data-node-context="Go startup / HTTP admission">
+          <title>Go Startup / SDK / Audit / HTTP / SSE · optional native reload / owned HTTP / feature selection · Go startup / HTTP admission · public browser / protected data</title>
           <rect x="330" y="800" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="330" y="800" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(336 806) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="495" y="836" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Startup / SDK / Audit / HTTP / SSE</text>
-        <text data-detail="context" x="495" y="852" class="t-muted" font-size="9" text-anchor="middle">efficiency / Guardian / AST / workflows / owned HTTP</text>
+        <text data-detail="context" x="495" y="852" class="t-muted" font-size="9" text-anchor="middle">optional native reload / owned HTTP / feature selection</text>
         <text data-detail="fine" x="495" y="868" class="t-backend" font-size="7" text-anchor="middle">public browser / protected data</text>
         </g>
 
@@ -5486,9 +5486,10 @@
           <h3>Language layout</h3>
         </div>
         <ul>
-          <li>&bull; Explicit reload.Supervisor owns a retained parent TCP socket, native child process groups and joined Artifact cleanup on macOS/Linux. Typed lifecycle events report source/build/start/exit/stop transitions; failed builds wait for correction. Real HTTP child replacement/recovery is verified. CLI reload selection remains pending.</li>
-          <li>&bull; Explicit reload.Builder owns native Go compilation and private Artifact directories; readonly local builds target this host, compiler cancellation owns a process group on macOS/Linux, and Artifact consumers must join children before cleanup. Watcher owns observation only. Explicit Supervisor now owns server children/listeners; CLI reload remains pending.</li>
-          <li>&bull; Explicit go/reload watcher observes operator-selected .go paths (Python differential profile .py), with Source StatReload baseline/mtime/reset semantics and cancellable polling. It owns no build, child, listener or runtime activation; MINILOOP_RELOAD remains refused until CLI delivery.</li>
+          <li>&bull; CLI MINILOOP_RELOAD nonempty selects a development parent on macOS/Linux: cwd watcher, local readonly native build, retained TCP socket and joined replacements. The parent owns no manager; the child captures fd 3 before dotenv, removes the private role marker from runtime/tool environments and authenticates the actual inherited address before manager allocation. Source edits refresh child config and reset process-local sessions; actual miniloop rebuild/recovery/HTTP tests verify this. Module selection is operator-local (cwd/ancestors or --reload-module). Current CLI uses the explicit StatReload fallback observer; installed Source selects WatchFilesReload, whose default event/filter profile remains pending.</li>
+          <li>&bull; Explicit reload.Supervisor owns a retained parent TCP socket, native child process groups and joined Artifact cleanup on macOS/Linux. Typed lifecycle events report source/build/start/exit/stop transitions; failed builds wait for correction. Real HTTP child replacement/recovery is verified. CLI now selects these owners on macOS/Linux.</li>
+          <li>&bull; Explicit reload.Builder owns native Go compilation and private Artifact directories; readonly local builds target this host, compiler cancellation owns a process group on macOS/Linux, and Artifact consumers must join children before cleanup. Watcher owns observation only. Explicit Supervisor now owns server children/listeners; CLI now selects these owners on macOS/Linux.</li>
+          <li>&bull; Explicit go/reload watcher observes operator-selected .go paths (Python differential profile .py), with Source StatReload baseline/mtime/reset semantics and cancellable polling. It owns no build, child, listener or runtime activation; MINILOOP_RELOAD now selects the native CLI parent.</li>
           <li>&bull; The main map follows the Python runtime under python/</li>
           <li>&bull; Go NewRuntimeSession registers ten implemented tools behind one typed gate</li>
           <li>&bull; SessionManager owns ManagedSession admission/cancel/status and drains scratch cleanup; raw children emit core spans only</li>

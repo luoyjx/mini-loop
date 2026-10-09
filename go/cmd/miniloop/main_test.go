@@ -77,7 +77,6 @@ func TestUnavailableConfigurationsAndArgumentsFailBeforeRuntimeEffects(t *testin
 		{"unavailable-feature", nil, map[string]string{"MINILOOP_FEATURES": "1"}, 1, "MINILOOP_FEATURES"},
 		{"open-bind", nil, map[string]string{"HOST": "0.0.0.0"}, 1, "refusing to bind"},
 		{"empty-host", nil, map[string]string{"HOST": ""}, 1, "HOST must not"},
-		{"reload", nil, map[string]string{"MINILOOP_RELOAD": "1"}, 1, "not implemented"},
 		{"unknown-flag", []string{"--guess"}, map[string]string{}, 2, "flag provided"},
 		{"positional", []string{"start"}, map[string]string{}, 2, "accepts"},
 		{"help", []string{"--help"}, map[string]string{}, 0, "Usage"},

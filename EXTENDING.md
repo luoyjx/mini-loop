@@ -3802,3 +3802,20 @@ on the pre-load disabled flag; default diagnostics contain no environment values
 Pure SDK functions do not call this wrapper. Command snapshot helpers continue
 to accept caller-prepared maps without process writes. miniloop dump reports the
 wrapper's actual selection; pure launcher inspection remains false.
+
+### Go CLI development reload ownership
+
+ServerSettings.Reload preserves Source nonempty MINILOOP_RELOAD selection. Only
+cmd/miniloop dispatches reload; SDK Launcher construction/inspection does not
+spawn a supervisor. The explicit --reload-module flag selects trusted local code;
+otherwise resolve a go.mod from runtime cwd/ancestors, never compiler file paths.
+Watcher roots stay cwd, matching the Source development observation origin.
+
+runMain captures the process's inherited-listener role before commandenv loading,
+then removes the marker from both process/prepared environment before factories.
+An inherited child always uses that socket; it must validate the actual address
+with refreshed authentication before manager allocation, independent of dotenv
+HOST/PORT/reload changes. Parent config/bind admission precedes listening/build
+execution. Parent owns observer/build/socket, child owns its App/manager lifetime,
+and Supervisor joins children before artifact cleanup. Failures wait for source
+repair; reload resets process-local state and never restores durable human authority.

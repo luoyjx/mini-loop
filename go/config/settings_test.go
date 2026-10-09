@@ -135,7 +135,7 @@ func TestUnsupportedActivationAndNetworkSettings(t *testing.T) {
 	if err != nil || supported.RequireSupported() != nil {
 		t.Fatal(err, supported.Unsupported())
 	}
-	for _, env := range []map[string]string{{"HOST": ""}, {"HOST": " "}, {"PORT": "-1"}, {"PORT": "65536"}, {"PORT": "8k"}, {"PORT": ""}, {"MINILOOP_RELOAD": "0"}, {"MINILOOP_FAKE_DELAY": "nan"}, {"MINILOOP_FAKE_DELAY": "0x1p0"}} {
+	for _, env := range []map[string]string{{"HOST": ""}, {"HOST": " "}, {"PORT": "-1"}, {"PORT": "65536"}, {"PORT": "8k"}, {"PORT": ""}, {"MINILOOP_FAKE_DELAY": "nan"}, {"MINILOOP_FAKE_DELAY": "0x1p0"}} {
 		if _, err := LoadServer(env); err == nil {
 			t.Fatalf("accepted invalid network settings %v", env)
 		}
@@ -143,5 +143,14 @@ func TestUnsupportedActivationAndNetworkSettings(t *testing.T) {
 	server, err := LoadServer(map[string]string{"HOST": "::1", "PORT": "０", "MINILOOP_FAKE_DELAY": "0.125"})
 	if err != nil || server.Address() != "[::1]:0" || server.FakeDelay != 125*time.Millisecond {
 		t.Fatal(server, err)
+	}
+}
+
+func TestSourceReloadUsesNonemptyEnvironmentSelection(t *testing.T) {
+	for _, text := range []string{"", "0", "false", "1", " ", "FALSE"} {
+		server, err := LoadServer(map[string]string{"MINILOOP_RELOAD": text})
+		if err != nil || server.Reload != (text != "") {
+			t.Fatalf("%q: %+v %v", text, server, err)
+		}
 	}
 }

@@ -2858,7 +2858,7 @@ paths and non-increasing mtimes do not trigger, matching Uvicorn StatReload.
 The roots/delay are detached from caller configuration. Directory symlinks are
 not traversed; matching-suffix directories and resolved file symlinks participate.
 It does not build binaries, own children/listeners or change CLI startup.
-`MINILOOP_RELOAD` remains unavailable pending the native supervisor/build path.
+The CLI now selects this observer through the native development reload path below.
 
 
 ### Native development build artifacts
@@ -2872,7 +2872,7 @@ launch to recheck retained bytes, then stop/join the child before Artifact.Close
 Environment is captured/detached at construction; compiler diagnostics stream to
 the caller. On macOS/Linux cancellation ends the compiler group, including its
 helpers; other platforms use direct-process cancellation. This operator library
-has no model tool or CLI activation. Explicit supervision is described below.
+is not a model tool. Explicit SDK supervision and CLI selection are described below.
 
 ### Native development supervisor
 
@@ -2891,4 +2891,32 @@ also waits for an edit. Callback panics cause owned cleanup and an error. Event
 callbacks and output writers must return promptly. Cancellation is normal shutdown.
 The watcher primes before each build so edits during compilation remain visible.
 These finite shutdown and native-build details are Go adaptations of StatReload.
-This SDK has real HTTP replacement/recovery tests; CLI reload is still refused.
+This SDK has real HTTP replacement/recovery tests; the standalone CLI uses it as below.
+
+### Run the CLI with development reload
+
+From `go/`, use `MINILOOP_RELOAD=1 go run ./cmd/miniloop`. Any nonempty value
+(including `0`/`false`) enables Source-compatible selection. The parent watches
+cwd `.go` entries with StatReload observation rules and rebuilds `./cmd/miniloop`
+from the Go module in cwd/ancestors; `--reload-module /operator/module` overrides
+module discovery. Dump reports server.reload without discovering/probing/building
+a module. An installed executable still needs the local source module and existing
+Go toolchain for reload. Dependencies remain readonly and no toolchain is downloaded.
+
+On macOS/Linux the parent retains one admitted TCP socket and owns no manager.
+Each native child captures its inherited descriptor before dotenv, repeats config
+and actual-address authentication checks, and serves the same port. Child startup
+role remains fixed if dotenv changes reload/HOST/PORT or its private marker; marker
+values are removed before runtime/tool factories capture environment. Source edits
+stop/join the old child before native rebuild; compilation/startup failures keep
+watching for a correction. Replacements reload dotenv and reset process-local
+sessions. SIGTERM/interrupt joins compiler/child and cleans artifacts/listener.
+These native-build/module, bounded-stop and inherited-bind checks are documented
+Go adaptations. Other platforms refuse the inherited-listener supervisor; no
+automatic durable restoration or model/remote reload selection is added.
+
+Current observer boundary: CLI process/build/listener integration uses the explicit
+StatReload fallback profile. Installed Source Uvicorn 0.49.0 selects WatchFilesReload
+with watchfiles 1.2.0. Native add/remove/modify event observation and Source default
+filename filtering remain required before default reload parity; the process tests
+above verify changed existing sources with increasing mtimes, not that event profile.

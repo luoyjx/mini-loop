@@ -6863,7 +6863,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Final audit of domain/service type boundaries; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
-| G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend and `MINILOOP_RELOAD` remain unavailable; audit public-entry parity |
+| G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; native CLI reload is wired, but installed Source WatchFiles event profile remains pending; audit public-entry parity |
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
@@ -6876,15 +6876,23 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    works with an injected diagnostics provider. Default CLI full activation still
    refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
    outstanding explicit dependency decision. SQLite driver approval does not approve it.
-2. Development reload: `go/config/server.go` explicitly refuses `MINILOOP_RELOAD`.
-   The Source launcher accepts this setting. `go/reload.NewWatcher` now implements
-   the actual StatReload observation contract. The typed native build/artifact
-   lifecycle and owned server-child supervision with retained listeners are also
-   implemented and verified with actual HTTP children. Remaining slices are CLI
-   selection and actual miniloop HTTP reload proof; the public-entry gap is open.
+
+2. Default reload observation: CLI process/listener/build integration is implemented
+   and tested, currently using the explicit StatReload fallback observer. A live
+   dependency check shows installed Uvicorn 0.49.0 selects WatchFilesReload with
+   watchfiles 1.2.0. Its add/remove/modify events and default filename filtering
+   differ from StatReload mtime baselines. Implement/verify that native event
+   profile and select it in CLI before claiming default reload parity.
+
 
 ### Resolved items that must not remain on the implementation queue
 
+- Native CLI development reload is implemented on macOS/Linux: nonempty Source
+  selection, cwd observation, local module builds, retained listener and child
+  replacement/recovery. Actual miniloop tests verify source rebuilding, dotenv
+  refresh, process-local reset and inherited-bind authority. G7 must reconcile
+  documented native/platform adaptations and the still-open default WatchFiles
+  event profile; the process/listener/CLI integration itself is implemented.
 - SQLite is implemented using approved `mattn/go-sqlite3 v1.14.52`; native opening,
   transactional stores and real reopen/restore tests exist in `go/sqlitestate/`.
 - Launcher has explicit caller-owned state injection and restoration; construction
@@ -14678,3 +14686,83 @@ implementation's full ordinary/race/vet and architecture gates are recorded in
 the preceding delivery entry. This follow-up changes only measurement docs and
 README review baseline; git diff --check passed. Temporary profiles are untracked.
 CLI reload and full G0–G7 acceptance remain incomplete. No push.
+
+## Native CLI development reload and inherited authority — 2026-10-10
+
+Implementation baseline: `9b59758` plus this slice. Actual Python __main__.main
+(source SHA-256 `7e6730669a2307c56a1a722ebb440cc5c968c3cb027050846692b4f93b759257`)
+was called with uvicorn.run captured: empty reload selects false; `0`, `false`,
+`1` and one space select true. Only server dispatch was captured; Source StatReload
+observation/process ownership evidence is recorded in the preceding reload slices.
+Go ServerSettings now has a named Reload bool using the same nonempty selection.
+No dependency or toolchain version changes.
+
+cmd/miniloop selects the existing observer/build/supervisor on macOS/Linux. It
+watches cwd .go entries and builds ./cmd/miniloop from cwd/ancestor go.mod or
+operator --reload-module. This module discovery/native compilation is a documented
+Go development adaptation; embedded compile-time source paths are not used.
+Dump reports selection without module discovery/build/runtime allocation.
+Parent config/auth admission precedes listening; it owns no manager/session.
+Parent socket stays bound through native child replacement and failed compilation.
+
+runMain captures an inherited TCP descriptor before dotenv, retains the role in a
+typed local listener, and removes marker values from process/prepared environment.
+Refreshed dotenv cannot recursively select another supervisor or make the child
+bind changed HOST/PORT. Child config/auth validation uses the actual inherited
+address before manager/workspace construction. App lifetime and process-local
+sessions belong to the child; replacements reload dotenv and reset sessions.
+No automatic durable restoration or authority rearming is added. Compiler and
+child join/artifact cleanup retain the prior SDK guarantees and finite stop grace.
+
+Actual miniloop process tests compile an isolated source/embed copy, change a real
+Go init definition and observe new model/PID at the same port. Bash reads refreshed
+dotenv values and excludes the private listener marker. Previous sessions return
+404 after replacement. Invalid source stops the old child, reports build failure
+and retains the port; repaired source restores real HTTP even when dotenv clears
+reload and changes PORT to zero. SIGTERM joins every child and leaves the private
+temporary-build directory empty, with the listener port available again.
+A real inherited public socket with loopback HOST/dotenv role overwrite is refused
+before workspace allocation. Pure dump and module/environment ownership tests pass.
+
+README canonical Mermaid adds the optional reload parent and descriptor handoff
+back to child startup. Boundary prose, extension/hardening notes and interactive
+aggregate startup card identify distinct parent/child owners and default-off
+selection. Remaining full-runtime acceptance and diagnostics decision stay open.
+
+Validation: narrow `go test -count=1 -timeout=180s ./config ./cmd/miniloop`,
+full `go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` passed
+from go/. `.venv/bin/python -u python/tools/verify_guards.py` completed with all
+378 existing Python mutations caught; it is not Go observer/authority mutation
+coverage. Existing Darwin CGO LC_DYSYMTAB link warnings did not prevent passing
+Go binaries. `git diff --check` and README outline passed. Architecture delivery
+passed 9/9 with zero errors/warnings, exact spec/artifact hashes/bytes verified.
+Correction rounds 0; visual review not repeated after prior browser denial.
+Full Python suite, export/invariant/scanner checks and coverage were not rerun:
+Python runtime modules, contract exports/default tool types and scanner targets
+did not change. No push; default WatchFiles profile and full G0–G7 remain open.
+
+### Default observer reconciliation discovered during CLI delivery
+
+A live `uvicorn.supervisors.ChangeReload` inspection reports Uvicorn 0.49.0
+selecting `uvicorn.supervisors.watchfilesreload.WatchFilesReload`, with watchfiles
+1.2.0 installed. The preceding explicit StatReload recipes are valid for that
+fallback component; they do not establish installed default observer parity.
+The current CLI process/build/listener tests likewise modify existing sources
+with increasing mtimes. This discovery changes the remaining implementation queue.
+
+Next slices:
+
+1. Capture actual WatchFiles default filtering and add/remove/modify/rename
+   observations, including same/lower mtime, hidden/temporary names and cancelled
+   observation; compare the default selected backend, not only fallback methods.
+2. Add a named observer profile and owned native filesystem-event lifecycle using
+   platform APIs, preserving the explicit StatReload SDK profile. Avoid treating
+   a polling snapshot's net changes as proof of transient native-event fidelity.
+3. Select the matching profile in CLI and exercise actual miniloop with source
+   creation/removal and metadata/content changes. Reconcile backend environment,
+   permissions/root/symlink and platform boundaries in G7; keep unresolved cases
+   explicit. Existing child/socket/build ownership stays the delivered foundation.
+
+Full G0–G7 and default reload parity remain incomplete; this is not a replacement
+of the original objective with the fallback profile.

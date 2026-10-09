@@ -8263,3 +8263,21 @@ effects and inherited child environment; a real main HTTP→Bash turn verifies t
 same propagation. Signal handlers start after preparation so blocked startup FIFO
 reads can still be terminated. Inspection exposes actual enabled/disabled CLI
 selection without publishing credentials; pure SDK inspection stays false.
+
+### Go development reload inherited-listener authority
+
+The reload parent keeps its TCP socket across native child replacement. Reading
+a private child-role marker after dotenv could recurse into another parent; using
+refreshed HOST instead of the inherited address could bypass open-bind refusal.
+runMain captures the descriptor before dotenv, keeps the role in a typed local
+listener and removes marker values before tool factories capture environment.
+The child rechecks its actual listener with refreshed authentication before any
+manager/workspace allocation. Pure dump builds no module or manager.
+
+Real command tests rebuild an isolated copy of miniloop, repair a failed native
+build, retain the port, refresh dotenv, reset old sessions and join all children.
+A real inherited public socket with loopback HOST and dotenv marker overwrite is
+refused before runtime allocation; Bash environment excludes the private marker.
+The Python mutation suite covers its existing Source targets; these Go ownership
+and authority boundaries are verified by the native process tests, not by those
+Python mutations. No restart resumes durable approvals/goals/cron automatically.

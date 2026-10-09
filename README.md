@@ -382,7 +382,8 @@ terminable. CLI dump reports actual enabled/disabled discovery and still creates
 no manager/listener or model probe; it now reads dotenv files and updates its
 own process environment. Pure config.Load and launcher inspection remain unchanged.
 
-`go/reload.NewWatcher` is an explicitly selected development library. Operator
+`go/reload.NewWatcher` implements the explicit StatReload fallback development
+contract. Operator
 roots are captured once; polling follows Uvicorn StatReload's first-seen baseline,
 increasing floating-point mtime comparison and reset semantics. Go watches `.go`;
 an explicit Python profile watches `.py` for differential checks. Matching directory
@@ -394,11 +395,22 @@ its retained executable bytes and releases them on Close. Build cancellation
 ends the owned compiler group on macOS/Linux. `reload.Supervisor` now retains
 the parent TCP listener, stops/joins each old child before replacement, and owns
 child artifacts through shutdown. Failed builds keep observing for source repair.
-This explicit SDK is verified with real HTTP children; CLI selection remains
-pending and `MINILOOP_RELOAD` is still refused.
+The standalone CLI now selects this supervisor when `MINILOOP_RELOAD` is nonempty
+(including `0` or `false`). It watches cwd `.go` paths, builds `./cmd/miniloop` from
+the Go module in cwd/ancestors, or an operator `--reload-module` directory, using
+the existing local toolchain. The parent owns no manager/session runtime. Native
+children receive the retained TCP descriptor before dotenv loading and recheck
+authentication against its actual bind address before constructing a manager.
+The private role marker is removed from prepared and tool-child environments;
+dotenv cannot turn an inherited child into another supervisor. Replacements reload
+dotenv/configuration and reset process-local sessions. Dump reports selection
+without discovering/building a module. This development path is implemented on
+macOS/Linux and adds no model-selected module, dependency or automatic restoration.
+The CLI currently uses this fallback observer. Installed Python Uvicorn 0.49.0
+selects WatchFilesReload (watchfiles 1.2.0); matching its default event/filter
+profile remains a required next slice, so default reload parity is not yet claimed.
 
-Runtime review baseline: `cdd57c7` (cross-package Go statement coverage refreshed: 89.92%)
-plus native reload supervisor/listener ownership,
+Runtime review baseline: `9b59758` plus native CLI reload/listener authority,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -542,8 +554,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `cdd57c7` (cross-package Go statement coverage refreshed: 89.92%)
-plus native reload supervisor/listener ownership;
+reviewed **2026-10-10** (Go baseline `9b59758` plus native CLI reload/listener authority;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -595,7 +606,8 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
+        GoReload["Optional Go development reload parent<br/>cwd source observer · readonly native build<br/>retained TCP socket · stop / join / replace<br/>build-failure recovery · child artifact cleanup"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]
@@ -656,6 +668,8 @@ flowchart LR
         GoWorkflow -. events / summaries / later-turn results .-> GoSession
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow / masked recovery tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent / auditor sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
+        GoLaunch -. parent role: nonempty MINILOOP_RELOAD .-> GoReload
+        GoReload -. native child: fd handoff / actual bind recheck .-> GoLaunch
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
         GoBrowser -->|authenticated API / SSE| GoTrust

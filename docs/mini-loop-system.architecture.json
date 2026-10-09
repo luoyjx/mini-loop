@@ -493,7 +493,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / SDK / Audit / HTTP / SSE",
-      "sublabel": "efficiency / Guardian / AST / workflows / owned HTTP",
+      "sublabel": "optional native reload / owned HTTP / feature selection",
       "pos": [
         330,
         800
@@ -1588,9 +1588,10 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
-        "Explicit reload.Supervisor owns a retained parent TCP socket, native child process groups and joined Artifact cleanup on macOS/Linux. Typed lifecycle events report source/build/start/exit/stop transitions; failed builds wait for correction. Real HTTP child replacement/recovery is verified. CLI reload selection remains pending.",
-        "Explicit reload.Builder owns native Go compilation and private Artifact directories; readonly local builds target this host, compiler cancellation owns a process group on macOS/Linux, and Artifact consumers must join children before cleanup. Watcher owns observation only. Explicit Supervisor now owns server children/listeners; CLI reload remains pending.",
-        "Explicit go/reload watcher observes operator-selected .go paths (Python differential profile .py), with Source StatReload baseline/mtime/reset semantics and cancellable polling. It owns no build, child, listener or runtime activation; MINILOOP_RELOAD remains refused until CLI delivery.",
+        "CLI MINILOOP_RELOAD nonempty selects a development parent on macOS/Linux: cwd watcher, local readonly native build, retained TCP socket and joined replacements. The parent owns no manager; the child captures fd 3 before dotenv, removes the private role marker from runtime/tool environments and authenticates the actual inherited address before manager allocation. Source edits refresh child config and reset process-local sessions; actual miniloop rebuild/recovery/HTTP tests verify this. Module selection is operator-local (cwd/ancestors or --reload-module). Current CLI uses the explicit StatReload fallback observer; installed Source selects WatchFilesReload, whose default event/filter profile remains pending.",
+        "Explicit reload.Supervisor owns a retained parent TCP socket, native child process groups and joined Artifact cleanup on macOS/Linux. Typed lifecycle events report source/build/start/exit/stop transitions; failed builds wait for correction. Real HTTP child replacement/recovery is verified. CLI now selects these owners on macOS/Linux.",
+        "Explicit reload.Builder owns native Go compilation and private Artifact directories; readonly local builds target this host, compiler cancellation owns a process group on macOS/Linux, and Artifact consumers must join children before cleanup. Watcher owns observation only. Explicit Supervisor now owns server children/listeners; CLI now selects these owners on macOS/Linux.",
+        "Explicit go/reload watcher observes operator-selected .go paths (Python differential profile .py), with Source StatReload baseline/mtime/reset semantics and cancellable polling. It owns no build, child, listener or runtime activation; MINILOOP_RELOAD now selects the native CLI parent.",
         "The main map follows the Python runtime under python/",
         "Go NewRuntimeSession registers ten implemented tools behind one typed gate",
         "SessionManager owns ManagedSession admission/cancel/status and drains scratch cleanup; raw children emit core spans only",
