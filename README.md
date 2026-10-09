@@ -282,7 +282,9 @@ for Source remote audit. Shell metadata reports an injected sandbox or explicit
 `None`; unobservable custom executors/factories fail observation. Seatbelt
 implementation and OS confinement verification remain pending.
 
-Runtime review baseline: `b0613e4` plus injected sandbox posture and compatible null-store reporting,
+Runtime review baseline: `82bf428` plus Source sandbox construction contracts
+(policy parameters, credential defaults, platform selection and workspace rebind;
+native Seatbelt implementation remains pending),
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,

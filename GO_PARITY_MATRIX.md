@@ -6144,3 +6144,43 @@ The profile stays in temporary local output. Python coverage and mutation covera
 were not refreshed. This measures executed statements, not port completion.
 Only documentation changes in this refresh; race/vet were not rerun.
 Implementation validation is recorded in the preceding delivery entries. No push.
+
+## Source sandbox construction contracts — 2026-10-09
+
+Base: c2b189f; runtime baseline remains 82bf428. Export actual Source
+SeatbeltSandbox, NullSandbox, UnavailableSandbox and default_sandbox construction
+to python-sandbox.json. No policy is reconstructed in the exporter and no child
+command is executed. Absolute scratch paths normalize to <ROOT>; snapshots are
+compared across two independent roots.
+
+Eight construction/rebind recipes cover protected reads, additive networking,
+ordered duplicates, extra-only writable roots, policy-syntax paths, linked git
+worktrees, symlink/nonexistent-tail resolution and home expansion. Rebind replaces
+ordinary writable roots, retains explicit _extra_writable and rediscovers the new
+repository's shared .git metadata. Sixteen platform/default selection recipes
+pin Darwin binary availability, Linux/Windows degradation, requiring confinement
+and credential opt-out. A separate omitted-option call pins the actual factory
+default credential deny-list and network denial. Null/unavailable wrappers keep
+their identity on rebind. Eight marker recipes cover relative/absolute paths,
+exact-prefix matching, invalid parents, later valid lines, Unicode line breaks,
+empty files and .git directories. Errors capture empty writable roots and invalid
+UTF-8 markers. Argv, description, preview and path lists come from Source objects.
+
+The new fixture is construction evidence, not proof of OS enforcement. Native
+Seatbelt, actual shell execution under its policy, full default platform selection
+and default diagnostics remain pending. No Go runtime, Python package, dependency,
+architecture topology or feature default changes. README review baseline updated;
+architecture regeneration is unnecessary for this contract-only slice.
+
+Validation: focused Source sandbox/contract tests passed (30 tests), then final
+contract tests passed (2 tests). The final isolated full Python run passed:
+2163 passed, 28 skipped, 24 subtests, three dependency warnings in 77.10 seconds.
+Final export --check passed for all 190 files; all 19 source scan guards are
+anchored. README outline and git diff --check passed. The initial concurrent
+full/export run failed: the existing 40-turn 0.5-second timing recipe measured
+0.62 seconds, and this agent edited the fixture during verification, mixing the
+old imported capture with the new snapshot. That run is not used as final
+evidence; verification was repeated after fixing the source/snapshot state and
+serializing the full suite and export. No thresholds or runtime were changed.
+Go tests/race/vet, invariant/guard scripts and coverage were not refreshed for
+this Python-tool/fixture-only slice. No push; full migration remains active.
