@@ -180,7 +180,7 @@ func TestDiagnosticsLauncherInspectionAndUnsupportedBundle(t *testing.T) {
 		t.Fatal("inspection allocated workspace", err)
 	}
 	settings.EnableFeatures = true
-	if _, err := NewWithOptions(context.Background(), settings, config.ServerSettings{Host: "127.0.0.1"}, nil, options); err == nil || !strings.Contains(err.Error(), "MINILOOP_FEATURES") {
-		t.Fatal("explicit provider bypassed bundle refusal", err)
+	if _, err := NewWithOptions(context.Background(), settings, config.ServerSettings{Host: "127.0.0.1"}, nil, Options{}); err == nil || !strings.Contains(err.Error(), "MINILOOP_FEATURES") {
+		t.Fatal("missing default parser bypassed bundle refusal", err)
 	}
 }

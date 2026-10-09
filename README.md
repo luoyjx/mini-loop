@@ -268,12 +268,14 @@ catalogues keep their order; capability filtering retains the selected subsequen
 diagnostics provider is available. Custom catalogues retain their inventory;
 full-profile lifecycle binding still supports default background/team notices.
 Independently selected workflow/AST/decision additions retain Source order. The full
-`MINILOOP_FEATURES` startup setting remains unavailable pending default Python
-syntax parsing. Explicit injector lists (including empty lists) replace default
+`MINILOOP_FEATURES` is accepted by `Launcher.NewWithOptions` when the caller
+supplies a diagnostics provider. Default CLI startup still refuses this setting
+pending a default Python syntax backend. Explicit injector lists (including empty lists) replace default
 background/team injection; nil retains selected lifecycle defaults. Workflow and
 core control injection remain appended, and child copies preserve this selection.
 
-Runtime review baseline: `59aebed` plus explicit Manager full-feature composition,
+Runtime review baseline: `ba6fcbf` plus provider-backed Launcher full-feature startup,
+plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
 plus Source-ordered Go built-in feature catalogues,
@@ -466,7 +468,7 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]

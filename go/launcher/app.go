@@ -27,6 +27,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/trajectory"
 	"github.com/luoyjx/mini-loop/go/userresources"
 	"github.com/luoyjx/mini-loop/go/workflows"
+	"github.com/luoyjx/mini-loop/go/worktrees"
 )
 
 type BuildIdentity struct {
@@ -73,6 +74,9 @@ const (
 )
 
 type Report struct {
+	FullFeatures      bool                        `json:"full_features"`
+	TaskTools         bool                        `json:"task_tools"`
+	WorktreeTools     bool                        `json:"worktree_tools"`
 	GuardianEnabled   bool                        `json:"guardian_enabled"`
 	ASTTools          bool                        `json:"ast_tools"`
 	DiagnosticsTools  bool                        `json:"diagnostics_tools"`
@@ -105,8 +109,8 @@ func Inspect(settings config.Settings, server config.ServerSettings, auth httpap
 	return InspectWithOptions(settings, server, auth, Options{})
 }
 
-// Options selects individual implemented Go services. The comprehensive Python
-// MINILOOP_FEATURES setting remains unsupported until its complete bundle exists.
+// Options selects individual Go services and explicit operator backends. Full
+// settings require DiagnosticsProvider until a default parser is implemented.
 type Options struct {
 	// StateStore is caller-owned. Neither constructor nor Serve restores sessions;
 	// the operator invokes App.RestoreSessions explicitly before serving them.
@@ -134,6 +138,7 @@ type Options struct {
 }
 
 func InspectWithOptions(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) Report {
+	options = selectedFeatureOptions(settings, options)
 	endpoint := provider.DefaultEndpoint
 	if settings.BaseURL != nil {
 		endpoint = *settings.BaseURL
@@ -156,7 +161,8 @@ func InspectWithOptions(settings config.Settings, server config.ServerSettings, 
 	if options.StateStore != nil {
 		state = InjectedState
 	}
-	return Report{GuardianEnabled: settings.GuardianEnabled, ASTTools: settings.ASTOutlineEnabled, DiagnosticsTools: options.DiagnosticsProvider != nil, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: state, Sandbox: "none", DotEnvDiscovery: false}
+	full := settings.EnableFeatures && options.DiagnosticsProvider != nil
+	return Report{FullFeatures: full, TaskTools: full, WorktreeTools: full, GuardianEnabled: settings.GuardianEnabled, ASTTools: settings.ASTOutlineEnabled, DiagnosticsTools: options.DiagnosticsProvider != nil, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: supportedSettings(settings, options).Unsupported(), StateStore: state, Sandbox: "none", DotEnvDiscovery: false}
 }
 
 type boundBashFactory struct{ timeout time.Duration }
@@ -193,9 +199,10 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 	if strings.TrimSpace(server.Host) == "" || server.Port < 0 || server.Port > 65535 {
 		return nil, errors.New("invalid listener host/port")
 	}
-	if err := settings.RequireSupported(); err != nil {
+	if err := supportedSettings(settings, options).RequireSupported(); err != nil {
 		return nil, err
 	}
+	options = selectedFeatureOptions(settings, options)
 	if err := httpapi.RefuseOpenBind(server.Host, auth); err != nil {
 		return nil, err
 	}
@@ -312,11 +319,21 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 		auditView = agent.SelfAuditOwnerView
 	}
 	efficiencyConfig := runtimeconfig.ManagerEfficiency(settings)
-	manager, err := agent.NewSessionManager(agent.ManagerConfig{Efficiency: &efficiencyConfig, WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
+	var repository *worktrees.Manager
+	if settings.EnableFeatures && settings.RepoRoot != nil {
+		repository, err = worktrees.New(worktrees.Config{Repository: *settings.RepoRoot})
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+	}
+	manager, err := agent.NewSessionManager(agent.ManagerConfig{EnableFeatures: settings.EnableFeatures, Efficiency: &efficiencyConfig, WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		TeamIdlePoll: settings.TeamIdlePoll.Duration(), TeamIdleTimeout: settings.TeamIdleTimeout.Duration(),
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{StateStore: options.StateStore, GuardianEnabled: settings.GuardianEnabled, ASTConfig: astConfig, DiagnosticsProvider: options.DiagnosticsProvider, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, MCPServers: options.MCPServers, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, WorkflowCaps: &workflows.DefinitionCaps{MaxConcurrentAgents: settings.WorkflowMaxConcurrentAgents, MaxAgents: settings.WorkflowMaxAgents, MaxRounds: settings.WorkflowMaxRounds, WallTimeSeconds: float64(settings.WorkflowWallTimeSeconds)}, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
+		Services: agent.ManagerServices{Worktrees: repository, StateStore: options.StateStore, GuardianEnabled: settings.GuardianEnabled, ASTConfig: astConfig, DiagnosticsProvider: options.DiagnosticsProvider, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, MCPServers: options.MCPServers, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, WorkflowCaps: &workflows.DefinitionCaps{MaxConcurrentAgents: settings.WorkflowMaxConcurrentAgents, MaxAgents: settings.WorkflowMaxAgents, MaxRounds: settings.WorkflowMaxRounds, WallTimeSeconds: float64(settings.WorkflowWallTimeSeconds)}, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
 	if err != nil {
 		if transport != nil {
 			transport.CloseIdleConnections()

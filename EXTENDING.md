@@ -3630,3 +3630,12 @@ Nil injectors enable full-profile background/team lifecycle binding even for
 custom catalogues; explicit lists replace those notifications. Workflow/AST/
 decision options remain independent. This Manager API does not enable the
 Launcher/CLI environment switch or install a default parser.
+
+### Go Launcher full feature availability
+
+`NewWithOptions` accepts `settings.EnableFeatures` with an explicit
+`Options.DiagnosticsProvider` and forwards the full Manager selection. Inspection
+uses the same rule without invoking providers or allocating state. Configured
+`RepoRoot` supplies the full-mode worktree backend. Plain `New` and the default
+CLI still reject full mode until a default diagnostics parser exists. The caller
+retains the diagnostics provider lifetime; App.Stop does not close it.

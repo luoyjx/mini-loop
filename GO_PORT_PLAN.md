@@ -13169,3 +13169,46 @@ errors/warnings and exact receipt hashes/bytes verified; browser visual inspecti
 remains skipped after the earlier denial. README outline and `git diff --check`
 pass. Python runtime/exports and Go tool schemas are unchanged: their checks
 were not refreshed, and coverage was not remeasured.
+
+## Provider-backed Launcher full-feature startup — 2026-10-09
+
+`Launcher.NewWithOptions` now accepts `MINILOOP_FEATURES` when the embedding caller
+supplies `DiagnosticsProvider`. A detached settings copy removes only that
+resolved unsupported condition during validation; original settings retain the
+full selection passed to `ManagerConfig.EnableFeatures`. No provider is called
+by inspection. Without one, settings-only/CLI startup still fails before resource
+construction with the explicit missing default Python-syntax backend reason.
+
+Inspection reports available full/task/worktree selection and its registry
+groups only when the diagnostics backend is supplied. Missing-backend requests
+remain in the settings snapshot/Unsupported list, without advertising available
+full groups or changing caller options or enabling independent workflow/AST/
+decision additions. The reported Unsupported list uses the same availability
+rule as startup. Full mode forwards configured `RepoRoot` into a native worktree
+manager; a missing root retains Source's unconfigured tool result. No new
+dependency, Python runtime or default parser is introduced.
+
+Native HTTP tests run two real model turns and compare both ordered 48-tool
+request catalogues to Source's full registry. `list_worktrees` retains the exact
+unconfigured-root result and, with a configured non-Git directory, Source's
+`(not a git repo)` result. Inspection with a provider reports support without
+provider calls/workspace creation; settings alone and caller settings still
+report the missing parser. Existing explicit-only feature paths remain tested.
+
+This closes startup wiring for an explicitly supplied diagnostic backend.
+Default CLI feature activation and the default parser remain incomplete; the
+previous CPython-backend approval request remains pending. This is not a release
+completion or full runtime-parity claim.
+
+Validation: focused Launcher HTTP/inspection and CLI selection tests passed.
+The initial full runs exposed inspection advertising full groups without a
+backend; the availability rule was corrected, and final complete runs of
+`go test -p=1 -count=1 -timeout=300s ./...` and
+`go test -race -p=1 -count=1 -timeout=300s ./...` both exited zero from `go/`.
+`go vet ./...` passed. Existing macOS CGO linker warnings were nonfatal.
+README outline and `git diff --check` passed. Architecture delivery scored 9/9
+with zero errors/warnings, and receipt sizes/SHA hashes matched the specification
+and generated HTML. Visual inspection remains skipped following the earlier
+browser denial. Python packages, exported contracts and tool schemas did not
+change in this slice, so Source tests/export/scanner/invariant/guard checks were
+not rerun. Statement coverage was not refreshed for this slice.

@@ -79,7 +79,7 @@ func (s Settings) Unsupported() []UnsupportedSetting {
 			result = append(result, UnsupportedSetting{variable, reason})
 		}
 	}
-	add(s.EnableFeatures, "MINILOOP_FEATURES", "comprehensive feature services are not implemented")
+	add(s.EnableFeatures, "MINILOOP_FEATURES", "default Python syntax diagnostics backend is not implemented")
 	return result
 }
 func (s Settings) RequireSupported() error {
