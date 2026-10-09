@@ -299,8 +299,15 @@ Native SQLite close/reopen tests also verify restored HTTP sessions bind the
 current caller sandbox policy: the old extra writable root is revoked, the new
 one is usable, protected reads remain denied and the original workspace/history
 is retained. Restoration stays an explicit operator action.
+The standalone Go `audit` library consumes a typed health report and returns
+Source-compatible sorted findings and text. Its JSON boundary rejects ambiguous
+known-field types, preserves absent/null/empty distinctions and ignores future
+fields. It performs no HTTP fetch, local/live inspection or automatic health
+audit; CLI composition remains pending. Findings reflect reported metadata,
+not an independent proof of confinement or persistence.
 
-Runtime review baseline: `98a5a1b` plus native SQLite reopen and restored HTTP
+Runtime review baseline: `0fe6f68` plus typed remote posture audit,
+plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
@@ -443,7 +450,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `98a5a1b` plus persisted sandbox-restoration proof;
+reviewed **2026-10-09** (Go baseline `0fe6f68` plus typed remote posture audit;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -496,7 +503,7 @@ flowchart LR
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>standalone audit library consumes typed reports<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]

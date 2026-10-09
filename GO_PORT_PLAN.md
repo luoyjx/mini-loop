@@ -13680,3 +13680,53 @@ Validation: full Python pytest passed (2165 passed, 28 skipped, 24 subtests;
 3 existing warnings). Source exporter --check passed for 191 files.
 verify_scans passed all 19 anchored scanning guards; git diff --check passed.
 No Python package modules or guarded mutation anchors changed.
+
+## Typed remote posture audit library — 2026-10-09
+
+`go/audit` implements concrete Report/Posture/Finding types, finite severity/check
+names, Source-compatible remote findings sorted by severity/check, and exact
+human rendering. Its JSON decoder preserves missing/null/empty posture and
+unknown-only objects, validates audited scalar types, ignores future fields,
+and publishes no partial receiver on failure. Generic closed JSON values stay
+inside decoding; domain structs contain no dynamic payloads. The supported
+health schema deliberately rejects ambiguous types rather than reproducing
+arbitrary Python Mapping truthiness.
+
+Twenty-two Source profiles compare findings and rendered text; negative tests
+cover invalid known types, integer overflow, receiver atomicity and invalid
+severity. This is a standalone report consumer: HTTP fetching, local settings
+auditing, live inspection and audit CLI composition remain pending. Findings
+reflect report metadata and do not independently establish OS confinement or
+persistence. No runtime defaults, dependencies or permissions change.
+
+README canonical map and boundary explanation include the consumer; architecture
+JSON annotation and generated HTML are updated together. Archify delivery passed
+9/9 showcase checks, zero errors/warnings; artifact/specification byte counts
+and SHA256 match the receipt. Visual review was not repeated: prior browser
+inspection was denied. Correction rounds: 0.
+
+Validation: focused audit race, full serialized Go tests, go vet ./..., and full
+serialized Go race with cross-package coverage all passed. Full Python pytest,
+191-file exporter check and 19 scanning guards passed in the preceding Source
+contract commit. README outline and git diff --check passed. Existing CGO linker
+warnings were nonfatal; Python invariant/guard checks were not repeated because
+package modules and guarded mutation anchors are unchanged. No push.
+
+Fresh Go statement coverage (2026-10-09; cross-package execution, merged blocks
+by maximum hit count; Darwin arm64):
+
+| Scope | Covered | Statements | Coverage |
+| --- | ---: | ---: | ---: |
+| ALL | 27,359 | 30,360 | 90.12% |
+| audit | 94 | 97 | 96.91% |
+| agent | 8,886 | 9,887 | 89.88% |
+| httpapi | 1,617 | 1,806 | 89.53% |
+| launcher | 196 | 236 | 83.05% |
+| sandbox | 157 | 189 | 83.07% |
+| shell | 383 | 406 | 94.33% |
+| sqlitestate | 521 | 625 | 83.36% |
+
+Gate: go test -race -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-current-cross-coverage.out ./... (exit 0).
+Python coverage and mutation coverage were not refreshed. This measures
+executed statements, not migration acceptance or completion.
