@@ -1,5 +1,32 @@
 # Python to Go parity matrix
 
+## Current acceptance index — 2026-10-10
+
+Reviewed code/test baseline: `552541f`. The entries below retain their historical
+baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
+for today's implementation queue. The complete migration is not yet accepted.
+
+| Scope | Current authoritative evidence | Current conclusion |
+| --- | --- | --- |
+| Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, run this iteration | Passed: 199 files current; this checks exported recipes, not complete port coverage |
+| Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
+| Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
+| Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
+| Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
+| Development reload | Python `__main__.py` passes `reload=bool(os.getenv("MINILOOP_RELOAD"))`; Go `config/server.go` refuses it | Confirmed open public-entry behavior gap; cannot be erased by its default-off status |
+| Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
+| Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
+
+The exporter exited zero. It emitted existing dependency deprecation warnings and
+one child-process return-code warning while still producing all 199 matching
+files; these are recorded, not hidden as a warning-free run. No runtime/test,
+dependency, scanner target or architecture topology changes in this iteration.
+Documentation validation: current source/test paths and Source reload/cleanup
+bodies inspected; README boundary reviewed; Markdown outlines and
+`git diff --check` checked. Runtime/race/Python/mutation/coverage gates were not
+rerun for these status corrections. No push.
+
 ## 2026-10-09 native SQLite killed-generation process recovery
 
 Baseline: fd57eb8. Native sqlitestate now has an actual process-kill integration

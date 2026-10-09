@@ -6851,45 +6851,49 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-- [x] P0 contract inventory (`GO_PARITY_MATRIX.md`, the generated Python
-      contracts in `go/testdata/`, and Go cases for each default tool input)
-- [x] P1 Python directory split (server smoke, complete Python suite, and
-      repository verifiers pass from the documented layout)
-- [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
-      usage, core lifecycle/status/cancel/stop/error/stuck/subagent/approval events,
-      run provenance, action/approval/session records and current archival event decoding implemented;
-      goal/plan-mode inputs/events and closed decision request/result variants are implemented; other event and state variants remain)
-- [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
-      fake-provider slice, cache annotation, stuck detection, scoped child execution,
-      exhaustion markers and cancellation repair implemented;
-      managed admission/cancellation and bounded subscriptions implemented;
-      prompt hooks/injectors, Todo nagging, shared limiters and ordered parallel batches
-      implemented; bounded steering and live posture updates implemented;
-      direct HTTP provider/SDK retries, typed SSE and provisional progress implemented;
-      default Agent recovery implemented; default goal continuation is implemented; remaining context integrations remain)
-- [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
-      workspace read/write/edit/glob plus todo/skill/question handlers implemented;
-      compress defers a real summary after the batch and task delegates through
-      a bound provider; optional action replay, journal transitions and bound approval
-      broker/session grants, optional registry masking and real shell execution are implemented;
-      injected-store restore-time expiry implemented; SQLite approval backend
-      and remaining sink masking remain)
-- [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
-      workspace policy and draining delete/stop implemented; token/anonymous auth,
-      thirty-three HTTP method/path operations, owned skills/memory views, mode/steering, completed-boundary fork and process-local SSE implemented;
-      typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
-      per-run file recording and owner-scoped read/export implemented;
-      typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
-      owner-scoped injected-store bounded SSE catch-up and transcript epoch reads implemented;
-      embedded public console/UI shells implemented; optional UI data routes, full health posture, native SQL restart evidence,
-      optional routes and complete validation semantics remain)
-- [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
-      and streamed-text cancellation repair implemented;
-      default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
-      implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; shared manager memory fallback with exact owner binding and launcher root/tool/auto selection and explicit typed owner/session-bound draft storage and source-compatible pure skill evidence projections and trusted completed-turn evidence capture and typed source candidate parsing and typed preview business flow implemented; standalone native model binding and manager-owned draft pool injection implemented; owned manager preview, reviewed commit and owned preview/commit/catalogue/memory routes implemented; typed benchmark statistics and transcript motion metrics implemented; native benchmark arm execution and other groups remain; source Git-aware cleanup is absent)
-- [ ] G7 differential and release audit
+Reviewed 2026-10-10 at `552541f`. This section is the current delivery index;
+implementation checkpoints below retain historical status at their own baselines.
+An implemented feature is not a claim that its whole work package has passed the
+final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
+
+| Package | Current implementation and evidence | Remaining acceptance |
+| --- | --- | --- |
+| P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
+| P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Final audit of domain/service type boundaries; transient fixture/wire parsing is a distinct boundary |
+| G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
+| G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
+| G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend and `MINILOOP_RELOAD` remain unavailable; audit public-entry parity |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
+| G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
+| G7 | 199 exported Source recipe files freshly checked at `552541f`, native tests and documented adaptations | Public-entry/default/type audit, performance evidence and final regression/verifier gates; goal remains incomplete |
+
+### Confirmed open implementation items
+
+1. Default Python syntax diagnostics: native filesystem diagnostics supports an
+   explicit typed `PythonSyntaxParser`, and Manager/Launcher full-feature composition
+   works with an injected diagnostics provider. Default CLI full activation still
+   refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
+   outstanding explicit dependency decision. SQLite driver approval does not approve it.
+2. Development reload: `go/config/server.go` explicitly refuses `MINILOOP_RELOAD`.
+   The Source launcher accepts this setting. A native implementation or a reviewed,
+   explicit deployment adaptation is still needed; default-off does not remove the gap.
+
+### Resolved items that must not remain on the implementation queue
+
+- SQLite is implemented using approved `mattn/go-sqlite3 v1.14.52`; native opening,
+  transactional stores and real reopen/restore tests exist in `go/sqlitestate/`.
+- Launcher has explicit caller-owned state injection and restoration; construction
+  and serving perform no automatic restore. See `go/launcher/state_test.go`.
+- Native benchmark arm execution, heldout tasks and HTTP fake comparison exist in
+  `go/benchmark/` and the benchmark HTTP adapter. The old “arm execution pending”
+  note is superseded; complete performance acceptance still requires G7 review.
+- Python manager scratch cleanup is **not Git-aware**: `_remove_workspace` removes
+  the directory/link, and `_finalize_workspace_cleanup` checks live references.
+  Go preserves this behavior. The worktree service's separate guarded Remove API
+  is implemented. Git registration cleanup must not be invented as missing Source
+  behavior; the actual Source cleanup limitation stays documented in README.
 
 ### Next decision slices
 
@@ -6913,43 +6917,32 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ### Next persistence slices
 
-1. Contracts: concrete session projection, separate tenant/process identities,
-   transcript epochs, audit-preserving deletion, typed archival event decoding
-   and actual Python SQLite probes are implemented. SQL outcomes remain Python
-   evidence until compared against a Go backend.
-2. Backend: after explicit dependency approval, implement schema v7 and additive
-   migrations, one owned connection, WAL/NORMAL/foreign-key posture, transactional
-   append/rollback, conditional leases and action/approval rows. Run the same
-   probe recipes against real Go SQLite, including concurrent connections.
-3. Session integration: configured-only live composition, persistence-before-request,
-   rewrite epochs, secret projections, owner/bound-workspace retention, explicit
-   default unknown-action handling, post-admission claims and drain/release are
-   implemented. Explicit manager restoration, parked approval expiry and crash-tail
-   repair are now implemented over the injected backend. Remaining: real backend
-   integration; scheduled restoration is now implemented over the injected seam. Restore lease confirmation separately
-   from recorded ownership; no human authority or goal/cron activation is restored.
-4. Serving: restored cron resolution is implemented with a fresh untrusted turn;
-   bounded owner-scoped SSE event catch-up and persisted transcript epoch reads
-   are implemented over the injected store;
-   native SQL reopen and explicit state-backend launcher selection remain. Compare real restart/crash windows and ownership paths
-   before claiming G5 complete; a lease is not external-effect fencing.
+The implementation queue from the earlier injected-store checkpoint is closed:
+`go/sqlitestate` implements native schema-v7/session/lease/transcript/event/action/
+approval storage, including concurrent connections and rollback recipes. Real
+manager and Launcher tests close/reopen SQLite before restoring. Additional
+native tests cover scheduled/cron reconstruction, a killed generation writer,
+compaction success/failure/cancellation and baseline/512 KiB decision replay.
+
+Remaining work is the G7 acceptance audit against the original G5 recipe scope,
+not implementing another backend. Keep proof limits explicit: no power-loss or
+external-effect fencing claim follows from these tests. Restore never resumes
+human authority or arms durable cron/goal state.
 
 ### Next cron slices
 
-1. Completed: explicit operator scheduler: five-field matching, typed jobs,
-   per-session controls, bounded problems, disarmed restoration, masked atomic
-   persistence, exclusive occurrence claims and cancellation/join. Compare actual
-   Python operations and disk state, including loss-before-dispatch boundaries.
-2. Managed untrusted turns, session deletion/stop and standalone startup are
-   implemented, together with closed tool variants, owned operator HTTP activation
-   and explicit launcher selection. Arm remains an
-   operator act, never a model tool. Keep comprehensive activation unavailable
-   until all feature groups are implemented.
-3. Lazy stable-ID session restoration and its lease/owner/workspace paths are now
-   implemented and compared to actual source. Audit real SQL restart and
-   differential failures in G5/G7;
-   an exclusive claim file does not provide an exactly-once transaction with
-   external effects or repair stale whole-file state across live writers.
+Native scheduler/tools/operator HTTP selection and lifecycle are implemented.
+The real SQLite scheduled-restoration recipes and managed one-shot reopen test
+now verify lazy stable-ID restoration, current workspace selection, fresh untrusted
+turn provenance and explicitly re-armed jobs. See
+`go/sqlitestate/scheduled_restore_test.go` and `go/sqlitestate/cron_restart_test.go`.
+
+Remaining work is G7 scope reconciliation. `.cron.json` and occurrence claims
+remain independent of SQLite sessions/leases; they do not provide an exactly-once
+transaction with external effects or repair stale whole-file state across live
+writers. Default comprehensive CLI activation is blocked by diagnostics backend
+selection, not by an unimplemented cron group.
+
 
 ## 2026-10-02 checkpoint
 
