@@ -382,7 +382,7 @@ terminable. CLI dump reports actual enabled/disabled discovery and still creates
 no manager/listener or model probe; it now reads dotenv files and updates its
 own process environment. Pure config.Load and launcher inspection remain unchanged.
 
-Runtime review baseline: `57b232d` plus native SQLite compaction recovery tests,
+Runtime review baseline: `6c1bf01` plus native SQLite large-decision replay tests,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -526,7 +526,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `57b232d` plus native SQLite compaction recovery tests;
+reviewed **2026-10-10** (Go baseline `6c1bf01` plus native SQLite large-decision replay tests;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

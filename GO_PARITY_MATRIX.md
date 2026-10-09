@@ -7152,3 +7152,40 @@ all affected test binaries completed successfully. `git diff --check` passed.
 Python tests, contract export, scanner/invariant/mutation checks and coverage
 were not rerun because their source/targets and runtime implementation did not
 change. No push.
+
+
+## Native SQLite large-decision restart proof — 2026-10-10
+
+`go/sqlitestate/decision_restart_test.go` runs both sqlite-reopen recipes from
+`python-decision-replay.json` through actual managed decision tools and the native
+StateStore-backed action journal. It compares the baseline 10,203-byte result
+and maximum 524,288-byte result with Source byte lengths and canonical SHA-256
+values. The test closes the database and creates a new manager before restoring
+the session, checking exact archived transcript recovery. Restored permission
+mode must be interactive: historical auto authority is not resumed. An explicit
+current-operator auto selection then retries the same RunContext/tool-use identity;
+the tool receives identical retained result bytes while the decision backend's
+call count remains one. A subsequent readonly retry is refused and cannot return
+the cached decision. Neither retry nor denial changes the settled action record.
+Transcript pairing and restored persistence/lease health are checked afterward.
+The integration explicitly uses an inert high-threshold in-memory compactor to
+preserve the large payload; default compaction has its separate real-SQL restart
+proof in the preceding entry.
+
+This closes the previously pending native SQL comparison for snapshot 55's two
+stored replay recipes. Aggregate shedding remains the Source in-memory journal
+profile; this entry does not claim a new aggregate policy for durable storage.
+Default diagnostics selection and complete G7 acceptance remain open. Only tests,
+the README review baseline and plan/matrix evidence changed; runtime topology,
+architecture artifacts, dependencies, Python sources and contract exports did not.
+
+Validation: targeted `go test -count=1 -timeout=90s ./sqlitestate -run
+TestDecisionNativeSQLiteReopenMatchesSource`, full `go test -p=1 -count=1
+-timeout=300s ./...`, `go test -race -count=1 -timeout=300s ./sqlitestate` and
+full `go vet ./...` passed from `go/`; `git diff --check` passed. The SQLite race
+binary linked with the known Darwin CGO LC_DYSYMTAB warning and exited zero.
+Full race, Python, contract-export, scanner/invariant/mutation and coverage checks
+were not rerun: no runtime implementation or corresponding source/targets changed.
+The initial test was terminated after identifying interactive approval waiting;
+the final bounded test explicitly checks restored interactive mode before current
+operator admission. No runtime authorization rule was changed. No push.
