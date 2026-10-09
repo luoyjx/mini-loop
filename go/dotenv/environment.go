@@ -12,7 +12,16 @@ type Variable struct {
 }
 type FailureClass string
 
-const InvalidEnvironment FailureClass = "ValueError"
+const (
+	InvalidEnvironment FailureClass = "ValueError"
+	FilesystemFailure  FailureClass = "OSError"
+	DecodeFailure      FailureClass = "UnicodeDecodeError"
+	EncodingFailure    FailureClass = "LookupError"
+	OriginFailure      FailureClass = "AssertionError"
+	PermissionFailure  FailureClass = "PermissionError"
+	MissingFileFailure FailureClass = "FileNotFoundError"
+	DirectoryFailure   FailureClass = "IsADirectoryError"
+)
 
 type Failure struct {
 	Class   FailureClass `json:"type"`
@@ -88,9 +97,7 @@ func Apply(values []Variable, environment Environment, override bool) Applicatio
 	for key, value := range environment {
 		result.Environment[key] = value
 	}
-	// Long s is the only non-ASCII case-fold expansion into these finite tokens.
-	disabled := strings.ReplaceAll(strings.ToLower(environment["PYTHON_DOTENV_DISABLED"]), "ſ", "s")
-	if disabled == "1" || disabled == "true" || disabled == "t" || disabled == "yes" || disabled == "y" {
+	if loadingDisabled(environment) {
 		loaded := false
 		result.Loaded = &loaded
 		return result
@@ -117,4 +124,10 @@ func Apply(values []Variable, environment Environment, override bool) Applicatio
 	loaded := len(values) > 0
 	result.Loaded = &loaded
 	return result
+}
+
+func loadingDisabled(environment Environment) bool {
+	// Long s is the only non-ASCII case-fold expansion into these finite tokens.
+	value := strings.ReplaceAll(strings.ToLower(environment["PYTHON_DOTENV_DISABLED"]), "ſ", "s")
+	return value == "1" || value == "true" || value == "t" || value == "yes" || value == "y"
 }

@@ -3757,5 +3757,23 @@ override selection; `Apply` returns a detached environment/application result
 and typed ValueError faults with Source partial writes. Nil input environment
 means empty. Nullable values remain distinct from empty strings. Functions
 perform no filesystem access or process mutation and install no config/CLI
-path. Supply scalar UTF-8; parser rejects invalid byte strings. File decoding,
-discovery and startup activation remain separate pending work.
+path. Supply scalar UTF-8; parser rejects invalid byte strings. File decoding and
+discovery use the separate explicit SDK APIs below; startup activation remains pending.
+
+### Go dotenv file discovery and loading
+
+`DiscoveryContext` supplies working directory, Source-equivalent caller files
+(nearest first), and explicit interactive/debugger/frozen observations. `Find`
+selects Source origin and searches upward; `Walk` keeps logical absolute paths.
+Neither infers deployment origin from compiled Go source. Missing caller evidence
+returns a typed refusal. Filename nil defaults to .env; explicit empty stays empty.
+`FileOptions` uses nil Path/Stream for discovery, explicit empty Path to suppress
+it, existing regular file/FIFO before fallback Stream, and finite UTF8 (default),
+UTF8Signature and Latin1 encodings. Files use universal newlines; supplied text
+retains its newlines. `Literal` disables interpolation. `Values` resolves with
+override=true independently of disabled loading. `LoadFile` honors override and
+the disabled flag, then returns a detached Application with no process writes.
+Decode faults retain no new writes; application faults retain earlier writes.
+FIFO reads wait for the producer and EOF, as Source does. Other Python codecs
+are outside this finite SDK surface. Local callers own these filesystem inputs;
+these APIs are not automatically wired into runtime tools or startup.

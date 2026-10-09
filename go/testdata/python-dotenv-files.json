@@ -918,6 +918,104 @@
           "value": "value"
         }
       ]
+    },
+    {
+      "applied": {
+        "A": "${NEXT}",
+        "NEXT": "expanded"
+      },
+      "content": "413d247b4558547d0a413d247b4e4558547d0a420a",
+      "encoding": "utf-8",
+      "environment": {
+        "NEXT": "expanded"
+      },
+      "fault": null,
+      "kind": "file",
+      "literal": true,
+      "loaded": true,
+      "name": "literal",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "${NEXT}"
+        },
+        {
+          "key": "B",
+          "value": null
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "${NEXT}",
+        "NEXT": "expanded"
+      },
+      "content": "413d247b4558547d0a413d247b4e4558547d0a420a",
+      "encoding": "utf-8",
+      "environment": {
+        "NEXT": "expanded"
+      },
+      "fault": null,
+      "kind": "file",
+      "literal": true,
+      "loaded": true,
+      "name": "literal",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "${NEXT}"
+        },
+        {
+          "key": "B",
+          "value": null
+        }
+      ]
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "kind": "nul-path",
+      "loaded": null,
+      "name": "nul-path",
+      "override": true,
+      "stream": null,
+      "valueFault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "values": null
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "kind": "nul-path",
+      "loaded": null,
+      "name": "nul-path",
+      "override": false,
+      "stream": null,
+      "valueFault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "values": null
     }
   ],
   "version": "1.2.2",

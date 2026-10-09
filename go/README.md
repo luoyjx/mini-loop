@@ -2800,6 +2800,18 @@ The separate dotenv package implements pinned Source 1.2.2 text parsing,
 variable resolution and detached environment application with concrete types.
 All 48 Source profiles match exact bindings/lines, interpolation, ordering,
 disabled loading and partial fault outcomes. Input maps/bindings stay unchanged.
-It performs no filesystem or process mutation; file decoding/discovery and
-CLI activation remain pending. Config inspection still reports
+Parse/Resolve/Apply perform no filesystem or process mutation. Separate
+file APIs are now available below; CLI activation remains pending. Config inspection still reports
 DotEnvDiscovery=false. No new dependency is required.
+
+### Native dotenv filesystem SDK
+
+Find/Walk search upward with an explicit caller/cwd context and Source origin
+selection. Values/LoadFile read files or FIFOs with strict UTF-8, universal
+newlines, linked-file behavior and fallback text. UTF-8-signature and Latin-1
+are explicit finite codec options; Literal disables interpolation. LoadFile
+checks disabled loading before discovery/decoding and returns detached complete
+or partial effects without changing process environment/cwd. All 10 discovery,
+2 missing-file, 3 walk and 40 file-read Source profiles match. Actual FIFO
+producer/EOF execution also passes. Config/CLI do not invoke these libraries;
+DotEnvDiscovery remains false pending explicit startup-origin mapping.

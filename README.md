@@ -349,14 +349,20 @@ missing-credential failure carries typed `TypeError` identity through existing
 recovery and error-result projection. Supplied keys retain header/size admission;
 SDK profile, OAuth and federation discovery remain outside this native seam.
 
-The standalone Go `dotenv` library now parses scalar UTF-8 text into concrete
-bindings, resolves variables with Source priority and applies values to a
-returned environment map. It preserves raw spans/lines, nullable values, syntax
-recovery, duplicate order and partial writes before environment faults. It
-performs no file discovery or process mutation. `DotEnvDiscovery` remains false;
-CLI activation and filesystem decoding/discovery remain pending.
+The Go `dotenv` library parses scalar UTF-8 text, resolves variables and returns
+a detached environment map, preserving Source spans/lines, nullable values,
+syntax recovery, duplicate order and partial application faults. `Find`/`Walk`
+now search logical ancestors using an explicit caller-frame/cwd context;
+interactive/debugger/frozen selection follows Source. `Values`/`LoadFile` read
+regular files, followed symlinks or FIFOs, with fallback text, strict UTF-8,
+universal newlines and optional UTF-8-signature/Latin-1 decoding. Loading checks
+the disabled flag before discovery/read, and decode faults change no environment.
+These are privileged local SDK filesystem reads; no tool gate or remote route
+calls them. No function changes process environment or cwd. Missing caller
+origin is refused rather than guessed from compiled Go source paths.
+`DotEnvDiscovery` remains false: config/CLI startup activation is still pending.
 
-Runtime review baseline: `2bc7722` plus pinned dotenv filesystem Source contracts,
+Runtime review baseline: `1454b45` plus native dotenv discovery and file loading,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -500,7 +506,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `2bc7722` plus pinned dotenv filesystem Source contracts;
+reviewed **2026-10-09** (Go baseline `1454b45` plus native dotenv discovery and file loading;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -554,7 +560,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
-        GoDotenv["Go dotenv · pure library<br/>typed bindings · variable resolution · detached application<br/>Source 1.2.2 · syntax recovery / partial faults<br/>file discovery and CLI activation pending"]
+        GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · CLI activation pending"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>absent-key inspection · request auth before HTTP / retry<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]

@@ -136,11 +136,15 @@ def dotenv_file_contracts(scratch: Path) -> dict:
         ("utf8-sig", "file", b"\xef\xbb\xbfA=one\n", None, "utf-8-sig", {}),
         ("interpolation", "file", b"A=file\nB=${A}\n", None, "utf-8", {"A": "external"}),
         ("partial-fault", "file", b"A=prior\n'bad=key'=value\n", None, "utf-8", {}),
+        ("literal", "file", b"A=${EXT}\nA=${NEXT}\nB\n", None, "utf-8", {"NEXT": "expanded"}),
+        ("nul-path", "nul-path", b"", None, "utf-8", {}),
     ]
     for name, kind, content, stream, encoding, environment in recipes:
         root = scratch / ("read-" + name)
         root.mkdir(exist_ok=True)
         path = root / ".env"
+        if kind == "nul-path":
+            path = root / "bad\x00name"
         if kind == "file":
             path.write_bytes(content)
         elif kind == "directory":
@@ -151,25 +155,29 @@ def dotenv_file_contracts(scratch: Path) -> dict:
         elif kind == "dangling":
             path.symlink_to("absent")
         for override in (True, False):
+            literal = name == "literal"
             values, value_fault, loaded, fault = None, None, None, None
             with patch.dict(os.environ, environment, clear=True), \
                     patch.object(logging.getLogger("dotenv.main"), "warning"):
                 try:
                     result = dotenv_values(path, stream=io.StringIO(stream) if stream is not None else None,
-                                           encoding=encoding)
+                                           encoding=encoding, interpolate=not literal)
                     values = [dict(key=k, value=v) for k, v in result.items()]
                 except (OSError, ValueError) as exc:
                     value_fault = _fault(exc)
                 try:
                     loaded = load_dotenv(path, stream=io.StringIO(stream) if stream is not None else None,
-                                         override=override, encoding=encoding)
+                                         override=override, encoding=encoding, interpolate=not literal)
                 except (OSError, ValueError) as exc:
                     fault = _fault(exc)
                 applied = dict(os.environ)
-            reads.append(dict(name=name, kind=kind, content=content.hex(), stream=stream,
+            row = dict(name=name, kind=kind, content=content.hex(), stream=stream,
                               encoding=encoding, environment=environment, override=override,
                               values=values, valueFault=value_fault, loaded=loaded,
-                              fault=fault, applied=applied))
+                              fault=fault, applied=applied)
+            if literal:
+                row["literal"] = True
+            reads.append(row)
     return dict(version=importlib.metadata.version("python-dotenv"),
                 discovery=discovery, missing=missing, walk=walk, reads=reads)
 

@@ -11,7 +11,7 @@ def test_real_dotenv_discovery_decoding_and_partial_effects(tmp_path):
     assert actual == expected
     assert actual["version"] == "1.2.2"
     assert len(actual["discovery"]) == 10
-    assert len(actual["reads"]) == 36
+    assert len(actual["reads"]) == 40
     selected = {row["name"]: row["selected"] for row in actual["discovery"]}
     assert selected["caller-parent"] == "source/.env"
     assert selected["cwd-explicit"] == "working/.env"
@@ -25,3 +25,5 @@ def test_real_dotenv_discovery_decoding_and_partial_effects(tmp_path):
     assert reads["partial-fault", True]["applied"] == {"A": "prior"}
     assert reads["interpolation", False]["applied"] == {"A": "external", "B": "external"}
     assert reads["interpolation", False]["values"][-1]["value"] == "file"
+    assert reads["literal", True]["applied"] == {"NEXT": "expanded", "A": "${NEXT}"}
+    assert reads["nul-path", True]["fault"] == {"type": "ValueError", "message": "embedded null byte"}

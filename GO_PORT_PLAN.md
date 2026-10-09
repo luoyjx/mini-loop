@@ -14255,3 +14255,49 @@ Python package module/mutation anchor changed, so Go ordinary/race/vet and
 Python package invariants/mutation guards were not rerun. Architecture source
 and generated map need no regeneration because topology is unchanged. Coverage
 was not refreshed for this Source-only slice. Full migration remains open.
+
+## Native dotenv discovery, decoding and file loading — 2026-10-09
+
+Base: `1454b45`. Concrete DiscoveryContext/DiscoveryOptions/FileOptions,
+finite Encoding/FailureClass and named FileValues extend the native dotenv SDK.
+Find selects explicit caller files (skipping missing frames), cwd, interactive,
+debugger or frozen origin and searches actual logical ancestors. Directory and
+dangling entries are skipped; regular files/followed links/FIFOs are admitted.
+Missing lookup and missing starting-path outcomes match Source. Missing caller
+origin is an explicit native refusal, never inferred from Go build-machine paths.
+
+Values and LoadFile implement file-first/fallback-stream selection, optional
+Find, strict UTF-8 decoder faults with exact captured Source messages, BOM,
+universal newline conversion, empty/missing/directory inputs, explicit finite
+UTF-8-signature/Latin-1 codecs and literal interpolation selection. Values always
+resolves with override=true. LoadFile checks disabled loading before any
+filesystem discovery/read/decode and honors the requested override. It returns
+detached maps: decode faults write nothing, while invalid-name application
+faults preserve preceding writes. No API changes cwd or process environment.
+These privileged local SDK reads are not a remote route or tool execution seam.
+Other Python codecs are outside the finite native SDK surface; production
+Source config uses default UTF-8. FIFO reads wait for producer/EOF without a cap.
+
+All ten discovery/default-load, two missing-file, three walk and forty file-read
+Source profiles compare directly. Source corpus adds actual interpolate=false
+and NUL-path failures (36→40 read profiles). Additional real FIFO execution
+verifies producer close, interpolation and CRLF normalization. Native checks
+cover explicit empty path, missing caller origin, unknown-codec refusal,
+absolute filenames, immutable inputs and unchanged process environment.
+
+README canonical Mermaid/boundary/review baseline and interactive aggregate SDK
+annotation update together. CLI/config do not invoke this library and continue
+to report DotEnvDiscovery=false. Startup-origin mapping/activation, default
+diagnostics and full migration acceptance remain open. No new dependency or
+runtime default/authority/persistence change; no push.
+
+Validation passed: focused native race contracts/FIFO tests; full Go ordinary
+and race suites (`-p=1 -count=1 -timeout=300s`), plus go vet ./...; Python full
+suite 2172 passed, 28 skipped, 24 subtests, 3 warnings; all 198 Source exports
+current; all 19 scanning guards; README outline and git diff --check. An empty
+caller-file guard was fixed after initial validation and all Go gates rerun.
+CGO linker LC_DYSYMTAB warnings were nonfatal. No Python package module or
+mutation anchor changed, so Python invariant/guard gates were not rerun.
+Archify regenerated artifact: 9/9, zero errors/warnings; exact hashes and bytes
+verified. Visual review was not repeated because prior browser review was denied;
+zero visual correction rounds. Coverage was not refreshed. No push.

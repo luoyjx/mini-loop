@@ -1,5 +1,5 @@
-// Package dotenv implements the pinned Source dotenv text and environment phases.
-// It does not discover files or mutate the process environment.
+// Package dotenv implements pinned Source text/environment phases and explicit
+// local file discovery/loading. It never mutates process environment or cwd.
 package dotenv
 
 import (
