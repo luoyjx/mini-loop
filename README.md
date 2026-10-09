@@ -329,7 +329,7 @@ API requires a trusted local caller; it is not owner admission. Per-session
 task/gate/owner diagnostics retain their existing self-audit path. Local CLI
 construction/shutdown remains pending; no health/model-tool path calls this API.
 
-Runtime review baseline: `724899f` plus native manager deployment observation and SDK audit,
+Runtime review baseline: `964907d` plus actual local audit CLI Source contracts,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -473,7 +473,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `724899f` plus native manager deployment observation and SDK audit;
+reviewed **2026-10-09** (Go baseline `964907d` plus actual local audit CLI Source contracts;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

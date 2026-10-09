@@ -1,0 +1,232 @@
+{
+  "cases": [
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "default",
+      "overrides": {},
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 2 high, 5 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "public",
+      "overrides": {
+        "HOST": "0.0.0.0"
+      },
+      "sessions": 0,
+      "stdout": "[CRITICAL] host-bind\n           the server binds 0.0.0.0 with no authentication -- every session, event stream and transcript is reachable by anyone who can route to the port\n           -> set MINILOOP_API_TOKEN, or bind 127.0.0.1 (`python -m mini_loop` now refuses this combination outright)\n[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 1 critical, 2 high, 4 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "authenticated",
+      "overrides": {
+        "HOST": "0.0.0.0",
+        "MINILOOP_API_TOKEN": "fixture-auth"
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked; 1 credential-shaped variables are set (MINILOOP_API_TOKEN)\n           -> pass secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n7 finding(s): 3 high, 3 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "exposed",
+      "overrides": {
+        "A_SECRET": "fixture-long-a",
+        "Z_TOKEN": "fixture-long-z"
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked; 2 credential-shaped variables are set (A_SECRET, Z_TOKEN)\n           -> pass secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 3 high, 4 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "content",
+      "overrides": {
+        "MINILOOP_TRAJECTORY_CAPTURE_CONTENT": "1"
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 2 high, 5 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "world-writable",
+      "overrides": {},
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[HIGH    ] workspace-permissions\n           ROOT/world-writable/workspaces is world-writable, so anything on the host can plant files an agent will read and act on\n           -> chmod o-w ROOT/world-writable/workspaces\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n9 finding(s): 3 high, 5 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "full-features",
+      "overrides": {
+        "MINILOOP_FEATURES": "1"
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 2 high, 5 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "workflow-setting",
+      "overrides": {
+        "MINILOOP_WORKFLOWS": "1"
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 2 high, 5 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [
+        "--unknown",
+        "unused"
+      ],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "unknown-args",
+      "overrides": {},
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 2 high, 5 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "ignored-port",
+      "overrides": {
+        "PORT": "not-a-port"
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n8 finding(s): 2 high, 5 medium, 1 info\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "real-client",
+      "overrides": {
+        "ANTHROPIC_API_KEY": "fixture-provider-key",
+        "MINILOOP_FAKE_LLM": ""
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked; 1 credential-shaped variables are set (ANTHROPIC_API_KEY)\n           -> pass secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n\n7 finding(s): 3 high, 4 medium\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": 1,
+      "fault": null,
+      "managers": 1,
+      "name": "missing-key",
+      "overrides": {
+        "MINILOOP_FAKE_LLM": ""
+      },
+      "sessions": 0,
+      "stdout": "[HIGH    ] action-journal\n           the action journal is in-memory, so a restarted process cannot tell which side effects already happened and may run them again\n           -> pass a SQLite state_store; the journal becomes durable with it\n[HIGH    ] shell-confinement\n           shell commands run on the host with the agent's full user rights; `cwd` is the workspace but nothing stops `cd /`. The DANGEROUS command list is a typo guard, not confinement -- it is substring matching, and `$(echo rm) -rf /` walks past it\n           -> pass sandbox=SeatbeltSandbox(...) (or default_sandbox(workspace))\n[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] durable-state\n           no state store: transcripts and event cursors exist only in this process and are lost on restart\n           -> pass state_store=SQLiteStateStore(path)\n[MEDIUM  ] resource-limits\n           nothing bounds how much a shell command consumes: memory, disk and CPU are unlimited, and a single command allocated 700 MB unopposed in testing. `bash_timeout` bounds wall time only. A sandbox does not help -- it confines where a command writes, not how much\n           -> run this deployment in a container with memory, disk and CPU limits; shell `ulimit` was measured and does not enforce these on macOS\n[MEDIUM  ] secret-masking\n           no secret registry: the shell inherits the whole process environment and tool output is not masked\n           -> pass secrets=SecretRegistry.from_environ()\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n\n7 finding(s): 2 high, 5 medium\n",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    },
+    {
+      "args": [],
+      "exit_code": null,
+      "fault": {
+        "message": "max_turns must be at least 1",
+        "type": "ValueError"
+      },
+      "managers": 0,
+      "name": "invalid-settings",
+      "overrides": {
+        "MINILOOP_MAX_TURNS": "0"
+      },
+      "sessions": 0,
+      "stdout": "",
+      "workflows": [],
+      "workspace_exists": false
+    },
+    {
+      "args": [],
+      "exit_code": null,
+      "fault": {
+        "message": "MINILOOP_API_TOKENS assigns one token to both 'alice' and 'bob'; a shared credential lets one caller act as the other",
+        "type": "ValueError"
+      },
+      "managers": 1,
+      "name": "invalid-auth",
+      "overrides": {
+        "MINILOOP_API_TOKENS": "alice:shared,bob:shared"
+      },
+      "sessions": 0,
+      "stdout": "",
+      "workflows": [
+        false
+      ],
+      "workspace_exists": true
+    }
+  ]
+}

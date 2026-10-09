@@ -6682,3 +6682,31 @@ Python pytest/exporter/invariant/scanner/guard gates were not repeated: no
 Python package, export, scanner, mutation anchor or Go default-tool type changed.
 The preceding Source contract delivery passed Python pytest and all 194 exports.
 No push.
+
+## Local deployment audit CLI Source contracts — 2026-10-09
+
+Base: `964907d`. The 195th export runs actual `mini_loop.audit.main` against
+14 local profiles: default/public/authenticated/exposed/content/world-write,
+full features, workflow setting, ignored unknown arguments/invalid PORT, real
+provider, missing provider key, invalid settings and shared-token refusal.
+Settings loading, client construction, manager construction and audit/render
+remain Source implementations. A constructor wrapper only records real manager
+instances; harness cleanup stops managers and closes clients after observation.
+All successful construction profiles have zero sessions. Root paths alone are
+normalized after resolving the scratch root. Two independent roots reproduce
+the frozen corpus.
+
+Source treats non--url arguments as local mode, ignores PORT, and does not pass
+the workflow environment selection to the local manager. Source settings create
+the workspace before client construction. Source AsyncAnthropic accepts a
+missing API key at construction; existing Go provider refuses it immediately.
+That difference remains explicit implementation work, not a passing parity case.
+Full Go CLI features still require the unresolved default diagnostic backend.
+README architecture baseline reviewed; this contract-only slice changes no
+runtime topology, dependency, authority or defaults.
+
+Validation: focused two-root Source test, full Python pytest (2169 passed,
+28 skipped, 24 subtests; 3 warnings), all 195 export checks, all 19 scanning
+guards and git diff --check passed. JSON key order was corrected to the existing
+exporter format before the final check. No Python package module/guarded mutation
+anchor or Go implementation changed; Go/race/vet gates were not repeated.
