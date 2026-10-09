@@ -7120,3 +7120,35 @@ successful rerun above supersedes that failed profile. Relevant race tests
 Only tests and the README review baseline changed; runtime code and Python
 sources were unchanged. Full race and Python suites were not rerun this iteration.
 The profile remains temporary local output. No push.
+
+
+## Native SQLite compaction restart proof — 2026-10-10
+
+`go/sqlitestate/compaction_restart_test.go` composes the real manager, compress
+and read_file tool batch, default archive/summary path and native SQLite backend.
+Three cases cover a successful summary, provider failure and cancellation.
+The archive must contain the complete paired three-message tool batch, including
+the later read_file result. Successful compaction stores a summary in epoch 2
+while retaining the exact paired epoch 1; the summary receipt is persisted with
+its Source-compatible pre-rewrite epoch and archive path. Failure/cancellation
+writes the archive but preserves the paired canonical epoch 1 without a summary
+receipt. Tests close and reopen the database before explicit manager restoration.
+They check owner/identity/run count, exact current and historical messages,
+unchanged persisted event prefix, resumed provider request prefix, healthy lease
+state, archive bytes and retained superseded epoch after the resumed turn.
+
+This proves the composed small-history compaction/restart path. It does not
+extend the proof to arbitrary large archival profiles or claim all G5/G7 work
+complete. Default diagnostics selection and full migration acceptance remain open.
+The README architecture review baseline was updated; runtime topology and
+interactive map are unchanged. Runtime code, Python sources and contracts are
+unchanged in this iteration.
+
+Validation: narrow `go test -count=1 ./sqlitestate -run
+TestCompactionNativeSQLiteRecovery`, full `go test -p=1 -count=1 -timeout=300s
+./...`, full `go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...`
+all passed from `go/`. Race linking emitted Darwin CGO LC_DYSYMTAB warnings;
+all affected test binaries completed successfully. `git diff --check` passed.
+Python tests, contract export, scanner/invariant/mutation checks and coverage
+were not rerun because their source/targets and runtime implementation did not
+change. No push.
