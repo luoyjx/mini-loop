@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `2f57665` plus Launcher and benchmark efficiency settings activation,
+Runtime review baseline: `76772ef` plus benchmark filter-order Source contracts,
+plus Launcher and benchmark efficiency settings activation,
 plus benchmark efficiency Source contracts,
 plus efficiency startup Source contracts,
 plus native entered-workspace child artifact allocation,

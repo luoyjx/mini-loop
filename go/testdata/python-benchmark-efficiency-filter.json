@@ -1,0 +1,337 @@
+{
+  "rows": [
+    {
+      "after_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "after_same_store": true,
+      "before_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "before_store": false,
+      "closed": true,
+      "mode": "off",
+      "model_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "name": "off",
+      "passed": true,
+      "selection": null,
+      "setup_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "setup_same_store": true
+    },
+    {
+      "after_names": [
+        "read_file"
+      ],
+      "after_same_store": true,
+      "before_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "before_store": false,
+      "closed": true,
+      "mode": "shadow",
+      "model_names": [
+        "read_file"
+      ],
+      "name": "shadow",
+      "passed": true,
+      "selection": [
+        "read_file"
+      ],
+      "setup_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "setup_same_store": true
+    },
+    {
+      "after_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "after_same_store": true,
+      "before_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "before_store": true,
+      "closed": true,
+      "mode": "enforce",
+      "model_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "name": "unfiltered",
+      "passed": true,
+      "selection": null,
+      "setup_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "setup_same_store": true
+    },
+    {
+      "after_names": [],
+      "after_same_store": true,
+      "before_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "before_store": true,
+      "closed": true,
+      "mode": "enforce",
+      "model_names": [],
+      "name": "empty",
+      "passed": true,
+      "selection": [],
+      "setup_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "setup_same_store": true
+    },
+    {
+      "after_names": [
+        "read_file",
+        "glob"
+      ],
+      "after_same_store": true,
+      "before_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "before_store": true,
+      "closed": true,
+      "mode": "enforce",
+      "model_names": [
+        "read_file",
+        "glob"
+      ],
+      "name": "readonly-tools",
+      "passed": true,
+      "selection": [
+        "glob",
+        "read_file",
+        "glob",
+        "missing"
+      ],
+      "setup_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "setup_same_store": true
+    },
+    {
+      "after_names": [
+        "read_token_artifact"
+      ],
+      "after_same_store": true,
+      "before_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "before_store": true,
+      "closed": true,
+      "mode": "enforce",
+      "model_names": [
+        "read_token_artifact"
+      ],
+      "name": "recovery-only",
+      "passed": true,
+      "selection": [
+        "read_token_artifact"
+      ],
+      "setup_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "setup_same_store": true
+    },
+    {
+      "after_names": [],
+      "after_same_store": true,
+      "before_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "before_store": true,
+      "closed": true,
+      "mode": "enforce",
+      "model_names": [],
+      "name": "unknown-only",
+      "passed": true,
+      "selection": [
+        "missing"
+      ],
+      "setup_names": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "read_token_artifact"
+      ],
+      "setup_same_store": true
+    }
+  ]
+}

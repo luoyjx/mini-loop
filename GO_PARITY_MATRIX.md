@@ -1,5 +1,17 @@
 # Python to Go parity matrix
 
+## 2026-10-09 benchmark post-construction filter Source contracts
+
+Baseline: `76772ef`. Seven actual Python benchmark.run_arm runs observe Manager
+construction, task setup, catalogue filtering, model schemas and manager stop.
+Enforce allocates before setup/filtering and retains the identical store for
+empty, unknown-only and readonly tool selections. Off/shadow allocate none.
+Unknown names and duplicates are ignored; original registry order is retained.
+These Source contracts precede the native post-construction narrowing seam.
+Validation: 124 focused Python tests, all 19 scan guards, complete 183-file
+exporter check and git diff --check passed. No Python runtime modules changed.
+
+
 ## 2026-10-09 native efficiency startup settings activation
 
 Baseline: `2f57665`. The pure runtimeconfig.ManagerEfficiency adapter maps validated
