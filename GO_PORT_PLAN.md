@@ -1,5 +1,49 @@
 # Go port plan
 
+## 2026-10-09 native SQLite transcript epochs and event rows
+
+Baseline: 5221144. sqlitestate.Store now satisfies TranscriptStore and EventStore
+in addition to session/lease interfaces. Immediate transactions reserve the writer
+before MAX(ordinal); message ordinals increase across epochs and entire failed
+batches roll back. Nil epoch selects MAX(epoch), empty append returns selected
+epoch count and Source epoch-zero reads/counts remain empty. Old epochs stay
+readable, including unfinished tool calls; no live transcript pairing is imposed
+on archival reads. Known typed payloads render spaced UTF-8 without a whole-row
+container cap. Physical event ordinals remain distinct from payload SSE sequences.
+Exclusive after and SQL nil/zero/negative-limit behavior are preserved. Signed SQL
+ordinal exhaustion returns a named error; no wraparound is allowed.
+
+protocol.DecodeStoredMessage provides a separate archival size mode for known
+message/content/block variants. The existing JSON ingress still enforces 512 KiB;
+known large plain/text/thinking/result rows and accumulated block arrays no longer
+inherit that frame cap. Tool-input and caller decoders retain their separate
+contracts. Known event decoding uses the existing untrusted archival adapter and
+its explicit 16 MiB/variant boundaries. Wider malformed/scalar/Unicode/tool-input
+and caller profiles remain for audit. Historical data cannot install live actors,
+capabilities or remembered grants; no full arbitrary Python payload claim.
+
+Tests replay actual Source state-store epoch/count/rollback/reopen results, append
+24 messages over two independent connections with contiguous ordinals, round-trip
+large plain/result messages and 1,501 blocks, and prove network rejection remains.
+Native event tests retain sequence 100/201 in ordinal 1/2, tail limits, failed append
+rollback and reopen with untrusted scope. An actual temporary Source SQLite probe
+confirms epoch-zero append/load (0/[]) and tail counts (2/1/0/1/2). An early test
+inspector incorrectly reused a single-connection pinned pool and blocked; its
+confirmed test process was terminated, inspection changed to an independent
+connection and subsequent narrow/full tests passed. Production read paths use
+the pinned connection directly.
+
+Validation: final Go focused/full tests (-p=1 -count=1 -timeout=300s), vet, 32 focused
+Python storage/restart tests and the complete 186-file exporter check passed.
+Full Go race (-p=1 -count=1 -timeout=300s) also passed. The macOS CGO link emitted
+an LC_DYSYMTAB warning; tests and command succeeded. git diff --check passed.
+README baseline/canonical map, extension/hardening and
+Go README updated; architecture delivery passes 9/9 checks with zero errors/warnings
+and receipt hashes verified. Visual review remains skipped after the earlier browser
+denial. Full Python regression/coverage not refreshed. No push. Native action/
+approval SQL, complete StateStore conformance, configured Manager/Launcher storage,
+durable managed restoration/catch-up/cron restart and full port audit remain open.
+
 ## 2026-10-09 native SQLite session metadata, deletion and leases
 
 Baseline: 8066d7b. sqlitestate.Store now satisfies the consumer-owned SessionStore

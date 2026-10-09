@@ -240,8 +240,10 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 
 // decodeStrict is used only at a JSON boundary. Domain values never retain
 // raw JSON or an open-ended map.
-func decodeStrict[T any](data []byte, target *T) error {
-	if len(data) > MaxWireBytes {
+func decodeStrict[T any](data []byte, target *T) error { return decodeStrictMode(data, target, true) }
+
+func decodeStrictMode[T any](data []byte, target *T, bounded bool) error {
+	if bounded && len(data) > MaxWireBytes {
 		return fmt.Errorf("JSON value exceeds %d bytes", MaxWireBytes)
 	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
@@ -259,14 +261,22 @@ func decodeStrict[T any](data []byte, target *T) error {
 }
 
 func (b *Block) UnmarshalJSON(data []byte) error {
-	if len(data) > MaxWireBytes {
-		return fmt.Errorf("block exceeds %d bytes", MaxWireBytes)
+	next, err := decodeBlock(data, true)
+	if err == nil {
+		*b = next
+	}
+	return err
+}
+
+func decodeBlock(data []byte, bounded bool) (Block, error) {
+	if bounded && len(data) > MaxWireBytes {
+		return Block{}, fmt.Errorf("block exceeds %d bytes", MaxWireBytes)
 	}
 	var tag struct {
 		Type BlockKind `json:"type"`
 	}
 	if err := json.Unmarshal(data, &tag); err != nil {
-		return err
+		return Block{}, err
 	}
 	var next Block
 	switch tag.Type {
@@ -275,11 +285,11 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 			Type BlockKind `json:"type"`
 			Data *string   `json:"data"`
 		}
-		if err := decodeStrict(data, &wire); err != nil {
-			return err
+		if err := decodeStrictMode(data, &wire, bounded); err != nil {
+			return Block{}, err
 		}
 		if wire.Data == nil {
-			return errors.New("redacted thinking requires data")
+			return Block{}, errors.New("redacted thinking requires data")
 		}
 		next = NewRedactedThinkingBlock(*wire.Data)
 	case BlockText:
@@ -287,8 +297,8 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 			Type BlockKind `json:"type"`
 			TextBlock
 		}
-		if err := decodeStrict(data, &wire); err != nil {
-			return err
+		if err := decodeStrictMode(data, &wire, bounded); err != nil {
+			return Block{}, err
 		}
 		next = NewTextBlock(wire.Text)
 	case BlockThinking:
@@ -296,8 +306,8 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 			Type BlockKind `json:"type"`
 			ThinkingBlock
 		}
-		if err := decodeStrict(data, &wire); err != nil {
-			return err
+		if err := decodeStrictMode(data, &wire, bounded); err != nil {
+			return Block{}, err
 		}
 		next = NewThinkingBlock(wire.Thinking, wire.Signature)
 	case BlockToolUse:
@@ -308,21 +318,21 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 			Input  json.RawMessage `json:"input"`
 			Caller json.RawMessage `json:"caller"`
 		}
-		if err := decodeStrict(data, &wire); err != nil {
-			return err
+		if err := decodeStrictMode(data, &wire, bounded); err != nil {
+			return Block{}, err
 		}
 		if len(wire.Input) == 0 {
-			return errors.New("tool_use requires input")
+			return Block{}, errors.New("tool_use requires input")
 		}
 		input, err := DecodeToolInput(wire.Name, wire.Input)
 		if err != nil {
-			return err
+			return Block{}, err
 		}
 		var caller *ToolCaller
 		if len(wire.Caller) > 0 && string(wire.Caller) != "null" {
 			caller = &ToolCaller{}
 			if err := json.Unmarshal(wire.Caller, caller); err != nil {
-				return err
+				return Block{}, err
 			}
 		}
 		next = NewToolUseWithCaller(wire.ID, input, caller)
@@ -332,18 +342,17 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 			Type BlockKind `json:"type"`
 			ToolResultBlock
 		}
-		if err := decodeStrict(data, &wire); err != nil {
-			return err
+		if err := decodeStrictMode(data, &wire, bounded); err != nil {
+			return Block{}, err
 		}
 		next = NewToolResult(wire.ToolUseID, wire.Content, wire.IsError)
 	default:
-		return fmt.Errorf("unsupported block type %q", tag.Type)
+		return Block{}, fmt.Errorf("unsupported block type %q", tag.Type)
 	}
 	if err := next.Validate(); err != nil {
-		return err
+		return Block{}, err
 	}
-	*b = next
-	return nil
+	return next, nil
 }
 
 // Content is the provider's string-or-block-array union. An empty string is
@@ -456,35 +465,50 @@ func (c Content) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Content) UnmarshalJSON(data []byte) error {
-	if len(data) > MaxWireBytes {
-		return fmt.Errorf("content exceeds %d bytes", MaxWireBytes)
+	next, err := decodeContent(data, true)
+	if err == nil {
+		*c = next
+	}
+	return err
+}
+
+func decodeContent(data []byte, bounded bool) (Content, error) {
+	if bounded && len(data) > MaxWireBytes {
+		return Content{}, fmt.Errorf("content exceeds %d bytes", MaxWireBytes)
 	}
 	var next Content
 	trimmed := bytes.TrimSpace(data)
 	if len(trimmed) == 0 {
-		return errors.New("missing content")
+		return Content{}, errors.New("missing content")
 	}
 	switch trimmed[0] {
 	case '"':
 		var plain string
-		if err := decodeStrict(data, &plain); err != nil {
-			return err
+		if err := decodeStrictMode(data, &plain, bounded); err != nil {
+			return Content{}, err
 		}
 		next = PlainContent(plain)
 	case '[':
-		var blocks []Block
-		if err := decodeStrict(data, &blocks); err != nil {
-			return err
+		var rows []json.RawMessage
+		if err := decodeStrictMode(data, &rows, bounded); err != nil {
+			return Content{}, err
+		}
+		blocks := make([]Block, 0, len(rows))
+		for _, row := range rows {
+			block, err := decodeBlock(row, bounded)
+			if err != nil {
+				return Content{}, err
+			}
+			blocks = append(blocks, block)
 		}
 		next = BlockContent(blocks...)
 	default:
-		return errors.New("content must be a string or block array")
+		return Content{}, errors.New("content must be a string or block array")
 	}
 	if err := next.Validate(); err != nil {
-		return err
+		return Content{}, err
 	}
-	*c = next
-	return nil
+	return next, nil
 }
 
 type Message struct {
@@ -510,22 +534,38 @@ func (m Message) MarshalJSON() ([]byte, error) {
 }
 
 func (m *Message) UnmarshalJSON(data []byte) error {
-	if len(data) > MaxWireBytes {
-		return fmt.Errorf("message exceeds %d bytes", MaxWireBytes)
+	next, err := decodeMessage(data, true)
+	if err == nil {
+		*m = next
+	}
+	return err
+}
+
+// DecodeStoredMessage decodes a known historical message without the network-frame
+// size cap. Tool input decoding retains its separate admission contract. Reading
+// this value grants no actor, permissions or live execution authority.
+func DecodeStoredMessage(data []byte) (Message, error) { return decodeMessage(data, false) }
+
+func decodeMessage(data []byte, bounded bool) (Message, error) {
+	if bounded && len(data) > MaxWireBytes {
+		return Message{}, fmt.Errorf("message exceeds %d bytes", MaxWireBytes)
 	}
 	var wire struct {
-		Role    Role    `json:"role"`
-		Content Content `json:"content"`
+		Role    Role            `json:"role"`
+		Content json.RawMessage `json:"content"`
 	}
-	if err := decodeStrict(data, &wire); err != nil {
-		return err
+	if err := decodeStrictMode(data, &wire, bounded); err != nil {
+		return Message{}, err
 	}
-	next := Message{Role: wire.Role, Content: wire.Content}
+	content, err := decodeContent(wire.Content, bounded)
+	if err != nil {
+		return Message{}, err
+	}
+	next := Message{Role: wire.Role, Content: content}
 	if err := next.Validate(); err != nil {
-		return err
+		return Message{}, err
 	}
-	*m = next
-	return nil
+	return next, nil
 }
 
 // ValidateTranscript enforces the immediate tool_use/tool_result pairing

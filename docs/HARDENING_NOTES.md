@@ -8182,3 +8182,19 @@ Rollback uses an independent cleanup context so cancellation cannot abandon a
 writer reservation. Tests cover real aborting triggers, cancelled commits, twenty
 competing double-connection claims, reopen and all thirteen Source lease steps. Database leases remain separate from external-effect fencing; record
 operations do not establish tenant authorization or restore human authority.
+
+### Go migration — transactional transcript and event append
+
+Native messages and events read MAX(ordinal) only after BEGIN IMMEDIATE. One
+connection serializes Store operations; independent connections serialize through
+SQLite writer reservation. Trigger refusal rolls back the complete message batch
+or event append. Message ordinals span epochs; historical reads never enforce
+current transcript pairing, so unfinished tool calls remain inspectable. Source
+epoch-zero reads/counts intentionally remain empty. Event payload sequence is
+independent of physical ordinal and retained on untrusted archival decoding.
+
+DecodeStoredMessage separates historical row size from network ingress size.
+Large plain/text/result blocks and accumulated arrays round-trip while network
+JSON still rejects oversize frames. Tool inputs and caller projections retain their
+separate decoding limits. Unknown historical variants and stored-event limits
+remain explicit; neither row reading nor remembered grant events install authority.

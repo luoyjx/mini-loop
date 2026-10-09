@@ -280,7 +280,17 @@ claims/renewals preserve Source expiry equality, owner-scoped release and missin
 row refusal. Store Close serializes against these operations. Pre-cancelled calls
 and cancelled pre-commit transactions are explicitly fenced; cleanup uses a live
 rollback context. These operations install no owner authorization or human grants.
-Transcript/event/action/approval record APIs, complete agent.StateStore conformance
+TranscriptStore and EventStore now use the same owned connection and immediate
+transactions for read-head/append. Message ordinals increase across epochs; nil
+selection reads the highest epoch and empty append reports that selected epoch
+count. Source epoch-zero reads/counts stay empty. Whole failed batches roll back.
+Event tails use exclusive physical ordinal and SQL LIMIT semantics, independently
+of live SSE sequences. Known events use the existing untrusted archival decoder,
+including its explicit 16 MiB/variant boundaries. protocol.DecodeStoredMessage
+removes the network cap for known stored rows and text/thinking/result blocks;
+tool-input and caller decoders keep their separate limits. Unsupported historical
+shapes still fail, and reads do not authorize execution. Action/approval APIs,
+complete agent.StateStore conformance
 and Launcher/Manager persistence activation remain pending.
 
 `agent.SessionRecord` models the Python schema-v7 session projection: immutable

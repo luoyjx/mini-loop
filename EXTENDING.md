@@ -531,7 +531,11 @@ retains audit rows and rolls back earlier operational deletes on failure. Source
 expiry equality and optional-column read fallbacks are preserved. Explicit context
 checks precede SQL admission and commit; rollback survives caller cancellation.
 Current Todo/steering variants are decoded explicitly, with unsupported shapes
-refused. Transcript/event/action/approval SQL and complete StateStore conformance
+refused. TranscriptStore/EventStore now append with immediate read-head transactions,
+retain older epochs, roll back failed batches and distinguish physical event
+ordinals from payload sequence. Known events decode with inert scope; archival
+message decoding permits larger histories while network and tool-input/caller
+limits remain. Action/approval SQL and complete StateStore conformance
 remain pending; these library methods do not activate managed restoration.
 
 `TrajectoryStore` records what happened, for audit, and redacts content when
