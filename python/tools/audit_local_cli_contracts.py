@@ -49,6 +49,7 @@ def audit_local_cli_contracts(scratch: Path) -> dict:
         code, fault = None, None
         try:
             with patch.dict(os.environ, env, clear=True), \
+                    patch("pathlib.Path.home", return_value=root / "home"), \
                     patch("mini_loop.manager.SessionManager", construct), \
                     contextlib.redirect_stdout(output):
                 try:

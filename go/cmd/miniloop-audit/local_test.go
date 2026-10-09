@@ -44,7 +44,7 @@ func localSourceCases(t *testing.T) []localSourceCase {
 func TestLocalCommandMatchesActualSourceConstruction(t *testing.T) {
 	matched := 0
 	for _, row := range localSourceCases(t) {
-		if row.Name == "full-features" || row.Name == "missing-key" || row.Fault != nil {
+		if row.Name == "full-features" || row.Fault != nil {
 			continue
 		}
 		t.Run(row.Name, func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestLocalCommandMatchesActualSourceConstruction(t *testing.T) {
 		})
 		matched++
 	}
-	if matched != 10 {
+	if matched != 11 {
 		t.Fatal("unexpected matched profile count", matched)
 	}
 }
@@ -97,7 +97,6 @@ func TestLocalCommandReportsOperationalFailuresAndPendingBackends(t *testing.T) 
 		{"MINILOOP_MAX_TURNS": "0"},
 		{"MINILOOP_API_TOKENS": "alice:shared,bob:shared"},
 		{"MINILOOP_FEATURES": "1"},
-		{"MINILOOP_FAKE_LLM": ""}, // Source permits uncredentialed construction; native provider admission is stricter.
 	} {
 		env := map[string]string{"MINILOOP_FAKE_LLM": "1", "MINILOOP_WORKSPACE_ROOT": filepath.Join(t.TempDir(), "workspaces")}
 		for key, value := range extra {

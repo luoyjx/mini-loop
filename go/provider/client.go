@@ -34,6 +34,7 @@ const (
 	FailureConnection        FailureKind = "connection"
 	FailureTimeout           FailureKind = "timeout"
 	FailureProtocol          FailureKind = "protocol"
+	FailureCredential        FailureKind = "credential"
 	FailureLimit             FailureKind = "wire_limit"
 	FailureStreamingRequired FailureKind = "streaming_required"
 )
@@ -136,8 +137,8 @@ func New(cfg Config) (*Client, error) {
 	if err != nil || u.Host == "" || (u.Scheme != "http" && u.Scheme != "https") || u.User != nil || u.RawQuery != "" || u.ForceQuery || u.Fragment != "" || u.Opaque != "" {
 		return nil, errors.New("provider endpoint must be an HTTP(S) base URL without credentials, query or fragment")
 	}
-	if len(cfg.APIKey) > 4096 || strings.TrimSpace(cfg.APIKey) == "" || strings.IndexFunc(cfg.APIKey, func(r rune) bool { return r < 32 || r == 127 }) >= 0 {
-		return nil, errors.New("provider API key is required and must be a single header value")
+	if len(cfg.APIKey) > 4096 || (cfg.APIKey != "" && strings.TrimSpace(cfg.APIKey) == "") || strings.IndexFunc(cfg.APIKey, func(r rune) bool { return r < 32 || r == 127 }) >= 0 {
+		return nil, errors.New("provider API key must be a single header value when supplied")
 	}
 	retries := DefaultRetries
 	if cfg.MaxRetries != nil {
@@ -185,7 +186,11 @@ func (c *Client) Describe() Description {
 	if c.compatible {
 		name = "anthropic-compatible"
 	}
-	return Description{name, "anthropic", strings.ReplaceAll(c.endpoint, c.key, "[REDACTED]"), "<set>"}
+	credential := "<absent>"
+	if c.key != "" {
+		credential = "<set>"
+	}
+	return Description{name, "anthropic", c.redactKey(c.endpoint), credential}
 }
 func (c *Client) String() string {
 	v := c.Describe()
@@ -200,7 +205,7 @@ func (c *Client) Complete(ctx context.Context, input protocol.ModelRequest) (pro
 		return protocol.ModelReply{}, &Failure{Kind: FailureProtocol, Message: "invalid provider request"}
 	}
 	if c.defaultTimeout && input.MaxTokens > DirectTokenCeiling(input.Model) {
-		return protocol.ModelReply{}, &Failure{Kind: FailureStreamingRequired, Message: "Streaming is required for operations that may take longer than 10 minutes."}
+		return protocol.ModelReply{}, &Failure{Kind: FailureStreamingRequired, Message: "Streaming is required for operations that may take longer than 10 minutes. See https://github.com/anthropics/anthropic-sdk-python#long-requests for more details"}
 	}
 	body, err := json.Marshal(input)
 	if err != nil {
@@ -208,6 +213,9 @@ func (c *Client) Complete(ctx context.Context, input protocol.ModelRequest) (pro
 	}
 	if int64(len(body)) > c.requestLimit {
 		return protocol.ModelReply{}, &Failure{Kind: FailureLimit, Message: "provider request exceeds wire limit"}
+	}
+	if err := c.requireCredential(); err != nil {
+		return protocol.ModelReply{}, err
 	}
 	for attempt := 0; ; attempt++ {
 		reply, failure, retry, delay, err := c.attempt(ctx, body, attempt)
@@ -277,7 +285,7 @@ func (c *Client) attempt(ctx context.Context, body []byte, attempt int) (protoco
 	return reply, nil, false, 0, nil
 }
 func (c *Client) clean(s string, limit int) string {
-	s = strings.ReplaceAll(s, c.key, "[REDACTED]")
+	s = c.redactKey(s)
 	runes := []rune(s)
 	if len(runes) > limit {
 		s = string(runes[:limit]) + " [truncated]"
@@ -350,4 +358,20 @@ func (c *Client) backoff(attempt int, retryAfter *time.Duration) time.Duration {
 		jitter = 0
 	}
 	return time.Duration(seconds * (1 - .25*jitter) * float64(time.Second))
+}
+
+// Construction and inspection do not require authentication. Request admission
+// follows Source's body/streaming checks and fails before transport or retries.
+func (c *Client) requireCredential() error {
+	if c.key == "" {
+		return &Failure{Kind: FailureCredential, Message: "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\""}
+	}
+	return nil
+}
+
+func (c *Client) redactKey(text string) string {
+	if c.key == "" {
+		return text
+	}
+	return strings.ReplaceAll(text, c.key, "[REDACTED]")
 }

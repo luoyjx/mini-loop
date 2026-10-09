@@ -54,6 +54,9 @@ func (c *StreamingClient) CompleteStream(ctx context.Context, request protocol.M
 	if int64(len(body)) > c.client.requestLimit {
 		return protocol.ModelReply{}, &Failure{Kind: FailureLimit, Message: "provider request exceeds wire limit"}
 	}
+	if err := c.client.requireCredential(); err != nil {
+		return protocol.ModelReply{}, err
+	}
 	for attempt := 0; ; attempt++ {
 		reply, failure, retry, delay, err := c.attempt(ctx, body, attempt, emit)
 		if err != nil {

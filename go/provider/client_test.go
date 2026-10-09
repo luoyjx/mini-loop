@@ -29,7 +29,7 @@ func TestClientRejectsUnsafeConfigAndNeverPrintsCredential(t *testing.T) {
 			t.Fatal("unsafe endpoint accepted", base)
 		}
 	}
-	for _, key := range []string{"", " ", "bad\r\nheader", "bad\x00header", "bad\theader"} {
+	for _, key := range []string{" ", "bad\r\nheader", "bad\x00header", "bad\theader"} {
 		if _, err := New(Config{APIKey: key}); err == nil {
 			t.Fatal("unsafe credential accepted")
 		}

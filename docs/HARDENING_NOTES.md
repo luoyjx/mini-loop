@@ -8228,3 +8228,15 @@ local audit while the serving path remains denied before workspace effects.
 Caller-owned stores/diagnostics are not closed. Cleanup uses an independent
 bounded context after cancellation. Component observation is privileged local
 fleet visibility, not owner admission or an atomic fleet transaction.
+
+### Go migration — missing provider auth fails before transport
+
+The native provider now permits credential absence during construction and
+inspection, matching Source's deferred request check. Missing authentication
+returns typed TypeError after request/body and non-streaming token admission,
+before HTTP, progress output or retry waiting. This is a local credential
+failure, distinct from remote HTTP AuthenticationError. Actual launcher model
+turns use existing provider error projection without contacting the endpoint.
+Empty keys leave endpoint/diagnostic text intact during redaction. Supplied
+key/URL/wire bounds and public listener authentication guards remain enforced.
+There is no automatic profile/OAuth/federation lookup in this native seam.

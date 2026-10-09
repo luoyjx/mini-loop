@@ -341,10 +341,15 @@ point does not activate the workflow environment setting; explicit SDK workflow
 options remain available. Construction may create workspace/shared-resource
 roots; serving still refuses unauthenticated public binds, while local audit
 reports that configuration. From `go/`: `go run ./cmd/miniloop-audit`.
-Full CLI features still require the pending default diagnostics backend. Native
-provider construction still requires a key; Source defers its missing-key check.
+Full CLI features still require the pending default diagnostics backend.
+Native providers now allow an absent API key during construction/inspection,
+report `<absent>` and refuse model requests before HTTP or retries. Non-streaming
+token-ceiling checks retain Source priority over missing authentication. The
+missing-credential failure carries typed `TypeError` identity through existing
+recovery and error-result projection. Supplied keys retain header/size admission;
+SDK profile, OAuth and federation discovery remain outside this native seam.
 
-Runtime review baseline: `c6e0cee` plus native local deployment audit CLI composition,
+Runtime review baseline: `798a2a6` plus deferred provider missing-credential admission,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -488,7 +493,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `c6e0cee` plus native local deployment audit CLI composition;
+reviewed **2026-10-09** (Go baseline `798a2a6` plus deferred provider missing-credential admission;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -544,7 +549,7 @@ flowchart LR
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>absent-key inspection · request auth before HTTP / retry<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]

@@ -14085,3 +14085,48 @@ git diff --check passed. Existing Darwin CGO linker warnings were nonfatal.
 Python package invariant/guard checks were not repeated because package modules
 and mutation anchors are unchanged. Coverage was not refreshed; the prior
 90.14% measurement belongs to the preceding manager observation implementation.
+
+## Deferred native provider missing-credential admission — 2026-10-09
+
+Base: `798a2a6`. The 196th Source export observes fixed SDK 0.107.1 constructor
+and request phases for missing/empty keys, streaming absence and non-streaming
+token-ceiling priority. All four clients construct, no transport call occurs,
+and TypeError/ValueError class and complete diagnostic text are frozen.
+Credential discovery paths are redirected through a temporary Path.home
+filesystem seam with environment cleared; no authentication guard is mocked.
+The local CLI corpus now uses the same home-path isolation and remains stable.
+ANTHROPIC_CONFIG_DIR is not an isolation substitute: the pinned SDK treats it
+as explicit profile selection; that attempted recipe was replaced.
+
+Native New/NewStreaming now permit empty APIKey, preserve `<absent>` identity
+and defer missing-authentication admission until after request/body validation
+and non-streaming token-ceiling refusal, before HTTP or retries. Finite
+FailureCredential carries Source TypeError and existing ModelFailureOther
+projection; HTTP AuthenticationError remains a separate status failure. Source
+token-ceiling diagnostic text is now complete. Empty-key redaction does not
+insert markers between endpoint or diagnostic characters. Existing constraints
+on nonempty keys, endpoints, wire sizes and listener authentication stay intact.
+No dependency, profile/OAuth/federation discovery or ambient key rotation added.
+
+All four Source request profiles match native error class/text and zero HTTP/
+retry/progress effects. A real uncredentialed launcher constructs an empty fleet,
+then an actual managed model turn projects the refusal through existing [Error]
+text without contacting HTTP. The previous early CLI missing-key refusal test
+was removed because its assumed behavior changed; public bind/configuration
+refusal tests remain. Eleven local audit command profiles now match Source,
+including missing-key construction; full default diagnostics remains open.
+
+README architecture review baseline, canonical provider label/boundary,
+extension/hardening notes and architecture specification are updated together.
+Wider G0-G7 migration acceptance remains open.
+
+Final validation passed: focused provider/local-command/actual managed launcher
+race tests; full serialized Go tests and full serialized Go race; go vet ./...;
+full Python pytest (2170 passed, 28 skipped, 24 subtests, 3 warnings); all 196
+Source exports; all 19 scanning guards; README outline, typed-payload search and
+git diff --check. Archify passes 9/9 showcase checks with zero errors/warnings;
+spec/artifact hashes and byte counts match receipt. Visual review was not
+repeated because previous browser inspection was denied; correction rounds 0.
+Existing Darwin CGO linker warnings were nonfatal. Python package invariant/
+guard gates and coverage were not refreshed: package modules/mutation anchors
+are unchanged. No push; full migration/default diagnostics remain unfinished.

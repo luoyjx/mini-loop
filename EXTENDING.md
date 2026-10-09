@@ -3733,5 +3733,18 @@ No session restoration/model/tool is started; workspace and shared service roots
 may be created as part of construction. Explicit SDK diagnostics support full
 features; default CLI diagnostics remain pending. Source local mode ignores
 PORT/non-URL arguments and does not forward its workflow environment flag;
-explicit Options.WorkflowTools still works. Existing native provider admission
-requires credentials at construction, unlike Source's deferred check.
+explicit Options.WorkflowTools still works. Native provider constructors
+now permit absent keys and defer missing-authentication refusal until request
+admission, before HTTP/retries. Supplied key bounds remain in construction;
+profile/OAuth/federation discovery is not implemented by the native seam.
+
+### Go provider credential absence
+
+Native `provider.Config.APIKey` empty means absent. Provider construction and
+inspection remain possible; Description reports `<absent>`. Missing request
+authentication returns finite FailureCredential / TypeError with no HTTP/retry
+work. The existing ModelFailureOther projection leaves that refusal terminal;
+non-streaming token limits retain their earlier refusal phase. Client credential
+strings remain captured at construction; this change adds no ambient credential
+lookup, alternate authentication mechanism or rotation. Supplied key, endpoint
+and wire constraints retain their existing native admission bounds.

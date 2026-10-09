@@ -16,6 +16,7 @@ const (
 	ClassTimeout           ErrorClass = "APITimeoutError"
 	ClassStreamingRequired ErrorClass = "ValueError"
 	ClassProtocol          ErrorClass = "ProtocolError"
+	ClassMissingCredential ErrorClass = "TypeError"
 	ClassWireLimit         ErrorClass = "WireLimitError"
 )
 
@@ -27,6 +28,8 @@ func (e *Failure) Class() ErrorClass {
 		return ClassTimeout
 	case FailureStreamingRequired:
 		return ClassStreamingRequired
+	case FailureCredential:
+		return ClassMissingCredential
 	case FailureProtocol:
 		return ClassProtocol
 	case FailureLimit:

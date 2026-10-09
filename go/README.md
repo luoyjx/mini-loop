@@ -2779,5 +2779,17 @@ launcher composition; `audit.Manager` instead audits a caller-owned manager.
 Injected stores and diagnostics remain caller-owned. Local Source selection
 ignores PORT/non-URL arguments and does not activate the workflow environment
 flag; explicit SDK workflow options remain available. Full CLI features still
-need default diagnostics, and native provider construction still requires a key
-where Source defers that check.
+need default diagnostics. Native provider construction now accepts missing keys;
+inspection reports absence and model requests fail before HTTP/retries.
+
+### Provider missing-credential phases
+
+`provider.New` and `NewStreaming` accept an absent API key for construction and
+inspection. Supplied keys still must satisfy existing header/size bounds.
+`Complete` and `CompleteStream` reject missing authentication before transport
+or retry waiting, after their request/body checks. Non-streaming token-ceiling
+refusal has Source priority. `FailureCredential` projects class TypeError and
+ModelFailureOther, distinct from a remote HTTP AuthenticationError. The existing
+Agent run boundary returns `[Error]` text and records a provider error.
+Empty keys do not alter endpoint/error text during redaction. No automatic SDK
+profile, OAuth or federation credential discovery is implemented by this seam.

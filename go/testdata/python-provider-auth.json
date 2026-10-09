@@ -1,0 +1,53 @@
+{
+  "cases": [
+    {
+      "calls": [],
+      "constructed": true,
+      "fault": {
+        "message": "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\"",
+        "type": "TypeError"
+      },
+      "key": null,
+      "max_tokens": 8,
+      "name": "missing",
+      "stream": false
+    },
+    {
+      "calls": [],
+      "constructed": true,
+      "fault": {
+        "message": "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\"",
+        "type": "TypeError"
+      },
+      "key": "",
+      "max_tokens": 8,
+      "name": "empty",
+      "stream": false
+    },
+    {
+      "calls": [],
+      "constructed": true,
+      "fault": {
+        "message": "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\"",
+        "type": "TypeError"
+      },
+      "key": null,
+      "max_tokens": 8,
+      "name": "stream",
+      "stream": true
+    },
+    {
+      "calls": [],
+      "constructed": true,
+      "fault": {
+        "message": "Streaming is required for operations that may take longer than 10 minutes. See https://github.com/anthropics/anthropic-sdk-python#long-requests for more details",
+        "type": "ValueError"
+      },
+      "key": null,
+      "max_tokens": 1000000,
+      "name": "ceiling-first",
+      "stream": false
+    }
+  ],
+  "sdk_version": "0.107.1"
+}
