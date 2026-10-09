@@ -1,0 +1,570 @@
+{
+  "cases": [
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "empty",
+      "source_repr": "''",
+      "source_utf8": ""
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "comment",
+      "source_repr": "'# coding: utf-8\\n'",
+      "source_utf8": "IyBjb2Rpbmc6IHV0Zi04Cg=="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "assignment",
+      "source_repr": "'answer = 42\\n'",
+      "source_utf8": "YW5zd2VyID0gNDIK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "unicode-identifier",
+      "source_repr": "\"\\u53d8\\u91cf = '\\u2713'\\n\"",
+      "source_utf8": "5Y+Y6YePID0gJ+KckycK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "unicode-string",
+      "source_repr": "\"value = '\\U0001f600'\\n\"",
+      "source_utf8": "dmFsdWUgPSAn8J+YgCcK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "return-at-module",
+      "source_repr": "'return 1\\n'",
+      "source_utf8": "cmV0dXJuIDEK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "break-at-module",
+      "source_repr": "'break\\n'",
+      "source_utf8": "YnJlYWsK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "continue-at-module",
+      "source_repr": "'continue\\n'",
+      "source_utf8": "Y29udGludWUK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "await-at-module",
+      "source_repr": "'await call()\\n'",
+      "source_utf8": "YXdhaXQgY2FsbCgpCg=="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "nonlocal-at-module",
+      "source_repr": "'nonlocal value\\n'",
+      "source_utf8": "bm9ubG9jYWwgdmFsdWUK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "duplicate-arguments",
+      "source_repr": "'def f(x, x):\\n    pass\\n'",
+      "source_utf8": "ZGVmIGYoeCwgeCk6CiAgICBwYXNzCg=="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "async-function",
+      "source_repr": "'async def f():\\n    return await g()\\n'",
+      "source_utf8": "YXN5bmMgZGVmIGYoKToKICAgIHJldHVybiBhd2FpdCBnKCkK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "decorator",
+      "source_repr": "'@decorate(1)\\ndef f():\\n    pass\\n'",
+      "source_utf8": "QGRlY29yYXRlKDEpCmRlZiBmKCk6CiAgICBwYXNzCg=="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "positional-only",
+      "source_repr": "'def f(x, /, y=1, *, z=2):\\n    return x\\n'",
+      "source_utf8": "ZGVmIGYoeCwgLywgeT0xLCAqLCB6PTIpOgogICAgcmV0dXJuIHgK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "type-union",
+      "source_repr": "'def f(x: int | str) -> list[int]:\\n    return []\\n'",
+      "source_utf8": "ZGVmIGYoeDogaW50IHwgc3RyKSAtPiBsaXN0W2ludF06CiAgICByZXR1cm4gW10K"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "walrus",
+      "source_repr": "'if (value := call()):\\n    print(value)\\n'",
+      "source_utf8": "aWYgKHZhbHVlIDo9IGNhbGwoKSk6CiAgICBwcmludCh2YWx1ZSkK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "match",
+      "source_repr": "\"match value:\\n    case {'x': x} if x:\\n        pass\\n\"",
+      "source_utf8": "bWF0Y2ggdmFsdWU6CiAgICBjYXNlIHsneCc6IHh9IGlmIHg6CiAgICAgICAgcGFzcwo="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "exception-group",
+      "source_repr": "'try:\\n    f()\\nexcept* ValueError:\\n    pass\\n'",
+      "source_utf8": "dHJ5OgogICAgZigpCmV4Y2VwdCogVmFsdWVFcnJvcjoKICAgIHBhc3MK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 5,
+      "message": "cannot have both 'except' and 'except*' on the same 'try'",
+      "name": "mixed-except",
+      "source_repr": "'try:\\n    pass\\nexcept ValueError:\\n    pass\\nexcept* TypeError:\\n    pass\\n'",
+      "source_utf8": "dHJ5OgogICAgcGFzcwpleGNlcHQgVmFsdWVFcnJvcjoKICAgIHBhc3MKZXhjZXB0KiBUeXBlRXJyb3I6CiAgICBwYXNzCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid syntax",
+      "name": "python312-type-statement",
+      "source_repr": "'type Alias = int\\n'",
+      "source_utf8": "dHlwZSBBbGlhcyA9IGludAo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "expected '('",
+      "name": "python312-type-parameter",
+      "source_repr": "'def f[T](x: T):\\n    return x\\n'",
+      "source_utf8": "ZGVmIGZbVF0oeDogVCk6CiAgICByZXR1cm4geAo="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "fstring",
+      "source_repr": "\"value = f'{name!r:>10}'\\n\"",
+      "source_utf8": "dmFsdWUgPSBmJ3tuYW1lIXI6PjEwfScK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "f-string: expecting '}'",
+      "name": "fstring-unclosed",
+      "source_repr": "\"value = f'{name'\\n\"",
+      "source_utf8": "dmFsdWUgPSBmJ3tuYW1lJwo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "f-string: empty expression not allowed",
+      "name": "fstring-empty",
+      "source_repr": "\"value = f'{}'\\n\"",
+      "source_utf8": "dmFsdWUgPSBmJ3t9Jwo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "f-string expression part cannot include a backslash",
+      "name": "fstring-backslash",
+      "source_repr": "'value = f\\'{chr(92) + \\\\\"x\\\\\"}\\'\\n'",
+      "source_utf8": "dmFsdWUgPSBmJ3tjaHIoOTIpICsgXCJ4XCJ9Jwo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "f-string: unmatched '['",
+      "name": "fstring-same-quote",
+      "source_repr": "'value = f\"{mapping[\"key\"]}\"\\n'",
+      "source_utf8": "dmFsdWUgPSBmInttYXBwaW5nWyJrZXkiXX0iCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "unterminated string literal (detected at line 1)",
+      "name": "unterminated-string",
+      "source_repr": "\"value = 'unfinished\\n\"",
+      "source_utf8": "dmFsdWUgPSAndW5maW5pc2hlZAo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "unterminated triple-quoted string literal (detected at line 1)",
+      "name": "unterminated-triple-string",
+      "source_repr": "\"value = '''unfinished\\n\"",
+      "source_utf8": "dmFsdWUgPSAnJyd1bmZpbmlzaGVkCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "'(' was never closed",
+      "name": "unclosed-parenthesis",
+      "source_repr": "'value = (1 +\\n'",
+      "source_utf8": "dmFsdWUgPSAoMSArCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "closing parenthesis ')' does not match opening parenthesis '['",
+      "name": "mismatched-bracket",
+      "source_repr": "'value = [1, 2)\\n'",
+      "source_utf8": "dmFsdWUgPSBbMSwgMikK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "unmatched ')'",
+      "name": "unexpected-close",
+      "source_repr": "'value = 1)\\n'",
+      "source_utf8": "dmFsdWUgPSAxKQo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "expected ':'",
+      "name": "missing-colon",
+      "source_repr": "'if True\\n    pass\\n'",
+      "source_utf8": "aWYgVHJ1ZQogICAgcGFzcwo="
+    },
+    {
+      "error_class": "IndentationError",
+      "kind": "syntax",
+      "line": 2,
+      "message": "expected an indented block after 'if' statement on line 1",
+      "name": "missing-indent",
+      "source_repr": "'if True:\\npass\\n'",
+      "source_utf8": "aWYgVHJ1ZToKcGFzcwo="
+    },
+    {
+      "error_class": "IndentationError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "unexpected indent",
+      "name": "unexpected-indent",
+      "source_repr": "'    pass\\n'",
+      "source_utf8": "ICAgIHBhc3MK"
+    },
+    {
+      "error_class": "IndentationError",
+      "kind": "syntax",
+      "line": 3,
+      "message": "unindent does not match any outer indentation level",
+      "name": "unindent",
+      "source_repr": "'if True:\\n    pass\\n  pass\\n'",
+      "source_utf8": "aWYgVHJ1ZToKICAgIHBhc3MKICBwYXNzCg=="
+    },
+    {
+      "error_class": "TabError",
+      "kind": "syntax",
+      "line": 3,
+      "message": "inconsistent use of tabs and spaces in indentation",
+      "name": "mixed-tabs-spaces",
+      "source_repr": "'if True:\\n\\tpass\\n        pass\\n'",
+      "source_utf8": "aWYgVHJ1ZToKCXBhc3MKICAgICAgICBwYXNzCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid syntax",
+      "name": "dangling-decorator",
+      "source_repr": "'@decorate\\n'",
+      "source_utf8": "QGRlY29yYXRlCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid syntax",
+      "name": "dangling-else",
+      "source_repr": "'else:\\n    pass\\n'",
+      "source_utf8": "ZWxzZToKICAgIHBhc3MK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "cannot assign to literal here. Maybe you meant '==' instead of '='?",
+      "name": "assignment-target",
+      "source_repr": "'1 = value\\n'",
+      "source_utf8": "MSA9IHZhbHVlCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "cannot delete literal",
+      "name": "delete-target",
+      "source_repr": "'del 1\\n'",
+      "source_utf8": "ZGVsIDEK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "'tuple' is an illegal expression for augmented assignment",
+      "name": "augmented-target",
+      "source_repr": "'a, b += values\\n'",
+      "source_utf8": "YSwgYiArPSB2YWx1ZXMK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "positional argument follows keyword argument",
+      "name": "keyword-argument-order",
+      "source_repr": "'f(x=1, 2)\\n'",
+      "source_utf8": "Zih4PTEsIDIpCg=="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "duplicate-keyword",
+      "source_repr": "'f(x=1, x=2)\\n'",
+      "source_utf8": "Zih4PTEsIHg9MikK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "iterable argument unpacking follows keyword argument unpacking",
+      "name": "argument-after-kwargs",
+      "source_repr": "'f(**values, *items)\\n'",
+      "source_utf8": "ZigqKnZhbHVlcywgKml0ZW1zKQo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers",
+      "name": "leading-zero",
+      "source_repr": "'value = 0123\\n'",
+      "source_utf8": "dmFsdWUgPSAwMTIzCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid decimal literal",
+      "name": "numeric-underscore",
+      "source_repr": "'value = 1__2\\n'",
+      "source_utf8": "dmFsdWUgPSAxX18yCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid hexadecimal literal",
+      "name": "invalid-hex",
+      "source_repr": "'value = 0xG\\n'",
+      "source_utf8": "dmFsdWUgPSAweEcK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid decimal literal",
+      "name": "invalid-exponent",
+      "source_repr": "'value = 1e+\\n'",
+      "source_utf8": "dmFsdWUgPSAxZSsK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "bytes can only contain ASCII literal characters",
+      "name": "bytes-nonascii",
+      "source_repr": "\"value = b'\\xe9'\\n\"",
+      "source_utf8": "dmFsdWUgPSBiJ8OpJwo="
+    },
+    {
+      "error_class": "ValueError",
+      "kind": "error",
+      "line": 0,
+      "message": "source code string cannot contain null bytes",
+      "name": "null-character",
+      "source_repr": "'value = 1\\x00\\n'",
+      "source_utf8": "dmFsdWUgPSAxAAo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid non-printable character U+FEFF",
+      "name": "bom-in-text",
+      "source_repr": "'\\ufeffvalue = 1\\n'",
+      "source_utf8": "77u/dmFsdWUgPSAxCg=="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid character '�' (U+FFFD)",
+      "name": "replacement-character",
+      "source_repr": "'value = \\ufffd\\n'",
+      "source_utf8": "dmFsdWUgPSDvv70K"
+    },
+    {
+      "error_class": "UnicodeEncodeError",
+      "kind": "error",
+      "line": 0,
+      "message": "'utf-8' codec can't encode character '\\ud800' in position 9: surrogates not allowed",
+      "name": "lone-surrogate",
+      "source_repr": "\"value = '\\ud800'\\n\"",
+      "source_utf8": "dmFsdWUgPSAn7aCAJwo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "invalid non-printable character U+00A0",
+      "name": "nonbreaking-space",
+      "source_repr": "'value\\xa0= 1\\n'",
+      "source_utf8": "dmFsdWXCoD0gMQo="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "line-continuation",
+      "source_repr": "'value = 1 + \\\\\\n  2\\n'",
+      "source_utf8": "dmFsdWUgPSAxICsgXAogIDIK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "unexpected character after line continuation character",
+      "name": "line-continuation-garbage",
+      "source_repr": "'value = 1 \\\\ x\\n'",
+      "source_utf8": "dmFsdWUgPSAxIFwgeAo="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "crlf",
+      "source_repr": "'if True:\\r\\n    pass\\r\\n'",
+      "source_utf8": "aWYgVHJ1ZToNCiAgICBwYXNzDQo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 2,
+      "message": "expected ':'",
+      "name": "error-line-two",
+      "source_repr": "'value = 1\\nif True\\n    pass\\n'",
+      "source_utf8": "dmFsdWUgPSAxCmlmIFRydWUKICAgIHBhc3MK"
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 3,
+      "message": "invalid syntax",
+      "name": "multiline-error",
+      "source_repr": "'value = (\\n    1 +\\n)\\n'",
+      "source_utf8": "dmFsdWUgPSAoCiAgICAxICsKKQo="
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "future-import-late",
+      "source_repr": "'value = 1\\nfrom __future__ import annotations\\n'",
+      "source_utf8": "dmFsdWUgPSAxCmZyb20gX19mdXR1cmVfXyBpbXBvcnQgYW5ub3RhdGlvbnMK"
+    },
+    {
+      "error_class": "",
+      "kind": "clean",
+      "line": 0,
+      "message": "",
+      "name": "unknown-future",
+      "source_repr": "'from __future__ import imaginary_feature\\n'",
+      "source_utf8": "ZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBpbWFnaW5hcnlfZmVhdHVyZQo="
+    },
+    {
+      "error_class": "SyntaxError",
+      "kind": "syntax",
+      "line": 1,
+      "message": "(unicode error) 'unicodeescape' codec can't decode bytes in position 0-1: truncated \\uXXXX escape",
+      "name": "invalid-unicode-escape",
+      "source_repr": "\"value = '\\\\uXYZW'\\n\"",
+      "source_utf8": "dmFsdWUgPSAnXHVYWVpXJwo="
+    }
+  ],
+  "encoding": "UTF-8 with surrogatepass, base64",
+  "implementation": "cpython",
+  "operation": "ast.parse(source)",
+  "version": [
+    3,
+    11,
+    3
+  ]
+}

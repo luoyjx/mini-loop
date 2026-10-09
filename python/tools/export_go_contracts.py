@@ -6512,6 +6512,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.transcript_search_runtime_contracts import transcript_search_runtime_contracts
     from tools.request_reconstruction_contracts import request_reconstruction_contracts
     from tools.diagnostics_contracts import diagnostics_contracts
+    from tools.python_syntax_contracts import python_syntax_contracts
     from tools.diagnostics_runtime_contracts import diagnostics_runtime_contracts
     from tools.ast_context_contracts import ast_context_contracts
     from tools.ast_snapshot_contracts import ast_snapshot_contracts
@@ -6850,6 +6851,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-request-reconstruction.json": _json_bytes(request_reconstruction_contracts()),
         "python-diagnostics.json": _json_bytes(diagnostics_contracts()),
         "python-diagnostics-runtime.json": _json_bytes(diagnostics_runtime_contracts()),
+        "python-syntax-parser.json": _json_bytes(python_syntax_contracts()),
         "python-ast-context.json": _json_bytes(ast_context_contracts()),
         "python-ast-snapshot.json": _json_bytes(ast_snapshot_contracts()),
         "python-ast-ignore.json": _json_bytes(ast_ignore_contracts()),

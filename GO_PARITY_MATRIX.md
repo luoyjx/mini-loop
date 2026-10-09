@@ -5789,3 +5789,40 @@ were not refreshed. Architecture passes 9/9 with zero errors/warnings and exact
 receipt hashes/bytes verified; browser visual inspection remains skipped after
 the earlier denial. README outline and `git diff --check` pass. Coverage was not
 remeasured.
+
+## Actual Python syntax-parser profile — 2026-10-09
+
+`python/tools/python_syntax_contracts.py` exports 62 actual `ast.parse(source)`
+observations to `go/testdata/python-syntax-parser.json`. The profile records
+CPython 3.11.3 explicitly, base64 UTF-8 with surrogatepass input, readable escaped
+source, clean/syntax/non-syntax disposition, error class, line and message.
+Coverage includes current grammar, unsupported 3.12 grammar, indentation/tabs,
+f-strings, delimiters, assignment targets, numeric literals, Unicode and NUL.
+
+The captured Source accepts module-level return/break/continue/await/nonlocal,
+duplicate function arguments and call keywords, late/unknown future imports.
+Compilation would reject some of these: a compiler cannot replace ast.parse.
+NUL raises ValueError in this actual 3.11.3 profile, and a directly supplied lone
+surrogate raises UnicodeEncodeError; both are parser faults, not clean results
+or SyntaxError diagnostics. File scanning replaces malformed UTF-8 before
+parsing, so the direct surrogate case documents the parser seam, not a claim
+that file reads produce lone surrogates. Later CPython profiles require explicit
+contract refresh rather than assuming error-text compatibility.
+
+This is actual Source evidence and conformance input, not a Go grammar or parser
+implementation. The default parser and full startup setting remain incomplete.
+A user decision is pending on allowing the existing CPython 3.11.3 read-only
+parser backend versus requiring removal of the Python runtime. The latter
+requires a native parser rather than approximate syntax checks. No new runtime
+or dependency has been introduced; README architecture was reviewed and its
+baseline updated, with unchanged topology/authority/defaults.
+
+Validation: 62 observations comprise 24 clean, 36 syntax failures and two
+non-syntax faults. Focused tests: 2 passed; final full Python suite: 2,159 passed,
+28 skipped, 24 subtests passed. Exporter `--check`: 188 current files. Source
+scan verification anchors all 19 guards. Full Go tests
+`-p=1 -count=1 -timeout=300s ./...`, `go vet ./...`, README outline and
+`git diff --check`: pass. An earlier Python run read the old fixture filename
+while it was renamed; the final full run above validates the final paths.
+Go runtime and Python package modules were unchanged; race, invariants and
+mutation guards were not rerun for this corpus slice. Coverage was not refreshed.

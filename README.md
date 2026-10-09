@@ -270,7 +270,8 @@ syntax parsing. Explicit injector lists (including empty lists) replace default
 background/team injection; nil retains selected lifecycle defaults. Workflow and
 core control injection remain appended, and child copies preserve this selection.
 
-Runtime review baseline: `cf637b9` plus Source-compatible explicit injector overrides,
+Runtime review baseline: `fa73913` plus actual CPython syntax-parser contracts,
+plus Source-compatible explicit injector overrides,
 plus Source-ordered Go built-in feature catalogues,
 plus Source full-feature composition contracts,
 plus native process-kill generation recovery,
