@@ -1,0 +1,167 @@
+{
+  "rows": [
+    {
+      "child_store_open": true,
+      "entered_workspace": true,
+      "foreign_recovered": false,
+      "fresh_store": true,
+      "limits": [
+        7.0,
+        200,
+        800
+      ],
+      "mode": "enforce",
+      "name": "worker",
+      "observations": [
+        "new workspace authority"
+      ],
+      "output": "done",
+      "own_recovered": true,
+      "parent_seed_retained": true,
+      "parent_store_open": true,
+      "permission": "interactive",
+      "persist": true,
+      "recovery_tool": true,
+      "role": "worker",
+      "selected": null,
+      "shared_root": true,
+      "store_workspace_matches": true
+    },
+    {
+      "child_store_open": false,
+      "entered_workspace": true,
+      "foreign_recovered": false,
+      "fresh_store": false,
+      "limits": null,
+      "mode": "enforce",
+      "name": "explore",
+      "observations": [
+        "new workspace authority"
+      ],
+      "output": "done",
+      "own_recovered": false,
+      "parent_seed_retained": true,
+      "parent_store_open": true,
+      "permission": "readonly",
+      "persist": true,
+      "recovery_tool": false,
+      "role": "Explore",
+      "selected": null,
+      "shared_root": true,
+      "store_workspace_matches": false
+    },
+    {
+      "child_store_open": false,
+      "entered_workspace": true,
+      "foreign_recovered": false,
+      "fresh_store": false,
+      "limits": null,
+      "mode": "enforce",
+      "name": "filtered",
+      "observations": [
+        "new workspace authority"
+      ],
+      "output": "done",
+      "own_recovered": false,
+      "parent_seed_retained": true,
+      "parent_store_open": true,
+      "permission": "interactive",
+      "persist": true,
+      "recovery_tool": false,
+      "role": "worker",
+      "selected": false,
+      "shared_root": true,
+      "store_workspace_matches": false
+    },
+    {
+      "child_store_open": false,
+      "entered_workspace": true,
+      "foreign_recovered": false,
+      "fresh_store": false,
+      "limits": null,
+      "mode": "enforce",
+      "name": "readonly-recovery",
+      "observations": [
+        "new workspace authority"
+      ],
+      "output": "done",
+      "own_recovered": false,
+      "parent_seed_retained": true,
+      "parent_store_open": true,
+      "permission": "readonly",
+      "persist": true,
+      "recovery_tool": true,
+      "role": "Explore",
+      "selected": true,
+      "shared_root": true,
+      "store_workspace_matches": false
+    },
+    {
+      "child_store_open": false,
+      "entered_workspace": true,
+      "foreign_recovered": false,
+      "fresh_store": false,
+      "limits": null,
+      "mode": "shadow",
+      "name": "shadow",
+      "observations": [
+        "new workspace authority"
+      ],
+      "output": "done",
+      "own_recovered": false,
+      "parent_seed_retained": true,
+      "parent_store_open": true,
+      "permission": "interactive",
+      "persist": true,
+      "recovery_tool": false,
+      "role": "worker",
+      "selected": null,
+      "shared_root": true,
+      "store_workspace_matches": false
+    },
+    {
+      "child_store_open": false,
+      "entered_workspace": true,
+      "foreign_recovered": false,
+      "fresh_store": false,
+      "limits": null,
+      "mode": "off",
+      "name": "off",
+      "observations": [],
+      "output": "done",
+      "own_recovered": false,
+      "parent_seed_retained": true,
+      "parent_store_open": true,
+      "permission": "interactive",
+      "persist": true,
+      "recovery_tool": false,
+      "role": "worker",
+      "selected": null,
+      "shared_root": true,
+      "store_workspace_matches": false
+    },
+    {
+      "child_store_open": false,
+      "entered_workspace": true,
+      "foreign_recovered": false,
+      "fresh_store": false,
+      "limits": null,
+      "mode": "enforce",
+      "name": "no-persistence",
+      "observations": [
+        "new workspace authority"
+      ],
+      "output": "done",
+      "own_recovered": false,
+      "parent_seed_retained": true,
+      "parent_store_open": true,
+      "permission": "interactive",
+      "persist": false,
+      "recovery_tool": false,
+      "role": "worker",
+      "selected": null,
+      "shared_root": true,
+      "store_workspace_matches": false
+    }
+  ]
+}

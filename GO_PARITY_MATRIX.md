@@ -1,6 +1,27 @@
 # Python to Go parity matrix
 
 
+## 2026-10-09 workspace-child artifact scope Source contracts
+
+Baseline: `54c6acf`. Seven actual Agent.enter_workspace + InProcessSubagents runs
+compare worker/Explore, filtered/explicit recovery, enforce/shadow/off and disabled
+persistence. Real file tools read the entered workspace; real recovery tools
+cannot retrieve old-workspace references. A writable enforce child with selected
+recovery allocates a fresh store using Settings TTL/limits (7/200/800), rather than
+the injected old store's 99/100/400. Readonly, filtered, off/shadow and disabled
+persistence allocate none. Component lifecycle root remains shared.
+
+Existing parent artifacts remain readable in their own store; child completion
+leaves both reachable stores open. Child-created stores are transient RAM, not
+managed session stores; explicit fixture teardown closes them. Only paths are
+canonicalized for workspace identity. No timestamps, refs or random IDs exported.
+
+Passed 82 focused Python tests, all 19 scan guards, complete 180-file contract
+exporter check and git diff --check. Native allocation and parameter snapshots
+are delivered separately. Launcher/HTTP/benchmark activation and full port remain
+open. No dependency or push.
+
+
 ## 2026-10-09 native child efficiency inheritance and scoped recovery
 
 Baseline: `65913d3`. SubagentParent now pins the shared three-stage runtime and

@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `65913d3` plus native child efficiency inheritance and scoped recovery,
+Runtime review baseline: `54c6acf` plus actual workspace-child artifact scope Source contracts,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,

@@ -6538,6 +6538,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.efficiency_agent_observation_contracts import efficiency_agent_observation_contracts
     from tools.efficiency_manager_contracts import efficiency_manager_contracts
     from tools.efficiency_subagent_contracts import efficiency_subagent_contracts
+    from tools.efficiency_workspace_child_contracts import efficiency_workspace_child_contracts
     from tools.efficiency_agent_request_contracts import efficiency_agent_request_contracts, efficiency_message_shape_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6866,6 +6867,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-efficiency-agent-observation.json": _json_bytes(efficiency_agent_observation_contracts(scratch)),
         "python-efficiency-manager.json": _json_bytes(efficiency_manager_contracts(scratch)),
         "python-efficiency-subagents.json": _json_bytes(efficiency_subagent_contracts(scratch)),
+        "python-efficiency-workspace-child.json": _json_bytes(efficiency_workspace_child_contracts(scratch)),
         "python-efficiency-agent-request.json": _json_bytes(efficiency_agent_request_contracts(scratch)),
         "python-efficiency-message-shape.json": _json_bytes(efficiency_message_shape_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
