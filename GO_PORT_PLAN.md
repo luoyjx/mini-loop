@@ -13787,3 +13787,27 @@ guards passed in the preceding Source contract commit. README outline and
 git diff --check passed. Existing CGO linker warnings were nonfatal. Python
 package invariant/guard checks and coverage were not refreshed: package modules
 and guarded mutation anchors are unchanged. No push; full migration remains open.
+
+## Local configuration audit Source contracts — 2026-10-09
+
+`python-audit-settings.json` captures 24 actual `audit_settings` calls over real
+Settings and filesystem states. Inputs cover exact loopback aliases, public and
+other loopback addresses, absent/blank/single/multiple/invalid authentication,
+fake models, trajectory recording/content combinations, world-writable directory
+and file roots, protected roots, symlink targets, dangling/cyclic links and
+non-directory parents. Findings preserve Source's insertion order; only the
+full live audit later sorts by severity/check. Exact text/rendering are frozen.
+
+Source Settings constructs its workspace before auditing. Fixtures therefore
+construct real Settings and mutate the root afterward, so missing/replaced/link
+observations describe filesystem drift. Source Path.exists treats ELOOP and
+ENOTDIR as absent; a live Source probe and the fixture pin this behavior. Two
+independent scratch roots normalize only absolute temporary prefixes. Source
+package code is unchanged. Authentication failures are retained as Source errors
+and must not be converted into apparently clean findings.
+
+Validation: focused Source fixture and full Python pytest passed (2167 passed,
+28 skipped, 24 subtests; 3 existing warnings). Source exporter --check passed
+for 193 files; verify_scans passed all 19 anchored scanning guards. Two scratch
+roots reproduce the fixture. git diff --check passed. No Source package modules
+or guarded mutation anchors changed.
