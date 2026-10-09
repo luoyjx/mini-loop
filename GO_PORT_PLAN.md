@@ -13418,3 +13418,26 @@ not change, so full Python/export/scanner/invariant/guard checks were not rerun;
 the live Source auditor was executed. Coverage was not refreshed. Native
 Seatbelt/default platform selection, default diagnostic parsing and full G0-G7
 completion remain open.
+
+## Coverage refresh — 2026-10-09, runtime at 82bf428
+
+Fresh full Go statement coverage on Darwin arm64 after feature composition,
+Launcher activation, HTTP posture and sandbox observation delivery.
+
+| Scope | Covered statements | Total statements | Coverage |
+| --- | ---: | ---: | ---: |
+| All Go packages | 27,093 | 30,068 | 90.11% |
+| agent | 8,878 | 9,885 | 89.81% |
+| sqlitestate | 521 | 625 | 83.36% |
+| httpapi | 1,614 | 1,806 | 89.37% |
+| efficiency | 1,489 | 1,629 | 91.41% |
+| shell | 381 | 405 | 94.07% |
+
+Gate: `cd go && go test -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-current-82bf428-coverage.out ./...`; exit 0.
+Repeated source blocks are merged by maximum execution count before statement
+aggregation. Per-test-package log percentages are not package coverage totals.
+The profile stays in temporary local output. Python coverage and mutation coverage
+were not refreshed. This measures executed statements, not port completion.
+Only documentation changes in this refresh; race/vet were not rerun.
+Implementation validation is recorded in the preceding delivery entries. No push.
