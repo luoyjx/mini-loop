@@ -728,8 +728,13 @@ missing-row refusal and foreign-lease denial. A real durable one-shot remains
 disarmed through Manager Start after reconstruction; explicit operator arm causes
 lazy restoration and a fresh untrusted turn. Another reopen proves persisted job
 removal and run_count. Cron definitions still live in .cron.json, while session
-history and leases use SQLite. Wider archival variants and OS-process crash
-validation remain pending.
+history and leases use SQLite. A separate helper test process now blocks inside
+model generation after native request/lease persistence; killing that exact child
+bypasses Stop/Close. Another process exposes the pending handle without repair or
+model admission until natural lease expiry, then installs distinct process ownership,
+repairs the unanswered user turn and persists a resumed request. A further reopen
+retains repair/run_count. Other crash windows, power-loss and external-effect
+atomicity are not proven; wider archival variants remain pending.
 
 ---
 

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `ba6dc73` plus native cron/SQLite reopen proof,
+Runtime review baseline: `fd57eb8` plus native process-kill generation recovery,
+plus native cron/SQLite reopen proof,
 plus Launcher caller-owned state injection,
 plus native managed SQLite close/reopen proof,
 plus native SQLite action/approval rows,
@@ -620,8 +621,12 @@ Native cron/SQLite close-and-reopen tests now cover all seven scheduled Source
 restoration recipes and a real durable one-shot job. Jobs remain in .cron.json,
 while session history/leases use SQLite. Manager Start keeps restored jobs disarmed;
 operator arm triggers lazy restoration and a fresh untrusted turn. A further reopen
-retains run_count and the one-shot removal. OS-process crash tests and wider
-archival profiles remain pending.
+retains run_count and the one-shot removal. A dedicated child test process now
+persists a request/lease, blocks in model generation and is killed without Stop or
+Close. Another process preserves the foreign lease until expiry, then reloads,
+repairs the unanswered user turn and resumes; a later reopen retains run_count=2.
+This proves one process-kill generation window, not power-loss or external-effect
+atomicity. Other crash windows and wider archival profiles remain pending.
 
 Go Manager selects an off/normal shared efficiency root by default. Library callers
 can configure ManagerEfficiencyConfig or inject ManagerServices.TokenEfficiency;

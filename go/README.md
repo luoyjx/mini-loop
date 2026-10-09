@@ -310,7 +310,15 @@ now replays all seven Source recipes over real database close/reopen and resumes
 Manager-created session with its stored steering and request prefix. Foreign-held
 rows remain unmodified until the lease can be claimed; owned stop releases it.
 Managed transcript reads and bounded event catch-up use the native backend. These
-are Manager-instance reconstruction tests, not OS-process crash tests.
+were initially Manager-instance reconstruction tests. A dedicated test child now
+persists an admitted generation request and lease, publishes a typed checkpoint
+and blocks in Complete. The parent kills that exact child process without
+Manager.Stop or Store.Close. Native reopen preserves its request and lease; another
+process refuses admission until natural lease expiry, acquires a distinct lease
+identity, includes the interrupted-turn marker in its next provider request and
+persists the resumed turn. A further reopen retains repair and run_count=2. This
+proves the killed-generation window, without claiming power-loss durability,
+external-tool effect reconciliation or all crash windows.
 
 Launcher embedding can pass `Options.StateStore` to `NewWithOptions`; no database
 is selected by default. `App.RestoreSessions(ctx)` is an operator method, usually

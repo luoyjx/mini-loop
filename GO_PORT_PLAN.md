@@ -1,5 +1,53 @@
 # Go port plan
 
+## 2026-10-09 native SQLite killed-generation process recovery
+
+Baseline: fd57eb8. Native sqlitestate now has an actual process-kill integration
+test for the admitted generation window. A dedicated child of the Go test binary
+creates a Manager/session, persists its request and process lease, validates the
+request at the real provider boundary and atomically publishes a typed checkpoint
+with session ID, lease identity and writer PID. Complete remains blocked. The
+parent validates the checkpoint against its exact child handle, kills only that
+process and waits for its unsuccessful terminal exit. Manager.Stop and Store.Close
+are bypassed; cleanup always kills/joins the owned child if the parent fails.
+
+Another process opens the native SQLite database. The admitted request and
+unexpired writer lease are retained. Manager restore exposes a pending owner-bound
+handle with unrepaired history; a premature Run is refused and invokes no model.
+No test SQL update, injected clock or manual lease release is used. After natural
+eight-second lease expiry, Run reloads/repairs the unanswered user turn, installs
+a distinct process lease and sends the exact interrupted-turn marker in its next
+provider request. The resumed turn persists; after Stop/close/reopen another
+Manager retains the repair/history and run_count=2. The helper's PID is verified
+to differ from the recovery process, so this is not instance reconstruction alone.
+
+The checkpoint is only a test synchronization file, not runtime persistence.
+This proves a killed-generation window on the local OS, not power-loss durability,
+external-tool effect reconciliation, in-flight SQL transaction kill recovery or
+all crash windows. SQLite remains configured with Source NORMAL synchronization.
+The test uses a local typed provider and no external service. Wider archival
+profiles, full feature activation and final Go port audit remain open. This slice
+adds typed tests/documentation only, without runtime changes or dependencies.
+
+Next activation audit must resolve the remaining MINILOOP_FEATURES refusal rather
+than infer completeness from optional flags. Current config.Settings.Unsupported
+still rejects the comprehensive bundle. Source Manager selects full_registry and
+default_injectors only for enable_features when no explicit overrides are supplied;
+workflows, AST and decision selection remain independent. Capture the concrete
+Source full catalogue/injectors and compare current Go composition before removing
+that refusal. Other native crash windows remain separate proof work.
+
+Focused process-crash test passed (8.465s); full Go ordinary tests (-p=1 -count=1
+-timeout=300s) including the final exact repair assertion and go vet ./... passed.
+Full Go race (-race -p=1 -count=1 -timeout=300s) passed, including the
+process-kill recovery test. Native links emitted nonfatal macOS CGO LC_DYSYMTAB
+warnings; all commands succeeded. git diff --check passed. README runtime
+baseline/boundary, extension/Go README and architecture specification updated.
+Archify delivery passes 9/9 with zero errors/warnings and exact receipt hashes
+verified. Visual review remains skipped after the earlier browser denial.
+Python source/default-tool types/exported fixtures were unchanged; Python suite,
+export and coverage were not refreshed. No push; full port goal remains active.
+
 ## 2026-10-09 native cron and scheduled SQLite reconstruction proof
 
 Baseline: ba6dc73. Native sqlitestate integration now replays all seven actual
