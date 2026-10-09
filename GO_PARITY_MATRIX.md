@@ -1,5 +1,19 @@
 # Python to Go parity matrix
 
+## 2026-10-09 SQLite schema migration Source contracts
+
+Fifteen actual Python SQLiteStateStore open cases capture fresh creation, versions
+0–7, a future version, multiple version rows and partially missing v2/v3/v6/v7
+columns. Fixtures contain seed DDL and observed columns, indexes, version rows,
+saved values and exact errors. Additive migration preserves existing data. Source
+only calls _upgrade below v7, gates epoch/todo/lease additions by version, updates
+all version rows and can leave v7 recorded before index creation fails. Future
+refusal follows current CREATE IF NOT EXISTS statements. No Go backend claim.
+
+Validation: 26 focused Python storage/census tests, all 19 scan guards and the
+complete 185-file contract exporter check passed. git diff --check passed.
+No Python package/runtime changes, full regression or coverage refresh. No push.
+
 ## 2026-10-09 native component timeout overflow/error order
 
 Baseline: `0300df4`. Shared invocationDuration now converts the exact arbitrary
