@@ -13811,3 +13811,50 @@ Validation: focused Source fixture and full Python pytest passed (2167 passed,
 for 193 files; verify_scans passed all 19 anchored scanning guards. Two scratch
 roots reproduce the fixture. git diff --check passed. No Source package modules
 or guarded mutation anchors changed.
+
+## Native configuration audit library — 2026-10-09
+
+`audit.Settings(config.Settings, environment)` implements all Source
+configuration-only checks: unauthenticated bind (critical public / medium exact
+loopback aliases), fake model info, world-write permission high, and trajectory
+content medium. It retains insertion order, exact findings/remedies and rendering
+for all supported profiles; it does not apply the full live audit's sorting.
+The actual existing HTTP authentication loader supplies configured/refusal
+outcomes. Authentication failures return no findings; shared-token denial uses
+the existing native loader's shorter error text, so the differential test checks
+refusal outcomes rather than claiming identical exception text.
+
+A nil environment snapshots process variables; a nonnil empty map stays empty.
+Selected config fields are read directly, with no provider, session or manager
+construction. A real stat follows symlink targets and suppresses Source exists'
+ENOENT/ENOTDIR/ELOOP/EBADF absence cases; unexpected stat faults return an error
+without partial findings. Missing roots are not created. Existing writable
+regular files are checked just like directories; chmod, filesystem writes and
+credential resolution are not performed. Domain/service payloads remain
+concrete config/Finding types and string-only environment maps.
+
+Twenty-four actual Source cases verify real permissions, symlink targets,
+dangling/cyclic links, non-directory parents, auth outcomes, trajectory flags,
+exact findings/text and ordering. Additional native checks cover nil versus
+empty environment, unexpected stat failure and no missing-root allocation.
+An actual config.Load -> audit.Settings smoke verifies public-bind/fake/content
+check order with a still-absent workspace.
+
+README boundary/map and review baseline are updated. Canonical Mermaid labels
+the library-only configuration/filesystem observer separately from remote
+command behavior. Architecture JSON annotation and generated HTML update
+together: Archify 9/9 showcase checks, zero errors/warnings, artifact/specification
+bytes and SHA256 verified. Visual review was not repeated because prior browser
+inspection was denied; correction rounds 0. No runtime default, dependency,
+authentication policy, persistence, CLI behavior or health behavior changes.
+Full live audit and local CLI integration remain open, along with default
+diagnostics and wider migration acceptance.
+
+Final validation: focused audit race, full serialized Go tests, full serialized
+Go race tests and go vet ./... passed. Real config.Load -> audit.Settings smoke
+passed with expected ordered findings and no workspace allocation. Full Python
+pytest, 193-file exporter check and 19 scanning guards passed in the preceding
+Source contract commit. README outline and git diff --check passed. Existing
+CGO linker warnings were nonfatal. Python package invariant/guard checks and
+coverage were not refreshed because package modules and mutation anchors are
+unchanged. No push; the complete port remains active.

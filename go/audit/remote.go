@@ -23,15 +23,19 @@ const (
 type Check string
 
 const (
-	PostureUnavailable Check = "posture-unavailable"
-	Authentication     Check = "authentication"
-	ShellConfinement   Check = "shell-confinement"
-	ShellUnavailable   Check = "shell-confinement-unavailable"
-	SecretMasking      Check = "secret-masking"
-	SecretUnregistered Check = "secret-unregistered"
-	DurableState       Check = "durable-state"
-	DurableFailing     Check = "durable-state-failing"
-	ActionJournal      Check = "action-journal"
+	PostureUnavailable   Check = "posture-unavailable"
+	Authentication       Check = "authentication"
+	ShellConfinement     Check = "shell-confinement"
+	ShellUnavailable     Check = "shell-confinement-unavailable"
+	SecretMasking        Check = "secret-masking"
+	SecretUnregistered   Check = "secret-unregistered"
+	DurableState         Check = "durable-state"
+	DurableFailing       Check = "durable-state-failing"
+	ActionJournal        Check = "action-journal"
+	HostBind             Check = "host-bind"
+	FakeLLM              Check = "fake-llm"
+	WorkspacePermissions Check = "workspace-permissions"
+	TrajectoryContent    Check = "trajectory-content"
 )
 
 type Finding struct {
