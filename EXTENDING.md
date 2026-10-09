@@ -3478,7 +3478,7 @@ even if its caller stops waiting, closes distinct stores, then closes components
 EfficiencyStatus returns detached typed lifecycle reports with safe fault codes.
 Bare RuntimeConfig consumers retain caller-owned lifetimes. Standard child
 inheritance is described below; launcher/HTTP/benchmark mode/style activation and
-foreign-workspace child store allocation remain separate work.
+broader runtime-profile activation remain separate work.
 
 
 ### Go child efficiency inheritance
@@ -3489,7 +3489,9 @@ same-workspace store. Selected native read_token_artifact handlers bind the new
 child SessionID/owner/workspace; role filtering is never widened. Explore remains
 readonly and default selection excludes recovery; an explicit recovery capability
 can read existing masked artifacts without granting writes. Foreign-workspace
-stores detach; fresh child allocation in switched workspaces remains pending.
+stores detach. Writable enforced children with selected recovery allocate fresh
+stores using detached ObservationRawConfig.StoreLimits, forwarded from Manager
+efficiency settings. Allocation is never triggered by readonly or filtered roles.
 
 Concise opt-in and request projection ledger belong to fresh child state. Shared
 policies still apply their own RequireOptIn setting. Children neither initialize
@@ -3497,3 +3499,24 @@ nor close the shared root/store; the caller or Manager owns that lifetime. Eight
 actual Source child runs compare real request/response/observation invocation and
 artifact recovery. A managed task test proves Stop cancels and joins the child
 before raw-store revocation and shared component close.
+
+
+### Entered-workspace child artifact parameters
+
+efficiency.ArtifactLimits owns named TTLSeconds, MaxArtifactBytes and MaxTotalBytes
+with validation and detached Clone. RawStore.Limits returns detached settings,
+never content, references or workspace authority. ObservationRawConfig.StoreLimits
+defaults to 3600 / 2 MB / 20 MB and snapshots supplied integers. Manager forwards
+its configured TTL/capacities; child snapshots detach them again. Allocation uses
+Settings values rather than the old store's limits.
+
+After an execution workspace switch, child construction drops the foreign store.
+A writable enforced child with selected recovery gets a new RAM store scoped to
+its entered workspace and rebinds its recovery handler. Failed construction
+closes the unpublished store. Successful child-created stores remain reachable
+through the child runtime and are reclaimed with that transient child; completion
+does not close a retained store, matching Source. Shared component initialization/
+close stays with the caller/Manager. Managed session/template store cleanup
+retains its existing boundaries. Seven Source runs prove new workspace reads,
+old-reference isolation, own-reference recovery, role filtering and 7/200/800
+limits despite the parent's injected 99/100/400 store.

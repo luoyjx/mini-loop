@@ -1,6 +1,39 @@
 # Go port plan
 
 
+## 2026-10-09 native entered-workspace child artifact allocation
+
+Baseline: `3968369`. Added named efficiency.ArtifactLimits with validation/Clone
+and detached RawStore.Limits. The raw-store constructor keeps identical validation
+messages/order. ObservationRawConfig snapshots StoreLimits with default
+3600/2 MB/20 MB; Manager forwards its selected TTL/capacities. Child snapshots
+detach them and use Settings values, not a foreign store's configuration.
+
+After role filtering and foreign-store detachment, writable enforced children
+with recovery capability allocate a fresh RAM store in the entered workspace.
+Readonly, filtered, off/shadow and disabled-persistence paths allocate none.
+Recovery handlers bind child scope. Unpublished construction unwinds allocation.
+Successful child-created stores are transient RAM held by that child runtime;
+completion does not close reachable stores, matching Source. Shared component
+root and managed session/template cleanup retain their existing ownership.
+
+Seven actual native child runs match Source workspace reads, parameter values,
+old-reference isolation, own-reference recovery and parent store preservation.
+Parent close fences the distinct child clone, proving shared lifecycle identity.
+Additional tests verify detached limits, exact TTL, capacity and item bounds.
+README/EXTENDING and the generated map reflect the new allocation path.
+Python gates passed: 82 focused tests, all 19 scan guards, complete 180-file
+exporter check. Passed go test ./... -count=1 -timeout=180s,
+go test -race -p=1 ./... -count=1 -timeout=180s, go vet ./... and
+git diff --check. Architecture checks passed 9/9 with zero errors/warnings;
+source/artifact SHA256 match the receipt. Visual inspection was not repeated
+after the earlier browser access denial.
+
+E6.4c next: launcher/HTTP/benchmark mode/style settings activation. SQLite,
+broader profile audit and full port completion remain open. No dependencies or
+push; full Python regression and coverage are not refreshed in this iteration.
+
+
 ## 2026-10-09 workspace-child artifact scope Source contracts
 
 Baseline: `54c6acf`. Seven actual Agent.enter_workspace + InProcessSubagents runs

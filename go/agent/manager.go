@@ -479,7 +479,7 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 		runtime.TokenEfficiency = runtime.TokenEfficiency.WithRawStore(nil)
 	}
 	runtime.ConciseResponse = manager.config.Efficiency.ResponseStyle == EfficiencyResponseConcise
-	runtime.ObservationRaw = &ObservationRawConfig{Persist: manager.config.Efficiency.PersistRaw, MinBytes: manager.config.Efficiency.RawMinBytes}
+	runtime.ObservationRaw = &ObservationRawConfig{Persist: manager.config.Efficiency.PersistRaw, MinBytes: manager.config.Efficiency.RawMinBytes, StoreLimits: &efficiency.ArtifactLimits{TTLSeconds: manager.config.Efficiency.ArtifactTTLSeconds, MaxArtifactBytes: manager.config.Efficiency.MaxArtifactBytes, MaxTotalBytes: manager.config.Efficiency.MaxTotalBytes}}
 	runtime.efficiencyOwner = manager
 	runtime.TokenArtifactTools = services.Tools == nil && mode != ModeReadonly && runtime.TokenEfficiency.ObservationEnforced() && manager.config.Efficiency.PersistRaw
 	runtime.TokenArtifactStore = runtime.TokenEfficiency.RawStore()

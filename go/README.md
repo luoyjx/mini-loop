@@ -2583,7 +2583,8 @@ preserves repeated instances/IDs separately from registry admission; shared poin
 instances serialize across stages and initialize/health/close once per root. WithRawStore
 clones retain global admission and explicit caller-owned store binding. Ten actual
 Source registry recipes and native queued-cancellation/drain tests cover composition.
-Explicit Agent adoption is described below; Manager and mode/style defaults remain pending.
+Explicit Agent and Manager/child adoption are installed; launcher mode/style
+activation remains pending.
 
 
 Explicit agent.RuntimeConfig.TokenEfficiency now adopts response policies before
@@ -2631,12 +2632,17 @@ once; deletion releases last holders after drain; Stop closes distinct stores
 before shared components. EfficiencyStatus returns detached lifecycle reports.
 Fourteen captured Python Manager scenarios, filtered capability admission, failed
 publication and restored-store cleanup have native tests. Launcher efficiency
-flags, HTTP/benchmark activation and foreign-workspace child allocation remain pending.
+flags and HTTP/benchmark activation remain pending.
 
 
 Standard in-process children share the efficiency root and matching store.
 Selected recovery tools bind child identity; role filtering stays authoritative.
 Child concise opt-in and projection ledger start fresh, raw thresholds detach,
 and child completion retains the caller-owned store. Eight Source scenarios and
-a managed task cancellation test cover these paths. Switched-workspace fresh
-store allocation remains pending.
+a managed task cancellation test cover these paths. Switched-workspace writable
+enforce children with selected recovery now allocate fresh scoped stores from
+detached ObservationRawConfig.StoreLimits. Seven additional Source runs compare
+workspace reads, old/new reference isolation and configured TTL/capacities.
+Child-created stores are transient RAM; shared lifecycle ownership stays with
+the caller/Manager. efficiency.ArtifactLimits and RawStore.Limits expose detached
+parameters without raw authority.

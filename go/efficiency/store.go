@@ -112,8 +112,9 @@ type RawStoreConfig struct {
 
 func DefaultRawStoreConfig(workspace string) RawStoreConfig {
 	origin := time.Now()
-	return RawStoreConfig{Workspace: workspace, Directory: ".token-efficiency/raw", TTLSeconds: 3600,
-		MaxArtifactBytes: big.NewInt(2_000_000), MaxTotalBytes: big.NewInt(20_000_000),
+	limits := DefaultArtifactLimits()
+	return RawStoreConfig{Workspace: workspace, Directory: ".token-efficiency/raw", TTLSeconds: limits.TTLSeconds,
+		MaxArtifactBytes: limits.MaxArtifactBytes, MaxTotalBytes: limits.MaxTotalBytes,
 		Clock: func() (float64, error) { return time.Since(origin).Seconds(), nil }}
 }
 
@@ -139,17 +140,8 @@ type RawStore struct {
 }
 
 func NewRawStore(c RawStoreConfig) (*RawStore, error) {
-	if math.IsNaN(c.TTLSeconds) || math.IsInf(c.TTLSeconds, 0) || c.TTLSeconds <= 0 {
-		return nil, errors.New("ttl_seconds must be positive")
-	}
-	if c.MaxArtifactBytes == nil || c.MaxTotalBytes == nil {
-		return nil, errors.New("artifact size limits must be integers")
-	}
-	if c.MaxArtifactBytes.Sign() <= 0 || c.MaxTotalBytes.Sign() <= 0 {
-		return nil, errors.New("artifact size limits must be positive")
-	}
-	if c.MaxArtifactBytes.Cmp(c.MaxTotalBytes) > 0 {
-		return nil, errors.New("max_artifact_bytes cannot exceed max_total_bytes")
+	if err := (ArtifactLimits{TTLSeconds: c.TTLSeconds, MaxArtifactBytes: c.MaxArtifactBytes, MaxTotalBytes: c.MaxTotalBytes}).Validate(); err != nil {
+		return nil, err
 	}
 	if c.Clock == nil {
 		return nil, errors.New("clock must be callable")

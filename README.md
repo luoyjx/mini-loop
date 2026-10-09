@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `54c6acf` plus actual workspace-child artifact scope Source contracts,
+Runtime review baseline: `3968369` plus native entered-workspace child artifact allocation,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
@@ -526,7 +526,7 @@ flowchart LR
         GoApprovals -. explicit / owned Guardian review .-> GoChildren
         GoSecrets -. bind gate / context / recording / shell .-> GoSession
         GoResources -->|task / depth gate| GoChildren
-        GoChildren -->|shared efficiency root · matching store · fresh ledger| GoContext
+        GoChildren -->|shared efficiency root · scoped stores / settings · fresh ledger| GoContext
         GoChildren -->|selected tools| GoGate
         GoChildren -. scoped events .-> GoSession
     end
@@ -581,7 +581,10 @@ template stores retain shared identity. Delete releases the last live session
 holder after consumers drain; Stop drains sessions, cron, workflows and cleanup,
 then closes all distinct stores before shared components. Source lifecycle reports
 and store selection are checked against 14 captured Manager scenarios. Launcher
-mode/style activation and foreign-workspace child store allocation remain pending.
+mode/style activation remains pending. Switched-workspace writable enforce
+children allocate fresh stores from detached settings only when recovery survives
+role selection. Child-created stores are transient RAM; old workspace refs stay
+confined to their original store, while component lifecycle remains shared.
 
 
 The main diagram describes the current Python runtime under `python/`. The
@@ -2096,12 +2099,14 @@ and path rules. ObservationPipeline now orchestrates explicit typed bindings in
 off/shadow/enforce modes with byte/token inflation and double-reduction guards,
 recoverable masked RAM retention and safe fault receipts. WithRawStore clones share
 component serialization and synchronized token estimates. Explicit Agent adoption
-is described below; Manager/default composition remains pending. Observation components now expose optional typed
+and Manager/child composition are installed; launcher activation remains pending.
+Observation components now expose optional typed
 Initialize/Health/Close hooks, clone-shared cached reports, exclusive health admission
 and close-before-drain fencing. Timed drain failures remain retryable; hook faults are
-contained class-only records. Raw storage remains caller-owned. Masking before/after
+contained class-only records. Bare store bindings remain caller-owned; Manager
+owns its managed session/template stores. Masking before/after
 the plugin boundary and multi-stage identity registration are described below; default
-selection remains pending.
+launcher selection remains pending.
 RequestPipeline now optimizes immutable provider-neutral RequestDocument values
 through explicit RequestOptimizer/OptimizationContext/result types. JSON data uses
 closed recursive variants; no generic service map or opaque raw JSON is retained.
@@ -2114,7 +2119,7 @@ counter root. Same pointer instances share locks and lifecycle hooks, while dist
 objects with equal IDs in direct StageComponents retain independent hooks. Clones
 share admission/draining with explicit caller-owned raw-store binding. Agent request
 ledger is now installed by explicit RuntimeConfig.TokenEfficiency; observation adoption
-is described below and Manager/default composition remains pending.
+and Manager/child composition are installed; launcher activation remains pending.
 The Agent consumer now guards role/count/tool identities, error flags and stable
 protocol blocks before lowering eligible payloads to named message variants. Its
 transient ledger reuses provider projections while preserving authoritative history;
@@ -2133,7 +2138,8 @@ warning count while excluding digests, warning strings and content. Typed event
 masking, detached snapshots and archival replay preserve this projection. Request optimization now runs before cache annotation, with latest-assistant/full
 prefix freezing and cross-round projection reuse. Protected skill previews bypass
 request/cache seams and remask/refreeze selected messages for every recovery call.
-Observation adoption, Manager composition and environment defaults remain pending.
+Observation adoption and Manager/child composition are installed. Environment
+activation remains pending.
 See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 
 Go explicit observation adoption runs after full output masking and before journal
@@ -2161,7 +2167,7 @@ remain caller-owned/pending. A typed stage-error event contains no plugin text.
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
-| `go/efficiency/` | Typed registry, shared three-stage runtime/lifecycle, masked RAM and recovery; explicit Agent adoption, defaults pending |
+| `go/efficiency/` | Typed registry, shared three-stage runtime/lifecycle, scoped masked RAM/recovery; Manager and child adoption, launcher activation pending |
 | `go/secrets/` | Typed optional credential lookup, environment selection and masking |
 | `go/internal/` | Shared Python filename matching and pinned Unicode/text semantics |
 | `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |

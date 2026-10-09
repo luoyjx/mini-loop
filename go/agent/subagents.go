@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math/big"
 	"strings"
 	"sync"
 
@@ -182,6 +181,26 @@ func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunCon
 			tokenEfficiency = tokenEfficiency.WithRawStore(nil)
 		}
 	}
+	var allocatedRaw *efficiency.RawStore
+	constructed := false
+	defer func() {
+		if !constructed && allocatedRaw != nil {
+			allocatedRaw.Close()
+		}
+	}()
+	if tokenEfficiency != nil && tokenEfficiency.RawStore() == nil && tokenEfficiency.ObservationEnforced() && parent.observationRaw.Persist && mode != ModeReadonly {
+		if _, recovery := catalog.Lookup(protocol.ToolReadTokenArtifact); recovery {
+			rawConfig := efficiency.DefaultRawStoreConfig(handler.binding.Workspace)
+			if limits := parent.observationRaw.StoreLimits; limits != nil {
+				rawConfig.TTLSeconds, rawConfig.MaxArtifactBytes, rawConfig.MaxTotalBytes = limits.TTLSeconds, limits.MaxArtifactBytes, limits.MaxTotalBytes
+			}
+			allocatedRaw, err = efficiency.NewRawStore(rawConfig)
+			if err != nil {
+				return nil, RunContext{}, err
+			}
+			tokenEfficiency = tokenEfficiency.WithRawStore(allocatedRaw)
+		}
+	}
 	definitions := append([]ToolDefinition(nil), catalog.ordered...)
 	// Built-in stateful handlers must bind the fresh child. Custom handlers
 	// receive its authority through the same gate and retain their own contract.
@@ -241,10 +260,7 @@ func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunCon
 	}
 	child.label, child.depth = parent.label+">"+strings.ToLower(string(request.Role)), parent.depth+1
 	child.tokenEfficiency = tokenEfficiency
-	child.observationRaw = parent.observationRaw
-	if parent.observationRaw.MinBytes != nil {
-		child.observationRaw.MinBytes = new(big.Int).Set(parent.observationRaw.MinBytes)
-	}
+	child.observationRaw = parent.observationRaw.clone()
 	// Source children get fresh session state; the parent's concise opt-in and
 	// request projection ledger are not inherited. Policies retain shared identity.
 	child.secrets = parent.secrets
@@ -295,6 +311,7 @@ func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunCon
 			break
 		}
 	}
+	constructed = true
 	return child, childContext, nil
 }
 
@@ -348,7 +365,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 func (s *Session) subagentParent(run RunContext) SubagentParent {
 	parent := SubagentParent{
 		tokenEfficiency:  s.tokenEfficiency,
-		observationRaw:   s.observationRaw,
+		observationRaw:   s.observationRaw.clone(),
 		selfAudit:        s.selfAudit,
 		memoryAuto:       s.memoryAuto,
 		memory:           s.memory,
@@ -362,9 +379,6 @@ func (s *Session) subagentParent(run RunContext) SubagentParent {
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
 		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,
 		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets, cachePolicy: s.cachePolicy, stuckDetector: s.stuckDetector, stopHooks: append([]StopHook(nil), s.stopHooks...),
-	}
-	if s.observationRaw.MinBytes != nil {
-		parent.observationRaw.MinBytes = new(big.Int).Set(s.observationRaw.MinBytes)
 	}
 	if s.mcp != nil {
 		parent.mcpServers = append([]MCPServer(nil), s.mcp.servers...)

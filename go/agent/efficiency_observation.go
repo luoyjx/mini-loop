@@ -15,17 +15,23 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-// ObservationRawConfig controls only the explicit post-mask consumer. The caller
-// still owns runtime/store/tool installation and their lifetimes.
+// ObservationRawConfig snapshots post-mask persistence and child store limits.
+// Shared runtimes and explicitly installed stores retain caller-owned lifetimes.
 type ObservationRawConfig struct {
-	Persist  bool
-	MinBytes *big.Int
+	Persist     bool
+	MinBytes    *big.Int
+	StoreLimits *efficiency.ArtifactLimits
 }
 
 func normalizedObservationRaw(config *ObservationRawConfig) (ObservationRawConfig, error) {
-	result := ObservationRawConfig{Persist: true, MinBytes: big.NewInt(4096)}
+	limits := efficiency.DefaultArtifactLimits()
+	result := ObservationRawConfig{Persist: true, MinBytes: big.NewInt(4096), StoreLimits: &limits}
 	if config != nil {
 		result.Persist = config.Persist
+		if config.StoreLimits != nil {
+			limits = config.StoreLimits.Clone()
+			result.StoreLimits = &limits
+		}
 		if config.MinBytes != nil {
 			result.MinBytes = new(big.Int).Set(config.MinBytes)
 		}
@@ -33,7 +39,21 @@ func normalizedObservationRaw(config *ObservationRawConfig) (ObservationRawConfi
 	if result.MinBytes.Sign() < 0 {
 		return ObservationRawConfig{}, errors.New("observation raw byte threshold must be nonnegative")
 	}
+	if err := result.StoreLimits.Validate(); err != nil {
+		return ObservationRawConfig{}, err
+	}
 	return result, nil
+}
+
+func (c ObservationRawConfig) clone() ObservationRawConfig {
+	if c.MinBytes != nil {
+		c.MinBytes = new(big.Int).Set(c.MinBytes)
+	}
+	if c.StoreLimits != nil {
+		limits := c.StoreLimits.Clone()
+		c.StoreLimits = &limits
+	}
+	return c
 }
 
 type sessionObservationProjector struct {
