@@ -2872,4 +2872,23 @@ launch to recheck retained bytes, then stop/join the child before Artifact.Close
 Environment is captured/detached at construction; compiler diagnostics stream to
 the caller. On macOS/Linux cancellation ends the compiler group, including its
 helpers; other platforms use direct-process cancellation. This operator library
-has no model tool or CLI activation. Server supervision remains pending.
+has no model tool or CLI activation. Explicit supervision is described below.
+
+### Native development supervisor
+
+`reload.NewSupervisor` takes explicit Builder/Watcher collaborators, child
+arguments, working directory and detached environment. On macOS/Linux Run takes
+ownership of one TCP listener after admission; a supervisor is single-use. The
+parent retains the socket across child replacement and failed compilation.
+Children call `reload.InheritedListener()` to duplicate descriptor 3; callers
+remain responsible for authentication and the actual inherited bind address.
+
+Source changes stop and join the old process group before building/replacing it.
+Shutdown sends SIGTERM, then forces group termination after StopGrace (default
+10 seconds). Artifacts are released only after children are joined. Build/start
+failures emit typed events and wait for a source correction; an exited child
+also waits for an edit. Callback panics cause owned cleanup and an error. Event
+callbacks and output writers must return promptly. Cancellation is normal shutdown.
+The watcher primes before each build so edits during compilation remain visible.
+These finite shutdown and native-build details are Go adaptations of StatReload.
+This SDK has real HTTP replacement/recovery tests; CLI reload is still refused.

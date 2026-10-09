@@ -7314,3 +7314,45 @@ specification/artifact SHA-256 and byte counts were verified. Correction rounds:
 exporter/fixtures, default tools and existing guard/scanner targets did not change;
 Python/export/invariant/scanner/mutation/coverage checks were not rerun.
 No push. The next implementation remains the owned supervisor/listener/CLI path.
+
+## Native reload supervisor and retained listener — 2026-10-10
+
+`reload.NewSupervisor` captures typed Builder/Watcher collaborators, child working
+directory, arguments and environment. On macOS/Linux its single-use Run owns an
+admitted TCP listener. The parent retains that socket through replacement, build
+failure and child exit. The public child protocol duplicates inherited descriptor
+3 into a TCP listener; actual-address authentication remains the caller's duty.
+This is an explicit SDK; config still refuses MINILOOP_RELOAD. CLI selection and
+actual miniloop HTTP proof remain required. No dependency is introduced.
+
+An edit stops/joins the old child before compiling/replacing it. SIGTERM gets a
+finite configurable grace (default 10 seconds), followed by forced process-group
+termination. Wait joins children and cleans their private artifacts before the
+parent closes its listener. Build/start errors and unexpected child exits emit
+typed events and keep observing for a correction, without a respawn loop.
+Callback panics trigger owned cleanup and an error; callbacks/writers must return
+promptly. Cancellation after a successful build also closes the returned artifact.
+Native builds explicitly select executable mode. Priming before each build keeps
+edits during compilation visible. These bounded/native details are documented Go
+adaptations; Source StatReload restarts an interpreter and joins without this
+native build stage. Other platforms refuse supervisor admission before ownership.
+
+Actual HTTP child tests import the public inherited-listener helper, replace
+three generations at one address, join old children, retain the socket through
+syntax failure, recover after repair, and release socket/artifacts on shutdown.
+Additional real children ignore SIGTERM to prove forced cleanup; callback-panic
+cleanup is verified. Detached environment and single-use rejection are checked.
+README canonical topology reviewed: this unactivated library has no new runtime
+edge/default; boundary/review baseline and aggregate interactive card updated.
+
+Validation: narrow `go test -count=1 -timeout=120s ./reload`, full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s -coverprofile=/tmp/mini-loop-supervisor.cover -covermode=atomic ./...`
+and `go vet ./...` passed from go/. `git diff --check` and README outline passed.
+Existing Darwin CGO LC_DYSYMTAB warnings did not prevent affected tests passing.
+Architecture delivery passed 9/9 with zero errors/warnings; exact spec/artifact
+hashes and byte counts verified, correction rounds 0. Visual review was not
+repeated after prior browser denial. Python runtime/exports/guard/scanner targets
+did not change; Python/export/invariant/scanner/mutation gates were not rerun.
+The race profile uses package-local coverage; comparable cross-package coverage
+is a separate measurement. No push; full G0–G7 remains incomplete.

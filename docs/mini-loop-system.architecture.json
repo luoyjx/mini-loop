@@ -1588,8 +1588,9 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
-        "Explicit reload.Builder owns native Go compilation and private Artifact directories; readonly local builds target this host, compiler cancellation owns a process group on macOS/Linux, and Artifact consumers must join children before cleanup. Watcher owns observation only. Server-child supervision/listener/CLI reload remains pending.",
-        "Explicit go/reload watcher observes operator-selected .go paths (Python differential profile .py), with Source StatReload baseline/mtime/reset semantics and cancellable polling. It owns no build, child, listener or runtime activation; MINILOOP_RELOAD remains refused until supervisor/build/CLI delivery.",
+        "Explicit reload.Supervisor owns a retained parent TCP socket, native child process groups and joined Artifact cleanup on macOS/Linux. Typed lifecycle events report source/build/start/exit/stop transitions; failed builds wait for correction. Real HTTP child replacement/recovery is verified. CLI reload selection remains pending.",
+        "Explicit reload.Builder owns native Go compilation and private Artifact directories; readonly local builds target this host, compiler cancellation owns a process group on macOS/Linux, and Artifact consumers must join children before cleanup. Watcher owns observation only. Explicit Supervisor now owns server children/listeners; CLI reload remains pending.",
+        "Explicit go/reload watcher observes operator-selected .go paths (Python differential profile .py), with Source StatReload baseline/mtime/reset semantics and cancellable polling. It owns no build, child, listener or runtime activation; MINILOOP_RELOAD remains refused until CLI delivery.",
         "The main map follows the Python runtime under python/",
         "Go NewRuntimeSession registers ten implemented tools behind one typed gate",
         "SessionManager owns ManagedSession admission/cancel/status and drains scratch cleanup; raw children emit core spans only",

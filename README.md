@@ -391,10 +391,13 @@ names and resolved file symlinks retain Source behavior. The separate typed
 Go toolchain, host target and readonly module mode. Each attempt owns a private
 output directory; failed attempts clean it, while a successful `Artifact` checks
 its retained executable bytes and releases them on Close. Build cancellation
-ends the owned compiler group on macOS/Linux. Server-child supervision and
-listener ownership remain the next slice; `MINILOOP_RELOAD` is still refused.
+ends the owned compiler group on macOS/Linux. `reload.Supervisor` now retains
+the parent TCP listener, stops/joins each old child before replacement, and owns
+child artifacts through shutdown. Failed builds keep observing for source repair.
+This explicit SDK is verified with real HTTP children; CLI selection remains
+pending and `MINILOOP_RELOAD` is still refused.
 
-Runtime review baseline: `bd6a095` plus native reload build/artifact ownership,
+Runtime review baseline: `9987c96` plus native reload supervisor/listener ownership,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -538,7 +541,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `bd6a095` plus native reload build/artifact ownership;
+reviewed **2026-10-10** (Go baseline `9987c96` plus native reload supervisor/listener ownership;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

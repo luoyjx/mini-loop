@@ -133,7 +133,7 @@ func (builder *Builder) Build(ctx context.Context, diagnostics io.Writer) (artif
 	if diagnostics == nil {
 		diagnostics = io.Discard
 	}
-	command := exec.CommandContext(ctx, builder.toolchain, "build", "-mod=readonly", "-o", path, builder.target)
+	command := exec.CommandContext(ctx, builder.toolchain, "build", "-mod=readonly", "-buildmode=exe", "-o", path, builder.target)
 	command.Dir, command.Env = builder.module, append([]string{}, builder.environment...)
 	command.Stdout, command.Stderr = diagnostics, diagnostics
 	configureBuildGroup(command)

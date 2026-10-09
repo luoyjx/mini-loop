@@ -8,6 +8,10 @@ import (
 	"syscall"
 )
 
+const inheritedListenersSupported = true
+
+func signalChildStop(process *os.Process) { _ = syscall.Kill(-process.Pid, syscall.SIGTERM) }
+
 func configureBuildGroup(command *exec.Cmd) {
 	command.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 }
