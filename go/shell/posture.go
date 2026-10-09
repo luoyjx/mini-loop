@@ -17,10 +17,16 @@ type SandboxPostureProvider interface{ SandboxPosture() SandboxPosture }
 type SandboxReasonProvider interface{ SandboxReason() *string }
 
 func (executor *Executor) SandboxPosture() SandboxPosture {
-	if executor.sandbox == nil {
+	return InspectSandbox(executor.sandbox)
+}
+
+// InspectSandbox reads configuration metadata without binding or executing it.
+// Optional reason callbacks must be concurrency safe, like the sandbox itself.
+func InspectSandbox(sandbox Sandbox) SandboxPosture {
+	if sandbox == nil {
 		return SandboxPosture{Name: "None"}
 	}
-	t := reflect.TypeOf(executor.sandbox)
+	t := reflect.TypeOf(sandbox)
 	for t.Kind() == reflect.Pointer {
 		t = t.Elem()
 	}
@@ -29,7 +35,7 @@ func (executor *Executor) SandboxPosture() SandboxPosture {
 		name = t.Kind().String()
 	}
 	result := SandboxPosture{Name: name}
-	if source, ok := executor.sandbox.(SandboxReasonProvider); ok {
+	if source, ok := sandbox.(SandboxReasonProvider); ok {
 		if reason := source.SandboxReason(); reason != nil {
 			value := *reason
 			result.Reason = &value

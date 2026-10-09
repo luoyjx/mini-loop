@@ -94,19 +94,22 @@ type ManagerServices struct {
 	Recovery         Recovery
 	StreamProgress   StreamProgressConfig
 	BashFactory      BashFactory
-	Skills           SkillSource
-	Approvals        *ApprovalBroker
-	ActionJournal    ActionJournal
-	Secrets          ApprovalRedactor
-	Hooks            GateHooks
-	SystemBuilder    SystemBuilder
-	Compactor        Compactor
-	Subagents        SubagentProvider
-	RoleToolPolicy   RoleToolPolicy
-	CachePolicy      CachePolicy
-	StuckDetector    StuckDetector
-	StopHooks        []StopHook
-	UserPromptHooks  []UserPromptHook
+	// Sandbox binds the default shell factory. A custom BashFactory owns this
+	// boundary itself; configuring both is rejected before allocation.
+	Sandbox         shell.Sandbox
+	Skills          SkillSource
+	Approvals       *ApprovalBroker
+	ActionJournal   ActionJournal
+	Secrets         ApprovalRedactor
+	Hooks           GateHooks
+	SystemBuilder   SystemBuilder
+	Compactor       Compactor
+	Subagents       SubagentProvider
+	RoleToolPolicy  RoleToolPolicy
+	CachePolicy     CachePolicy
+	StuckDetector   StuckDetector
+	StopHooks       []StopHook
+	UserPromptHooks []UserPromptHook
 	// Nil selects lifecycle defaults; an explicit list replaces background/team
 	// injection, including an empty list. The manager copies without widening.
 	Injectors                 []MessageInjector
@@ -170,15 +173,15 @@ type CleanupError struct {
 	Error     string    `json:"error"`
 }
 
-type hostBashFactory struct{}
+type hostBashFactory struct{ sandbox shell.Sandbox }
 
-func (hostBashFactory) SandboxPosture() shell.SandboxPosture {
-	return shell.SandboxPosture{Name: "None"}
+func (factory hostBashFactory) SandboxPosture() shell.SandboxPosture {
+	return shell.InspectSandbox(factory.sandbox)
 }
 
-func (hostBashFactory) BashFor(ctx context.Context, binding SessionBinding) (BashExecutor, error) {
+func (factory hostBashFactory) BashFor(ctx context.Context, binding SessionBinding) (BashExecutor, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	return shell.New(shell.Config{Workspace: binding.Workspace})
+	return shell.New(shell.Config{Workspace: binding.Workspace, Sandbox: factory.sandbox})
 }

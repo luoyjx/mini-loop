@@ -285,9 +285,15 @@ selection and workspace rebinding through `shell.Config.Sandbox`. Actual macOS
 tests verify protected reads/copies, confined writes, denied/allowed local
 network access and linked-worktree commits without sibling working-file access.
 Host execution remains the default; Seatbelt provides no resource caps.
+`ManagerServices.Sandbox` binds the default factory directly, including fresh
+sessions and later workspace switches. Configuring it with a custom BashFactory
+is rejected before allocation; custom factories own their sandbox boundary.
+Empty-fleet posture reads template metadata without binding or executing it.
+Actual managed turns and pinned children retain read/write restrictions and
+explicit extra roots across a parent workspace switch.
 
-Runtime review baseline: `e0ee372` plus native opt-in Seatbelt and actual macOS
-shell/worktree/network enforcement tests,
+Runtime review baseline: `8c9d90a` plus direct Manager sandbox injection and
+actual managed-turn/pinned-child/workspace-switch enforcement tests,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
@@ -429,7 +435,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `e0ee372` plus native opt-in Seatbelt;
+reviewed **2026-10-09** (Go baseline `8c9d90a` plus direct Manager sandbox injection;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -543,7 +549,7 @@ flowchart LR
         GoBrowser -->|authenticated API / SSE| GoTrust
         GoLaunch -. construct / stop / caller store / explicit restore .-> GoManager
         GoManager -. explicit typed workspace factory .-> GoWorktrees
-        GoManager -->|create / fork / restore · owned teammate idle turns · bind owner resources| GoManaged --> GoControls --> GoSession
+        GoManager -->|create / fork / restore · owned teammate idle turns · bind resources / sandbox| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoProvider
         GoProvider --> GoSession

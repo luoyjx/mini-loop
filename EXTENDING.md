@@ -480,6 +480,12 @@ tests prove read/copy/write denial, explicit networking and worktree commits;
 configuration metadata alone is not evidence of successful OS enforcement.
 Go runtime startup continues to select host execution unless a caller injects
 this backend. No container or resource-consumption limits are provided.
+For the managed SDK, set `agent.ManagerServices.Sandbox` to this backend instead
+of implementing a factory. The default factory binds it for new/restored sessions
+and workspace entry; template metadata is observable even before the first
+session. A nonnil custom BashFactory plus Sandbox is rejected before allocation,
+because the custom factory owns execution configuration. Children retain the
+executor captured at creation while a parent switches to a new workspace.
 
 ---
 

@@ -67,6 +67,9 @@ type SessionManager struct {
 func closedSignal() chan struct{} { signal := make(chan struct{}); close(signal); return signal }
 
 func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
+	if config.Services.Sandbox != nil && config.Services.BashFactory != nil {
+		return nil, errors.New("sandbox and custom Bash factory cannot both be configured")
+	}
 	if err := normalizeManagerFeatures(&config); err != nil {
 		return nil, err
 	}
@@ -186,7 +189,7 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		}
 	}
 	if services.BashFactory == nil {
-		services.BashFactory = hostBashFactory{}
+		services.BashFactory = hostBashFactory{sandbox: services.Sandbox}
 	}
 	if services.Skills == nil {
 		services.Skills = skills.EmptyCatalog()

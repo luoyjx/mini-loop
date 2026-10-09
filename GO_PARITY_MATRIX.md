@@ -6237,3 +6237,48 @@ exports, schemas, source scan and mutation anchors are unchanged, so full Python
 export, invariant/scanner/guard checks were not rerun. Coverage was not refreshed.
 
 Final `go vet ./...`, README architecture outline and `git diff --check` passed.
+
+## Direct Manager sandbox injection — 2026-10-09
+
+Base: 8c9d90a. Source SessionManager accepts sandbox directly; native Manager
+previously required callers to implement a BashFactory plus empty-fleet metadata.
+ManagerServices.Sandbox now provides that typed seam through the default factory.
+Fresh and restored bindings, and runtime workspace preparation, already consume
+this factory; no additional execution path is introduced. Simultaneously setting
+Sandbox and a custom BashFactory is refused at constructor entry, before feature
+composition, services, recovery or workspace allocation. Custom factories retain
+complete ownership when this option is absent. Default startup stays host-based;
+Launcher sandbox configuration is not added in this slice.
+
+A shared shell.InspectSandbox helper projects type/reason metadata without calling
+ForWorkspace, Argv or constructing an executor. Both live executors and default
+factory templates use it, with detached reasons. Empty and populated managed
+fleets report actual UnavailableSandbox/SeatbeltSandbox configuration. Metadata
+alone does not prove enforcement; optional callbacks retain the existing shared
+concurrency-safety contract.
+
+Real macOS managed model-tool turns use native Seatbelt through the normal Run
+and tool gate: allowed workspace/extra-root writes succeed; protected reads and
+outside writes fail with recorded model-facing results and absent forbidden files.
+After workspace entry, the parent writes only its new root plus explicit extra
+roots. A child constructed before entry executes a fresh model/tool turn in its
+pinned old root and cannot write the parent's new root; credentials remain denied
+in both. Live posture remains the actual backend. Constructor conflict refuses
+without invoking the competing factory or allocating its root. No dependency,
+ambiguous domain JSON container or implicit sandbox activation is added.
+
+README Mermaid and boundary/baseline, EXTENDING and the architecture specification
+are updated; HTML regenerated via Archify. Automated showcase validation passed
+9/9 with zero errors/warnings, and sizes/SHA256 match the receipt. Visual review
+remains skipped after the prior browser denial. Default diagnostic parsing and
+remaining full-port acceptance are still open; no push.
+
+Validation: final focused agent race tests passed (three integration tests, real
+Seatbelt case executed without skip). Full ordinary and race suites from go/
+passed with `go test [-race] -p=1 -count=1 -timeout=300s ./...`; nonfatal
+macOS CGO linker warnings remain. Native restore consumes the same factory at
+restore.go:230; real persisted sandbox restoration is not exercised in this
+slice. Python package/exports/schemas/scanner and mutation targets did not change,
+so Python/export/invariant/scanner/guard gates and coverage were not refreshed.
+
+Final go vet ./..., README architecture outline and git diff --check passed.
