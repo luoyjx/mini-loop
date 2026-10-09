@@ -1,4 +1,4 @@
-// miniloop-audit audits public runtime posture reported by a running server.
+// miniloop-audit audits a local deployment or public runtime health metadata.
 package main
 
 import (
@@ -12,11 +12,21 @@ import (
 	"syscall"
 
 	"github.com/luoyjx/mini-loop/go/audit"
+	"github.com/luoyjx/mini-loop/go/config"
+	"github.com/luoyjx/mini-loop/go/launcher"
+	"github.com/luoyjx/mini-loop/go/secrets"
 )
 
 func execute(ctx context.Context, args []string, stdout, stderr io.Writer) int {
-	if len(args) == 0 || args[0] != "--url" || len(args) < 2 {
-		fmt.Fprintln(stderr, "usage: miniloop-audit --url http://host:port (local audit is not implemented)")
+	return executeWithEnvironment(ctx, args, nil, stdout, stderr)
+}
+
+func executeWithEnvironment(ctx context.Context, args []string, environment map[string]string, stdout, stderr io.Writer) int {
+	if len(args) == 0 || args[0] != "--url" {
+		return executeLocal(ctx, environment, stdout, stderr)
+	}
+	if len(args) < 2 {
+		fmt.Fprintln(stderr, "usage: miniloop-audit --url http://host:port")
 		return 2
 	}
 	base := strings.TrimRight(args[1], "/")
@@ -42,6 +52,36 @@ func execute(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintln(stderr, err)
 		return 1
 	}
+	return findingStatus(findings)
+}
+
+func executeLocal(ctx context.Context, environment map[string]string, stdout, stderr io.Writer) int {
+	fail := func(err error) int { fmt.Fprintln(stderr, err); return 1 }
+	if environment == nil {
+		environment = make(map[string]string)
+		for name, value := range secrets.CurrentEnvironment() {
+			environment[string(name)] = value
+		}
+	}
+	settings, err := config.Load(environment, config.LoadOptions{})
+	if err != nil {
+		return fail(err)
+	}
+	findings, err := launcher.AuditDeployment(ctx, settings, environment, launcher.Options{})
+	if err != nil {
+		return fail(err)
+	}
+	text, err := audit.Render(findings)
+	if err != nil {
+		return fail(err)
+	}
+	if _, err := fmt.Fprintln(stdout, text); err != nil {
+		return fail(err)
+	}
+	return findingStatus(findings)
+}
+
+func findingStatus(findings []audit.Finding) int {
 	for _, finding := range findings {
 		if finding.Severity == audit.Critical || finding.Severity == audit.High {
 			return 1

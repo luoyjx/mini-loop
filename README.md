@@ -304,8 +304,9 @@ Source-compatible sorted findings and text. Its JSON boundary rejects ambiguous
 known-field types, preserves absent/null/empty distinctions and ignores future
 fields. `audit.Fetch` and `go/cmd/miniloop-audit --url` read public `/healthz`
 with a ten-second deadline and a 1 MiB response cap. The command prints build/pid
-and findings, returning 1 for high/critical findings and 0 otherwise. Local CLI
-construction remains pending; health does not automatically audit.
+and findings, returning 1 for high/critical findings and 0 otherwise. Without
+`--url`, the command constructs and audits a local deployment; health does not
+automatically audit.
 Findings reflect reported metadata, not an independent proof of confinement or
 persistence. Run from `go/`: `go run ./cmd/miniloop-audit --url http://localhost:8000`.
 
@@ -326,10 +327,24 @@ MCP records from all published sessions. Snapshots detach mutable fields and
 callbacks run outside manager locks. Observation creates no session, reads no
 historical recording and resolves no credential values. This privileged fleet
 API requires a trusted local caller; it is not owner admission. Per-session
-task/gate/owner diagnostics retain their existing self-audit path. Local CLI
-construction/shutdown remains pending; no health/model-tool path calls this API.
+task/gate/owner diagnostics retain their existing self-audit path. No
+health/model-tool path calls this API.
 
-Runtime review baseline: `964907d` plus actual local audit CLI Source contracts,
+`launcher.AuditDeployment` shares native resource construction with the server,
+audits the empty local fleet and stops its owned manager/transport before returning.
+It opens no listener, restores no session and invokes no model/tool. Injected
+stores and diagnostic providers retain caller ownership. The no-URL command
+captures environment once, loads selected settings, prints exact Source findings
+and returns 1 for high/critical findings or operational faults. Like Source,
+non-URL arguments select local mode and PORT is ignored. Source's local entry
+point does not activate the workflow environment setting; explicit SDK workflow
+options remain available. Construction may create workspace/shared-resource
+roots; serving still refuses unauthenticated public binds, while local audit
+reports that configuration. From `go/`: `go run ./cmd/miniloop-audit`.
+Full CLI features still require the pending default diagnostics backend. Native
+provider construction still requires a key; Source defers its missing-key check.
+
+Runtime review baseline: `c6e0cee` plus native local deployment audit CLI composition,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -473,7 +488,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `964907d` plus actual local audit CLI Source contracts;
+reviewed **2026-10-09** (Go baseline `c6e0cee` plus native local deployment audit CLI composition;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -527,7 +542,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
-        GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>config / filesystem / full findings + privileged Manager SDK"]
+        GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -627,6 +642,7 @@ flowchart LR
     Caller --> GoRemoteAudit
     GoRemoteAudit -. public health report .-> GoEntry
     GoManager -. template components / detached fleet diagnostics .-> GoRemoteAudit
+    GoRemoteAudit -. local composition / owned shutdown without listening .-> GoLaunch
     Caller --> GoEntry
     GoEntry -->|GET lineage / POST proposal; bound owner| GoImprovement
     GoManager -->|fixed bus / protocols; owned idle loop / inbox / task claims| GoTeams

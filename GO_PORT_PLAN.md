@@ -14029,3 +14029,59 @@ Validation: focused two-root Source test, full Python pytest (2169 passed,
 guards and git diff --check passed. JSON key order was corrected to the existing
 exporter format before the final check. No Python package module/guarded mutation
 anchor or Go implementation changed; Go/race/vet gates were not repeated.
+
+## Native local deployment audit construction and CLI — 2026-10-09
+
+Base: `c6e0cee`. No-URL `cmd/miniloop-audit` now captures one environment, loads
+settings, builds actual native services through `launcher.AuditDeployment`,
+composes full manager findings, stops its owned manager/transport and prints
+exact Source rendering. High/critical findings or operational errors return 1.
+Non-URL arguments select local mode and PORT is ignored, matching Source.
+Source eagerly creates the workspace; the native audit constructor performs
+that effect while general config.Load remains pure. Shared memory/trajectory/
+skill construction uses the same private buildApp as the serving launcher.
+
+Serving NewWithOptions preflight and actual App.Serve bind refusal remain intact.
+The audit API returns findings rather than an App or listener and can report
+public/no-auth configuration without serving it. No model, tool, listener,
+restoration or live session is started. Owned manager/transport cleanup uses
+a fresh ten-second context, independent of request cancellation; cleanup faults
+return errors without partial findings. Injected stores/diagnostics retain caller
+ownership. No dependency or normal serving default changes.
+
+The Source workflow recipe now uses its correct configuration variable
+MINILOOP_EXPERIMENTAL_WORKFLOWS and records the actual selected settings value.
+It proves settings=true with manager=false in local main, rather than testing
+an unknown environment variable. The audit constructor preserves that Source
+selection; explicit SDK Options.WorkflowTools remains available.
+
+Ten direct Source local profiles match native command findings/text/status,
+including world-write permissions, open bind, authentication, credential-shaped
+environment, real provider construction without HTTP calls, unknown args and
+invalid PORT. A compiled native binary also matches Source output and terminates
+without sessions. The full-feature SDK profile matches using the explicitly
+injected diagnostics seam without calling Scope/Diagnose; caller diagnostics
+and actual SQLite stores remain open. Serving bind guards and cancellation are
+verified. Operational invalid-settings/authentication errors become native code 1
+and stderr, rather than uncaught Source exceptions.
+
+Two known differences remain: full default CLI features need the unresolved
+default diagnostics backend; native provider construction requires credentials
+while Source allows missing-key construction and defers validation. These are
+explicit refusal/error cases, not passing Source parity profiles. Wider migration
+acceptance remains open.
+
+README canonical Mermaid/boundary/review baseline, extension and hardening notes
+and architecture source are updated together. Generated HTML passes Archify
+9/9 showcase checks, zero errors/warnings; hashes and byte counts match receipt.
+Visual inspection was not repeated because previous browser review was denied;
+correction rounds 0. No push.
+
+Final gates passed: targeted local command/SDK race (including real native binary),
+full serialized Go tests, full serialized Go race, go vet ./..., full Python
+pytest (2169 passed, 28 skipped, 24 subtests, 3 warnings), 195-file Source exporter
+and all 19 scanning guards. README outlines, typed-payload search and
+git diff --check passed. Existing Darwin CGO linker warnings were nonfatal.
+Python package invariant/guard checks were not repeated because package modules
+and mutation anchors are unchanged. Coverage was not refreshed; the prior
+90.14% measurement belongs to the preceding manager observation implementation.

@@ -21,7 +21,7 @@ def audit_local_cli_contracts(scratch: Path) -> dict:
         ("content", {"MINILOOP_TRAJECTORY_CAPTURE_CONTENT": "1"}, []),
         ("world-writable", {}, []),
         ("full-features", {"MINILOOP_FEATURES": "1"}, []),
-        ("workflow-setting", {"MINILOOP_WORKFLOWS": "1"}, []),
+        ("workflow-setting", {"MINILOOP_EXPERIMENTAL_WORKFLOWS": "1"}, []),
         ("unknown-args", {}, ["--unknown", "unused"]),
         ("ignored-port", {"PORT": "not-a-port"}, []),
         ("real-client", {"MINILOOP_FAKE_LLM": "", "ANTHROPIC_API_KEY": "fixture-provider-key"}, []),
@@ -59,7 +59,8 @@ def audit_local_cli_contracts(scratch: Path) -> dict:
                              stdout=output.getvalue().replace(str(scratch), "ROOT"),
                              fault=fault, workspace_exists=(root / "workspaces").exists(),
                              managers=len(managers), sessions=sum(len(m._sessions) for m in managers),
-                             workflows=[m.enable_workflows for m in managers]))
+                             workflows=[m.enable_workflows for m in managers],
+                             workflow_setting=[m.settings.enable_workflows for m in managers]))
         finally:
             for manager in managers:
                 asyncio.run(manager.stop())

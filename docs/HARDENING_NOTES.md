@@ -8215,3 +8215,16 @@ an explicitly empty session ID; nil means global. Open never invokes this policy
 Unknown status proves neither foreign-process death nor external-effect fencing.
 Stored approvals cannot reconstruct remembered grants. Native managed restart and
 configured Launcher activation remain separate validation work.
+
+### Go migration — local audit construction grants no serving bypass
+
+Local `launcher.AuditDeployment` shares private resource composition with the
+server, returns findings and stops owned resources before returning. It never
+returns an App, opens a listener, restores sessions or executes model/tools.
+`NewWithOptions` retains its original configuration/support/bind admission
+before invoking that private builder; `App.Serve` still checks the actual
+listener. A public unauthenticated configuration is therefore reportable by
+local audit while the serving path remains denied before workspace effects.
+Caller-owned stores/diagnostics are not closed. Cleanup uses an independent
+bounded context after cancellation. Component observation is privileged local
+fleet visibility, not owner admission or an atomic fleet transaction.

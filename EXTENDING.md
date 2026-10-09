@@ -3721,5 +3721,17 @@ Source deployment scope. Per-session task/gate/owner diagnostics stay in existin
 self-audit. All published sessions contribute persistence faults and retained
 MCP entries; repeated counts are merged exactly without count-sized replay.
 Observation opens no owner bundle or task board, visits no historical recording,
-creates no session and invokes no provider/tool. Local CLI startup/shutdown
-remains a separate migration slice.
+creates no session and invokes no provider/tool.
+
+`launcher.AuditDeployment(ctx, settings, environment, options)` now constructs
+and audits the Source local-CLI profile using shared native composition. It
+stops the owned manager/transport with a fresh bounded cleanup context even
+when the request is cancelled, and reports cleanup faults as errors without
+partial findings. Injected state stores and diagnostics remain caller-owned.
+It returns findings, never an app/listener, so it grants no serving bypass.
+No session restoration/model/tool is started; workspace and shared service roots
+may be created as part of construction. Explicit SDK diagnostics support full
+features; default CLI diagnostics remain pending. Source local mode ignores
+PORT/non-URL arguments and does not forward its workflow environment flag;
+explicit Options.WorkflowTools still works. Existing native provider admission
+requires credentials at construction, unlike Source's deferred check.

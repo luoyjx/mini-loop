@@ -224,6 +224,12 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 	if strings.TrimSpace(settings.Model) == "" {
 		return nil, errors.New("MODEL_ID must not be empty for the Go runtime")
 	}
+	return buildApp(ctx, settings, server, auth, options)
+}
+
+// buildApp composes resources but never opens a listener. Serving callers must
+// complete NewWithOptions admission; the local operator audit owns its lifecycle.
+func buildApp(ctx context.Context, settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) (*App, error) {
 	if server.ShutdownTimeout <= 0 {
 		server.ShutdownTimeout = 10 * time.Second
 	}

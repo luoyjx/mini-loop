@@ -2765,3 +2765,19 @@ report, while close returns the error without caching successful closure. Its
 admission fence remains active. Twenty-five actual Python operations compare body
 calls, status/reason, exact escaped error and post-close admission. Broader SPI
 and Unicode/wire profiles remain under audit.
+
+### Local deployment audit command
+
+From go/, run `go run ./cmd/miniloop-audit` to construct the selected local
+profile, print deployment findings and stop its owned resources. It opens no
+listener and runs no session/tool/model. Workspace/shared-resource directories
+may be created. High/critical findings and operational faults return 1; other
+reports return 0. `--url http://host:port` retains the public health audit mode.
+
+`launcher.AuditDeployment` is the typed SDK constructor/auditor over shared
+launcher composition; `audit.Manager` instead audits a caller-owned manager.
+Injected stores and diagnostics remain caller-owned. Local Source selection
+ignores PORT/non-URL arguments and does not activate the workflow environment
+flag; explicit SDK workflow options remain available. Full CLI features still
+need default diagnostics, and native provider construction still requires a key
+where Source defers that check.

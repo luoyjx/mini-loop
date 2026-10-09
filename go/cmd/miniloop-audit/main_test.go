@@ -110,7 +110,7 @@ func TestRemoteCommandAuditsActualNativeLauncherWithoutCreatingSession(t *testin
 }
 
 func TestRemoteCommandUsageFailuresAndAbsentHeaderFields(t *testing.T) {
-	for _, args := range [][]string{nil, {"--url"}, {"--local"}} {
+	for _, args := range [][]string{{"--url"}} {
 		var out, fault bytes.Buffer
 		if code := execute(context.Background(), args, &out, &fault); code != 2 || out.Len() != 0 || !strings.Contains(fault.String(), "usage:") {
 			t.Fatal(code, out.String(), fault.String())

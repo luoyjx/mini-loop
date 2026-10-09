@@ -16,6 +16,7 @@ def test_local_audit_entry_point_contracts(tmp_path):
     rows = {row["name"]: row for row in expected["cases"]}
     assert all(row["sessions"] == 0 for row in expected["cases"])
     assert "[CRITICAL] host-bind" in rows["public"]["stdout"]
+    assert rows["workflow-setting"]["workflow_setting"] == [True]
     assert rows["workflow-setting"]["workflows"] == [False]
     assert rows["ignored-port"]["exit_code"] == 1
     assert rows["unknown-args"]["exit_code"] == 1
