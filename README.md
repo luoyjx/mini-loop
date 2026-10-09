@@ -397,7 +397,8 @@ child artifacts through shutdown. Failed builds keep observing for source repair
 This explicit SDK is verified with real HTTP children; CLI selection remains
 pending and `MINILOOP_RELOAD` is still refused.
 
-Runtime review baseline: `9987c96` plus native reload supervisor/listener ownership,
+Runtime review baseline: `cdd57c7` (cross-package Go statement coverage refreshed: 89.92%)
+plus native reload supervisor/listener ownership,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -541,7 +542,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `9987c96` plus native reload supervisor/listener ownership;
+reviewed **2026-10-10** (Go baseline `cdd57c7` (cross-package Go statement coverage refreshed: 89.92%)
+plus native reload supervisor/listener ownership;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

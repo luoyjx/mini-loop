@@ -7356,3 +7356,35 @@ repeated after prior browser denial. Python runtime/exports/guard/scanner target
 did not change; Python/export/invariant/scanner/mutation gates were not rerun.
 The race profile uses package-local coverage; comparable cross-package coverage
 is a separate measurement. No push; full G0–G7 remains incomplete.
+
+## Coverage refresh after native reload SDK — 2026-10-10
+
+Measured implementation/test baseline: `cdd57c7`. Fresh full Go tests passed with
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-reload-current.cover ./...`
+from go/ on Darwin arm64. Source-location blocks are merged by maximum hit count,
+counting each statement once across test packages, matching the previous method.
+
+| Scope | Covered / total statements | Coverage |
+| --- | ---: | ---: |
+| All Go packages | 28,378 / 31,559 | 89.92% |
+| reload | 284 / 357 | 79.55% |
+| agent | 8,997 / 10,003 | 89.94% |
+| sqlitestate | 521 / 625 | 83.36% |
+| config | 349 / 401 | 87.03% |
+| launcher | 212 / 263 | 80.61% |
+| httpapi | 1,616 / 1,806 | 89.48% |
+| internal/commandenv | 0 / 28 | 0.00% |
+| cmd/miniloop | 45 / 69 | 65.22% |
+
+Compared with the prior 28,088 / 31,202 snapshot (90.02%), this is 28,378 /
+31,559 (89.92%): 290 more covered and 357 more total statements. The denominator
+now includes the explicit watcher/build/supervisor SDK; the aggregate declines
+0.10 percentage points. Statement coverage does not establish full feature parity.
+
+Test subprocess counters are not merged. In particular, commandenv and the child
+InheritedListener protocol have passing real-process tests whose executions are
+not counted here. Python coverage and mutation checks were not refreshed. The
+implementation's full ordinary/race/vet and architecture gates are recorded in
+the preceding delivery entry. This follow-up changes only measurement docs and
+README review baseline; git diff --check passed. Temporary profiles are untracked.
+CLI reload and full G0–G7 acceptance remain incomplete. No push.
