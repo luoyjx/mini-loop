@@ -75,7 +75,7 @@ def provider_background_options_contracts(scratch: Path | str) -> dict:
                     if owned is None or owned._counter != 1:
                         raise AssertionError(f"{name}: optional input did not allocate a task")
                     task = owned._tasks["bg_0001"]
-                    await asyncio.wait_for(asyncio.shield(task["handle"]), timeout=3)
+                    await task["handle"]  # A watchdog changes NaN timer ordering.
                     rows.append({"name": name, "input_json": json.dumps(arguments), "output": output,
                         "trace": trace, "outcomes": outcomes, "starts_at_return": starts_at_return,
                         "starts_at_settlement": len(processes), "kills_at_settlement": len(kills),
@@ -97,9 +97,10 @@ def provider_background_options_contracts(scratch: Path | str) -> dict:
     sources = {"Agent._exec_tool": Agent._exec_tool, "BackgroundManager.run": BackgroundManager.run,
                "BackgroundManager._exec": BackgroundManager._exec, "BackgroundManager._settle": BackgroundManager._settle,
                "grant_candidate": grant_candidate, "proposed_candidate": proposed_candidate,
-               "asyncio.wait_for": asyncio.wait_for}
-    return {"cases": asyncio.run(capture()),
+               "asyncio.wait_for": asyncio.wait_for, "capture.background_options": provider_background_options_contracts}
+    return {"task_wait": "direct handle await without an observer timer", "cases": asyncio.run(capture()),
             "source_sha256": {name: hashlib.sha256(inspect.getsource(fn).encode()).hexdigest() for name, fn in sources.items()},
             "limits": ["Standalone actual gate/task execution; no managed journal or SDK transport acceptance claim",
                        "Source type/overflow faults do not kill groups; capture joins harmless commands after settlement",
-                       "No wall-clock durations or process identifiers are fixture authority"]}
+                       "No wall-clock durations or process identifiers are fixture authority",
+                       "NaN is observed without an outer watchdog; other timer heaps can change its Source outcome"]}

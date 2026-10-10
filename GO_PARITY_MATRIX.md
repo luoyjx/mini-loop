@@ -10263,3 +10263,20 @@ Validation: three Source contract tests pass with 12 existing SDK warnings;
 19 scanner guards pass. Full Source export --check passes: 227 files current.
 git diff --check passes. No full Python/Go, race, vet, coverage, non-Darwin or
 performance run is claimed for this Source-only prerequisite. No merge or push.
+
+## Background NaN observer correction — 2026-10-11
+
+The initial `5985636` Source capture awaited the task with an outer three-second
+asyncio watchdog. Fresh isolated-loop comparison proves that this alters the
+NaN profile: direct await yields `Error: Timeout (nans)` after spawning/killing;
+watchdog-guided await completes the 30ms command. The capture now directly awaits
+its harmless bounded commands. A regression test records both observations, and
+the 48-case fixture retains the unguarded outcome plus the capture function hash.
+The Go policy must use a named immediate timeout for this unguarded NaN profile,
+not infer an unbounded wait from the instrumented observation. Exact Python
+heap/interleaving behavior remains an explicit adaptation; positive infinity is
+still unbounded. All other optional inputs and initial call acceptance stay the
+same. This correction changes the Source oracle, not Python production behavior.
+
+Correction gates: two Source tests pass; full export --check passes with 227
+current files; git diff --check passes. Native adoption is validated separately.

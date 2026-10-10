@@ -741,7 +741,7 @@
       ]
     },
     {
-      "check": "[completed] options-done",
+      "check": "[error] Error: Timeout (nans)",
       "counter": 1,
       "default_candidate": [
         "background_run",
@@ -749,14 +749,14 @@
         "0.03;"
       ],
       "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}",
-      "kills_at_settlement": 0,
+      "kills_at_settlement": 1,
       "live_at_settlement": 0,
       "name": "timeout-nan",
       "notifications": [
         {
           "bg_id": "bg_0001",
-          "result": "options-done",
-          "status": "completed"
+          "result": "Error: Timeout (nans)",
+          "status": "error"
         }
       ],
       "outcomes": [
@@ -768,10 +768,10 @@
       ],
       "output": "Started background task bg_0001: sleep 0.03; printf options-done",
       "proposed_candidate": null,
-      "result": "options-done",
+      "result": "Error: Timeout (nans)",
       "starts_at_return": 0,
       "starts_at_settlement": 1,
-      "status": "completed",
+      "status": "error",
       "trace": [
         "before",
         "guard",
@@ -1953,7 +1953,8 @@
   "limits": [
     "Standalone actual gate/task execution; no managed journal or SDK transport acceptance claim",
     "Source type/overflow faults do not kill groups; capture joins harmless commands after settlement",
-    "No wall-clock durations or process identifiers are fixture authority"
+    "No wall-clock durations or process identifiers are fixture authority",
+    "NaN is observed without an outer watchdog; other timer heaps can change its Source outcome"
   ],
   "source_sha256": {
     "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
@@ -1961,7 +1962,9 @@
     "BackgroundManager._settle": "1fbe7fe016fa8c6f54777345bc9262011feeab5399cc24205d23362980de550c",
     "BackgroundManager.run": "ecfae7c58a20150d65482726c10485c113da042733fd21d859904db9e5ca9a4f",
     "asyncio.wait_for": "2e3efae791fd8896c9e4b594bde9d03a62a6b1986ad11390d31523fe43a85c37",
+    "capture.background_options": "c49dcebcb3f6cf7cdd12ae019ed6fc9e6a261c40300875a7a0bc834a7d91b399",
     "grant_candidate": "89e9deac921548cbf489102f62d0f889eb226d19469c8d81b7b1b648b00b9b92",
     "proposed_candidate": "ca63205bc892974f9e28c799edb9b97a0ddfbed74739fb8a2156d9c09115c089"
-  }
+  },
+  "task_wait": "direct handle await without an observer timer"
 }

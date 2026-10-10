@@ -26,14 +26,14 @@ def test_background_options_acceptance_precedes_post_spawn_faults(tmp_path):
     assert huge['kills_at_settlement'] == 0
     assert len(huge['warnings']) == 1
     for name, label in [('fraction', '0.005'), ('negative', '-1'), ('negative-fraction', '-0.5'),
-                        ('negative-infinity', '-inf'), ('true-expired', 'True')]:
+                        ('negative-infinity', '-inf'), ('nan', 'nan'), ('true-expired', 'True')]:
         row = rows['timeout-' + name]
         assert row['status'] == 'error'
         assert row['result'] == f'Error: Timeout ({label}s)'
         assert row['kills_at_settlement'] == 1
         assert row['warnings'] == []
     for name in ['missing', 'null', 'false', 'true', 'zero', 'float-zero', 'negative-zero',
-                 'integer', 'empty-text', 'empty-array', 'empty-object', 'nan', 'infinity']:
+                 'integer', 'empty-text', 'empty-array', 'empty-object', 'infinity']:
         row = rows['timeout-' + name]
         assert row['status'] == 'completed' and row['result'] == 'options-done'
         assert row['kills_at_settlement'] == 0 and row['warnings'] == []
@@ -44,3 +44,36 @@ def test_background_options_acceptance_precedes_post_spawn_faults(tmp_path):
             assert row['default_candidate'] == ('background_run', 'printf', 'options-done')
             expected = ('background_run', 'printf', 'options-done') if name == 'prefix-valid' else None
             assert row['proposed_candidate'] == expected
+
+
+def test_nan_timeout_observer_watchdog_changes_source_timer_heap(tmp_path):
+    import asyncio
+    from unittest.mock import patch
+    from mini_loop.background import BackgroundManager
+
+    async def observe(guard):
+        root = tmp_path / ('guarded' if guard else 'unguarded')
+        root.mkdir()
+        manager = BackgroundManager(root)
+        processes = []
+        original = asyncio.create_subprocess_exec
+        async def spawn(*args, **kwargs):
+            process = await original(*args, **kwargs)
+            processes.append(process)
+            return process
+        with patch.object(asyncio, 'create_subprocess_exec', spawn):
+            try:
+                manager.run('sleep 0.03; printf nan-done', float('nan'))
+                handle = manager._tasks['bg_0001']['handle']
+                if guard:
+                    await asyncio.wait_for(asyncio.shield(handle), timeout=3)
+                else:
+                    await handle
+                task = manager._tasks['bg_0001']
+                return task['status'], task['result']
+            finally:
+                for process in processes:
+                    await process.communicate()
+                await manager.close()
+    assert asyncio.run(observe(False)) == ('error', 'Error: Timeout (nans)')
+    assert asyncio.run(observe(True)) == ('completed', 'nan-done')
