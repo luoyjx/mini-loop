@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `f187508` plus finite non-mapping tool input adoption. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `9c01921` plus named Bash option projections. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,10 +6864,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 217 exported Source recipe files including actual SDK usage and non-mapping input capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 218 exported Source recipe files including actual SDK usage, non-mapping input and Bash option consumer captures; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16938,4 +16938,49 @@ Validation on local Darwin arm64:
   measurement belongs to bf4c866. No non-Darwin, merge/push or full-port claim.
 
 Source export freshness after all watcher suites ended: passed, 217 current files.
+Diff and staged diff checks passed.
+
+## Named model Bash optional-field projections — 2026-10-10
+
+Baseline: `9c01921` plus this implementation; Source contract commit `ffc3265`.
+`BashBackgroundRequest` and `BashApprovalProposal` preserve finite observed option
+values in immutable closed variants. Bash execution accessors return only a boolean
+Python-truth request and an optional string-array proposal. Candidate length, exact
+command-prefix match, banned heads and actual human approval remain the existing
+agent rules. Invalid proposal shapes are ignored, not converted into grants.
+
+Actual Source Agent/default Bash consumers cover 56 profiles: 15 background request
+shapes and 13 proposal shapes, each with background tools enabled and disabled.
+Text "false", nonzero numbers and nonempty containers request background execution;
+empty text/containers, zero, false and null do not. Disabled background support
+executes foreground regardless of the request. Twenty-eight distinct wire inputs
+retain exact original JSON values and kinds through direct/SSE decoding, clone,
+masking, historical message reads and SQLite close/reopen. Native tests execute real
+foreground shells/background tasks, compare Source candidate selection, and prove
+readonly denial starts no background manager. Explicit DecodeToolInput is strict.
+
+This closes the captured finite Bash optional-field adaptation. Nonfinite inputs,
+non-text command values, other default tools, broader SDK/caller/coercion scope,
+default diagnostics dependency approval and complete G7 acceptance remain open.
+
+Validation on local Darwin arm64:
+- Full `go test -p=1 -count=1 -timeout=300s ./...`: passed.
+- Full `go test -race -p=1 -count=1 -timeout=300s ./...`: passed; no race report.
+- `go vet ./...`: passed; existing Darwin FSEvents/linker warnings remain.
+- Type audit: 427 production files, 1395 named types, zero direct open-payload findings.
+- Focused Source consumer test: one passed. Source effect seams are explicit
+  foreground/background probes; native consumer tests run real shells/tasks.
+- Scans: 19 anchored; selected `verify_guards.py -k block`: three caught mutations,
+  not a full mutation sweep. Targeted protocol/provider/agent/SQLite suites passed.
+- The first direct-ingress test body omitted required completed-message envelope
+  fields. The fixture envelope was corrected; runtime guards stayed intact.
+- Archify: 9/9 checks, zero warnings; README outline reviewed.
+  Specification SHA256 61fdcc1770d19d9240bcde4d08dc37cbbdd37f817f2c018d81385d6cb6f816bb;
+  HTML SHA256 9a3cfc70d06fadd9676b46db3d46a96fbf1bb16a0f75d0a1f0dfc9e2e712c66e.
+  No fresh browser visual inspection (earlier access denied).
+- No Python runtime package modules changed; full Python regression/invariant
+  verifier were not rerun. No fresh coverage: the previous 89.39% application
+  snapshot belongs to bf4c866. No non-Darwin verification, merge or push.
+
+Source export freshness after all native watcher suites ended: passed, 218 current files.
 Diff and staged diff checks passed.

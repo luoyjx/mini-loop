@@ -181,6 +181,8 @@ type ToolInput struct {
 	bash               BashInput
 	bashBinding        *BashBindingFailure
 	bashRejected       *BashRejectedArguments
+	bashBackground     *BashBackgroundRequest
+	bashApproval       *BashApprovalProposal
 	bashExtra          jsonvalue.Value
 	bashCommandMissing bool
 	readFile           ReadFileInput
@@ -311,7 +313,15 @@ func (input ToolInput) Bash() (BashInput, bool) {
 	if input.name != ToolBash {
 		return BashInput{}, false
 	}
-	return cloneBash(input.bash), true
+	value := cloneBash(input.bash)
+	if input.bashBackground != nil {
+		requested := input.bashBackground.requested()
+		value.RunInBackground = &requested
+	}
+	if input.bashApproval != nil {
+		value.ApprovalPrefix = input.bashApproval.tokens()
+	}
+	return value, true
 }
 
 func (input ToolInput) ReadFile() (ReadFileInput, bool) {
@@ -366,6 +376,14 @@ func (input ToolInput) clone() (result ToolInput) {
 		if input.name == ToolBash {
 			result.bashExtra = input.bashExtra
 			result.bashCommandMissing = input.bashCommandMissing
+			if input.bashBackground != nil {
+				value := *input.bashBackground
+				result.bashBackground = &value
+			}
+			if input.bashApproval != nil {
+				value := *input.bashApproval
+				result.bashApproval = &value
+			}
 			if input.bashRejected != nil {
 				value := *input.bashRejected
 				result.bashRejected = &value
@@ -441,6 +459,14 @@ func (input ToolInput) clone() (result ToolInput) {
 }
 
 func (input ToolInput) Validate() error {
+	if input.bashBackground != nil || input.bashApproval != nil {
+		if input.name != ToolBash {
+			return errors.New("Bash options on non-Bash input")
+		}
+		if err := input.validateBashOptions(); err != nil {
+			return err
+		}
+	}
 	if input.bashBinding != nil {
 		if input.name != ToolBash {
 			return errors.New("Bash binding failure on non-Bash input")
@@ -525,7 +551,7 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
-	if input.bashBinding != nil {
+	if input.bashBinding != nil || input.bashBackground != nil || input.bashApproval != nil {
 		if err := input.Validate(); err != nil {
 			return nil, err
 		}

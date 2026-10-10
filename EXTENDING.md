@@ -4250,3 +4250,26 @@ object remains a common shape, not a rule that drops permissive SDK observations
 Twelve actual direct SDK reply/forwarding cases, 49 finite Source execution cases,
 and 78 finite SSE/history/SQLite cases pass. Four nonfinite client/server SDK final
 cases and unsupported known-field scalar input adaptations remain open.
+
+## Named model Bash optional-field projections — 2026-10-10
+
+Baseline: `9c01921` plus this implementation; Source contract commit `ffc3265`.
+`BashBackgroundRequest` and `BashApprovalProposal` preserve finite observed option
+values in immutable closed variants. Bash execution accessors return only a boolean
+Python-truth request and an optional string-array proposal. Candidate length, exact
+command-prefix match, banned heads and actual human approval remain the existing
+agent rules. Invalid proposal shapes are ignored, not converted into grants.
+
+Actual Source Agent/default Bash consumers cover 56 profiles: 15 background request
+shapes and 13 proposal shapes, each with background tools enabled and disabled.
+Text "false", nonzero numbers and nonempty containers request background execution;
+empty text/containers, zero, false and null do not. Disabled background support
+executes foreground regardless of the request. Twenty-eight distinct wire inputs
+retain exact original JSON values and kinds through direct/SSE decoding, clone,
+masking, historical message reads and SQLite close/reopen. Native tests execute real
+foreground shells/background tasks, compare Source candidate selection, and prove
+readonly denial starts no background manager. Explicit DecodeToolInput is strict.
+
+This closes the captured finite Bash optional-field adaptation. Nonfinite inputs,
+non-text command values, other default tools, broader SDK/caller/coercion scope,
+default diagnostics dependency approval and complete G7 acceptance remain open.

@@ -95,9 +95,7 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 		return ToolInput{}, err
 	}
 	var wire struct {
-		Command    *string   `json:"command"`
-		Background *bool     `json:"run_in_background"`
-		Prefix     *[]string `json:"approval_prefix"`
+		Command *string `json:"command"`
 	}
 	if err := json.Unmarshal(encoded, &wire); err != nil {
 		return ToolInput{}, err
@@ -106,20 +104,32 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 	if commandPresent && wire.Command == nil {
 		return DecodeToolInput(name, data)
 	} // known null/type policy is still strict
-	if len(extra) == 0 && commandPresent {
+	_, backgroundPresent := object.Lookup("run_in_background")
+	_, prefixPresent := object.Lookup("approval_prefix")
+	if len(extra) == 0 && commandPresent && !backgroundPresent && !prefixPresent {
 		return DecodeToolInput(name, data)
 	}
-	input := BashToolInput(BashInput{RunInBackground: wire.Background, ApprovalPrefix: wire.Prefix})
+	input := BashToolInput(BashInput{})
+	if backgroundPresent {
+		value, _ := object.Lookup("run_in_background")
+		input.bashBackground = &BashBackgroundRequest{observed: value}
+	}
+	if prefixPresent {
+		value, _ := object.Lookup("approval_prefix")
+		input.bashApproval = &BashApprovalProposal{observed: value}
+	}
 	if wire.Command != nil {
 		input.bash.Command = *wire.Command
 	}
 	input.bashCommandMissing = !commandPresent
 	input.bashExtra = jsonvalue.ObjectValue(extra)
-	failure := BashBindingFailure{kind: BashMissingCommand}
-	if len(extra) > 0 {
-		failure = BashBindingFailure{kind: BashUnexpectedParameter, parameter: extra[0].Name}
+	if !commandPresent || len(extra) > 0 {
+		failure := BashBindingFailure{kind: BashMissingCommand}
+		if len(extra) > 0 {
+			failure = BashBindingFailure{kind: BashUnexpectedParameter, parameter: extra[0].Name}
+		}
+		input.bashBinding = &failure
 	}
-	input.bashBinding = &failure
 	if err := json.Unmarshal(encoded, &input.nulls); err != nil {
 		return ToolInput{}, err
 	}
@@ -134,9 +144,29 @@ func (input ToolInput) marshalBashBinding() ([]byte, error) {
 		value := input.bash.Command
 		command = &value
 	}
+	background := input.bashBackground
+	if background == nil && (input.bash.RunInBackground != nil || input.nulls.Background) {
+		value := jsonvalue.NullValue()
+		if input.bash.RunInBackground != nil {
+			value = jsonvalue.BoolValue(*input.bash.RunInBackground)
+		}
+		background = &BashBackgroundRequest{observed: value}
+	}
+	prefix := input.bashApproval
+	if prefix == nil && (input.bash.ApprovalPrefix != nil || input.nulls.ApprovalPrefix) {
+		value := jsonvalue.NullValue()
+		if input.bash.ApprovalPrefix != nil {
+			items := make([]jsonvalue.Value, len(*input.bash.ApprovalPrefix))
+			for i, token := range *input.bash.ApprovalPrefix {
+				items[i] = jsonvalue.TextValue(token)
+			}
+			value = jsonvalue.ArrayValue(items)
+		}
+		prefix = &BashApprovalProposal{observed: value}
+	}
 	return marshalMetadataObject(struct {
-		Command    *string                 `json:"command,omitempty"`
-		Background *wireOptional[bool]     `json:"run_in_background,omitempty"`
-		Prefix     *wireOptional[[]string] `json:"approval_prefix,omitempty"`
-	}{command, optionalWire(input.bash.RunInBackground, input.nulls.Background), optionalWire(input.bash.ApprovalPrefix, input.nulls.ApprovalPrefix)}, input.bashExtra)
+		Command    *string                `json:"command,omitempty"`
+		Background *BashBackgroundRequest `json:"run_in_background,omitempty"`
+		Prefix     *BashApprovalProposal  `json:"approval_prefix,omitempty"`
+	}{command, background, prefix}, input.bashExtra)
 }
