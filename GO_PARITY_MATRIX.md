@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `d3c8203` plus deferred Bash argument binding. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `a5bde56` plus named usage count adoption. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -15,7 +15,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 424 production files, 1388 named types on the deferred Bash binding snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 425 production files, 1391 named types on the named usage count snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -9041,3 +9041,68 @@ anchored guards; Source export check passed 216 current files; README outline,
 architecture were unchanged; no new full Go/Python suite, coverage refresh,
 mutation sweep or architecture regeneration was required or claimed. Existing
 bf4c866 full Go/race/vet/type evidence remains the runtime baseline. No push.
+
+## 2026-10-10 named SDK usage observations and native consumers
+
+Baseline: `a5bde56` plus this implementation. `protocol.UsageCount` is an immutable
+closed union of integer/float/bool/text/null/array/object with concrete private
+payloads and members, not an any/open map/RawMessage domain field. All known root
+and nested counters use the named variant; sparse/null flags stay separate.
+Native/fake producers use IntegerUsageCount. Typed Integer/Kind inspection is
+separate from Source Metered projection. Native bounded integer/finite float
+metering range remains an adaptation, not unbounded Python arithmetic parity.
+
+Direct required values retain their observed kind. Optional SDK counts normalize
+eligible integer-like scalars. Captured SSE start/delta count validation runs per
+stage before accumulation; prior state is not re-normalized by a later delta.
+All 34 actual SDK final values/kinds and stage snapshots now match. Actual native
+TokenMeter observations/anchors/used context match all 34 Source captures, including
+ignored text/structured/null, bool-as-int, truncated fractions, zero and negative
+anchors. Normalization remains scoped to these captured cases; full Pydantic
+coercion, other invalid field shapes and native range adaptations remain open.
+
+Compaction SummaryReceipt and archival event fields retain observed counters.
+DecisionLLM requires integer variants with nonnegative value, refusing text,
+float, bool, null, array/object and negative values even when Metered could yield
+an integer. Native/fake integer producers and existing Source fixtures keep their
+JSON shape. Count text and structured keys/values are masked in model_end and
+compaction projections without changing the live observations. Thirty-four actual
+Source usage values survive SQLite event close/reopen with untrusted authority.
+Previous HTTP/SSE SQL/recording/Manager reconstruction recipes run in the suite;
+no new real-provider deployment is claimed.
+
+Canonical README provider label, usage boundary, review baseline, extension docs
+and interactive specification updated together. Archify regeneration: 9/9 checks,
+no warnings. No fresh browser visual inspection (prior access was denied).
+Specification SHA256: 21507811f4431d03313623e046f550f88a0a7b2f40f770642b2282c8f9b7672c.
+HTML SHA256: 50ae61bb40f7199d539b82627f70d7a8b1a95644d2abc860e916e858784bddfa.
+
+Initial targeted checks exposed old tests treating Source-accepted negative/text
+observations as invalid; these adaptation expectations now use malformed/nonfinite
+inputs. An added masking isolation assertion compared escape spellings instead of
+values; it now inspects decoded strings and compares before/after live bytes.
+The actual numeric/authority guards are tested separately and remain enforced.
+
+Final native diagnostic report: docs/audits/provider-usage-count-native-2026-10-10.json
+(baseline a5bde56 plus this adoption) has 34 successes, 0 refusals, 34 event and
+34 prompt matches, down from the prior 30 refusals. Independent ordinary parity
+tests compare the complete JSON tree's kinds and all 36 SSE stage snapshots;
+report generation alone is not the acceptance gate.
+
+Validation on local Darwin arm64:
+- Full `go test -p=1 -count=1 -timeout=300s ./...`: passed.
+- Full `go test -race -p=1 -count=1 -timeout=300s ./...`: passed; no race report.
+- `go vet ./...`: passed; existing Darwin FSEvents/linker warnings remain.
+- `go run ./tools/typeaudit -root .`: 425 production files, 1391 named types,
+  zero direct open-payload findings.
+- Source scanning guards: 19 anchored. Selected `verify_guards.py -k block`:
+  3 caught mutations; not a full mutation sweep.
+- Explicit diagnostic replay: passed; targeted Source-kind/meter/decision/masking/
+  compaction/SQLite checks passed. Archify 9/9, README outline and diff check passed.
+- No Python runtime package change; full Python regression/invariant verifier were
+  not rerun. No new coverage collection or non-Darwin verification. The previous
+  application 89.39% snapshot is bf4c866 evidence, not this changed implementation.
+- No merge/push or full-port acceptance claim. Default diagnostics approval,
+  remaining provider/type/public-entry scope and complete G7 remain open.
+
+Source export freshness after all watcher suites ended: passed, 216 current files.

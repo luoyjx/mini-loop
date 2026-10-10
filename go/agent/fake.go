@@ -106,7 +106,7 @@ func (p *FakeProvider) generate(ctx context.Context, request protocol.ModelReque
 	if err != nil {
 		return protocol.ModelReply{}, err
 	}
-	reply.ID, reply.Model, reply.Usage.InputTokens = fmt.Sprintf("msg_fake_%06d", ordinal), request.Model, count
+	reply.ID, reply.Model, reply.Usage.InputTokens = fmt.Sprintf("msg_fake_%06d", ordinal), request.Model, protocol.IntegerUsageCount(count)
 	if err := ctx.Err(); err != nil {
 		return protocol.ModelReply{}, err
 	}
@@ -217,13 +217,13 @@ func FakePromptTokens(request protocol.ModelRequest) (int, error) {
 }
 
 func fakeReply(blocks []protocol.Block, reason protocol.StopReason) protocol.ModelReply {
-	zeroRead, zeroCreation := 0, 0
+	zeroRead, zeroCreation := protocol.IntegerUsageCount(0), protocol.IntegerUsageCount(0)
 	tier := protocol.ServiceTier("standard")
 	return protocol.ModelReply{
 		ID: "msg_fake", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant,
 		Model: "fake-model", Content: blocks, StopReason: reason,
 		Usage: protocol.TokenUsage{
-			InputTokens: 0, OutputTokens: len(blocks),
+			InputTokens: protocol.IntegerUsageCount(0), OutputTokens: protocol.IntegerUsageCount(len(blocks)),
 			CacheReadInputTokens: &zeroRead, CacheCreationInputTokens: &zeroCreation,
 			ServiceTier: &tier,
 		},

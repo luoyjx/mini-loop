@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"os"
@@ -89,13 +88,6 @@ func TestProviderUsageMatchesActualSDKDirectAndStream(t *testing.T) {
 			}
 			if calls != 1 {
 				t.Fatal("usage parsing retried HTTP", calls)
-			}
-			if row.Name == "scalar-strings" {
-				var failure *Failure
-				if !errors.As(err, &failure) || failure.Kind != FailureProtocol {
-					t.Fatal("native integer adaptation changed", err)
-				}
-				return
 			}
 			if err != nil {
 				t.Fatal(err)

@@ -48,7 +48,7 @@ func TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy(t *testing.T) {
 			return
 		}
 		requests <- launcherMCPResults(input.Messages)
-		reply := protocol.ModelReply{ID: "reply", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: "configured", Content: []protocol.Block{protocol.NewTextBlock("done")}, StopReason: protocol.StopEndTurn, Usage: protocol.TokenUsage{InputTokens: 5, OutputTokens: 3}}
+		reply := protocol.ModelReply{ID: "reply", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: "configured", Content: []protocol.Block{protocol.NewTextBlock("done")}, StopReason: protocol.StopEndTurn, Usage: protocol.TokenUsage{InputTokens: protocol.IntegerUsageCount(5), OutputTokens: protocol.IntegerUsageCount(3)}}
 		if calls.Add(1)%2 == 1 {
 			reply.Content = []protocol.Block{*tool.Load()}
 			reply.StopReason = protocol.StopToolUse

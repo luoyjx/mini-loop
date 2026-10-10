@@ -46,7 +46,7 @@ func TestRealPythonFakeReplyFixturesDecode(t *testing.T) {
 	if len(replies) != 3 || replies[0].StopReason != StopToolUse || replies[1].StopReason != StopEndTurn || replies[2].StopReason != StopRefusal {
 		t.Fatalf("Python fake response shape drifted: %+v", replies)
 	}
-	if replies[0].Usage.InputTokens != 13 || replies[0].Usage.OutputTokens != 2 {
+	if replies[0].Usage.InputTokens.Metered() != 13 || replies[0].Usage.OutputTokens.Metered() != 2 {
 		t.Fatalf("Python usage fields were lost: %+v", replies[0].Usage)
 	}
 	use, ok := replies[0].Content[1].ToolUse()
@@ -68,12 +68,12 @@ func TestModelReplyRoundTripPreservesTypedUsageAndUnknownStop(t *testing.T) {
 	if err := json.Unmarshal([]byte(wire), &reply); err != nil {
 		t.Fatal(err)
 	}
-	if reply.StopReason.Known() || reply.Usage.CacheReadInputTokens == nil || *reply.Usage.CacheReadInputTokens != 0 {
+	if reply.StopReason.Known() || reply.Usage.CacheReadInputTokens == nil || reply.Usage.CacheReadInputTokens.Metered() != 0 {
 		t.Fatalf("reply lost unknown reason or explicit cache zero: %+v", reply)
 	}
 	clone := reply.Clone()
-	*clone.Usage.CacheReadInputTokens = 10
-	if *reply.Usage.CacheReadInputTokens != 0 {
+	*clone.Usage.CacheReadInputTokens = IntegerUsageCount(10)
+	if reply.Usage.CacheReadInputTokens.Metered() != 0 {
 		t.Fatal("clone retained a caller-mutable usage pointer")
 	}
 	encoded, err := json.Marshal(reply)
@@ -95,7 +95,7 @@ func TestModelReplyAllowsEmptyRefusalAndRejectsInvalidWire(t *testing.T) {
 	bad := []string{
 		`{"id":"m","type":"message","role":"assistant","model":"x","content":[],"stop_reason":"end_turn"}`,
 		`{"id":"m","type":"message","role":"user","model":"x","content":[],"stop_reason":"end_turn","usage":{"input_tokens":0,"output_tokens":0}}`,
-		`{"id":"m","type":"message","role":"assistant","model":"x","content":[],"stop_reason":"end_turn","usage":{"input_tokens":-1,"output_tokens":0}}`,
+		`{"id":"m","type":"message","role":"assistant","model":"x","content":[],"stop_reason":"end_turn","usage":{"input_tokens":NaN,"output_tokens":0}}`,
 		`{"id":"m","type":"message","role":"assistant","model":"x","content":[],"stop_reason":"end_turn","usage":{"input_tokens":0,"output_tokens":0},"unknown":true}`,
 		`null`,
 	}

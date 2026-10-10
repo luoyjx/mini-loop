@@ -34,7 +34,7 @@ func TestRealHTTPAdapterRunsToolsThroughExistingGateAndRecordsServedAlias(t *tes
 		if input.Model != "requested-alias" || len(input.Tools) != 10 || len(input.System) == 0 {
 			t.Error("typed request missing model/catalogue/system")
 		}
-		reply := protocol.ModelReply{ID: "response", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: "actually-served", Usage: protocol.TokenUsage{InputTokens: 17, OutputTokens: 3}}
+		reply := protocol.ModelReply{ID: "response", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: "actually-served", Usage: protocol.TokenUsage{InputTokens: protocol.IntegerUsageCount(17), OutputTokens: protocol.IntegerUsageCount(3)}}
 		if calls.Add(1) == 1 {
 			reply.StopReason = protocol.StopToolUse
 			reply.Content = []protocol.Block{protocol.NewToolUseWithoutCaller("w1", protocol.WriteFileToolInput(protocol.WriteFileInput{Path: "artifact.txt", Content: "landed"}))}
@@ -92,7 +92,7 @@ func TestRealHTTPAdapterRunsToolsThroughExistingGateAndRecordsServedAlias(t *tes
 	for _, record := range session.Events() {
 		if end, ok := record.Event.ModelEnd(); ok {
 			count++
-			if end.ServedModel == nil || *end.ServedModel != "actually-served" || end.Usage == nil || end.Usage.InputTokens != 17 {
+			if end.ServedModel == nil || *end.ServedModel != "actually-served" || end.Usage == nil || end.Usage.InputTokens.Metered() != 17 {
 				t.Fatal("served identity/usage lost", end)
 			}
 		}

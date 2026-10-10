@@ -289,3 +289,11 @@ Direct 与 SSE 对字符串、bool、integral float 的实际归一化不同；�
 截断，负 anchor 接受，字符串不计量。已捕获 start/delta 快照，详见
 [消费契约与实现顺序](docs/audits/provider-usage-consumer-2026-10-10.md)。
 本轮未改变原生 usage 适配，完整字段/消费者/持久化交付仍开放。
+
+## 具名 usage 观察值与实际计量接入
+
+已接入闭合 UsageCount 变体，所有已知根及嵌套计数字段保持具名类型。
+34 个 SDK 最终值/类型和 SSE 阶段快照、34 个 Meter 状态及 SQLite 事件
+重开场景匹配。计量投影与事件原值分开，摘要保持原值；decision 只接受
+非负整数变体。文本/结构化计数中的秘密按投影脱敏，原始值不受修改。
+原生整数/有限浮点边界、更多 SDK coercion/错误字段形状及 G4/G7 验收仍开放。

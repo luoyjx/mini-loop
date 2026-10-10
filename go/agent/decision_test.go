@@ -560,7 +560,7 @@ func TestDecisionRealToolTurnsAndPrivateRecording(t *testing.T) {
 				stage++
 				if stage == 1 {
 					reply := fakeReply([]protocol.Block{protocol.NewToolUse("decision-turn", protocol.DecisionToolInput(request))}, protocol.StopToolUse)
-					reply.Usage.InputTokens = 10
+					reply.Usage.InputTokens = protocol.IntegerUsageCount(10)
 					return reply, nil
 				}
 				blocks, _ := r.Messages[len(r.Messages)-1].Content.Blocks()
@@ -572,7 +572,7 @@ func TestDecisionRealToolTurnsAndPrivateRecording(t *testing.T) {
 					t.Fatal(err)
 				}
 				reply := fakeReply([]protocol.Block{protocol.NewTextBlock("judgment recorded")}, protocol.StopEndTurn)
-				reply.Usage.InputTokens = 10
+				reply.Usage.InputTokens = protocol.IntegerUsageCount(10)
 				return reply, nil
 			})
 			trace := &decisionRecording{}

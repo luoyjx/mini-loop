@@ -31,12 +31,6 @@ func TestUsageMetadataMatchesSourceEventShapes(t *testing.T) {
 			wire, _ := row.Usage.MarshalJSON()
 			var usage TokenUsage
 			err := json.Unmarshal(wire, &usage)
-			if row.Name == "scalar-strings" {
-				if err == nil {
-					t.Fatal("native integer boundary changed")
-				}
-				return
-			}
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -50,8 +44,8 @@ func TestUsageMetadataMatchesSourceEventShapes(t *testing.T) {
 			}
 			cloned := (ModelReply{Usage: usage}).Clone().Usage
 			if usage.CacheCreation != nil && usage.CacheCreation.Ephemeral1hInputTokens != nil {
-				*cloned.CacheCreation.Ephemeral1hInputTokens = 999
-				if *usage.CacheCreation.Ephemeral1hInputTokens == 999 {
+				*cloned.CacheCreation.Ephemeral1hInputTokens = IntegerUsageCount(999)
+				if usage.CacheCreation.Ephemeral1hInputTokens.Metered() == 999 {
 					t.Fatal("cache metadata aliases clone")
 				}
 			}
@@ -62,14 +56,14 @@ func TestUsageMetadataMatchesSourceEventShapes(t *testing.T) {
 				}
 			}
 			if usage.OutputTokensDetails != nil && usage.OutputTokensDetails.ThinkingTokens != nil {
-				*cloned.OutputTokensDetails.ThinkingTokens = 999
-				if *usage.OutputTokensDetails.ThinkingTokens == 999 {
+				*cloned.OutputTokensDetails.ThinkingTokens = IntegerUsageCount(999)
+				if usage.OutputTokensDetails.ThinkingTokens.Metered() == 999 {
 					t.Fatal("output metadata aliases clone")
 				}
 			}
 			if usage.ServerToolUse != nil && usage.ServerToolUse.WebFetchRequests != nil {
-				*cloned.ServerToolUse.WebFetchRequests = 999
-				if *usage.ServerToolUse.WebFetchRequests == 999 {
+				*cloned.ServerToolUse.WebFetchRequests = IntegerUsageCount(999)
+				if usage.ServerToolUse.WebFetchRequests.Metered() == 999 {
 					t.Fatal("server metadata aliases clone")
 				}
 			}
@@ -78,7 +72,7 @@ func TestUsageMetadataMatchesSourceEventShapes(t *testing.T) {
 }
 
 func TestUsageSparseNullDefaultsAndNestedExtensions(t *testing.T) {
-	sparse := TokenUsage{InputTokens: 13, OutputTokens: 5}
+	sparse := TokenUsage{InputTokens: IntegerUsageCount(13), OutputTokens: IntegerUsageCount(5)}
 	wire, _ := json.Marshal(sparse)
 	if string(wire) != `{"input_tokens":13,"output_tokens":5}` {
 		t.Fatal("native sparse usage changed", string(wire))
@@ -109,13 +103,13 @@ func TestUsageSparseNullDefaultsAndNestedExtensions(t *testing.T) {
 }
 
 func TestUsageMetadataFailureIsAtomicAndBounded(t *testing.T) {
-	initial := TokenUsage{InputTokens: 7, OutputTokens: 8}
-	for _, raw := range []string{`{"input_tokens":1}`, `{"input_tokens":1,"output_tokens":2,"cache_creation":{"ephemeral_1h_input_tokens":-1,"ephemeral_5m_input_tokens":0}}`, `{"input_tokens":1,"output_tokens":2,"inference_geo":5}`, `{"input_tokens":1,"output_tokens":2,"output_tokens_details":{"thinking_tokens":"invalid"}}`, strings.Repeat(" ", MaxWireBytes+1)} {
+	initial := TokenUsage{InputTokens: IntegerUsageCount(7), OutputTokens: IntegerUsageCount(8)}
+	for _, raw := range []string{`{"input_tokens":1}`, `{"input_tokens":1,"output_tokens":2,"cache_creation":{"ephemeral_1h_input_tokens":NaN,"ephemeral_5m_input_tokens":0}}`, `{"input_tokens":1,"output_tokens":2,"inference_geo":5}`, `{"input_tokens":1,"output_tokens":2,"output_tokens_details":{"thinking_tokens":NaN}}`, strings.Repeat(" ", MaxWireBytes+1)} {
 		target := initial
 		if err := json.Unmarshal([]byte(raw), &target); err == nil {
 			t.Fatal("invalid usage accepted")
 		}
-		if target.InputTokens != 7 || target.OutputTokens != 8 {
+		if target.InputTokens.Metered() != 7 || target.OutputTokens.Metered() != 8 {
 			t.Fatal("failed decode changed target")
 		}
 	}

@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `bf4c866`; actual usage-consumer contract review;
+reviewed **2026-10-10** (Go baseline `a5bde56` plus named usage count adoption;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · SDK usage metadata · per-delta partial input · deferred Bash binding failures · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash binding failures · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1319,8 +1319,7 @@ masked projection and stored-message decoding retain the same closed variant.
 
 Direct HTTP and SSE now decode complete named usage, preserve closed extensions
 and apply SDK null defaults, including missing nested counters. SSE updates server-tool
-counts according to the SDK accumulator. Native non-negative bounded integers remain
-strict; scalar-string inputs are refused. Direct/SSE integration verifies masked usage in actual SQL event payloads before
+counts according to the SDK accumulator. Named UsageCount observations preserve scalar/structured values; Source metering projects only numeric variants. Native integer and finite float bounds remain explicit. Direct/SSE integration verifies masked usage in actual SQL event payloads before
 and after database reopen, typed archival reads and resumed writes, and newly opened
 recording readers over private JSONL files. Complete provider scope acceptance remains open.
 Both profile grant paths use the Source 30-second default token timeout. Launcher now selects explicit
@@ -2599,6 +2598,21 @@ raw writes; foreign workspace stores are detached. ObservationRawConfig snapshot
 persist/minimum-byte settings; defaults are true/4096 only within an explicitly
 injected runtime. Shared component/store lifetime and default Manager composition
 remain caller-owned/pending. A typed stage-error event contains no plugin text.
+
+### Named usage observations and metering
+
+SDK count fields use immutable `UsageCount` variants for integer, float, bool,
+text, null, array and object observations. Known fields remain named; only unknown
+metadata uses the extension boundary. Direct required counts preserve their
+observed kind, while optional SDK integer fields normalize eligible scalars.
+Captured SSE start/delta validation is applied per stage before accumulation.
+Metering accepts integers/floats/bools, truncates fractions, ignores text and
+structured values, treats zero as no observation and allows negative anchors
+before clamping used context. Compaction receipts retain observed count kinds.
+Decision estimates require nonnegative integer variants and reject projections
+from other kinds. Clone/masking and archival/SQLite codecs preserve observations
+without adding authority. Native integer and finite float metering bounds remain
+explicit adaptations; complete provider/port acceptance remains open.
 
 ### Model Bash input binding failures
 

@@ -25,7 +25,7 @@ func (p *memoryExtractionProvider) Complete(_ context.Context, request protocol.
 	}
 	middle := len(p.output) / 2
 	reply := fakeReply([]protocol.Block{protocol.NewTextBlock("prefix " + p.output[:middle]), protocol.NewTextBlock(p.output[middle:] + " suffix")}, protocol.StopEndTurn)
-	reply.Model, reply.Usage.InputTokens, reply.Usage.OutputTokens = "served-memory", 777, 3
+	reply.Model, reply.Usage.InputTokens, reply.Usage.OutputTokens = "served-memory", protocol.IntegerUsageCount(777), protocol.IntegerUsageCount(3)
 	return reply, nil
 }
 

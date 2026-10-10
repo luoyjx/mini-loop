@@ -166,6 +166,8 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 	}
 	event.compact.failure = mask(event.compact.failure)
 	event.compact.summary.Transcript = mask(event.compact.summary.Transcript)
+	event.compact.summary.InputTokens = event.compact.summary.InputTokens.MapStrings(mask)
+	event.compact.summary.OutputTokens = event.compact.summary.OutputTokens.MapStrings(mask)
 	event.compact.summary.Model = mask(event.compact.summary.Model)
 	event.subagent.prompt = mask(event.subagent.prompt)
 	event.subagent.summary = mask(event.subagent.summary)

@@ -63,3 +63,17 @@ SSE readStream 与实际 agent.PromptTokens。这里核对解码/计量边界，
 - 诊断重放通过并生成 34 行报告；拒绝 30 行的事实保持显式。
 - 扫描守卫：19 项锚定。运行时未修改，未刷新覆盖率或全仓测试。
 - Source export、显式诊断 race 和 diff 检查见本轮计划/矩阵的最终记录。
+
+## 原生具名计数实现更新
+
+最新[原生观察报告](provider-usage-count-native-2026-10-10.json) 使用
+`a5bde56 plus named usage count adoption` 基线：34 场景现均成功，事件值/根字段
+类型和 prompt 计量均匹配，拒绝从 30 降至 0。旧报告保留为实现前证据。
+独立 parity 测试比较整个 JSON 树的值和 kind，以及全部 36 个 SSE 累计快照，
+不依赖报告生成测试的成功。34 个实际 TokenMeter 状态和 SQLite 事件重开
+场景通过；摘要事件保持观察值，decision 只接受非负整数变体。
+
+具名 UsageCount 及所有已知根/嵌套计数字段使用闭合具体类型；文本和结构化
+观察不会取得计量或 decision 整数权限。文本/对象键值脱敏保留现场原始观察值。
+有限原生 int/float 计量范围仍为适配；更多 Pydantic coercion、其他错误字段
+形状及完整 G4/G7 验收仍开放。Go IntegerUsageCount 是本地/fake 的显式构造器。

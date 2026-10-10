@@ -76,7 +76,7 @@ func TestDroppedStreamRegeneratesWithoutSplicingAndReleasesModelPermit(t *testin
 	for _, r := range s.Events() {
 		if e, ok := r.Event.ModelEnd(); ok {
 			ends++
-			if e.Status != ModelCompleted || e.Usage.OutputTokens != 3 {
+			if e.Status != ModelCompleted || e.Usage.OutputTokens.Metered() != 3 {
 				t.Fatal(e)
 			}
 		}

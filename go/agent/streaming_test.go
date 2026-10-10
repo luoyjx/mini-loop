@@ -123,7 +123,7 @@ func (p *syntheticStream) CompleteStream(ctx context.Context, _ protocol.ModelRe
 	return p.reply.Clone(), p.failed
 }
 func streamedReply(text string) protocol.ModelReply {
-	return protocol.ModelReply{ID: "message", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: "served", Content: []protocol.Block{protocol.NewTextBlock(text)}, StopReason: protocol.StopEndTurn, Usage: protocol.TokenUsage{InputTokens: 11, OutputTokens: 3}}
+	return protocol.ModelReply{ID: "message", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: "served", Content: []protocol.Block{protocol.NewTextBlock(text)}, StopReason: protocol.StopEndTurn, Usage: protocol.TokenUsage{InputTokens: protocol.IntegerUsageCount(11), OutputTokens: protocol.IntegerUsageCount(3)}}
 }
 func TestManagedStreamingCancellationKeepsOnlyShownAnswerAndClearsPartial(t *testing.T) {
 	shown := strings.Repeat("已显示", 70)

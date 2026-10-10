@@ -40,8 +40,8 @@ func (p *nativePreviewProvider) Complete(_ context.Context, request protocol.Mod
 	}
 	reply := fakeReply(blocks, reason)
 	reply.Model = "served-preview"
-	reply.Usage.InputTokens = 777
-	reply.Usage.OutputTokens = 3
+	reply.Usage.InputTokens = protocol.IntegerUsageCount(777)
+	reply.Usage.OutputTokens = protocol.IntegerUsageCount(3)
 	return reply, nil
 }
 

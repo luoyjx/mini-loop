@@ -6,21 +6,21 @@ import (
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
-// Named nested SDK usage. Counts retain the native non-negative integer boundary.
+// Named nested SDK usage. Counts retain named scalar/structured observations.
 type CacheCreationUsage struct {
-	Ephemeral1hInputTokens *int `json:"ephemeral_1h_input_tokens"`
-	Ephemeral5mInputTokens *int `json:"ephemeral_5m_input_tokens"`
+	Ephemeral1hInputTokens *UsageCount `json:"ephemeral_1h_input_tokens"`
+	Ephemeral5mInputTokens *UsageCount `json:"ephemeral_5m_input_tokens"`
 	extra                  jsonvalue.Value
 	nulls                  usageNulls
 }
 type OutputTokenDetails struct {
-	ThinkingTokens *int `json:"thinking_tokens"`
+	ThinkingTokens *UsageCount `json:"thinking_tokens"`
 	extra          jsonvalue.Value
 	nulls          usageNulls
 }
 type ServerToolUsage struct {
-	WebFetchRequests  *int `json:"web_fetch_requests"`
-	WebSearchRequests *int `json:"web_search_requests"`
+	WebFetchRequests  *UsageCount `json:"web_fetch_requests"`
+	WebSearchRequests *UsageCount `json:"web_search_requests"`
 	extra             jsonvalue.Value
 	nulls             usageNulls
 }
@@ -28,10 +28,10 @@ type ServerToolUsage struct {
 // TokenUsage keeps absent/null/value for optional fields. Closed extension members
 // are immutable; recognized fields always enter named types before runtime use.
 type TokenUsage struct {
-	InputTokens              int                 `json:"input_tokens"`
-	OutputTokens             int                 `json:"output_tokens"`
-	CacheReadInputTokens     *int                `json:"cache_read_input_tokens,omitempty"`
-	CacheCreationInputTokens *int                `json:"cache_creation_input_tokens,omitempty"`
+	InputTokens              UsageCount          `json:"input_tokens"`
+	OutputTokens             UsageCount          `json:"output_tokens"`
+	CacheReadInputTokens     *UsageCount         `json:"cache_read_input_tokens,omitempty"`
+	CacheCreationInputTokens *UsageCount         `json:"cache_creation_input_tokens,omitempty"`
 	ServiceTier              *ServiceTier        `json:"service_tier,omitempty"`
 	CacheCreation            *CacheCreationUsage `json:"cache_creation,omitempty"`
 	InferenceGeo             *string             `json:"inference_geo,omitempty"`
@@ -53,8 +53,8 @@ const (
 	nullServerTool
 )
 
-func (u TokenUsage) Validate() error {
-	counts := []*int{&u.InputTokens, &u.OutputTokens, u.CacheReadInputTokens, u.CacheCreationInputTokens}
+func (u TokenUsage) countPointers() []*UsageCount {
+	counts := []*UsageCount{&u.InputTokens, &u.OutputTokens, u.CacheReadInputTokens, u.CacheCreationInputTokens}
 	if u.CacheCreation != nil {
 		counts = append(counts, u.CacheCreation.Ephemeral1hInputTokens, u.CacheCreation.Ephemeral5mInputTokens)
 	}
@@ -64,12 +64,15 @@ func (u TokenUsage) Validate() error {
 	if u.ServerToolUse != nil {
 		counts = append(counts, u.ServerToolUse.WebFetchRequests, u.ServerToolUse.WebSearchRequests)
 	}
-	return validateUsageCounts(counts...)
+	return counts
 }
-func validateUsageCounts(counts ...*int) error {
+func (u TokenUsage) Validate() error { return validateUsageCounts(u.countPointers()...) }
+func validateUsageCounts(counts ...*UsageCount) error {
 	for _, count := range counts {
-		if count != nil && *count < 0 {
-			return errors.New("usage counts must be non-negative")
+		if count != nil {
+			if err := count.Validate(); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -159,10 +162,10 @@ func (u TokenUsage) WithSDKDefaults() TokenUsage {
 }
 func (u TokenUsage) MarshalJSON() ([]byte, error) {
 	wire := struct {
-		Input         int                               `json:"input_tokens"`
-		Output        int                               `json:"output_tokens"`
-		Read          *wireOptional[int]                `json:"cache_read_input_tokens,omitempty"`
-		CreationInput *wireOptional[int]                `json:"cache_creation_input_tokens,omitempty"`
+		Input         UsageCount                        `json:"input_tokens"`
+		Output        UsageCount                        `json:"output_tokens"`
+		Read          *wireOptional[UsageCount]         `json:"cache_read_input_tokens,omitempty"`
+		CreationInput *wireOptional[UsageCount]         `json:"cache_creation_input_tokens,omitempty"`
 		Tier          *wireOptional[ServiceTier]        `json:"service_tier,omitempty"`
 		Creation      *wireOptional[CacheCreationUsage] `json:"cache_creation,omitempty"`
 		Geo           *wireOptional[string]             `json:"inference_geo,omitempty"`
@@ -173,10 +176,10 @@ func (u TokenUsage) MarshalJSON() ([]byte, error) {
 }
 func (u *TokenUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
-		Input         *int                `json:"input_tokens"`
-		Output        *int                `json:"output_tokens"`
-		Read          *int                `json:"cache_read_input_tokens"`
-		CreationInput *int                `json:"cache_creation_input_tokens"`
+		Input         UsageCount          `json:"input_tokens"`
+		Output        UsageCount          `json:"output_tokens"`
+		Read          *UsageCount         `json:"cache_read_input_tokens"`
+		CreationInput *UsageCount         `json:"cache_creation_input_tokens"`
 		Tier          *ServiceTier        `json:"service_tier"`
 		Creation      *CacheCreationUsage `json:"cache_creation"`
 		Geo           *string             `json:"inference_geo"`
@@ -188,10 +191,12 @@ func (u *TokenUsage) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	if wire.Input == nil || wire.Output == nil {
+	_, inputPresent := value.Lookup("input_tokens")
+	_, outputPresent := value.Lookup("output_tokens")
+	if !inputPresent || !outputPresent {
 		return errors.New("usage requires input_tokens and output_tokens")
 	}
-	next := TokenUsage{InputTokens: *wire.Input, OutputTokens: *wire.Output, CacheReadInputTokens: wire.Read, CacheCreationInputTokens: wire.CreationInput, ServiceTier: wire.Tier, CacheCreation: wire.Creation, InferenceGeo: wire.Geo, OutputTokensDetails: wire.Details, ServerToolUse: wire.Server, extra: extra}
+	next := TokenUsage{InputTokens: wire.Input, OutputTokens: wire.Output, CacheReadInputTokens: wire.Read, CacheCreationInputTokens: wire.CreationInput, ServiceTier: wire.Tier, CacheCreation: wire.Creation, InferenceGeo: wire.Geo, OutputTokensDetails: wire.Details, ServerToolUse: wire.Server, extra: extra}
 	for i, key := range keys[2:] {
 		if v, present := value.Lookup(key); present && v.Kind() == jsonvalue.Null {
 			next.nulls |= 1 << i
@@ -215,14 +220,14 @@ func usageNullFields(value jsonvalue.Value, keys ...string) usageNulls {
 }
 func (v CacheCreationUsage) MarshalJSON() ([]byte, error) {
 	return marshalMetadataObject(struct {
-		Hour   *wireOptional[int] `json:"ephemeral_1h_input_tokens,omitempty"`
-		Minute *wireOptional[int] `json:"ephemeral_5m_input_tokens,omitempty"`
+		Hour   *wireOptional[UsageCount] `json:"ephemeral_1h_input_tokens,omitempty"`
+		Minute *wireOptional[UsageCount] `json:"ephemeral_5m_input_tokens,omitempty"`
 	}{optionalWireValue(v.Ephemeral1hInputTokens, v.nulls&1 != 0), optionalWireValue(v.Ephemeral5mInputTokens, v.nulls&2 != 0)}, v.extra)
 }
 func (v *CacheCreationUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
-		Hour   *int `json:"ephemeral_1h_input_tokens"`
-		Minute *int `json:"ephemeral_5m_input_tokens"`
+		Hour   *UsageCount `json:"ephemeral_1h_input_tokens"`
+		Minute *UsageCount `json:"ephemeral_5m_input_tokens"`
 	}
 	value, extra, err := decodeMetadataObject(data, &wire, []string{"ephemeral_1h_input_tokens", "ephemeral_5m_input_tokens"}, true)
 	if err != nil {
@@ -236,12 +241,12 @@ func (v *CacheCreationUsage) UnmarshalJSON(data []byte) error {
 }
 func (v OutputTokenDetails) MarshalJSON() ([]byte, error) {
 	return marshalMetadataObject(struct {
-		Thinking *wireOptional[int] `json:"thinking_tokens,omitempty"`
+		Thinking *wireOptional[UsageCount] `json:"thinking_tokens,omitempty"`
 	}{optionalWireValue(v.ThinkingTokens, v.nulls&1 != 0)}, v.extra)
 }
 func (v *OutputTokenDetails) UnmarshalJSON(data []byte) error {
 	var wire struct {
-		Thinking *int `json:"thinking_tokens"`
+		Thinking *UsageCount `json:"thinking_tokens"`
 	}
 	value, extra, err := decodeMetadataObject(data, &wire, []string{"thinking_tokens"}, true)
 	if err != nil {
@@ -255,14 +260,14 @@ func (v *OutputTokenDetails) UnmarshalJSON(data []byte) error {
 }
 func (v ServerToolUsage) MarshalJSON() ([]byte, error) {
 	return marshalMetadataObject(struct {
-		Fetch  *wireOptional[int] `json:"web_fetch_requests,omitempty"`
-		Search *wireOptional[int] `json:"web_search_requests,omitempty"`
+		Fetch  *wireOptional[UsageCount] `json:"web_fetch_requests,omitempty"`
+		Search *wireOptional[UsageCount] `json:"web_search_requests,omitempty"`
 	}{optionalWireValue(v.WebFetchRequests, v.nulls&1 != 0), optionalWireValue(v.WebSearchRequests, v.nulls&2 != 0)}, v.extra)
 }
 func (v *ServerToolUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
-		Fetch  *int `json:"web_fetch_requests"`
-		Search *int `json:"web_search_requests"`
+		Fetch  *UsageCount `json:"web_fetch_requests"`
+		Search *UsageCount `json:"web_search_requests"`
 	}
 	value, extra, err := decodeMetadataObject(data, &wire, []string{"web_fetch_requests", "web_search_requests"}, true)
 	if err != nil {
@@ -288,6 +293,13 @@ func (u TokenUsage) MapStrings(mask func(string) string) TokenUsage {
 	if u.ServiceTier != nil {
 		*u.ServiceTier = ServiceTier(mask(string(*u.ServiceTier)))
 	}
+	u.InputTokens = u.InputTokens.MapStrings(mask)
+	u.OutputTokens = u.OutputTokens.MapStrings(mask)
+	for _, count := range u.countPointers()[2:] {
+		if count != nil {
+			*count = count.MapStrings(mask)
+		}
+	}
 	u.extra = u.extra.MapStrings(mask)
 	if u.CacheCreation != nil {
 		u.CacheCreation.extra = u.CacheCreation.extra.MapStrings(mask)
@@ -299,4 +311,37 @@ func (u TokenUsage) MapStrings(mask func(string) string) TokenUsage {
 		u.ServerToolUse.extra = u.ServerToolUse.extra.MapStrings(mask)
 	}
 	return u
+}
+
+// WithSDKDirectCounts normalizes optional SDK integer fields while keeping the
+// required direct fields as actual observed values.
+func (u TokenUsage) WithSDKDirectCounts() TokenUsage {
+	u = u.clone()
+	for _, count := range u.countPointers()[2:] {
+		if count != nil {
+			if next, ok := count.sdkInteger(); ok {
+				*count = next
+			}
+		}
+	}
+	return u.WithSDKDefaults()
+}
+
+// WithSDKStreamCounts performs the captured full Usage integer validation before
+// fallback construction. If a field cannot validate, required values stay raw.
+func (u TokenUsage) WithSDKStreamCounts() TokenUsage {
+	u = u.clone()
+	valid := true
+	for _, count := range u.countPointers() {
+		if count != nil {
+			if _, ok := count.sdkInteger(); !ok {
+				valid = false
+			}
+		}
+	}
+	if valid {
+		u.InputTokens, _ = u.InputTokens.sdkInteger()
+		u.OutputTokens, _ = u.OutputTokens.sdkInteger()
+	}
+	return u.WithSDKDirectCounts()
 }

@@ -214,7 +214,7 @@ func TestRecoveryCancellationAndDetachedMetadata(t *testing.T) {
 }
 
 func recoveryFixtureUsage() protocol.TokenUsage {
-	zero := 0
+	zero := protocol.IntegerUsageCount(0)
 	tier := protocol.ServiceTier("standard")
-	return protocol.TokenUsage{InputTokens: 21, OutputTokens: 4, CacheReadInputTokens: &zero, CacheCreationInputTokens: &zero, ServiceTier: &tier}
+	return protocol.TokenUsage{InputTokens: protocol.IntegerUsageCount(21), OutputTokens: protocol.IntegerUsageCount(4), CacheReadInputTokens: &zero, CacheCreationInputTokens: &zero, ServiceTier: &tier}
 }

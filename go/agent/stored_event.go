@@ -486,17 +486,17 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 		return event, err
 	case EventCompact:
 		v, err := storedPayload[struct {
-			Kind       CompactionKind `json:"kind"`
-			Persisted  int            `json:"persisted"`
-			Removed    int            `json:"removed"`
-			Cleared    int            `json:"cleared"`
-			Error      string         `json:"error"`
-			Transcript string         `json:"transcript"`
-			Messages   int            `json:"replaced_messages"`
-			Tokens     int            `json:"replaced_tokens_estimate"`
-			Input      int            `json:"summary_input_tokens"`
-			Output     int            `json:"summary_output_tokens"`
-			Model      string         `json:"summary_model"`
+			Kind       CompactionKind      `json:"kind"`
+			Persisted  int                 `json:"persisted"`
+			Removed    int                 `json:"removed"`
+			Cleared    int                 `json:"cleared"`
+			Error      string              `json:"error"`
+			Transcript string              `json:"transcript"`
+			Messages   int                 `json:"replaced_messages"`
+			Tokens     int                 `json:"replaced_tokens_estimate"`
+			Input      protocol.UsageCount `json:"summary_input_tokens"`
+			Output     protocol.UsageCount `json:"summary_output_tokens"`
+			Model      string              `json:"summary_model"`
 		}](data)
 		if err != nil {
 			return SessionEvent{}, err

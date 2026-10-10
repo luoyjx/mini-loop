@@ -41,7 +41,7 @@ func TestCompactionNativeSQLiteRecovery(t *testing.T) {
 						return protocol.ModelReply{}, fault
 					}
 					reply.Content = []protocol.Block{protocol.NewTextBlock("durable handoff")}
-					reply.Usage.InputTokens = 9999
+					reply.Usage.InputTokens = protocol.IntegerUsageCount(9999)
 					return reply, nil
 				}
 				turns++
@@ -127,7 +127,7 @@ func TestCompactionNativeSQLiteRecovery(t *testing.T) {
 				if event, ok := record.Event.Compaction(); ok {
 					if receipt, ok := event.Summary(); ok {
 						summaries++
-						if record.TranscriptEpoch != 1 || receipt.Transcript != archives[0] || receipt.ReplacedMessages != 3 || receipt.InputTokens != 9999 {
+						if record.TranscriptEpoch != 1 || receipt.Transcript != archives[0] || receipt.ReplacedMessages != 3 || receipt.InputTokens.Metered() != 9999 {
 							t.Fatal("summary receipt epoch/archive", record, receipt)
 						}
 					}

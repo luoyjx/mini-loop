@@ -32,7 +32,7 @@ func (provider *compressionProvider) Complete(_ context.Context, request protoco
 			return protocol.ModelReply{}, provider.summaryError
 		}
 		reply := fakeReply([]protocol.Block{protocol.NewTextBlock(provider.summaryText)}, protocol.StopEndTurn)
-		reply.Usage.InputTokens = 9999
+		reply.Usage.InputTokens = protocol.IntegerUsageCount(9999)
 		return reply, nil
 	}
 	provider.turns++
@@ -41,11 +41,11 @@ func (provider *compressionProvider) Complete(_ context.Context, request protoco
 			protocol.NewToolUse("compress", protocol.CompressToolInput()),
 			protocol.NewToolUse("read", protocol.ReadFileToolInput(protocol.ReadFileInput{Path: "proof"})),
 		}, protocol.StopToolUse)
-		reply.Usage.InputTokens = 100
+		reply.Usage.InputTokens = protocol.IntegerUsageCount(100)
 		return reply, nil
 	}
 	reply := fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn)
-	reply.Usage.InputTokens = 200
+	reply.Usage.InputTokens = protocol.IntegerUsageCount(200)
 	return reply, nil
 }
 func TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter(t *testing.T) {
@@ -88,7 +88,7 @@ func TestCompressWaitsForWholeBatchAndSummaryDoesNotAnchorMeter(t *testing.T) {
 			}
 		}
 	}
-	if receipt.ReplacedMessages != 3 || receipt.InputTokens != 9999 || receipt.Transcript == "" {
+	if receipt.ReplacedMessages != 3 || receipt.InputTokens.Metered() != 9999 || receipt.Transcript == "" {
 		t.Fatalf("summary receipt: %+v", receipt)
 	}
 	data, err := os.ReadFile(receipt.Transcript)
@@ -196,7 +196,7 @@ func TestCheapShrinkAvoidsUnnecessarySummary(t *testing.T) {
 	}
 	var meter TokenMeter
 	used := EstimateTokens(fixture.Messages)
-	meter.Observe(protocol.TokenUsage{InputTokens: used}, fixture.Messages, "stable")
+	meter.Observe(protocol.TokenUsage{InputTokens: protocol.IntegerUsageCount(used)}, fixture.Messages, "stable")
 	provider := &summaryProvider{text: "unexpected summary"}
 	compactor := NewDefaultCompactor()
 	compactor.TokenThreshold = used - 1

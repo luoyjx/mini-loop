@@ -174,7 +174,7 @@ func TestRequestJSONAndBudgetMatchPython(t *testing.T) {
 			t.Fatalf("case %d fake count %d != %d", i, count, fixture.FakeTokens)
 		}
 		reply, err := (&FakeProvider{}).Complete(context.Background(), request)
-		if err != nil || reply.Usage.InputTokens != fixture.FakeTokens || reply.Model != DefaultModel {
+		if err != nil || reply.Usage.InputTokens.Metered() != fixture.FakeTokens || reply.Model != DefaultModel {
 			t.Fatalf("case %d usage not connected: %v", i, err)
 		}
 	}
@@ -228,8 +228,8 @@ func (provider *summaryProvider) Complete(_ context.Context, request protocol.Mo
 	}
 	reply := fakeReply([]protocol.Block{protocol.NewTextBlock(provider.text)}, protocol.StopEndTurn)
 	reply.Model = "served-summary"
-	reply.Usage.InputTokens = 123
-	reply.Usage.OutputTokens = 7
+	reply.Usage.InputTokens = protocol.IntegerUsageCount(123)
+	reply.Usage.OutputTokens = protocol.IntegerUsageCount(7)
 	return reply, nil
 }
 func normalizeMessages(t *testing.T, messages []protocol.Message, root string) []protocol.Message {
@@ -289,7 +289,7 @@ func TestSpillAndSummaryMatchPython(t *testing.T) {
 	}
 	event, ok := compressed.Events[0].Summary()
 	want := fixture.Summary.Events[0]
-	if !ok || event.ReplacedMessages != want.ReplacedMessages || event.ReplacedTokensEstimate != want.ReplacedTokens || event.InputTokens != want.InputTokens || event.OutputTokens != want.OutputTokens || event.Model != want.Model || strings.ReplaceAll(event.Transcript, files.Root(), "<workspace>") != want.Transcript {
+	if !ok || event.ReplacedMessages != want.ReplacedMessages || event.ReplacedTokensEstimate != want.ReplacedTokens || event.InputTokens.Metered() != want.InputTokens || event.OutputTokens.Metered() != want.OutputTokens || event.Model != want.Model || strings.ReplaceAll(event.Transcript, files.Root(), "<workspace>") != want.Transcript {
 		t.Fatalf("summary receipt drift: %+v", event)
 	}
 }

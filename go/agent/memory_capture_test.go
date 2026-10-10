@@ -143,7 +143,7 @@ func (p *captureMemoryProvider) Complete(_ context.Context, request protocol.Mod
 		}
 	}
 	reply := fakeReply(blocks, reason)
-	reply.Model, reply.Usage.InputTokens, reply.Usage.OutputTokens = "served-memory", 1234, 2
+	reply.Model, reply.Usage.InputTokens, reply.Usage.OutputTokens = "served-memory", protocol.IntegerUsageCount(1234), protocol.IntegerUsageCount(2)
 	return reply, nil
 }
 

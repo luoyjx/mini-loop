@@ -32,8 +32,8 @@ type SummaryReceipt struct {
 	Transcript             string
 	ReplacedMessages       int
 	ReplacedTokensEstimate int
-	InputTokens            int
-	OutputTokens           int
+	InputTokens            protocol.UsageCount
+	OutputTokens           protocol.UsageCount
 	Model                  string
 }
 type CompactionEvent struct {

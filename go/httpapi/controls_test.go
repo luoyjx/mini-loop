@@ -45,7 +45,7 @@ func (p *controlFlowProvider) Complete(ctx context.Context, r protocol.ModelRequ
 			return protocol.ModelReply{}, ctx.Err()
 		case <-p.release:
 		}
-		return protocol.ModelReply{ID: "todo", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: r.Model, Content: []protocol.Block{protocol.NewToolUse("todo", protocol.TodoWriteToolInput(protocol.TodoWriteInput{Items: []protocol.TodoItem{}}))}, StopReason: protocol.StopToolUse, Usage: protocol.TokenUsage{InputTokens: 200, OutputTokens: 3}}, nil
+		return protocol.ModelReply{ID: "todo", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: r.Model, Content: []protocol.Block{protocol.NewToolUse("todo", protocol.TodoWriteToolInput(protocol.TodoWriteInput{Items: []protocol.TodoItem{}}))}, StopReason: protocol.StopToolUse, Usage: protocol.TokenUsage{InputTokens: protocol.IntegerUsageCount(200), OutputTokens: protocol.IntegerUsageCount(3)}}, nil
 	}
 	return (doneProvider{}).Complete(ctx, r)
 }

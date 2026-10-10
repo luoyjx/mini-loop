@@ -187,10 +187,10 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			StopSequence *string              `json:"stop_sequence"`
 		} `json:"delta"`
 		Usage struct {
-			Input    *int                      `json:"input_tokens"`
-			Output   *int                      `json:"output_tokens"`
-			Read     *int                      `json:"cache_read_input_tokens"`
-			Creation *int                      `json:"cache_creation_input_tokens"`
+			Input    *protocol.UsageCount      `json:"input_tokens"`
+			Output   *protocol.UsageCount      `json:"output_tokens"`
+			Read     *protocol.UsageCount      `json:"cache_read_input_tokens"`
+			Creation *protocol.UsageCount      `json:"cache_creation_input_tokens"`
 			Server   *protocol.ServerToolUsage `json:"server_tool_use"`
 		} `json:"usage"`
 	}
@@ -218,7 +218,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		if json.Unmarshal(wire.Message, &start) != nil || start.ID == nil || start.Type == nil || start.Role == nil || start.Model == nil || start.Content == nil || start.Usage == nil {
 			return badStream("missing message_start fields")
 		}
-		s.reply = protocol.ModelReply{ID: *start.ID, Type: *start.Type, Role: *start.Role, Model: *start.Model, Content: []protocol.Block{}, Usage: start.Usage.WithSDKDefaults()}
+		s.reply = protocol.ModelReply{ID: *start.ID, Type: *start.Type, Role: *start.Role, Model: *start.Model, Content: []protocol.Block{}, Usage: start.Usage.WithSDKStreamCounts()}
 		if err := s.reply.Usage.Validate(); err != nil {
 			return badStream("invalid initial usage")
 		}
@@ -249,18 +249,23 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		s.reply.StopReason = *wire.Delta.StopReason
 		s.reply.StopSequence = wire.Delta.StopSequence
-		s.reply.Usage.OutputTokens = *wire.Usage.Output
+		deltaUsage := protocol.TokenUsage{OutputTokens: *wire.Usage.Output, CacheReadInputTokens: wire.Usage.Read, CacheCreationInputTokens: wire.Usage.Creation, ServerToolUse: wire.Usage.Server}
 		if wire.Usage.Input != nil {
-			s.reply.Usage.InputTokens = *wire.Usage.Input
+			deltaUsage.InputTokens = *wire.Usage.Input
+		}
+		deltaUsage = deltaUsage.WithSDKStreamCounts()
+		s.reply.Usage.OutputTokens = deltaUsage.OutputTokens
+		if wire.Usage.Input != nil {
+			s.reply.Usage.InputTokens = deltaUsage.InputTokens
 		}
 		if wire.Usage.Read != nil {
-			s.reply.Usage.CacheReadInputTokens = wire.Usage.Read
+			s.reply.Usage.CacheReadInputTokens = deltaUsage.CacheReadInputTokens
 		}
 		if wire.Usage.Creation != nil {
-			s.reply.Usage.CacheCreationInputTokens = wire.Usage.Creation
+			s.reply.Usage.CacheCreationInputTokens = deltaUsage.CacheCreationInputTokens
 		}
 		if wire.Usage.Server != nil {
-			s.reply.Usage.ServerToolUse = wire.Usage.Server
+			s.reply.Usage.ServerToolUse = deltaUsage.ServerToolUse
 		}
 		s.reply.Usage = s.reply.Usage.WithSDKDefaults()
 		if err := s.reply.Usage.Validate(); err != nil {

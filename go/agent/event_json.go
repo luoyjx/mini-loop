@@ -339,13 +339,13 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		case CompactAuto:
 			s := v.summary
 			return marshalEvent(h, struct {
-				Kind       CompactionKind `json:"kind"`
-				Transcript string         `json:"transcript"`
-				Messages   int            `json:"replaced_messages"`
-				Tokens     int            `json:"replaced_tokens_estimate"`
-				Input      int            `json:"summary_input_tokens"`
-				Output     int            `json:"summary_output_tokens"`
-				Model      string         `json:"summary_model"`
+				Kind       CompactionKind      `json:"kind"`
+				Transcript string              `json:"transcript"`
+				Messages   int                 `json:"replaced_messages"`
+				Tokens     int                 `json:"replaced_tokens_estimate"`
+				Input      protocol.UsageCount `json:"summary_input_tokens"`
+				Output     protocol.UsageCount `json:"summary_output_tokens"`
+				Model      string              `json:"summary_model"`
 			}{v.kind, s.Transcript, s.ReplacedMessages, s.ReplacedTokensEstimate, s.InputTokens, s.OutputTokens, s.Model})
 		}
 	case SessionEventKind(ApprovalRequiredEvent):

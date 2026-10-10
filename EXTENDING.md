@@ -3999,14 +3999,13 @@ ServerToolUsage plus InferenceGeo. Optional pointers retain concrete values;
 the codec separately preserves explicit null and closed immutable extensions,
 including nested metadata extensions. Native sparse/fake usage remains sparse.
 `WithSDKDefaults` explicitly supplies seven optional SDK null defaults and missing
-nested counter nulls. Nested counters are named optional integers; sparse native
+nested counter nulls. Nested counters are named optional UsageCount observations; sparse native
 constructors preserve omission until this normalization.
 Cloning detaches mutable pointers; MapStrings projects metadata values and
 extension keys/values before serialization. Agent event projection uses this
 without mutating provider values; stored event decoding retains shape and never
 grants authority. Direct HTTP and SSE now preserve this metadata and extensions. SSE updates
-server-tool counts with the SDK accumulator semantics. Native non-negative bounded
-integers remain an ingress adaptation; scalar-string Source output is refused.
+server-tool counts with the SDK accumulator semantics. Known counters use immutable UsageCount variants. Numeric metering is separate from observed values; native integer and finite float bounds remain explicit.
 Direct/SSE integration now checks actual SQL event payloads, database close/reopen,
 typed archival reads, explicit Manager restoration and resumed writes, plus raw
 private JSONL and independently reopened recording readers. Registered secrets in
@@ -4214,3 +4213,21 @@ returns the binding error without invoking a handler; normal after/result hooks
 still run. A before rewrite can replace the fault with valid arguments. Permission
 denial takes precedence. Root/nonfinite and unsupported known scalar adaptations
 remain unresolved. This binding contract represents the default Python Bash handler.
+
+## Named SDK usage count observations
+
+`TokenUsage` and its nested count fields now hold `UsageCount` and optional
+`*UsageCount`, rather than plain int. Use `IntegerUsageCount(n)` for native/fake
+producers. `Kind` and `Integer` inspect observations; `Metered` implements the
+Source numeric projection and must not serve as strict decision validation.
+Private scalar/array/object variants remain immutable. No any/open map/RawMessage
+field enters runtime structures. Sparse optional null flags remain separate.
+
+Direct SDK normalization keeps required values and normalizes optional integer
+fields. SSE validates each captured start/delta count set before accumulation.
+The implementation is verified against 34 real SDK/metering profiles and their
+stage snapshots, not a claim of every Pydantic coercion/error shape. Finite native
+metering bounds remain explicit. Compaction receipts/events keep observed values;
+decision consumers require integer kind and nonnegative value. Masking transforms
+count text and structured keys/values on detached projections. Historical/SQLite
+observations do not supply authority. Default diagnostics and G7 remain open.

@@ -174,7 +174,7 @@ func (doneProvider) Complete(ctx context.Context, r protocol.ModelRequest) (prot
 	if err := ctx.Err(); err != nil {
 		return protocol.ModelReply{}, err
 	}
-	return protocol.ModelReply{ID: "reply", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: r.Model, Content: []protocol.Block{protocol.NewTextBlock("done")}, StopReason: protocol.StopEndTurn, Usage: protocol.TokenUsage{InputTokens: 200, OutputTokens: 3}}, nil
+	return protocol.ModelReply{ID: "reply", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: r.Model, Content: []protocol.Block{protocol.NewTextBlock("done")}, StopReason: protocol.StopEndTurn, Usage: protocol.TokenUsage{InputTokens: protocol.IntegerUsageCount(200), OutputTokens: protocol.IntegerUsageCount(3)}}, nil
 }
 func testManager(t *testing.T, provider agent.Provider) *agent.SessionManager {
 	t.Helper()

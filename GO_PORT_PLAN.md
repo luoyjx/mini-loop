@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `d3c8203` plus deferred Bash argument binding. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `a5bde56` plus named usage count adoption. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6889,7 +6889,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    Named types, nullable/default selection, extensions, clones, masked event projection
    and stored-event JSON codecs are implemented; direct/SSE SQLite close/reopen,
    restored writes and independently reopened JSONL readers preserve complete usage.
-   Scalar usage normalization, metering and remaining provider scope reconciliation stay open. See
+   The captured 34 usage scalar/structured profiles, SDK stage normalization and metering are implemented; broader coercion/field scope and provider reconciliation remain open. See
    [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md). Structured output request
    options are not emitted by the current repository request producers; audit
    custom extension behavior separately instead of adding unrelated SDK features.
@@ -16834,3 +16834,68 @@ anchored guards; Source export check passed 216 current files; README outline,
 architecture were unchanged; no new full Go/Python suite, coverage refresh,
 mutation sweep or architecture regeneration was required or claimed. Existing
 bf4c866 full Go/race/vet/type evidence remains the runtime baseline. No push.
+
+## 2026-10-10 named SDK usage observations and native consumers
+
+Baseline: `a5bde56` plus this implementation. `protocol.UsageCount` is an immutable
+closed union of integer/float/bool/text/null/array/object with concrete private
+payloads and members, not an any/open map/RawMessage domain field. All known root
+and nested counters use the named variant; sparse/null flags stay separate.
+Native/fake producers use IntegerUsageCount. Typed Integer/Kind inspection is
+separate from Source Metered projection. Native bounded integer/finite float
+metering range remains an adaptation, not unbounded Python arithmetic parity.
+
+Direct required values retain their observed kind. Optional SDK counts normalize
+eligible integer-like scalars. Captured SSE start/delta count validation runs per
+stage before accumulation; prior state is not re-normalized by a later delta.
+All 34 actual SDK final values/kinds and stage snapshots now match. Actual native
+TokenMeter observations/anchors/used context match all 34 Source captures, including
+ignored text/structured/null, bool-as-int, truncated fractions, zero and negative
+anchors. Normalization remains scoped to these captured cases; full Pydantic
+coercion, other invalid field shapes and native range adaptations remain open.
+
+Compaction SummaryReceipt and archival event fields retain observed counters.
+DecisionLLM requires integer variants with nonnegative value, refusing text,
+float, bool, null, array/object and negative values even when Metered could yield
+an integer. Native/fake integer producers and existing Source fixtures keep their
+JSON shape. Count text and structured keys/values are masked in model_end and
+compaction projections without changing the live observations. Thirty-four actual
+Source usage values survive SQLite event close/reopen with untrusted authority.
+Previous HTTP/SSE SQL/recording/Manager reconstruction recipes run in the suite;
+no new real-provider deployment is claimed.
+
+Canonical README provider label, usage boundary, review baseline, extension docs
+and interactive specification updated together. Archify regeneration: 9/9 checks,
+no warnings. No fresh browser visual inspection (prior access was denied).
+Specification SHA256: 21507811f4431d03313623e046f550f88a0a7b2f40f770642b2282c8f9b7672c.
+HTML SHA256: 50ae61bb40f7199d539b82627f70d7a8b1a95644d2abc860e916e858784bddfa.
+
+Initial targeted checks exposed old tests treating Source-accepted negative/text
+observations as invalid; these adaptation expectations now use malformed/nonfinite
+inputs. An added masking isolation assertion compared escape spellings instead of
+values; it now inspects decoded strings and compares before/after live bytes.
+The actual numeric/authority guards are tested separately and remain enforced.
+
+Final native diagnostic report: docs/audits/provider-usage-count-native-2026-10-10.json
+(baseline a5bde56 plus this adoption) has 34 successes, 0 refusals, 34 event and
+34 prompt matches, down from the prior 30 refusals. Independent ordinary parity
+tests compare the complete JSON tree's kinds and all 36 SSE stage snapshots;
+report generation alone is not the acceptance gate.
+
+Validation on local Darwin arm64:
+- Full `go test -p=1 -count=1 -timeout=300s ./...`: passed.
+- Full `go test -race -p=1 -count=1 -timeout=300s ./...`: passed; no race report.
+- `go vet ./...`: passed; existing Darwin FSEvents/linker warnings remain.
+- `go run ./tools/typeaudit -root .`: 425 production files, 1391 named types,
+  zero direct open-payload findings.
+- Source scanning guards: 19 anchored. Selected `verify_guards.py -k block`:
+  3 caught mutations; not a full mutation sweep.
+- Explicit diagnostic replay: passed; targeted Source-kind/meter/decision/masking/
+  compaction/SQLite checks passed. Archify 9/9, README outline and diff check passed.
+- No Python runtime package change; full Python regression/invariant verifier were
+  not rerun. No new coverage collection or non-Darwin verification. The previous
+  application 89.39% snapshot is bf4c866 evidence, not this changed implementation.
+- No merge/push or full-port acceptance claim. Default diagnostics approval,
+  remaining provider/type/public-entry scope and complete G7 remain open.
+
+Source export freshness after all watcher suites ended: passed, 216 current files.

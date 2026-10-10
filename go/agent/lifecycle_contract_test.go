@@ -150,7 +150,7 @@ func (p *lifecycleProvider) Complete(ctx context.Context, r protocol.ModelReques
 	reply := fakeReply(blocks, reason)
 	reply.Model = r.Model
 	tokens, err := FakePromptTokens(r)
-	reply.Usage.InputTokens = tokens
+	reply.Usage.InputTokens = protocol.IntegerUsageCount(tokens)
 	return reply, err
 }
 

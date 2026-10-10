@@ -32,7 +32,7 @@ func decodeReply(data []byte) (protocol.ModelReply, error) {
 	if wire.ID == nil || wire.Type == nil || wire.Role == nil || wire.Model == nil || wire.Content == nil || wire.StopReason == nil || wire.Usage == nil {
 		return protocol.ModelReply{}, errors.New("missing completed-message fields")
 	}
-	reply := protocol.ModelReply{ID: *wire.ID, Type: *wire.Type, Role: *wire.Role, Model: *wire.Model, Content: []protocol.Block{}, StopReason: *wire.StopReason, StopSequence: wire.StopSequence, Usage: wire.Usage.WithSDKDefaults()}
+	reply := protocol.ModelReply{ID: *wire.ID, Type: *wire.Type, Role: *wire.Role, Model: *wire.Model, Content: []protocol.Block{}, StopReason: *wire.StopReason, StopSequence: wire.StopSequence, Usage: wire.Usage.WithSDKDirectCounts()}
 	for i, raw := range *wire.Content {
 		block, err := decodeBlock(raw)
 		if err != nil {

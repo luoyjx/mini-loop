@@ -165,6 +165,11 @@ func (p *LLMDecisionProvider) Evaluate(ctx context.Context, request decisions.Re
 			text.WriteString(v.Text)
 		}
 	}
-	usage := decisions.TokenUsage{InputTokens: int64(reply.Usage.InputTokens), OutputTokens: int64(reply.Usage.OutputTokens)}
+	input, inputInteger := reply.Usage.InputTokens.Integer()
+	output, outputInteger := reply.Usage.OutputTokens.Integer()
+	if !inputInteger || !outputInteger || input < 0 || output < 0 {
+		return decisions.Result{}, decisions.ValidationFailure("Decision usage requires nonnegative integer token counts.")
+	}
+	usage := decisions.TokenUsage{InputTokens: int64(input), OutputTokens: int64(output)}
 	return decisions.Estimate(request, reply.Model, []byte(text.String()), &usage)
 }

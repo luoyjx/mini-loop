@@ -45,7 +45,7 @@ func (p *memorySelectionProvider) Complete(_ context.Context, request protocol.M
 			return protocol.ModelReply{}, errors.New("selection failed")
 		}
 		reply := fakeReply([]protocol.Block{protocol.NewTextBlock(p.output)}, protocol.StopEndTurn)
-		reply.Usage.InputTokens, reply.Usage.OutputTokens = 777, 3
+		reply.Usage.InputTokens, reply.Usage.OutputTokens = protocol.IntegerUsageCount(777), protocol.IntegerUsageCount(3)
 		return reply, nil
 	}
 	return fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn), nil

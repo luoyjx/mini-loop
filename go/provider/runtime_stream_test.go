@@ -138,7 +138,7 @@ func TestRealStreamingToolRoundPreservesSignedHistoryUsageAndPhases(t *testing.T
 			if end.Usage == nil || end.ServedModel == nil || end.PromptTokens == nil {
 				t.Fatal("streaming usage missing")
 			}
-			if ends == 1 && (*end.ServedModel != "served-stream" || *end.PromptTokens != 27 || end.Usage.OutputTokens != 9) {
+			if ends == 1 && (*end.ServedModel != "served-stream" || *end.PromptTokens != 27 || end.Usage.OutputTokens.Metered() != 9) {
 				t.Fatal(end)
 			}
 		}
