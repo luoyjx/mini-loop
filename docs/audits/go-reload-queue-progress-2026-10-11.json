@@ -1,0 +1,597 @@
+{
+  "baseline_commit": "360f844",
+  "production_runtime": "ea35cd3 unchanged",
+  "experiment": "Temporary 100ms dispatch-source timer on each subscription private serial queue. Ticks and raw callback metadata retained in bounded C memory and printed only after stop/invalidate, timer cancellation acknowledgement and queue join. Temporary Go trace records the operation wall-clock epoch.",
+  "timer_cleanup_reference": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/dispatch/source.h",
+    "sha256": "c0a3c34828c40d761b421d1b595ce1da22110410412facc531b1ac16af12d5d2",
+    "lines": "450-477; cancellation handler is submitted after the event handler returns"
+  },
+  "commands": [
+    {
+      "command": "cd go && go test -v -p=1 -count=1 -timeout=300s ./reload -run 'TestNativeEventsImmediateConcurrentClose|TestNativeEventsCloseJoinsActiveCallback'",
+      "result": "pass; 0.913s; 32 immediate concurrent closes and active callback join",
+      "log": "/tmp/mini-loop-reload-queue-probe-lifecycle.log",
+      "sha256": "40e8f7a76a7c7a0eb5b99f1c2883c3ca78babe1ebba4d06e271a13fe17eb89d7"
+    },
+    {
+      "command": "cd go && go test -v -p=1 -count=1 -timeout=300s ./...",
+      "result": "failed only reload; eight native recipe failures; reload 115.733s",
+      "log": "/tmp/mini-loop-reload-queue-probe-full.log",
+      "sha256": "86066afe8cffb7dd40a0b1564cfa9c78037d8ae21575a316050f543d380ab377"
+    }
+  ],
+  "failed_profiles": [
+    {
+      "name": "added-source",
+      "operation": "add",
+      "operation_unix_ns": 1791672851144634000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source2423873816/001",
+      "key": 36,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672850989373000,
+          "key": 36,
+          "event_id": 1899712832,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source2423873816/001"
+        },
+        {
+          "unix_ns": 1791672850990059000,
+          "key": 36,
+          "event_id": 1899712841,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source2423873816/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672851209945000,
+        1791672851303363000,
+        1791672851401861000,
+        1791672851509151000,
+        1791672851601404000,
+        1791672851707215000,
+        1791672851803700000,
+        1791672851909924000,
+        1791672852007812000,
+        1791672852107222000,
+        1791672852207208000,
+        1791672852303345000,
+        1791672852405601000,
+        1791672852509924000,
+        1791672852605051000,
+        1791672852707206000,
+        1791672852809422000,
+        1791672852905870000,
+        1791672853008690000,
+        1791672853107213000,
+        1791672853207178000,
+        1791672853303367000,
+        1791672853408218000,
+        1791672853504792000,
+        1791672853609466000,
+        1791672853707207000,
+        1791672853809434000,
+        1791672853902556000,
+        1791672854008190000,
+        1791672854107215000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 107.29,
+      "probe_summary": {
+        "raw_count": 2,
+        "tick_count": 73,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    },
+    {
+      "name": "identical-write",
+      "operation": "unchanged-write",
+      "operation_unix_ns": 1791672866808377000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write365339638/001",
+      "key": 42,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672866655787000,
+          "key": 42,
+          "event_id": 1899732172,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write365339638/001"
+        },
+        {
+          "unix_ns": 1791672866656058000,
+          "key": 42,
+          "event_id": 1899732184,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write365339638/001/source.go"
+        },
+        {
+          "unix_ns": 1791672866656089000,
+          "key": 42,
+          "event_id": 1899732379,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write365339638/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672866871894000,
+        1791672866969734000,
+        1791672867065062000,
+        1791672867173734000,
+        1791672867275317000,
+        1791672867374434000,
+        1791672867475061000,
+        1791672867568718000,
+        1791672867671138000,
+        1791672867773438000,
+        1791672867867230000,
+        1791672867970434000,
+        1791672868070021000,
+        1791672868173770000,
+        1791672868265818000,
+        1791672868374500000,
+        1791672868469226000,
+        1791672868575067000,
+        1791672868671103000,
+        1791672868769018000,
+        1791672868867260000,
+        1791672868975131000,
+        1791672869070675000,
+        1791672869173787000,
+        1791672869267790000,
+        1791672869374757000,
+        1791672869472744000,
+        1791672869567335000,
+        1791672869670225000,
+        1791672869771252000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 108.682,
+      "probe_summary": {
+        "raw_count": 3,
+        "tick_count": 49,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    },
+    {
+      "name": "same-mtime-touch",
+      "operation": "touch",
+      "operation_unix_ns": 1791672870664425000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch274945999/001",
+      "key": 43,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672870496019000,
+          "key": 43,
+          "event_id": 1899734144,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch274945999/001"
+        },
+        {
+          "unix_ns": 1791672870510411000,
+          "key": 43,
+          "event_id": 1899734156,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch274945999/001/source.go"
+        },
+        {
+          "unix_ns": 1791672870510458000,
+          "key": 43,
+          "event_id": 1899734177,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch274945999/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672870711246000,
+        1791672870815075000,
+        1791672870911824000,
+        1791672871008789000,
+        1791672871112364000,
+        1791672871211423000,
+        1791672871313724000,
+        1791672871414017000,
+        1791672871507963000,
+        1791672871611618000,
+        1791672871711244000,
+        1791672871811109000,
+        1791672871914118000,
+        1791672872008833000,
+        1791672872112642000,
+        1791672872211216000,
+        1791672872309588000,
+        1791672872414147000,
+        1791672872512811000,
+        1791672872615051000,
+        1791672872711354000,
+        1791672872812782000,
+        1791672872905481000,
+        1791672873008840000,
+        1791672873114361000,
+        1791672873211205000,
+        1791672873315107000,
+        1791672873410447000,
+        1791672873513454000,
+        1791672873610986000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 105.521,
+      "probe_summary": {
+        "raw_count": 3,
+        "tick_count": 35,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    },
+    {
+      "name": "rename-out",
+      "operation": "rename",
+      "operation_unix_ns": 1791672877048844000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out1579963328/001",
+      "key": 44,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672876893346000,
+          "key": 44,
+          "event_id": 1899736025,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out1579963328/001"
+        },
+        {
+          "unix_ns": 1791672876894658000,
+          "key": 44,
+          "event_id": 1899736037,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out1579963328/001/source.go"
+        },
+        {
+          "unix_ns": 1791672876894678000,
+          "key": 44,
+          "event_id": 1899736046,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out1579963328/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672877135678000,
+        1791672877232001000,
+        1791672877336679000,
+        1791672877431172000,
+        1791672877535250000,
+        1791672877631589000,
+        1791672877732022000,
+        1791672877828111000,
+        1791672877928440000,
+        1791672878027794000,
+        1791672878133298000,
+        1791672878232041000,
+        1791672878334415000,
+        1791672878434570000,
+        1791672878535018000,
+        1791672878632639000,
+        1791672878732016000,
+        1791672878831812000,
+        1791672878927553000,
+        1791672879025953000,
+        1791672879127148000,
+        1791672879231996000,
+        1791672879327762000,
+        1791672879433905000,
+        1791672879532607000,
+        1791672879626845000,
+        1791672879732047000,
+        1791672879835683000,
+        1791672879934407000,
+        1791672880028904000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 106.143,
+      "probe_summary": {
+        "raw_count": 3,
+        "tick_count": 62,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    },
+    {
+      "name": "rename-in",
+      "operation": "rename",
+      "operation_unix_ns": 1791672884367335000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in665935862/001",
+      "key": 45,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672884212114000,
+          "key": 45,
+          "event_id": 1899738247,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in665935862/001"
+        },
+        {
+          "unix_ns": 1791672884213168000,
+          "key": 45,
+          "event_id": 1899738259,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in665935862/001/notes.txt"
+        },
+        {
+          "unix_ns": 1791672884213964000,
+          "key": 45,
+          "event_id": 1899738304,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in665935862/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672884446415000,
+        1791672884544620000,
+        1791672884648525000,
+        1791672884754082000,
+        1791672884846658000,
+        1791672884947054000,
+        1791672885054652000,
+        1791672885147293000,
+        1791672885251667000,
+        1791672885346093000,
+        1791672885449634000,
+        1791672885550134000,
+        1791672885655589000,
+        1791672885752554000,
+        1791672885856011000,
+        1791672885956168000,
+        1791672886055956000,
+        1791672886153191000,
+        1791672886253325000,
+        1791672886356854000,
+        1791672886448097000,
+        1791672886556725000,
+        1791672886654758000,
+        1791672886754168000,
+        1791672886848952000,
+        1791672886949566000,
+        1791672887052856000,
+        1791672887151632000,
+        1791672887254911000,
+        1791672887357571000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 108.628,
+      "probe_summary": {
+        "raw_count": 3,
+        "tick_count": 69,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    },
+    {
+      "name": "ignored-backup",
+      "operation": "add",
+      "operation_unix_ns": 1791672899266738000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3382735982/001",
+      "key": 48,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672899113468000,
+          "key": 48,
+          "event_id": 1899748123,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3382735982/001"
+        },
+        {
+          "unix_ns": 1791672899113902000,
+          "key": 48,
+          "event_id": 1899748132,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3382735982/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672899342766000,
+        1791672899442042000,
+        1791672899546934000,
+        1791672899639446000,
+        1791672899738968000,
+        1791672899843315000,
+        1791672899943443000,
+        1791672900040496000,
+        1791672900147481000,
+        1791672900243347000,
+        1791672900347605000,
+        1791672900440310000,
+        1791672900542858000,
+        1791672900646442000,
+        1791672900747858000,
+        1791672900843535000,
+        1791672900942552000,
+        1791672901046461000,
+        1791672901146108000,
+        1791672901245757000,
+        1791672901348090000,
+        1791672901448289000,
+        1791672901542828000,
+        1791672901640455000,
+        1791672901746630000,
+        1791672901846892000,
+        1791672901945550000,
+        1791672902047841000,
+        1791672902139795000,
+        1791672902243710000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 106.985,
+      "probe_summary": {
+        "raw_count": 2,
+        "tick_count": 44,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    },
+    {
+      "name": "ignored-text",
+      "operation": "add",
+      "operation_unix_ns": 1791672903861143000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1676445101/001",
+      "key": 49,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672903706503000,
+          "key": 49,
+          "event_id": 1899750183,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1676445101/001"
+        },
+        {
+          "unix_ns": 1791672903706748000,
+          "key": 49,
+          "event_id": 1899750192,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1676445101/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672903928846000,
+        1791672904030599000,
+        1791672904134360000,
+        1791672904237380000,
+        1791672904334289000,
+        1791672904438620000,
+        1791672904536197000,
+        1791672904631960000,
+        1791672904737846000,
+        1791672904835093000,
+        1791672904938471000,
+        1791672905038265000,
+        1791672905134809000,
+        1791672905237839000,
+        1791672905334798000,
+        1791672905435577000,
+        1791672905530185000,
+        1791672905631110000,
+        1791672905738091000,
+        1791672905833411000,
+        1791672905934108000,
+        1791672906037607000,
+        1791672906136396000,
+        1791672906233464000,
+        1791672906335281000,
+        1791672906435460000,
+        1791672906535982000,
+        1791672906634753000,
+        1791672906738532000,
+        1791672906836983000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 106.981,
+      "probe_summary": {
+        "raw_count": 2,
+        "tick_count": 44,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    },
+    {
+      "name": "source-directory",
+      "operation": "mkdir",
+      "operation_unix_ns": 1791672909867034000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessource-directory1480818716/001",
+      "key": 50,
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672909712912000,
+          "key": 50,
+          "event_id": 1899752033,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessource-directory1480818716/001"
+        },
+        {
+          "unix_ns": 1791672909714446000,
+          "key": 50,
+          "event_id": 1899752042,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessource-directory1480818716/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "window_ticks_unix_ns": [
+        1791672909888907000,
+        1791672909989869000,
+        1791672910092934000,
+        1791672910194323000,
+        1791672910284321000,
+        1791672910394145000,
+        1791672910487086000,
+        1791672910590855000,
+        1791672910687529000,
+        1791672910794511000,
+        1791672910892614000,
+        1791672910988202000,
+        1791672911093299000,
+        1791672911188387000,
+        1791672911290463000,
+        1791672911394451000,
+        1791672911494738000,
+        1791672911592086000,
+        1791672911688242000,
+        1791672911788624000,
+        1791672911886732000,
+        1791672911987006000,
+        1791672912093228000,
+        1791672912190815000,
+        1791672912293154000,
+        1791672912391086000,
+        1791672912495072000,
+        1791672912592828000,
+        1791672912695056000,
+        1791672912791999000
+      ],
+      "window_tick_count": 30,
+      "max_window_gap_ms": 109.824,
+      "probe_summary": {
+        "raw_count": 2,
+        "tick_count": 56,
+        "raw_overflow": false,
+        "tick_overflow": false,
+        "path_overflow": false
+      }
+    }
+  ],
+  "temporary_files": {
+    "go/reload/native_events_darwin.c": {
+      "baseline_sha256": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e",
+      "instrumented_sha256": "ca357ea7d1201037f78fcfd62a247f42913537108251cb5a03134bf00c955590",
+      "restored_sha256": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e"
+    },
+    "go/reload/native_events_recipes_test.go": {
+      "baseline_sha256": "10c9774fa7324cbc4ede1d0621d43080092a329cce43dfeddb9c4f150ca1b9e9",
+      "instrumented_sha256": "07b92bfdce78b7a49b39b380174c6b602597b7140395991c9b8ec36b0876ecb9",
+      "restored_sha256": "10c9774fa7324cbc4ede1d0621d43080092a329cce43dfeddb9c4f150ca1b9e9"
+    }
+  },
+  "conclusion": "In all eight failed operation windows, the exact subscription private serial queue executed 30 timer handlers with max observed window gap below 111ms; raw C event callbacks never entered after the operation. An entire three-second dispatch queue stall is therefore excluded in this instrumented run. The unresolved boundary is upstream FSEvents event-stream delivery/dispatch, not downstream Go admission or a generally inactive serial queue.",
+  "limits": [
+    "Does not identify kernel, daemon, FSEvents configuration, internal stream dispatch or process-history root cause",
+    "The additional timer changes queue activity and callback context carries probe storage; this is an observation intervention, not production acceptance",
+    "No raw/tick/path overflow in any failed subscription; windows measured from operation epoch through the next three seconds, not an assertion of exact Source timer scheduling",
+    "No fresh same-pressure Source comparison; previous Source observations retain their original scope",
+    "All temporary C/Go files restored byte-for-byte with baseline hashes; no runtime/test change retained",
+    "No new uninstrumented full Go, race, vet, type audit, Source export, Python suite, coverage, non-Darwin, performance or architecture visual gate",
+    "Native temporal reliability and full port acceptance remain open; no merge or push"
+  ],
+  "next_action": "Compare current FSEvents stream configuration, registration history and delivery against the actual pinned Source under matching subscription churn before proposing an implementation change"
+}

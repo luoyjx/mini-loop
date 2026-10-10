@@ -18249,3 +18249,26 @@ No merge or push.
 Next: measure private serial dispatch queue progress independently of event
 callbacks during the failing operation window, separating queue service from
 upstream stream delivery before proposing an implementation change.
+
+## Darwin queue progress probe — 2026-10-11
+
+Baseline `360f844`; production runtime `ea35cd3` unchanged. A temporary 100ms
+serial-queue timer and raw C callback recorder retain bounded in-memory samples,
+printing only after close joins timer cancellation and callbacks. Probe lifecycle
+checks pass (32 immediate concurrent closes and active callback join). The
+instrumented full ordinary run still fails eight native recipes (reload 115.733s).
+Every failed subscription executes 30 timer handlers in its 3-second operation
+window; maximum window gap is 105.521–109.824ms, with no raw/tick/path overflow.
+All eight have zero raw C event entries after operation. Thus an entire-window
+private queue stall is excluded for this run; the event-stream delivery/dispatch
+boundary remains unresolved. This is not proof of a kernel/daemon defect.
+
+[Queue progress audit](docs/audits/go-reload-queue-progress-2026-10-11.json) pins
+samples, subscription keys, log/file hashes and timer cleanup header evidence.
+Timer activity and probe context storage are observer interventions; these results
+do not replace uninstrumented acceptance. Temporary files were restored exactly;
+no implementation/test/default/dependency change is retained. git diff --check
+passes. No new uninstrumented full Go/race/vet/type/export/Python/coverage/visual
+or non-Darwin gate. Native temporal reliability and complete port acceptance stay
+open; no merge/push. Next: compare actual Source stream configuration, registration
+history and delivery under matching subscription churn before changing runtime.
