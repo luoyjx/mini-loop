@@ -25,3 +25,12 @@ def test_source_authentication_precedence_and_headers(tmp_path):
     assert rows["explicit-endpoint"]["calls"][0]["url"] == "https://explicit.invalid/v1/messages"
     assert rows["environment-endpoint"]["calls"][0]["url"] == "https://environment.invalid/v1/messages"
     assert rows["environment-bearer"]["description"]["credential"] == "<absent>"
+
+
+def test_settings_provider_key_suppresses_environment_bearer(tmp_path):
+    rows = {row["name"]: row for row in provider_auth_contracts(tmp_path)["settings_cases"]}
+    headers = lambda name: rows[name]["calls"][0]["headers"]
+    assert headers("settings-bearer") == {"authorization": "Bearer env-token"}
+    assert headers("settings-empty-key") == {"x-api-key": "", "authorization": "Bearer env-token"}
+    assert headers("settings-key-suppresses-bearer") == {"x-api-key": "env-key"}
+    assert headers("settings-custom-overrides") == {"x-api-key": "custom-key", "authorization": "Bearer custom-token"}

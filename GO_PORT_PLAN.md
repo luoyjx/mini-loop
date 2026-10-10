@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `2133e26` plus explicit provider auth and native citation SQLite/recording recovery proof. This section is the current delivery index;
+Reviewed 2026-10-10 at `7398b32` plus Launcher provider auth and native citation SQLite/recording recovery proof. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -15602,3 +15602,72 @@ before the final package/full gates. Existing macOS linker/compiler warnings
 remain. No Python, Source export, mutation, coverage or performance rerun was
 performed; these keep their recorded baselines. Diff/cached checks pass.
 No merge or push was performed.
+
+## 2026-10-10 Launcher environment authentication selection
+
+Baseline `11bd11c` plus this slice captures ANTHROPIC_AUTH_TOKEN and
+ANTHROPIC_CUSTOM_HEADERS in named Secret settings. ProviderAuthentication
+returns a detached ordered list of named ProviderHeader values. A nonempty
+Settings API key suppresses environment bearer selection because Source
+Settings passes it explicitly to provider_for/SDK. An explicitly empty
+environment key preserves an empty X-Api-Key header alongside bearer auth.
+SDK parsing of custom header lines retains colon splitting, trimming, ignored
+colon-free lines and provider last-value precedence. Native header admission
+retains the earlier explicit bounds/injection refusal.
+
+The Source capture now adds four actual Settings/provider_for cases to the
+existing ten direct-provider cases. Real managed Launcher turns compare the
+headers received by localhost upstream HTTP, completed text and request count.
+Construction makes no provider request. Snapshot/Inspect/formatted Settings
+checks prove that raw bearer/custom-header credentials are absent, including
+from retained snapshot Secret fields. The previous generic Settings Source
+comparison remains intact; the private empty-key presence bit is also cleared
+from snapshots. SDK profile/federation discovery remains open.
+
+Initial expected empty-key headers omitted the SDK's empty X-Api-Key; actual
+Source capture corrected that expectation and native projection. The resulting
+private presence bit first broke deep snapshot equality despite identical JSON;
+clearing it at the snapshot boundary fixed the original Source parity test.
+Final targeted config/launcher/provider tests and three Python auth tests pass.
+README canonical Mermaid, authority explanation, EXTENDING and interactive
+JSON/HTML are updated together. No dependency or tool catalogue changed.
+
+Verification history: complete ordinary Go tests, vet, type audit (403
+production files / 1304 package-level types / zero findings), Source export
+check (202 current files), and all 19 scan anchors pass. The first full race
+run failed only TestNativeSupervisorRetainsSocketAcrossRecoveryAndJoinsChildren: a
+pre-registration fixture event arrived after its 200 ms drain and replaced
+the initial child before the test's HTTP PID assertion. The native test's
+existing comment identifies this FSEvents initialization-event boundary. No
+data race was reported. An isolated unchanged-code race rerun of that exact
+test passed (5.966 s); a fresh complete serial race rerun follows. The first
+failed command is retained at /tmp/mini-loop-launcher-auth-race.log.
+
+The serial full race rerun also failed the native supervisor test, plus
+TestNativeObserverDuringRealCgoBuildInsideWatchedRoot, on initialization
+main.go events. Both fixtures used a 200 ms quiet timeout. Replaced those
+setup drains with an actual post-subscription source-event handshake before
+compiler/supervisor handoff. The inert package-main probe remains until
+fixture cleanup to avoid enqueueing a removal event during the test. Its path
+is canonicalized to match macOS observer roots. The initial handshake run
+was terminated after identifying /var versus /private/var path comparison;
+that terminated run is not a pass. Both exact tests then pass under race
+(7.286 s total) with the corrected handshake. Production observer/supervisor
+code and all post-start source-change/cleanup assertions are unchanged.
+Final complete ordinary/race/vet gates run on this final snapshot. The test
+synchronization fix and authentication implementation are delivered as
+separate commits. Go README also corrects obsolete citation-refusal text.
+
+Final unchanged-code snapshot gates passed: complete ordinary
+`go test -p=1 -count=1 -timeout=300s ./...`, complete race with `-race`, and
+`go vet ./...`. Logs: /tmp/mini-loop-launcher-auth-final-{go,race,vet}.log.
+The independent reload fixture synchronization change is commit `7398b32`;
+all runtime/config/Source capture changes remain in the following auth slice.
+Archify delivery passes 9/9 and current artifact hashes match the receipt:
+specification SHA-256 `446fe05381f9ebcb491e86fb444caedff245ff3be9a37a792b7ccfb0e1ce705c`,
+HTML SHA-256 `0c39d3ccf2e960f71bff17ba1a9990c0743875cf0d14192ce36548d0e7c265c7`.
+No fresh browser visual review, full Python, Python invariant/mutation suite,
+coverage, performance, Linux-host or CGO-disabled run was performed; their
+prior evidence keeps its measured baseline. Python package runtime/scanners,
+mutation anchors and default-tool catalogue are unchanged. Diff/cached checks
+pass. No merge or push was performed.

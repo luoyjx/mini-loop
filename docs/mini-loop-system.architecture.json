@@ -299,7 +299,7 @@
       "id": "goFake",
       "type": "external",
       "label": "Go model providers",
-      "sublabel": "HTTP / SSE · explicit key / bearer",
+      "sublabel": "HTTP / SSE · captured key / bearer",
       "pos": [
         330,
         1180

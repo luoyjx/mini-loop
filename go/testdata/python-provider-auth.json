@@ -51,6 +51,122 @@
   ],
   "constructor_sha256": "c2b2cd0137a8023e27d00ca4d11705bcc19cf98dd9e5974a2cbc0e11c2c37836",
   "sdk_version": "0.107.1",
+  "settings_cases": [
+    {
+      "calls": [
+        {
+          "headers": {
+            "authorization": "Bearer env-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "constructor": [
+        {}
+      ],
+      "description": {
+        "credential": "<absent>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "endpoint": null,
+      "environment": {
+        "ANTHROPIC_AUTH_TOKEN": "env-token"
+      },
+      "key": null,
+      "name": "settings-bearer",
+      "text": "ok"
+    },
+    {
+      "calls": [
+        {
+          "headers": {
+            "x-api-key": "env-key"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "constructor": [
+        {
+          "api_key": "env-key"
+        }
+      ],
+      "description": {
+        "credential": "<set>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "endpoint": null,
+      "environment": {
+        "ANTHROPIC_API_KEY": "env-key",
+        "ANTHROPIC_AUTH_TOKEN": "env-token"
+      },
+      "key": null,
+      "name": "settings-key-suppresses-bearer",
+      "text": "ok"
+    },
+    {
+      "calls": [
+        {
+          "headers": {
+            "authorization": "Bearer env-token",
+            "x-api-key": ""
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "constructor": [
+        {}
+      ],
+      "description": {
+        "credential": "<absent>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "endpoint": null,
+      "environment": {
+        "ANTHROPIC_API_KEY": "",
+        "ANTHROPIC_AUTH_TOKEN": "env-token"
+      },
+      "key": null,
+      "name": "settings-empty-key",
+      "text": "ok"
+    },
+    {
+      "calls": [
+        {
+          "headers": {
+            "authorization": "Bearer custom-token",
+            "x-api-key": "custom-key"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "constructor": [
+        {
+          "api_key": "env-key"
+        }
+      ],
+      "description": {
+        "credential": "<set>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "endpoint": null,
+      "environment": {
+        "ANTHROPIC_API_KEY": "env-key",
+        "ANTHROPIC_AUTH_TOKEN": "env-token",
+        "ANTHROPIC_CUSTOM_HEADERS": "X-Api-Key: custom-key\nAuthorization: Bearer custom-token"
+      },
+      "key": null,
+      "name": "settings-custom-overrides",
+      "text": "ok"
+    }
+  ],
   "source_cases": [
     {
       "calls": [

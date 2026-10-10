@@ -55,6 +55,9 @@ func (s Secret) GoString() string             { return s.String() }
 func (s Secret) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
 
 type Settings struct {
+	apiKeyDefined                     bool
+	AuthToken                         Secret           `json:"-"`
+	ProviderHeaders                   Secret           `json:"-"`
 	Model                             string           `json:"model"`
 	BaseURL                           *string          `json:"base_url"`
 	APIKey                            Secret           `json:"-"`
@@ -129,6 +132,8 @@ func (s Settings) Snapshot() Snapshot {
 		result.TypesafeAPIKey = ptr("<set>")
 	}
 	result.Settings.APIKey, result.Settings.TypesafeAPIKey = Secret{}, Secret{}
+	result.Settings.AuthToken, result.Settings.ProviderHeaders = Secret{}, Secret{}
+	result.Settings.apiKeyDefined = false
 	result.BindableRoots = append([]string{}, s.BindableRoots...)
 	if s.BaseURL != nil {
 		result.Settings.BaseURL = ptr(RedactEndpoint(*s.BaseURL))
@@ -242,6 +247,9 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	s.Model = text("MODEL_ID", "claude-sonnet-4-6")
 	s.BaseURL = optional(text("ANTHROPIC_BASE_URL", ""))
 	s.APIKey = Secret{text("ANTHROPIC_API_KEY", "")}
+	_, s.apiKeyDefined = get("ANTHROPIC_API_KEY")
+	s.AuthToken = Secret{text("ANTHROPIC_AUTH_TOKEN", "")}
+	s.ProviderHeaders = Secret{text("ANTHROPIC_CUSTOM_HEADERS", "")}
 	s.MaxTokens, err = integer("MINILOOP_MAX_TOKENS", 8000)
 	if err != nil {
 		return s, err

@@ -1574,7 +1574,11 @@ identity. `Config.AuthToken` supplies an explicit bearer token; ordered `Config.
 override static headers with last-value precedence. Header names/values are
 validated and copied during construction. Both direct and streaming errors scrub
 static and header credentials. Environment/profile discovery is caller-owned;
-launcher bearer/custom-header selection remains open. It retains no dynamic
+Launcher now captures bearer/custom-header environment settings without live
+environment reads during composition. Nonempty Settings API keys suppress bearer
+selection; ordered custom headers can override them. Inspection reports explicit
+key presence and removes live credential fields. SDK profile/federation discovery
+remains open. It retains no dynamic
 payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
 `agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.

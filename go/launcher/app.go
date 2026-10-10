@@ -254,7 +254,12 @@ func buildApp(ctx context.Context, settings config.Settings, server config.Serve
 		if settings.BaseURL != nil {
 			endpoint = *settings.BaseURL
 		}
-		client, err := provider.New(provider.Config{APIKey: settings.APIKey.Reveal(), BaseURL: endpoint, HTTPClient: &http.Client{Transport: transport}})
+		token, configuredHeaders := settings.ProviderAuthentication()
+		headers := make([]provider.Header, 0, len(configuredHeaders))
+		for _, header := range configuredHeaders {
+			headers = append(headers, provider.Header{Name: header.Name, Value: header.Value.Reveal()})
+		}
+		client, err := provider.New(provider.Config{APIKey: settings.APIKey.Reveal(), AuthToken: token.Reveal(), Headers: headers, BaseURL: endpoint, HTTPClient: &http.Client{Transport: transport}})
 		if err != nil {
 			transport.CloseIdleConnections()
 			return nil, err

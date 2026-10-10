@@ -476,12 +476,22 @@ timeouts opt out. A whole-attempt deadline and caller context own calls/waits.
 
 Config permits explicit byte limits (default 8 MiB, maximum 64 MiB), 0..10 HTTP
 retries, a client, and concurrency-safe waiter/clock/jitter seams. Reply ingress
-validates signed thinking and supported default-tool inputs; unknown content and
-nonempty citations fail until typed adapters exist. Nullable SDK text citations
-are omitted. API-key diagnostics are scrubbed; redirects are refused and the
-supplied client's redirect policy is preserved. Description/debug identity never
-prints the key. Advanced request/auth options and
-production endpoint/cache conformance remain pending. No dependencies were added.
+validates signed thinking and supported default-tool inputs; unknown content
+fails. Five named citation variants and immutable closed extension data survive
+HTTP/SSE, forwarding, masking and SQLite restoration. Explicit `AuthToken` and
+ordered `[]provider.Header` support bearer and custom authentication headers;
+construction validates/copies headers and custom values override static ones.
+Diagnostics scrub key/token/auth-header credentials. Redirects are refused on
+a private HTTP client copy; the supplied client's policy is not modified.
+
+Launcher captures `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_CUSTOM_HEADERS` from
+configuration. A nonempty Settings API key suppresses environment bearer auth,
+matching Python Settings/provider_for; an explicitly empty environment key can
+accompany bearer auth as an empty X-Api-Key header. Custom headers can override
+static authentication. Inspection/snapshots discard live tokens and header values;
+provider identity retains explicit API-key presence, so bearer-only selection
+still reports an absent key. SDK profile/federation discovery, remaining request
+options and production endpoint/cache conformance remain pending.
 
 ### Typed decision operator library
 
