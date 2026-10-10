@@ -14876,3 +14876,37 @@ not CLI behavior acceptance; real subprocess tests separately verify startup/rel
 C FSEvents callback code is outside Go's statement denominator. The previous
 cdd57c7 snapshot was 89.92% (28378/31559); subsequent CLI/native-event code changes
 the denominator, so the old result must not be presented as current.
+
+## Forced PollWatcher and environment Source contracts — 2026-10-10
+
+Baseline: `4acefcc` plus this Source evidence slice. python-watchfiles.json now
+adds 20 real forced-PollWatcher cases with original RustNotify and actual Uvicorn
+filter/dispatch. Native rows remain unchanged. Stable native repr verifies recursive
+symlink following, no content hasher and signed whole-second path mtime, including
+fractional/pre-epoch inputs. Polling observes add/delete/rename and increasing
+whole seconds; same/lower/fractional mtime or identical writes/touches yield no
+batch. A followed file link retains its lexical name, and a directory alias adds
+both alias and target paths. This is polling evidence, not transient native proof.
+
+Actual boundary subscriptions report a WatchfilesRustInternalError for directory
+cycles and three consecutive deletion batches for dangling source links and a
+removed suffix-matching root. Context entry/exit is verified; raw paths are filtered
+through actual FileFilter. Native/polling contexts and collecting threads close.
+Environment capture adds Unicode dotted-I behavior, six actual uname combinations
+(only Linux + microsoft-standard auto-forces polling), five debug truth rows,
+Unicode decimals, maximum u64/overflow and CPython's 4300-digit conversion limit.
+Two actual native RustNotify constructions verify the u64 millisecond boundary;
+nonempty `0`/`false` debug values remain true. No dependency or CLI default changes.
+
+Validation: fresh export followed by `.venv/bin/python
+python/tools/export_go_contracts.py --check` passed all 201 files;
+`.venv/bin/python python/tools/verify_scans.py` passed all 19 scanner guards.
+Native rows were compared with HEAD and remain identical. Narrow native/polling
+Go replay passed; complete Go runtime gates belong to the implementation slice.
+Existing exporter dependency deprecation/FutureWarnings remain recorded.
+README outline and diff checks passed; architecture regeneration passed 9/9,
+zero errors/warnings, with exact hashes/bytes verified. Correction rounds 0;
+visual review not repeated after prior browser denial. Python package runtime,
+mutation anchors and default-tool types do not change; full Python/invariant/
+mutation checks were not rerun. No push.
+Go profile/owned polling implementation remains a separate pending delivery.

@@ -413,6 +413,9 @@ and retains eligible sources inside hidden parent directories. It has no root,
 filesystem or execution authority and is selected by the explicit native event SDK.
 Actual installed Source filtering/native events/environment/cancellation are
 archived in python-watchfiles.json; the default filter replays in Go.
+The archive now also captures 20 actual forced-PollWatcher operations, repeated
+missing-path notifications, a cycle fault and expanded environment conversion.
+These are Source evidence; Go backend/environment selection is the next delivery.
 `reload.NewNativeEvents` now owns an explicit macOS/CGO FSEvents subscription
 using captured flags 18, zero latency and since-now. Its typed batches retain
 lexical kernel names, coalesce events and replay all 16 real Source recipes;
@@ -424,7 +427,7 @@ The CLI currently uses this fallback observer. Installed Python Uvicorn 0.49.0
 selects WatchFilesReload (watchfiles 1.2.0); matching its default event/filter
 profile remains a required next slice, so default reload parity is not yet claimed.
 
-Runtime review baseline: `32cf034` plus owned macOS native-event SDK,
+Runtime review baseline: `4acefcc` plus actual PollWatcher/environment Source contracts,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -568,7 +571,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `32cf034` plus owned macOS native-event SDK;
+reviewed **2026-10-10** (Go baseline `4acefcc` plus actual PollWatcher/environment Source contracts;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

@@ -1,4 +1,4 @@
-"""Capture installed default Uvicorn filtering and actual native file events."""
+"""Capture installed Uvicorn filtering and actual native/polling file events."""
 from __future__ import annotations
 
 import hashlib
@@ -6,10 +6,12 @@ import inspect
 import os
 import platform
 import re
+import time
 from pathlib import Path
 from queue import Empty, Queue
 from threading import Event, Thread
 from unittest.mock import patch
+from types import SimpleNamespace
 
 import uvicorn
 import watchfiles
@@ -52,16 +54,19 @@ def _filters(root: Path) -> list[dict]:
     return rows
 
 
-def _native_case(root: Path, recipe: dict) -> dict:
+def _native_case(root: Path, recipe: dict, force_polling: bool = False) -> dict:
     root.mkdir()
     source = root / recipe["path"]
+    if recipe.get("directory_alias"):
+        (root / recipe["directory_target"]).mkdir()
+        (root / recipe["directory_alias"]).symlink_to(recipe["directory_target"], target_is_directory=True)
     source.parent.mkdir(parents=True, exist_ok=True)
     if recipe.get("symlink_target"):
         (root / recipe["symlink_target"]).write_text("before\n")
         source.symlink_to(recipe["symlink_target"])
     if recipe["initial"]:
         source.write_text("before\n")
-        os.utime(source, (100, 100))
+        os.utime(source, (recipe.get("initial_mtime", 100), recipe.get("initial_mtime", 100)))
     output: Queue = Queue()
     armed, release = Event(), Event()
     errors = []
@@ -75,11 +80,25 @@ def _native_case(root: Path, recipe: dict) -> dict:
                                   recursive=args[4], ignore_permission_denied=args[5]))
             self.value = original_notify(*args)
             representation = repr(self.value)
-            if not representation.startswith("RustNotify(Recommended("):
-                raise RuntimeError("Source selected a non-native observer")
+            prefix = "RustNotify(Poll(" if force_polling else "RustNotify(Recommended("
+            if not representation.startswith(prefix):
+                raise RuntimeError("Source selected an unexpected observer")
             arguments[-1]["backend"] = next((name for name in
-                ["FsEventWatcher", "INotifyWatcher", "ReadDirectoryChangesWatcher"]
+                ["FsEventWatcher", "INotifyWatcher", "ReadDirectoryChangesWatcher", "PollWatcher"]
                 if name in representation), "Recommended")
+            if force_polling:
+                deadline = time.monotonic() + 1
+                while '"<locked>"' in representation and time.monotonic() < deadline:
+                    time.sleep(0.001)
+                    representation = repr(self.value)
+                if '"<locked>"' in representation:
+                    raise RuntimeError("Source polling metadata remained locked")
+                if "follow_symlinks: true" not in representation or "build_hasher: None" not in representation:
+                    raise RuntimeError("unknown Source polling strategy")
+                arguments[-1]["follow_symlinks"] = True
+                arguments[-1]["compare_contents"] = False
+                source_mtime = re.search(re.escape(str(source)) + r'": PathData\s*\{\s*mtime: (-?[0-9]+),', representation)
+                arguments[-1]["source_mtime_seconds"] = int(source_mtime[1]) if source_mtime else None
             if arguments[-1]["backend"] == "FsEventWatcher":
                 flags = re.search(r"flags: (\d+),", representation)
                 latency = re.search(r"latency: ([0-9.]+),", representation)
@@ -102,7 +121,7 @@ def _native_case(root: Path, recipe: dict) -> dict:
         # step, recursion, filtering and Uvicorn dispatch remain unchanged.
         return original_watch(*args, **kwargs, rust_timeout=100)
 
-    with patch.dict(os.environ, {"WATCHFILES_FORCE_POLLING": "false",
+    with patch.dict(os.environ, {"WATCHFILES_FORCE_POLLING": "true" if force_polling else "false",
                                  "WATCHFILES_DEBUG": "", "WATCHFILES_POLL_DELAY_MS": ""}), \
             patch.object(watch_main, "RustNotify", ReadyNotify), \
             patch.object(reload_module, "watch", bounded_watch):
@@ -167,14 +186,14 @@ def _native_case(root: Path, recipe: dict) -> dict:
             raise RuntimeError("native Source observation failed") from errors[0]
     if not closed.is_set():
         raise RuntimeError("native Source context was not closed")
-    if len(arguments) != 1 or arguments[0]["force_polling"]:
-        raise RuntimeError("contract did not use one native observer")
+    if len(arguments) != 1 or arguments[0]["force_polling"] != force_polling:
+        raise RuntimeError("contract did not use one selected observer")
     return dict(**recipe, changed=changed, native_arguments=arguments[0], closed=True)
 
 
 def _environment() -> dict:
     force = []
-    for value in [None, "", "false", "FALSE", "disable", "disabled", "0", "1", " "]:
+    for value in [None, "", "false", "FALSE", "disable", "disabled", "0", "1", " ", "DİSABLED"]:
         with patch.dict(os.environ):
             os.environ.pop("WATCHFILES_FORCE_POLLING", None)
             if value is not None:
@@ -183,7 +202,7 @@ def _environment() -> dict:
                               explicit_true=watch_main._default_force_polling(True),
                               explicit_false=watch_main._default_force_polling(False)))
     delay = []
-    for value in [None, "", "50", "0", "-1", "nonnumeric", "١٠", "²"]:
+    for value in [None, "", "50", "0", "-1", "nonnumeric", "١٠", "²", "18446744073709551615", "18446744073709551616", "0" * 4301]:
         with patch.dict(os.environ):
             os.environ.pop("WATCHFILES_POLL_DELAY_MS", None)
             if value is not None:
@@ -194,7 +213,33 @@ def _environment() -> dict:
             except ValueError as error:
                 row["error"] = str(error)
             delay.append(row)
-    return dict(force_polling=force, poll_delay=delay)
+    auto = []
+    for system, release in [("Darwin", "microsoft-standard"), ("Linux", "6.0"),
+                            ("Linux", "5.15-Microsoft-standard-WSL2"),
+                            ("LINUX", "MICROSOFT-STANDARD"), ("Windows", "microsoft-standard"),
+                            ("Linux", "microsoft")]:
+        with patch("platform.uname", return_value=SimpleNamespace(system=system, release=release)):
+            auto.append(dict(system=system, release=release, result=watch_main._auto_force_polling()))
+    debug = []
+    for value in [None, "", "false", "0", "1"]:
+        with patch.dict(os.environ):
+            os.environ.pop("WATCHFILES_DEBUG", None)
+            if value is not None:
+                os.environ["WATCHFILES_DEBUG"] = value
+            debug.append(dict(value=value, result=watch_main._default_debug(None)))
+    constructors = []
+    from tempfile import TemporaryDirectory
+    with TemporaryDirectory() as tmp:
+        for value in [2**64 - 1, 2**64]:
+            row = dict(milliseconds=str(value))
+            try:
+                with watch_main.RustNotify([tmp], False, False, value, True, True):
+                    row["accepted"] = True
+            except OverflowError as error:
+                row.update(accepted=False, error_type=type(error).__name__)
+            constructors.append(row)
+    return dict(force_polling=force, poll_delay=delay, auto_polling=auto, debug=debug,
+                delay_constructor=constructors, decimal_digit_limit=4300)
 
 
 def _cancel(root: Path) -> dict:
@@ -246,6 +291,46 @@ def _cancel(root: Path) -> dict:
     return dict(exit="StopIteration", native_context_closed=True, thread_joined=True)
 
 
+
+def _polling_boundaries(root: Path) -> dict:
+    """Actual PollWatcher cycle errors and repeated missing-path notifications."""
+    root.mkdir()
+    cycle = root / "cycle-root"
+    cycle.mkdir()
+    (cycle / "cycle").symlink_to(".", target_is_directory=True)
+    cycle_result = dict(closed=False, entered=False)
+    try:
+        with watch_main.RustNotify([str(cycle)], False, True, 50, True, True) as observer:
+            cycle_result["entered"] = True
+            observer.watch(1600, 50, 500, Event())
+    except Exception as error:
+        cycle_result.update(error_type=type(error).__name__,
+                            error=str(error).replace(str(cycle), "<root>"))
+    if not cycle_result["entered"]:
+        raise RuntimeError("Source polling cycle failed before entering its context")
+    cycle_result["closed"] = True
+    rows = []
+    for name in ["dangling", "missing-root"]:
+        selected = root / (name + ".py")
+        selected.mkdir()
+        if name == "dangling":
+            (selected / "link.py").symlink_to("absent")
+        file_filter = FileFilter(_config(selected))
+        with watch_main.RustNotify([str(selected)], False, True, 50, True, True) as observer:
+            if name == "missing-root":
+                selected.rmdir()
+            batches = []
+            for _ in range(3):
+                changes = observer.watch(1600, 50, 500, Event())
+                if not isinstance(changes, set):
+                    raise RuntimeError("missing actual polling boundary batch")
+                paths = {Path(path) for _, path in changes}
+                batches.append(sorted("<root>" if path == selected else str(path.relative_to(selected))
+                                      for path in paths if file_filter(path)))
+        rows.append(dict(name=name, batches=batches, closed=True))
+    return dict(cycle=cycle_result, missing_paths=rows)
+
+
 def watchfiles_contracts(scratch: Path) -> dict:
     if ChangeReload is not WatchFilesReload:
         raise RuntimeError("installed Source default is not WatchFilesReload")
@@ -269,12 +354,22 @@ def watchfiles_contracts(scratch: Path) -> dict:
         dict(name="source-directory", operation="mkdir", path="package.py", initial=False),
         dict(name="transient-source", operation="transient", path="flash.py", initial=False),
     ]
+    polling_recipes = [row for row in recipes if row["operation"] != "transient"] + [
+        dict(name="increasing-mtime-write", operation="write", path="source.py", initial=True, mtime=101),
+        dict(name="fractional-mtime-write", operation="write", path="source.py", initial=True, initial_mtime=100.1, mtime=100.9),
+        dict(name="symlink-target-increasing", operation="write", path="linked.py", symlink_target="notes.txt", initial=True, mtime=101),
+        dict(name="negative-mtime-write", operation="write", path="source.py", initial=True, initial_mtime=-100, mtime=-50),
+        dict(name="directory-symlink-source", operation="add", path="alias/a.py", directory_alias="alias", directory_target="target", initial=False, mtime=100),
+    ]
     source = Path(inspect.getfile(WatchFilesReload))
     return dict(uvicorn_version=uvicorn.__version__, watchfiles_version=watchfiles.__version__,
                 platform=platform.system(), default_backend=ChangeReload.__name__,
                 source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                 watch_source_sha256=hashlib.sha256(Path(watch_main.__file__).read_bytes()).hexdigest(),
                 environment=_environment(), cancellation=_cancel(scratch / "cancel"),
+                polling_boundaries=_polling_boundaries(scratch / "poll-boundaries"),
                 filters=_filters(scratch),
                 native_events=[_native_case(scratch / recipe["name"], recipe)
-                               for recipe in recipes])
+                               for recipe in recipes],
+                polling_events=[_native_case(scratch / ("poll-" + recipe["name"]), recipe, True)
+                                for recipe in polling_recipes])
