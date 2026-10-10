@@ -15061,3 +15061,37 @@ not a claim about this code. No Go domain/service any/interface{}/RawMessage add
 Full `go test -race -p=1 -count=1 -timeout=300s ./...` passes, including
 reload 43.143s and sqlitestate 28.770s. Existing FSEvents deprecation and Darwin
 CGO linker warnings are nonfatal. No push.
+
+
+## Go reload — captured Linux Source native contracts (2026-10-10)
+
+Runtime baseline: `48aa064`. The separate Linux fixture captures actual Uvicorn
+0.49.0 / watchfiles 1.2.0 INotifyWatcher with recursive=true,
+ignore_permission_denied=true and force_polling=false. Eighteen recipes include
+the existing sixteen operations plus forward/reverse directory symlink names.
+Actual native directory and file link loops enter/close their context and time out;
+write-open/close without writing also times out. These are distinct from forced
+PollWatcher loop errors. Source closure and constructor arguments are retained.
+
+The dedicated Linux exporter refuses other platforms/versions/backends. It runs
+against an actual Linux aarch64 Docker kernel, not mocked platform helpers.
+Official watchfiles v1.2.0 Cargo.lock pins notify 8.0.0; its inotify implementation
+uses filesystem-order WalkDir traversal and overwrites the lexical descriptor
+projection on each registration. Initial descendant traversal errors are skipped.
+Sources: https://raw.githubusercontent.com/samuelcolvin/watchfiles/v1.2.0/Cargo.lock
+and https://raw.githubusercontent.com/notify-rs/notify/notify-8.0.0/notify/src/inotify.rs.
+
+Reproduce from the repository tools directory in Linux with these pinned installed
+packages: `python export_linux_watchfiles_contracts.py --output <fixture>`.
+Container Go toolchain: golang:1.23.3-bookworm, image digest
+sha256:59b8183301af6dc358c9258d7b2ab0ee1a9363618552334fb3b160d454cbda72.
+Python image used: python:3.11-slim, local image ID
+sha256:1eee6fcc4d866c86dd8e32a4a1a583767ddac0d640b0fe571b2c22d233b60eee.
+The Source evidence precedes the Go backend delivery. CLI remains StatReload.
+
+Root movement is also captured: after a watched root is renamed, the next child
+write retains the old lexical root projection. Raw batches are [<root>] then
+[a.py], and context closure is verified. The final Linux exporter recapture
+matches the checked-in fixture exactly. Main Source export --check passes 201
+files; invariant verification passes 77 and scanner verification passes 19.
+No new project dependency or default CLI selection is introduced by this evidence.

@@ -453,7 +453,7 @@ the full detached Paths batch and retains Path as its first entry. Real HTTP chi
 tests verify native and polling replacement, failed-build recovery, retained sockets
 and released workspace leases. CLI still selects the StatReload fallback.
 
-Runtime review baseline: `04bf277` plus supervised event observers,
+Runtime review baseline: `48aa064` plus captured Linux native Source contracts,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -597,7 +597,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `04bf277` plus supervised event observers;
+reviewed **2026-10-10** (Go baseline `48aa064` plus captured Linux native Source contracts;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
