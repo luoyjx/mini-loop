@@ -48,6 +48,13 @@ func DecodeStoredEvent(data []byte) (SessionEventRecord, error) {
 		}
 		kind, _ := value.Lookup("type")
 		text, _ := kind.Text()
+		if SessionEventKind(text) == EventToolUse {
+			name, _ := value.Lookup("name")
+			toolName, _ := name.Text()
+			if protocol.ToolName(toolName) == protocol.ToolBash {
+				return decodeLegacyToolObservationEvent(value)
+			}
+		}
 		if workflowKind(SessionEventKind(text)) {
 			headerJSON, _, err = observationHeader(data)
 			if err != nil {

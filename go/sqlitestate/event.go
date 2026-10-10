@@ -30,7 +30,7 @@ func (s *Store) AppendEvent(ctx context.Context, id agent.SessionID, record agen
 		if head < 0 || head == math.MaxInt64 {
 			return ErrOrdinalRange
 		}
-		data, err := record.MarshalJSON()
+		data, err := record.MarshalArchiveJSON()
 		if err != nil {
 			return err
 		}

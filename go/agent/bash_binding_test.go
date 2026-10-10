@@ -46,10 +46,6 @@ func TestBashBindingMatchesActualSourceExecutionAndHookOrder(t *testing.T) {
 	}
 	matched := 0
 	for _, row := range fixture.Cases {
-		switch row.Name {
-		case "nonfinite-nan", "nonfinite-infinity":
-			continue
-		}
 		t.Run(row.Name, func(t *testing.T) {
 			input, err := protocol.DecodeModelToolInput(protocol.ToolBash, []byte(row.Input))
 			if err != nil {
@@ -107,8 +103,8 @@ func TestBashBindingMatchesActualSourceExecutionAndHookOrder(t *testing.T) {
 			matched++
 		})
 	}
-	if matched != 49 {
-		t.Fatal("finite supported Source cases changed", matched)
+	if matched != 51 {
+		t.Fatal("supported Source consumer cases changed", matched)
 	}
 }
 

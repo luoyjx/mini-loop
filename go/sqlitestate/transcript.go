@@ -57,7 +57,7 @@ func (s *Store) AppendMessages(ctx context.Context, id agent.SessionID, messages
 			if err := validateMessageText(message); err != nil {
 				return err
 			}
-			data, err := message.MarshalJSON()
+			data, err := message.MarshalArchiveJSON()
 			if err != nil {
 				return err
 			}

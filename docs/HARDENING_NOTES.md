@@ -8377,3 +8377,15 @@ Stream stop/invalidate/release and stop-source removal/invalidation/release occu
 on the owner. No global FSEvents device purge, wider roots, longer read deadlines
 or relaxed recipe expectations are introduced. This addresses a concrete Source
 lifecycle difference; historical timing failures remain separate evidence.
+
+### Go migration — nonfinite SDK observations do not supply authority
+
+Baseline: `eea850b` plus this implementation. Nonfinite values are accepted only
+in captured SDK input observations: unknown Bash binding parameters and immutable
+server inputs. Named observation/archive codecs retain legacy numbers, while
+standard JSON request/event encoders refuse them. Four direct responses and valid
+next-request transcripts prove rejection before transport. SQLite message and
+named tool-event close/reopen tests preserve the original observations; archived
+events remain untrusted. Known executable fields, explicit caller admission,
+metadata and unsupported block variants retain their existing boundaries.
+Full SDK parity, nonfinite SSE event delivery and native watcher reliability remain open.

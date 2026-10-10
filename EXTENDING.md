@@ -4192,8 +4192,9 @@ nonempty cumulative delta using internal/jsonvalue.DecodePartial. It returns a
 closed immutable value, drops incomplete scalar members at EOF and retains
 completed nested values/duplicate-key semantics. Empty deltas keep initial input;
 invalid syntax is refused at the corresponding delta. The raw cumulative buffer
-is capped before parsing. At block stop the value must serialize as finite JSON
-and enter the existing named ToolInput or finite observational ServerToolInput decoder.
+is capped before parsing. At block stop the value enters a named ToolInput or observational ServerToolInput
+decoder. SDK snapshots retain legacy nonfinite numbers; standard HTTP request
+encoding remains finite. Explicit caller admission is unchanged.
 No partial bytes enter service/domain records or authorize client tool effects.
 Complete/archival jsonvalue.Decode is unchanged. Ninety-eight SDK per-delta
 recipes and 42 direct jiter edge contracts are enforced as real assertions;
@@ -4247,9 +4248,10 @@ and error kind; recording projections do not mutate live arguments.
 ServerToolInput now retains finite scalar/array/null roots as observational SDK
 metadata. It cannot become client ToolInput or supply grants. The SDK-declared
 object remains a common shape, not a rule that drops permissive SDK observations.
-Twelve actual direct SDK reply/forwarding cases, 49 finite Source execution cases,
-and 78 finite SSE/history/SQLite cases pass. Four nonfinite client/server SDK final
-cases and unsupported known-field scalar input adaptations remain open.
+Twelve finite direct SDK reply/forwarding cases, all 51 Source execution cases,
+and 78 finite SSE/history/SQLite cases pass. Four additional nonfinite direct/SSE
+snapshots and message archives retain SDK observations; next requests fail finite
+encoding before transport. Unsupported known-field scalar adaptations remain open.
 
 ## Named model Bash optional-field projections — 2026-10-10
 
@@ -4361,3 +4363,15 @@ This restores continuous servicing within the existing bounded cleanup design.
 It does not enlarge batch/context timers or claim a proven cause for the old
 intermittent failures. Event class deduplication/complete temporal equivalence
 remain separate acceptance questions.
+
+## Named SDK input observation and archive codecs — 2026-10-11
+
+`protocol.InputObservation`, `MarshalObservedBlocks`, and `DecodeSDKServerToolInput`
+retain immutable legacy SDK numbers without constructing executable arguments.
+Use `Message.MarshalArchiveJSON` and `SessionEventRecord.MarshalArchiveJSON` only
+for archival projections. SQLite append/read paths retain those numbers through
+close/reopen; standard `MarshalJSON` refuses them. Client unknown Bash parameters
+retain the named binding failure settled by the common gate. Historical event
+reads remain untrusted; server observations cannot dispatch a client tool. Other
+nonfinite metadata, unsupported block kinds and malformed JSON remain refused.
+This does not establish nonfinite SSE event delivery or complete SDK parity.

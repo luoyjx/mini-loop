@@ -78,7 +78,7 @@ func TestSDKPartialValuesSurviveSQLiteReopen(t *testing.T) {
 		}
 		expected, err := jsonvalue.Decode(expectedJSON)
 		if err != nil || !got.PythonEqual(expected) {
-			t.Fatal("SDK partial object changed in SQLite", i)
+			t.Fatal("SDK partial object changed in SQLite", i, string(encoded), expectedJSON)
 		}
 	}
 }

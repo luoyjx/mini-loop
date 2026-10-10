@@ -13,6 +13,9 @@ import (
 // Normalize every
 // consumed field into a closed domain variant. Raw bytes never reach a session.
 func decodeReply(data []byte) (protocol.ModelReply, error) {
+	if !json.Valid(data) && utf8.Valid(data) {
+		return decodeLegacySDKReply(data)
+	}
 	if !utf8.Valid(data) {
 		return protocol.ModelReply{}, errors.New("invalid UTF-8 response")
 	}

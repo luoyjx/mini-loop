@@ -474,7 +474,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `eea850b` plus named protocol SDK observation/archive codecs, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `486f8ec` plus provider and SQLite nonfinite observation consumers, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -681,7 +681,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named protocol SDK observation / archive codecs · inert unknown-model calls · deferred Bash and background binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1261,13 +1261,18 @@ separate jiter-compatible partial decoder. Completed fields and nested container
 survive EOF; incomplete scalar members are omitted. Empty deltas retain initial
 client/server input. Invalid syntax is refused at its input delta, before block
 stop. Raw buffers remain bounded before parsing; stopped values still pass named
-client ToolInput or finite observational ServerToolInput validation.
+client ToolInput or observational ServerToolInput validation. Named read-only
+SDK observations preserve legacy NaN/Infinity at snapshot/archive boundaries;
+standard request and event JSON encoding remains finite.
 Strict complete JSON syntax and archival decoding remain enforced. All 98 SDK
 input snapshots and 42 jiter edges match the boundary decoder; 78 finite client
 and server captures match final content, history and SQLite reopen. Finite Bash
 non-mapping roots retain named binding failures, settled after hooks and permission
-without invoking the handler; 49 finite actual Source consumer cases match. Four
-nonfinite final differences and other known-field consumer adaptations remain open.
+without invoking the handler; all 51 captured actual Source consumer cases match.
+The four captured nonfinite client/server inputs survive direct/SSE snapshots and
+SQLite message reopen; two named client tool events survive SQLite reopen. Valid
+next-request transcripts fail finite encoding before transport. Broader known-field
+consumer adaptations and SSE nonfinite event delivery remain open.
 Declared ToolCaller variants retain unknown fields as immutable extension metadata
 across client/server tool-use and web-search/web-fetch replies. Direct caller
 `tool_id` is retained as an extension; typed ToolID remains empty. Code-execution
@@ -2638,7 +2643,7 @@ checks, before invoking any handler. Before hooks can replace the input with val
 arguments; denial still takes precedence. Failed outcomes use the existing after
 hooks and result observers. Explicit `DecodeToolInput` admission stays strict.
 BashRejectedArguments retains finite non-mapping observations with a closed named
-kind; no handler receives them. ServerToolInput retains finite observational roots
+kind; no handler receives them. ServerToolInput retains immutable observational roots, including legacy SDK numbers,
 without client dispatch. Named BashBackgroundRequest and BashApprovalProposal retain
 finite optional-field observations. Execution receives the explicit Python-truth
 boolean and only string-array proposal tokens; invalid proposals cannot supply a
@@ -2839,11 +2844,3 @@ body runs. Stage receipts and initialization reports contain the safe fault code
 Close returns the typed error, retains admission fencing, and caches no success.
 Twenty-five actual Source operations cover three stages and initialize/close,
 including 2**1024 milliseconds that remains finite only after ratio conversion.
-
-### SDK input observation codec foundation
-
-Named `InputObservation`, SDK server-input decoding and block snapshot codecs
-retain immutable legacy numbers. `Message.MarshalArchiveJSON` and historical
-message reads preserve those observations; standard `MarshalJSON` stays finite.
-These library entry points add no actor, client dispatch or permission grant.
-Provider and SQLite consumer adoption is a subsequent slice.

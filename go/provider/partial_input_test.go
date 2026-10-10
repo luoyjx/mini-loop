@@ -131,8 +131,28 @@ func TestStreamPartialValuesMatchSDKFinalAndHistory(t *testing.T) {
 			input := partialSDKInput(t, row.Expected)
 			_, finiteErr := input.MarshalJSON()
 			if finiteErr != nil {
-				if err == nil {
-					t.Fatal("unsupported nonfinite adaptation changed")
+				if err != nil {
+					t.Fatal("SDK nonfinite observation refused", err)
+				}
+				observed, snapshotErr := protocol.MarshalObservedBlocks(reply.Content)
+				if snapshotErr != nil {
+					t.Fatal(snapshotErr)
+				}
+				got, decodeErr := jsonvalue.Decode(string(observed))
+				if decodeErr != nil {
+					t.Fatal(decodeErr)
+				}
+				want, decodeErr := jsonvalue.Decode(row.Expected)
+				if decodeErr != nil {
+					t.Fatal(decodeErr)
+				}
+				a, _ := got.Sorted().MarshalLegacyUTF8()
+				b, _ := want.Sorted().MarshalLegacyUTF8()
+				if string(a) != string(b) {
+					t.Fatalf("SDK snapshot changed: %s != %s", a, b)
+				}
+				if _, finiteErr := json.Marshal(reply.Content); finiteErr == nil {
+					t.Fatal("nonfinite observation entered finite request encoding")
 				}
 				return
 			}

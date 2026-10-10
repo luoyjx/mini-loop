@@ -443,7 +443,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 	b := &s.blocks[i]
 	if event == "content_block_stop" {
 		if b.partialInput {
-			encoded, err := b.parsedInput.MarshalJSON()
+			encoded, err := b.parsedInput.MarshalLegacyUTF8()
 			if err != nil {
 				return badStream(c.clean(err.Error(), 500))
 			}
@@ -451,13 +451,13 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		switch b.kind {
 		case protocol.BlockServerToolUse:
-			input, err := protocol.DecodeServerToolInput(b.input)
+			input, err := protocol.DecodeSDKServerToolInput(b.input)
 			if err != nil {
 				return badStream(c.clean(err.Error(), 500))
 			}
 			value, _ := b.block.ServerToolUse()
 			value = value.WithInput(input)
-			encoded, err := json.Marshal(value)
+			encoded, err := value.Block().MarshalObservationJSON()
 			if err != nil || len(encoded) > protocol.MaxWireBytes {
 				return badStream("normalized server tool use exceeds protocol limit")
 			}

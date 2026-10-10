@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+	"github.com/luoyjx/mini-loop/go/protocol"
 	"os"
 	"strings"
 	"testing"
@@ -76,7 +77,7 @@ func TestProviderPartialInputAudit(t *testing.T) {
 			}
 			o.SameOutcome = o.SDKError
 		} else {
-			encoded, err := json.Marshal(reply.Content)
+			encoded, err := protocol.MarshalObservedBlocks(reply.Content)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -87,6 +88,11 @@ func TestProviderPartialInputAudit(t *testing.T) {
 			}
 			b, err := jsonvalue.Decode(row.Expected)
 			o.SameOutcome = err == nil && a.PythonEqual(b)
+			if err == nil && !o.SameOutcome {
+				actual, actualErr := a.Sorted().MarshalLegacyUTF8()
+				expected, expectedErr := b.Sorted().MarshalLegacyUTF8()
+				o.SameOutcome = actualErr == nil && expectedErr == nil && string(actual) == string(expected)
+			}
 		}
 		rows = append(rows, o)
 	}
