@@ -23,9 +23,12 @@ for today's implementation queue. The complete migration is not yet accepted.
 
 The latest Source export check at `aee0437` plus native citation integration exited
 zero with 202 matching files and existing dependency warnings. Runtime ordinary/race/vet, actual Linux CLI
-and macOS CGO-disabled polling gates passed there. Coverage was refreshed at
-`39dbca4`: 89.72% for the measured application code baseline. These results do
-not include the new audit command. Current command-specific and full Go checks
+and macOS CGO-disabled polling gates passed there. Coverage was freshly measured at `dd7571a`: **89.65% (29109/32468)** across
+all Go packages, including the audit command; application packages excluding
+`tools/` measure **89.69% (29062/32404)**. The complete ordinary coverage run
+passed on Darwin arm64; CLI child-process/native C counters and Linux-only
+inotify code are outside the collected denominator. See the current plan's
+coverage refresh entry for package counts and exact command. Current command-specific and full Go checks
 are recorded in the audit delivery entry below. No full Python or merge/push
 was performed in this index refresh.
 

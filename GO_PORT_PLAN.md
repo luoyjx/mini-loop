@@ -15491,3 +15491,38 @@ of the parsed recording export. Existing macOS compiler/linker warnings remain.
 Diff checks pass. No full race, Python regression/verifiers, Source export,
 coverage, performance or fresh architecture rendering was rerun for this test-only
 slice; runtime and exported contracts are unchanged.
+
+## 2026-10-10 coverage refresh after citation recovery delivery
+
+Measured code/test baseline: `dd7571a` on Darwin arm64. The complete command
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-dd7571a-current.cover ./...` from `go/` passed.
+Log: `/tmp/mini-loop-dd7571a-coverage.log`. Identical source-location blocks
+are counted once, taking the maximum hit count across package tests.
+
+All Go packages, including `tools/typeaudit`: **89.65% (29109/32468 statements)**.
+Application packages excluding `tools/`: **89.69% (29062/32404)**. The previous
+application snapshot at `ba1c43f` was 89.72% (28758/32054); covered statements
+increased by 304 and the denominator increased by 350. These are statement
+coverage measurements, not branch coverage or migration completion.
+
+| Package | Covered / total statements | Coverage |
+| --- | --- | --- |
+| provider | 583 / 671 | 86.89% |
+| protocol | 1971 / 2166 | 91.00% |
+| agent | 8997 / 10004 | 89.93% |
+| sqlitestate | 522 / 625 | 83.52% |
+| reload | 635 / 752 | 84.44% |
+| config | 348 / 400 | 87.00% |
+| httpapi | 1616 / 1806 | 89.48% |
+| launcher | 212 / 263 | 80.61% |
+| cmd/miniloop | 71 / 170 | 41.76% |
+| internal/commandenv | 0 / 28 | 0.00% |
+| tools/typeaudit | 47 / 64 | 73.44% |
+
+CLI child-process and native C counters are not merged. Linux-only inotify
+code is outside this Darwin denominator. The existing macOS FSEvents
+deprecation warning remains. No fresh race, vet, Python, mutation, Source
+export or performance run was performed for this documentation-only refresh;
+their prior evidence retains its recorded baseline. `git diff --check` and
+the cached diff check pass. No merge or push was performed.
