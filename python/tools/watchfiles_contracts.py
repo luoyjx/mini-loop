@@ -133,6 +133,21 @@ def _native_case(root: Path, recipe: dict, force_polling: bool = False) -> dict:
                 # timeout. Keep the live subscription while the operation runs.
                 while observer.should_restart() is not None:
                     pass
+                # A quiet timeout does not acknowledge kernel registration or
+                # delivery of setup writes. Observe a post-subscription probe.
+                probe = root / "watch_contract_ready.py"
+                probe.write_text("# inert subscription readiness probe\n")
+                deadline = time.monotonic() + 5
+                while time.monotonic() < deadline:
+                    changed = observer.should_restart()
+                    if changed is not None and probe in changed:
+                        break
+                else:
+                    raise RuntimeError("Source did not observe its readiness probe")
+                # Keep the inert file until observer close, and drain any
+                # remaining setup batch without rewriting the probe.
+                while observer.should_restart() is not None:
+                    pass
                 armed.set()
                 release.wait(5)
                 while not observer.should_exit.is_set():

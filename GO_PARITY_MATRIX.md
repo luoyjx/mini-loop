@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `5656802` plus export and native-recipe diagnostics. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `cf808fe` plus observer recipe readiness calibration. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -9498,3 +9498,31 @@ full race/type audit remains pinned to 5656802; no fresh full race claimed here.
 
 FAIL
 ```
+
+## Calibrate observer recipe readiness — 2026-10-10
+
+Baseline: `cf808fe` plus this calibration. Captured timelines show initial setup
+Created events arriving after a quiet drain timeout. Both Source _native_case and
+native Go recipe tests now observe a file created after subscription construction
+before arming the actual operation. The inert valid probe remains until observer
+close, and remaining setup batches are drained. Go reuses the existing native
+fixture readiness helper; Python uses its actual WatchFilesReload should_restart.
+A quiet timeout alone is not treated as kernel readiness.
+
+The recipe operations, three-second operation timeout, expected batches, backend
+flags and native runtime remain unchanged. Python's complete calibrated native/
+polling capture matched the existing python-watchfiles fixture exactly. No fixture
+was regenerated or widened. This repairs a proved capture precondition; runtime
+handoff reliability and complete temporal equivalence still require their own
+scope audit. No dependency, domain/API change or coverage refresh.
+
+Fresh validation: native actual-Source recipes passed three consecutive rounds
+(`/tmp/mini-loop-native-calibrated.log`). Full ordinary Go tests and full race
+with cross-package coverage passed sequentially; `go vet ./...` passed. Type
+audit: 428 production files, 1,400 named types, zero findings. Source scanner
+verification: all 19 anchored; export-diagnostic tests: five passed. Full Python
+regression and non-Darwin gates were not rerun; no merge or push. Coverage is
+recorded separately to preserve a focused calibration commit.
+
+Full Source export --check passed: 219 current files, after all native Go jobs
+ended. No diagnostics directory was needed and no fixture was rewritten.

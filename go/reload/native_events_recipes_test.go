@@ -141,7 +141,9 @@ func TestNativeEventsActualSourceRecipes(t *testing.T) {
 					t.Log("native recipe timeline:\n" + trace.text())
 				}
 			})
-			trace.mark("subscription constructed; drain setup events")
+			trace.mark("subscription constructed; await post-subscription probe")
+			awaitNativeFixtureReady(t, observer, root)
+			trace.mark("readiness probe observed; drain remaining setup events")
 			// Drain pre-registration writes while retaining this exact subscription.
 			for {
 				ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
