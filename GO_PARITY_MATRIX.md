@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `cf808fe` plus observer recipe readiness calibration. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `e3fc640`. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -42,10 +42,10 @@ The latest authentication-slice Source export retry at `477a209` passed with
 six Python authentication tests, 19 scans and type audit passed at `477a209`.
 No new Go runtime validation is claimed by this fixture/inventory slice.
 
-Latest measured coverage: application excluding tools **89.32% (31628/35408)**;
-all Go **89.30% (31675/35472)** on `9f0e9db` plus display alignment. Successful
+Latest measured coverage: application excluding tools **89.34% (31644/35418)**;
+all Go **89.32% (31691/35482)** on `e3fc640`. Successful
 full race/coverpkg run merges source locations by maximum hit count. See
-[package metrics](docs/audits/go-coverage-bash-display-2026-10-10.json). Darwin
+[package metrics](docs/audits/go-coverage-observer-readiness-2026-10-10.json). Darwin
 coverage excludes native C and CLI child-process internals; coverage does not
 prove complete port/default/type acceptance. No merge or push was performed.
 
@@ -9526,3 +9526,26 @@ recorded separately to preserve a focused calibration commit.
 
 Full Source export --check passed: 219 current files, after all native Go jobs
 ended. No diagnostics directory was needed and no fixture was rewritten.
+
+## Coverage refresh after observer readiness calibration — 2026-10-10
+
+Measured baseline: `e3fc640`. Full ordinary Go tests passed, followed by
+`go test -race -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-calibrated-integrated.cover ./...` (passed).
+[Package metrics](docs/audits/go-coverage-observer-readiness-2026-10-10.json)
+record the exact profile hash and source-location aggregation.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| Application excluding tools | 31,644 / 35,418 | 89.34% |
+| All Go | 31,691 / 35,482 | 89.32% |
+
+The 1,186,527 raw blocks merge to 24,718 unique source locations using maximum
+hit counts with consistent statement counts. Compared with the previous Bash
+display snapshot, covered statements increased by 16 and total statements by 10;
+application coverage increased approximately 0.02 percentage points. This is
+Darwin arm64 statement coverage; native C and CLI subprocess internals are not
+instrumented. Python coverage, branch coverage and migration acceptance are not
+measured. Source export: 219 current files; vet passed, type audit zero findings,
+19 scanner guards anchored and five export diagnostic tests passed. Full Python
+regression and non-Darwin gates were not rerun; no merge or push.

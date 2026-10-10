@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `cf808fe` plus observer recipe readiness calibration. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `e3fc640`. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -17332,3 +17332,26 @@ recorded separately to preserve a focused calibration commit.
 
 Full Source export --check passed: 219 current files, after all native Go jobs
 ended. No diagnostics directory was needed and no fixture was rewritten.
+
+## Coverage refresh after observer readiness calibration — 2026-10-10
+
+Measured baseline: `e3fc640`. Full ordinary Go tests passed, followed by
+`go test -race -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-calibrated-integrated.cover ./...` (passed).
+[Package metrics](docs/audits/go-coverage-observer-readiness-2026-10-10.json)
+record the exact profile hash and source-location aggregation.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| Application excluding tools | 31,644 / 35,418 | 89.34% |
+| All Go | 31,691 / 35,482 | 89.32% |
+
+The 1,186,527 raw blocks merge to 24,718 unique source locations using maximum
+hit counts with consistent statement counts. Compared with the previous Bash
+display snapshot, covered statements increased by 16 and total statements by 10;
+application coverage increased approximately 0.02 percentage points. This is
+Darwin arm64 statement coverage; native C and CLI subprocess internals are not
+instrumented. Python coverage, branch coverage and migration acceptance are not
+measured. Source export: 219 current files; vet passed, type audit zero findings,
+19 scanner guards anchored and five export diagnostic tests passed. Full Python
+regression and non-Darwin gates were not rerun; no merge or push.
