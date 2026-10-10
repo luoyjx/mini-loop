@@ -243,3 +243,17 @@ caller 的扩展、partial/畸形输入、usage scalar 消费者、默认诊断�
 - 转发、脱敏键和值、克隆、历史大记录与 SQLite 关闭重开保留字段；网络上限不变。
   未知 caller 类型、已知字段 scalar/missing/null 宽松构造与 partial-input 差异
   仍需独立捕获，不能据此宣布完整 provider 迁移完成。
+
+## Partial-input 实际 SDK 契约与原生差异审计
+
+- Source capture `d984cbd` 固定 Anthropic 0.107.1 / jiter 0.15.0，49 种输入 ×
+  client/server 两种块共 98 个实际 SSE 场景。包含每个已交付 delta 的快照、最终
+  `_content_payload` 或实际 ValueError；并固定 SDK accumulator 源码摘要。
+- 在 `689a1d9` 原生快照，69 个最终结果不同：client 37、server 32。
+  另外 16 个双方拒绝场景的失败发生阶段不同；“双方拒绝”不证明错误顺序相同。
+- SDK partial 模式的未闭合容器、截断标量、duplicate key、trailing input 与
+  非对象/nonfinite 接受行为均已捕获。client 空 delta 清空与具名输入额外字段
+  拒绝分别列为差异，不能用普通 JSON 补括号或只实现成功完整对象替代。
+- 本轮新增 Source fixture、诊断重放和审计，没有修复原生 parser，也不关闭 G4。
+  后续按 [完整审计与实现顺序](docs/audits/provider-partial-input-2026-10-10.md)
+  实现逐 delta 累计解析，并单独核对实际 Python 工具输入/转发/持久化消费者。
