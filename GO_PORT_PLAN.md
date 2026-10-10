@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `9f30168` plus native federation profile disk-cache dispatch and exchange, file-profile/OAuth refresh and dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
+Reviewed 2026-10-10 at `477a209` plus the provider usage Source inventory. Launcher automatic discovery and defined-empty auth alignment are delivered; SDK usage metadata preservation is the next confirmed runtime gap. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,10 +6864,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas and forwarding implemented; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; four SDK usage metadata fields and SDK null/default event shape remain unimplemented; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 202 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 203 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -6883,12 +6883,23 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    profiles with an explicit registry. Reconcile remaining provider content, request
    and auth options against Python public behavior before accepting G4/G7.
 
-3. Launcher credential discovery: capture environment/home/profile configuration
-   once; preserve static-key/bearer defined-empty distinctions, explicit profile
-   and active-pointer selection, environment federation before fallback profile,
-   and Source constructor-versus-request failures. Use the current native drivers.
+3. Complete usage event fidelity: actual SDK direct/SSE fixtures show that
+   `cache_creation`, `inference_geo`, `output_tokens_details` and `server_tool_use`
+   reach Python `model_end.usage` but are discarded by native decoding. Preserve
+   the SDK's nullable defaults and future extension fields through named types,
+   event projection, recordings and restart paths. See
+   [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md). Structured output request
+   options are not emitted by the current repository request producers; audit
+   custom extension behavior separately instead of adding unrelated SDK features.
 
 ### Resolved items that must not remain on the implementation queue
+
+- Launcher credential discovery is delivered at `4e92d28` and empty auth alignment
+  at `477a209`: captured selectors, active pointers, environment federation,
+  fallback profiles, constructor/request phases, private caches and literal
+  identity reader rotation/disappearance. There are 51 Source recipes; managed
+  Launcher tests compare 50, with same-client forced invalidation covered by
+  provider tests. No pending Launcher discovery implementation remains.
 
 - Native CLI development reload is implemented on macOS/Linux: nonempty Source
   selection, cwd observation, local module builds, retained listener and child
@@ -16121,3 +16132,31 @@ Six Python auth tests passed. Logs:
 Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings remain nonfatal.
 README architecture map reviewed; topology remains unchanged. Specification/artifact
 hashes match generated files. Worktree/staged diff checks pass. No merge or push.
+
+## 2026-10-10 provider runtime scope audit and complete usage Source capture
+
+Source capture commit `ab1833a`, runtime baseline `477a209`. Current status/index
+now removes delivered Launcher discovery from the open implementation queue.
+[GO_PROVIDER_SCOPE_AUDIT.md](GO_PROVIDER_SCOPE_AUDIT.md) maps actual Python SDK call
+sites and generated fields to named native request boundaries. It does not claim
+all custom provider/transport extensions or G4 acceptance are complete.
+
+A confirmed native gap is SDK usage event fidelity. Actual AsyncAnthropic direct
+and stream responses retain nine usage fields, nullable defaults, three named
+nested structures and future extension data. Native decoding currently retains
+five fields, dropping cache_creation, inference_geo, output_tokens_details and
+server_tool_use. Seven pinned Source recipes capture minimal/null/nested/future/
+scalar-string cases. Required input/output strings survive SDK construction while
+optional cache_creation_input_tokens is coerced, so a uniform coercion assumption
+is disproven by actual behavior. Native usage implementation is the next task;
+this commit does not claim it is fixed.
+
+Python provider usage/auth tests: 7 passed, one expected Pydantic scalar-string
+warning. Source export: 203 matching files, exit 0. Scanner verification: all 19
+guards pass, exit 0. Logs: `/tmp/mini-loop-provider-usage-{export,scans}.log`.
+README architecture review baseline and document navigation are updated; no
+runtime topology/default/authority/persistence changed. No fresh Go/race/vet,
+full Python, invariants/mutation, coverage, performance or architecture regeneration
+was run; native runtime/Python package modules/default tool types are unchanged.
+Diff/cached checks pass. No merge or push. Original P0/P1/G0-G7 acceptance and
+the default diagnostics dependency decision remain open.

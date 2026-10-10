@@ -2,40 +2,43 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `9f30168` plus native federation profile disk-cache dispatch and exchange, file-profile/OAuth, dynamic credential caching and citation SQLite/recording recovery proof. The entries below retain their historical
+Reviewed code/test baseline: `477a209` plus SDK usage Source inventory. Automatic Launcher discovery and defined-empty auth are delivered; usage metadata remains a confirmed implementation gap. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `aee0437` plus native citation integration | Passed: 202 files current; this checks exported recipes, not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `477a209` plus seven actual SDK usage captures | Passed: 203 files current; this checks exported recipes, not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 409 production files, 1322 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 412 production files, 1327 named types at `477a209`, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
-| Explicit provider authentication | Ten pinned Source recipes, each compared against native direct and SSE request headers; detached configuration, effective-header admission and credential redaction tests | Explicit key/bearer/ordered-header seam and Launcher environment selection implemented; four Settings/provider_for Source captures match managed native turns; SDK automatic profile/federation discovery remains open |
-| Dynamic credential cache | Typed callback/token/error seam; provider race tests for SDK windows/backoff, forced exchange retry, cancellation/panic release, direct/SSE auth and concurrent token redaction | Explicit process-local cache implemented; native file-profile/user OAuth implemented; explicit native federation exchange implemented; profile federation disk cache implemented; Launcher discovery remains open |
-| Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher discovery remains open; bounded ingress adaptations recorded |
-| Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence remains open; Client cache owns reuse |
-| Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher discovery remains open |
+| Explicit provider authentication | Ten pinned Source recipes, each compared against native direct and SSE request headers; detached configuration, effective-header admission and credential redaction tests | Explicit key/bearer/ordered-header seam and Launcher environment selection implemented; four Settings/provider_for Source captures match managed native turns; 51 actual SDK discovery recipes are captured; Launcher compares 50 and provider tests cover same-client invalidation; defined-empty auth alignment delivered |
+| Dynamic credential cache | Typed callback/token/error seam; provider race tests for SDK windows/backoff, forced exchange retry, cancellation/panic release, direct/SSE auth and concurrent token redaction | Explicit process-local cache implemented; native file-profile/user OAuth implemented; explicit native federation exchange implemented; profile federation disk cache implemented; Launcher automatic discovery delivered |
+| Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
+| Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
+| Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
+| Provider usage metadata | Seven actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Four named metadata fields, SDK nullable event defaults and future extension preservation are a confirmed native gap; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-The latest Source export check at `9f30168` exited zero with 202 matching files
-and existing dependency/watcher warnings. Historical actual Linux CLI and macOS
-CGO-disabled polling evidence retains its recorded baseline. Coverage was freshly measured at `a9585cb`: **89.63% (29248/32633)** across
-all Go packages, including the audit command; application packages excluding
-`tools/` measure **89.66% (29201/32569)**. The complete ordinary coverage run
-passed on Darwin arm64; CLI child-process/native C counters and Linux-only
-inotify code are outside the collected denominator. See the current plan's
-coverage refresh entry for package counts and exact command. Current command-specific and full Go checks
-are recorded in the audit delivery entry below. No full Python or merge/push
-was performed in this index refresh.
+The latest authentication-slice Source export retry at `477a209` passed with
+202 files; this slice adds the 203rd usage fixture. Native full Go ordinary/race/vet,
+six Python authentication tests, 19 scans and type audit passed at `477a209`.
+No new Go runtime validation is claimed by this fixture/inventory slice.
+
+Latest measured coverage is code/test baseline `4e92d28`: all packages **89.56%
+(29839/33318)**; application packages excluding `tools/` **89.59% (29792/33254)**.
+It is not refreshed after `477a209`. CLI child-process/native C counters and
+Linux-only inotify are outside the Darwin denominator. Full Python, broader
+performance, external type closure and final G7 acceptance remain unrefreshed.
+No merge or push was performed.
+
 
 ## 2026-10-09 native SQLite killed-generation process recovery
 
@@ -8326,3 +8329,31 @@ Six Python auth tests passed. Logs:
 Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings remain nonfatal.
 README architecture map reviewed; topology remains unchanged. Specification/artifact
 hashes match generated files. Worktree/staged diff checks pass. No merge or push.
+
+## 2026-10-10 provider runtime scope audit and complete usage Source capture
+
+Source capture commit `ab1833a`, runtime baseline `477a209`. Current status/index
+now removes delivered Launcher discovery from the open implementation queue.
+[GO_PROVIDER_SCOPE_AUDIT.md](GO_PROVIDER_SCOPE_AUDIT.md) maps actual Python SDK call
+sites and generated fields to named native request boundaries. It does not claim
+all custom provider/transport extensions or G4 acceptance are complete.
+
+A confirmed native gap is SDK usage event fidelity. Actual AsyncAnthropic direct
+and stream responses retain nine usage fields, nullable defaults, three named
+nested structures and future extension data. Native decoding currently retains
+five fields, dropping cache_creation, inference_geo, output_tokens_details and
+server_tool_use. Seven pinned Source recipes capture minimal/null/nested/future/
+scalar-string cases. Required input/output strings survive SDK construction while
+optional cache_creation_input_tokens is coerced, so a uniform coercion assumption
+is disproven by actual behavior. Native usage implementation is the next task;
+this commit does not claim it is fixed.
+
+Python provider usage/auth tests: 7 passed, one expected Pydantic scalar-string
+warning. Source export: 203 matching files, exit 0. Scanner verification: all 19
+guards pass, exit 0. Logs: `/tmp/mini-loop-provider-usage-{export,scans}.log`.
+README architecture review baseline and document navigation are updated; no
+runtime topology/default/authority/persistence changed. No fresh Go/race/vet,
+full Python, invariants/mutation, coverage, performance or architecture regeneration
+was run; native runtime/Python package modules/default tool types are unchanged.
+Diff/cached checks pass. No merge or push. Original P0/P1/G0-G7 acceptance and
+the default diagnostics dependency decision remain open.

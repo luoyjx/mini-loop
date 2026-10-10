@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `477a209` plus SDK usage Source capture;
+reviewed **2026-10-10** (Go baseline `ab1833a` plus provider scope audit;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -2615,7 +2615,7 @@ Check the Python contract snapshot before extending the Go port:
 | What is the verified-loop adoption status? | [Verified loop design](docs/VERIFIED_LOOP_DESIGN.md) |
 | What remains before a broader agent platform? | [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md) |
 | What informed the token-efficiency design? | [Token-efficiency components](docs/TOKEN_EFFICIENCY_COMPONENTS.md) |
-| What is the Python-to-Go migration sequence and current parity? | [Go port plan](GO_PORT_PLAN.md) and [parity matrix](GO_PARITY_MATRIX.md) |
+| What is the Python-to-Go migration sequence and current parity? | [Go port plan](GO_PORT_PLAN.md), [parity matrix](GO_PARITY_MATRIX.md), and [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Where are the source-level external studies? | [Research Atlas](research-site/README.md) |
 
 ### Go efficiency startup selection

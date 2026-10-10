@@ -1,0 +1,98 @@
+# Go provider 范围审计
+
+## 摘要
+
+代码基线：`477a209`；Source usage 捕获提交：`ab1833a`。审计时间：2026-10-10，Anthropic SDK 0.107.1。
+Launcher 自动发现已经实现，不能继续列为待实现项。当前确认的运行时缺口是
+**SDK usage 元数据和事件形状**：Python 会保留 SDK 完整 usage，Go 只建模其中五个字段。
+本报告与七个真实 SDK 离线捕获确定下一项实现任务，不代表 G4/G7 已验收。
+
+## 实际请求生成路径
+
+对 `python/mini_loop/**/*.py` 的 AST 调用节点检查发现三个 SDK 调用位置：
+
+| 位置 | 传递参数 | 对应 Go 边界 |
+| --- | --- | --- |
+| `transport.py:66`，DirectTransport.send | `**kwargs` | `provider.Client.Complete` |
+| `transport.py:140`，StreamingTransport.send | `**kwargs` | `provider.StreamingClient.CompleteStream` |
+| `memory.py:653`，extract_memories 的无 Agent fallback | `model/max_tokens/messages` | memory 模型接口与具名 ModelRequest |
+
+`Agent._create` 构造 `model/messages/max_tokens`，按需加入 `system/tools`。
+恢复策略修改 `model/max_tokens/messages`。缓存标注写入系统、工具和消息的副本。
+Go `protocol.ModelRequest` 对应这五个具名请求字段；`Purpose` 是本地来源，
+`Cache` 在 wire 投影中展开，不作为额外顶层请求字段。
+SDK 流式入口另外加入 `stream: true`，对应 Go streaming wire 选择。
+
+当前仓库生成路径没有 `output_config/output_format/temperature/top_p/top_k/tool_choice`
+等 SDK 选项。这项静态检查不是所有自定义 provider/transport 的行为证明；
+扩展可以改变调用方式，扩展接缝仍需单独审计。不能仅因 SDK 支持某选项就把它
+当成默认 Python 运行路径的缺失功能。
+
+## 已确认的 usage 缺口
+
+Python `agent._usage_payload` 调用 SDK Usage.model_dump；`Agent._create` 将结果写入
+`model_end.usage`。因此下列数据是仓库的可观察输出，不是被忽略的 SDK 私有元数据。
+
+| SDK 具名字段 | 当前 Go | 本轮 Source 证据 |
+| --- | --- | --- |
+| input_tokens / output_tokens | 已建模整数 | minimal / nested 的 direct 和 stream |
+| cache_creation_input_tokens / cache_read_input_tokens | 已建模可选整数 | nested；缺省 null 事件形状仍不同 |
+| service_tier | 已建模可选值 | nested；缺省 null 事件形状仍不同 |
+| cache_creation | 丢弃 | 1h / 5m 输入 token 分桶 |
+| inference_geo | 丢弃 | `us` |
+| output_tokens_details | 丢弃 | thinking_tokens |
+| server_tool_use | 丢弃 | web_fetch_requests / web_search_requests |
+| 未知扩展字段 | 丢弃 | future_counter.generation |
+
+SDK 最小回复仍输出全部九个声明字段，七个可选字段为 null；Go 的 omitempty
+目前不保留这种形状。direct 和 SDK 流式累计均保留 message_start 中的嵌套 usage。
+字符串场景还有一个明确观察：SDK 保留必填 input/output 的字符串，却将可选
+cache_creation_input_tokens 转成整数，序列化产生 Pydantic 警告。不得假设所有计数
+具有统一强制转换规则；现有 native 严格整数适配需在后续实现中明确界定。
+
+捕获文件：[python-provider-usage.json](go/testdata/python-provider-usage.json)。
+工厂：[provider_usage_contracts.py](python/tools/provider_usage_contracts.py)。
+测试：[test_provider_usage_contracts.py](python/tests/test_provider_usage_contracts.py)。
+捕获包含 SDK/Pydantic/CPython 版本及 Usage、SDK stream accumulator、仓库
+_usage_payload 的源码哈希。HTTP 使用 httpx.MockTransport，没有真实网络请求。
+
+## 后续实现与验收顺序
+
+1. 为四个遗漏字段建立具名嵌套结构；保留 absent/null/value 与 SDK 缺省事件形状。
+   未来扩展使用既有闭合 JSON 值边界，不能增加开放 domain payload。
+2. 更新 direct/SSE 解码、克隆、事件投影、记录与持久化读写，对照七个 Source 场景。
+   不能只修正 HTTP 解码而继续在事件或 restart 路径丢字段。
+3. 核对 usage 计量消费者与 scalar-string 适配，确认事件值与计量转换的区别。
+4. 单独完成剩余响应 block 与自定义 provider/transport 扩展范围审计。SDK 当前有
+   十二个回复 content discriminator；Go 的客户端工具 union 不等同于全部 SDK
+   服务端工具类型，不能据此直接声称完整 G4 关闭。
+5. 默认 full-feature CLI 的 Python 语法解析后端仍待依赖批准。SQLite 驱动批准
+   不覆盖该后端。G0 外部类型闭包、完整公共入口、跨功能与 G7 性能/发布门禁仍开放。
+
+SDK Message 的 container/stop_details 与完整 Usage 是不同问题：当前 Agent 事件
+明确投影 stop_reason、served_model、usage、content；未看到它读取前两者。
+其自定义调用者语义需要后续审计，不在本轮擅自宣布已覆盖或必需新增。
+
+## 源码固定
+
+| Python 文件 | SHA256 |
+| --- | --- |
+| providers.py | 19b2aaade7606e8ddea10dd2ce9b1ea274326937184d908c356353915a18d597 |
+| agent.py | c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6 |
+| transport.py | ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873 |
+| recovery.py | bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca |
+| memory.py | 39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f |
+
+本轮只新增 Source 契约、测试与审计文档；Go 运行时 usage 尚未修正。
+历史覆盖率不是这项未实现能力的证明。完整迁移目标继续保持开放。
+
+## 本轮验证
+
+- Python provider usage/auth 测试：7 passed，1 个字符串计数场景的预期 Pydantic 警告。
+- Source 导出：203 文件一致，退出 0。
+- Scanner 验证：19 项通过，退出 0。
+- README 架构地图与 Markdown outline 已复核，拓扑、默认能力、权限和持久化不变。
+- diff 与 staged diff 检查通过。未重跑 Go/race/vet、全量 Python、mutation、覆盖率或性能；
+  Go 运行时未变，Source fixture 与审计文档没有修复 native usage。
+
+验证日志位于 `/tmp/mini-loop-provider-usage-{export,scans}.log`；没有 merge 或 push。
