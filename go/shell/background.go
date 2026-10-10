@@ -21,6 +21,7 @@ type ProcessID int
 type BackgroundCommand struct {
 	Command string
 	Timeout time.Duration
+	Wait    *BackgroundWait
 	Started func(ProcessID)
 }
 
@@ -28,6 +29,7 @@ type executionPolicy struct {
 	background bool
 	timeout    time.Duration
 	started    func(ProcessID)
+	wait       *BackgroundWait
 }
 
 func notifyStarted(callback func(ProcessID), pid ProcessID) (err error) {
@@ -48,7 +50,7 @@ func (executor *Executor) ExecuteBackground(ctx context.Context, request Backgro
 	if request.Timeout == 0 {
 		request.Timeout = 300 * time.Second
 	}
-	result, err := executor.execute(ctx, request.Command, executionPolicy{true, request.Timeout, request.Started})
+	result, err := executor.execute(ctx, request.Command, executionPolicy{background: true, timeout: request.Timeout, started: request.Started, wait: request.Wait})
 	output := result.Stdout
 	if result.Projection != nil {
 		output = *result.Projection

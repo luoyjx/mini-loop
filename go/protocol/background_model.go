@@ -28,6 +28,8 @@ func (failure BackgroundBindingFailure) Error() string {
 // backgroundModelArguments separates observations from the executable typed
 // BackgroundRunInput. Unknown parameters are immutable metadata, never argv.
 type backgroundModelArguments struct {
+	timeout  *BackgroundTimeoutObservation
+	approval *BashApprovalProposal
 	command  *BashCommandObservation
 	failure  *BackgroundBindingFailure
 	rejected *BashRejectedArguments
@@ -36,6 +38,14 @@ type backgroundModelArguments struct {
 }
 
 func (args backgroundModelArguments) clone() *backgroundModelArguments {
+	if args.timeout != nil {
+		value := *args.timeout
+		args.timeout = &value
+	}
+	if args.approval != nil {
+		value := *args.approval
+		args.approval = &value
+	}
 	if args.command != nil {
 		value := *args.command
 		args.command = &value
@@ -52,6 +62,16 @@ func (args backgroundModelArguments) clone() *backgroundModelArguments {
 }
 
 func (args backgroundModelArguments) validate() error {
+	if args.timeout != nil {
+		if _, err := args.timeout.observed.MarshalLegacyUTF8(); err != nil {
+			return err
+		}
+	}
+	if args.approval != nil {
+		if _, err := args.approval.observed.MarshalLegacyUTF8(); err != nil {
+			return err
+		}
+	}
 	if args.command != nil {
 		if err := args.command.Validate(); err != nil {
 			return err
@@ -99,13 +119,15 @@ func decodeModelBackgroundInput(data []byte) (ToolInput, error) {
 		input.backgroundModel = args
 		return input, input.Validate()
 	}
-	known, extra := []jsonvalue.Field{}, []jsonvalue.Field{}
+	extra := []jsonvalue.Field{}
 	for _, key := range object.Keys() {
 		value, _ := object.Lookup(key)
 		switch key {
 		case "command": // Selected below, preserving the observed value separately.
-		case "timeout", "approval_prefix":
-			known = append(known, jsonvalue.Field{Name: key, Value: value})
+		case "timeout":
+			args.timeout = &BackgroundTimeoutObservation{observed: value}
+		case "approval_prefix":
+			args.approval = &BashApprovalProposal{observed: value}
 		default:
 			extra = append(extra, jsonvalue.Field{Name: key, Value: value})
 		}
@@ -120,18 +142,7 @@ func decodeModelBackgroundInput(data []byte) (ToolInput, error) {
 		}
 		args.command = &value
 	}
-	if len(extra) == 0 && present && isText {
-		return DecodeToolInput(ToolBackgroundRun, data)
-	}
-	known = append(known, jsonvalue.Field{Name: "command", Value: jsonvalue.TextValue(text)})
-	encoded, err := jsonvalue.ObjectValue(known).MarshalJSON()
-	if err != nil {
-		return ToolInput{}, err
-	}
-	input, err := DecodeToolInput(ToolBackgroundRun, encoded)
-	if err != nil {
-		return ToolInput{}, err
-	}
+	input := BackgroundRunToolInput(BackgroundRunInput{Command: text})
 	args.extra = jsonvalue.ObjectValue(extra)
 	if len(extra) > 0 {
 		args.failure = &BackgroundBindingFailure{kind: BashUnexpectedParameter, parameter: extra[0].Name}
@@ -195,6 +206,12 @@ func (input ToolInput) backgroundObservation() (jsonvalue.Value, error) {
 		}
 		fields = append(fields, jsonvalue.Field{Name: key, Value: value})
 	}
+	if args.timeout != nil {
+		fields = append(fields, jsonvalue.Field{Name: "timeout", Value: args.timeout.observed})
+	}
+	if args.approval != nil {
+		fields = append(fields, jsonvalue.Field{Name: "approval_prefix", Value: args.approval.observed})
+	}
 	for _, key := range args.extra.Keys() {
 		value, _ := args.extra.Lookup(key)
 		fields = append(fields, jsonvalue.Field{Name: key, Value: value})
@@ -203,6 +220,12 @@ func (input ToolInput) backgroundObservation() (jsonvalue.Value, error) {
 }
 
 func (args *backgroundModelArguments) mask(mask func(string) string) {
+	if args.timeout != nil {
+		args.timeout.observed = args.timeout.observed.MapStrings(mask)
+	}
+	if args.approval != nil {
+		args.approval.observed = args.approval.observed.MapStrings(mask)
+	}
 	if args.command != nil {
 		args.command.observed = args.command.observed.MapStrings(mask)
 	}

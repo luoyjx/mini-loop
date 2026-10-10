@@ -174,7 +174,7 @@ func TestActualSourceCommandsAndRendering(t *testing.T) {
 				value := time.Duration(*row.Timeout) * time.Second
 				timeout = &value
 			}
-			if start := run(t, m, Request{row.Command, timeout}); start.Render() != row.Started {
+			if start := run(t, m, Request{Command: row.Command, Timeout: timeout}); start.Render() != row.Started {
 				t.Fatal("source start differs", start.Render(), row.Started)
 			}
 			checkState(t, m, row.sourceState, true)

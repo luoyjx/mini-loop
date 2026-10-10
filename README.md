@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `a5aed66` plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `b6f49c6` plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -620,7 +620,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-11** (Go baseline `a5aed66` plus serial Darwin callback queue ownership;
+reviewed **2026-10-11** (Go baseline `b6f49c6` plus named background wait policies and serial Darwin callback queue ownership;
 native watcher temporal acceptance and prior measured coverage stay explicit;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
@@ -706,7 +706,7 @@ flowchart LR
         GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
-        GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
+        GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · named wait policies · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
         GoBackground -->|atomic best-effort in-flight files| GoBgLedger
@@ -2691,6 +2691,25 @@ match display, final input, hook/result order and background initialization/task
 numbering. Before rewrites and denials retain precedence. Known timeout/prefix
 fields remain typed; their broader coercion audit, nonfinite optional fields and complete
 provider/port acceptance remain open.
+
+### Background optional observations and wait policies
+
+Model background replies retain named BackgroundTimeoutObservation and approval
+proposal metadata. Known integer timeout accessors remain available; execution
+lowers observations into a concrete BackgroundWait policy after the common gate.
+Falsy values use the configured default; bool/fraction/negative numeric deadlines,
+immediate NaN, positive infinity and post-spawn type/overflow faults match 48 Source task
+profiles. Finite deadlines beyond time.Duration use bounded timer steps rather
+than overflow or early rejection. Explicit typed caller admission remains strict.
+Clones, masking, canonical identities and archived messages preserve observations;
+finite JSON still refuses nonfinite values. Only valid string-array approval
+proposals reach existing candidate validation; readonly calls allocate no task.
+Source type/overflow faults leave processes running. Native execution deliberately
+kills and joins those groups before settling the same error text, preserving its
+resource-ownership boundary. NaN uses the unguarded Source profile's immediate timeout. An outer Python
+watchdog changes that profile to completion; exact timer-heap parity is not claimed. Native direct/SSE and SQLite message close/reopen preserve all 48 option inputs.
+Broader managed turns, Source SDK coercion, full-state recovery and default
+diagnostics remain open.
 
 ### Missing model tool observations
 

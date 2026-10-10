@@ -273,9 +273,27 @@ func (executor *Executor) execute(ctx context.Context, command string, policy ex
 	}
 	waited := make(chan error, 1)
 	go func() { waited <- cmd.Wait() }()
-	timer := time.NewTimer(policy.timeout)
-	defer timer.Stop()
-	deadline := timer.C
+	wait := NumericBackgroundWait(policy.timeout.Seconds(), fmt.Sprintf("%g", policy.timeout.Seconds()))
+	if policy.wait != nil {
+		wait = *policy.wait
+	}
+	var timer *time.Timer
+	var deadline <-chan time.Time
+	var remaining float64
+	if wait.kind == backgroundWaitNumeric && wait.seconds > 0 {
+		if policy.wait == nil {
+			timer = time.NewTimer(policy.timeout) // Preserve the typed caller's exact duration.
+		} else {
+			step, rest := backgroundWaitStep(wait.seconds)
+			remaining = rest
+			timer = time.NewTimer(step)
+		}
+		deadline = timer.C
+		defer timer.Stop()
+	}
+	if wait.kind == backgroundWaitFault && startFault == nil {
+		startFault = wait.failure()
+	}
 	cancelled := ctx.Done()
 	overflow := capture.overflow
 	var drainError error
@@ -310,6 +328,9 @@ func (executor *Executor) execute(ctx context.Context, command string, policy ex
 	}
 	if startFault != nil {
 		endGroup()
+	} else if wait.kind == backgroundWaitImmediate || wait.kind == backgroundWaitNumeric && wait.seconds <= 0 {
+		result.TimedOut = true
+		endGroup()
 	}
 	for drains < 2 || !reaped && !abandonedWait {
 		select {
@@ -342,6 +363,12 @@ func (executor *Executor) execute(ctx context.Context, command string, policy ex
 			}
 		case <-deadline:
 			if !killed {
+				if remaining > 0 {
+					step, rest := backgroundWaitStep(remaining)
+					remaining = rest
+					timer.Reset(step)
+					continue
+				}
 				result.TimedOut = true
 				endGroup()
 			} else {
@@ -384,7 +411,7 @@ func (executor *Executor) execute(ctx context.Context, command string, policy ex
 		text := executor.secrets.MaskText("Error: " + startFault.Error())
 		result.Error = &text
 	} else if result.TimedOut {
-		text := fmt.Sprintf("Error: Timeout (%gs)", policy.timeout.Seconds())
+		text := executor.secrets.MaskText(fmt.Sprintf("Error: Timeout (%ss)", wait.label))
 		result.Error = &text
 	} else if drainError != nil {
 		text := executor.secrets.MaskText("Error: " + drainError.Error())

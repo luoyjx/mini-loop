@@ -34,6 +34,7 @@ const (
 type Request struct {
 	Command string
 	Timeout *time.Duration
+	Wait    *shell.BackgroundWait
 }
 type Started struct {
 	ID       ID
@@ -214,11 +215,16 @@ func (manager *Manager) Run(ctx context.Context, request Request) (Started, erro
 		timeout = *request.Timeout
 	}
 	executor := manager.executor
-	go manager.execute(ctxTask, executor, id, request.Command, timeout, done, cancel)
+	var wait *shell.BackgroundWait
+	if request.Wait != nil {
+		value := *request.Wait
+		wait = &value
+	}
+	go manager.execute(ctxTask, executor, id, request.Command, timeout, wait, done, cancel)
 	return Started{id, request.Command, recorded}, nil
 }
 
-func (manager *Manager) execute(ctx context.Context, executor *shell.Executor, id ID, command string, timeout time.Duration, done chan struct{}, cancel context.CancelFunc) {
+func (manager *Manager) execute(ctx context.Context, executor *shell.Executor, id ID, command string, timeout time.Duration, wait *shell.BackgroundWait, done chan struct{}, cancel context.CancelFunc) {
 	defer close(done)
 	defer cancel()
 	defer func() {
@@ -232,7 +238,7 @@ func (manager *Manager) execute(ctx context.Context, executor *shell.Executor, i
 			manager.settle(id)
 		}
 	}()
-	result, err := executor.ExecuteBackground(ctx, shell.BackgroundCommand{Command: command, Timeout: timeout, Started: func(pid shell.ProcessID) {
+	result, err := executor.ExecuteBackground(ctx, shell.BackgroundCommand{Command: command, Timeout: timeout, Wait: wait, Started: func(pid shell.ProcessID) {
 		manager.mu.Lock()
 		defer manager.mu.Unlock()
 		manager.writeLedger(id, command, &pid)

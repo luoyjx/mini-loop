@@ -34,7 +34,14 @@ func CheckBackgroundToolInput(v CheckBackgroundInput) ToolInput {
 	return ToolInput{name: ToolCheckBackground, checkBackground: cloneCheckBackground(v)}
 }
 func (v ToolInput) BackgroundRun() (BackgroundRunInput, bool) {
-	return cloneBackgroundRun(v.backgroundRun), v.name == ToolBackgroundRun
+	value := cloneBackgroundRun(v.backgroundRun)
+	if v.backgroundModel != nil && v.backgroundModel.timeout != nil {
+		value.Timeout = v.backgroundModel.timeout.integer()
+	}
+	if v.backgroundModel != nil && v.backgroundModel.approval != nil {
+		value.ApprovalPrefix = v.backgroundModel.approval.tokens()
+	}
+	return value, v.name == ToolBackgroundRun
 }
 func (v ToolInput) CheckBackground() (CheckBackgroundInput, bool) {
 	return cloneCheckBackground(v.checkBackground), v.name == ToolCheckBackground

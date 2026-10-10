@@ -8475,3 +8475,24 @@ context deadlines and Source fixture expectations remain intact. A real native
 callback blocked in diagnostic IO verifies that concurrent Close waits for its
 release and registry cleanup. This queue lifecycle change does not independently
 establish the cause of the previous RunLoop/Source timing failures.
+
+## Named background optional execution policies — 2026-10-11
+
+Baseline `b6f49c6`. Background model observations retain timeout/proposal metadata
+separately from strict caller inputs. BackgroundTimeoutPlan lowers into concrete
+shell.BackgroundWait policies; no generic value enters the background service or
+shell. The gate still allocates tasks and returns Started before type/overflow
+faults are consumed after process creation. Honest proposals use existing candidate
+validation; readonly execution cannot initialize a manager. Source fault paths
+leave processes alive; native execution intentionally kills and joins those groups
+before publishing the same task error, preserving its cleanup invariant. Finite
+long deadlines use bounded timer steps, with sub-nanosecond rounding to one ns.
+NaN matches the unguarded immediate-timeout profile; positive infinity has no
+deadline. A Python observer watchdog changes NaN to completion, so exact timer-heap
+interleavings are not claimed. Existing owner contexts, cancellation, secrets,
+sandbox, ledgers, retention and notifications remain the same execution boundaries.
+
+Native tasks use goroutines: process creation can race the caller's return,
+whereas the captured Source hooks do not yield before returning. This slice
+compares allocated call outcomes and settled tasks, not zero process starts at
+return or exact scheduling. Post-spawn faults still require an allocated task.

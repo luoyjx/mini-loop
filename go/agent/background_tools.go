@@ -160,6 +160,30 @@ func (handler *runtimeHandler) executeBackground(ctx context.Context, input prot
 	if command, ok := input.BackgroundCommandObservation(); ok {
 		return "", command.Failure(protocol.BashCommandSplit)
 	}
+	var wait *shell.BackgroundWait
+	if plan, observed := input.BackgroundTimeout(); observed {
+		value.Timeout = nil // The named observation plan owns model timeout execution.
+		var policy shell.BackgroundWait
+		switch plan.Kind {
+		case protocol.BackgroundTimeoutNumeric:
+			policy = shell.NumericBackgroundWait(plan.Seconds, plan.Label)
+		case protocol.BackgroundTimeoutImmediate:
+			policy = shell.ImmediateBackgroundWait(plan.Label)
+		case protocol.BackgroundTimeoutUnbounded:
+			policy = shell.UnboundedBackgroundWait()
+		case protocol.BackgroundTimeoutTextFault:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitTextFault)
+		case protocol.BackgroundTimeoutArrayFault:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitArrayFault)
+		case protocol.BackgroundTimeoutObjectFault:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitObjectFault)
+		case protocol.BackgroundTimeoutIntegerOverflow:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitIntegerOverflow)
+		}
+		if plan.Kind != protocol.BackgroundTimeoutDefault {
+			wait = &policy
+		}
+	}
 	var timeout *time.Duration
 	if value.Timeout != nil {
 		const maxSeconds = int64(1<<63-1) / int64(time.Second)
@@ -170,7 +194,7 @@ func (handler *runtimeHandler) executeBackground(ctx context.Context, input prot
 		duration := time.Duration(seconds) * time.Second
 		timeout = &duration
 	}
-	started, err := manager.Run(ctx, background.Request{Command: value.Command, Timeout: timeout})
+	started, err := manager.Run(ctx, background.Request{Command: value.Command, Timeout: timeout, Wait: wait})
 	if err != nil {
 		return "", err
 	}
