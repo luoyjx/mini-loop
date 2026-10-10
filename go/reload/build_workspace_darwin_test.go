@@ -4,7 +4,6 @@ package reload
 
 import (
 	"context"
-	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -50,17 +49,8 @@ func TestNativeObserverDuringRealCgoBuildInsideWatchedRoot(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer observer.Close()
-	for {
-		ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
-		_, err := observer.Next(ctx)
-		cancel()
-		if errors.Is(err, context.DeadlineExceeded) {
-			break
-		}
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
+	awaitNativeFixtureReady(t, observer, root)
+
 	artifact, err := builder.Build(context.Background(), nil)
 	if err != nil {
 		t.Fatal(err)

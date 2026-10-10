@@ -119,20 +119,7 @@ func testSupervisorRecovery(t *testing.T, profile *ObserverProfile) {
 		t.Cleanup(func() { _ = observer.Close() })
 	}
 	if profile != nil && profile.Backend() == NativeBackend {
-		// FSEvents can deliver the fixture's pre-registration atomic rename
-		// after subscription construction. Drain only before ownership handoff;
-		// actual source edits start after the first child responds.
-		for {
-			ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
-			_, err := observer.Next(ctx)
-			cancel()
-			if errors.Is(err, context.DeadlineExceeded) {
-				break
-			}
-			if err != nil {
-				t.Fatal("fixture initialization events", err)
-			}
-		}
+		awaitNativeFixtureReady(t, observer, root)
 	}
 
 	events := make(chan LifecycleEvent, 64)
@@ -455,4 +442,35 @@ func (observer *supervisorTestObserver) Next(ctx context.Context) (EventBatch, e
 func (observer *supervisorTestObserver) Close() error {
 	observer.once.Do(func() { close(observer.closed) })
 	return nil
+}
+
+// Observe a source event published after subscription construction. This
+// acknowledges actual kernel delivery before supervisor/compiler ownership;
+// a short quiet timeout cannot prove that setup events have been delivered.
+func awaitNativeFixtureReady(t *testing.T, observer Observer, root string) {
+	t.Helper()
+	probe := filepath.Join(root, "reload_observer_ready.go")
+	if err := os.WriteFile(probe, []byte("package main\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	canonical, err := filepath.EvalSymlinks(probe)
+	if err != nil {
+		t.Fatal(err)
+	}
+	probe = canonical
+	// Keep this valid, inert source until fixture cleanup. Removing it now
+	// would enqueue a new matching event after the ownership handoff.
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	for {
+		batch, err := observer.Next(ctx)
+		if err != nil {
+			t.Fatal("native fixture readiness", err)
+		}
+		for _, path := range batch.Paths {
+			if path == probe {
+				return
+			}
+		}
+	}
 }
