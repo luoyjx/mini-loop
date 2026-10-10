@@ -25,7 +25,7 @@ func settingsFor(t *testing.T, extra map[string]string) config.Settings {
 	for key, value := range extra {
 		env[key] = value
 	}
-	settings, err := config.Load(env, config.LoadOptions{Directory: t.TempDir()})
+	settings, err := config.Load(env, config.LoadOptions{Directory: t.TempDir(), HomeDirectory: t.TempDir()})
 	if err != nil {
 		t.Fatal(err)
 	}

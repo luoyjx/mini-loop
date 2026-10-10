@@ -8228,3 +8228,55 @@ coverage, full race, vet, type audit (412 production files / 1327 named types /
 zero findings), Source export (202 files) and 19 scan guards. Code/tests remained
 frozen during full runs. Logs: `/tmp/mini-loop-discovery-{go,race,vet,types,export,scans}.log`.
 The following integration commit records coverage and architecture activation.
+
+## 2026-10-10 Launcher automatic credential discovery
+
+Library baseline `c910c57` plus Launcher/CLI integration. Real providers now select
+explicit profile/config directory or active pointer, complete environment federation,
+then fallback profile. Defined empty static key/auth suppresses lookup. Fake providers
+skip lookup. Explicit profile errors remain constructor faults; unreadable fallback
+profiles preserve deferred missing request auth. Profile headers precede custom headers.
+Token/model HTTP share an explicitly borrowed transport or a private owned clone;
+App does not close borrowed transports. Token exchanges use a 30-second timeout.
+Selectors are captured once. Explicit SDK maps capture literals unless an identity
+reader is supplied. Real CLI process identity reads rotate regardless of dotenv
+selection. Snapshots discard live credential selectors, secrets and callbacks.
+
+The managed Launcher harness checks constructor phases, actual model/token URLs,
+headers/bodies, call counts, replies/error projections and private disk cache files
+for 42 of 43 pinned discovery recipes. The forced-invalidation recipe is explicitly
+skipped here because Launcher exposes no same-client invalidation handle; existing
+provider tests cover that operation. Reconstruction is compared through real App
+shutdown and new App creation. Settings tests cover defined-empty suppression,
+privacy, detached optional strings, captured maps and explicit reader rotation.
+
+README canonical Mermaid/boundary/review baseline, extension notes and interactive
+specification were updated together. Archify delivery passed 9/9 checks, zero errors
+and warnings. Specification SHA256 d6a87d7bbc9ecd62a5cd83754dea425b5478c8d9c59586c320c8ac521ccb41b5;
+HTML SHA256 bda5d88b623283c4d94c1e4ce53939bd85f1d1d0f5d6d263eda8f99735ef8556.
+No fresh browser visual inspection was performed. Migration/G7 remains open.
+No new dependency, merge or push. Full Python regression, Python invariant/mutation,
+performance, Linux-host and CGO-disabled checks were not rerun in this Go slice.
+
+### Final integrated coverage
+
+Darwin arm64, `c910c57` plus this integration: full
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-discovery-coverage.out ./...` passed.
+Identical source-location blocks are counted once using maximum hit count.
+Application packages excluding tools: **89.59% (29792/33254 statements)**;
+all Go packages: **89.56% (29839/33318)**. Compared to application baseline
+`a9585cb` (89.66%), the denominator grew by 685 statements and covered statements
+by 591; percentage decreased 0.07 points. This is collected statement coverage,
+not branch coverage or migration acceptance. CLI child-process/C counters are not
+merged; Linux-only code is outside the Darwin denominator. Temporary profile/logs
+are untracked. Python coverage remains unrefreshed.
+
+Final code snapshot gates all passed: full Go ordinary tests with cross-package
+coverage, full `go test -race -p=1 -count=1 -timeout=300s ./...`, and `go vet ./...`.
+Code/test/fixture files stayed frozen throughout final full jobs. Type audit passed
+with 412 production files, 1327 package-level types and zero findings; unchanged
+Source contracts checked current (202 files), 19 scanning guards passed. Logs:
+`/tmp/mini-loop-discovery-{go,race,vet,types,export,scans}.log`. Existing Darwin
+FSEvents deprecation and LC_DYSYMTAB warnings did not prevent passing. README outline,
+architecture artifact hashes, worktree and staged diff checks passed. No merge/push.

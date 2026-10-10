@@ -2836,8 +2836,9 @@ or retry waiting, after their request/body checks. Non-streaming token-ceiling
 refusal has Source priority. `FailureCredential` projects class TypeError and
 ModelFailureOther, distinct from a remote HTTP AuthenticationError. The existing
 Agent run boundary returns `[Error]` text and records a provider error.
-Empty keys do not alter endpoint/error text during redaction. No automatic SDK
-profile, OAuth or federation credential discovery is implemented by this seam.
+Empty keys do not alter endpoint/error text during redaction. Direct provider
+constructors consume caller configuration; Launcher performs profile/OAuth/federation
+discovery through the named credential selection described below.
 
 ### Native dotenv library
 
@@ -3026,3 +3027,17 @@ DiagnosticWriter uses stdout; custom writers must return promptly. Native flags
 (or zero for polling) are printed; text is a native Go adaptation of Rust debug
 output. No observer/profile is implicitly activated by Launcher or the current CLI.
 Linux native event delivery and CLI binding remain next; no dependency is added.
+
+### Launcher credential discovery
+
+`Launcher.NewWithOptions` discovers credentials only for real providers with
+undefined API key and auth token. Explicit profile/config directory or active
+pointer takes precedence, then complete environment federation, then fallback
+profile. Explicit profile errors are eager; bad fallback profiles preserve deferred
+missing-auth request errors. Static custom headers are applied after profile headers.
+`LoadOptions.HomeDirectory` isolates profile roots. Explicit settings maps capture
+literal identity; `IdentityTokenReader` provides rotation and disappearance. Real
+CLI process readers remain live regardless of dotenv selection. Snapshot discards
+live selectors, literals and readers. `Options.ProviderTransport` is borrowed and
+never closed by App; nil owns a private transport. `ProviderNow` supplies an optional
+clock. Token exchanges use the Source 30-second timeout. Fake providers skip discovery.

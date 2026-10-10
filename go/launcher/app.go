@@ -113,6 +113,10 @@ func Inspect(settings config.Settings, server config.ServerSettings, auth httpap
 // Options selects individual Go services and explicit operator backends. Full
 // settings require DiagnosticsProvider until a default parser is implemented.
 type Options struct {
+	// ProviderTransport is an optional borrowed HTTP boundary for model and token
+	// requests. The caller owns its lifetime; nil uses a private default clone.
+	ProviderTransport http.RoundTripper
+	ProviderNow       func() time.Time
 	// StateStore is caller-owned. Neither constructor nor Serve restores sessions;
 	// the operator invokes App.RestoreSessions explicitly before serving them.
 	StateStore agent.StateStore
@@ -246,22 +250,26 @@ func buildApp(ctx context.Context, settings config.Settings, server config.Serve
 	if settings.FakeLLM {
 		model = agent.NewFakeProvider(agent.FakeProviderConfig{Delay: server.FakeDelay}).ObjectView()
 	} else {
-		transport = &http.Transport{}
-		if base, ok := http.DefaultTransport.(*http.Transport); ok {
-			transport = base.Clone()
+		var upstream http.RoundTripper = options.ProviderTransport
+		if upstream == nil {
+			transport = &http.Transport{}
+			if base, ok := http.DefaultTransport.(*http.Transport); ok {
+				transport = base.Clone()
+			}
+			upstream = transport
 		}
-		endpoint := ""
-		if settings.BaseURL != nil {
-			endpoint = *settings.BaseURL
-		}
-		token, configuredHeaders := settings.ProviderAuthentication()
-		headers := make([]provider.Header, 0, len(configuredHeaders))
-		for _, header := range configuredHeaders {
-			headers = append(headers, provider.Header{Name: header.Name, Value: header.Value.Reveal()})
-		}
-		client, err := provider.New(provider.Config{APIKey: settings.APIKey.Reveal(), AuthToken: token.Reveal(), Headers: headers, BaseURL: endpoint, HTTPClient: &http.Client{Transport: transport}})
+		cfg, err := modelConfig(ctx, settings, upstream, options.ProviderNow)
 		if err != nil {
-			transport.CloseIdleConnections()
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+		client, err := provider.New(cfg)
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
 			return nil, err
 		}
 		model = client

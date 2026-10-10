@@ -55,7 +55,11 @@ func executeWithListener(ctx context.Context, args []string, env map[string]stri
 		return 2
 	}
 	fail := func(err error) int { fmt.Fprintln(stderr, err); return 1 }
-	settings, err := config.Load(env, config.LoadOptions{})
+	loadOptions := config.LoadOptions{}
+	if _, present := os.LookupEnv("ANTHROPIC_IDENTITY_TOKEN"); present {
+		loadOptions.IdentityTokenReader = config.ReadProcessIdentityToken
+	}
+	settings, err := config.Load(env, loadOptions)
 	if err != nil {
 		return fail(err)
 	}

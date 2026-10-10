@@ -3964,3 +3964,17 @@ values and never receive the compiler-only overrides or listener role marker.
 Run owns the subscription after listener admission; CLI defers cover earlier failures.
 Cleanup joins child/artifact and observer before closing the workspace. Native loss
 faults terminate with cleanup; an empty filtered batch causes no rebuild.
+
+### Launcher credential discovery
+
+`Launcher.NewWithOptions` discovers credentials only for real providers with
+undefined API key and auth token. Explicit profile/config directory or active
+pointer takes precedence, then complete environment federation, then fallback
+profile. Explicit profile errors are eager; bad fallback profiles preserve deferred
+missing-auth request errors. Static custom headers are applied after profile headers.
+`LoadOptions.HomeDirectory` isolates profile roots. Explicit settings maps capture
+literal identity; `IdentityTokenReader` provides rotation and disappearance. Real
+CLI process readers remain live regardless of dotenv selection. Snapshot discards
+live selectors, literals and readers. `Options.ProviderTransport` is borrowed and
+never closed by App; nil owns a private transport. `ProviderNow` supplies an optional
+clock. Token exchanges use the Source 30-second timeout. Fake providers skip discovery.

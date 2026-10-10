@@ -347,7 +347,7 @@ report `<absent>` and refuse model requests before HTTP or retries. Non-streamin
 token-ceiling checks retain Source priority over missing authentication. The
 missing-credential failure carries typed `TypeError` identity through existing
 recovery and error-result projection. Supplied keys retain header/size admission;
-SDK profile, OAuth and federation discovery remain outside this native seam.
+Launcher now discovers SDK profiles, OAuth and federation through named settings.
 
 The Go `dotenv` library parses scalar UTF-8 text, resolves variables and returns
 a detached environment map, preserving Source spans/lines, nullable values,
@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `80c0dc5` plus typed credential discovery library review;
+reviewed **2026-10-10** (Go baseline `c910c57` plus Launcher credential discovery integration;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · file profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1197,8 +1197,7 @@ contexts own calls/waits, redirects are refused, and diagnostics scrub the confi
 API key, bearer token and custom authentication header values. Explicit typed
 `provider.Config.AuthToken` and ordered `Headers` support SDK header precedence
 for direct and streaming requests. Construction captures header values; later
-caller edits cannot change request authority. The adapter never discovers
-credentials; Launcher captures `ANTHROPIC_AUTH_TOKEN` and
+caller edits cannot change request authority. The adapter consumes explicit credentials; Launcher captures `ANTHROPIC_AUTH_TOKEN` and
 `ANTHROPIC_CUSTOM_HEADERS` in secret settings. A nonempty Settings API key
 suppresses environment bearer selection, matching Python Settings/provider_for.
 Explicit empty environment keys retain an empty header alongside bearer auth.
@@ -1232,8 +1231,16 @@ remaining, and supports forced bypass. Invalid expiry re-exchanges; atomic write
 preserve refresh-token/extension fields. Filesystem write failure leaves the
 exchanged token usable in memory. Profile credentials retain private-file guards,
 and workspace selection belongs in federation's token body. Both profile grant
-paths use the Source 30-second default token timeout. Launcher automatic discovery
-remains open. The launcher explicitly passes
+paths use the Source 30-second default token timeout. Launcher now selects explicit
+profiles (including active pointers), complete environment federation, then fallback
+profiles when API key/auth token are undefined. Defined empty static credentials
+suppress discovery. Explicit profile faults occur at construction; bad fallback
+profiles defer missing-auth refusal until requests. Fake providers bypass discovery.
+Selectors are captured; projected files and explicit identity readers can rotate.
+Real CLI process identity reads remain live independently of dotenv selection;
+explicit SDK environment maps retain captured literals unless given a reader.
+Snapshots discard live selection. Borrowed ProviderTransport remains caller-owned,
+and ProviderNow is an optional clock seam. The launcher explicitly passes
 its validated environment settings. This
 adapter supplies SDK-level retry; the session now applies separate default Agent
 recovery: at most ten transient retries, bounded outer waits, token escalation,
