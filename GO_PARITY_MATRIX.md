@@ -10370,3 +10370,36 @@ modules are unchanged. No merge or push. See
 
 Next: investigate ordinary native reload event failures against actual Source
 recipes; retain the passing race result separately and preserve watcher ownership.
+
+## Native recipe probe setup fidelity — 2026-10-11
+
+Test prerequisite `e5064d8`; production baseline `ea35cd3` unchanged. Actual Source
+`_native_case` drains subscription setup before writing its readiness probe, then
+drains again after observing that probe, with rust_timeout=100 and reload_delay=0.
+The Go recipe test now uses that same two-phase order, with 100ms context-bounded
+Next waits. This aligns setup order; it does not prove identical timer scheduling
+or timeout behavior during an in-progress batch. The live subscription, expected
+16 recipes, event filtering and 3-second operation deadline are unchanged.
+
+Counterevidence matters: the unmodified targeted 16-case run already passed in
+7.590s. After the test change, three targeted rounds (48 scenarios) pass in 18.239s.
+Fresh actual Source captures for identical-write, same-mtime-touch, rename-source
+and ignored-hidden all match the pinned fixture, including the excluded empty
+batch. Nevertheless, full ordinary Go still fails only reload lower-mtime-write,
+identical-write, rename-out and rename-source (reload 97.211s). Thus omitted
+pre-probe draining is not established as the cause of the full-run failures.
+The failure timelines contain no admitted diagnostic event after the operation;
+that diagnostic runs after Darwin flag/root admission, so it cannot prove that
+the OS or raw C callback produced no event. Native temporal reliability remains
+open. The reload package race run passes in 59.235s with existing macOS linker
+warnings and no reported data race; it does not supersede the ordinary result.
+
+See [probe setup audit](docs/audits/go-reload-source-drain-2026-10-11.json) for
+Source results, test/source hashes, commands and log hashes. git diff --check
+passes. This is a tests-only change: runtime/types/defaults/dependencies and
+architecture are unchanged. No new full race, vet/type audit, full Source export,
+Python suite, coverage, non-Darwin or performance gate is claimed. No merge/push;
+the full port goal remains active.
+
+Next: distinguish raw FSEvents callback delivery from Go flag/root admission at
+the exact failing runtime baseline before proposing a listener implementation fix.

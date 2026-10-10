@@ -1,0 +1,155 @@
+{
+  "baseline": "0912763",
+  "test_commit": "e5064d8",
+  "production_runtime": "ea35cd3 unchanged",
+  "conclusion": "Two-phase setup order aligned; full ordinary failure counterexample rejects treating the missing pre-probe drain as the complete cause",
+  "source_results": [
+    {
+      "initial": true,
+      "mtime": 100,
+      "name": "identical-write",
+      "operation": "unchanged-write",
+      "path": "source.py",
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "FsEventWatcher",
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        }
+      },
+      "closed": true,
+      "matches_fixture": true
+    },
+    {
+      "initial": true,
+      "mtime": 100,
+      "name": "same-mtime-touch",
+      "operation": "touch",
+      "path": "source.py",
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "FsEventWatcher",
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        }
+      },
+      "closed": true,
+      "matches_fixture": true
+    },
+    {
+      "destination": "target.py",
+      "initial": true,
+      "name": "rename-source",
+      "operation": "rename",
+      "path": "source.py",
+      "changed": [
+        "source.py",
+        "target.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "FsEventWatcher",
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        }
+      },
+      "closed": true,
+      "matches_fixture": true
+    },
+    {
+      "initial": false,
+      "mtime": 100,
+      "name": "ignored-hidden",
+      "operation": "add",
+      "path": ".hidden.py",
+      "changed": [],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "FsEventWatcher",
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        }
+      },
+      "closed": true,
+      "matches_fixture": true
+    }
+  ],
+  "source_capture": "Actual _native_case sequentially replayed four previously failed fixture recipes after native targeted jobs terminated; asserts all changed paths match the pinned fixture",
+  "verification": [
+    {
+      "name": "baseline",
+      "working_directory": "go/",
+      "command": "go test -p=1 -count=1 ./reload -run TestNativeEventsActualSourceRecipes -v",
+      "result": "16 pass 7.590s before change",
+      "log": "/tmp/mini-loop-reload-investigation-recipes.log",
+      "sha256": "67238745ec3e7add860bd472e0897edb1008d13b88d20dc8c5ffa0fbe8bf96d0"
+    },
+    {
+      "name": "recipes",
+      "working_directory": "go/",
+      "command": "go test -p=1 -count=3 ./reload -run TestNativeEventsActualSourceRecipes -v",
+      "result": "48 pass 18.239s",
+      "log": "/tmp/mini-loop-reload-source-drain-recipes.log",
+      "sha256": "6965ba31e4771caf29edab4e58198e36c4515d24db9b21e787405f2a0e44c294"
+    },
+    {
+      "name": "full",
+      "working_directory": "go/",
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "result": "fail only reload lower-mtime-write, identical-write, rename-out, rename-source; reload 97.211s",
+      "log": "/tmp/mini-loop-reload-source-drain-full.log",
+      "sha256": "744e93a958bdb5ad5baa9fbdbafb937103da43ffef12f4d74a05a67d823fe294"
+    },
+    {
+      "name": "race",
+      "working_directory": "go/",
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./reload",
+      "result": "pass 59.235s; existing LC_DYSYMTAB linker warning; no reported data race",
+      "log": "/tmp/mini-loop-reload-source-drain-race.log",
+      "sha256": "7e45179af1068b51a68ee970209dd9b8d221ffc86a742f2d94370fc9e1f04034"
+    }
+  ],
+  "file_sha256": {
+    "go/reload/native_events_recipes_test.go": "10c9774fa7324cbc4ede1d0621d43080092a329cce43dfeddb9c4f150ca1b9e9",
+    "go/reload/native_events_darwin.go": "c3824702d6b4bb2e6a1e1ffb3d267183fcbe98a848d39b01c6d8f0cfa3c3c144",
+    "go/reload/native_events_darwin.c": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e",
+    "go/reload/event_reader.go": "6006f1d1dbebd166e81d0a71b2c6b3ce6e5e32bfec8a4260ae154a062461a0fc",
+    "python/tools/watchfiles_contracts.py": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a",
+    "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0"
+  },
+  "limits": [
+    "100ms Go context deadline is an observation adaptation; exact in-progress batch timeout scheduling is not asserted aligned",
+    "Go diagnostics occur after Darwin flag/root admission; missing diagnostic is not proof of missing raw OS/C callbacks",
+    "Native temporal reliability and full Go ordinary acceptance remain open",
+    "No production code, types, defaults, dependencies or architecture changes",
+    "No new full race, vet/type audit, full Source export, Python suite, coverage, non-Darwin or performance gates",
+    "No merge or push; complete port acceptance remains open"
+  ],
+  "next_action": "Capture raw C callback and Go flag/root admission evidence at the exact failing runtime baseline before any listener implementation change"
+}
