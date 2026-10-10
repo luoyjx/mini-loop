@@ -610,10 +610,11 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 		}
 		var caller *ToolCaller
 		if len(wire.Caller) > 0 && string(wire.Caller) != "null" {
-			caller = &ToolCaller{}
-			if err := json.Unmarshal(wire.Caller, caller); err != nil {
+			decoded, err := decodeToolCaller(wire.Caller, bounded)
+			if err != nil {
 				return Block{}, err
 			}
+			caller = &decoded
 		}
 		next = NewToolUseWithCaller(wire.ID, input, caller)
 		next.callerPresent = len(wire.Caller) > 0

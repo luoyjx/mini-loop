@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
 type CallerKind string
@@ -19,6 +21,7 @@ const (
 type ToolCaller struct {
 	kind   CallerKind
 	toolID string
+	extra  jsonvalue.Value
 }
 
 func DirectToolCaller() ToolCaller { return ToolCaller{kind: CallerDirect} }
@@ -58,54 +61,63 @@ func (caller ToolCaller) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 	if caller.kind == CallerDirect {
-		return json.Marshal(struct {
+		return marshalMetadataObject(struct {
 			Type CallerKind `json:"type"`
-		}{Type: caller.kind})
+		}{Type: caller.kind}, caller.extra)
 	}
-	return json.Marshal(struct {
+	return marshalMetadataObject(struct {
 		Type   CallerKind `json:"type"`
 		ToolID string     `json:"tool_id"`
-	}{Type: caller.kind, ToolID: caller.toolID})
+	}{Type: caller.kind, ToolID: caller.toolID}, caller.extra)
 }
 
 func (caller *ToolCaller) UnmarshalJSON(data []byte) error {
-	if len(data) > MaxWireBytes {
-		return fmt.Errorf("caller exceeds %d bytes", MaxWireBytes)
+	next, err := decodeToolCaller(data, true)
+	if err == nil {
+		*caller = next
 	}
+	return err
+}
+
+func decodeToolCaller(data []byte, bounded bool) (ToolCaller, error) {
 	var tag struct {
 		Type CallerKind `json:"type"`
 	}
 	if err := json.Unmarshal(data, &tag); err != nil {
-		return err
+		return ToolCaller{}, err
 	}
 	var next ToolCaller
 	switch tag.Type {
 	case CallerDirect:
 		var wire struct {
-			Type CallerKind `json:"type"`
+			Type *CallerKind `json:"type"`
 		}
-		if err := decodeStrict(data, &wire); err != nil {
-			return err
+		_, extra, err := decodeMetadataObject(data, &wire, []string{"type"}, bounded)
+		if err != nil {
+			return ToolCaller{}, err
 		}
-		next = DirectToolCaller()
+		if wire.Type == nil {
+			return ToolCaller{}, errors.New("direct caller requires type")
+		}
+		next = ToolCaller{kind: *wire.Type, extra: extra}
 	case CallerCodeExecution2025, CallerCodeExecution2026:
 		var wire struct {
-			Type   CallerKind `json:"type"`
-			ToolID *string    `json:"tool_id"`
+			Type   *CallerKind `json:"type"`
+			ToolID *string     `json:"tool_id"`
 		}
-		if err := decodeStrict(data, &wire); err != nil {
-			return err
+		_, extra, err := decodeMetadataObject(data, &wire, []string{"type", "tool_id"}, bounded)
+		if err != nil {
+			return ToolCaller{}, err
 		}
-		if wire.ToolID == nil {
-			return errors.New("code execution caller requires tool_id")
+		if wire.Type == nil || wire.ToolID == nil {
+			return ToolCaller{}, errors.New("code execution caller requires type and tool_id")
 		}
-		next = ToolCaller{kind: wire.Type, toolID: *wire.ToolID}
+		next = ToolCaller{kind: *wire.Type, toolID: *wire.ToolID, extra: extra}
 	default:
-		return fmt.Errorf("unsupported caller kind %q", tag.Type)
+		return ToolCaller{}, fmt.Errorf("unsupported caller kind %q", tag.Type)
 	}
 	if err := next.Validate(); err != nil {
-		return err
+		return ToolCaller{}, err
 	}
-	*caller = next
-	return nil
+	return next, nil
 }

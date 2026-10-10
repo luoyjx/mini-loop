@@ -293,10 +293,11 @@ func decodeWebFetchBlock(data []byte, bounded bool) (WebFetchToolResultBlock, er
 	}
 	var caller *ToolCaller
 	if len(wire.Caller) > 0 && string(wire.Caller) != "null" {
-		caller = &ToolCaller{}
-		if err := json.Unmarshal(wire.Caller, caller); err != nil {
+		decoded, err := decodeToolCaller(wire.Caller, bounded)
+		if err != nil {
 			return WebFetchToolResultBlock{}, err
 		}
+		caller = &decoded
 	}
 	for _, raw := range []json.RawMessage{wire.Text, wire.Citations, wire.ParsedOutput} {
 		if len(raw) > 0 && string(raw) != "null" {

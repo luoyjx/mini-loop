@@ -270,10 +270,11 @@ func decodeWebSearchBlock(data []byte, bounded bool) (WebSearchToolResultBlock, 
 	}
 	var caller *ToolCaller
 	if len(wire.Caller) > 0 && string(wire.Caller) != "null" {
-		caller = &ToolCaller{}
-		if err := json.Unmarshal(wire.Caller, caller); err != nil {
+		decoded, err := decodeToolCaller(wire.Caller, bounded)
+		if err != nil {
 			return WebSearchToolResultBlock{}, err
 		}
+		caller = &decoded
 	}
 	next := WebSearchToolResultBlock{ToolUseID: *wire.ToolUseID, Content: content, Caller: caller, callerPresent: len(wire.Caller) > 0, cache: wire.Cache, extra: extra}
 	return next, next.Validate()

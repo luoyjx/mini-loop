@@ -231,3 +231,15 @@ text_editor_code_execution_tool_result、tool_search_tool_result、container_upl
 当前均有具名 Go 变体。这证明种类覆盖，不能代替完整字段与消费者验收。已声明
 caller 的扩展、partial/畸形输入、usage scalar 消费者、默认诊断和最终 G4/G7
 验收仍未完成；元数据不触发文件读取、创建、编辑或客户端工具权限。
+
+## Declared caller 扩展字段更新
+
+- 固定 SDK 0.107.1 的 DirectCaller 只声明 type；ServerToolCaller 与
+  ServerToolCaller20260120 声明 type/tool_id。实际 direct/SSE 捕获表明额外字段
+  原样保留，含 direct 上的 tool_id，而旧 Go decodeStrict 拒绝它们。
+- 新增 48 个实际 SDK 场景，覆盖四个声明 caller 的块：client/server tool-use、
+  web-search/web-fetch。三个既有 discriminator 保持具名解析；未知字段使用闭合
+  不可变扩展。direct 扩展 tool_id 不进入具名 ToolID，也不增加执行权限。
+- 转发、脱敏键和值、克隆、历史大记录与 SQLite 关闭重开保留字段；网络上限不变。
+  未知 caller 类型、已知字段 scalar/missing/null 宽松构造与 partial-input 差异
+  仍需独立捕获，不能据此宣布完整 provider 迁移完成。

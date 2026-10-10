@@ -106,7 +106,7 @@ func TestStreamClientCallerValidationRemainsSelected(t *testing.T) {
 		{`{"type":"code_execution_20260120","tool_id":"parent"}`, true},
 		{`"opaque"`, false},
 		{`{"type":"future_metadata"}`, false},
-		{`{"type":"direct","tool_id":"unexpected"}`, false},
+		{`{"type":"direct","tool_id":"unexpected"}`, true},
 		{`{"type":"code_execution_20260120"}`, false},
 	} {
 		state := streamAssembly{started: true}

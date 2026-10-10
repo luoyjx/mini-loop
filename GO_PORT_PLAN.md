@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `2d8ba81` plus named text-editor result replies. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `b56975b` plus declared caller extension preservation. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 211 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 212 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16593,3 +16593,43 @@ full mutation, non-Darwin or browser inspection was performed. No merge/push.
 Logs/profile: /tmp/mini-loop-text-editor-coverage.log,
 /tmp/mini-loop-text-editor-integrated.cover;
 summary: /tmp/mini-loop-text-editor-coverage-summary.json.
+
+## 2026-10-10 declared caller extension preservation
+
+Baseline: `b56975b` plus this implementation; actual SDK Source capture commit
+`ff3fd06`. Forty-eight Anthropic SDK 0.107.1 direct/SSE recipes exercise absent,
+null and unknown fields on the three declared caller kinds across client/server
+tool-use and web-search/web-fetch result blocks. Before-fix provider replay
+failed on unknown caller fields (log /tmp/mini-loop-caller-before.log).
+ToolCaller now retains only unknown members in immutable closed extensions;
+type and code caller tool_id remain named fields. Direct tool_id is an extension
+and typed ToolID remains empty. No new client tool selection or grants are added.
+Unknown caller kinds and malformed known fields retain their current refusal;
+Source permissive construction and partial/malformed input audit remain open.
+
+All captures match complete native direct/SSE content and forwarding/history
+codecs. SQLite close/reopen preserves all 48 recipes. Protocol regression tests
+verify extension key/value masks, detached caller accessor/clone behavior, failed
+decode atomicity and historical nested frames above 512 KiB on all four block
+kinds. Network ingress retains its bound. The old direct-tool-id rejection test
+was updated to the captured SDK behavior; code callers still require a nonempty
+string ID. Database reconstruction is proved, not new power-loss/process-kill
+semantics. Python runtime modules and production feature defaults are unchanged.
+
+Source helper test: 1 passed. Targeted protocol/provider/sqlitestate suites passed.
+Archify regenerated the architecture from the specification: 9/9 checks, zero
+errors/warnings. Specification SHA256
+25dc581a684e6ac41ab093b21aa4972721bfd4b657b5ec03c00e42e06a01c62d;
+HTML SHA256 faee5a252d398a6e60e73ce7b17cf31399262506eda044c787e34434a59bd004.
+No fresh browser visual inspection, full Python regression, full mutation sweep,
+coverage refresh or non-Darwin run; no merge/push. Coverage remains pinned to
+`b56975b`: application 89.28%, not a measurement of this implementation.
+Full Go and Source export gate results follow below.
+
+Final gates: full ordinary Go and race suites (`-p=1 -count=1 -timeout=300s ./...`),
+`go vet ./...`, typeaudit (422 production files, 1385 named types, zero findings),
+19 anchored scanning guards, three block mutation guards and `git diff --check`
+passed. `.venv/bin/python python/tools/export_go_contracts.py --check` exited 0;
+all 212 exported Source contracts are current. Source capture started after both
+native Go watcher suites were terminal. No watcher helper/golden was rewritten.
+Logs: /tmp/mini-loop-caller-{source,targeted,ordinary,race,vet,types,scans,guards,export}.log.

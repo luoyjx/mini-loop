@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `2d8ba81` plus named text-editor result replies;
+reviewed **2026-10-10** (Go baseline `b56975b` plus declared caller extension preservation;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · SDK usage metadata · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · SDK usage metadata · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1246,6 +1246,14 @@ forms stay distinct. Immutable extensions, masked clones and SQLite reopen retai
 all 48 SDK captures. Stream caller decoding is selected by block kind, so opaque
 caller extensions on editor observations are preserved while client caller
 validation stays intact. Editor observations do not read, create or modify files.
+Declared ToolCaller variants retain unknown fields as immutable extension metadata
+across client/server tool-use and web-search/web-fetch replies. Direct caller
+`tool_id` is retained as an extension; typed ToolID remains empty. Code-execution
+callers still require a nonempty typed ToolID. Caller metadata is masked with keys
+and values, cloned without mutation, and retained through archival decode and
+SQLite reopen. Network decoding remains bounded; historical callers follow the
+parent archival policy. Unknown caller kinds and malformed known fields remain
+an explicit Source parity audit.
 The SDK's 12 declared ContentBlock kinds are represented; complete provider and
 default-path parity still require the remaining field/consumer audit.
 Native `bash_code_execution_tool_result` observations use a separate named
