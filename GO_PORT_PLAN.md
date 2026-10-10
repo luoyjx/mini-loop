@@ -18042,3 +18042,39 @@ interrupted background export slice. This run's Source readiness/capture succeed
 it does not prove the cause of the earlier intermittent Source arm failure.
 Exact recipe/helper/fixture bytes remain unchanged from `a5aed66`. Full ordinary
 failure timelines/log hashes are retained in the audit; diff checks pass.
+
+## Background optional-field execution Source contracts — 2026-10-11
+
+Baseline `ce3406c`. The current Go model background decoder forwards known
+`timeout`/`approval_prefix` fields to strict `BackgroundRunInput` decoding.
+This rejects Source-supported observations before the execution stage. New
+`python-provider-background-options.json` records 48 actual standalone Agent
+gate and BackgroundManager task profiles, with Source function hashes. It
+separates accepted tool results from asynchronous task results and observes
+process creation/group termination before capture cleanup.
+
+All optional profiles allocate bg_0001 and return Started with a successful
+tool outcome before any process starts. Falsy timeout values select the default;
+positive integers, bool and fractions are accepted. Negative numeric timeout
+values kill the group after creation. The expired bool label is `Trues`.
+Truthy text/list/dict timeout values fault after process creation with Python
+comparison errors. A 401-digit integer faults at float conversion. Those five
+fault profiles do not kill the group and emit an unawaited-capture RuntimeWarning;
+the fixture joins and drains the harmless commands after settlement. NaN and
+positive infinity complete the selected short command; this is a captured
+profile, not an exhaustive event-loop timing guarantee. Negative infinity times
+out with `-infs`. All prefix shapes permit execution; only an honest two-string
+leading prefix contributes a proposal. Invalid proposals do not grant authority.
+
+Next native slice: retain optional observations in named immutable protocol
+variants; lower timeout observations into explicit service/shell wait policies;
+keep task allocation and post-spawn fault ordering; preserve owner cancellation
+and process-group cleanup. Compare direct/SSE, readonly approval, managed journal
+and SQLite/archive consumers separately. Explicit typed caller admission stays
+strict. This prerequisite changes no runtime, topology, default or dependency;
+the Go optional-field mismatch remains open.
+
+Validation: three Source contract tests pass with 12 existing SDK warnings;
+19 scanner guards pass. Full Source export --check passes: 227 files current.
+git diff --check passes. No full Python/Go, race, vet, coverage, non-Darwin or
+performance run is claimed for this Source-only prerequisite. No merge or push.

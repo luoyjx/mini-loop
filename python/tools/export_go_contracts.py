@@ -6528,6 +6528,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_nonfinite_trajectory_contracts import provider_nonfinite_trajectory_contracts
     from tools.provider_nonfinite_bash_contracts import provider_nonfinite_bash_contracts
     from tools.provider_nonfinite_background_contracts import provider_nonfinite_background_contracts
+    from tools.provider_background_options_contracts import provider_background_options_contracts
     from tools.provider_bash_options_contracts import provider_bash_options_contracts
     from tools.provider_bash_command_contracts import provider_bash_command_contracts
     from tools.provider_background_input_contracts import provider_background_input_contracts
@@ -6904,6 +6905,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-nonfinite-trajectory.json": _json_bytes(provider_nonfinite_trajectory_contracts(scratch)),
         "python-provider-nonfinite-bash.json": _json_bytes(provider_nonfinite_bash_contracts(scratch)),
         "python-provider-nonfinite-background.json": _json_bytes(provider_nonfinite_background_contracts(scratch)),
+        "python-provider-background-options.json": _json_bytes(provider_background_options_contracts(scratch)),
         "python-provider-bash-options.json": _json_bytes(provider_bash_options_contracts(scratch)),
         "python-provider-bash-command.json": _json_bytes(provider_bash_command_contracts(scratch)),
         "python-provider-background-input.json": _json_bytes(provider_background_input_contracts(scratch)),
