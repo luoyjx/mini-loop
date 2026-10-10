@@ -16569,3 +16569,27 @@ Final Source export: `.venv/bin/python python/tools/export_go_contracts.py --che
 exited 0; all 211 contracts are current. Capture ran after ordinary and race
 Go watcher suites were terminal; no watcher golden/helper was rewritten.
 `git diff --check` passed. Coverage refresh is a separate follow-up checkpoint.
+
+## 2026-10-10 coverage refresh after named text-editor replies
+
+Measured runtime baseline: `b56975b`. Full cross-package coverage passed:
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-text-editor-integrated.cover ./...`
+from `go/`. Duplicate source locations are merged using their maximum hit count.
+Application excluding tools: **89.28% (31132/34871)**; all Go:
+**89.25% (31179/34935)**. Protocol: **88.37% (3139/3552)**;
+provider: **86.10% (1344/1561)**; sqlitestate: **81.44% (575/706)**.
+Compared with the matching tool-search application snapshot at `0781cd7`,
+89.47% (30239/33799), covered statements increased by 893 and total statements
+by 1072 across the subsequent server-tool-use, web-fetch, code, Bash and editor
+slices; the ratio decreased about 0.19 percentage points. This comparison does
+not attribute the difference to the editor slice alone.
+
+Scope: Go statement coverage on Darwin, with cross-package integration hits;
+CLI child-process, native C and Linux-only counters are not included. This is
+not Python coverage or complete migration parity. Full ordinary/race, vet,
+typeaudit, Source 211-file freshness, scans and the three block mutation guards
+passed for the implementation as recorded above; no additional full Python,
+full mutation, non-Darwin or browser inspection was performed. No merge/push.
+Logs/profile: /tmp/mini-loop-text-editor-coverage.log,
+/tmp/mini-loop-text-editor-integrated.cover;
+summary: /tmp/mini-loop-text-editor-coverage-summary.json.
