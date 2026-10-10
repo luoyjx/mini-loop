@@ -17434,3 +17434,29 @@ scanner verification were not rerun: no Python package or scanner targets change
 Full Source export --check passed after all native Go jobs and the selected
 mutation completed: 220 current files. No fixture or diagnostics output was
 rewritten. Working-tree diff check passed.
+
+## Missing model tool Source capture — 2026-10-11
+
+Baseline: `5cfb518`. Actual Source Agent._exec_tool and PermissionHook capture
+32 missing-tool recipes across all three real modes (interactive/auto/readonly),
+eight finite argument shapes, empty/case-sensitive/whitespace/Unicode tool names,
+and before rewrite/denial, guard denial and after replacement. Unknown calls
+retain before/guard/after/result order, fail with `Unknown tool: NAME`, and produce
+no permission requests even in readonly mode. Input rewrites preserve unknown
+lookup; denials retain precedence. This is actual installed Source dispatch,
+not a mocked missing-tool executor. The fixture is
+`go/testdata/python-provider-unknown-tool.json`; source hashes are retained.
+Native model admission at the baseline rejects unsupported names before this
+boundary. The next implementation must preserve inert finite observations in a
+named variant; custom handlers must still require a concrete native input codec.
+Nonfinite inputs, unknown MCP root shapes and registered extension input codecs
+remain separate audit scope. No Python runtime/default or dependency changed.
+
+Validation: full Source export --check passed, 221 current files, with native Go
+watcher jobs terminal. Every capture uses the three real Source permission modes;
+the earlier standard-mode capture was replaced before delivery because Source
+normalizes unknown mode strings to interactive. No runtime parity implementation
+is claimed by this capture commit. Full Python regression and coverage were not
+refreshed; no merge or push.
+
+Scanner verification passed: all 19 anchored. Working-tree diff check passed.
