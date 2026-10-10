@@ -1,0 +1,397 @@
+{
+  "baseline": "f490ddf",
+  "runtime_baseline": "ea35cd3",
+  "host": "macOS 15.5 arm64",
+  "watchfiles": "1.2.0",
+  "uvicorn": "0.49.0",
+  "scope": "Sequential diagnostic controls; runtime, tests and Source fixtures unchanged.",
+  "controls": [
+    {
+      "command": "go test -count=1 -timeout=180s -run ^(TestNativeObserverDuringRealCgoBuildInsideWatchedRoot|TestNativeEventsActualSourceRecipes)$ -v ./reload",
+      "result": "pass; 7.700s; all 16 recipes"
+    },
+    {
+      "selected_tests": [
+        "TestBuildCancellationKillsCompilerDescendants",
+        "TestBuildSyntaxFailureRecoveryAndPrivateArtifacts",
+        "TestBuildRejectsLibraryAndCancelledAdmission",
+        "TestBuildConfigurationAdmissionAndDetachedEnvironment",
+        "TestNativeObserverDuringRealCgoBuildInsideWatchedRoot",
+        "TestBuildWorkspaceLeasesExcludeOnlyOwnedEvents",
+        "TestBuildWorkspaceArtifactAndFailedAdmissions",
+        "TestOwnedEventsDoNotConsumeCapacityButKernelLossRemains",
+        "TestEventFilterMatchesActualSourceDefaultPolicy",
+        "TestEventFilterInitializationAndLexicalBoundary",
+        "TestNativeEventsCloseAndCancellation",
+        "TestNativeEventsImmediateConcurrentClose",
+        "TestDarwinObservationKeepsOnlySubscribedChangePaths",
+        "TestDarwinSentinelsDoNotConsumeNextWait",
+        "TestDarwinLossRemainsStickyWithinSubscription",
+        "TestNativeEventsCloseJoinsActiveCallback",
+        "TestNativeEventsActualSourceRecipes"
+      ],
+      "command": "go test -count=1 -timeout=180s -run ^(<selected tests joined by |>)$ -v ./reload",
+      "result": "pass; 10.646s; 16 preceding tests plus all 16 recipes"
+    },
+    {
+      "command": "go test -count=1 -timeout=180s ./reload",
+      "result": "pass; 36.714s; whole package without -v"
+    }
+  ],
+  "package_prefix": {
+    "packages": [
+      "github.com/luoyjx/mini-loop/go/agent",
+      "github.com/luoyjx/mini-loop/go/astcontext",
+      "github.com/luoyjx/mini-loop/go/audit",
+      "github.com/luoyjx/mini-loop/go/background",
+      "github.com/luoyjx/mini-loop/go/benchmark",
+      "github.com/luoyjx/mini-loop/go/cmd/miniloop",
+      "github.com/luoyjx/mini-loop/go/cmd/miniloop-audit",
+      "github.com/luoyjx/mini-loop/go/cmd/traceview",
+      "github.com/luoyjx/mini-loop/go/config",
+      "github.com/luoyjx/mini-loop/go/cron",
+      "github.com/luoyjx/mini-loop/go/decisions",
+      "github.com/luoyjx/mini-loop/go/diagnostics",
+      "github.com/luoyjx/mini-loop/go/dotenv",
+      "github.com/luoyjx/mini-loop/go/durable",
+      "github.com/luoyjx/mini-loop/go/efficiency",
+      "github.com/luoyjx/mini-loop/go/httpapi",
+      "github.com/luoyjx/mini-loop/go/improvement",
+      "github.com/luoyjx/mini-loop/go/internal/commandenv",
+      "github.com/luoyjx/mini-loop/go/internal/fnmatch",
+      "github.com/luoyjx/mini-loop/go/internal/jsonsyntax",
+      "github.com/luoyjx/mini-loop/go/internal/jsonvalue",
+      "github.com/luoyjx/mini-loop/go/internal/pytext",
+      "github.com/luoyjx/mini-loop/go/launcher",
+      "github.com/luoyjx/mini-loop/go/mcp",
+      "github.com/luoyjx/mini-loop/go/memory",
+      "github.com/luoyjx/mini-loop/go/problems",
+      "github.com/luoyjx/mini-loop/go/protocol",
+      "github.com/luoyjx/mini-loop/go/provider"
+    ],
+    "command": [
+      "go",
+      "test",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "github.com/luoyjx/mini-loop/go/agent",
+      "github.com/luoyjx/mini-loop/go/astcontext",
+      "github.com/luoyjx/mini-loop/go/audit",
+      "github.com/luoyjx/mini-loop/go/background",
+      "github.com/luoyjx/mini-loop/go/benchmark",
+      "github.com/luoyjx/mini-loop/go/cmd/miniloop",
+      "github.com/luoyjx/mini-loop/go/cmd/miniloop-audit",
+      "github.com/luoyjx/mini-loop/go/cmd/traceview",
+      "github.com/luoyjx/mini-loop/go/config",
+      "github.com/luoyjx/mini-loop/go/cron",
+      "github.com/luoyjx/mini-loop/go/decisions",
+      "github.com/luoyjx/mini-loop/go/diagnostics",
+      "github.com/luoyjx/mini-loop/go/dotenv",
+      "github.com/luoyjx/mini-loop/go/durable",
+      "github.com/luoyjx/mini-loop/go/efficiency",
+      "github.com/luoyjx/mini-loop/go/httpapi",
+      "github.com/luoyjx/mini-loop/go/improvement",
+      "github.com/luoyjx/mini-loop/go/internal/commandenv",
+      "github.com/luoyjx/mini-loop/go/internal/fnmatch",
+      "github.com/luoyjx/mini-loop/go/internal/jsonsyntax",
+      "github.com/luoyjx/mini-loop/go/internal/jsonvalue",
+      "github.com/luoyjx/mini-loop/go/internal/pytext",
+      "github.com/luoyjx/mini-loop/go/launcher",
+      "github.com/luoyjx/mini-loop/go/mcp",
+      "github.com/luoyjx/mini-loop/go/memory",
+      "github.com/luoyjx/mini-loop/go/problems",
+      "github.com/luoyjx/mini-loop/go/protocol",
+      "github.com/luoyjx/mini-loop/go/provider"
+    ],
+    "source_arm_exit": 0,
+    "native_arm_exit": 0
+  },
+  "native_after_prefix": {
+    "command": [
+      "go",
+      "test",
+      "-count=1",
+      "-timeout=180s",
+      "./reload"
+    ],
+    "exit": 1,
+    "duration_seconds": 99.699,
+    "failing_recipe_profiles": [
+      "same-mtime-write",
+      "same-mtime-touch",
+      "rename-out",
+      "rename-in"
+    ],
+    "conclusion": "A preceding multi-package run followed by a separate reload command reproduces post-readiness operation timeouts; a single whole-repository Go process is not necessary."
+  },
+  "source_after_prefix": {
+    "matched_fixture": 6,
+    "total": 16,
+    "completed_observations": 14,
+    "operation_timeout_observations": 8,
+    "readiness_errors": 2,
+    "native_arguments": {
+      "force_polling": false,
+      "poll_delay_ms": 300,
+      "recursive": true,
+      "ignore_permission_denied": true,
+      "backend": "FsEventWatcher",
+      "fsevents": {
+        "flags": 18,
+        "latency_seconds": 0.0,
+        "since_now": true
+      }
+    },
+    "observations": [
+      {
+        "name": "added-source",
+        "expected": [
+          "new.py"
+        ],
+        "match": false,
+        "error": "native Source observer did not arm",
+        "cause": null
+      },
+      {
+        "name": "hidden-parent-source",
+        "changed": null,
+        "expected": [
+          ".git/a.py"
+        ],
+        "match": false,
+        "closed": true
+      },
+      {
+        "name": "symlink-target-write",
+        "changed": [],
+        "expected": [],
+        "match": true,
+        "closed": true
+      },
+      {
+        "name": "removed-source",
+        "changed": [
+          "source.py"
+        ],
+        "expected": [
+          "source.py"
+        ],
+        "match": true,
+        "closed": true
+      },
+      {
+        "name": "same-mtime-write",
+        "changed": null,
+        "expected": [
+          "source.py"
+        ],
+        "match": false,
+        "closed": true
+      },
+      {
+        "name": "lower-mtime-write",
+        "changed": [
+          "source.py"
+        ],
+        "expected": [
+          "source.py"
+        ],
+        "match": true,
+        "closed": true
+      },
+      {
+        "name": "identical-write",
+        "changed": null,
+        "expected": [
+          "source.py"
+        ],
+        "match": false,
+        "closed": true
+      },
+      {
+        "name": "same-mtime-touch",
+        "changed": [
+          "source.py"
+        ],
+        "expected": [
+          "source.py"
+        ],
+        "match": true,
+        "closed": true
+      },
+      {
+        "name": "rename-out",
+        "changed": null,
+        "expected": [
+          "source.py"
+        ],
+        "match": false,
+        "closed": true
+      },
+      {
+        "name": "rename-in",
+        "changed": [
+          "target.py"
+        ],
+        "expected": [
+          "target.py"
+        ],
+        "match": true,
+        "closed": true
+      },
+      {
+        "name": "rename-source",
+        "changed": null,
+        "expected": [
+          "source.py",
+          "target.py"
+        ],
+        "match": false,
+        "closed": true
+      },
+      {
+        "name": "ignored-hidden",
+        "expected": [],
+        "match": false,
+        "error": "native Source observer did not arm",
+        "cause": null
+      },
+      {
+        "name": "ignored-backup",
+        "changed": null,
+        "expected": [],
+        "match": false,
+        "closed": true
+      },
+      {
+        "name": "ignored-text",
+        "changed": null,
+        "expected": [],
+        "match": false,
+        "closed": true
+      },
+      {
+        "name": "source-directory",
+        "changed": [
+          "package.py"
+        ],
+        "expected": [
+          "package.py"
+        ],
+        "match": true,
+        "closed": true
+      },
+      {
+        "name": "transient-source",
+        "changed": null,
+        "expected": [
+          "flash.py"
+        ],
+        "match": false,
+        "closed": true
+      }
+    ]
+  },
+  "source_direct_followup": [
+    {
+      "name": "same-mtime-write",
+      "changed": null,
+      "expected": [
+        "source.py"
+      ],
+      "match": false,
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "FsEventWatcher",
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        }
+      },
+      "closed": true
+    },
+    {
+      "name": "rename-out",
+      "match": false,
+      "error": "native Source observer did not arm"
+    }
+  ],
+  "interpretation": [
+    "Actual Source also returns no operation batch within the existing three-second deadline under this run context. Do not treat the observed delivery gap as exclusively Go-specific.",
+    "Both Source and Go time out same-mtime-write and rename-out; their entire failure sets differ.",
+    "Direct Source follow-up still fails; it does not isolate package-prefix causality or prove recovery after an idle interval."
+  ],
+  "limits": [
+    "Source arm does not execute Go reload package-local preceding tests; filesystem workloads and process history are not identical.",
+    "One pair of prefix runs; no statistical or root-cause claim.",
+    "Readiness errors do not establish an operation timeout or backend selection for those two cases.",
+    "Initial Source attempt used an alias temp path and failed readiness; excluded from the corrected observations. Corrected capture resolves the temp root, matching the Go fixture.",
+    "Full ordinary Go gate remains failing; native reliability/G3/G7 and the full migration remain open.",
+    "No full race, vet, coverage, Source export or Python regression refresh; diagnostics only."
+  ],
+  "reproduction": [
+    "Run the recorded package-prefix command from go/.",
+    "For the native arm, run the recorded whole reload command.",
+    "For Source, call python/tools/watchfiles_contracts.py::_native_case sequentially for each go/testdata/python-watchfiles.json native_events recipe, excluding changed/native_arguments/closed from recipe inputs; use Path(temporary_root).resolve()/str(index).",
+    "Retain each returned changed/expected/closed/native_arguments observation and readiness exception; never replace the canonical fixture with timeout results."
+  ],
+  "logs": {
+    "cgo_control": {
+      "path": "/tmp/mini-loop-cgo-prefix-recipes.log",
+      "sha256": "8274aa24552a5178ca61c5514dd052c9b74423e09347e37143d74fb45c54e448"
+    },
+    "package_local_prefix_control": {
+      "path": "/tmp/mini-loop-reload-prefix-recipes.log",
+      "sha256": "ab0ea5dd21b6525fcda36dc90f154240c81c71572273f29a70318d7df2a29ca3"
+    },
+    "whole_package_control": {
+      "path": "/tmp/mini-loop-reload-package-only.log",
+      "sha256": "0363947da173fc7a47ac72ad2456fc6e512b6a58afc07527f7e13600a050fe62"
+    },
+    "native_package_prefix": {
+      "path": "/tmp/mini-loop-package-prefix-native.log",
+      "sha256": "6c8bfd07f942c4db93936e2d576ed214db923d247dc0aa158c5f89d8c1ae3f0c"
+    },
+    "native_reload": {
+      "path": "/tmp/mini-loop-package-prefix-native-recipes.log",
+      "sha256": "28b62785c5bd83f1e66fd33d7bd0201d88da7d76d8a37e049048516290adcb3f"
+    },
+    "source_package_prefix": {
+      "path": "/tmp/mini-loop-package-prefix-source.log",
+      "sha256": "aa443bfd59f740b7ca4b1ff59982b7ffecc6b36b11d4c7a13e4fbe39927c50c5"
+    },
+    "source_capture": {
+      "path": "/tmp/mini-loop-prefix-source-driver-fixed.log",
+      "sha256": "360aac1fe3ce38edc94a49468041d3f68db72639383f3baf5fedc097c25525fd"
+    },
+    "source_raw": {
+      "path": "/tmp/mini-loop-package-prefix-source.json",
+      "sha256": "cccb9a7cd3bc33ffee692f616677de3105b1060510d0fe8d16461f540e8dffa6"
+    },
+    "native_raw": {
+      "path": "/tmp/mini-loop-package-prefix-native.json",
+      "sha256": "baa568b9729014a9f3d9ec3a287a805acc667f67e10ef9b447915112821369a8"
+    },
+    "reproduction_script": {
+      "path": "/tmp/mini-loop-prefix-load-control.py",
+      "sha256": "401e54053158cff04908df60c14b6aa805197d0a96e4ed6c711226c124cddf03"
+    },
+    "direct_source_script": {
+      "path": "/tmp/mini-loop-source-direct-control.py",
+      "sha256": "7ae825369c37816b5e2e0eca17389b39d3ce0b83d50d53108f7ee48d019aec69"
+    },
+    "canonical_fixture": {
+      "path": "go/testdata/python-watchfiles.json",
+      "sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0"
+    },
+    "source_capture_implementation": {
+      "path": "python/tools/watchfiles_contracts.py",
+      "sha256": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a"
+    }
+  }
+}

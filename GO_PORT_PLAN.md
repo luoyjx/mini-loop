@@ -6900,8 +6900,12 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    experiments at `360f844` / `05d675c` locate missing entries before C while the
    private queue continues executing; the root cause remains unknown. Source and
    Go pass all 16 scenarios with and without 32 preceding closes at `5d1c99b`.
-   Targeted passes do not supersede full-run failures. Preserve the 3-second
-   operation deadline and native selection while separating full-run context.
+   New package-prefix controls at `f490ddf` reproduce Go timeouts across separate
+   commands; actual Source also has eight operation timeouts and two readiness
+   failures. The failure sets differ, so this is not complete temporal parity or
+   a root-cause finding. Targeted passes do not supersede full-run failures.
+   Preserve the 3-second operation deadline and native selection; see
+   [prefix controls](docs/audits/go-reload-package-prefix-controls-2026-10-11.json).
 
 5. Provider/default acceptance: the 48 standalone background option profiles,
    actual SDK direct/SSE/forwarding observations and 48 managed consumer profiles
@@ -18305,3 +18309,25 @@ Focused ordinary/race/vet, full vet, and 19 scanning guards pass. Full ordinary
 Go fails only `TestNativeEventsActualSourceRecipes` in six native reload profiles;
 all other tested packages pass. No full race or coverage refresh, merge or push.
 See [audit and exact gates](docs/audits/go-public-types-2026-10-11.json).
+
+## 2026-10-11 preceding-package reload controls
+
+At `f490ddf`, CGO-build + recipe and all 16 package-local preceding tests + recipe
+controls pass; a whole reload package alone also passes (36.714s). Running the
+28 preceding module packages, then reload in a separate command, reproduces
+four post-readiness operation timeouts (99.699s). A single whole-repository
+Go command is not required for reproduction.
+
+A separate sequential run of the same preceding packages followed by actual
+WatchFiles 1.2.0 / Uvicorn 0.49.0 captures matches only 6/16 historical recipes:
+14 cases complete and close (eight with no operation batch in three seconds),
+and two fail readiness. The Source root is canonicalized; an earlier alias-path
+capture is excluded. Two direct Source follow-ups also fail. This is evidence
+against a Go-exclusive delivery gap, not proof of its trigger, root cause or
+complete temporal parity: package-local history and failure sets differ.
+
+[Exact observations, commands, hashes and limits](docs/audits/go-reload-package-prefix-controls-2026-10-11.json).
+Runtime, tests, fixtures and deadlines remain unchanged. No merge/push or
+coverage refresh. G3/G7 and complete port acceptance remain open. Next isolate
+which preceding workload retains the failure and compare Source under that
+reduced context before changing the backend or its acceptance test.
