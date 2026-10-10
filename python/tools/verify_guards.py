@@ -47,6 +47,13 @@ class Mutation:
 
 MUTATIONS = [
     Mutation(
+        "journal-nonfinite-fingerprint-accepted", 0, "mini_loop/actions.py",
+        "        allow_nan=False,",
+        "        allow_nan=True,",
+        "tests/test_provider_nonfinite_stream_contracts.py::test_managed_nonfinite_input_sse_and_journal_failure",
+        "Go migration Source probe: a journal refuses nonfinite input before creating action authority or invoking after/execute",
+    ),
+    Mutation(
         "export-diagnostics-without-check", 239, "tools/export_go_contracts.py",
         "if args.diagnostics_dir is not None and not args.check:",
         "if False:",

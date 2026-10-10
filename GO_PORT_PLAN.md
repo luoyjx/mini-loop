@@ -17777,3 +17777,29 @@ No Python runtime/scanner/mutation anchor changed, so those gates were not rerun
 Full Python, performance, non-Darwin and browser refresh were not run.
 Native watcher reliability, default diagnostics and full migration acceptance
 remain open. No merge or push.
+
+## Managed nonfinite journal/SSE Source contracts — 2026-10-11
+
+Baseline: `412e94c`. Four actual Source ASGI message-stream turns use the real
+AsyncAnthropic 0.107.1 parser, managed session, hooks, default memory journal and
+explicit SQLite journal. The stream retains NaN/Infinity in tool_use.input.keep.
+Journal fingerprinting uses allow_nan=False: tool_result reports the finite JSON
+error, hook order is before → guard → result (no after), and no action is created.
+This differs from the 51 standalone ToolGate consumers without a journal, which
+settle the unexpected-keyword binding failure through after/result. Both paths
+remain authoritative for their own composition. The next model request fails
+before transport; the Source stream reaches done. Actual SQLite tool-use events
+retain the observations. The fixture's outer JSON remains strict; legacy numbers
+are represented inside JSON strings.
+
+A targeted mutation enables nonfinite action hashes and is caught by this real
+Source test after a passing baseline; 19 scanner guards remain anchored.
+Native integration is in progress. Realtime persistence projection, observation
+query and request estimation were discovered as separate finite-only consumers.
+Full native regression and Source export refresh are pending. This prerequisite
+does not establish complete G4/G7 acceptance or native watcher reliability.
+
+Source prerequisite gates completed: both nonfinite Source tests passed; the
+journal fingerprint mutation was caught, all 19 scanner guards are anchored,
+and sequential Source export --check reports 223 current files.
+[Managed stream fixture](go/testdata/python-provider-nonfinite-stream.json).

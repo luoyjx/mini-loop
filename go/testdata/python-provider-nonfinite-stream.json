@@ -1,0 +1,141 @@
+{
+  "cases": [
+    {
+      "action_recorded": false,
+      "content_type": "text/event-stream; charset=utf-8",
+      "done_text": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "event_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "model_end",
+        "tool_use",
+        "tool_result",
+        "model_start",
+        "recovery",
+        "model_end",
+        "error",
+        "trajectory_end",
+        "done"
+      ],
+      "name": "nan",
+      "status": 200,
+      "store": "memory",
+      "tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}, {\"error\": true, \"name\": \"bash\", \"output\": \"Error: Out of range float values are not JSON compliant\", \"type\": \"tool_result\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "content_type": "text/event-stream; charset=utf-8",
+      "done_text": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "event_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "model_end",
+        "tool_use",
+        "tool_result",
+        "model_start",
+        "recovery",
+        "model_end",
+        "error",
+        "trajectory_end",
+        "done"
+      ],
+      "name": "infinity",
+      "status": 200,
+      "store": "memory",
+      "tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}, {\"error\": true, \"name\": \"bash\", \"output\": \"Error: Out of range float values are not JSON compliant\", \"type\": \"tool_result\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "content_type": "text/event-stream; charset=utf-8",
+      "done_text": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "event_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "model_end",
+        "tool_use",
+        "tool_result",
+        "model_start",
+        "recovery",
+        "model_end",
+        "error",
+        "trajectory_end",
+        "done"
+      ],
+      "name": "nan",
+      "status": 200,
+      "store": "sqlite",
+      "stored_tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}, {\"error\": true, \"name\": \"bash\", \"output\": \"Error: Out of range float values are not JSON compliant\", \"type\": \"tool_result\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "content_type": "text/event-stream; charset=utf-8",
+      "done_text": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "event_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "model_end",
+        "tool_use",
+        "tool_result",
+        "model_start",
+        "recovery",
+        "model_end",
+        "error",
+        "trajectory_end",
+        "done"
+      ],
+      "name": "infinity",
+      "status": 200,
+      "store": "sqlite",
+      "stored_tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}, {\"error\": true, \"name\": \"bash\", \"output\": \"Error: Out of range float values are not JSON compliant\", \"type\": \"tool_result\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    }
+  ],
+  "httpx_version": "0.28.1",
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "actions._payload_hash": "e190c7796123d6ab4f80eebb4c25397bae60b1b242bac655deea240b8a75cc1b",
+    "server._register_routes": "d3564ed51475cb02a16d03c5130bb686df70e64f7cdb697193131d7d69348705"
+  }
+}
