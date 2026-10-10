@@ -406,11 +406,18 @@ dotenv cannot turn an inherited child into another supervisor. Replacements relo
 dotenv/configuration and reset process-local sessions. Dump reports selection
 without discovering/building a module. This development path is implemented on
 macOS/Linux and adds no model-selected module, dependency or automatic restoration.
+`reload.NewEventFilter` separately implements the captured POSIX default
+WatchFiles filename policy with named Go/Python language profiles. It matches
+removed paths and suffix directories lexically, excludes hidden/backup basenames
+and retains eligible sources inside hidden parent directories. It has no root,
+filesystem or execution authority and is not yet selected by a native observer.
+Actual installed Source filtering/native events/environment/cancellation are
+archived in python-watchfiles.json; the default filter replays in Go.
 The CLI currently uses this fallback observer. Installed Python Uvicorn 0.49.0
 selects WatchFilesReload (watchfiles 1.2.0); matching its default event/filter
 profile remains a required next slice, so default reload parity is not yet claimed.
 
-Runtime review baseline: `9b59758` plus native CLI reload/listener authority,
+Runtime review baseline: `7607ab3` plus installed WatchFiles contracts/default event-filter SDK,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -554,7 +561,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `9b59758` plus native CLI reload/listener authority;
+reviewed **2026-10-10** (Go baseline `7607ab3` plus installed WatchFiles contracts/default event-filter SDK;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -607,7 +614,7 @@ flowchart LR
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
-        GoReload["Optional Go development reload parent<br/>cwd source observer · readonly native build<br/>retained TCP socket · stop / join / replace<br/>build-failure recovery · child artifact cleanup"]
+        GoReload["Optional Go development reload parent<br/>cwd StatReload observer · readonly native build<br/>event-filter SDK only · native event profile pending<br/>retained TCP socket · stop / join / replace<br/>build-failure recovery · child artifact cleanup"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]

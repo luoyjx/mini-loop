@@ -7468,3 +7468,64 @@ Next slices:
 
 Full G0–G7 and default reload parity remain incomplete; this is not a replacement
 of the original objective with the fallback profile.
+
+## Installed WatchFiles contracts and typed default filter SDK — 2026-10-10
+
+Baseline: `7607ab3` plus this slice. Export 201 adds python-watchfiles.json,
+pinning installed Uvicorn 0.49.0, watchfiles 1.2.0 and Darwin. The selected Source
+backend is WatchFilesReload; source hashes are
+`bbe32e626d0bb1930debbd2efd3b525a2301500db3e23d6c21edced80ebb129e`
+(Uvicorn observer/filter) and
+`520b73b467a13dc31f2c21d86d0da68112654d611511b3de82d18534b43c339b`
+(watchfiles watch/environment helpers). No dependency is added: existing Source
+requirements already select uvicorn[standard], and Go modules remain unchanged.
+
+The collector calls actual FileFilter and WatchFilesReload.should_restart using
+real temporary filesystem effects and the original native RustNotify subscription.
+It verifies the Recommended FsEventWatcher backend (not polling), recursion and
+ignore_permission_denied=true; captured FSEvents settings are flags 18, latency
+0.0 and since-now. Registration drains earlier writes to a real timeout before
+arming. Only rust_timeout waiting is reduced to 100ms; default debounce/step and
+Uvicorn filtering/dispatch remain unchanged. Workers and native contexts close
+before temporary-root teardown. No server/child/socket/model starts.
+
+Six actual filter configurations produce 84 decisions: default, disabled Python
+include, added text include, allowed hidden/backup patterns, excluded directory
+and exact-include shortcut. The project default excludes hidden/backup basenames
+but retains sources under .git/.venv/__pycache__ parents; matching-suffix
+directories and removed paths need no stat. Exact literal inclusion can bypass
+an excluded parent when the default include is removed; this is filter behavior,
+not root or filesystem authority. Go implements only the project default policy.
+
+Sixteen real native cases cover add/remove, same/lower mtime content edits,
+identical writes/touches, rename in/out/both source names, hidden/backup/text
+filtering, hidden-parent source, a followed symlink's non-source target, suffix
+directory creation and transient create/delete. Matching add/remove/metadata
+events restart despite StatReload baseline/mtime limitations. The symlink target
+write reports no source restart: native event names differ from resolved StatReload
+paths. A separate live subscription is cancelled/joined and reports StopIteration
+with its native context closed. Nine force-polling and eight delay-environment
+rows record actual helper conversion/explicit precedence; these are not Go
+environment/backend implementations. Native evidence is this pinned Darwin profile.
+
+Go reload.EventFilter has private immutable extension state and named Language
+selection, an inert zero value and refusal of unknown languages. Matches is
+lexical and grants no root/filesystem/execute authority. All 14 actual default
+Source decisions replay for Python and Go suffixes (28 checks). Non-default
+Uvicorn include/exclude configurations are captured but not exposed by this SDK
+or selected by mini_loop.__main__. No native Go event source is implemented in
+this slice; CLI still uses StatReload. The next work is owned native subscriptions,
+backend/environment lifecycle and CLI event-profile selection. Full G0–G7 stays open.
+
+Validation: narrow `go test -count=1 -timeout=120s ./reload`, full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` passed
+from go/. `.venv/bin/python python/tools/export_go_contracts.py --check` freshly
+re-executed all recipes and passed 201 files; `.venv/bin/python
+python/tools/verify_scans.py` passed all 19 scanner guards. Existing Darwin CGO
+LC_DYSYMTAB warnings did not prevent passing Go tests. `git diff --check` and
+README outline passed. Architecture delivery passed 9/9 with zero errors/warnings
+and exact spec/artifact hashes/bytes verified. Correction rounds 0; visual review
+not repeated after prior browser denial. Python package runtime, existing mutation
+anchors and tool types did not change; full Python/invariant/mutation/coverage
+checks were not rerun. No push; owned native Go events and full G0–G7 remain open.

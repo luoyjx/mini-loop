@@ -2920,3 +2920,14 @@ StatReload fallback profile. Installed Source Uvicorn 0.49.0 selects WatchFilesR
 with watchfiles 1.2.0. Native add/remove/modify event observation and Source default
 filename filtering remain required before default reload parity; the process tests
 above verify changed existing sources with increasing mtimes, not that event profile.
+
+### Default event filename filter SDK
+
+`reload.NewEventFilter(reload.GoSource)` (or PythonSource for differential checks)
+constructs the captured POSIX default WatchFiles filename policy. Matches(path)
+is lexical: removed files, eligible sources under hidden parent directories and
+matching-suffix directories can match. Hidden/backup basenames are excluded;
+no stat, root-containment or execution authority follows. The zero value matches
+nothing and unknown languages fail construction. Actual Source default cases
+replay for both language profiles. This pure SDK does not start an event source
+or change the current CLI StatReload fallback; native observation remains next.

@@ -1,0 +1,860 @@
+{
+  "cancellation": {
+    "exit": "StopIteration",
+    "native_context_closed": true,
+    "thread_joined": true
+  },
+  "default_backend": "WatchFilesReload",
+  "environment": {
+    "force_polling": [
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": false,
+        "value": null
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": false,
+        "value": ""
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": false,
+        "value": "false"
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": false,
+        "value": "FALSE"
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": false,
+        "value": "disable"
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": false,
+        "value": "disabled"
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": true,
+        "value": "0"
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": true,
+        "value": "1"
+      },
+      {
+        "explicit_false": false,
+        "explicit_true": true,
+        "result": true,
+        "value": " "
+      }
+    ],
+    "poll_delay": [
+      {
+        "result": 300,
+        "value": null
+      },
+      {
+        "result": 300,
+        "value": ""
+      },
+      {
+        "result": 50,
+        "value": "50"
+      },
+      {
+        "result": 0,
+        "value": "0"
+      },
+      {
+        "result": 300,
+        "value": "-1"
+      },
+      {
+        "result": 300,
+        "value": "nonnumeric"
+      },
+      {
+        "result": 10,
+        "value": "١٠"
+      },
+      {
+        "result": 300,
+        "value": "²"
+      }
+    ]
+  },
+  "filters": [
+    {
+      "excludes": [],
+      "includes": [],
+      "name": "default",
+      "paths": [
+        {
+          "allowed": true,
+          "path": "a.py"
+        },
+        {
+          "allowed": true,
+          "path": "nested/a.py"
+        },
+        {
+          "allowed": false,
+          "path": ".hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "nested/.hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "~backup.py"
+        },
+        {
+          "allowed": false,
+          "path": ".sw.part.py"
+        },
+        {
+          "allowed": true,
+          "path": ".git/a.py"
+        },
+        {
+          "allowed": true,
+          "path": ".venv/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "__pycache__/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "notes.txt"
+        },
+        {
+          "allowed": false,
+          "path": "UPPER.PY"
+        },
+        {
+          "allowed": true,
+          "path": "package.py"
+        },
+        {
+          "allowed": true,
+          "path": "excluded/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "excluded/literal.py"
+        }
+      ]
+    },
+    {
+      "excludes": [
+        "*.py"
+      ],
+      "includes": [],
+      "name": "exclude-python",
+      "paths": [
+        {
+          "allowed": false,
+          "path": "a.py"
+        },
+        {
+          "allowed": false,
+          "path": "nested/a.py"
+        },
+        {
+          "allowed": false,
+          "path": ".hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "nested/.hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "~backup.py"
+        },
+        {
+          "allowed": false,
+          "path": ".sw.part.py"
+        },
+        {
+          "allowed": false,
+          "path": ".git/a.py"
+        },
+        {
+          "allowed": false,
+          "path": ".venv/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "__pycache__/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "notes.txt"
+        },
+        {
+          "allowed": false,
+          "path": "UPPER.PY"
+        },
+        {
+          "allowed": false,
+          "path": "package.py"
+        },
+        {
+          "allowed": false,
+          "path": "excluded/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "excluded/literal.py"
+        }
+      ]
+    },
+    {
+      "excludes": [],
+      "includes": [
+        "*.txt"
+      ],
+      "name": "include-text",
+      "paths": [
+        {
+          "allowed": true,
+          "path": "a.py"
+        },
+        {
+          "allowed": true,
+          "path": "nested/a.py"
+        },
+        {
+          "allowed": false,
+          "path": ".hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "nested/.hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "~backup.py"
+        },
+        {
+          "allowed": false,
+          "path": ".sw.part.py"
+        },
+        {
+          "allowed": true,
+          "path": ".git/a.py"
+        },
+        {
+          "allowed": true,
+          "path": ".venv/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "__pycache__/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "notes.txt"
+        },
+        {
+          "allowed": false,
+          "path": "UPPER.PY"
+        },
+        {
+          "allowed": true,
+          "path": "package.py"
+        },
+        {
+          "allowed": true,
+          "path": "excluded/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "excluded/literal.py"
+        }
+      ]
+    },
+    {
+      "excludes": [],
+      "includes": [
+        ".*",
+        "~*"
+      ],
+      "name": "allow-hidden-and-backup",
+      "paths": [
+        {
+          "allowed": true,
+          "path": "a.py"
+        },
+        {
+          "allowed": true,
+          "path": "nested/a.py"
+        },
+        {
+          "allowed": true,
+          "path": ".hidden.py"
+        },
+        {
+          "allowed": true,
+          "path": "nested/.hidden.py"
+        },
+        {
+          "allowed": true,
+          "path": "~backup.py"
+        },
+        {
+          "allowed": false,
+          "path": ".sw.part.py"
+        },
+        {
+          "allowed": true,
+          "path": ".git/a.py"
+        },
+        {
+          "allowed": true,
+          "path": ".venv/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "__pycache__/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "notes.txt"
+        },
+        {
+          "allowed": false,
+          "path": "UPPER.PY"
+        },
+        {
+          "allowed": true,
+          "path": "package.py"
+        },
+        {
+          "allowed": true,
+          "path": "excluded/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "excluded/literal.py"
+        }
+      ]
+    },
+    {
+      "excludes": [
+        "<root>/excluded"
+      ],
+      "includes": [],
+      "name": "exclude-directory",
+      "paths": [
+        {
+          "allowed": true,
+          "path": "a.py"
+        },
+        {
+          "allowed": true,
+          "path": "nested/a.py"
+        },
+        {
+          "allowed": false,
+          "path": ".hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "nested/.hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "~backup.py"
+        },
+        {
+          "allowed": false,
+          "path": ".sw.part.py"
+        },
+        {
+          "allowed": true,
+          "path": ".git/a.py"
+        },
+        {
+          "allowed": true,
+          "path": ".venv/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "__pycache__/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "notes.txt"
+        },
+        {
+          "allowed": false,
+          "path": "UPPER.PY"
+        },
+        {
+          "allowed": true,
+          "path": "package.py"
+        },
+        {
+          "allowed": false,
+          "path": "excluded/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "excluded/literal.py"
+        }
+      ]
+    },
+    {
+      "excludes": [
+        "*.py",
+        "<root>/excluded"
+      ],
+      "includes": [
+        "literal.py"
+      ],
+      "name": "exact-include-shortcut",
+      "paths": [
+        {
+          "allowed": false,
+          "path": "a.py"
+        },
+        {
+          "allowed": false,
+          "path": "nested/a.py"
+        },
+        {
+          "allowed": false,
+          "path": ".hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "nested/.hidden.py"
+        },
+        {
+          "allowed": false,
+          "path": "~backup.py"
+        },
+        {
+          "allowed": false,
+          "path": ".sw.part.py"
+        },
+        {
+          "allowed": false,
+          "path": ".git/a.py"
+        },
+        {
+          "allowed": false,
+          "path": ".venv/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "__pycache__/a.py"
+        },
+        {
+          "allowed": false,
+          "path": "notes.txt"
+        },
+        {
+          "allowed": false,
+          "path": "UPPER.PY"
+        },
+        {
+          "allowed": false,
+          "path": "package.py"
+        },
+        {
+          "allowed": false,
+          "path": "excluded/a.py"
+        },
+        {
+          "allowed": true,
+          "path": "excluded/literal.py"
+        }
+      ]
+    }
+  ],
+  "native_events": [
+    {
+      "changed": [
+        "new.py"
+      ],
+      "closed": true,
+      "initial": false,
+      "mtime": 100,
+      "name": "added-source",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": "new.py"
+    },
+    {
+      "changed": [
+        ".git/a.py"
+      ],
+      "closed": true,
+      "initial": false,
+      "mtime": 100,
+      "name": "hidden-parent-source",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": ".git/a.py"
+    },
+    {
+      "changed": [],
+      "closed": true,
+      "initial": true,
+      "mtime": 100,
+      "name": "symlink-target-write",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "write",
+      "path": "linked.py",
+      "symlink_target": "notes.txt"
+    },
+    {
+      "changed": [
+        "source.py"
+      ],
+      "closed": true,
+      "initial": true,
+      "name": "removed-source",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "remove",
+      "path": "source.py"
+    },
+    {
+      "changed": [
+        "source.py"
+      ],
+      "closed": true,
+      "initial": true,
+      "mtime": 100,
+      "name": "same-mtime-write",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "write",
+      "path": "source.py"
+    },
+    {
+      "changed": [
+        "source.py"
+      ],
+      "closed": true,
+      "initial": true,
+      "mtime": 99,
+      "name": "lower-mtime-write",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "write",
+      "path": "source.py"
+    },
+    {
+      "changed": [
+        "source.py"
+      ],
+      "closed": true,
+      "initial": true,
+      "mtime": 100,
+      "name": "identical-write",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "unchanged-write",
+      "path": "source.py"
+    },
+    {
+      "changed": [
+        "source.py"
+      ],
+      "closed": true,
+      "initial": true,
+      "mtime": 100,
+      "name": "same-mtime-touch",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "touch",
+      "path": "source.py"
+    },
+    {
+      "changed": [
+        "source.py"
+      ],
+      "closed": true,
+      "destination": "notes.txt",
+      "initial": true,
+      "name": "rename-out",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "rename",
+      "path": "source.py"
+    },
+    {
+      "changed": [
+        "target.py"
+      ],
+      "closed": true,
+      "destination": "target.py",
+      "initial": true,
+      "name": "rename-in",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "rename",
+      "path": "notes.txt"
+    },
+    {
+      "changed": [
+        "source.py",
+        "target.py"
+      ],
+      "closed": true,
+      "destination": "target.py",
+      "initial": true,
+      "name": "rename-source",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "rename",
+      "path": "source.py"
+    },
+    {
+      "changed": [],
+      "closed": true,
+      "initial": false,
+      "mtime": 100,
+      "name": "ignored-hidden",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": ".hidden.py"
+    },
+    {
+      "changed": [],
+      "closed": true,
+      "initial": false,
+      "mtime": 100,
+      "name": "ignored-backup",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": "~backup.py"
+    },
+    {
+      "changed": [],
+      "closed": true,
+      "initial": false,
+      "mtime": 100,
+      "name": "ignored-text",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": "notes.txt"
+    },
+    {
+      "changed": [
+        "package.py"
+      ],
+      "closed": true,
+      "initial": false,
+      "name": "source-directory",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "mkdir",
+      "path": "package.py"
+    },
+    {
+      "changed": [
+        "flash.py"
+      ],
+      "closed": true,
+      "initial": false,
+      "name": "transient-source",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "transient",
+      "path": "flash.py"
+    }
+  ],
+  "platform": "Darwin",
+  "source_sha256": "bbe32e626d0bb1930debbd2efd3b525a2301500db3e23d6c21edced80ebb129e",
+  "uvicorn_version": "0.49.0",
+  "watch_source_sha256": "520b73b467a13dc31f2c21d86d0da68112654d611511b3de82d18534b43c339b",
+  "watchfiles_version": "1.2.0"
+}
