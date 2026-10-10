@@ -18151,3 +18151,36 @@ This slice changes tests/export tooling only. No new full Go/Python suite, vet,
 type audit, architecture visual, coverage or non-Darwin gate is claimed.
 See [SDK consumer audit](docs/audits/go-background-sdk-2026-10-11.json).
 No merge or push; full port acceptance and SDK final error rendering remain open.
+
+## Nonfinite provider encoding error projection — 2026-10-11
+
+Runtime `ea35cd3`; captured SDK/managed prerequisite `9086419`, native stage tests
+`8888e72`. Direct and streaming request serialization now recognizes the wrapped
+nonfinite JSON sentinel as `FailureNonfiniteRequest` with SDK `ValueError` class
+and fixed `Out of range float values are not JSON compliant` text. Encoding still
+fails before dynamic credentials, HTTP, retries or stream callbacks. Recovery
+retains nonretryable protocol evidence. The named ProviderErrorDetail interface
+projects only the adapter's captured nonfinite diagnostic at the final Session
+provider boundary, bounded to 500 runes. Generic lifecycle diagnostics and other
+provider failure formatting retain their previous behavior.
+
+All 48 captured managed optional profiles now assert exact final reply text,
+closing the six nonfinite final-message differences logged by `98f94be`. Twelve
+direct/streaming boundary cases also assert class, recovery evidence and zero
+credential/HTTP/delta effects. Wrapped-error projection and diagnostic bounds are
+checked. This does not close broader SDK exception parity, full-state optional
+recovery, native post-spawn cleanup/scheduler adaptations or full port acceptance.
+
+Gates: focused provider/agent tests pass; full Go race and vet pass; type audit
+reports 443 production files / 1,414 package-level types / zero findings. Full
+ordinary Go fails only reload identical-write, same-mtime-touch, rename-source
+and ignored-hidden; SQLite passes. Source full export --check passes with 228
+current files after native tests terminate. Archify delivery passes 9/9 with zero
+errors/warnings after one note-length repair; browser visual review is not
+refreshed. README outline and git diff --check pass. No full Python suite,
+coverage, non-Darwin, performance or mutation refresh. Python runtime/scanner
+modules are unchanged. No merge or push. See
+[encoding error audit](docs/audits/go-request-encoding-2026-10-11.json).
+
+Next: investigate ordinary native reload event failures against actual Source
+recipes; retain the passing race result separately and preserve watcher ownership.
