@@ -8344,3 +8344,23 @@ Tests preflight all mutant Python syntax and collect all selectors, and execute
 passing, surviving, bad-baseline, syntax-error and missing-selector probes.
 This protects the verification instrument; Python mutation coverage is distinct
 from Go observer, permission or persistence mutation coverage.
+
+
+## Native Darwin callback admission — 2026-10-10
+
+The native callback originally forwarded every raw kernel path/flag into a lexical
+filename filter. Source notify 8 first fences recursive paths against its watched
+roots and ignores HistoryDone/non-change flags. A synthetic sibling callback could
+enter a batch; type-only callbacks could remain unread through cancellation; an
+unrelated loss callback could poison this subscription. NativeEvents privately
+owns canonical roots and applies root/change admission before recording. Three
+observer tests fail under raw forwarding and pass with the fence; subscribed loss
+still fails explicitly, retaining the stronger native recovery boundary.
+
+Within the existing 50ms owner-thread slice, pending runloop sources are serviced
+continuously, matching notify's continuous run method while retaining bounded stop
+checks. No wider roots, model-controlled path/flags, global purge or timer extension.
+Source and native repeated recipes pass in isolated captures, but ordinary full
+runs still expose delayed/absent events; these corrections do not prove their cause.
+See GO_PORT_PLAN's native reliability item and the pinned audit artifact. Python
+mutation tests cover their registered Source guards, not this Go/C boundary.

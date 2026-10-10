@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `fbf75c1` plus background command display alignment. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `45d086b` plus native Darwin callback admission and loop servicing. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6894,13 +6894,16 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    options are not emitted by the current repository request producers; audit
    custom extension behavior separately instead of adding unrelated SDK features.
 
-4. Native Darwin reload reliability: background display validation at `fbf75c1`
-   plus this slice exposed failed native event recipes in both overlapped and
-   sequential ordinary runs. Sequential cmd/miniloop passed, but reload reported
-   symlink-target-write `[linked.go]` instead of `[]` and removed-source timeout.
-   Full race passed. Source exports remain current; no watcher/fixture change was
-   made. Subscription readiness/coalescing versus the actual Source observer must
-   be investigated before final G3/G7 acceptance; overlap alone is not a cause.
+4. Native Darwin reload reliability: callback root/change admission and continuous
+   owner-thread servicing are aligned on the `45d086b` plus current implementation
+   worktree. Three independent boundary probes demonstrate repaired differences;
+   native and actual Source recipes each passed three repeated captures. Full race
+   passes, but isolated ordinary hidden-parent-source timed out. Full Source
+   export check drifted only python-watchfiles.json, then a read-only full snapshot
+   retry matched all 219 files; the failed difference was not retained.
+   Current evidence does not prove the temporal failures' cause. Investigate the
+   subscription/capture/handoff boundary before final G3/G7 acceptance; never widen
+   fixture expectations or treat a quiet timeout as kernel readiness proof.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -17165,3 +17168,77 @@ watcher implementation or expectation was changed to hide this result.
 Source export check after both full runs terminated passed: 219 current files.
 Working-tree and staged diff checks pass. This slice adds no Python runtime module;
 full Python regression remains unrefreshed. Final G3/G7 acceptance stays open.
+
+## Native Darwin callback admission — 2026-10-10
+
+Baseline: `45d086b` plus this implementation. notify 8.0.0 callback_impl fences
+recursive event paths against subscription roots; translate_flags ignores
+HistoryDone and emits no change for item-type/OwnEvent/ID-wrap flags alone.
+NativeEvents now owns the detached canonical root list and applies the same
+lexical root/change admission before the existing filename filter. Subscribed
+loss remains a sticky error (a stronger documented native adaptation). No
+leaf stat resolution, wider roots, new dependency, default selection or global
+FSEvents purge. Three independent observer-boundary tests failed with the former
+raw forwarding and pass with admission; cancellation retains later real deletion.
+
+Actual Python native recipes repeated three times: all 48 observations matched
+the committed fixture. Native raw diagnostic runs before this change also matched
+all sixteen recipes in three rounds. Earlier timeout/symlink failures are thus
+not causally explained by this patch and must remain on G3/G7's reliability queue.
+[Source pins and repeated observations](docs/audits/go-fsevents-boundary-2026-10-10.json)
+retain exact source hashes and proof limits. Source fixtures/expectations and
+runtime timers were not changed; no coverage refresh is claimed for this slice.
+
+The pinned notify run method uses continuous CFRunLoopRun. Native Go's existing
+50ms owner-thread slices now service all pending sources for the slice rather
+than return after the first handled source; Stop is still checked between slices.
+This restores continuous servicing within the existing bounded cleanup design.
+It does not enlarge batch/context timers or claim a proven cause for the old
+intermittent failures. Event class deduplication/complete temporal equivalence
+remain separate acceptance questions.
+
+Validation checkpoints before final isolated runs:
+- Native reload package before the continuous-service correction passed three
+  whole-package rounds (113.159s); boundary/cancellation/Close tests after the
+  correction passed (1.407s). Linux amd64 compile passed, no Linux runtime claim.
+- Full ordinary before the service correction failed late readiness-probe delivery
+  in the real Cgo compiler test and a hidden-parent empty batch. It overlapped
+  the full Python mutation copier; overlap is not a proven cause. Previous failures
+  remain recorded. Final ordinary/race runs are isolated and sequential.
+- Full Python mutation verifier: 378/378 caught, each with a passing baseline;
+  this covers registered Python guards, not the new Go/C callback boundary.
+- Scans: all 19 anchored. Type audit: 428 production files, 1400 named types,
+  zero findings. No Python package/runtime change; full Python regression and
+  package invariant verifier were not rerun.
+- Archify regenerated HTML from JSON: showcase 9/9, zero warnings.
+  Specification SHA256 a04fd8eb43a76b12e2cd83093b27032a789f4f4f172831f232a966ba7974fe02;
+  HTML SHA256 465a635749243471224f221fa2ed507dd10278042e5a033400b07f3d91b9557b.
+  README outline reviewed; no fresh browser visual inspection (earlier access
+  denied). No merge/push, paid provider check or complete-port acceptance claim.
+
+Final isolated ordinary run after the loop correction still failed one native
+recipe: hidden-parent-source timed out (3.35s); all other packages passed, including
+actual CLI reload and the Cgo workspace test. Neither overlapping verification nor
+single-source loop yielding fully explains the observed reliability gap. This
+patch repairs independently proven Source admission/servicing differences; it does
+not close the native timing queue or claim a green ordinary full-suite gate.
+
+Full isolated race `go test -race -p=1 -count=1 -timeout=300s ./...` passed with no
+race report. Final `go vet ./...` passed. Existing Darwin FSEvents deprecation
+and linker warnings remain. The ordinary failure above remains authoritative;
+passing race is not a substitute. Source evidence is committed at `b998ba9`.
+No final native reliability or complete migration acceptance is claimed.
+
+Source freshness check after all native jobs terminated failed only
+python-watchfiles.json. This confirms that fixed native-event expectations can
+drift in actual Python capture as well; a read-only full snapshot comparison is
+collecting the exact difference. The committed fixture was not changed, and this
+check is not reported as a pass. Other full exported files were current.
+
+Read-only full snapshot retry completed: `_snapshot()` produced 219 files and the
+same byte-for-byte TARGET comparison used by --check found zero stale files.
+No fixture was written. The first failed --check snapshot was not retained, so
+its exact event difference remains unknown; current equality does not erase that
+failure or prove capture determinism. Stop optional repeats after this freshness
+observation. Current ordinary native hidden-parent timeout remains unresolved.
+Working-tree/staged diff checks pass. No merge or push performed.

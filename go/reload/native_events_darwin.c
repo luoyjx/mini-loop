@@ -36,7 +36,9 @@ MiniLoopEvents *mini_loop_events_start(uintptr_t key, const char *roots) {
  return events;
 }
 void mini_loop_events_step(MiniLoopEvents *events) {
- CFRunLoopRunInMode(kCFRunLoopDefaultMode,0.05,true);
+ // notify services CFRunLoop continuously. Keep servicing pending sources
+ // for this bounded slice instead of yielding after the first handled source.
+ CFRunLoopRunInMode(kCFRunLoopDefaultMode,0.05,false);
 }
 void mini_loop_events_close(MiniLoopEvents *events) {
  FSEventStreamStop(events->stream);

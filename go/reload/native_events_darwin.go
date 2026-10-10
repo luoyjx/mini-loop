@@ -12,6 +12,7 @@ import "C"
 import (
 	"context"
 	"errors"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
@@ -31,7 +32,7 @@ func goMiniLoopNativeEvent(key C.uintptr_t, path *C.char, flags C.uint32_t) {
 	source := nativeRegistry.sources[uintptr(key)]
 	nativeRegistry.Unlock()
 	if source != nil {
-		source.record(C.GoString(path), uint32(flags))
+		source.recordDarwin(C.GoString(path), uint32(flags))
 	}
 }
 
@@ -70,4 +71,22 @@ func (source *NativeEvents) start(ctx context.Context, roots []string) error {
 		return err
 	}
 	return nil
+}
+
+// recordDarwin applies notify 8's recursive subscription fence and precise
+// change admission before the filename filter. Leaf paths remain lexical.
+func (source *NativeEvents) recordDarwin(path string, flags uint32) {
+	const historyDone uint32 = 0x10
+	const changeFlags uint32 = 0xffe0 // root/mount/unmount and item changes
+	const droppedFlags uint32 = 7
+	if flags&historyDone != 0 || flags&(changeFlags|droppedFlags) == 0 {
+		return
+	}
+	for _, root := range source.roots {
+		relative, err := filepath.Rel(root, path)
+		if err == nil && relative != ".." && !strings.HasPrefix(relative, ".."+string(filepath.Separator)) {
+			source.record(path, flags)
+			return
+		}
+	}
 }

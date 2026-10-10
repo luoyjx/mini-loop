@@ -4333,3 +4333,31 @@ live executable input and emits no registered secret. No new dependency/type,
 execution route or tool catalogue change. Non-text background_run consumers and
 complete default/provider/G7 acceptance remain open. Prior coverage is pinned to
 the Bash display worktree; no coverage refresh is claimed for this slice.
+
+## Native Darwin callback admission — 2026-10-10
+
+Baseline: `45d086b` plus this implementation. notify 8.0.0 callback_impl fences
+recursive event paths against subscription roots; translate_flags ignores
+HistoryDone and emits no change for item-type/OwnEvent/ID-wrap flags alone.
+NativeEvents now owns the detached canonical root list and applies the same
+lexical root/change admission before the existing filename filter. Subscribed
+loss remains a sticky error (a stronger documented native adaptation). No
+leaf stat resolution, wider roots, new dependency, default selection or global
+FSEvents purge. Three independent observer-boundary tests failed with the former
+raw forwarding and pass with admission; cancellation retains later real deletion.
+
+Actual Python native recipes repeated three times: all 48 observations matched
+the committed fixture. Native raw diagnostic runs before this change also matched
+all sixteen recipes in three rounds. Earlier timeout/symlink failures are thus
+not causally explained by this patch and must remain on G3/G7's reliability queue.
+[Source pins and repeated observations](docs/audits/go-fsevents-boundary-2026-10-10.json)
+retain exact source hashes and proof limits. Source fixtures/expectations and
+runtime timers were not changed; no coverage refresh is claimed for this slice.
+
+The pinned notify run method uses continuous CFRunLoopRun. Native Go's existing
+50ms owner-thread slices now service all pending sources for the slice rather
+than return after the first handled source; Stop is still checked between slices.
+This restores continuous servicing within the existing bounded cleanup design.
+It does not enlarge batch/context timers or claim a proven cause for the old
+intermittent failures. Event class deduplication/complete temporal equivalence
+remain separate acceptance questions.
