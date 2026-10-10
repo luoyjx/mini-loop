@@ -38,7 +38,7 @@ def test_settings_provider_key_suppresses_environment_bearer(tmp_path):
 
 def test_discovery_phases_caching_refresh_and_file_guards(tmp_path):
     rows = {row["spec"]["name"]: row for row in provider_auth_contracts(tmp_path)["discovery_cases"]}
-    assert len(rows) == 26
+    assert len(rows) == 43
     for name in ["explicit-config-dir-missing", "missing-explicit-profile", "missing-active-profile",
                  "invalid-profile-name", "corrupt-explicit-profile", "federation-refuses-http"]:
         assert not rows[name]["constructed"] and not rows[name]["requests"]
@@ -66,3 +66,29 @@ def test_discovery_phases_caching_refresh_and_file_guards(tmp_path):
     assert refresh["credentials_after"]["access_token"] == "exchanged-token"
     assert refresh["credentials_after"]["expires_at"] == 1700003600
     assert refresh["credentials_mode"] == 0o600
+
+
+def test_federation_profile_disk_cache_refresh_and_reconstruction(tmp_path):
+    rows = {row["spec"]["name"]: row for row in provider_auth_contracts(tmp_path)["discovery_cases"]}
+    for name in ["fresh", "31", "fractional"]:
+        row = rows[f"profile-federation-{name}"]
+        assert row["constructed"] and row["exchanges"] == [] and row["texts"] == ["ok", "ok"]
+        assert row["requests"][0]["headers"]["authorization"] == "Bearer disk-token"
+        assert "anthropic-workspace-id" not in row["requests"][0]["headers"]
+    for name in ["missing-cache", "30", "corrupt-expiry", "force", "reopen", "empty-cache", "env-fill", "write-failure"]:
+        row = rows[f"profile-federation-{name}"]
+        assert row["constructed"] and len(row["exchanges"]) == 1 and row["texts"] == ["ok", "ok"]
+        assert "scope" not in row["exchanges"][0]["body"]
+    for name in ["missing-rule", "unsupported-identity", "empty-identity-path", "invalid-cache-type", "world-readable", "symlink-cache"]:
+        row = rows[f"profile-federation-{name}"]
+        assert row["constructed"] and row["requests"] == [] and row["exchanges"] == []
+        assert row["fault"]["type"] == ("WorkloadIdentityError" if name == "missing-rule" else "AnthropicError")
+    updated = rows["profile-federation-corrupt-expiry"]["credentials_after"]
+    assert updated["extra"] == {"generation": 7} and updated["refresh_token"] == "preserved-refresh"
+    assert updated["access_token"] == "exchanged-token" and updated["expires_at"] == 1700003600
+    assert rows["profile-federation-30"]["credentials_mode"] == 0o600
+    assert len(rows["profile-federation-reopen"]["constructors"]) == 2
+    env = rows["profile-federation-env-fill"]["exchanges"][0]["body"]
+    assert env["federation_rule_id"] == "env-rule" and env["organization_id"] == "env-org"
+    assert env["workspace_id"] == "env-workspace"
+    assert rows["profile-federation-env-fill"]["credentials_mode"] == 0o600

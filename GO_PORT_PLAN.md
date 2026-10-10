@@ -15931,3 +15931,28 @@ No fresh browser visual inspection, Python regression/verifiers, Source export,
 coverage, performance, Linux-host or CGO-disabled run was performed. Python
 runtime/export recipes and default-tool catalogue are unchanged. Diff/cached
 checks pass. No merge or push was performed.
+
+## 2026-10-10 federation profile disk-cache Source contracts
+
+Source baseline: `3bb5f5c`. Seventeen actual Anthropic SDK 0.107.1 profile
+recipes extend provider-auth discovery from 26 to 43 cases. The prior 26 outputs
+remain identical. New recipes cover missing/fresh/31s/30s/fractional caches,
+corrupt expiry, missing rule and unsupported/empty identity selection before
+cache reads, private-file type/mode/symlink guards, forced invalidation, actual
+SDK client close/reconstruction, empty cache, filesystem write failure and
+captured environment defaults. Fifteen discovery methods are now hash-pinned,
+including profile delegation, cache existence, atomic write and HTTP timeout.
+
+The first native env-fill comparison exposed a capture selecting environment
+federation ahead of a fallback profile. The recipe now explicitly selects
+ANTHROPIC_PROFILE=default, proving profile field-fill and disk persistence;
+the existing federation-before-fallback recipe remains unchanged.
+
+Five provider-auth Python tests pass. Full Source export check passes with
+202 matching files; all 19 scanner guards pass. Logs:
+`/tmp/mini-loop-profile-federation-{export,scans}.log`. Existing synthetic static
+shadow, pathspec FutureWarning and child-watcher warnings did not prevent the
+export command from exiting zero. Diff/cached checks pass. Python runtime,
+default tool declarations and dependencies are unchanged. This commit records
+Source contracts; native implementation is validated and committed separately.
+No merge or push was performed.

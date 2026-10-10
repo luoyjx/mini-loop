@@ -47,6 +47,31 @@ async def provider_discovery_cases(scratch):
         dict(name="federation-model-401", environment=federation, model_statuses=[401, 200]),
         dict(name="federation-file-rotation", environment=federation, identity_file="file.jwt.assertion", advance_clock=3600, rotate_identity="rotated.jwt.assertion"),
     ]
+    profile_federation = {"organization_id": "fixture-org", "workspace_id": "profile-workspace",
+        "authentication": {"type": "oidc_federation", "federation_rule_id": "fixture-rule",
+            "identity_token": {"source": "file", "path": "<identity-file>"},
+            "service_account_id": "fixture-account", "scope": "informational"}}
+    disk = {"access_token": "disk-token", "expires_at": 1700001000,
+        "refresh_token": "preserved-refresh", "extra": {"generation": 7}}
+    profiles.extend([
+        dict(name="profile-federation-missing-cache", config=profile_federation, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-fresh", config=profile_federation, credentials=disk, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-31", config=profile_federation, credentials={**disk, "expires_at": 1700000031}, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-30", config=profile_federation, credentials={**disk, "expires_at": 1700000030}, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-fractional", config=profile_federation, credentials={**disk, "expires_at": 1700000030.5}, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-corrupt-expiry", config=profile_federation, credentials={**disk, "expires_at": "invalid"}, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-missing-rule", config={**profile_federation, "authentication": {**profile_federation["authentication"], "federation_rule_id": ""}}, credentials=disk, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-unsupported-identity", config={**profile_federation, "authentication": {**profile_federation["authentication"], "identity_token": {"source": "url", "path": "<identity-file>"}}}, credentials=disk, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-empty-identity-path", config={**profile_federation, "authentication": {**profile_federation["authentication"], "identity_token": {"source": "file", "path": ""}}}, credentials=disk, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-invalid-cache-type", config=profile_federation, credentials={**disk, "type": "wrong"}, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-world-readable", config=profile_federation, credentials=disk, identity_file="file.jwt.assertion", mode=0o644),
+        dict(name="profile-federation-symlink-cache", config=profile_federation, credentials=disk, identity_file="file.jwt.assertion", symlink=True),
+        dict(name="profile-federation-force", config=profile_federation, credentials=disk, identity_file="file.jwt.assertion", force_after_first=True),
+        dict(name="profile-federation-reopen", config=profile_federation, identity_file="file.jwt.assertion", reopen_after_first=True),
+        dict(name="profile-federation-empty-cache", config=profile_federation, credentials={}, identity_file="file.jwt.assertion"),
+        dict(name="profile-federation-write-failure", config={**profile_federation, "authentication": {**profile_federation["authentication"], "credentials_path": "<cache-parent-file>/cache.json"}}, identity_file="file.jwt.assertion", write_failure=True),
+        dict(name="profile-federation-env-fill", config={"authentication": {"type": "oidc_federation"}}, identity_file="file.jwt.assertion", environment={"ANTHROPIC_PROFILE": "default", "ANTHROPIC_FEDERATION_RULE_ID": "env-rule", "ANTHROPIC_ORGANIZATION_ID": "env-org", "ANTHROPIC_WORKSPACE_ID": "env-workspace", "ANTHROPIC_SCOPE": "env-scope"}),
+    ])
     rows = []
     for spec in profiles:
         root = scratch / spec["name"]
@@ -57,7 +82,12 @@ async def provider_discovery_cases(scratch):
         profile = spec.get("profile", "default")
         if "config" in spec:
             value = spec["config"]
-            (directory / "configs" / f"{profile}.json").write_text(value if isinstance(value, str) else json.dumps(value))
+            config_text = value if isinstance(value, str) else json.dumps(value)
+            config_text = config_text.replace("<identity-file>", str(root / "identity.jwt"))
+            config_text = config_text.replace("<cache-parent-file>", str(root / "cache-parent-file"))
+            (directory / "configs" / f"{profile}.json").write_text(config_text)
+        if spec.get("write_failure"):
+            (root / "cache-parent-file").write_text("not a directory")
         if "credentials" in spec:
             path = directory / "credentials" / f"{profile}.json"
             if spec.get("symlink"):
@@ -80,7 +110,11 @@ async def provider_discovery_cases(scratch):
         requests, exchanges, constructors, texts = [], [], [], []
         fault, constructed = None, False
         clock = [1700000000]
-        credentials_client = real_http(transport=httpx.MockTransport(lambda request: exchange(request)))
+        credentials_clients = []
+        def credentials_http(*args, **kwargs):
+            instance = real_http(transport=httpx.MockTransport(lambda request: exchange(request)))
+            credentials_clients.append(instance)
+            return instance
 
         def exchange(request):
             exchanges.append(dict(url=str(request.url), body=json.loads(request.content),
@@ -111,7 +145,7 @@ async def provider_discovery_cases(scratch):
                 patch("time.time", side_effect=lambda: clock[0]), \
                 patch("anthropic.AsyncAnthropic", side_effect=construct), \
                 patch("anthropic._client.TokenCache", side_effect=lambda provider: _cache.TokenCache(provider, time_source=lambda: clock[0])), \
-                patch("httpx.Client", return_value=credentials_client):
+                patch("httpx.Client", side_effect=credentials_http):
             try:
                 source = provider_for(Settings())
                 client = source.create_client()
@@ -120,6 +154,11 @@ async def provider_discovery_cases(scratch):
                     reply = await client.messages.create(model="fixture-model", max_tokens=8,
                         messages=[dict(role="user", content="hello")])
                     texts.append(reply.content[0].text)
+                    if len(texts) == 1 and spec.get("force_after_first"):
+                        client._token_cache.invalidate()
+                    if len(texts) == 1 and spec.get("reopen_after_first"):
+                        await client.close()
+                        client = source.create_client()
                     if len(texts) == 1 and spec.get("advance_clock"):
                         clock[0] += spec["advance_clock"]
                         if spec.get("rotate_identity"):
@@ -129,13 +168,15 @@ async def provider_discovery_cases(scratch):
             finally:
                 if client is not None:
                     await client.close()
-                credentials_client.close()
+                for credentials_client in credentials_clients:
+                    credentials_client.close()
         credentials_after = None
         credentials_mode = None
-        if spec["name"] == "oauth-refresh":
+        if spec["name"] == "oauth-refresh" or spec["name"].startswith("profile-federation-"):
             path = directory / "credentials" / f"{profile}.json"
-            credentials_after = json.loads(path.read_text())
-            credentials_mode = path.stat().st_mode & 0o777
+            if path.is_file():
+                credentials_after = json.loads(path.read_text())
+                credentials_mode = path.stat().st_mode & 0o777
         # Normalize only the isolated absolute origin for deterministic recipes.
         normalized = json.loads(json.dumps(dict(spec=spec, environment=environment, constructed=constructed,
             constructors=constructors, requests=requests, exchanges=exchanges, texts=texts, fault=fault,
@@ -147,7 +188,9 @@ async def provider_discovery_cases(scratch):
 def discovery_source_hashes():
     symbols = [_chain.default_credentials, _chain._build_federation_result,
         _providers.CredentialsFile._load_config, _providers.CredentialsFile._read_credentials,
-        _providers.CredentialsFile._call_user_oauth, _workload.WorkloadIdentityCredentials.__call__,
+        _providers.CredentialsFile._call_user_oauth, _providers.CredentialsFile._call_oidc_federation,
+        _providers.CredentialsFile._build_workload_delegate, _providers.CredentialsFile._read_credentials_if_exists,
+        _providers.CredentialsFile._atomic_write_credentials, _providers.CredentialsFile._get_http_client, _workload.WorkloadIdentityCredentials.__call__,
         _cache.TokenCache.get_token, _cache.TokenCache.invalidate,
         _auth.AccessTokenAuth._apply, _auth.AccessTokenAuth.async_auth_flow]
     return {symbol.__qualname__: hashlib.sha256(inspect.getsource(symbol).encode()).hexdigest() for symbol in symbols}

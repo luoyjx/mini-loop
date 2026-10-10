@@ -1084,14 +1084,1118 @@
         "ok",
         "ok"
       ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "exchanged-token",
+        "expires_at": 1700003600,
+        "type": "oauth_token",
+        "version": "1.0"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-missing-cache/identity.jwt"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org",
+            "service_account_id": "fixture-account",
+            "workspace_id": "profile-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-missing-cache"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700001000,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-fresh/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer disk-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer disk-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-fresh"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700000031,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-31/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer disk-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer disk-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700000031,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-31"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "exchanged-token",
+        "expires_at": 1700003600,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh",
+        "type": "oauth_token",
+        "version": "1.0"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-30/identity.jwt"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org",
+            "service_account_id": "fixture-account",
+            "workspace_id": "profile-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700000030,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-30"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700000030.5,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-fractional/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer disk-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer disk-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700000030.5,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-fractional"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "exchanged-token",
+        "expires_at": 1700003600,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh",
+        "type": "oauth_token",
+        "version": "1.0"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-corrupt-expiry/identity.jwt"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org",
+            "service_account_id": "fixture-account",
+            "workspace_id": "profile-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": "invalid",
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-corrupt-expiry"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700001000,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-missing-rule/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "config file with authentication.type 'oidc_federation' must include 'authentication.federation_rule_id' and top-level 'organization_id': <scratch>/profile-federation-missing-rule/home/.config/anthropic/configs/default.json",
+        "type": "WorkloadIdentityError"
+      },
+      "requests": [],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-missing-rule"
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700001000,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-unsupported-identity/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "identity_token source 'url' is not supported; only 'file' is implemented",
+        "type": "AnthropicError"
+      },
+      "requests": [],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "url"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-unsupported-identity"
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700001000,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-empty-identity-path/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "identity_token source 'file' requires a non-empty path; profile 'default' at <scratch>/profile-federation-empty-identity-path/home/.config/anthropic/configs/default.json has identity_token={'source': 'file', 'path': ''}.",
+        "type": "AnthropicError"
+      },
+      "requests": [],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-empty-identity-path"
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700001000,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh",
+        "type": "wrong"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-invalid-cache-type/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "credentials file has type 'wrong'; expected 'oauth_token' for authentication.type 'oidc_federation'",
+        "type": "AnthropicError"
+      },
+      "requests": [],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh",
+          "type": "wrong"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-invalid-cache-type"
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700001000,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 420,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-world-readable/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "Credentials file at <scratch>/profile-federation-world-readable/home/.config/anthropic/credentials/default.json is world-readable (mode 0o644); run `chmod 600 <scratch>/profile-federation-world-readable/home/.config/anthropic/credentials/default.json` before retrying.",
+        "type": "AnthropicError"
+      },
+      "requests": [],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "mode": 420,
+        "name": "profile-federation-world-readable"
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "disk-token",
+        "expires_at": 1700001000,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-symlink-cache/identity.jwt"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "Credentials file at <scratch>/profile-federation-symlink-cache/home/.config/anthropic/credentials/default.json is a symlink; refusing to follow (move the real file into place to keep secret material on the expected filesystem).",
+        "type": "AnthropicError"
+      },
+      "requests": [],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-symlink-cache",
+        "symlink": true
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "exchanged-token",
+        "expires_at": 1700003600,
+        "extra": {
+          "generation": 7
+        },
+        "refresh_token": "preserved-refresh",
+        "type": "oauth_token",
+        "version": "1.0"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-force/identity.jwt"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org",
+            "service_account_id": "fixture-account",
+            "workspace_id": "profile-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer disk-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {
+          "access_token": "disk-token",
+          "expires_at": 1700001000,
+          "extra": {
+            "generation": 7
+          },
+          "refresh_token": "preserved-refresh"
+        },
+        "force_after_first": true,
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-force"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {},
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "exchanged-token",
+        "expires_at": 1700003600,
+        "type": "oauth_token",
+        "version": "1.0"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-reopen/identity.jwt"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org",
+            "service_account_id": "fixture-account",
+            "workspace_id": "profile-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-reopen",
+        "reopen_after_first": true
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "exchanged-token",
+        "expires_at": 1700003600,
+        "type": "oauth_token",
+        "version": "1.0"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-empty-cache/identity.jwt"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org",
+            "service_account_id": "fixture-account",
+            "workspace_id": "profile-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "credentials": {},
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-empty-cache"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-write-failure/identity.jwt"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org",
+            "service_account_id": "fixture-account",
+            "workspace_id": "profile-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "credentials_path": "<cache-parent-file>/cache.json",
+            "federation_rule_id": "fixture-rule",
+            "identity_token": {
+              "path": "<identity-file>",
+              "source": "file"
+            },
+            "scope": "informational",
+            "service_account_id": "fixture-account",
+            "type": "oidc_federation"
+          },
+          "organization_id": "fixture-org",
+          "workspace_id": "profile-workspace"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-write-failure",
+        "write_failure": true
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": {
+        "access_token": "exchanged-token",
+        "expires_at": 1700003600,
+        "type": "oauth_token",
+        "version": "1.0"
+      },
+      "credentials_mode": 384,
+      "environment": {
+        "ANTHROPIC_FEDERATION_RULE_ID": "env-rule",
+        "ANTHROPIC_IDENTITY_TOKEN_FILE": "<scratch>/profile-federation-env-fill/identity.jwt",
+        "ANTHROPIC_ORGANIZATION_ID": "env-org",
+        "ANTHROPIC_PROFILE": "default",
+        "ANTHROPIC_SCOPE": "env-scope",
+        "ANTHROPIC_WORKSPACE_ID": "env-workspace"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "file.jwt.assertion",
+            "federation_rule_id": "env-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "env-org",
+            "workspace_id": "env-workspace"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "type": "oidc_federation"
+          }
+        },
+        "environment": {
+          "ANTHROPIC_FEDERATION_RULE_ID": "env-rule",
+          "ANTHROPIC_ORGANIZATION_ID": "env-org",
+          "ANTHROPIC_PROFILE": "default",
+          "ANTHROPIC_SCOPE": "env-scope",
+          "ANTHROPIC_WORKSPACE_ID": "env-workspace"
+        },
+        "identity_file": "file.jwt.assertion",
+        "name": "profile-federation-env-fill"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
     }
   ],
   "discovery_hashes": {
     "AccessTokenAuth._apply": "76ac56121db3b2bdee092f5756e54b18776a581961e356b0f328f3511e858732",
     "AccessTokenAuth.async_auth_flow": "328d3c8986a2148307416e6a14d0cef6c44ca1eb60a524fd33b2e175ca767262",
+    "CredentialsFile._atomic_write_credentials": "7332603fb6d4323e7a555a0d05044703ef5c7ca2a97b0829c20dbd25086236c4",
+    "CredentialsFile._build_workload_delegate": "739290427eaab808c932b2ae17f5d0f65b68d16e6704b5ff1a30bf9360e51169",
+    "CredentialsFile._call_oidc_federation": "e713c745db6737a0faeac0974ae3208dc1bd13d8cefdcb90fcf012095d8aed49",
     "CredentialsFile._call_user_oauth": "c6947ee7e0e837636827a73a30f8ec983b054fdcb3b95ff61e5fe9e059567035",
+    "CredentialsFile._get_http_client": "914593fc51080cb85919efa44725a82e01c09e29589d8d930bc3d805c75ba1ec",
     "CredentialsFile._load_config": "3988626708507aa87f22a7b5a4310b463b2e1dda8a932f9d6f284aae7597aeb5",
     "CredentialsFile._read_credentials": "fb860c3aab2796c2e97c2442724c344549c27b1f8248a2f0439134e451c1fc1e",
+    "CredentialsFile._read_credentials_if_exists": "054ee188fd1b03404767dce16a646f19ff7ef750643062734b0ad63dd911ad4b",
     "TokenCache.get_token": "02550a107ec7a566bfc8866caf55a0c94093af1b162591ea246f72ae94adc645",
     "TokenCache.invalidate": "23f3d4e92b7ba404185e668f84cbbf14363a4a121b4c40275d593de012fe74eb",
     "WorkloadIdentityCredentials.__call__": "6783c40c4a7b322cb0217a08d53e1012d3adb127e601c713530f6d1f77f2c4e6",
