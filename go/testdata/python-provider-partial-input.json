@@ -1,0 +1,1322 @@
+{
+  "accumulate_event_sha256": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098",
+  "cases": [
+    {
+      "chunks": [],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "no-deltas",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        ""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "empty-delta",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "",
+        ""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "empty-twice",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "complete",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "open-object",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{ "
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "open-object-space",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{ \"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "complete-member-open-object",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "trailing-comma-eof",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"dro"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-key",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"dro\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "missing-colon",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "missing-value",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-string",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":\"unfinished\\"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-escape",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\\\"unfinished\\\\\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":\"\\u12"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-unicode",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\\\"\\\\u12\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"values\":[1,true,\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1, true]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-array",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1, true]}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"values\\\":[1,true,\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"values\":[1,tru"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-array-literal",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1]}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"values\\\":[1,tru\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"nested\":{\"keep\":1,\"drop\":\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"nested\": {\"keep\": 1}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-nested-object",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"nested\": {\"keep\": 1}}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"nested\\\":{\\\"keep\\\":1,\\\"drop\\\":\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":tru"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-true",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":tru\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":fals"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-false",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":fals\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":nul"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-null",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":nul\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":-"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-negative",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":-\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":1."
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-fraction",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":1.\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":1e+"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "partial-exponent",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":1e+\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"value\":1e2"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 100.0}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "complete-exponent-eof",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 100.0}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"value\\\":1e2\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"value\":9223372036854775808123"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 9223372036854775808123}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "large-integer-eof",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 9223372036854775808123}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"value\\\":9223372036854775808123\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"keep\":\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "duplicate-partial",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"keep\\\":\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"keep\":2"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 2}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "duplicate-complete",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 2}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"keep\\\":2\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":\"un",
+        "finished\"}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": \"unfinished\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "completed-two-chunks",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": \"unfinished\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":\\\"un\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"finished\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{",
+        "\"",
+        "c",
+        "o",
+        "m",
+        "m",
+        "a",
+        "n",
+        "d",
+        "\"",
+        ":",
+        "\"",
+        "t",
+        "r",
+        "u",
+        "e",
+        "\"",
+        ",",
+        "\"",
+        "k",
+        "e",
+        "e",
+        "p",
+        "\"",
+        ":",
+        "1",
+        "}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "completed-many-chunks",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"c\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"o\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"m\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"m\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"a\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"n\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"d\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \":\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"t\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"r\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"u\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"e\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \",\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"k\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"e\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"e\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"p\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \":\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"1\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "",
+        "{\"command\":\"true\"}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "empty-first",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{",
+        "",
+        "\"command\":\"true\"}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "empty-middle",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"command\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\"}",
+        ""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "empty-last",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"}\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",?",
+        "\"keep\":1}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "key must be a string at line 1 column 19"
+      },
+      "kind": "tool_use",
+      "name": "invalid-repaired-later",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",?\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"keep\\\":1}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":truth}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "expected ident at line 1 column 29"
+      },
+      "kind": "tool_use",
+      "name": "invalid-literal",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":truth}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":01}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "invalid number at line 1 column 27"
+      },
+      "kind": "tool_use",
+      "name": "invalid-number",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":01}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "trailing comma at line 1 column 19"
+      },
+      "kind": "tool_use",
+      "name": "invalid-trailing-comma",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":\"\\u12xz\"}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "invalid escape at line 1 column 31"
+      },
+      "kind": "tool_use",
+      "name": "invalid-unicode",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":\\\"\\\\u12xz\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":\"a\nb\"}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "control character (\\u0000-\\u001F) found while parsing a string at line 2 column 0"
+      },
+      "kind": "tool_use",
+      "name": "invalid-control",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":\\\"a\\nb\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\"]"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "invalid-delimiter",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"]\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\"}garbage"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "trailing-garbage",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"}garbage\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        " "
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "EOF while parsing a value at line 1 column 1"
+      },
+      "kind": "tool_use",
+      "name": "whitespace-only",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \" \"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "[1,true]"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": [1, true], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "root-array",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": [1, true], \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"[1,true]\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "null"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": null, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "root-null",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": null, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"null\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "\"hello\""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": \"hello\", \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "root-string",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": \"hello\", \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"hello\\\"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "17"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": 17, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "root-integer",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": 17, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"17\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "true"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": true, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "root-boolean",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": true, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"true\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "\"unfinished"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "EOF while parsing a string at line 1 column 11"
+      },
+      "kind": "tool_use",
+      "name": "root-partial-string",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":NaN}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "nonfinite-nan",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":Infinity}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "kind": "tool_use",
+      "name": "nonfinite-infinity",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool\", \"name\": \"bash\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "no-deltas",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        ""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "empty-delta",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "",
+        ""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "empty-twice",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "complete",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "open-object",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{ "
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "open-object-space",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{ \"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "complete-member-open-object",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "trailing-comma-eof",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"dro"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-key",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"dro\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "missing-colon",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "missing-value",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-string",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":\"unfinished\\"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-escape",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\\\"unfinished\\\\\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":\"\\u12"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-unicode",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":\\\"\\\\u12\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"values\":[1,true,\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1, true]}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-array",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1, true]}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"values\\\":[1,true,\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"values\":[1,tru"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1]}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-array-literal",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1]}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"values\\\":[1,tru\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"nested\":{\"keep\":1,\"drop\":\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"nested\": {\"keep\": 1}}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-nested-object",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"nested\": {\"keep\": 1}}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"nested\\\":{\\\"keep\\\":1,\\\"drop\\\":\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":tru"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-true",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":tru\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":fals"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-false",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":fals\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":nul"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-null",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":nul\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":-"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-negative",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":-\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":1."
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-fraction",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":1.\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"drop\":1e+"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "partial-exponent",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"drop\\\":1e+\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"value\":1e2"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 100.0}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "complete-exponent-eof",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 100.0}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"value\\\":1e2\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"value\":9223372036854775808123"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 9223372036854775808123}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "large-integer-eof",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 9223372036854775808123}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"value\\\":9223372036854775808123\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"keep\":\"unfinished"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "duplicate-partial",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"keep\\\":\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":1,\"keep\":2"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 2}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "duplicate-complete",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 2}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":1,\\\"keep\\\":2\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":\"un",
+        "finished\"}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": \"unfinished\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "completed-two-chunks",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": \"unfinished\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":\\\"un\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"finished\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{",
+        "\"",
+        "c",
+        "o",
+        "m",
+        "m",
+        "a",
+        "n",
+        "d",
+        "\"",
+        ":",
+        "\"",
+        "t",
+        "r",
+        "u",
+        "e",
+        "\"",
+        ",",
+        "\"",
+        "k",
+        "e",
+        "e",
+        "p",
+        "\"",
+        ":",
+        "1",
+        "}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "completed-many-chunks",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"c\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"o\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"m\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"m\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"a\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"n\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"d\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \":\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"t\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"r\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"u\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"e\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \",\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"k\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"e\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"e\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"p\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \":\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"1\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "",
+        "{\"command\":\"true\"}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "empty-first",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{",
+        "",
+        "\"command\":\"true\"}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "empty-middle",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"command\\\":\\\"true\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\"}",
+        ""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "empty-last",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"}\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",?",
+        "\"keep\":1}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "key must be a string at line 1 column 19"
+      },
+      "kind": "server_tool_use",
+      "name": "invalid-repaired-later",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",?\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"keep\\\":1}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":truth}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "expected ident at line 1 column 29"
+      },
+      "kind": "server_tool_use",
+      "name": "invalid-literal",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":truth}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":01}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "invalid number at line 1 column 27"
+      },
+      "kind": "server_tool_use",
+      "name": "invalid-number",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":01}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "trailing comma at line 1 column 19"
+      },
+      "kind": "server_tool_use",
+      "name": "invalid-trailing-comma",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":\"\\u12xz\"}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "invalid escape at line 1 column 31"
+      },
+      "kind": "server_tool_use",
+      "name": "invalid-unicode",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":\\\"\\\\u12xz\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":\"a\nb\"}"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "control character (\\u0000-\\u001F) found while parsing a string at line 2 column 0"
+      },
+      "kind": "server_tool_use",
+      "name": "invalid-control",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":\\\"a\\nb\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\"]"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "invalid-delimiter",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"]\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\"}garbage"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "trailing-garbage",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\"}garbage\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        " "
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "EOF while parsing a value at line 1 column 1"
+      },
+      "kind": "server_tool_use",
+      "name": "whitespace-only",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \" \"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "[1,true]"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": [1, true], \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "root-array",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": [1, true], \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"[1,true]\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "null"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": null, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "root-null",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": null, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"null\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "\"hello\""
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": \"hello\", \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "root-string",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": \"hello\", \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"hello\\\"\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "17"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": 17, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "root-integer",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": 17, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"17\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "true"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": true, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "root-boolean",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": true, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"true\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "\"unfinished"
+      ],
+      "error": {
+        "class": "ValueError",
+        "message": "EOF while parsing a string at line 1 column 11"
+      },
+      "kind": "server_tool_use",
+      "name": "root-partial-string",
+      "snapshots_json": [],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"unfinished\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":NaN}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "nonfinite-nan",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "chunks": [
+        "{\"command\":\"true\",\"keep\":Infinity}"
+      ],
+      "expected_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "kind": "server_tool_use",
+      "name": "nonfinite-infinity",
+      "snapshots_json": [
+        "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+      ],
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"server_tool_use\", \"id\": \"tool\", \"name\": \"web_search\", \"input\": {\"command\": \"true\"}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\":\\\"true\\\",\\\"keep\\\":Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    }
+  ],
+  "content_payload_sha256": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505",
+  "jiter_version": "0.15.0",
+  "sdk_version": "0.107.1"
+}
