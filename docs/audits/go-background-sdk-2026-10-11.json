@@ -1,0 +1,65 @@
+{
+  "source_commit": "9086419",
+  "native_test_commit": "8888e72",
+  "production_runtime": "4f56ef8",
+  "sdk_version": "anthropic 0.107.1",
+  "sdk_profiles": 48,
+  "managed_profiles": 48,
+  "finite_profiles": 42,
+  "nonfinite_profiles": 6,
+  "fixture_sha256": "bf8e5f23b6005509ac56d1df53f2880005956950eca441e62cd6f6e1df9078b1",
+  "gates": [
+    {
+      "command": ".venv/bin/python -m pytest -q python/tests/test_provider_background_sdk_contracts.py python/tests/test_provider_background_options_contracts.py",
+      "result": "3 passed in 6.88s"
+    },
+    {
+      "command": "cd go && go test -race -p=1 -count=1 ./provider ./agent",
+      "result": "pass; provider 3.007s, agent 51.807s"
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_scans.py",
+      "result": "19 guards anchored"
+    },
+    {
+      "command": ".venv/bin/python python/tools/export_go_contracts.py --check --diagnostics-dir /tmp/mini-loop-background-sdk-export-diagnostics",
+      "result": "228 files current"
+    },
+    {
+      "command": "cd go && go test -p=1 -count=1 ./agent -run TestBackgroundSDKOptionsMatchSourceManagedAdmissionAndTasks",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "logs": {
+    "/tmp/mini-loop-background-sdk-targeted-race.log": {
+      "sha256": "078c6ff18cc6fa4fe670d406d37cec2189bbafd4b207fede86eebac907f5b278"
+    },
+    "/tmp/mini-loop-background-sdk-export.log": {
+      "sha256": "a318bd6f1b32debec06bf67e99368e1a3dbb7b972b2c485716b428b9b30c5bc6"
+    },
+    "/tmp/mini-loop-background-sdk-scans.log": {
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+    },
+    "/tmp/mini-loop-background-sdk-error-adaptation.log": {
+      "sha256": "b738803a7cf80d2783f213c566df5a982d695fbddc1556fa2153c284c6aec399"
+    },
+    "/tmp/mini-loop-background-sdk-managed.log": {
+      "sha256": "0277102603b654c7d23acfb112a02133a7f5dfd071f645b7262242c1f596dd33"
+    }
+  },
+  "open_gap": {
+    "source": "[Error] ValueError: Out of range float values are not JSON compliant",
+    "native": "[Error] *provider.Failure: cannot encode provider request",
+    "scope": "Six nonfinite profiles; difference logged, not asserted as parity"
+  },
+  "limits": [
+    "Tests/export tooling only; no runtime change",
+    "No refreshed full Go/Python, vet, type audit, coverage, architecture visual or non-Darwin checks",
+    "Native post-spawn fault cleanup and scheduler adaptations remain",
+    "No merge or push; full port acceptance remains open"
+  ]
+}

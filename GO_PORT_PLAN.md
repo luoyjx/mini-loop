@@ -18130,3 +18130,24 @@ for exact commands, source/implementation hashes, preserved logs and limits.
 No full Python, non-Darwin, coverage or performance refresh. Default diagnostics,
 broader managed option consumers and complete port acceptance remain open.
 git diff --check passes. No dependency added, merge or push.
+
+## Captured SDK background optional consumers — 2026-10-11
+
+Source prerequisite `9086419`; native tests `8888e72`; production runtime remains
+`4f56ef8`. The pinned anthropic 0.107.1 capture exercises 48 direct/SSE and
+forwarding profiles plus 48 actual Source SessionManager runs. Native tests now
+consume those captured envelopes. All 42 finite profiles match managed admission,
+hook order, journal presence, initial output, final reply and settled task result.
+Six nonfinite profiles match rejection before forwarding and background allocation,
+but final error rendering remains open: Source returns `[Error] ValueError: Out of
+range float values are not JSON compliant`; Go returns `[Error] *provider.Failure:
+cannot encode provider request`. The test logs this difference; it does not assert
+error-text parity. Existing process cleanup and scheduler adaptations remain.
+
+Gates: three Source tests pass; complete provider/agent race suites pass; 19 scan
+guards pass; full Source export --check passes with 228 current files after native
+jobs terminate; focused nonfinite diagnostic tests and git diff --check pass.
+This slice changes tests/export tooling only. No new full Go/Python suite, vet,
+type audit, architecture visual, coverage or non-Darwin gate is claimed.
+See [SDK consumer audit](docs/audits/go-background-sdk-2026-10-11.json).
+No merge or push; full port acceptance and SDK final error rendering remain open.

@@ -42,10 +42,11 @@ The latest authentication-slice Source export retry at `477a209` passed with
 six Python authentication tests, 19 scans and type audit passed at `477a209`.
 No new Go runtime validation is claimed by this fixture/inventory slice.
 
-Latest measured coverage: application excluding tools **89.34% (31644/35418)**;
-all Go **89.32% (31691/35482)** on `e3fc640`. Successful
-full race/coverpkg run merges source locations by maximum hit count. See
-[package metrics](docs/audits/go-coverage-observer-readiness-2026-10-10.json). Darwin
+Latest measured coverage: application excluding tools **89.17% (32196/36106)**;
+all Go **89.14% (32243/36170)** on runtime `770f065`. This measurement comes from
+a failing full race/coverpkg run: SQLite maximum decision restart timed out, so
+its profile may undercount. It is not current-HEAD coverage. See
+[package metrics](docs/audits/go-coverage-nonfinite-bash-2026-10-11.json). Darwin
 coverage excludes native C and CLI child-process internals; coverage does not
 prove complete port/default/type acceptance. No merge or push was performed.
 
@@ -10315,3 +10316,24 @@ for exact commands, source/implementation hashes, preserved logs and limits.
 No full Python, non-Darwin, coverage or performance refresh. Default diagnostics,
 broader managed option consumers and complete port acceptance remain open.
 git diff --check passes. No dependency added, merge or push.
+
+## Captured SDK background optional consumers — 2026-10-11
+
+Source prerequisite `9086419`; native tests `8888e72`; production runtime remains
+`4f56ef8`. The pinned anthropic 0.107.1 capture exercises 48 direct/SSE and
+forwarding profiles plus 48 actual Source SessionManager runs. Native tests now
+consume those captured envelopes. All 42 finite profiles match managed admission,
+hook order, journal presence, initial output, final reply and settled task result.
+Six nonfinite profiles match rejection before forwarding and background allocation,
+but final error rendering remains open: Source returns `[Error] ValueError: Out of
+range float values are not JSON compliant`; Go returns `[Error] *provider.Failure:
+cannot encode provider request`. The test logs this difference; it does not assert
+error-text parity. Existing process cleanup and scheduler adaptations remain.
+
+Gates: three Source tests pass; complete provider/agent race suites pass; 19 scan
+guards pass; full Source export --check passes with 228 current files after native
+jobs terminate; focused nonfinite diagnostic tests and git diff --check pass.
+This slice changes tests/export tooling only. No new full Go/Python suite, vet,
+type audit, architecture visual, coverage or non-Darwin gate is claimed.
+See [SDK consumer audit](docs/audits/go-background-sdk-2026-10-11.json).
+No merge or push; full port acceptance and SDK final error rendering remain open.
