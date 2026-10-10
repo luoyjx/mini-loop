@@ -6500,6 +6500,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_server_tool_contracts import provider_server_tool_contracts
     from tools.provider_caller_contracts import provider_caller_contracts
     from tools.provider_partial_input_contracts import provider_partial_input_contracts
+    from tools.provider_partial_json_contracts import provider_partial_json_contracts
     from tools.dotenv_contracts import dotenv_contracts
     from tools.dotenv_file_contracts import dotenv_file_contracts
     from tools.dotenv_boot_contracts import dotenv_boot_contracts
@@ -6863,6 +6864,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-server-tool.json": _json_bytes(provider_server_tool_contracts()),
         "python-provider-caller.json": _json_bytes(provider_caller_contracts()),
         "python-provider-partial-input.json": _json_bytes(provider_partial_input_contracts()),
+        "python-provider-partial-json.json": _json_bytes(provider_partial_json_contracts()),
         "python-dotenv.json": _json_bytes(dotenv_contracts()),
         "python-dotenv-files.json": _json_bytes(dotenv_file_contracts(Path(scratch) / "dotenv-files")),
         "python-dotenv-boot.json": _json_bytes(dotenv_boot_contracts(Path(scratch) / "dotenv-boot")),
