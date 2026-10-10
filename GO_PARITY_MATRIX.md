@@ -10184,3 +10184,46 @@ task-owned fixtures byte-for-byte. This narrow check does not establish that
 all 226 export targets are current. git diff --check passes.
 
 Native implementation: `83d12e2`; Source prerequisite: `49ee982`.
+
+## Darwin per-subscription dispatch queue — 2026-10-11
+
+Baseline `a5aed66`. The deprecated FSEventStreamScheduleWithRunLoop path now
+uses Apple's supported FSEventStreamSetDispatchQueue with one owned serial
+queue per stream. Start and stop/invalidate serialize with event callbacks.
+Close drains work before stream/queue release and typed registry retirement;
+start failures release partial ownership. The coordinator joins cleanup without
+a private locked OS thread, CFRunLoop or second stop-signalling goroutine.
+
+Apple API requirements are pinned in the [queue audit](docs/audits/go-fsevents-dispatch-queue-2026-10-11.json)
+with the installed SDK header hash/version and implementation/test/fixture hashes.
+Callbacks retain the same flags 18, latency zero, since-now, root/change/loss
+admission and lexical projection. Native/polling selection and all batching,
+context and recipe deadlines remain unchanged. No global purge, fallback or
+fixture relaxation. This is a supported native API adaptation; it does not prove
+the causal origin of the previous Go or Source callback timing failures.
+
+Lifecycle/cancellation, 32 immediate concurrent-close subscriptions, real
+active-callback join and all 16 recipes pass in targeted ordinary and race runs.
+A callback held inside diagnostic IO demonstrates Close cannot return before
+that callback is released and registry cleanup joins. Fixed three-round recipe
+validation passes all 48 scenarios in 21.418 seconds. Full ordinary Go still
+fails only reload symlink-target-write, removed-source, same-mtime-write,
+same-mtime-touch and rename-out. Full Go race passes (reload 39.524 seconds);
+it does not supersede those ordinary failures or establish exhaustive reliability.
+
+Vet passes; the FSEvents deprecation warning is removed, while the existing
+macOS race linker warning remains. Type audit has 439 production files / 1,407
+named types / zero findings. README canonical map, boundary, review baseline and
+architecture specification are synchronized; generated HTML passes Archify 9/9,
+zero errors/warnings. No fresh browser visual inspection. Coverage/full Python/
+non-Darwin/performance were not rerun. No Python package-module/scanner/guard
+anchor changes. Prior coverage keeps its `770f065` baseline and failed-run limit.
+Native temporal reliability, Source capture readiness, default diagnostics and
+complete migration acceptance remain open. No dependency added, merge or push.
+
+Native implementation: `0d794bf`. Sequential Source export --check passes after
+all native Go jobs terminated: **226 files current**, including the previously
+interrupted background export slice. This run's Source readiness/capture succeeded;
+it does not prove the cause of the earlier intermittent Source arm failure.
+Exact recipe/helper/fixture bytes remain unchanged from `a5aed66`. Full ordinary
+failure timelines/log hashes are retained in the audit; diff checks pass.
