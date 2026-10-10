@@ -15177,3 +15177,29 @@ verification. git diff --check passes. Existing FSEvents deprecation and macOS
 linker warnings remain. Visual review was not repeated after prior browser denial.
 No Python module/scanner/guard target changed; corresponding full Python,
 invariant/scanner/mutation checks were not rerun. No merge or push.
+
+
+## 2026-10-10 coverage refresh after CLI observer activation
+
+Measured code baseline: `ba1c43f` on Darwin arm64. Fresh complete ordinary
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-cli-current.cover ./...` passes. Each source-location
+block is counted once, retaining maximum hits across package tests.
+
+Merged statement coverage: **89.72% (28758/32054)**. Package coverage:
+reload **84.44% (635/752)**; agent **89.91% (8994/10003)**;
+sqlitestate **83.36% (521/625)**; config **87.00% (348/400)**;
+httpapi **89.48% (1616/1806)**; launcher **80.61% (212/263)**;
+cmd/miniloop **41.76% (71/170)**; internal/commandenv **0% (0/28)**.
+
+Previous 2d2b608 snapshot was 89.73% (28712/31998): covered statements
+increased by 46 and total statements by 56. This reports statement coverage,
+not branch coverage or full migration completion. CLI child-process counters
+and native C are not merged. Actual native/polling command, HTTP and cleanup
+behavior is verified separately by process tests. Linux-only inotify code is
+not part of this Darwin denominator; its actual Linux tests pass separately.
+
+Fresh full ordinary/race/vet gates passed independently of coverage. No
+SQLite fallback profile was necessary in this refresh. No full Python,
+mutation gate, merge or push was run. This update changes documentation only;
+git diff --check and cached diff checks pass.
