@@ -47,6 +47,13 @@ class Mutation:
 
 MUTATIONS = [
     Mutation(
+        "export-diagnostics-without-check", 239, "tools/export_go_contracts.py",
+        "if args.diagnostics_dir is not None and not args.check:",
+        "if False:",
+        "tests/test_go_export_diagnostics.py::test_diagnostics_requires_check_before_capture",
+        "diagnostic retention is admitted only for a check; rejecting the flag combination precedes capture and target writes",
+    ),
+    Mutation(
         "block-normalization-is-lossy", 30, "mini_loop/agent.py",
         'fields["type"] = getattr(block, "type", "unknown")\n            payload.append(fields)',
         'payload.append({"type": getattr(block, "type", "unknown")})',

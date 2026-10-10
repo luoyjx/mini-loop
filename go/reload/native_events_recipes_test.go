@@ -6,14 +6,52 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 )
+
+// Bound the failure timeline and serialize writes from the native owner thread.
+type nativeRecipeTrace struct {
+	mu        sync.Mutex
+	start     time.Time
+	log       strings.Builder
+	truncated bool
+}
+
+func (trace *nativeRecipeTrace) Write(data []byte) (int, error) {
+	trace.mu.Lock()
+	defer trace.mu.Unlock()
+	line := fmt.Sprintf("+%s %s", time.Since(trace.start).Round(time.Millisecond), data)
+	const capacity = 8192
+	remaining := capacity - trace.log.Len()
+	if len(line) > remaining {
+		line = line[:remaining]
+		trace.truncated = true
+	}
+	trace.log.WriteString(line)
+	return len(data), nil
+}
+
+func (trace *nativeRecipeTrace) mark(message string) {
+	fmt.Fprintln(trace, message)
+}
+
+func (trace *nativeRecipeTrace) text() string {
+	trace.mu.Lock()
+	defer trace.mu.Unlock()
+	text := trace.log.String()
+	if trace.truncated {
+		text += "\n[further native diagnostic bytes omitted]"
+	}
+	return text
+}
 
 func TestNativeEventsActualSourceRecipes(t *testing.T) {
 	var fixture struct {
@@ -90,16 +128,26 @@ func TestNativeEventsActualSourceRecipes(t *testing.T) {
 				write(sourcePath, "before\n")
 				stamp(100)
 			}
-			observer, err := NewNativeEvents([]string{root}, GoSource)
+			trace := &nativeRecipeTrace{start: time.Now()}
+			observer, err := newNativeEvents(context.Background(), []string{root}, GoSource, trace, "")
 			if err != nil {
 				t.Fatal(err)
 			}
-			defer observer.Close()
+			t.Cleanup(func() {
+				if err := observer.Close(); err != nil {
+					t.Error(err)
+				}
+				if t.Failed() {
+					t.Log("native recipe timeline:\n" + trace.text())
+				}
+			})
+			trace.mark("subscription constructed; drain setup events")
 			// Drain pre-registration writes while retaining this exact subscription.
 			for {
 				ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
-				_, err := observer.Next(ctx)
+				batch, err := observer.Next(ctx)
 				cancel()
+				trace.mark(fmt.Sprintf("setup next: paths=%v error=%v", batch.Paths, err))
 				if errors.Is(err, context.DeadlineExceeded) {
 					break
 				}
@@ -107,6 +155,7 @@ func TestNativeEventsActualSourceRecipes(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
+			trace.mark(fmt.Sprintf("operation=%s path=%s", recipe.Operation, sourcePath))
 			switch recipe.Operation {
 			case "write", "add":
 				write(sourcePath, "after\n")
@@ -134,6 +183,7 @@ func TestNativeEventsActualSourceRecipes(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 			defer cancel()
 			batch, err := observer.Next(ctx)
+			trace.mark(fmt.Sprintf("operation next: paths=%v error=%v", batch.Paths, err))
 			if err != nil {
 				t.Fatal(err)
 			}

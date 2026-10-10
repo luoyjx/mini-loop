@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `45d086b` plus native Darwin callback admission and loop servicing. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `5656802` plus export and native-recipe diagnostics. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -17242,3 +17242,65 @@ its exact event difference remains unknown; current equality does not erase that
 failure or prove capture determinism. Stop optional repeats after this freshness
 observation. Current ordinary native hidden-parent timeout remains unresolved.
 Working-tree/staged diff checks pass. No merge or push performed.
+
+## Retain failed observer captures — 2026-10-10
+
+Baseline: `5656802` plus diagnostics. Full export --check now reports bounded
+unified differences (80 lines per stale file) and both SHA256 values from the
+same captured snapshot. Explicit --diagnostics-dir retains exact expected/actual
+bytes and a manifest in a fresh child directory; successful checks create none.
+Invalid expected UTF-8 remains preserved exactly and uses replacement only for
+the display diff. The check never rewrites TARGET and never samples a replacement
+observation to explain failure. Normal export behavior remains unchanged.
+
+Five focused Python tests cover one capture/no target rewrite, missing fixtures,
+bounded text/corrupt bytes, success without output creation and flag admission.
+Native recipe tests now retain a mutex-protected, 8 KiB capped failure timeline
+with setup/operation phases and accepted raw paths/flags, closing the owned
+observer before reading logs. Existing timers, operations and expectations remain.
+Three native recipe rounds passed. No Go runtime/API change, new dependency or
+open domain type. This diagnostic work does not resolve G3/G7 reliability.
+
+The actual full --check failed with one changed Source profile:
+symlink-target-write expected [] but observed [linked.py]; 218 other exports were
+current. [Exact captured profile and hashes](docs/audits/go-watchfiles-drift-2026-10-10.json)
+retain that failed observation. Expected SHA256 fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0;
+actual SHA256 00c60c7690aac36bf9e86d647a86b04bfcd5ae6ad58578e5cce36cd563042743.
+This matches a previously failing native profile, but does not prove event origin
+or readiness causality. No fixture widening or additional freshness retry.
+
+Validation: five Source diagnostics tests passed; selected new export-diagnostics
+mutation caught (passing baseline, failed mutated test); Go vet passed. Full ordinary
+Go failed hidden-parent-source and symlink-target-write; new bounded timelines show
+setup directory/symlink Created events arriving after the 200ms drain timeout.
+The operation timeline is retained below. This proves the timeout did not establish
+setup completion, not that a runtime first-batch expectation can be weakened.
+Source --check's failed bytes were retained; no freshness retry. Full Python and
+invariant verifier were not rerun (no Python runtime package change). Previous
+full race/type audit remains pinned to 5656802; no fresh full race claimed here.
+
+```text
+--- FAIL: TestNativeEventsActualSourceRecipes (21.13s)
+    --- FAIL: TestNativeEventsActualSourceRecipes/hidden-parent-source (2.01s)
+        native_events_recipes_test.go:203: got [] want [.git/a.go]
+        native_events_recipes_test.go:141: native recipe timeline:
+            +87ms subscription constructed; drain setup events
+            +289ms setup next: paths=[] error=context deadline exceeded
+            +289ms operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3339926772/001/.git/a.go
+            +1.93s reload native event: path="/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3339926772/001" flags=164096
+            +1.93s reload native event: path="/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3339926772/001/.git" flags=164096
+            +1.98s operation next: paths=[] error=<nil>
+
+    --- FAIL: TestNativeEventsActualSourceRecipes/symlink-target-write (0.64s)
+        native_events_recipes_test.go:203: got [linked.go] want []
+        native_events_recipes_test.go:141: native recipe timeline:
+            +198ms subscription constructed; drain setup events
+            +399ms setup next: paths=[] error=context deadline exceeded
+            +399ms operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write2476421173/001/linked.go
+            +559ms reload native event: path="/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write2476421173/001" flags=164096
+            +559ms reload native event: path="/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write2476421173/001/linked.go" flags=295168
+            +559ms reload native event: path="/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write2476421173/001/notes.txt" flags=103680
+            +609ms operation next: paths=[/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write2476421173/001/linked.go] error=<nil>
+
+FAIL
+```

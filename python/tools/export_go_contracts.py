@@ -9,6 +9,7 @@ offline model probes. It does not call a paid endpoint or include credentials.
 from __future__ import annotations
 
 import argparse
+import difflib
 import hashlib
 import json
 import os
@@ -9031,17 +9032,56 @@ def _team_protocol_contracts() -> dict:
     return dict(cases=cases)
 
 
+def _report_export_drift(snapshot: dict[str, bytes], expected_snapshot: dict[str, bytes | None],
+                         stale: list[str], diagnostics: Path | None) -> None:
+    """Report one captured snapshot; optionally retain exact failed bytes."""
+    capture = None
+    if diagnostics is not None:
+        diagnostics.mkdir(parents=True, exist_ok=True)
+        capture = Path(tempfile.mkdtemp(prefix="go-contract-drift-", dir=diagnostics))
+        (capture / "expected").mkdir()
+        (capture / "actual").mkdir()
+    manifest = []
+    for name in stale:
+        expected = expected_snapshot[name]
+        actual = snapshot[name]
+        expected_hash = hashlib.sha256(expected).hexdigest() if expected is not None else None
+        actual_hash = hashlib.sha256(actual).hexdigest()
+        print(f"{name}: expected SHA256={expected_hash or '<missing>'}; actual SHA256={actual_hash}", file=sys.stderr)
+        diff = list(difflib.unified_diff(
+            (expected or b"").decode("utf-8", errors="replace").splitlines(), actual.decode("utf-8", errors="replace").splitlines(),
+            fromfile=f"expected/{name}", tofile=f"actual/{name}", n=2, lineterm=""))
+        for line in diff[:80]:
+            print(line, file=sys.stderr)
+        if len(diff) > 80:
+            print(f"... {len(diff) - 80} further diff lines omitted", file=sys.stderr)
+        if capture is not None:
+            if expected is not None:
+                (capture / "expected" / name).write_bytes(expected)
+            (capture / "actual" / name).write_bytes(actual)
+        manifest.append({"name": name, "expected_sha256": expected_hash,
+                         "actual_sha256": actual_hash, "diff_lines": len(diff)})
+    if capture is not None:
+        (capture / "manifest.json").write_bytes(_json_bytes({"snapshot_files": len(snapshot), "stale": manifest}))
+        print(f"Exact drift capture: {capture}", file=sys.stderr)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="reject stale exports")
+    parser.add_argument("--diagnostics-dir", type=Path, help="retain exact failed --check snapshots in a fresh child directory")
     args = parser.parse_args()
+    if args.diagnostics_dir is not None and not args.check:
+        parser.error("--diagnostics-dir requires --check")
 
     snapshot = _snapshot()
     if args.check:
-        stale = [name for name, body in snapshot.items()
-                 if not (TARGET / name).is_file() or (TARGET / name).read_bytes() != body]
+        expected = {name: (TARGET / name).read_bytes() if (TARGET / name).is_file() else None
+                    for name in snapshot}
+        stale = [name for name, body in snapshot.items() if expected[name] != body]
         if stale:
             print("Stale Go contract exports: " + ", ".join(stale), file=sys.stderr)
+            _report_export_drift(snapshot, expected, stale, args.diagnostics_dir)
             return 1
         print(f"Python→Go contracts current: {len(snapshot)} files")
         return 0
