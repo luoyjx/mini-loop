@@ -17742,3 +17742,38 @@ performance, non-Darwin and browser checks were not run. Their prior baselines
 remain explicit; native watcher ordinary failures remain unresolved. Architecture
 is unchanged. This is Source prerequisite delivery, not four-gap closure, G4/G7
 acceptance or complete port acceptance. No merge or push.
+
+## Native nonfinite SDK observation consumers — 2026-10-11
+
+Delivered as `486f8ec` (named protocol observation/archive foundation) and
+`c8491d2` (provider, event and SQLite consumers).
+[Native audit](docs/audits/provider-nonfinite-native-2026-10-11.json) records
+98 diagnostic SDK snapshots with zero differences, all 51 captured Bash gate
+consumers, four direct response and SQLite message reopen cases, and two named
+client tool-event SQLite reopen cases. Valid next-request transcripts refuse
+nonfinite encoding before transport; historical event reconstruction remains
+untrusted. Standard request/event JSON stays finite. The SDK replay remains a
+diagnostic, not complete G4/G7 acceptance. Broader known-field adaptations,
+unknown-tool nonfinite inputs and nonfinite SSE event delivery remain open.
+
+Integrated worktree verification: targeted protocol/provider/agent/SQLite tests,
+full Go race with coverage, go vet and package type audit passed (434 production
+files / 1,405 named types / zero findings). Full ordinary Go ran and failed only
+in native reload recipes removed-source, lower-mtime-write and identical-write.
+No rerun was used to replace those failures. Source export check passed
+sequentially after native Go processes ended: 222 current files. Architecture
+source/generated artifact passes Archify 9/9 with no errors or warnings; no fresh
+browser visual inspection. Both code commits were validated in the combined
+worktree; the intermediate commit was not separately full-suite replayed.
+
+[Current race coverage](docs/audits/go-coverage-nonfinite-observation-2026-10-11.json):
+application excluding tools 32,037 / 35,891 = **89.26%**; all Go
+32,084 / 35,955 = **89.23%**. Source locations are deduplicated using maximum
+hit count; this is the Darwin arm64 statement denominator. Versus runtime
+`f2cdbca`, application covered statements increased by 230 and total by 290;
+percentage decreased from 89.34%. Native C and child-process internals are not
+instrumented. Passing race coverage does not supersede ordinary watcher failures.
+No Python runtime/scanner/mutation anchor changed, so those gates were not rerun.
+Full Python, performance, non-Darwin and browser refresh were not run.
+Native watcher reliability, default diagnostics and full migration acceptance
+remain open. No merge or push.
