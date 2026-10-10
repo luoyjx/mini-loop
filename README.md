@@ -465,7 +465,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `b16bf0a` plus pinned SDK citation contract capture,
+Runtime review baseline: `d04e417` plus immutable named citation protocol variants,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -1214,9 +1214,14 @@ it at fake-client construction. Fresh ephemeral stream IDs correlate
 provisional commentary with authoritative final/commentary events; progress never
 replays. Only shown answer text is preserved on managed cancellation, and successful
 streams clear partial state, including internal summaries. Body drops surface to
-Agent recovery as a fresh generation, whose stream_start supersedes prior progress. Nonempty citation/search/server-tool
-blocks and their typed payloads remain unsupported; nullable SDK text citation
-metadata is omitted. Production endpoint/cache savings are unverified.
+Agent recovery as a fresh generation, whose stream_start supersedes prior progress. The protocol text block now owns immutable named citation variants for character,
+page, content-block, web-search and search-result locations, including arbitrary-size
+signed indices and absent/null metadata. Unknown or malformed SDK citation data is
+preserved as closed JSON extension values; cloned requests and storage encoding
+retain it, and recording projections mask keys and values. These values describe
+provider output and confer no execution authority. Provider HTTP decoding and SSE
+citation accumulation still require integration, and currently reject nonempty
+citations/deltas. Search/server-tool content blocks remain unsupported. Production endpoint/cache savings are unverified.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:

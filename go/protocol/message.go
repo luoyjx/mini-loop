@@ -35,7 +35,8 @@ const ToolBash ToolName = "bash"
 const MaxWireBytes = 512 * 1024
 
 type TextBlock struct {
-	Text string `json:"text"`
+	Text      string `json:"text"`
+	citations Citations
 }
 
 type ThinkingBlock struct {
@@ -71,7 +72,41 @@ type Block struct {
 }
 
 func NewTextBlock(text string) Block {
-	return Block{kind: BlockText, text: &TextBlock{Text: text}}
+	return NewTextBlockWithCitations(text, Citations{})
+}
+
+func NewTextBlockWithCitations(text string, citations Citations) Block {
+	return Block{kind: BlockText, text: &TextBlock{Text: text, citations: citations}}
+}
+
+func (text TextBlock) Citations() Citations { return text.citations }
+func (text TextBlock) citationWire() *Citations {
+	if !text.citations.Present() {
+		return nil
+	}
+	value := text.citations
+	return &value
+}
+func (text TextBlock) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Text      string     `json:"text"`
+		Citations *Citations `json:"citations,omitempty"`
+	}{text.Text, text.citationWire()})
+}
+func (text *TextBlock) UnmarshalJSON(data []byte) error {
+	var wire struct {
+		Text      string          `json:"text"`
+		Citations json.RawMessage `json:"citations"`
+	}
+	if err := decodeStrict(data, &wire); err != nil {
+		return err
+	}
+	citations, err := DecodeCitations(wire.Citations)
+	if err != nil {
+		return err
+	}
+	*text = TextBlock{Text: wire.Text, citations: citations}
+	return nil
 }
 
 func NewThinkingBlock(thinking, signature string) Block {
@@ -202,10 +237,11 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		}{BlockRedactedThinking, *b.redactedThinking, control})
 	case BlockText:
 		return json.Marshal(struct {
-			Type BlockKind `json:"type"`
-			TextBlock
+			Type         BlockKind     `json:"type"`
+			Text         string        `json:"text"`
+			Citations    *Citations    `json:"citations,omitempty"`
 			CacheControl *CacheControl `json:"cache_control,omitempty"`
-		}{BlockText, *b.text, control})
+		}{BlockText, b.text.Text, b.text.citationWire(), control})
 	case BlockThinking:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
@@ -294,13 +330,18 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 		next = NewRedactedThinkingBlock(*wire.Data)
 	case BlockText:
 		var wire struct {
-			Type BlockKind `json:"type"`
-			TextBlock
+			Type      BlockKind       `json:"type"`
+			Text      string          `json:"text"`
+			Citations json.RawMessage `json:"citations"`
 		}
 		if err := decodeStrictMode(data, &wire, bounded); err != nil {
 			return Block{}, err
 		}
-		next = NewTextBlock(wire.Text)
+		citations, err := DecodeCitations(wire.Citations)
+		if err != nil {
+			return Block{}, err
+		}
+		next = NewTextBlockWithCitations(wire.Text, citations)
 	case BlockThinking:
 		var wire struct {
 			Type BlockKind `json:"type"`

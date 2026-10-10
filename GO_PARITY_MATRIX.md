@@ -8083,3 +8083,38 @@ Validation: targeted capture test passes; full Python regression reports
 2195 passed, 28 skipped and 24 subtests passed (3 existing warnings). Source export
 check reports all 202 files current; all 19 scanner guards pass. Diff checks pass.
 Go runtime tests, race, vet and coverage were not rerun for this fixture-only slice.
+
+## 2026-10-10 immutable named citation protocol foundation
+
+Baseline: `d04e417` plus this native protocol slice. Text blocks now retain
+absent/null/empty and non-array citation metadata. Five named immutable citation
+variants expose typed document/search fields and arbitrary-size signed indices.
+Malformed known variants and unknown SDK data retain closed JSON extension values;
+extra members survive known-variant encoding. No any/interface/RawMessage field
+is retained in a domain type. Public accessors detach lists and return variant
+copies; append allocates a fresh list. Recording string mapping masks extension
+keys and values before escaping.
+
+All 17 pinned SDK completed cases round-trip through protocol decoding, content
+clone and actual ModelRequest request encoding. Additional tests cover absent/null
+cache annotations, direct TextBlock projection, masking without source mutation,
+immutable delta append and independent bounded-network/unbounded-stored-message
+limits. The README canonical map was reviewed; boundary prose, visible baseline
+and interactive specification describe the data model and remaining provider gap.
+The interactive artifact is regenerated from the specification.
+
+HTTP reply decoding, SSE citation accumulation and any Agent paths that reconstruct
+text-only blocks still require integration and end-to-end evidence. This foundation
+alone does not close G4 provider parity or prove citation truth/authority.
+
+Validation: `go test ./protocol -count=1`, full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` pass.
+The production type audit reports 400 files, 1302 package-level types and zero
+direct open-payload findings. Archify delivery passes 9/9 checks with specification
+SHA256 cf50a997a8d90061e59313a65c83d16d388a1a1b6345c8855a551bba63714452
+and artifact SHA256 6766a9d6217de03bb1b183386019301cbf111f1ed958034658707ff34d525b32;
+both hashes match current files. No fresh browser visual inspection was performed.
+Diff checks pass. Compiler output includes macOS FSEvents deprecation and race
+linker warnings. Python code and default-tool types are unchanged; Python gates,
+Source export check, coverage and performance were not rerun for this slice.
