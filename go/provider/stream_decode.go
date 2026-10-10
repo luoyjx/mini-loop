@@ -309,6 +309,17 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		b := streamBlock{kind: block.Type, text: &strings.Builder{}}
 		switch block.Type {
+		case protocol.BlockBashExecutionToolResult:
+			var result protocol.BashExecutionToolResultBlock
+			if err := json.Unmarshal(wire.Block, &result); err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			result = result.WithSDKDefaults(true)
+			encoded, err := json.Marshal(result)
+			if err != nil || len(encoded) > protocol.MaxWireBytes {
+				return badStream("normalized bash execution block exceeds protocol limit")
+			}
+			b.block = result.Block()
 		case protocol.BlockCodeExecutionToolResult:
 			var result protocol.CodeExecutionToolResultBlock
 			if err := json.Unmarshal(wire.Block, &result); err != nil {

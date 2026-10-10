@@ -3189,3 +3189,23 @@ Outputs do not execute code, open files, decrypt ciphertext or grant client tool
 pairing/dispatch authority. The existing Source decision allowlist remains intact.
 Two SDK execution-result kinds and broader caller/partial-input/default/public-entry
 acceptance remain.
+
+### Named provider Bash execution results
+
+`protocol.BashExecutionToolResultBlock` exposes ToolUseID and a closed
+BashExecutionContent result/error union. BashExecutionResult has named OutputFiles,
+ReturnCode, Stdout and Stderr. BashExecutionOutput preserves FileID and its SDK
+bash_code_execution_output tag. ExecutionReturnCode is shared with ordinary code
+execution and retains SDK Python integers above machine width. Bash result/file
+labels remain separate; ordinary code-execution labels are refused here. Five
+known errors include output_file_too_large; future codes stay named strings.
+All recognized fields enter named types. Immutable closed extensions preserve
+unrecognized root/result/output/error fields. Accessors/clones detach output slices.
+WithSDKDefaults(streamed) adds observed null text/citations/parsed_output metadata;
+sparse/history codecs preserve omission and larger stdout. Twenty-six SDK 0.107.1
+direct/SSE captures cover outputs, empty text/files, large signed return codes,
+all errors/future code and extensions. Forwarding, masking, atomic nested refusals,
+SQLite close/reopen and invalid UTF-8 batch rollback are verified. This metadata
+has no client BashInput, command execution, file opening, result pairing or grant
+semantics. Decision admission retains its Source allowlist. The text-editor SDK
+reply kind and broader caller/partial-input/default/public-entry acceptance remain.

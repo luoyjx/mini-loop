@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `897cad8` plus named code-execution result replies;
+reviewed **2026-10-10** (Go baseline `37d4451` plus named Bash execution result replies;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + server tool-use inputs + container-upload + server search results / tool references / fetched documents / execution outputs + citations + usage schema · SSE · UTF-8 tool-result wire · SDK usage metadata · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code and Bash outputs + citations + usage schema · SSE · UTF-8 tool-result wire · SDK usage metadata · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1238,6 +1238,13 @@ Its codec preserves absent/null/value and closed future extensions; clones detac
 mutable fields. `WithSDKDefaults` explicitly materializes nullable SDK fields.
 Event projection masks metadata strings and extension keys/values before escaping,
 without mutating authoritative usage. Stored event decoding retains this shape.
+Native `bash_code_execution_tool_result` observations use a separate named
+result/error union, output files, stdout/stderr and shared ExecutionReturnCode.
+Five SDK errors include output_file_too_large; future codes and extensions survive.
+The Bash result and file tags remain distinct from ordinary code-execution tags.
+Stream null defaults, sparse/history codecs, masked clones and SQLite reopen retain
+all 26 SDK captures. Provider Bash metadata does not select the client Bash tool,
+execute commands, open output files or require client result pairing.
 Native `code_execution_tool_result` replies retain ToolUseID and a closed
 ordinary/encrypted/error content union. Named outputs preserve file IDs, stdout or
 encrypted stdout, stderr and an ExecutionReturnCode integer without machine-width

@@ -31,6 +31,7 @@ const (
 	BlockServerToolUse           BlockKind = "server_tool_use"
 	BlockWebFetchToolResult      BlockKind = "web_fetch_tool_result"
 	BlockCodeExecutionToolResult BlockKind = "code_execution_tool_result"
+	BlockBashExecutionToolResult BlockKind = "bash_code_execution_tool_result"
 	BlockToolResult              BlockKind = "tool_result"
 )
 
@@ -85,6 +86,7 @@ type Block struct {
 	serverTool       *ServerToolUseBlock
 	webFetch         *WebFetchToolResultBlock
 	codeExecution    *CodeExecutionToolResultBlock
+	bashExecution    *BashExecutionToolResultBlock
 	toolUse          *ToolUseBlock
 	toolResult       *ToolResultBlock
 }
@@ -249,6 +251,16 @@ func (b Block) ToolResult() (ToolResultBlock, bool) {
 }
 
 func (b Block) Validate() error {
+	if b.kind != BlockBashExecutionToolResult && b.bashExecution != nil {
+		return errors.New("block has an unexpected bash execution variant")
+	}
+	if b.kind == BlockBashExecutionToolResult {
+		if b.bashExecution == nil || b.codeExecution != nil || b.webFetch != nil || b.serverTool != nil || b.toolSearch != nil || b.webSearch != nil || b.containerUpload != nil || b.redactedThinking != nil || b.text != nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
+			return errors.New("bash execution block requires one variant")
+		}
+		return b.bashExecution.Validate()
+	}
+
 	if b.kind != BlockCodeExecutionToolResult && b.codeExecution != nil {
 		return errors.New("block has an unexpected code execution variant")
 	}
@@ -347,6 +359,8 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		return nil, err
 	}
 	switch b.kind {
+	case BlockBashExecutionToolResult:
+		return b.bashExecution.marshal(control)
 	case BlockCodeExecutionToolResult:
 		return b.codeExecution.marshal(control)
 	case BlockWebFetchToolResult:
@@ -455,6 +469,12 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 	}
 	var next Block
 	switch tag.Type {
+	case BlockBashExecutionToolResult:
+		result, err := decodeBashExecutionBlock(data, bounded)
+		if err != nil {
+			return Block{}, err
+		}
+		next = Block{kind: BlockBashExecutionToolResult, bashExecution: &result}
 	case BlockCodeExecutionToolResult:
 		result, err := decodeCodeExecutionBlock(data, bounded)
 		if err != nil {
@@ -620,6 +640,10 @@ func (c Content) Clone() Content {
 		if b.thinking != nil {
 			v := *b.thinking
 			blocks[i].thinking = &v
+		}
+		if b.bashExecution != nil {
+			v := b.bashExecution.clone()
+			blocks[i].bashExecution = &v
 		}
 		if b.codeExecution != nil {
 			v := b.codeExecution.clone()

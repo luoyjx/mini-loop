@@ -199,3 +199,16 @@ root/result/output/error 扩展进入不可变闭合 JSON；stream 的三个 nul
 具名字段使批次回滚。数据不触发代码执行、文件打开或解密，不进入客户端配对。
 剩余两类：bash_code_execution_tool_result、text_editor_code_execution_tool_result。
 caller/partial 输入、usage scalar、默认诊断与完整 provider/G7 验收仍待完成。
+
+## Bash execution result 回复更新
+
+基线 `37d4451` 后支持 `bash_code_execution_tool_result` 的具名 ToolUseID 和
+结果/错误闭合 union。OutputFiles、Stdout、Stderr、FileID 具名，ReturnCode 复用
+保留 Python 整数的 ExecutionReturnCode。Bash 结果与文件标签独立；普通 code
+execution 标签不会在此类型中混用。26 个 SDK direct/SSE 配方覆盖输出、空文本/
+文件、大有符号整数、5 种错误（含 output_file_too_large）、future code 与扩展。
+未知扩展为不可变闭合 JSON；SDK stream null 默认字段、转发、脱敏、克隆和历史
+大记录保真。实际 SQLite 重开保留配方，无效 UTF-8 字段使批次回滚。此观察数据
+不调用客户端 Bash、不执行命令或打开文件，也不要求客户端结果配对。尚缺
+text_editor_code_execution_tool_result；caller/partial 输入、usage scalar、默认
+诊断与完整 G4/G7 验收仍未完成。
