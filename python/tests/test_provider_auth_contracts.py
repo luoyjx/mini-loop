@@ -34,3 +34,35 @@ def test_settings_provider_key_suppresses_environment_bearer(tmp_path):
     assert headers("settings-empty-key") == {"x-api-key": "", "authorization": "Bearer env-token"}
     assert headers("settings-key-suppresses-bearer") == {"x-api-key": "env-key"}
     assert headers("settings-custom-overrides") == {"x-api-key": "custom-key", "authorization": "Bearer custom-token"}
+
+
+def test_discovery_phases_caching_refresh_and_file_guards(tmp_path):
+    rows = {row["spec"]["name"]: row for row in provider_auth_contracts(tmp_path)["discovery_cases"]}
+    assert len(rows) == 26
+    for name in ["explicit-config-dir-missing", "missing-explicit-profile", "missing-active-profile",
+                 "invalid-profile-name", "corrupt-explicit-profile", "federation-refuses-http"]:
+        assert not rows[name]["constructed"] and not rows[name]["requests"]
+    assert rows["corrupt-fallback-profile"]["constructed"]
+    assert rows["corrupt-fallback-profile"]["fault"]["type"] == "TypeError"
+    for name in ["world-readable-profile", "symlink-profile-secret", "missing-profile-token"]:
+        assert rows[name]["constructed"] and not rows[name]["requests"]
+        assert rows[name]["fault"]["type"] == "AnthropicError"
+    assert len(rows["federation-before-fallback"]["exchanges"]) == 1
+    assert rows["federation-before-fallback"]["requests"][0]["headers"]["anthropic-beta"] == "oauth-2025-04-20"
+    assert rows["explicit-profile-before-federation"]["exchanges"] == []
+    assert rows["explicit-profile-before-federation"]["requests"][0]["headers"]["authorization"] == "Bearer profile-token"
+    assert rows["profile-endpoint-workspace"]["requests"][0]["url"] == "https://profile.invalid/v1/messages"
+    assert rows["profile-endpoint-workspace"]["requests"][0]["headers"]["anthropic-workspace-id"] == "profile-workspace"
+    assert rows["environment-endpoint-wins"]["requests"][0]["url"] == "https://environment.invalid/v1/messages"
+    failure = rows["federation-exchange-failure"]
+    assert len(failure["exchanges"]) == 2 and not failure["requests"]
+    assert "must-redact" not in failure["fault"]["message"]
+    assert len(rows["federation-model-401"]["exchanges"]) == 1
+    assert rows["federation-model-401"]["fault"]["type"] == "AuthenticationError"
+    rotation = rows["federation-file-rotation"]
+    assert [exchange["body"]["assertion"] for exchange in rotation["exchanges"]] == ["file.jwt.assertion", "rotated.jwt.assertion"]
+    refresh = rows["oauth-refresh"]
+    assert refresh["exchanges"][0]["body"] == {"grant_type": "refresh_token", "refresh_token": "fixture-refresh", "client_id": "fixture-client"}
+    assert refresh["credentials_after"]["access_token"] == "exchanged-token"
+    assert refresh["credentials_after"]["expires_at"] == 1700003600
+    assert refresh["credentials_mode"] == 0o600

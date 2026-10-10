@@ -10,6 +10,7 @@ import anthropic
 import httpx
 from mini_loop.providers import AnthropicCompatibleProvider, provider_for
 from mini_loop.config import Settings
+from tools.provider_discovery_contracts import provider_discovery_cases, discovery_source_hashes
 
 
 async def _source_auth_cases(scratch, *, settings=False):
@@ -101,6 +102,8 @@ def provider_auth_contracts(scratch) -> dict:
             constructor_sha256=hashlib.sha256(inspect.getsource(
                 anthropic.AsyncAnthropic.__init__).encode()).hexdigest(),
             source_cases=await _source_auth_cases(scratch),
-            settings_cases=await _source_auth_cases(scratch, settings=True))
+            settings_cases=await _source_auth_cases(scratch, settings=True),
+            discovery_hashes=discovery_source_hashes(),
+            discovery_cases=await provider_discovery_cases(scratch / "discovery"))
 
     return asyncio.run(capture())

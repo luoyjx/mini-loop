@@ -15671,3 +15671,53 @@ coverage, performance, Linux-host or CGO-disabled run was performed; their
 prior evidence keeps its measured baseline. Python package runtime/scanners,
 mutation anchors and default-tool catalogue are unchanged. Diff/cached checks
 pass. No merge or push was performed.
+
+## 2026-10-10 Source profile/federation discovery contracts
+
+Baseline `e03a54b` plus this capture slice adds 26 discovery recipes to the
+pinned SDK 0.107.1 authentication fixture. The actual Python Settings ->
+provider_for -> AsyncAnthropic path is retained; only HTTP transports, home/
+environment and the supported TokenCache clock are injected. SDK constructor
+and ten discovery/cache/auth method hashes are recorded. The fixture captures
+constructor-versus-request failure phase, endpoint/header projection, OAuth
+beta headers, token-exchange body/beta, two-call cache behavior, final text and
+OAuth credentials-file replacement/mode. All values are synthetic and all
+HTTP traffic uses offline MockTransport.
+
+Recipes cover default/active/explicit profiles; explicit config-dir absence;
+missing/invalid profile selection; corrupt fallback versus explicit config;
+unknown auth kind; missing/world-readable/symlink secret files; profile endpoint/
+workspace and explicit environment endpoint precedence; static-key shadowing;
+federation before fallback but after explicit selection; incomplete federation;
+identity file before literal; nonlocal HTTP refusal; token-exchange failure;
+OAuth refresh-token grant and 0600 updated credentials; expired-cache projected
+identity-file rotation; and model authentication failure. This is POSIX file-
+permission evidence, not a Windows mode-gate claim.
+
+Source behavior matters for the next Go slice: invalid explicit selection fails
+at construction while a corrupt unselected default can fall through to the
+deferred no-auth error. World-readable/symlink/missing-token refusals occur
+when credentials are needed. Federation token-endpoint 401 retries once within
+TokenCache, but a model-endpoint 401 is returned without automatic token refresh
+or message replay (max_retries=0 in this capture). Expiry-triggered refresh
+re-reads the identity file. OAuth API beta and federation token-routing beta are
+distinct headers. Go profile discovery/exchange/cache is still unimplemented.
+
+Capture repair history: patching time.time alone did not replace TokenCache's
+import-time default time_source, so the fixture now injects that public clock
+parameter while preserving its real cache. The initial symlink target escaped
+the credentials directory and exercised fallback containment instead of the
+file-read guard; it now points to a synthetic file inside that directory. An
+initial model-401 refresh assumption was disproved by actual SDK behavior and
+retained as the no-refresh recipe. No Go runtime, dependencies, catalogue,
+architecture or feature defaults changed.
+
+Final gates: four auth/discovery Python tests pass; complete ordinary
+`go test -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` pass; Source
+export check reports 202 matching files; all 19 scanning anchors pass. Logs
+are /tmp/mini-loop-discovery-contract-{go,vet,export,scans}.log. Export emits
+existing SDK/pathspec warnings and a child-watcher diagnostic but exits zero
+with matching fixtures. No fresh full Python, race, invariant/mutation,
+coverage, performance, type audit or architecture render was run for this
+fixture-only slice; Go/Python package runtime and topology are unchanged.
+Diff/cached checks pass. No merge or push was performed.
