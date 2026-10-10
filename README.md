@@ -432,8 +432,11 @@ recursive roots and admits only recognized change/loss flags; historical/type-on
 sentinels cannot create a batch or poison another subscription. Three independent
 boundary probes reproduce the former differences. Prior native timing failures
 remain under investigation; these admission fixes do not prove their cause.
-The existing 50ms owner-thread slices service pending sources continuously,
-with stop checks between slices. Close joins the thread and releases the stream. Cancellation retains unread
+The dedicated Darwin owner thread now runs CFRunLoop continuously. Close signals
+an owned runloop source and wakes the owner; that source stops the loop on its
+owner thread, including a signal queued before loop entry. Cleanup joins the
+signalling call, releases the stream/source, and retires the locked OS thread.
+Prior timeouts remain open until repeated temporal validation completes. Cancellation retains unread
 events. Kernel drops or a bounded queue overflow report errors requiring operator
 recovery; they never silently prove event fidelity. NewNativeEvents retains
 its explicit native profile. The separate observer factory selects captured native/
@@ -616,8 +619,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-11** (Go baseline `f2cdbca`; coverage refreshed after inert
-unknown-model tool delivery, with native watcher temporal acceptance still open;
+reviewed **2026-10-11** (Go baseline `0027a97` plus continuous Darwin owner lifetime;
+native watcher temporal acceptance and prior measured coverage stay explicit;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +674,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
-        GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO FSEvents · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
+        GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO continuous FSEvents owner · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]

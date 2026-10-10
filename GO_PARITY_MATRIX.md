@@ -9756,3 +9756,51 @@ flow, persistence or default changed. Only its visible review baseline was
 advanced; interactive specification and generated HTML are unchanged.
 Validation for this documentation slice: full race coverage gate, JSON metrics
 consistency assertions and `git diff --check`. No merge or push.
+
+## Continuous Darwin owner lifetime — 2026-10-11
+
+Baseline: `0027a97` plus this implementation. Pinned notify 8 runs a fresh
+owner thread in CFRunLoopRun; the prior Go implementation re-entered 50ms slices
+and returned its owner OS thread to the Go pool. Darwin now runs continuously
+on a locked thread that retires at goroutine exit. An opaque C MiniLoopEvents
+owns the stream, loop and version-zero stop source. Close signals that source
+and wakes the loop; its callback stops on the owner thread, retaining an early
+signal before loop entry. The signalling call is joined before C objects are
+released. Unexpected loop return fails the reader, with caller Close still owed.
+
+The stop protocol follows Apple's [custom input-source signalling guidance](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html).
+Callback admission, roots, batch/context deadlines and all Source recipe fixtures
+are unchanged. No global device purge or dependencies added. This is Source
+lifecycle alignment, not a claim to resolve the historical timeout cause.
+
+[Exact audit](docs/audits/go-fsevents-continuous-owner-2026-10-11.json) pins hashes
+of the implementation and unchanged recipe/fixture plus the complete ordinary
+failure. Gates run sequentially with source/tests/fixtures frozen:
+
+- Existing close/cancellation test, 20 repetitions: passed.
+- Focused race lifecycle tests: passed, including 32 immediate-close subscriptions
+  with four simultaneous Close callers each and final registry cleanup.
+- Actual Source recipes, three repetitions (48 scenarios): passed.
+- Full ordinary `go test -p=1 -count=1 -timeout=300s ./...`: **failed only reload**.
+  Added-source timed out after acknowledged readiness: +1.775s probe observed,
+  +1.977s add, +4.980s operation deadline, no admitted post-operation diagnostic.
+  This does not prove whether raw callbacks were absent or rejected.
+- Full `go test -race -p=1 -count=1 -timeout=300s ./...`: passed;
+  reload 38.729s. It does not supersede the ordinary failure.
+- `go vet ./...`: passed, existing FSEvents API deprecation warning retained.
+- Type audit: 430 production files / 1,404 package-level types / zero findings.
+
+README canonical Mermaid/boundary/review baseline and architecture specification
+updated together; generated HTML delivered via Archify showcase 9/9, zero errors
+and warnings. Specification SHA256
+82ad1b788a52e6f3f6ebc88c1caf53b6e697c638c3394de87eb0a5c8593ec2dd;
+HTML SHA256 a2a4c735a808e4efa3b7086ef043579edd0a223ace7a6657d8b4d03641b57c5c.
+No fresh browser visual inspection. Native temporal acceptance remains open;
+the next diagnosis must distinguish raw callback absence from admission rejection.
+No coverage refresh: f2cdbca's 89.34% application measurement keeps its baseline.
+Python runtime modules and scanner/guard targets were unchanged; full Python,
+mutation sweep and non-Darwin gates were not rerun. No merge or push.
+
+Final Source export --check passed after all native Go jobs were terminal: 221
+current files, no fixture changes. Working-tree diff check passed. Lifecycle
+alignment is scoped; full ordinary native temporal validation remains failed.

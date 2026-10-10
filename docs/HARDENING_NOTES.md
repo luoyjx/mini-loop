@@ -8364,3 +8364,16 @@ Source and native repeated recipes pass in isolated captures, but ordinary full
 runs still expose delayed/absent events; these corrections do not prove their cause.
 See GO_PORT_PLAN's native reliability item and the pinned audit artifact. Python
 mutation tests cover their registered Source guards, not this Go/C boundary.
+
+## Darwin continuous owner shutdown — 2026-10-11
+
+Each Darwin subscription now owns a continuously running CFRunLoop and dedicated
+locked OS thread. Close signals a version-zero source and wakes the loop; the
+source callback stops it on the owner thread. A stop signalled before loop entry
+remains pending. A separate signalling goroutine is joined before any C object
+is freed. The owner exits without UnlockOSThread, retiring its per-thread CF state.
+An unexpected loop exit fails the event reader; the caller still owes Close.
+Stream stop/invalidate/release and stop-source removal/invalidation/release occur
+on the owner. No global FSEvents device purge, wider roots, longer read deadlines
+or relaxed recipe expectations are introduced. This addresses a concrete Source
+lifecycle difference; historical timing failures remain separate evidence.

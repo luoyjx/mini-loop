@@ -45,7 +45,8 @@ func (source *NativeEvents) start(ctx context.Context, roots []string) error {
 	ready := make(chan error, 1)
 	go func() {
 		runtime.LockOSThread()
-		defer runtime.UnlockOSThread()
+		// Exiting while locked terminates the dedicated OS thread. Its CFRunLoop
+		// must not become per-thread state inherited by another Go subscription.
 		defer close(source.done)
 		defer func() { nativeRegistry.Lock(); delete(nativeRegistry.sources, key); nativeRegistry.Unlock() }()
 		names := C.CString(strings.Join(roots, "\x00") + "\x00")
@@ -55,16 +56,23 @@ func (source *NativeEvents) start(ctx context.Context, roots []string) error {
 			ready <- errors.New("could not start native FSEvents subscription")
 			return
 		}
-		ready <- nil
 		defer C.mini_loop_events_close(events)
-		for {
-			select {
-			case <-source.stop:
-				return
-			default:
-				C.mini_loop_events_step(events)
-			}
+		stopDone := make(chan struct{})
+		go func() {
+			<-source.stop
+			C.mini_loop_events_request_stop(events)
+			close(stopDone)
+		}()
+		ready <- nil
+		C.mini_loop_events_run(events)
+		select {
+		case <-source.stop:
+		default:
+			source.fail(errors.New("native FSEvents runloop exited before Close"))
 		}
+		// Join the signalling call before releasing its C objects, including on
+		// an unexpected runloop exit. The caller still owns Close after faults.
+		<-stopDone
 	}()
 	if err := <-ready; err != nil {
 		<-source.done

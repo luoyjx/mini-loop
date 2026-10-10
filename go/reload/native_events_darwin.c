@@ -3,6 +3,15 @@
 #include "native_events_darwin.h"
 #include <stdlib.h>
 #include <string.h>
+struct MiniLoopEvents {
+ FSEventStreamRef stream;
+ CFRunLoopRef loop;
+ CFRunLoopSourceRef stop_source;
+};
+static void mini_loop_stop_on_owner(void *info) {
+ MiniLoopEvents *events=info;
+ CFRunLoopStop(events->loop);
+}
 extern void goMiniLoopNativeEvent(uintptr_t key, char *path, uint32_t flags);
 static void mini_loop_callback(ConstFSEventStreamRef stream, void *info,
  size_t count, void *paths, const FSEventStreamEventFlags flags[],
@@ -29,20 +38,33 @@ MiniLoopEvents *mini_loop_events_start(uintptr_t key, const char *roots) {
  MiniLoopEvents *events=calloc(1,sizeof(*events));
  if (!events) { FSEventStreamRelease(stream); return NULL; }
  events->stream=stream; events->loop=CFRunLoopGetCurrent();
+ CFRunLoopSourceContext stop_context={0};
+ stop_context.info=events;
+ stop_context.perform=mini_loop_stop_on_owner;
+ events->stop_source=CFRunLoopSourceCreate(NULL,0,&stop_context);
+ if (!events->stop_source) { FSEventStreamRelease(stream); free(events); return NULL; }
+ CFRunLoopAddSource(events->loop,events->stop_source,kCFRunLoopDefaultMode);
  FSEventStreamScheduleWithRunLoop(stream,events->loop,kCFRunLoopDefaultMode);
  if (!FSEventStreamStart(stream)) {
-  FSEventStreamInvalidate(stream); FSEventStreamRelease(stream); free(events); return NULL;
+  mini_loop_events_close(events); return NULL;
  }
  return events;
 }
-void mini_loop_events_step(MiniLoopEvents *events) {
- // notify services CFRunLoop continuously. Keep servicing pending sources
- // for this bounded slice instead of yielding after the first handled source.
- CFRunLoopRunInMode(kCFRunLoopDefaultMode,0.05,false);
+void mini_loop_events_run(MiniLoopEvents *events) {
+ CFRunLoopRun();
+}
+void mini_loop_events_request_stop(MiniLoopEvents *events) {
+ // The source retains a signal sent before Run begins. Stop executes only on
+ // the owner thread, avoiding a lost stop between readiness and loop entry.
+ CFRunLoopSourceSignal(events->stop_source);
+ CFRunLoopWakeUp(events->loop);
 }
 void mini_loop_events_close(MiniLoopEvents *events) {
  FSEventStreamStop(events->stream);
  FSEventStreamInvalidate(events->stream);
  FSEventStreamRelease(events->stream);
+ CFRunLoopRemoveSource(events->loop,events->stop_source,kCFRunLoopDefaultMode);
+ CFRunLoopSourceInvalidate(events->stop_source);
+ CFRelease(events->stop_source);
  free(events);
 }

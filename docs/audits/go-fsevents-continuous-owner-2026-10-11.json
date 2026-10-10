@@ -1,0 +1,39 @@
+{
+  "apple_stop_source_reference": "https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html",
+  "baseline": "0027a97 plus continuous Darwin owner lifetime",
+  "conclusion": "Lifecycle alignment has not resolved temporal failure. Added-source timed out after acknowledged readiness. Admitted diagnostics do not prove whether raw callbacks were absent or rejected. Keep native temporal acceptance open.",
+  "files_sha256": {
+    "go/reload/native_events_darwin.c": "73e544bdcd054012392a9123ac8230d716b05d41ae65c6a191296dcd47389649",
+    "go/reload/native_events_darwin.go": "63134b8a47cb23718c08199220a739a1e0af1f3e95d1249c45bff543bd94c5a1",
+    "go/reload/native_events_darwin.h": "0c018d649aa26f7510c75acd4283a45dbf5bab7a43e12005cd19e923371fc467",
+    "go/reload/native_events_darwin_test.go": "25290e59e828ff7524bcb52bafeec9988250da72f23334aa218dbdb987fbeae6",
+    "go/reload/native_events_recipes_test.go": "560cd3409c968d726e7170eb8f2fd0926cde5072f9d655b8d7acd810efb985ed",
+    "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0"
+  },
+  "full_ordinary": {
+    "command": "go test -p=1 -count=1 -timeout=300s ./...",
+    "exit_code": 1,
+    "failure": "--- FAIL: TestNativeEventsActualSourceRecipes (36.28s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/added-source (4.98s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +69ms subscription constructed; await post-subscription probe\n            +1.723s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3125166143/001\" flags=164096\n            +1.723s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3125166143/001/reload_observer_ready.go\" flags=102656\n            +1.775s readiness probe observed; drain remaining setup events\n            +1.977s setup next: paths=[] error=context deadline exceeded\n            +1.977s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3125166143/001/new.go\n            +4.98s operation next: paths=[] error=context deadline exceeded\n            \nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/reload\t77.509s\n",
+    "log_sha256": "c2355b149fc6c5a957754688637d56e6b7d406f212663b1ce0e5841d1c44cf95",
+    "scope": "Only reload failed; all other packages passed or had no tests"
+  },
+  "full_race": {
+    "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+    "exit_code": 0,
+    "log_sha256": "d1dc58805079c6569904b91ea34822d7820c347b93edf7b6aafbaadf5833c626",
+    "reload_seconds": 38.729
+  },
+  "narrow_gates": {
+    "actual_source_recipes_3_repetitions": "passed; 16 recipes per repetition",
+    "close_cancellation_20_repetitions": "passed",
+    "race_immediate_concurrent_close_and_cancellation": "passed; 32 subscriptions with four simultaneous Close callers each"
+  },
+  "other_gates": {
+    "architecture": "showcase 9/9, zero errors and warnings; no fresh visual inspection",
+    "diff_check": "passed",
+    "source_export": "--check passed: 221 files; sequentially after all native Go jobs were terminal; no fixture changes",
+    "type_audit": "430 production files / 1404 package-level types / 0 findings",
+    "vet": "passed with existing FSEvents deprecation warning"
+  },
+  "source_alignment": "notify 8 uses a fresh thread and continuous CFRunLoopRun; Go now retires its locked owner thread and uses a version-zero stop source with signal/wake and joined signalling lifetime"
+}

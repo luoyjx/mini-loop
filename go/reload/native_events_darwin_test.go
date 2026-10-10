@@ -54,6 +54,40 @@ func TestNativeEventsCloseAndCancellation(t *testing.T) {
 	}
 }
 
+// Close may arrive as soon as construction publishes readiness, before the
+// owner enters CFRunLoopRun. Concurrent callers must join the same cleanup.
+func TestNativeEventsImmediateConcurrentClose(t *testing.T) {
+	root := t.TempDir()
+	for iteration := 0; iteration < 32; iteration++ {
+		observer, err := NewNativeEvents([]string{root}, GoSource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		finished := make(chan error, 4)
+		for caller := 0; caller < cap(finished); caller++ {
+			go func() { finished <- observer.Close() }()
+		}
+		deadline := time.NewTimer(time.Second)
+		for caller := 0; caller < cap(finished); caller++ {
+			select {
+			case err := <-finished:
+				if err != nil {
+					t.Fatal(err)
+				}
+			case <-deadline.C:
+				t.Fatalf("iteration %d: immediate concurrent Close did not join", iteration)
+			}
+		}
+		deadline.Stop()
+	}
+	nativeRegistry.Lock()
+	remaining := len(nativeRegistry.sources)
+	nativeRegistry.Unlock()
+	if remaining != 0 {
+		t.Fatal("native registry leaked", remaining)
+	}
+}
+
 func TestDarwinObservationKeepsOnlySubscribedChangePaths(t *testing.T) {
 	filter, _ := NewEventFilter(GoSource)
 	source := &NativeEvents{eventReader: newEventReader(filter, NativeBackend, nil), roots: []string{"/watched"}}
