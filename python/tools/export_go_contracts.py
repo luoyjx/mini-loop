@@ -6490,6 +6490,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_auth_contracts import provider_auth_contracts
     from tools.provider_citation_contracts import provider_citation_contracts
     from tools.provider_usage_contracts import provider_usage_contracts
+    from tools.provider_container_contracts import provider_container_contracts
     from tools.dotenv_contracts import dotenv_contracts
     from tools.dotenv_file_contracts import dotenv_file_contracts
     from tools.dotenv_boot_contracts import dotenv_boot_contracts
@@ -6843,6 +6844,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-auth.json": _json_bytes(provider_auth_contracts(Path(scratch) / "provider-auth")),
         "python-provider-citations.json": _json_bytes(provider_citation_contracts()),
         "python-provider-usage.json": _json_bytes(provider_usage_contracts()),
+        "python-provider-container-upload.json": _json_bytes(provider_container_contracts()),
         "python-dotenv.json": _json_bytes(dotenv_contracts()),
         "python-dotenv-files.json": _json_bytes(dotenv_file_contracts(Path(scratch) / "dotenv-files")),
         "python-dotenv-boot.json": _json_bytes(dotenv_boot_contracts(Path(scratch) / "dotenv-boot")),
