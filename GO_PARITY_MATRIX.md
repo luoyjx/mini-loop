@@ -8204,3 +8204,27 @@ of the parsed recording export. Existing macOS compiler/linker warnings remain.
 Diff checks pass. No full race, Python regression/verifiers, Source export,
 coverage, performance or fresh architecture rendering was rerun for this test-only
 slice; runtime and exported contracts are unchanged.
+
+## 2026-10-10 typed credential discovery library
+
+Baseline `80c0dc5`. Named configuration captures profile/directory, optional
+federation field presence and a private identity reader. Defined empty API key
+or auth token suppresses discovery. Snapshots discard selectors, literal secrets
+and callbacks; optional strings are detached. Explicit map inputs capture literal
+identity; an explicit reader supports rotation and disappearance. Platform profile
+roots and relative config directories are resolved at settings load.
+
+`provider.DiscoverCredentials` implements explicit profile/active pointer,
+complete environment federation, then fallback profile selection. Explicit profile
+errors are eager; unreadable fallback profiles defer to missing request auth.
+No Launcher default is activated by this library commit. Existing guarded profile
+and token boundaries remain in force. No dependency is added; the approved SQLite
+driver stays pinned to v1.14.52. Runtime integration and final full-worktree gates
+are recorded in the next commit. Targeted config/provider tests passed during
+integration; diff checks passed. No merge or push.
+
+Final integrated worktree gates passed: full ordinary Go tests with cross-package
+coverage, full race, vet, type audit (412 production files / 1327 named types /
+zero findings), Source export (202 files) and 19 scan guards. Code/tests remained
+frozen during full runs. Logs: `/tmp/mini-loop-discovery-{go,race,vet,types,export,scans}.log`.
+The following integration commit records coverage and architecture activation.

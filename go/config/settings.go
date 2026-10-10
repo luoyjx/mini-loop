@@ -55,6 +55,8 @@ func (s Secret) GoString() string             { return s.String() }
 func (s Secret) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
 
 type Settings struct {
+	authTokenDefined                  bool
+	providerCredentials               ProviderCredentialSettings
 	apiKeyDefined                     bool
 	AuthToken                         Secret           `json:"-"`
 	ProviderHeaders                   Secret           `json:"-"`
@@ -134,6 +136,8 @@ func (s Settings) Snapshot() Snapshot {
 	result.Settings.APIKey, result.Settings.TypesafeAPIKey = Secret{}, Secret{}
 	result.Settings.AuthToken, result.Settings.ProviderHeaders = Secret{}, Secret{}
 	result.Settings.apiKeyDefined = false
+	result.Settings.authTokenDefined = false
+	result.Settings.providerCredentials = ProviderCredentialSettings{}
 	result.BindableRoots = append([]string{}, s.BindableRoots...)
 	if s.BaseURL != nil {
 		result.Settings.BaseURL = ptr(RedactEndpoint(*s.BaseURL))
@@ -156,7 +160,11 @@ func (s Settings) String() string {
 }
 func (s Settings) GoString() string { return s.String() }
 
-type LoadOptions struct{ Directory, DefaultSkillsDir string }
+type LoadOptions struct {
+	Directory, DefaultSkillsDir string
+	HomeDirectory               string
+	IdentityTokenReader         IdentityTokenReader
+}
 
 func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	var s Settings
@@ -249,6 +257,9 @@ func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	s.APIKey = Secret{text("ANTHROPIC_API_KEY", "")}
 	_, s.apiKeyDefined = get("ANTHROPIC_API_KEY")
 	s.AuthToken = Secret{text("ANTHROPIC_AUTH_TOKEN", "")}
+	_, s.authTokenDefined = get("ANTHROPIC_AUTH_TOKEN")
+	options.Directory = directory
+	s.providerCredentials = captureProviderCredentials(get, options, env == nil)
 	s.ProviderHeaders = Secret{text("ANTHROPIC_CUSTOM_HEADERS", "")}
 	s.MaxTokens, err = integer("MINILOOP_MAX_TOKENS", 8000)
 	if err != nil {
