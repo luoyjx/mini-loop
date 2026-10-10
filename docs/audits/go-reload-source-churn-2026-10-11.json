@@ -1,0 +1,440 @@
+{
+  "baseline_commit": "05d675c",
+  "production_runtime": "ea35cd3 unchanged",
+  "scope": "Fresh sequential processes; zero or 32 immediate create/close subscriptions before all 16 pinned native scenarios. Source closes once per subscription; Go uses its existing four-concurrent-caller close test. Overall compiler/filesystem pressure is not matched.",
+  "source_file": {
+    "path": "/tmp/mini-loop-notify8-fsevent.rs",
+    "upstream_url": "https://raw.githubusercontent.com/notify-rs/notify/notify-8.0.0/notify/src/fsevent.rs",
+    "sha256": "d6c13ff6065b35f335d329aa64424fc491d3cd5899e30b462c3fafe3d1da12cb",
+    "verified_against": "docs/audits/go-fsevents-boundary-2026-10-10.json",
+    "symbols": [
+      "FsEventWatcher.from_event_handler",
+      "FsEventWatcher.watch_inner",
+      "FsEventWatcher.stop",
+      "FsEventWatcher.run"
+    ],
+    "facts": [
+      "flags FileEvents|NoDefer (18), latency 0, since-now",
+      "Source stop waits for CFRunLoopIsWaiting then stops and joins its dedicated thread",
+      "Source run calls stop, purge API, invalidate and release after the loop returns"
+    ]
+  },
+  "purge_boundary": {
+    "effective_uid": 501,
+    "header": "installed FSEvents.h lines 1045-1068",
+    "fact": "Purge API is documented as root-only; no explicit purge call was added by this experiment",
+    "limit": "Actual return value of Source internal purge was not instrumented"
+  },
+  "source_controls": [
+    {
+      "churn": 0,
+      "command": ".venv/bin/python /tmp/mini-loop-source-churn-2026-10-11.py 0",
+      "result": "16/16 match fixture; all contexts closed",
+      "watchfiles_version": "1.2.0",
+      "uvicorn_version": "0.49.0",
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "FsEventWatcher",
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        }
+      },
+      "churn_closed": true,
+      "churn_seconds": 0,
+      "case_seconds": 9.928205914795399,
+      "cases": [
+        {
+          "name": "added-source",
+          "changed": [
+            "new.py"
+          ],
+          "expected": [
+            "new.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "hidden-parent-source",
+          "changed": [
+            ".git/a.py"
+          ],
+          "expected": [
+            ".git/a.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "symlink-target-write",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "removed-source",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "same-mtime-write",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "lower-mtime-write",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "identical-write",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "same-mtime-touch",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "rename-out",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "rename-in",
+          "changed": [
+            "target.py"
+          ],
+          "expected": [
+            "target.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "rename-source",
+          "changed": [
+            "source.py",
+            "target.py"
+          ],
+          "expected": [
+            "source.py",
+            "target.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "ignored-hidden",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "ignored-backup",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "ignored-text",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "source-directory",
+          "changed": [
+            "package.py"
+          ],
+          "expected": [
+            "package.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "transient-source",
+          "changed": [
+            "flash.py"
+          ],
+          "expected": [
+            "flash.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        }
+      ],
+      "output_sha256": "5334a157068021b4980cf336fc15f7903009830fc8a8f5d4b5d862cb13e98b40",
+      "log": "/tmp/mini-loop-source-churn-0-2026-10-11.log",
+      "log_sha256": "f7984f0db9387afbff307b54f61b3241d95aeb8eabb9f6f2e058675be2839174"
+    },
+    {
+      "churn": 32,
+      "command": ".venv/bin/python /tmp/mini-loop-source-churn-2026-10-11.py 32",
+      "result": "16/16 match fixture; all contexts closed",
+      "watchfiles_version": "1.2.0",
+      "uvicorn_version": "0.49.0",
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "FsEventWatcher",
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        }
+      },
+      "churn_closed": true,
+      "churn_seconds": 0.6411327496170998,
+      "case_seconds": 9.151630958542228,
+      "cases": [
+        {
+          "name": "added-source",
+          "changed": [
+            "new.py"
+          ],
+          "expected": [
+            "new.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "hidden-parent-source",
+          "changed": [
+            ".git/a.py"
+          ],
+          "expected": [
+            ".git/a.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "symlink-target-write",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "removed-source",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "same-mtime-write",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "lower-mtime-write",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "identical-write",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "same-mtime-touch",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "rename-out",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "rename-in",
+          "changed": [
+            "target.py"
+          ],
+          "expected": [
+            "target.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "rename-source",
+          "changed": [
+            "source.py",
+            "target.py"
+          ],
+          "expected": [
+            "source.py",
+            "target.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "ignored-hidden",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "ignored-backup",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "ignored-text",
+          "changed": [],
+          "expected": [],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "source-directory",
+          "changed": [
+            "package.py"
+          ],
+          "expected": [
+            "package.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        },
+        {
+          "name": "transient-source",
+          "changed": [
+            "flash.py"
+          ],
+          "expected": [
+            "flash.py"
+          ],
+          "matches_fixture": true,
+          "closed": true
+        }
+      ],
+      "output_sha256": "1727ce1d54dc41443acf7ae11dccac4b15900c408201db09a52f67fb2959c0db",
+      "log": "/tmp/mini-loop-source-churn-32-2026-10-11.log",
+      "log_sha256": "3902077bc004aba24aa413228327b0505132c56827ceef5812c7c0a606f487cb"
+    }
+  ],
+  "go_controls": [
+    {
+      "churn": 0,
+      "command": "cd go && go test -v -p=1 -count=1 -timeout=300s ./reload -run '^TestNativeEventsActualSourceRecipes$'",
+      "result": "ok  \tgithub.com/luoyjx/mini-loop/go/reload\t7.083s",
+      "matched_scenarios": 16,
+      "log": "/tmp/mini-loop-go-churn-0-2026-10-11.log",
+      "sha256": "65e4a5058f545e3bdb8e9c083f411f62869cd3366f85fcea841e7baf55e84fe9"
+    },
+    {
+      "churn": 32,
+      "command": "cd go && go test -v -p=1 -count=1 -timeout=300s ./reload -run '^TestNativeEventsImmediateConcurrentClose$|^TestNativeEventsActualSourceRecipes$'",
+      "result": "ok  \tgithub.com/luoyjx/mini-loop/go/reload\t6.239s",
+      "matched_scenarios": 16,
+      "log": "/tmp/mini-loop-go-churn-32-2026-10-11.log",
+      "sha256": "ca4c18f4919d82b199a4ef9207e95341f7fe16ca09f1fbdb64b2d11922794ceb"
+    }
+  ],
+  "reproduction_script": "import json,sys,tempfile,time,hashlib\nfrom pathlib import Path\nrepo=Path('/Users/yanjixiong/github/mini-loop')\nsys.path.insert(0,str(repo/'python'));sys.path.insert(0,str(repo/'python/tools'))\nimport watchfiles,uvicorn\nfrom watchfiles.main import RustNotify\nfrom watchfiles_contracts import _native_case\nassert watchfiles.__version__=='1.2.0' and uvicorn.__version__=='0.49.0'\nchurn=int(sys.argv[1]);fixture_path=repo/'go/testdata/python-watchfiles.json';cases=json.loads(fixture_path.read_text())['native_events']\nresult={'churn':churn,'watchfiles_version':watchfiles.__version__,'uvicorn_version':uvicorn.__version__,'fixture_sha256':hashlib.sha256(fixture_path.read_bytes()).hexdigest(),'subscriptions':[],'cases':[]}\nwith tempfile.TemporaryDirectory(prefix='mini-loop-source-churn-') as scratch:\n root=Path(scratch).resolve();warm=root/'warm';warm.mkdir()\n for index in range(churn):\n  start=time.monotonic();observer=RustNotify([str(warm)],False,False,300,True,True)\n  representation=repr(observer);assert 'FsEventWatcher' in representation and 'latency: 0.0' in representation and 'flags: 18' in representation\n  observer.close();closed=False\n  try:observer.watch(1,1,1,None)\n  except RuntimeError:closed=True\n  assert closed\n  result['subscriptions'].append({'index':index,'seconds':time.monotonic()-start,'closed':closed})\n for case in cases:\n  recipe={k:v for k,v in case.items() if k not in ('changed','closed','native_arguments')}\n  start=time.monotonic()\n  try:\n   observed=_native_case(root/case['name'],recipe)\n   sample={'name':case['name'],'changed':observed['changed'],'expected':case['changed'],'matches_fixture':observed['changed']==case['changed'],'closed':observed['closed'],'native_arguments':observed['native_arguments'],'seconds':time.monotonic()-start}\n  except Exception as error:\n   sample={'name':case['name'],'error_class':type(error).__name__,'error':str(error),'seconds':time.monotonic()-start,'matches_fixture':False}\n  result['cases'].append(sample);print(json.dumps(sample),flush=True)\noutput=Path(f'/tmp/mini-loop-source-churn-{churn}-2026-10-11.json');output.write_text(json.dumps(result,indent=2)+'\\n')\nprint('COMPLETE',churn,sum(c['matches_fixture'] for c in result['cases']),len(cases),flush=True)\n",
+  "script_sha256": "ef9f09cd5d41882e98d84ef91b9f1a0e61657decb8ad70445e8b920ef2b65932",
+  "fixture_sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+  "source_helper_sha256": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a",
+  "conclusion": "Both Source and Go controls match all 16 scenarios with and without 32 preceding closes. This counterexample shows immediate-close churn alone is insufficient to reproduce the existing full-run native delivery failures. It does not establish their cause or full temporal reliability.",
+  "limits": [
+    "Subscription close concurrency and exact elapsed timing differ between controls",
+    "No complete CLI/compiler preload or full-run context reproduced",
+    "No production, test, fixture, default or dependency changes",
+    "No new full ordinary/race, vet/type audit, Source export, Python suite, coverage, non-Darwin, performance or architecture gate",
+    "Previously failed full ordinary gates remain failed; full port acceptance stays open",
+    "No merge or push"
+  ],
+  "next_action": "Compare actual Source event delivery after the preceding compiler/CLI filesystem workload; separate process-local observer history from shared volume workload"
+}

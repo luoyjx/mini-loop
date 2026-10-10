@@ -10458,3 +10458,22 @@ passes. No new uninstrumented full Go/race/vet/type/export/Python/coverage/visua
 or non-Darwin gate. Native temporal reliability and complete port acceptance stay
 open; no merge/push. Next: compare actual Source stream configuration, registration
 history and delivery under matching subscription churn before changing runtime.
+
+## Source/native immediate-close controls — 2026-10-11
+
+Baseline `05d675c`; production runtime `ea35cd3` unchanged. Local notify 8.0.0
+source matches the pinned d6c13ff6 hash: flags 18, latency zero, since-now and a
+joined dedicated Source run loop. Actual watchfiles 1.2.0 / Uvicorn 0.49.0 controls
+match all 16 native scenarios both without churn and after 32 immediate closes.
+Fresh Go controls also match all 16 in both profiles (7.083s / 6.239s), including
+its four-caller concurrent close check. Thus 32 immediate closes alone do not
+reproduce the full-run delivery gap. Exact close concurrency/timing and compiler
+preload are not matched; no root-cause or reliability conclusion is implied.
+
+[Source churn audit](docs/audits/go-reload-source-churn-2026-10-11.json) retains
+scenario outputs, commands, script/source/fixture/log hashes and reproduction
+script. No repository runtime/test/fixture change, new dependency or full gate;
+previous full ordinary failures and coverage baseline retain their limits.
+git diff --check passes; no merge/push; complete port acceptance remains open.
+Next: compare actual Source after preceding compiler/CLI volume workload,
+separating shared filesystem workload from process-local subscription history.
