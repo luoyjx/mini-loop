@@ -5,7 +5,9 @@ package reload
 import (
 	"context"
 	"errors"
+	"os"
 	"path/filepath"
+	"sync"
 	"testing"
 	"time"
 )
@@ -55,7 +57,7 @@ func TestNativeEventsCloseAndCancellation(t *testing.T) {
 }
 
 // Close may arrive as soon as construction publishes readiness, before the
-// owner enters CFRunLoopRun. Concurrent callers must join the same cleanup.
+// owner begins waiting for stop. Concurrent callers must join the same cleanup.
 func TestNativeEventsImmediateConcurrentClose(t *testing.T) {
 	root := t.TempDir()
 	for iteration := 0; iteration < 32; iteration++ {
@@ -140,5 +142,74 @@ func TestDarwinLossRemainsStickyWithinSubscription(t *testing.T) {
 	defer cancel2()
 	if _, err := source.Next(ctx2); err == nil {
 		t.Fatal("subscribed event loss silently accepted")
+	}
+}
+
+// A callback may still be inside caller-owned IO when another goroutine closes
+// the subscription. Close must join that callback before retiring its registry.
+type blockingNativeDiagnostic struct {
+	entered chan struct{}
+	release chan struct{}
+	once    sync.Once
+}
+
+func (writer *blockingNativeDiagnostic) Write(data []byte) (int, error) {
+	writer.once.Do(func() { close(writer.entered) })
+	<-writer.release
+	return len(data), nil
+}
+
+func TestNativeEventsCloseJoinsActiveCallback(t *testing.T) {
+	root, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	writer := &blockingNativeDiagnostic{entered: make(chan struct{}), release: make(chan struct{})}
+	observer, err := newNativeEvents(context.Background(), []string{root}, GoSource, writer, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var releaseOnce sync.Once
+	release := func() { releaseOnce.Do(func() { close(writer.release) }) }
+	t.Cleanup(func() {
+		release()
+		if err := observer.Close(); err != nil {
+			t.Error(err)
+		}
+	})
+	if err := os.WriteFile(filepath.Join(root, "callback.go"), []byte("package callback\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	select {
+	case <-writer.entered:
+	case <-time.After(5 * time.Second):
+		t.Fatal("native callback did not enter diagnostic IO")
+	}
+	closed := make(chan error, 1)
+	go func() { closed <- observer.Close() }()
+	select {
+	case <-observer.stop:
+	case <-time.After(time.Second):
+		t.Fatal("Close did not signal owned shutdown")
+	}
+	select {
+	case err := <-closed:
+		t.Fatalf("Close returned before callback finished: %v", err)
+	case <-time.After(20 * time.Millisecond):
+	}
+	release()
+	select {
+	case err := <-closed:
+		if err != nil {
+			t.Fatal(err)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("Close did not join released callback")
+	}
+	nativeRegistry.Lock()
+	remaining := len(nativeRegistry.sources)
+	nativeRegistry.Unlock()
+	if remaining != 0 {
+		t.Fatal("retired callback retained registry ownership", remaining)
 	}
 }

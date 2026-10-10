@@ -8456,3 +8456,22 @@ that initialization. Actual 27 standalone and 18 managed comparisons, 18 unique
 direct/SSE captures and Python/native SQLite message close/reopen cover these
 boundaries. Native readonly checks are separate from Source permission captures.
 Named timeout/prefix coercion and global SDK error text remain open.
+
+## Darwin serial native callback queue — 2026-10-11
+
+Baseline `a5aed66` plus this slice. The deprecated RunLoop scheduler is replaced
+with FSEventStreamSetDispatchQueue on one owned serial queue per subscription.
+Control start and stop/invalidate serialize with callback delivery. Close drains
+queued callbacks before releasing the stream/queue and retiring the typed Go
+registry; construction failure releases partial ownership. A Go coordinator
+waits for the existing stop signal and joins cleanup; no dedicated locked OS
+thread or extra stop-signalling goroutine is retained.
+
+Apple requires scheduling before start and invalidate before queue detach:
+[queue API](https://developer.apple.com/documentation/coreservices/1444164-fseventstreamsetdispatchqueue),
+[invalidation](https://developer.apple.com/documentation/coreservices/1446990-fseventstreaminvalidate).
+Flags 18, zero latency, since-now, callback admission, 50ms/1600ms batching,
+context deadlines and Source fixture expectations remain intact. A real native
+callback blocked in diagnostic IO verifies that concurrent Close waits for its
+release and registry cleanup. This queue lifecycle change does not independently
+establish the cause of the previous RunLoop/Source timing failures.

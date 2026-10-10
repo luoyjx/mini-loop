@@ -432,10 +432,11 @@ recursive roots and admits only recognized change/loss flags; historical/type-on
 sentinels cannot create a batch or poison another subscription. Three independent
 boundary probes reproduce the former differences. Prior native timing failures
 remain under investigation; these admission fixes do not prove their cause.
-The dedicated Darwin owner thread now runs CFRunLoop continuously. Close signals
-an owned runloop source and wakes the owner; that source stops the loop on its
-owner thread, including a signal queued before loop entry. Cleanup joins the
-signalling call, releases the stream/source, and retires the locked OS thread.
+Each Darwin stream now owns a serial dispatch queue using Apple's supported
+FSEventStreamSetDispatchQueue API. Start and stop/invalidate run on that queue.
+Close waits for active callbacks and drains queued work before stream/queue release
+and removal of the typed Go registry entry. Immediate and concurrent Close retains
+the same ownership contract without retaining a private CFRunLoop or OS thread.
 Prior timeouts remain open until repeated temporal validation completes. Cancellation retains unread
 events. Kernel drops or a bounded queue overflow report errors requiring operator
 recovery; they never silently prove event fidelity. NewNativeEvents retains
@@ -474,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `7992994` plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `a5aed66` plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -619,7 +620,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-11** (Go baseline `0027a97` plus continuous Darwin owner lifetime;
+reviewed **2026-10-11** (Go baseline `a5aed66` plus serial Darwin callback queue ownership;
 native watcher temporal acceptance and prior measured coverage stay explicit;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
@@ -674,7 +675,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
-        GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO continuous FSEvents owner · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
+        GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]

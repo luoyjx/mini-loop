@@ -1,17 +1,26 @@
 //go:build darwin && cgo
 
 #include "native_events_darwin.h"
+#include <dispatch/dispatch.h>
 #include <stdlib.h>
 #include <string.h>
 struct MiniLoopEvents {
  FSEventStreamRef stream;
- CFRunLoopRef loop;
- CFRunLoopSourceRef stop_source;
+ dispatch_queue_t queue;
+ Boolean started;
 };
-static void mini_loop_stop_on_owner(void *info) {
+static void mini_loop_start_on_queue(void *info) {
  MiniLoopEvents *events=info;
- CFRunLoopStop(events->loop);
+ FSEventStreamSetDispatchQueue(events->stream,events->queue);
+ events->started=FSEventStreamStart(events->stream);
 }
+static void mini_loop_stop_on_queue(void *info) {
+ MiniLoopEvents *events=info;
+ if (events->started) FSEventStreamStop(events->stream);
+ // Invalidate unschedules the stream; never detach its queue before this call.
+ FSEventStreamInvalidate(events->stream);
+}
+static void mini_loop_queue_barrier(void *info) {}
 extern void goMiniLoopNativeEvent(uintptr_t key, char *path, uint32_t flags);
 static void mini_loop_callback(ConstFSEventStreamRef stream, void *info,
  size_t count, void *paths, const FSEventStreamEventFlags flags[],
@@ -37,34 +46,19 @@ MiniLoopEvents *mini_loop_events_start(uintptr_t key, const char *roots) {
  if (!stream) return NULL;
  MiniLoopEvents *events=calloc(1,sizeof(*events));
  if (!events) { FSEventStreamRelease(stream); return NULL; }
- events->stream=stream; events->loop=CFRunLoopGetCurrent();
- CFRunLoopSourceContext stop_context={0};
- stop_context.info=events;
- stop_context.perform=mini_loop_stop_on_owner;
- events->stop_source=CFRunLoopSourceCreate(NULL,0,&stop_context);
- if (!events->stop_source) { FSEventStreamRelease(stream); free(events); return NULL; }
- CFRunLoopAddSource(events->loop,events->stop_source,kCFRunLoopDefaultMode);
- FSEventStreamScheduleWithRunLoop(stream,events->loop,kCFRunLoopDefaultMode);
- if (!FSEventStreamStart(stream)) {
-  mini_loop_events_close(events); return NULL;
- }
+ events->stream=stream;
+ events->queue=dispatch_queue_create("mini-loop.fsevents",DISPATCH_QUEUE_SERIAL);
+ if (!events->queue) { FSEventStreamRelease(stream); free(events); return NULL; }
+ dispatch_sync_f(events->queue,events,mini_loop_start_on_queue);
+ if (!events->started) { mini_loop_events_close(events); return NULL; }
  return events;
 }
-void mini_loop_events_run(MiniLoopEvents *events) {
- CFRunLoopRun();
-}
-void mini_loop_events_request_stop(MiniLoopEvents *events) {
- // The source retains a signal sent before Run begins. Stop executes only on
- // the owner thread, avoiding a lost stop between readiness and loop entry.
- CFRunLoopSourceSignal(events->stop_source);
- CFRunLoopWakeUp(events->loop);
-}
 void mini_loop_events_close(MiniLoopEvents *events) {
- FSEventStreamStop(events->stream);
- FSEventStreamInvalidate(events->stream);
+ // Control operations and callbacks share one serial queue. Stop/invalidate
+ // joins active callbacks; the second barrier drains work queued before detach.
+ dispatch_sync_f(events->queue,events,mini_loop_stop_on_queue);
+ dispatch_sync_f(events->queue,NULL,mini_loop_queue_barrier);
  FSEventStreamRelease(events->stream);
- CFRunLoopRemoveSource(events->loop,events->stop_source,kCFRunLoopDefaultMode);
- CFRunLoopSourceInvalidate(events->stop_source);
- CFRelease(events->stop_source);
+ dispatch_release(events->queue);
  free(events);
 }
