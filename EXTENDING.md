@@ -4374,4 +4374,19 @@ close/reopen; standard `MarshalJSON` refuses them. Client unknown Bash parameter
 retain the named binding failure settled by the common gate. Historical event
 reads remain untrusted; server observations cannot dispatch a client tool. Other
 nonfinite metadata, unsupported block kinds and malformed JSON remain refused.
-This does not establish nonfinite SSE event delivery or complete SDK parity.
+Managed Bash nonfinite SSE delivery is now covered by four memory/SQLite
+HTTP turns. Complete SDK parity and remaining historical consumers remain open.
+
+## Managed nonfinite observation consumers — 2026-10-11
+
+The journal uses finite input fingerprint admission before creating an action.
+Its failure preserves the common before/guard/result path and skips after, as in
+Source; a journal-free gate still settles the named Bash binding failure normally.
+Live state projections use concrete message/event archival encoders and mask
+decoded keys/strings before reconstructing untrusted stored records. SSE exposes
+legacy numbers only for the captured named Bash tool observations; standard REST
+and model request encoders remain finite. Mask failures return no raw projection.
+`InputObservation.MapStrings` builds a read-only query projection independently
+of executable/decision input variants. `ObservedMessagesPythonJSON` and
+`ObservedWireMessagesPythonJSON` support inspection/estimation, retaining detached
+cache annotations. None of these projections supplies live authority.

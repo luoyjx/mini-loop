@@ -10,7 +10,7 @@ func EstimateTokens(messages []protocol.Message) int {
 	if len(messages) == 0 {
 		return 0
 	}
-	text, err := protocol.PythonJSON(messages, true, false)
+	text, err := protocol.ObservedMessagesPythonJSON(messages, true, false)
 	if err != nil {
 		return 0
 	} // callers validate the typed transcript first

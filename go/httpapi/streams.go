@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/internal/pytext"
+	"github.com/luoyjx/mini-loop/go/protocol"
 	"math"
 	"net/http"
 	"strconv"
@@ -47,6 +48,9 @@ func eventStreamJSON(s *Server, record agent.SessionEventRecord) (data []byte, e
 			err = fmt.Errorf("event stream projection failed")
 		}
 	}()
+	if use, ok := record.Event.ToolUse(); ok && use.Name == protocol.ToolBash {
+		return toolObservationStreamJSON(s, record)
+	}
 	workflow, ok := record.Event.Workflow()
 	if ok {
 		if _, observation := workflow.ObservationPayload(); observation {

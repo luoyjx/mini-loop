@@ -2,7 +2,6 @@ package agent
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"sync"
@@ -141,13 +140,11 @@ func stateMessageProjection(message protocol.Message, mask TextMasker) (protocol
 	}
 	// Raw JSON is transient at this projection boundary. The source masker walks
 	// string values and keys; invalid masked structure degrades, never writes raw.
-	encoded, err := protocol.MaskedPythonJSON(message, mask.MaskText, false, true)
+	encoded, err := maskedMessageArchive(message, mask.MaskText)
 	if err != nil {
 		return protocol.Message{}, err
 	}
-	var projected protocol.Message
-	err = json.Unmarshal([]byte(encoded), &projected)
-	return projected, err
+	return protocol.DecodeStoredMessage(encoded)
 }
 
 func (p *sessionPersistence) loseLocked() error {
@@ -239,12 +236,12 @@ func (p *sessionPersistence) capture(record *SessionEventRecord) error {
 	// The source stamps the event before its subsequent flush can open an epoch.
 	record.TranscriptEpoch = int(p.epoch)
 	stored := *record
-	encoded, err := protocol.MaskedPythonJSON(stored, func(text string) string { return maskedText(p.session.core.secrets, text) }, false, true)
+	encoded, err := maskedEventArchive(stored, func(text string) string { return maskedText(p.session.core.secrets, text) })
 	if err != nil {
 		p.failLocked(err)
 		return nil
 	}
-	stored, err = DecodeStoredEvent([]byte(encoded))
+	stored, err = DecodeStoredEvent(encoded)
 	if err != nil {
 		p.failLocked(err)
 		return nil

@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"errors"
 	"math/big"
 	"strings"
@@ -100,15 +99,11 @@ func (p sessionObservationProjector) projectToolOutcome(ctx context.Context, aut
 			projected, err = outcome, nil
 		}
 	}()
-	data, err := json.Marshal(call.Input)
+	input, err := call.Input.Observation()
 	if err != nil {
 		return outcome, err
 	}
-	input, err := jsonvalue.Decode(string(data))
-	if err != nil {
-		return outcome, err
-	}
-	query, err := protocol.PythonJSON(input.MapStrings(func(value string) string { return maskedText(s.secrets, value) }).Sorted(), false, false)
+	query, err := input.MapStrings(func(value string) string { return maskedText(s.secrets, value) }).SortedPythonJSON()
 	if err != nil {
 		return outcome, err
 	}

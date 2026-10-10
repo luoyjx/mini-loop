@@ -8388,4 +8388,20 @@ next-request transcripts prove rejection before transport. SQLite message and
 named tool-event close/reopen tests preserve the original observations; archived
 events remain untrusted. Known executable fields, explicit caller admission,
 metadata and unsupported block variants retain their existing boundaries.
-Full SDK parity, nonfinite SSE event delivery and native watcher reliability remain open.
+Full SDK parity, remaining nonfinite historical consumers and native watcher
+reliability remain open. Managed Bash nonfinite SSE is covered by the following slice.
+
+### Go migration — journal fingerprints remain finite after legacy observation adoption
+
+Baseline: `412e94c` plus this slice. Actual managed Source HTTP captures distinguish
+its journal encoding failure from the journal-free Bash binding failure. NaN and
+Infinity survive the emitted tool-use observation, but journal begin refuses them
+before creating action authority. After hooks do not run; result observers do.
+A targeted Source mutation enabling nonfinite fingerprints is caught after a
+passing baseline. Go memory/stored journal tests prove no handler or action entry;
+four actual HTTP turns cover default memory and real SQLite persistence.
+Detached observation masking must not mark executable decision arguments as a
+recording projection: Launcher LLM/Jev and SQLite decision regressions exposed
+that distinction and were repaired. Projection bytes remain separate from finite
+request JSON. Legacy trajectory/model snapshots and complete restore consumer
+proofs remain open; native watcher reliability is unchanged.

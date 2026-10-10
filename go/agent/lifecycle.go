@@ -379,7 +379,7 @@ func (s *Session) completeProjectedModel(ctx context.Context, request protocol.M
 	if err != nil {
 		return protocol.ModelReply{}, err
 	}
-	estimated, err := protocol.PythonJSON(wire.Messages, true, false)
+	estimated, err := protocol.ObservedWireMessagesPythonJSON(wire.Messages, true, false)
 	if err != nil {
 		return protocol.ModelReply{}, err
 	}

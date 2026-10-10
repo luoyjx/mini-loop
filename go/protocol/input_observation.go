@@ -17,6 +17,22 @@ func (observation InputObservation) LegacyJSON() ([]byte, error) {
 func (observation InputObservation) MarshalJSON() ([]byte, error) {
 	return observation.value.MarshalJSON()
 }
+
+// MapStrings transforms a detached inspection value, never executable input.
+func (observation InputObservation) MapStrings(mask func(string) string) InputObservation {
+	if mask == nil {
+		return observation
+	}
+	return InputObservation{value: observation.value.MapStrings(mask)}
+}
+
+func (observation InputObservation) SortedPythonJSON() (string, error) {
+	data, err := observation.value.Sorted().MarshalLegacyUTF8()
+	if err != nil {
+		return "", err
+	}
+	return formatPythonJSONBytes(data, false, false)
+}
 func (input ToolInput) Observation() (InputObservation, error) {
 	if err := input.Validate(); err != nil {
 		return InputObservation{}, err

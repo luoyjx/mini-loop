@@ -474,7 +474,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `486f8ec` plus provider and SQLite nonfinite observation consumers, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `d36323d` plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -702,7 +702,7 @@ flowchart LR
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
-        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
+        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
@@ -1272,7 +1272,13 @@ without invoking the handler; all 51 captured actual Source consumer cases match
 The four captured nonfinite client/server inputs survive direct/SSE snapshots and
 SQLite message reopen; two named client tool events survive SQLite reopen. Valid
 next-request transcripts fail finite encoding before transport. Broader known-field
-consumer adaptations and SSE nonfinite event delivery remain open.
+consumer adaptations remain open. Four managed memory/SQLite HTTP turns now
+preserve the captured Bash observations in SSE and live archives. Their action
+journals refuse finite input fingerprints before creating authority; before/guard
+run, after is skipped, and result receives the encoding failure. Detached
+observation queries and cache-bearing request estimates retain legacy numbers;
+standard request/event JSON remains finite. Native legacy trajectory model
+snapshots and complete nonfinite historical restore still need separate proofs.
 Declared ToolCaller variants retain unknown fields as immutable extension metadata
 across client/server tool-use and web-search/web-fetch replies. Direct caller
 `tool_id` is retained as an extension; typed ToolID remains empty. Code-execution

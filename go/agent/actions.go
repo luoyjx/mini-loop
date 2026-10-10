@@ -125,6 +125,15 @@ func actionCandidate(request ActionRequest) (ActionRecord, error) {
 	if request.ActionID == "" || request.SessionID == "" || request.MessageID == "" || request.Input.Name() == "" {
 		return ActionRecord{}, errors.New("action_id, session_id, message_id, and tool_name are required")
 	}
+	// Source hashes journal input using allow_nan=False. An SDK observation can
+	// survive snapshots and archives without becoming a finite action candidate.
+	observation, err := request.Input.Observation()
+	if err != nil {
+		return ActionRecord{}, err
+	}
+	if _, err := observation.MarshalJSON(); err != nil {
+		return ActionRecord{}, errors.New("Out of range float values are not JSON compliant")
+	}
 	encoded, err := request.Input.CanonicalJSON()
 	if err != nil {
 		return ActionRecord{}, err

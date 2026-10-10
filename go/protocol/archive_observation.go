@@ -6,6 +6,70 @@ import (
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
+// ObservedMessagesPythonJSON is the inspection/estimation projection. It does
+// not change the finite model request encoder or grant execution authority.
+func ObservedMessagesPythonJSON(messages []Message, ascii, compact bool) (string, error) {
+	items := make([]jsonvalue.Value, len(messages))
+	for i, message := range messages {
+		data, err := message.MarshalArchiveJSON()
+		if err != nil {
+			return "", err
+		}
+		items[i], err = jsonvalue.Decode(string(data))
+		if err != nil {
+			return "", err
+		}
+	}
+	data, err := jsonvalue.ArrayValue(items).MarshalLegacyUTF8()
+	if err != nil {
+		return "", err
+	}
+	return formatPythonJSONBytes(data, ascii, compact)
+}
+
+// ObservedWireMessagesPythonJSON retains detached cache annotations when
+// estimating or recording a request. HTTP encoding still uses Wire.MarshalJSON.
+func ObservedWireMessagesPythonJSON(messages []WireMessage, ascii, compact bool) (string, error) {
+	items := make([]jsonvalue.Value, len(messages))
+	for i, message := range messages {
+		data, err := (Message{Role: message.Role, Content: message.Content.content}).MarshalArchiveJSON()
+		if err != nil {
+			return "", err
+		}
+		value, err := jsonvalue.Decode(string(data))
+		if err != nil {
+			return "", err
+		}
+		content, _ := value.Lookup("content")
+		if blocks, ok := content.Array(); ok {
+			for index, control := range message.Content.controls {
+				if index < 0 || index >= len(blocks) {
+					return "", errors.New("cache breakpoint outside observed content")
+				}
+				if err := control.Validate(); err != nil {
+					return "", err
+				}
+				encoded, err := json.Marshal(control)
+				if err != nil {
+					return "", err
+				}
+				cache, err := jsonvalue.Decode(string(encoded))
+				if err != nil {
+					return "", err
+				}
+				blocks[index] = observationFields(blocks[index], jsonvalue.ObjectValue([]jsonvalue.Field{{Name: "cache_control", Value: cache}}))
+			}
+			value = replaceObservationField(value, "content", jsonvalue.ArrayValue(blocks))
+		}
+		items[i] = value
+	}
+	data, err := jsonvalue.ArrayValue(items).MarshalLegacyUTF8()
+	if err != nil {
+		return "", err
+	}
+	return formatPythonJSONBytes(data, ascii, compact)
+}
+
 // MarshalArchiveJSON preserves SDK observation numbers in a detached transcript.
 // Message.MarshalJSON remains finite request encoding.
 func (message Message) MarshalArchiveJSON() ([]byte, error) {
