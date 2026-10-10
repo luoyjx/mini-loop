@@ -1585,11 +1585,12 @@ own fetches/waits; callbacks must cooperate with cancellation. SDK refresh windo
 and token-endpoint 401 retry are retained. Model 401 does not refresh/replay.
 Explicit InvalidateCredentials requests a forced next fetch without fencing an
 in-flight fetch. Callback messages/panics are contained; request-local token
-redaction survives concurrent rotation. Explicit `NewFileProfile(ProfileConfig)` supplies the native user OAuth driver.
+redaction survives concurrent rotation. Explicit `NewFileProfile(ProfileConfig)` supplies native user OAuth and file-profile federation drivers.
 Pass its `ModelBaseURL()`, `Headers()` and the profile as `Config.Credentials`;
 merge profile headers before ordered caller overrides. `Directory` and `Name`
 select the config, `HomeDirectory` expands a credentials `~/` override, and
-`DefaultBaseURL`/`DefaultWorkspaceID` are detached environment fallbacks.
+`DefaultBaseURL`/`DefaultWorkspaceID` and federation organization/rule/account/
+scope/identity-file defaults are detached environment fallbacks.
 The profile endpoint owns refresh while explicit `BaseURL` owns model requests.
 No constructor performs token exchange. File rotation is observed on cache fetch;
 without client_id, an external rotator owns refresh. With client_id, refresh_token
@@ -1613,8 +1614,16 @@ are capped at 16 KiB, token responses at 1 MiB, and raw projected files at 8 MiB
 before stripping. Shared callbacks/clock/client transports must support concurrent
 calls and respect context. Callback errors/panics retain safe classifications;
 redirects are refused on a private HTTP client copy. This driver has no internal
-cache or disk write; Client owns refresh policy. Profile federation disk-cache
-selection and Launcher automatic discovery remain pending. `provider.NewStreaming` adds the optional consumer-owned
+cache or disk write; Client owns refresh policy. File profiles now compose
+this driver with a guarded disk cache. Selection validates required IDs and identity
+source/path before reading a cached token. Disk freshness uses Source's float
+expiry minus 30 seconds, while AccessToken retains integer expiry; forced refresh
+bypasses freshness. Corrupt expiry exchanges again. File replacement preserves
+refresh-token/extension fields; filesystem write errors are best effort and do not
+reject the exchanged token. Private file guards still apply on forced calls.
+Both profile grant paths use a 30-second default exchange timeout. Default paths
+resolve dangling symlink targets for containment. Launcher automatic discovery
+remains pending. `provider.NewStreaming` adds the optional consumer-owned
 `agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
 The native adapter retains five named citation variants and closed extension data

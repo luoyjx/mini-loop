@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `a43b1da` plus native federation exchange, file-profile/OAuth refresh and dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
+Reviewed 2026-10-10 at `9f30168` plus native federation profile disk-cache dispatch and exchange, file-profile/OAuth refresh and dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6883,13 +6883,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    profiles with an explicit registry. Reconcile remaining provider content, request
    and auth options against Python public behavior before accepting G4/G7.
 
-3. Federation profile dispatch: compose the implemented explicit driver with
-   CredentialsFile profile selection, required-field admission before disk-cache
-   reads, the Source 30-second disk freshness window, forced bypass, preserved
-   credential extensions and best-effort private atomic write-back. Capture
-   additional actual SDK profile recipes before accepting this path.
-
-4. Launcher credential discovery: capture environment/home/profile configuration
+3. Launcher credential discovery: capture environment/home/profile configuration
    once; preserve static-key/bearer defined-empty distinctions, explicit profile
    and active-pointer selection, environment federation before fallback profile,
    and Source constructor-versus-request failures. Use the current native drivers.
@@ -15955,4 +15949,53 @@ shadow, pathspec FutureWarning and child-watcher warnings did not prevent the
 export command from exiting zero. Diff/cached checks pass. Python runtime,
 default tool declarations and dependencies are unchanged. This commit records
 Source contracts; native implementation is validated and committed separately.
+No merge or push was performed.
+
+## 2026-10-10 native federation profile dispatch and disk-cache reconstruction
+
+Code/test baseline: `9f30168` plus this implementation. Seventeen pinned Source
+profiles now compare native model/token URLs/headers/bodies, call counts, constructor
+and request error phases, cache files/modes and fresh-client reconstruction.
+`FileProfile` captures named federation selection and detached environment defaults.
+Required organization/rule and supported identity source/path are validated at first
+fetch before an apparently fresh disk token can short-circuit. Profile workspace
+belongs in the token body, without a model workspace header; scope is informational.
+
+Private disk files keep existing discriminator/mode/symlink/UTF-8/size guards.
+Missing cache and invalid expiry trigger exchange. Disk reuse compares float expiry
+minus 30 seconds; the returned token keeps integer expiry, preserving the Source
+fractional boundary. Force bypasses freshness but not file guards. Client's separate
+RAM cache owns advisory/mandatory policy and token-endpoint 401 retry. Both profile
+grant paths now default to Source's 30-second exchange timeout. Explicit supplied
+HTTP client policy/timeouts remain detached as before.
+
+Shared private atomic replacement preserves refresh-token and closed extension
+fields for federation. Filesystem write errors are best effort: the exchanged token
+remains usable in RAM. JSON/type errors remain classified and contained. A new
+profile/client reuses a fresh cache written by the prior instance. Default path
+containment now resolves dangling leaf symlink targets instead of treating the
+link as an absent file. Native tests cover an outside-root dangling target.
+No cross-process lock, effect fencing or power-loss guarantee is added. Existing
+strict named-string/header ingress, civil-time expiry and JSON bounds remain
+explicit adaptations. Automatic Launcher discovery is still pending; no default
+activation, dependency or tool catalogue changed. README and generated interactive
+specification distinguish process-local RAM and best-effort private file caches.
+Final gates passed from `go/`: `go test -race -count=1 ./provider`, full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...`, `go vet ./...` and
+`go run ./tools/typeaudit -root .` (409 production files, 1322 package-level
+types, zero findings). Logs: `/tmp/mini-loop-profile-federation-{go,race,vet,types}.log`.
+Source/test/fixture files remained unchanged during full Go validation jobs.
+Five Python provider-auth tests, Source export (202 current files) and all 19
+scanner guards passed at the Source capture checkpoint in the same iteration.
+Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings did not prevent passing.
+
+Archify regeneration passed 9/9 checks. Specification SHA256:
+`a2b27073164c225bab19ad1cb3452a8f9b3c44e2ec20a7786578a06720ef0e04`;
+HTML SHA256:
+`eeceacb4edd542db858a7e87d50c5b1f642e9fd6cd27bedc959037a60ad3bdd4`.
+No fresh browser visual inspection, full Python regression, Python package
+invariant/guard mutation, coverage, performance, Linux-host or CGO-disabled run
+was performed. Python runtime/default tools/mutation anchors did not change.
+Coverage retains measured baseline `a9585cb`. Diff/cached checks pass.
 No merge or push was performed.

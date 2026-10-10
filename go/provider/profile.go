@@ -18,29 +18,36 @@ import (
 // ProfileConfig is a detached operator selection. It never reads environment
 // variables. BaseURL binds model requests; a profile base_url owns token exchange.
 type ProfileConfig struct {
-	Directory          string
-	Name               string
-	HomeDirectory      string
-	BaseURL            string
-	DefaultBaseURL     string
-	DefaultWorkspaceID string
-	HTTPClient         *http.Client     `json:"-"`
-	Now                func() time.Time `json:"-"`
+	Directory                string
+	Name                     string
+	HomeDirectory            string
+	BaseURL                  string
+	DefaultBaseURL           string
+	DefaultWorkspaceID       string
+	DefaultOrganizationID    string
+	DefaultFederationRuleID  string
+	DefaultServiceAccountID  string
+	DefaultScope             string
+	DefaultIdentityTokenFile string
+	HTTPClient               *http.Client     `json:"-"`
+	Now                      func() time.Time `json:"-"`
 }
 
 // FileProfile eagerly validates configuration, and reads credentials only on
 // FetchToken. One instance serializes refreshes; different instances remain
 // independent last-writer-wins caches, as in Source.
 type FileProfile struct {
-	gate            chan struct{}
-	kind            string
-	clientID        string
-	credentialsPath string
-	tokenBaseURL    string
-	modelBaseURL    string
-	workspaceID     string
-	http            *http.Client
-	now             func() time.Time
+	gate               chan struct{}
+	kind               string
+	federationSettings profileFederationSettings
+	federation         *Federation
+	clientID           string
+	credentialsPath    string
+	tokenBaseURL       string
+	modelBaseURL       string
+	workspaceID        string
+	http               *http.Client
+	now                func() time.Time
 }
 
 func (*FileProfile) String() string         { return "<file profile>" }
@@ -134,7 +141,7 @@ func NewFileProfile(cfg ProfileConfig) (*FileProfile, error) {
 	}
 	client := cfg.HTTPClient
 	if client == nil {
-		client = &http.Client{Timeout: DefaultTimeout}
+		client = &http.Client{Timeout: FederationTimeout}
 	}
 	detached := *client
 	// Token secrets must not follow redirects, including same-origin redirects.
@@ -143,7 +150,7 @@ func NewFileProfile(cfg ProfileConfig) (*FileProfile, error) {
 	if now == nil {
 		now = time.Now
 	}
-	return &FileProfile{gate: make(chan struct{}, 1), kind: kind, clientID: clientID, credentialsPath: credentialPath, tokenBaseURL: base, modelBaseURL: modelBase, workspaceID: workspace, http: &detached, now: now}, nil
+	return &FileProfile{gate: make(chan struct{}, 1), kind: kind, federationSettings: captureProfileFederation(cfg, raw, auth), clientID: clientID, credentialsPath: credentialPath, tokenBaseURL: base, modelBaseURL: modelBase, workspaceID: workspace, http: &detached, now: now}, nil
 }
 
 func credentialEndpoint(base string) bool {
@@ -170,6 +177,18 @@ func resolveProfilePath(path string) (string, error) {
 	}
 	if !os.IsNotExist(err) {
 		return "", err
+	}
+	// EvalSymlinks reports ENOENT for a dangling leaf; resolve its declared
+	// target before containment checks instead of treating the link as absent.
+	if info, statErr := os.Lstat(absolute); statErr == nil && info.Mode()&os.ModeSymlink != 0 {
+		target, readErr := os.Readlink(absolute)
+		if readErr != nil {
+			return "", readErr
+		}
+		if !filepath.IsAbs(target) {
+			target = filepath.Join(filepath.Dir(absolute), target)
+		}
+		return resolveProfilePath(target)
 	}
 	parent := filepath.Dir(absolute)
 	if parent == absolute {
@@ -276,11 +295,8 @@ func (p *FileProfile) readCredentials() (profileCredentials, error) {
 	if err != nil {
 		return profileCredentials{}, err
 	}
-	if discriminator, ok := raw.Lookup("type"); ok && discriminator.Kind() != jsonvalue.Null {
-		text, isText := discriminator.Text()
-		if !isText || text != "oauth_token" {
-			return profileCredentials{}, profileError(CredentialInvalid)
-		}
+	if err := validateProfileCredentialType(raw); err != nil {
+		return profileCredentials{}, err
 	}
 	access, err := profileText(raw, "access_token")
 	if err != nil || access == "" {
@@ -321,6 +337,9 @@ func (p *FileProfile) FetchToken(ctx context.Context, force bool) (AccessToken, 
 	}
 	if err := ctx.Err(); err != nil {
 		return AccessToken{}, err
+	}
+	if p.kind == "oidc_federation" {
+		return p.fetchFederation(ctx, force)
 	}
 	if p.kind != "user_oauth" {
 		return AccessToken{}, profileError(CredentialInvalid)

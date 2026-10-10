@@ -106,6 +106,10 @@ func (p *FileProfile) writeCredentials(c profileCredentials) error {
 		{Name: "refresh_token", Value: jsonvalue.TextValue(c.refresh)},
 	}
 	fields = append(fields, c.extensions...)
+	return p.writeCredentialFields(fields)
+}
+
+func (p *FileProfile) writeCredentialFields(fields []jsonvalue.Field) error {
 	data, err := jsonvalue.AppendLegacyIndent(jsonvalue.ObjectValue(fields))
 	if err != nil {
 		return profileError(CredentialInvalid)

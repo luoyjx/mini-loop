@@ -515,9 +515,16 @@ Optional request fields are copied; scope remains informational. The driver send
 both exchange beta flags, validates required expiry/token type, and bounds
 assertions/responses to 16 KiB/1 MiB. Client's existing cache owns reuse and forced
 401 retry. Model 401 does not invalidate/replay. Callback errors/panics and
-exchange replies cannot leak token bodies through diagnostics. Profile federation
-disk-cache dispatch, automatic Launcher discovery, remaining request options and
-production conformance remain pending.
+exchange replies cannot leak token bodies through diagnostics. `FileProfile` now
+selects `oidc_federation`, validates required selection before cache reads and
+reuses guarded disk tokens with more than 30 seconds remaining. Fractional disk
+expiry retains Source freshness semantics; returned token expiry is an integer.
+Invalid expiry triggers exchange; forced refresh bypasses freshness. Cache writes
+preserve extensions/refresh tokens and use private atomic replacement. Filesystem
+write failure still returns the exchanged token. Reconstructing the profile/client
+reuses a fresh disk cache; all profile exchanges default to 30 seconds. Captured
+federation defaults fill only unset fields. Automatic Launcher discovery, remaining
+request options and production conformance remain pending.
 
 ### Typed decision operator library
 
