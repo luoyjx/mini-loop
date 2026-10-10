@@ -50,12 +50,25 @@ func TestSupervisorRetainsSocketAcrossRecoveryAndJoinsChildren(t *testing.T) {
 	write := func(source string) {
 		t.Helper()
 		generation++
-		path := filepath.Join(root, "main.go")
-		if err := os.WriteFile(path, []byte(source), 0600); err != nil {
+		// Publish content and its synthetic timestamp together. An intermediate
+		// wall-clock mtime could become StatReload's baseline before Chtimes.
+		file, err := os.CreateTemp(root, ".reload-source-")
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer os.Remove(file.Name())
+		defer file.Close()
+		if _, err = file.WriteString(source); err != nil {
+			t.Fatal(err)
+		}
+		if err = file.Close(); err != nil {
 			t.Fatal(err)
 		}
 		stamp := time.Unix(int64(100+generation), 0)
-		if err := os.Chtimes(path, stamp, stamp); err != nil {
+		if err = os.Chtimes(file.Name(), stamp, stamp); err != nil {
+			t.Fatal(err)
+		}
+		if err = os.Rename(file.Name(), filepath.Join(root, "main.go")); err != nil {
 			t.Fatal(err)
 		}
 	}
