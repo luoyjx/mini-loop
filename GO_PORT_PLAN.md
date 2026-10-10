@@ -17840,3 +17840,38 @@ historical restore consumers, broader known-field/unknown-tool input adaptations
 native watcher reliability and default diagnostics remain open. This is concrete
 managed consumer delivery, not complete G4/G7 or migration acceptance. No merge
 or push.
+
+## Nonfinite SQLite restore and catch-up — 2026-10-11
+
+Baseline `73d3dbc`; Source prerequisite `a5c6864`; native fix `a176242`.
+Two actual Source SQLite captures physically close/reopen
+and construct a new Manager before explicit restoration. NaN/Infinity in Bash
+input.keep survive; owner alice is retained, current permission mode is
+interactive, and transcript counts are 4 before / 4 restored / 6 after resume.
+The resumed Source request fails finite encoding before any transport call.
+Source restore method hashes and legacy observation strings are captured in the
+[managed stream fixture](go/testdata/python-provider-nonfinite-stream.json).
+
+Native restore/catch-up now validate known events with the named archival codec
+before re-decoding closed variants. Scope/order/window and identity checks remain.
+Two real native database close/reopen tests retain the observed transcript,
+owner/current policy and original tool input. Every catch-up context is untrusted;
+no historical tool action exists. Resume sends zero new transport requests and
+retains healthy persistence with the current lease confirmed. Catch-up acquires
+no lease. Full Source/native transcript bytes and SDK error-text/class equality
+are not claimed.
+
+Combined-worktree gates: targeted sqlitestate/agent Nonfinite/Catchup/Restore;
+full Go race (50 packages); go vet; type audit (436 production files, 1,405 named
+types, zero findings); Source managed nonfinite test; 19 scanner anchors; one
+caught journal-fingerprint mutation with passing baseline; sequential Source
+export --check (223 files); Archify 9/9, zero errors/warnings; git diff --check.
+Full ordinary Go fails only reload lower-mtime-write and identical-write. That
+failure remains open. Commits are split for review and were not independently
+full-suite replayed. See the [restore audit](docs/audits/provider-nonfinite-restore-2026-10-11.json).
+
+Coverage was not refreshed: 89.26% application / 89.23% all Go belongs to runtime
+c8491d2. Full Python, non-Darwin, performance and fresh browser visual checks were
+not run. Broader historical/trajectory/model consumers, SDK error fidelity,
+watcher reliability, default diagnostics and complete migration acceptance remain
+open. No dependency was added; no merge or push.

@@ -1,0 +1,97 @@
+{
+  "baseline": "73d3dbc",
+  "source_fixture": "go/testdata/python-provider-nonfinite-stream.json",
+  "source_fixture_sha256": "aa41d6e8e2447c6f5bcd693dc133b180327aa4cf0204a88c7742702f17c2266b",
+  "source_sqlite_restore_cases": [
+    {
+      "name": "nan",
+      "owner": "alice",
+      "permission_mode": "interactive",
+      "messages_before": 4,
+      "messages_restored": 4,
+      "messages_after": 6,
+      "resume_transport_requests": 0,
+      "resume_final": "[Error] ValueError: Out of range float values are not JSON compliant"
+    },
+    {
+      "name": "infinity",
+      "owner": "alice",
+      "permission_mode": "interactive",
+      "messages_before": 4,
+      "messages_restored": 4,
+      "messages_after": 6,
+      "resume_transport_requests": 0,
+      "resume_final": "[Error] ValueError: Out of range float values are not JSON compliant"
+    }
+  ],
+  "native_proofs": [
+    "Actual SQLite physical close/reopen and new Manager explicit RestoreSessions",
+    "Native observed transcript unchanged across restore; Source transcript shape 4 to 4 to 6",
+    "Owner preserved and current permission mode interactive",
+    "CatchUpEvents retains original Bash input observation and every returned context has AuthorityUntrusted",
+    "No action record for historical tool use",
+    "Resumed request never reaches transport; persistence remains healthy and lease confirmed"
+  ],
+  "gates": {
+    "native_targeted": {
+      "command": "go test ./sqlitestate ./agent -run 'Nonfinite|Catchup|Restore' -count=1",
+      "passed": true
+    },
+    "native_full": {
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "passed": false,
+      "failed_package": "reload",
+      "failed_recipes": [
+        "lower-mtime-write",
+        "identical-write"
+      ],
+      "log_sha256": "8df368ed772d16c60b9e33a571ac4d6be8773d349fc7f6668c8019ec406b8583"
+    },
+    "native_race": {
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+      "passed": true,
+      "terminal_packages": 50,
+      "log_sha256": "1e3a9ec14745f4516d35f266d75f5809d82f44dab75cf26e02c0e87b335c8538"
+    },
+    "vet": "passed",
+    "type_audit": {
+      "production_files": 436,
+      "named_types": 1405,
+      "findings": 0
+    },
+    "source_test": "passed",
+    "scanner_guards": "19 anchored",
+    "journal_fingerprint_mutation": "caught with passing baseline and failed test call",
+    "source_export": {
+      "passed": true,
+      "current_files": 223,
+      "sequential_after_native_jobs": true,
+      "log_sha256": "be68683002186d030c0e5363f4b2744a8c7b7a953982b87169fb801011701b82"
+    },
+    "architecture": {
+      "passed": 9,
+      "total": 9,
+      "errors": 0,
+      "warnings": 0,
+      "fresh_visual_check": false
+    },
+    "git_diff_check": "passed",
+    "intermediate_commits_replayed_separately": false
+  },
+  "limitations": [
+    "Only the two captured unknown Bash input.keep NaN/Infinity observations are proved here",
+    "Source/native full transcript bytes and SDK exception-class/error-text parity are not established",
+    "Broader archival consumers and trajectory/model snapshots remain open",
+    "Native watcher reliability and complete port acceptance remain open",
+    "Coverage, full Python suite, performance and non-Darwin checks were not refreshed",
+    "No new dependency; no merge or push"
+  ],
+  "coverage_reference": {
+    "runtime": "c8491d2",
+    "application_percent": 89.26,
+    "all_go_percent": 89.23,
+    "refreshed_for_this_slice": false
+  },
+  "source_commit": "a5c6864",
+  "runtime_commit": "a176242"
+}
