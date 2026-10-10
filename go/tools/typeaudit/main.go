@@ -110,7 +110,27 @@ func audit(root string) (report, error) {
 
 func main() {
 	root := flag.String("root", ".", "production Go source root (all platform files)")
+	public := flag.Bool("public", false, "compiler-resolved exported type closure (active build profile)")
 	flag.Parse()
+	if *public {
+		result, err := auditPublic(*root)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(2)
+		}
+		for _, finding := range result.findings {
+			fmt.Fprintf(os.Stderr, "%s: open payload in public type %s\n", finding.position, finding.name)
+		}
+		fmt.Printf("Go public type audit: %d packages, %d exported types, %d findings\n", result.packages, result.types, len(result.findings))
+		if result.packages == 0 {
+			fmt.Fprintln(os.Stderr, "no main-module packages found")
+			os.Exit(2)
+		}
+		if len(result.findings) != 0 {
+			os.Exit(1)
+		}
+		return
+	}
 	result, err := audit(*root)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

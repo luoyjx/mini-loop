@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `98f94be` plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `d872343` plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -2784,7 +2784,18 @@ integration; it does not enable workflows on the default FastAPI server.
 From `go/`, `go run ./tools/typeaudit -root .` checks package-level production
 type bodies across all platform files for `any`, empty interfaces and JSON raw
 messages. Function-local ingress DTOs and generic constraints are excluded.
-This check complements review of external types and runtime data flow.
+Add `-public` to inspect compiler-resolved exported type payloads in the active
+build profile: cross-package aliases, nested retained fields, generic arguments
+and signatures nested in those type bodies. Top-level functions and named struct
+methods are outside this traversal. The compiler inventory uses only Go standard
+library tooling and existing module dependencies. Imported aliases and erased
+interfaces are expanded; external structs and named nonempty capabilities remain
+opaque platform boundaries. Private types are traversed when reachable from
+exported types. Inactive platform definitions and unexported roots retain the
+syntax audit's separate scope. Neither check proves runtime data flow, named
+method implementations or external library internals. Runtime topology and
+feature defaults are unchanged by this audit tool. These checks complement the
+remaining external-type and runtime data-flow review.
 
 `python/tools/go_port_performance.py` compares isolated default Python/Go fake
 HTTP workloads with actual Bash file effects and joined server shutdown. Build
