@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `aee0437` plus native citation HTTP/SSE integration. This section is the current delivery index;
+Reviewed 2026-10-10 at `dff40b4` plus native citation SQLite/recording recovery proof. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,7 +6864,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas and forwarding implemented; citation-bearing managed restart/recording acceptance and final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas and forwarding implemented; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
 | G7 | 201 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
@@ -6877,11 +6877,11 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
    outstanding explicit dependency decision. SQLite driver approval does not approve it.
 
-2. Provider citation acceptance: native named variants, SDK-normalized HTTP
-   replies, ordered SSE deltas, forwarding, immutable cloning/masking and text
-   rewrites are implemented against 35 completed and two streamed Source cases.
-   G7 still needs citation-bearing managed transcript/restart/recording evidence
-   and reconciliation of remaining provider content, request and auth options.
+2. Provider final inventory: native citation normalization, ordered SSE, forwarding,
+   immutable cloning/masking and text rewrites have Source and native evidence.
+   Citation-bearing HTTP/SQLite/recording recovery is verified for direct and stream
+   profiles with an explicit registry. Reconcile remaining provider content, request
+   and auth options against Python public behavior before accepting G4/G7.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -15453,3 +15453,41 @@ artifact SHA256 310745bff7ae30fad7fe63bd012518c3cacafe67cfc95e18bfbb74c8deaebbc2
 Both hashes match current files. No fresh browser visual inspection, coverage,
 performance or Python mutation sweep was run. Compiler output includes existing
 macOS FSEvents deprecation and race linker warnings. Diff checks pass.
+
+## 2026-10-10 citation-bearing native SQLite HTTP and recording recovery proof
+
+Code baseline: `dff40b4`. New integration tests exercise real localhost provider
+HTTP, authenticated HTTP API, Manager, native SQLite and retained trajectory files.
+Both direct and optional streaming profiles compose eight citations from pinned
+Source recipes: five known variants, extension members, an unknown discriminator
+and a signed arbitrary-size index (10**80). This composition is native integration
+evidence, not a new SDK capture or production-provider deployment check.
+
+An explicit registry masks both citation values and extension keys. Live second-turn
+provider requests retain originals; actual SQL message payloads, stored HTTP
+transcripts and all three trajectory model_output captures contain only masked
+metadata. Complete citation arrays, nullable stream parsed_output and the large
+index survive. The database is closed, the old handle is proven unreadable, and
+a newly opened connection/new Manager reconstructs the same masked history after
+explicit operator restoration. Construction does not restore automatically; owner
+identity and Bob's HTTP denial remain intact. Restored requests forward that durable
+masked history, fresh writes retain confirmed leases, and shutdown releases the
+previous lease. The registry is explicitly injected; default Null behavior is not
+claimed to mask. This is same-process database/Manager reconstruction, not a new
+kill-process test or crash-atomicity proof.
+
+Only a focused integration test and review/evidence documentation changed; no
+runtime implementation, topology, public flow, authority or default changes.
+README architecture map reviewed and visible baseline updated. The canonical
+Mermaid and generated interactive specification remain unchanged.
+
+Validation on the final test snapshot: targeted
+`go test ./sqlitestate -run '^TestCitationNativeSQLiteHTTPRecordingAndReopen$' -count=1 -timeout=90s`,
+full `go test -p=1 -count=1 -timeout=300s ./...`, targeted
+`go test -race ./sqlitestate -run '^TestCitationNativeSQLiteHTTPRecordingAndReopen$' -count=1 -timeout=90s`
+and `go vet ./...` pass. Original JSONL files are checked directly for citation
+output, absence of both registered secrets and 0600 permissions, independently
+of the parsed recording export. Existing macOS compiler/linker warnings remain.
+Diff checks pass. No full race, Python regression/verifiers, Source export,
+coverage, performance or fresh architecture rendering was rerun for this test-only
+slice; runtime and exported contracts are unchanged.

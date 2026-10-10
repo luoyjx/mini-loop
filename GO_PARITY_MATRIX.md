@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `aee0437` plus native citation HTTP/SSE integration. The entries below retain their historical
+Reviewed code/test baseline: `dff40b4` plus native citation SQLite/recording recovery proof. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -18,7 +18,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 401 production files, 1302 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
-| Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, metadata forwarding and text rewrite preservation implemented; managed restart/recording acceptance remains |
+| Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 The latest Source export check at `aee0437` plus native citation integration exited
@@ -8158,3 +8158,41 @@ artifact SHA256 310745bff7ae30fad7fe63bd012518c3cacafe67cfc95e18bfbb74c8deaebbc2
 Both hashes match current files. No fresh browser visual inspection, coverage,
 performance or Python mutation sweep was run. Compiler output includes existing
 macOS FSEvents deprecation and race linker warnings. Diff checks pass.
+
+## 2026-10-10 citation-bearing native SQLite HTTP and recording recovery proof
+
+Code baseline: `dff40b4`. New integration tests exercise real localhost provider
+HTTP, authenticated HTTP API, Manager, native SQLite and retained trajectory files.
+Both direct and optional streaming profiles compose eight citations from pinned
+Source recipes: five known variants, extension members, an unknown discriminator
+and a signed arbitrary-size index (10**80). This composition is native integration
+evidence, not a new SDK capture or production-provider deployment check.
+
+An explicit registry masks both citation values and extension keys. Live second-turn
+provider requests retain originals; actual SQL message payloads, stored HTTP
+transcripts and all three trajectory model_output captures contain only masked
+metadata. Complete citation arrays, nullable stream parsed_output and the large
+index survive. The database is closed, the old handle is proven unreadable, and
+a newly opened connection/new Manager reconstructs the same masked history after
+explicit operator restoration. Construction does not restore automatically; owner
+identity and Bob's HTTP denial remain intact. Restored requests forward that durable
+masked history, fresh writes retain confirmed leases, and shutdown releases the
+previous lease. The registry is explicitly injected; default Null behavior is not
+claimed to mask. This is same-process database/Manager reconstruction, not a new
+kill-process test or crash-atomicity proof.
+
+Only a focused integration test and review/evidence documentation changed; no
+runtime implementation, topology, public flow, authority or default changes.
+README architecture map reviewed and visible baseline updated. The canonical
+Mermaid and generated interactive specification remain unchanged.
+
+Validation on the final test snapshot: targeted
+`go test ./sqlitestate -run '^TestCitationNativeSQLiteHTTPRecordingAndReopen$' -count=1 -timeout=90s`,
+full `go test -p=1 -count=1 -timeout=300s ./...`, targeted
+`go test -race ./sqlitestate -run '^TestCitationNativeSQLiteHTTPRecordingAndReopen$' -count=1 -timeout=90s`
+and `go vet ./...` pass. Original JSONL files are checked directly for citation
+output, absence of both registered secrets and 0600 permissions, independently
+of the parsed recording export. Existing macOS compiler/linker warnings remain.
+Diff checks pass. No full race, Python regression/verifiers, Source export,
+coverage, performance or fresh architecture rendering was rerun for this test-only
+slice; runtime and exported contracts are unchanged.
