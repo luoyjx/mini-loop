@@ -1,0 +1,2644 @@
+{
+  "cases": [
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "text",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "text",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "JVBERi0=",
+                "media_type": "application/pdf",
+                "type": "base64"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "JVBERi0=",
+                  "media_type": "application/pdf",
+                  "type": "base64"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "pdf",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"base64\", \"media_type\": \"application/pdf\", \"data\": \"JVBERi0=\"}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "JVBERi0=",
+                "media_type": "application/pdf",
+                "type": "base64"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "JVBERi0=",
+                  "media_type": "application/pdf",
+                  "type": "base64"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "pdf",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"base64\", \"media_type\": \"application/pdf\", \"data\": \"JVBERi0=\"}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "empty-text",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\"}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "empty-text",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\"}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": "标题",
+              "type": "document"
+            },
+            "retrieved_at": "2026-10-10T00:00:00Z",
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "title": "标题",
+                "type": "document"
+              },
+              "retrieved_at": "2026-10-10T00:00:00Z",
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "title-time",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"title\": \"\\u6807\\u9898\"}, \"retrieved_at\": \"2026-10-10T00:00:00Z\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": "标题",
+              "type": "document"
+            },
+            "retrieved_at": "2026-10-10T00:00:00Z",
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "title": "标题",
+                "type": "document"
+              },
+              "retrieved_at": "2026-10-10T00:00:00Z",
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "title-time",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"title\": \"\\u6807\\u9898\"}, \"retrieved_at\": \"2026-10-10T00:00:00Z\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": null,
+            "content": {
+              "content": {
+                "citations": null,
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "title": null,
+                "type": "document"
+              },
+              "retrieved_at": null,
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "nulls",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"title\": null, \"citations\": null}, \"retrieved_at\": null}, \"caller\": null}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": null,
+            "content": {
+              "content": {
+                "citations": null,
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "title": null,
+                "type": "document"
+              },
+              "retrieved_at": null,
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "nulls",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"title\": null, \"citations\": null}, \"retrieved_at\": null}, \"caller\": null}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": {
+                "enabled": true
+              },
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "citations": {
+                  "enabled": true
+                },
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "citations-on",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"citations\": {\"enabled\": true}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": {
+                "enabled": true
+              },
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "citations": {
+                  "enabled": true
+                },
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "citations-on",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"citations\": {\"enabled\": true}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": {
+                "enabled": false
+              },
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "citations": {
+                  "enabled": false
+                },
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "citations-off",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"citations\": {\"enabled\": false}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": {
+                "enabled": false
+              },
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "citations": {
+                  "enabled": false
+                },
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "citations-off",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}, \"citations\": {\"enabled\": false}}}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "type": "direct"
+          },
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "direct-caller",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}, \"caller\": {\"type\": \"direct\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "type": "direct"
+          },
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "direct-caller",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}, \"caller\": {\"type\": \"direct\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "tool_id": "parent",
+            "type": "code_execution_20250825"
+          },
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "tool_id": "parent",
+              "type": "code_execution_20250825"
+            },
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "code-caller-2025",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}, \"caller\": {\"type\": \"code_execution_20250825\", \"tool_id\": \"parent\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "tool_id": "parent",
+            "type": "code_execution_20250825"
+          },
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "tool_id": "parent",
+              "type": "code_execution_20250825"
+            },
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "code-caller-2025",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}, \"caller\": {\"type\": \"code_execution_20250825\", \"tool_id\": \"parent\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "tool_id": "parent",
+            "type": "code_execution_20260120"
+          },
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "tool_id": "parent",
+              "type": "code_execution_20260120"
+            },
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "code-caller-2026",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}, \"caller\": {\"type\": \"code_execution_20260120\", \"tool_id\": \"parent\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "tool_id": "parent",
+            "type": "code_execution_20260120"
+          },
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": null,
+              "source": {
+                "data": "文档 text",
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "tool_id": "parent",
+              "type": "code_execution_20260120"
+            },
+            "content": {
+              "content": {
+                "source": {
+                  "data": "文档 text",
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "code-caller-2026",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\"}}}, \"caller\": {\"type\": \"code_execution_20260120\", \"tool_id\": \"parent\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "content": {
+              "citations": {
+                "enabled": true,
+                "future": 10
+              },
+              "future": 9,
+              "source": {
+                "data": "文档 text",
+                "future": {
+                  "source": "metadata"
+                },
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "future": 8,
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "future": {
+            "root": "metadata"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "citations": {
+                  "enabled": true,
+                  "future": 10
+                },
+                "future": 9,
+                "source": {
+                  "data": "文档 text",
+                  "future": {
+                    "source": "metadata"
+                  },
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "future": 8,
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "future": {
+              "root": "metadata"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "extensions",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\", \"future\": {\"source\": \"metadata\"}}, \"future\": 9, \"citations\": {\"enabled\": true, \"future\": 10}}, \"future\": 8}, \"future\": {\"root\": \"metadata\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "content": {
+              "citations": {
+                "enabled": true,
+                "future": 10
+              },
+              "future": 9,
+              "source": {
+                "data": "文档 text",
+                "future": {
+                  "source": "metadata"
+                },
+                "media_type": "text/plain",
+                "type": "text"
+              },
+              "title": null,
+              "type": "document"
+            },
+            "future": 8,
+            "retrieved_at": null,
+            "type": "web_fetch_result",
+            "url": "https://fixture.invalid"
+          },
+          "future": {
+            "root": "metadata"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": {
+                "citations": {
+                  "enabled": true,
+                  "future": 10
+                },
+                "future": 9,
+                "source": {
+                  "data": "文档 text",
+                  "future": {
+                    "source": "metadata"
+                  },
+                  "media_type": "text/plain",
+                  "type": "text"
+                },
+                "type": "document"
+              },
+              "future": 8,
+              "type": "web_fetch_result",
+              "url": "https://fixture.invalid"
+            },
+            "future": {
+              "root": "metadata"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "extensions",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_result\", \"url\": \"https://fixture.invalid\", \"content\": {\"type\": \"document\", \"source\": {\"type\": \"text\", \"media_type\": \"text/plain\", \"data\": \"\\u6587\\u6863 text\", \"future\": {\"source\": \"metadata\"}}, \"future\": 9, \"citations\": {\"enabled\": true, \"future\": 10}}, \"future\": 8}, \"future\": {\"root\": \"metadata\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "future_code",
+            "future": 7,
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "future_code",
+              "future": 7,
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "future-error",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"future_code\", \"future\": 7}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "future_code",
+            "future": 7,
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "future_code",
+              "future": 7,
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "future-error",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"future_code\", \"future\": 7}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "invalid_tool_input",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "invalid_tool_input",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "invalid_tool_input",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"invalid_tool_input\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "invalid_tool_input",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "invalid_tool_input",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "invalid_tool_input",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"invalid_tool_input\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "url_too_long",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_too_long",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "url_too_long",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_too_long\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "url_too_long",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_too_long",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "url_too_long",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_too_long\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "url_not_allowed",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_not_allowed",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "url_not_allowed",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_not_allowed\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "url_not_allowed",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_not_allowed",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "url_not_allowed",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_not_allowed\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "url_not_in_prior_context",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_not_in_prior_context",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "url_not_in_prior_context",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_not_in_prior_context\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "url_not_in_prior_context",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_not_in_prior_context",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "url_not_in_prior_context",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_not_in_prior_context\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "url_not_accessible",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_not_accessible",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "url_not_accessible",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_not_accessible\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "url_not_accessible",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "url_not_accessible",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "url_not_accessible",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"url_not_accessible\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "unsupported_content_type",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unsupported_content_type",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "unsupported_content_type",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"unsupported_content_type\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "unsupported_content_type",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unsupported_content_type",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "unsupported_content_type",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"unsupported_content_type\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "too_many_requests",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "too_many_requests",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "too_many_requests",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"too_many_requests\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "too_many_requests",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "too_many_requests",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "too_many_requests",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"too_many_requests\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "max_uses_exceeded",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "max_uses_exceeded",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "max_uses_exceeded",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"max_uses_exceeded\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "max_uses_exceeded",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "max_uses_exceeded",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "max_uses_exceeded",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"max_uses_exceeded\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "unavailable",
+            "type": "web_fetch_tool_result_error"
+          },
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unavailable",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "unavailable",
+      "sdk_block_class": "WebFetchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"unavailable\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "citations": null,
+          "content": {
+            "error_code": "unavailable",
+            "type": "web_fetch_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_fetch",
+          "type": "web_fetch_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unavailable",
+              "type": "web_fetch_tool_result_error"
+            },
+            "tool_use_id": "server_fetch",
+            "type": "web_fetch_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "unavailable",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_fetch_tool_result\", \"tool_use_id\": \"server_fetch\", \"content\": {\"type\": \"web_fetch_tool_result_error\", \"error_code\": \"unavailable\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    }
+  ],
+  "content_payload_sha256": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505",
+  "sdk_version": "0.107.1"
+}
