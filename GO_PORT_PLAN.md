@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `39dbca4` plus the package-level type audit. This section is the current delivery index;
+Reviewed 2026-10-10 at `d05004c` plus the measured fake HTTP baseline. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 201 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, performance evidence and final regression/verifier gates; goal remains incomplete |
+| G7 | 201 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -15258,3 +15258,47 @@ survived/stale/ambiguous result was printed before interruption. Performance
 results and reproduction evidence are delivered separately; this command does
 not establish comprehensive G7 performance or migration acceptance. README
 architecture baseline reviewed; no runtime map change. git diff --check passes.
+
+
+## 2026-10-10 measured Python/Go default fake HTTP baseline
+
+Instrument: `d05004c`; application code baseline: `723853e` (no Python runtime
+or Go source changed between those commits). Raw host/build identity, binary
+SHA-256, final texts and samples: [measured JSON](docs/benchmarks/go-port-fake-http-2026-10-10.json).
+Darwin arm64 24.5.0, CPython 3.11.3 and prebuilt Go 1.23.3. Three fresh process
+pairs alternate Python/Go order, each with two warmup turns, 100 health reads
+and 20 fresh-session Bash turns. Each turn writes and verifies proof.txt,
+returns identical Python/Go final text and deletes the session. All six servers
+join and their ports rebind. RSS is sampled after workload, excluding descendants.
+
+| Metric | Samples per runtime | Python median / p95 ms | Go median / p95 ms |
+| --- | ---: | ---: | ---: |
+| startup | 3 | 267.544 / 283.038 | 15.306 / 32.124 |
+| health | 300 | 0.597 / 0.694 | 0.105 / 0.129 |
+| create | 60 | 2.650 / 3.763 | 4.766 / 7.827 |
+| turn | 60 | 9.356 / 10.292 | 7.971 / 9.382 |
+| delete | 60 | 0.677 / 0.748 | 0.285 / 0.331 |
+
+Post-workload median server RSS: Python 59136 KiB, Go 22016 KiB (three samples
+each). Go creation is slower in this run; other measured medians are lower.
+These are default CLI/HTTP observations on one host. Python Uvicorn access
+logging remains enabled; Go has no per-request access log. Startup includes
+10ms readiness polling and excludes Go compilation. p95 uses nearest rank;
+individual requests are clustered within three processes, with no confidence
+or significance claim. SSE, SQLite, concurrent turns, feature groups and real
+providers are outside this workload. It establishes initial performance
+evidence, not comprehensive G7 acceptance or model quality.
+
+Reproduce from the repository root:
+
+```sh
+(cd go && go build -mod=readonly -o /tmp/miniloop-perf ./cmd/miniloop)
+.venv/bin/python python/tools/go_port_performance.py --go-binary /tmp/miniloop-perf --output /tmp/go-port-performance.json
+```
+
+Artifact validation checks all six run/sample counts, per-pair exact final-text
+identity and actual binary digest. Instrument tests/full Python/invariant/scanner
+gates are recorded in the preceding delivery. Full mutation verification is
+still incomplete (81/378 caught before intentional stop), and G7 default
+parser/provider/public-entry/type scope audits remain open. Documentation/data
+only: git diff --check and cached checks pass. No merge/push.

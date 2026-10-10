@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `39dbca4` plus package-level type audit. The entries below retain their historical
+Reviewed code/test baseline: `d05004c` plus measured fake HTTP evidence. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -17,6 +17,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
 | Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 399 production files, 1291 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
+| Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 The latest Source export check at `ba1c43f` exited zero with 201 matching files
@@ -7967,3 +7968,47 @@ survived/stale/ambiguous result was printed before interruption. Performance
 results and reproduction evidence are delivered separately; this command does
 not establish comprehensive G7 performance or migration acceptance. README
 architecture baseline reviewed; no runtime map change. git diff --check passes.
+
+
+## 2026-10-10 measured Python/Go default fake HTTP baseline
+
+Instrument: `d05004c`; application code baseline: `723853e` (no Python runtime
+or Go source changed between those commits). Raw host/build identity, binary
+SHA-256, final texts and samples: [measured JSON](docs/benchmarks/go-port-fake-http-2026-10-10.json).
+Darwin arm64 24.5.0, CPython 3.11.3 and prebuilt Go 1.23.3. Three fresh process
+pairs alternate Python/Go order, each with two warmup turns, 100 health reads
+and 20 fresh-session Bash turns. Each turn writes and verifies proof.txt,
+returns identical Python/Go final text and deletes the session. All six servers
+join and their ports rebind. RSS is sampled after workload, excluding descendants.
+
+| Metric | Samples per runtime | Python median / p95 ms | Go median / p95 ms |
+| --- | ---: | ---: | ---: |
+| startup | 3 | 267.544 / 283.038 | 15.306 / 32.124 |
+| health | 300 | 0.597 / 0.694 | 0.105 / 0.129 |
+| create | 60 | 2.650 / 3.763 | 4.766 / 7.827 |
+| turn | 60 | 9.356 / 10.292 | 7.971 / 9.382 |
+| delete | 60 | 0.677 / 0.748 | 0.285 / 0.331 |
+
+Post-workload median server RSS: Python 59136 KiB, Go 22016 KiB (three samples
+each). Go creation is slower in this run; other measured medians are lower.
+These are default CLI/HTTP observations on one host. Python Uvicorn access
+logging remains enabled; Go has no per-request access log. Startup includes
+10ms readiness polling and excludes Go compilation. p95 uses nearest rank;
+individual requests are clustered within three processes, with no confidence
+or significance claim. SSE, SQLite, concurrent turns, feature groups and real
+providers are outside this workload. It establishes initial performance
+evidence, not comprehensive G7 acceptance or model quality.
+
+Reproduce from the repository root:
+
+```sh
+(cd go && go build -mod=readonly -o /tmp/miniloop-perf ./cmd/miniloop)
+.venv/bin/python python/tools/go_port_performance.py --go-binary /tmp/miniloop-perf --output /tmp/go-port-performance.json
+```
+
+Artifact validation checks all six run/sample counts, per-pair exact final-text
+identity and actual binary digest. Instrument tests/full Python/invariant/scanner
+gates are recorded in the preceding delivery. Full mutation verification is
+still incomplete (81/378 caught before intentional stop), and G7 default
+parser/provider/public-entry/type scope audits remain open. Documentation/data
+only: git diff --check and cached checks pass. No merge/push.
