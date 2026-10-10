@@ -1,0 +1,333 @@
+{
+  "cases": [
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": [
+            1,
+            true
+          ],
+          "name": "bash",
+          "type": "tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": [
+              1,
+              true
+            ],
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "tool_use",
+      "name": "array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": [1, true]}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": null,
+          "name": "bash",
+          "type": "tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": null,
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "tool_use",
+      "name": "null",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": null}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": "hello",
+          "name": "bash",
+          "type": "tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": "hello",
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "tool_use",
+      "name": "text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": \"hello\"}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": 17,
+          "name": "bash",
+          "type": "tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": 17,
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "tool_use",
+      "name": "integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": 17}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": 13.75,
+          "name": "bash",
+          "type": "tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": 13.75,
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "tool_use",
+      "name": "float",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": 13.75}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": true,
+          "name": "bash",
+          "type": "tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": true,
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "tool_use",
+      "name": "boolean",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": true}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": [
+            1,
+            true
+          ],
+          "name": "web_search",
+          "type": "server_tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": [
+              1,
+              true
+            ],
+            "name": "web_search",
+            "type": "server_tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "server_tool_use",
+      "name": "array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": [1, true]}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": null,
+          "name": "web_search",
+          "type": "server_tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": null,
+            "name": "web_search",
+            "type": "server_tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "server_tool_use",
+      "name": "null",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": null}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": "hello",
+          "name": "web_search",
+          "type": "server_tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": "hello",
+            "name": "web_search",
+            "type": "server_tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "server_tool_use",
+      "name": "text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": \"hello\"}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": 17,
+          "name": "web_search",
+          "type": "server_tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": 17,
+            "name": "web_search",
+            "type": "server_tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "server_tool_use",
+      "name": "integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": 17}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": 13.75,
+          "name": "web_search",
+          "type": "server_tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": 13.75,
+            "name": "web_search",
+            "type": "server_tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "server_tool_use",
+      "name": "float",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": 13.75}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    },
+    {
+      "expected": [
+        {
+          "caller": null,
+          "id": "call",
+          "input": true,
+          "name": "web_search",
+          "type": "server_tool_use"
+        }
+      ],
+      "forwarded": {
+        "content": [
+          {
+            "caller": null,
+            "id": "call",
+            "input": true,
+            "name": "web_search",
+            "type": "server_tool_use"
+          }
+        ],
+        "role": "assistant"
+      },
+      "kind": "server_tool_use",
+      "name": "boolean",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": true}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}"
+    }
+  ],
+  "sdk_version": "0.107.1",
+  "source_hashes": {
+    "ServerToolUseBlock": "3ece8c941ecbd91179b9409335a979d914b0caa034944105185e4dc94c7f86db",
+    "ToolUseBlock": "9d779433f5695f7fb653b98b66697237f6843cbd15815a0458d652553d875cd6"
+  }
+}

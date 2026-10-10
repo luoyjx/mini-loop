@@ -17,7 +17,6 @@ def test_actual_agent_bash_binding_and_hook_order(tmp_path):
         assert rows[name]["trace"] == ["before", "result"]
         assert rows[name]["outcomes"][0]["denied"] is True
 
-    rows = {row["name"]: row for row in fixture["cases"]}
     assert rows["root-float"]["output"].endswith("not float")
     assert rows["root-rewritten"]["trace"] == ["before", "guard", "execute", "after", "result"]
     assert rows["root-denied-before"]["trace"] == ["before", "result"]
