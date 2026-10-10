@@ -1267,8 +1267,26 @@ def _lifecycle_contracts(scratch: Path) -> dict[str, object]:
               ("glob", {"pattern": "*.go"}), ("bash", {"command": "rg needle ."}), ("bash", {"command": "ls"}),
               ("bash", {"command": "cat a | wc"}), ("bash", {"command": "echo $(whoami)"}), ("bash", {"command": "cat file"}),
               ("compress", {})]
+    from mini_loop.secrets import SecretRegistry
+    registry = SecretRegistry()
+    registry.register("BACKGROUND_DISPLAY", "sk-background-display-123")
+    background_labels = []
+    for name, command in [
+        ("empty", ""), ("search", "rg needle ."), ("list", "ls"),
+        ("read", "cat file"), ("unicode-space", "grep\u3000中文🌟"),
+        ("pipe", "cat a | wc"), ("substitution", "echo $(whoami)"),
+        ("backtick", "echo `pwd`"), ("redirect", "cat a > b"),
+        ("chain", "ls && cat a"), ("newline", "cat a\ncat b"),
+        ("quoted", "cat 'a b'"), ("unicode-cap", "echo " + "中文🌟" * 30),
+        ("masked-cap", "cat sk-background-display-123 " + "中文🌟" * 30),
+    ]:
+        original = {"command": command}
+        masked = registry.mask_payload(original)
+        background_labels.append({"name": name, "input": original, "masked": masked,
+                                  "display": tool_label("background_run", masked)})
     return {"cases": cases, "bus": bus, "titles": [{"input": v, "title": activity_title(v)} for v in titles],
-            "labels": [{"tool": n, "input": v, "display": tool_label(n, v)} for n, v in labels]}
+            "labels": [{"tool": n, "input": v, "display": tool_label(n, v)} for n, v in labels],
+            "background_labels": background_labels}
 
 
 def _scheduling_contracts(scratch: Path) -> dict[str, object]:

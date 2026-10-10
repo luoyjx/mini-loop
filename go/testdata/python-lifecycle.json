@@ -1,4 +1,188 @@
 {
+  "background_labels": [
+    {
+      "display": {
+        "object": "",
+        "verb": "run"
+      },
+      "input": {
+        "command": ""
+      },
+      "masked": {
+        "command": ""
+      },
+      "name": "empty"
+    },
+    {
+      "display": {
+        "object": "needle .",
+        "verb": "search"
+      },
+      "input": {
+        "command": "rg needle ."
+      },
+      "masked": {
+        "command": "rg needle ."
+      },
+      "name": "search"
+    },
+    {
+      "display": {
+        "object": ".",
+        "verb": "list"
+      },
+      "input": {
+        "command": "ls"
+      },
+      "masked": {
+        "command": "ls"
+      },
+      "name": "list"
+    },
+    {
+      "display": {
+        "object": "file",
+        "verb": "read"
+      },
+      "input": {
+        "command": "cat file"
+      },
+      "masked": {
+        "command": "cat file"
+      },
+      "name": "read"
+    },
+    {
+      "display": {
+        "object": "中文🌟",
+        "verb": "search"
+      },
+      "input": {
+        "command": "grep　中文🌟"
+      },
+      "masked": {
+        "command": "grep　中文🌟"
+      },
+      "name": "unicode-space"
+    },
+    {
+      "display": {
+        "object": "cat a | wc",
+        "verb": "run"
+      },
+      "input": {
+        "command": "cat a | wc"
+      },
+      "masked": {
+        "command": "cat a | wc"
+      },
+      "name": "pipe"
+    },
+    {
+      "display": {
+        "object": "echo $(whoami)",
+        "verb": "run"
+      },
+      "input": {
+        "command": "echo $(whoami)"
+      },
+      "masked": {
+        "command": "echo $(whoami)"
+      },
+      "name": "substitution"
+    },
+    {
+      "display": {
+        "object": "echo `pwd`",
+        "verb": "run"
+      },
+      "input": {
+        "command": "echo `pwd`"
+      },
+      "masked": {
+        "command": "echo `pwd`"
+      },
+      "name": "backtick"
+    },
+    {
+      "display": {
+        "object": "cat a > b",
+        "verb": "run"
+      },
+      "input": {
+        "command": "cat a > b"
+      },
+      "masked": {
+        "command": "cat a > b"
+      },
+      "name": "redirect"
+    },
+    {
+      "display": {
+        "object": "ls && cat a",
+        "verb": "run"
+      },
+      "input": {
+        "command": "ls && cat a"
+      },
+      "masked": {
+        "command": "ls && cat a"
+      },
+      "name": "chain"
+    },
+    {
+      "display": {
+        "object": "cat a cat b",
+        "verb": "run"
+      },
+      "input": {
+        "command": "cat a\ncat b"
+      },
+      "masked": {
+        "command": "cat a\ncat b"
+      },
+      "name": "newline"
+    },
+    {
+      "display": {
+        "object": "'a b'",
+        "verb": "read"
+      },
+      "input": {
+        "command": "cat 'a b'"
+      },
+      "masked": {
+        "command": "cat 'a b'"
+      },
+      "name": "quoted"
+    },
+    {
+      "display": {
+        "object": "echo 中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟…",
+        "verb": "run"
+      },
+      "input": {
+        "command": "echo 中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟"
+      },
+      "masked": {
+        "command": "echo 中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟"
+      },
+      "name": "unicode-cap"
+    },
+    {
+      "display": {
+        "object": "cat <secret-hidden> 中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟…",
+        "verb": "run"
+      },
+      "input": {
+        "command": "cat sk-background-display-123 中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟"
+      },
+      "masked": {
+        "command": "cat <secret-hidden> 中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟中文🌟"
+      },
+      "name": "masked-cap"
+    }
+  ],
   "bus": {
     "backlog": 200,
     "ephemeral_live": 5,
