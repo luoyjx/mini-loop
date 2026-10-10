@@ -1,0 +1,53 @@
+{
+  "cases": [
+    {
+      "capture_content": true,
+      "input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": NaN}], \"keep\": NaN}",
+      "live_input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": NaN}], \"keep\": NaN}",
+      "name": "nan",
+      "raw_contains_secret": false,
+      "recording_error": null,
+      "snapshots_json": "[{\"messages\": [{\"content\": \"<secret-hidden>\", \"role\": \"user\"}], \"type\": \"model_start\"}, {\"output\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"<secret-hidden>\": [\"<secret-hidden>\", {\"n\": NaN}], \"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"type\": \"model_end\"}, {\"input\": {\"<secret-hidden>\": [\"<secret-hidden>\", {\"n\": NaN}], \"command\": \"true\", \"keep\": NaN}, \"type\": \"tool_use\"}, {\"messages\": [{\"content\": \"<secret-hidden>\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"<secret-hidden>\": [\"<secret-hidden>\", {\"n\": NaN}], \"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"cache_control\": {\"type\": \"ephemeral\"}, \"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}], \"type\": \"model_start\"}]",
+      "status": "error",
+      "transport_requests": 1
+    },
+    {
+      "capture_content": true,
+      "input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": Infinity}], \"keep\": Infinity}",
+      "live_input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": Infinity}], \"keep\": Infinity}",
+      "name": "infinity",
+      "raw_contains_secret": false,
+      "recording_error": null,
+      "snapshots_json": "[{\"messages\": [{\"content\": \"<secret-hidden>\", \"role\": \"user\"}], \"type\": \"model_start\"}, {\"output\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"<secret-hidden>\": [\"<secret-hidden>\", {\"n\": Infinity}], \"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"type\": \"model_end\"}, {\"input\": {\"<secret-hidden>\": [\"<secret-hidden>\", {\"n\": Infinity}], \"command\": \"true\", \"keep\": Infinity}, \"type\": \"tool_use\"}, {\"messages\": [{\"content\": \"<secret-hidden>\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"<secret-hidden>\": [\"<secret-hidden>\", {\"n\": Infinity}], \"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"cache_control\": {\"type\": \"ephemeral\"}, \"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}], \"type\": \"model_start\"}]",
+      "status": "error",
+      "transport_requests": 1
+    },
+    {
+      "capture_content": false,
+      "input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": NaN}], \"keep\": NaN}",
+      "live_input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": NaN}], \"keep\": NaN}",
+      "name": "nan",
+      "raw_contains_secret": false,
+      "recording_error": null,
+      "snapshots_json": "[{\"messages\": \"[redacted: dict, 4 item(s)]\", \"type\": \"model_start\"}, {\"output\": \"[redacted: list, 1 item(s)]\", \"type\": \"model_end\"}, {\"input\": \"[redacted: dict, 3 item(s)]\", \"type\": \"tool_use\"}, {\"messages\": \"[redacted: dict, 4 item(s)]\", \"type\": \"model_start\"}]",
+      "status": "error",
+      "transport_requests": 1
+    },
+    {
+      "capture_content": false,
+      "input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": Infinity}], \"keep\": Infinity}",
+      "live_input_json": "{\"command\": \"true\", \"fixture-secret\": [\"fixture-secret\", {\"n\": Infinity}], \"keep\": Infinity}",
+      "name": "infinity",
+      "raw_contains_secret": false,
+      "recording_error": null,
+      "snapshots_json": "[{\"messages\": \"[redacted: dict, 4 item(s)]\", \"type\": \"model_start\"}, {\"output\": \"[redacted: list, 1 item(s)]\", \"type\": \"model_end\"}, {\"input\": \"[redacted: dict, 3 item(s)]\", \"type\": \"tool_use\"}, {\"messages\": \"[redacted: dict, 4 item(s)]\", \"type\": \"model_start\"}]",
+      "status": "error",
+      "transport_requests": 1
+    }
+  ],
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "AgentSession._capture_event": "8fe0f7443048c643995df056d43b631ef4a67abfc74a94ef93f059a6bdcc3b6c",
+    "TrajectoryStore._write": "b492a8c28431eb47c7341b3e0f186b1afe162c3367e8a185fd3533f93bb2b1d0"
+  }
+}
