@@ -7609,3 +7609,58 @@ visual review not repeated after prior browser denial. Python package runtime,
 mutation anchors and default-tool types do not change; full Python/invariant/
 mutation checks were not rerun. No push.
 Go profile/owned polling implementation remains a separate pending delivery.
+
+## Typed observer selection and owned polling SDK — 2026-10-10
+
+Baseline: `c48e38a` plus this slice. ObserverBackend is closed; ObserverProfile
+privately stores backend, uint64 millisecond delay and debug selection. Pure
+SelectObserverProfile uses caller-captured environment/host and explicit force
+precedence, pinned Unicode lowercase/decimal semantics, the 4300-digit conversion
+bound, Source uint64 constructor admission and Linux microsoft-standard auto policy.
+Nil environment is empty; no process/host probe or environment reference is retained.
+
+NewObserver(ctx, config) returns the narrow Next/Close interface and binds a
+captured native macOS/CGO or portable forced-polling profile. Existing NativeEvents
+uses the shared typed reader; no stream/registry ownership changes. Polling owns
+snapshot traversal and partitioned timer waits through Close. Construction context
+cancels initial traversal; successful subscriptions retain explicit Close ownership.
+The default native/polling filename filter is lexical. Directory/file links retain
+aliases; signed whole-second mtime/no content hash preserve Source comparisons.
+Adds/removes/renames, pre-epoch/increasing edits and hidden parents replay; lower,
+equal/fractional edits/identical writes/touches remain quiet. Dangling entries and
+missing roots repeatedly emit deletion, matching the three actual Source batches.
+Cycle admission fails before Go worker startup; Source faults during initial watch.
+
+All 20 Source polling operations, missing-path/cycle boundaries and expanded
+force/delay/host/debug/constructor rows replay in Go. Existing 16 actual native
+scenarios still pass. Source raw-event set semantics are retained: duplicates do
+not extend quiet waits; polling records named add/modify/delete variants. Matching
+path capacity is 4096; raw fingerprint tracking is separately bounded, after which
+the hard batch cap applies. Cancellation retains unread batches, Close releases
+blocked readers, and maximum uint64 waits join without nanosecond overflow.
+Selected debug writes include raw excluded names, with native flags or zero for
+polling; Go diagnostic text is an explicit adaptation of Rust debug internals.
+Custom diagnostic writers must return promptly. No dependency is added.
+
+This is SDK delivery: default Linux native events, CLI observer selection/ownership
+and compiler-temporary self-trigger protection remain implementation work. Current
+CLI still uses StatReload; Source parity/full G0–G7 acceptance is not claimed.
+Validation: narrow native/polling/profile/duplicate replay passed. The real
+supervisor recovery test initially timed out waiting for SourceChanged: publishing
+content before a synthetic past mtime allowed an intermediate wall-clock value to
+become the StatReload baseline. `c48e38a` publishes content/stamp by atomic rename;
+the supervisor/duplicate checks passed three consecutive runs. Production StatReload
+logic is unchanged. After that correction, fresh full
+`go test -p=1 -count=1 -timeout=300s ./...`,
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` all passed.
+`CGO_ENABLED=0 go test -run 'TestObserver|TestPolling|TestRepeated' -count=1 -timeout=120s ./reload`
+passed. Fresh Source export/check passed 201 files, scanner verification all 19,
+and invariant verification all 77 modules. New Go domain/service structs contain
+no any/interface{}/RawMessage; fixture JSON numbers stay in test boundary decoders.
+README outline/diff checks passed; architecture delivery passed 9/9, zero errors/
+warnings and exact hashes/bytes verified. Correction rounds 0; visual review not
+repeated after prior browser denial. Existing Source deprecation/FutureWarnings,
+FSEvents API deprecation and Darwin CGO linker warnings are recorded and nonfatal.
+Full Python, mutation and coverage were not rerun; Python runtime/default tools/
+mutation anchors are unchanged. The 4acefcc coverage snapshot is not current after
+this implementation. No push.

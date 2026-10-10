@@ -2947,6 +2947,39 @@ The API is unavailable without Darwin/CGO; no Go module dependency is added.
 
 All 16 actual Source native recipes replay against the real OS subscription,
 including removed/transient paths, identical and same/lower-mtime edits, renames,
-hidden parents, suffix directories and non-source symlink targets. This is an
-explicit SDK slice: WATCHFILES environment selection, Linux native observation
-and CLI selection remain pending. The CLI still uses the StatReload fallback.
+hidden parents, suffix directories and non-source symlink targets. This remains an
+explicit native SDK; the factory below binds captured native/polling profiles.
+Default Linux native observation and CLI selection remain pending. The CLI still
+uses the StatReload fallback.
+
+### Captured observer profiles and owned polling
+
+`reload.SelectObserverProfile(environment, host, forcePolling)` is pure: nil
+means an empty environment; the caller captures host System/Release explicitly.
+An explicit bool overrides force-polling environment; nonempty values except
+false/disable/disabled force polling, including `0`. Auto selection is Linux
+with microsoft-standard in its release. Unicode lowercase/decimal behavior,
+4300-digit conversion and uint64 millisecond bounds follow pinned Source.
+`WATCHFILES_DEBUG` is true for any nonempty value. Profile fields are private.
+
+`reload.NewObserver(ctx, reload.ObserverConfig{Roots: roots, Profile: profile})`
+returns the narrow Next/Close interface. Native selects the existing macOS/CGO
+stream; polling owns a cancellable traversal/timer worker on any supported Go OS.
+The construction context cancels initial traversal; it does not implicitly Close
+an already returned subscription. Next cancellation preserves unread events.
+Close joins polling or stream cleanup. StatReload remains a separate fallback.
+
+Polling follows directory/file links with lexical names, signed whole-second
+mtime and no content hash. Add/delete/rename and increasing seconds emit batches;
+lower/equal/fractional edits and identical writes/touches do not. Dangling entries
+and missing registered roots repeat deletion batches, preserving Source behavior.
+Directory cycles fail before starting the Go worker; Source reports its loop
+fault during initial watching. Polling cannot observe a transient path absent at
+both scans. Duplicate raw changes do not prolong the 50ms quiet/1600ms capped
+batch window. Maximum uint64 waits are partitioned without nanosecond overflow.
+
+Selected diagnostics report raw paths, including filter exclusions. Nil selected
+DiagnosticWriter uses stdout; custom writers must return promptly. Native flags
+(or zero for polling) are printed; text is a native Go adaptation of Rust debug
+output. No observer/profile is implicitly activated by Launcher or the current CLI.
+Linux native event delivery and CLI binding remain next; no dependency is added.

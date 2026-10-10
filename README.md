@@ -415,19 +415,28 @@ Actual installed Source filtering/native events/environment/cancellation are
 archived in python-watchfiles.json; the default filter replays in Go.
 The archive now also captures 20 actual forced-PollWatcher operations, repeated
 missing-path notifications, a cycle fault and expanded environment conversion.
-These are Source evidence; Go backend/environment selection is the next delivery.
+`reload.SelectObserverProfile` now replays environment/host/override selection;
+`reload.NewObserver(ctx, config)` binds that captured profile to an owned native
+or polling subscription. Profile fields are private and retain no environment.
+Polling compares signed whole-second mtime, follows links lexically and retains
+Source's repeated missing-path notifications. Duplicate raw changes do not extend
+its quiet window. Close joins its worker, including maximum uint64 delays.
+The construction context cancels initial polling traversal; successful subscriptions
+remain caller-owned until Close. Selected debug output reports raw lexical paths
+(native flags or zero for polling); Go diagnostic text differs from Rust internals.
 `reload.NewNativeEvents` now owns an explicit macOS/CGO FSEvents subscription
 using captured flags 18, zero latency and since-now. Its typed batches retain
 lexical kernel names, coalesce events and replay all 16 real Source recipes;
 Close joins the thread and releases the stream. Cancellation retains unread
 events. Kernel drops or a bounded queue overflow report errors requiring operator
-recovery; they never silently prove event fidelity. The SDK does not select
-WATCHFILES environment overrides, Linux backends or CLI observation yet.
+recovery; they never silently prove event fidelity. NewNativeEvents retains
+its explicit native profile. The separate observer factory selects captured native/
+polling profiles; default Linux native observation and CLI selection remain pending.
 The CLI currently uses this fallback observer. Installed Python Uvicorn 0.49.0
 selects WatchFilesReload (watchfiles 1.2.0); matching its default event/filter
 profile remains a required next slice, so default reload parity is not yet claimed.
 
-Runtime review baseline: `4acefcc` plus actual PollWatcher/environment Source contracts,
+Runtime review baseline: `c48e38a` plus typed observer profiles and owned polling SDK,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -571,7 +580,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `4acefcc` plus actual PollWatcher/environment Source contracts;
+reviewed **2026-10-10** (Go baseline `c48e38a` plus typed observer profiles and owned polling SDK;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -625,7 +634,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd StatReload observer · readonly native build<br/>CLI native event profile pending<br/>retained TCP socket · stop / join / replace<br/>build-failure recovery · child artifact cleanup"]
-        GoNativeEvents["Explicit Go native-event SDK · macOS / CGO<br/>FSEvents subscription → lexical filtered batches<br/>cancel retains unread events · Close joins/releases<br/>environment / Linux / CLI selection pending"]
+        GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO FSEvents or owned PollWatcher<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>Linux native / CLI selection pending"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]

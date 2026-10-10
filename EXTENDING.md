@@ -3829,4 +3829,24 @@ preserves unread batches. Only one Next may be active. Native names remain lexic
 so deleted files, suffix directories and hidden-parent sources retain captured
 Source behavior. Kernel loss or bounded-capacity faults require closing/recovery;
 this SDK performs no stat-based recovery that could miss transient events.
-Environment/backend selection and CLI binding remain separate pending slices.
+The pure profile selector and owned native/polling factory now bind captured
+WATCHFILES environment/host choices. Successful subscriptions still require explicit
+Close; construction context cancellation affects initial traversal only. StatReload
+remains separate. Default Linux native events and CLI binding remain pending.
+
+### Captured observer and polling boundaries
+
+Observer is the narrow Next(context)/Close ownership interface. Profile construction
+retains selected primitives, never process environment or a mutable force pointer.
+NewObserver grants no model/tool/HTTP entry point. Its roots are trusted operator
+filesystem reads. Poll traversal follows links with lexical names and rejects
+ancestor cycles before creating a worker. Missing registered roots/dangling entries
+repeat Source deletion notifications; callers must not silently treat them as quiet.
+No content hash is introduced. A worker fault requires explicit Close/recovery.
+Batch deduplication tracks raw event identity so short polling periods do not
+extend quiet waits indefinitely; filtered matching capacity remains 4096 paths.
+Raw fingerprint tracking is bounded independently; beyond its retained set the
+hard batch cap still applies. Debug writers are selected operator effects and must
+return promptly; native Go text preserves raw paths without claiming Rust formatting.
+CLI integration must own Close on every exit and preserve observations during
+native builds; owned compiler temporaries must not recursively trigger themselves.
