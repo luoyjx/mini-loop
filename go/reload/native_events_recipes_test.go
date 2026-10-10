@@ -141,22 +141,29 @@ func TestNativeEventsActualSourceRecipes(t *testing.T) {
 					t.Log("native recipe timeline:\n" + trace.text())
 				}
 			})
-			trace.mark("subscription constructed; await post-subscription probe")
-			awaitNativeFixtureReady(t, observer, root)
-			trace.mark("readiness probe observed; drain remaining setup events")
-			// Drain pre-registration writes while retaining this exact subscription.
-			for {
-				ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
-				batch, err := observer.Next(ctx)
-				cancel()
-				trace.mark(fmt.Sprintf("setup next: paths=%v error=%v", batch.Paths, err))
-				if errors.Is(err, context.DeadlineExceeded) {
-					break
-				}
-				if err != nil {
-					t.Fatal(err)
+			// Match _native_case: drain until its 100ms timeout before creating
+			// the readiness probe, then drain again after observing that probe.
+			// Neither timeout alone acknowledges kernel subscription readiness.
+			// Keep the exact subscription and the 3s operation deadline intact.
+			drain := func(phase string) {
+				for {
+					ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+					batch, err := observer.Next(ctx)
+					cancel()
+					trace.mark(fmt.Sprintf("%s next: paths=%v error=%v", phase, batch.Paths, err))
+					if errors.Is(err, context.DeadlineExceeded) {
+						return
+					}
+					if err != nil {
+						t.Fatal(err)
+					}
 				}
 			}
+			trace.mark("subscription constructed; drain before post-subscription probe")
+			drain("pre-probe")
+			awaitNativeFixtureReady(t, observer, root)
+			trace.mark("readiness probe observed; drain remaining setup events")
+			drain("post-probe")
 			trace.mark(fmt.Sprintf("operation=%s path=%s", recipe.Operation, sourcePath))
 			switch recipe.Operation {
 			case "write", "add":
