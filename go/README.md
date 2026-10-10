@@ -3146,3 +3146,24 @@ admission keeps its existing Source allowlist. Thirty-two SDK direct/SSE capture
 match forwarding and archival codecs; actual SQLite close/reopen retains all captures
 and invalid UTF-8 named fields roll back the batch. Four remaining SDK reply kinds
 and final provider/default/public-entry acceptance remain open.
+
+### Named web-fetch documents and results
+
+`protocol.WebFetchToolResultBlock` retains ToolUseID/Caller and a closed
+WebFetchContent result/error union. WebFetchResult exposes URL, optional RetrievedAt
+and FetchedDocument. Its document has named Source, optional Title and optional
+DocumentCitationsConfig with Enabled. DocumentSource is a closed text/PDF variant
+with verbatim Data and named DocumentMediaType. Source metadata remains inert:
+there is no base64/PDF decoding, document opening or URL fetching in this layer.
+All recognized fields enter named types; only unrecognized root/result/document/
+source/configuration/error extensions enter immutable closed JSON. Future error
+codes remain named strings. Clone and accessors detach nullable pointers.
+WithSDKDefaults(streamed) selects caller, retrieval, title and citation-config nulls,
+and observed stream-only null text/citations/parsed_output metadata. Native sparse
+codecs retain omission. Network frames remain bounded; historical document data
+supports larger records. Forty-two SDK 0.107.1 direct/SSE captures cover text/PDF,
+empty text, nulls, citations on/off, caller variants, all nine error codes, future
+code and nested extensions. Forwarding, masking, SQLite close/reopen and batch
+rollback on invalid named UTF-8 fields are verified. Client tool dispatch/pairing
+and decision admission keep their existing authority boundaries. Three SDK execution
+result kinds and broader caller/partial-input/default/public-entry audit remain.

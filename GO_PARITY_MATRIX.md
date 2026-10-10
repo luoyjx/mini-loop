@@ -2,20 +2,20 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `0781cd7` plus named server tool-use observations. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `d271228` plus named web-fetch document replies. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `8c0b442` | 206/207 files matched; unchanged `python-watchfiles.json` remains stale. Thirty-two SDK server-tool-use captures match; full freshness gate remains failed |
+| Source recipe freshness | `export_go_contracts.py --check` initial capture, followed by quiet-process `_snapshot()` byte comparisons; `b8dc489` | Quiet full snapshot passed: 208/208 files match. Initial parallel capture reported watchfiles drift; isolated watcher and full snapshot then matched without fixture changes. Recipe freshness is not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 417 production files, 1348 named types on the server tool-use snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 419 production files, 1359 named types on the web-fetch document snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -24,6 +24,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
 | Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
 | Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
+| Web-fetch document replies | Forty-two SDK direct/SSE captures in `go/testdata/python-provider-web-fetch.json` | Named document/result/error variants, text/PDF sources, title/retrieval/citations configuration, nullable SDK defaults and immutable extensions; forwarding, masking, historical codec, SQLite reopen and invalid UTF-8 rollback implemented; three SDK execution result kinds remain |
 | Provider-owned tool-use observations | Thirty-two SDK direct/SSE captures in `go/testdata/python-provider-server-tool.json` | Named ID/name/input/caller, immutable object input and root extensions, SDK null defaults, complete SSE accumulation and empty-delta semantics, mask/clone/historical codec and actual SQLite reopen implemented; inert client authority; four SDK reply kinds remain |
 | Server tool-search result replies | Twelve SDK direct/SSE captures in `go/testdata/python-provider-tool-search.json` | Named references/error union, nullable messages, stream defaults, immutable extensions, forwarding/mask/clone/historical codec implemented; metadata does not activate client tools; five remaining SDK kinds and final audit open |
 | Server web-search result replies | Fourteen SDK direct/SSE captures in `go/testdata/python-provider-web-search.json` | Named results/error union, optional age/caller defaults, immutable extensions, forwarding/mask/clone/historical codec implemented; six remaining SDK reply kinds and final scope audit open |
@@ -8601,3 +8602,50 @@ coverage refresh or non-Darwin run; no merge/push. The previous application
 coverage remains 89.47% at the earlier tool-search snapshot, not this code.
 Four SDK reply kinds, SDK partial/malformed-input and caller extension audit,
 usage scalar consumer alignment, default diagnostics and final acceptance remain.
+
+## 2026-10-10 named web-fetch document replies
+
+Baseline: `d271228` plus this implementation; SDK Source capture committed at
+`b8dc489`. Forty-two Anthropic SDK 0.107.1 direct/SSE cases compare complete
+web_fetch_tool_result projections: text/PDF document sources, empty text, nullable
+title/retrieval/citation configuration, enabled true/false, caller variants, nine
+error codes, future code and root/result/document/source/configuration extensions.
+Known fields enter named types and closed source/result/error variants. Immutable
+closed JSON is retained only for unrecognized extensions. PDF data is verbatim
+observational metadata; no URL/document effect or client authority is introduced.
+SDK direct metadata defaults and stream ParsedTextBlock null defaults are selected
+explicitly. Sparse native codecs distinguish omission. Clone/accessor isolation,
+masked keys/values, atomic nested refusals and historical sources above network
+limits are verified. SQLite close/reopen preserves all forty-two captures; invalid
+ID/error-code/URL/data/media/title/retrieval UTF-8 rolls back message batches.
+Database reconstruction is proved, not a new killed-process/power-loss scenario.
+
+Passed: Python SDK capture test (1 passed, expected future-code serializer warning);
+targeted protocol/provider/sqlitestate suites; full Go tests and race
+(`-p=1 -count=1 -timeout=300s ./...`); go vet; typeaudit (419 production files,
+1359 named types, zero findings); scans (19 guards); block mutation subset
+(3 guards); git diff --check. Initial Source export check exited 1: unchanged
+python-watchfiles.json alone was stale, other 207/208 files matched. A separate
+watchfiles-only capture matched the existing fixture without rewriting it.
+Full quiet-process snapshot diagnostics follow below.
+Logs: /tmp/mini-loop-web-fetch-{source,targeted,go,race,vet,types,export,scans,guards}.log.
+
+Architecture regenerated from specification with Archify: 9/9 checks, no errors
+or warnings. Specification SHA256
+6459bcd8509647f0820fcd98f2d922a41a27c0afe69eede305841460ffdafc60;
+HTML SHA256 c17f7e3ae58b986db8b3eceaedcb3f6341efcfa02e6604a7d26d5c04a0b5ed0b.
+No fresh browser visual inspection, full Python regression, full mutation sweep,
+coverage refresh or non-Darwin run; no merge/push. The previous application
+coverage remains 89.47% at the earlier tool-search snapshot, not this code.
+Three SDK execution-result kinds, caller/partial-input audit, usage scalar
+consumer alignment, default diagnostics and final migration acceptance remain.
+
+Final Source freshness observation: after full Go jobs were terminal, the same
+exporter `_snapshot()` was recomputed and every output byte compared against
+its target, using the --check comparison rule. Exit 0, 208 files, stale=[].
+Receipt: /tmp/mini-loop-web-fetch-export-isolated-result.json; log:
+/tmp/mini-loop-web-fetch-export-isolated.log. The initial concurrent --check
+exit 1 remains recorded. Watchfiles-only capture and quiet full capture both
+matched; no watcher golden or helper was rewritten. This establishes current
+recipe freshness while leaving the intermittent concurrent capture behavior
+explicit. Avoid rewriting the fixture to hide that observation.

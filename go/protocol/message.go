@@ -29,6 +29,7 @@ const (
 	BlockToolSearchToolResult BlockKind = "tool_search_tool_result"
 	BlockToolUse              BlockKind = "tool_use"
 	BlockServerToolUse        BlockKind = "server_tool_use"
+	BlockWebFetchToolResult   BlockKind = "web_fetch_tool_result"
 	BlockToolResult           BlockKind = "tool_result"
 )
 
@@ -81,6 +82,7 @@ type Block struct {
 	webSearch        *WebSearchToolResultBlock
 	toolSearch       *ToolSearchToolResultBlock
 	serverTool       *ServerToolUseBlock
+	webFetch         *WebFetchToolResultBlock
 	toolUse          *ToolUseBlock
 	toolResult       *ToolResultBlock
 }
@@ -245,6 +247,16 @@ func (b Block) ToolResult() (ToolResultBlock, bool) {
 }
 
 func (b Block) Validate() error {
+	if b.kind != BlockWebFetchToolResult && b.webFetch != nil {
+		return errors.New("block has an unexpected web fetch variant")
+	}
+	if b.kind == BlockWebFetchToolResult {
+		if b.webFetch == nil || b.serverTool != nil || b.toolSearch != nil || b.webSearch != nil || b.containerUpload != nil || b.redactedThinking != nil || b.text != nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
+			return errors.New("web fetch block requires one variant")
+		}
+		return b.webFetch.Validate()
+	}
+
 	if b.kind != BlockServerToolUse && b.serverTool != nil {
 		return errors.New("block has an unexpected server tool use variant")
 	}
@@ -323,6 +335,8 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		return nil, err
 	}
 	switch b.kind {
+	case BlockWebFetchToolResult:
+		return b.webFetch.marshal(control)
 	case BlockServerToolUse:
 		return b.serverTool.marshal(control)
 	case BlockToolSearchToolResult:
@@ -427,6 +441,12 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 	}
 	var next Block
 	switch tag.Type {
+	case BlockWebFetchToolResult:
+		result, err := decodeWebFetchBlock(data, bounded)
+		if err != nil {
+			return Block{}, err
+		}
+		next = Block{kind: BlockWebFetchToolResult, webFetch: &result}
 	case BlockServerToolUse:
 		result, err := decodeServerToolUseBlock(data, bounded)
 		if err != nil {
@@ -580,6 +600,10 @@ func (c Content) Clone() Content {
 		if b.thinking != nil {
 			v := *b.thinking
 			blocks[i].thinking = &v
+		}
+		if b.webFetch != nil {
+			v := b.webFetch.clone()
+			blocks[i].webFetch = &v
 		}
 		if b.serverTool != nil {
 			v := b.serverTool.clone()

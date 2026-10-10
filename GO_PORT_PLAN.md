@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `0781cd7` plus named server tool-use observations. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `d271228` plus named web-fetch document replies. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,10 +6864,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 207 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 208 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16400,3 +16400,50 @@ coverage refresh or non-Darwin run; no merge/push. The previous application
 coverage remains 89.47% at the earlier tool-search snapshot, not this code.
 Four SDK reply kinds, SDK partial/malformed-input and caller extension audit,
 usage scalar consumer alignment, default diagnostics and final acceptance remain.
+
+## 2026-10-10 named web-fetch document replies
+
+Baseline: `d271228` plus this implementation; SDK Source capture committed at
+`b8dc489`. Forty-two Anthropic SDK 0.107.1 direct/SSE cases compare complete
+web_fetch_tool_result projections: text/PDF document sources, empty text, nullable
+title/retrieval/citation configuration, enabled true/false, caller variants, nine
+error codes, future code and root/result/document/source/configuration extensions.
+Known fields enter named types and closed source/result/error variants. Immutable
+closed JSON is retained only for unrecognized extensions. PDF data is verbatim
+observational metadata; no URL/document effect or client authority is introduced.
+SDK direct metadata defaults and stream ParsedTextBlock null defaults are selected
+explicitly. Sparse native codecs distinguish omission. Clone/accessor isolation,
+masked keys/values, atomic nested refusals and historical sources above network
+limits are verified. SQLite close/reopen preserves all forty-two captures; invalid
+ID/error-code/URL/data/media/title/retrieval UTF-8 rolls back message batches.
+Database reconstruction is proved, not a new killed-process/power-loss scenario.
+
+Passed: Python SDK capture test (1 passed, expected future-code serializer warning);
+targeted protocol/provider/sqlitestate suites; full Go tests and race
+(`-p=1 -count=1 -timeout=300s ./...`); go vet; typeaudit (419 production files,
+1359 named types, zero findings); scans (19 guards); block mutation subset
+(3 guards); git diff --check. Initial Source export check exited 1: unchanged
+python-watchfiles.json alone was stale, other 207/208 files matched. A separate
+watchfiles-only capture matched the existing fixture without rewriting it.
+Full quiet-process snapshot diagnostics follow below.
+Logs: /tmp/mini-loop-web-fetch-{source,targeted,go,race,vet,types,export,scans,guards}.log.
+
+Architecture regenerated from specification with Archify: 9/9 checks, no errors
+or warnings. Specification SHA256
+6459bcd8509647f0820fcd98f2d922a41a27c0afe69eede305841460ffdafc60;
+HTML SHA256 c17f7e3ae58b986db8b3eceaedcb3f6341efcfa02e6604a7d26d5c04a0b5ed0b.
+No fresh browser visual inspection, full Python regression, full mutation sweep,
+coverage refresh or non-Darwin run; no merge/push. The previous application
+coverage remains 89.47% at the earlier tool-search snapshot, not this code.
+Three SDK execution-result kinds, caller/partial-input audit, usage scalar
+consumer alignment, default diagnostics and final migration acceptance remain.
+
+Final Source freshness observation: after full Go jobs were terminal, the same
+exporter `_snapshot()` was recomputed and every output byte compared against
+its target, using the --check comparison rule. Exit 0, 208 files, stale=[].
+Receipt: /tmp/mini-loop-web-fetch-export-isolated-result.json; log:
+/tmp/mini-loop-web-fetch-export-isolated.log. The initial concurrent --check
+exit 1 remains recorded. Watchfiles-only capture and quiet full capture both
+matched; no watcher golden or helper was rewritten. This establishes current
+recipe freshness while leaving the intermittent concurrent capture behavior
+explicit. Avoid rewriting the fixture to hide that observation.

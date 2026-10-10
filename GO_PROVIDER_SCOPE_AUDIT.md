@@ -174,3 +174,16 @@ ToolCaller。SDK 的 input 是无具体字段定义的对象，Go 以具名封�
 元数据；无效 UTF-8 具名字段使批次回滚。不会执行客户端工具或要求客户端结果配对。
 剩余四类 SDK 回复：web_fetch_tool_result、code_execution_tool_result、
 bash_code_execution_tool_result、text_editor_code_execution_tool_result。完整验收未完成。
+
+## Web-fetch document 回复更新
+
+基线 `d271228` 后支持 `web_fetch_tool_result` 具名 ToolUseID/Caller 和文档/错误
+闭合 union。成功结果保留 URL、可空 RetrievedAt 和具名 FetchedDocument；文档
+保留可空 Title/Citations 配置、具名 Enabled，以及 text/PDF 闭合 source 的 Data/
+MediaType。42 个 SDK direct/SSE 配方覆盖文本/PDF、空文本、nullable 字段、引用
+配置 on/off、caller、9 个错误码、future code 和嵌套扩展。各层未知扩展是不可变
+闭合 JSON；SDK direct 的具名模型和 stream ParsedTextBlock null 默认值分别保留。
+脱敏、克隆、历史大记录与实际 SQLite 重开保留元数据，具名 UTF-8 错误使批次回滚。
+这是观察数据，不打开文档、取 URL 或执行客户端工具。尚缺三个执行结果类型：
+code_execution_tool_result、bash_code_execution_tool_result、
+text_editor_code_execution_tool_result。caller 扩展、partial 输入及完整验收仍待审计。
