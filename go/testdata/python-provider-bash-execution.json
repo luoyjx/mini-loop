@@ -1,0 +1,1452 @@
+{
+  "cases": [
+    {
+      "expected_content": [
+        {
+          "content": {
+            "content": [],
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "empty-files",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": 0, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "content": [],
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "empty-files",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": 0, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "content": [
+              {
+                "file_id": "file-名称",
+                "type": "bash_code_execution_output"
+              },
+              {
+                "file_id": "second",
+                "type": "bash_code_execution_output"
+              }
+            ],
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [
+                {
+                  "file_id": "file-名称",
+                  "type": "bash_code_execution_output"
+                },
+                {
+                  "file_id": "second",
+                  "type": "bash_code_execution_output"
+                }
+              ],
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "files",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [{\"type\": \"bash_code_execution_output\", \"file_id\": \"file-\\u540d\\u79f0\"}, {\"type\": \"bash_code_execution_output\", \"file_id\": \"second\"}], \"return_code\": 0, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "content": [
+              {
+                "file_id": "file-名称",
+                "type": "bash_code_execution_output"
+              },
+              {
+                "file_id": "second",
+                "type": "bash_code_execution_output"
+              }
+            ],
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [
+                {
+                  "file_id": "file-名称",
+                  "type": "bash_code_execution_output"
+                },
+                {
+                  "file_id": "second",
+                  "type": "bash_code_execution_output"
+                }
+              ],
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "files",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [{\"type\": \"bash_code_execution_output\", \"file_id\": \"file-\\u540d\\u79f0\"}, {\"type\": \"bash_code_execution_output\", \"file_id\": \"second\"}], \"return_code\": 0, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "content": [],
+            "return_code": -9,
+            "stderr": "terminated",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": -9,
+              "stderr": "terminated",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "negative-code",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": -9, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"terminated\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "content": [],
+            "return_code": -9,
+            "stderr": "terminated",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": -9,
+              "stderr": "terminated",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "negative-code",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": -9, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"terminated\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "content": [],
+            "return_code": 1208925819614629174706193,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": 1208925819614629174706193,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "large-code",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": 1208925819614629174706193, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "content": [],
+            "return_code": 1208925819614629174706193,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": 1208925819614629174706193,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "large-code",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": 1208925819614629174706193, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "content": [],
+            "return_code": -1208925819614629174706193,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": -1208925819614629174706193,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "negative-large-code",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": -1208925819614629174706193, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "content": [],
+            "return_code": -1208925819614629174706193,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": -1208925819614629174706193,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "negative-large-code",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": -1208925819614629174706193, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "content": [],
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "",
+            "type": "bash_code_execution_result"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "empty-text",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": 0, \"stdout\": \"\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "content": [],
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "",
+            "type": "bash_code_execution_result"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [],
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "",
+              "type": "bash_code_execution_result"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "empty-text",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [], \"return_code\": 0, \"stdout\": \"\", \"stderr\": \"\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "content": [
+              {
+                "file_id": "file-名称",
+                "future": {
+                  "file": "metadata"
+                },
+                "type": "bash_code_execution_output"
+              }
+            ],
+            "future": 8,
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "future": {
+            "root": "metadata"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [
+                {
+                  "file_id": "file-名称",
+                  "future": {
+                    "file": "metadata"
+                  },
+                  "type": "bash_code_execution_output"
+                }
+              ],
+              "future": 8,
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "future": {
+              "root": "metadata"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "extensions",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [{\"type\": \"bash_code_execution_output\", \"file_id\": \"file-\\u540d\\u79f0\", \"future\": {\"file\": \"metadata\"}}], \"return_code\": 0, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\", \"future\": 8}, \"future\": {\"root\": \"metadata\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "content": [
+              {
+                "file_id": "file-名称",
+                "future": {
+                  "file": "metadata"
+                },
+                "type": "bash_code_execution_output"
+              }
+            ],
+            "future": 8,
+            "return_code": 0,
+            "stderr": "",
+            "stdout": "output 名称",
+            "type": "bash_code_execution_result"
+          },
+          "future": {
+            "root": "metadata"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "content": [
+                {
+                  "file_id": "file-名称",
+                  "future": {
+                    "file": "metadata"
+                  },
+                  "type": "bash_code_execution_output"
+                }
+              ],
+              "future": 8,
+              "return_code": 0,
+              "stderr": "",
+              "stdout": "output 名称",
+              "type": "bash_code_execution_result"
+            },
+            "future": {
+              "root": "metadata"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "extensions",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_result\", \"content\": [{\"type\": \"bash_code_execution_output\", \"file_id\": \"file-\\u540d\\u79f0\", \"future\": {\"file\": \"metadata\"}}], \"return_code\": 0, \"stdout\": \"output \\u540d\\u79f0\", \"stderr\": \"\", \"future\": 8}, \"future\": {\"root\": \"metadata\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "error_code": "future_code",
+            "future": 17,
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "future_code",
+              "future": 17,
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "future-error",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"future_code\", \"future\": 17}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "error_code": "future_code",
+            "future": 17,
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "future_code",
+              "future": 17,
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "future-error",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"future_code\", \"future\": 17}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "error_code": "invalid_tool_input",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "invalid_tool_input",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "invalid_tool_input",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"invalid_tool_input\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "error_code": "invalid_tool_input",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "invalid_tool_input",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "invalid_tool_input",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"invalid_tool_input\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "error_code": "unavailable",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unavailable",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "unavailable",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"unavailable\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "error_code": "unavailable",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unavailable",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "unavailable",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"unavailable\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "error_code": "too_many_requests",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "too_many_requests",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "too_many_requests",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"too_many_requests\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "error_code": "too_many_requests",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "too_many_requests",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "too_many_requests",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"too_many_requests\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "error_code": "execution_time_exceeded",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "execution_time_exceeded",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "execution_time_exceeded",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"execution_time_exceeded\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "error_code": "execution_time_exceeded",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "execution_time_exceeded",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "execution_time_exceeded",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"execution_time_exceeded\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "content": {
+            "error_code": "output_file_too_large",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "output_file_too_large",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "output_file_too_large",
+      "sdk_block_class": "BashCodeExecutionToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"output_file_too_large\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "citations": null,
+          "content": {
+            "error_code": "output_file_too_large",
+            "type": "bash_code_execution_tool_result_error"
+          },
+          "parsed_output": null,
+          "text": null,
+          "tool_use_id": "server_bash",
+          "type": "bash_code_execution_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "output_file_too_large",
+              "type": "bash_code_execution_tool_result_error"
+            },
+            "tool_use_id": "server_bash",
+            "type": "bash_code_execution_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "output_file_too_large",
+      "sdk_block_class": "ParsedTextBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"bash_code_execution_tool_result\", \"tool_use_id\": \"server_bash\", \"content\": {\"type\": \"bash_code_execution_tool_result_error\", \"error_code\": \"output_file_too_large\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    }
+  ],
+  "content_payload_sha256": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505",
+  "sdk_version": "0.107.1"
+}
