@@ -85,8 +85,15 @@ func TestBashModelOptionsRetainActualSourceValues(t *testing.T) {
 		}
 	}
 	for _, raw := range []string{`{"command":"true","run_in_background":NaN}`, `{"command":"true","approval_prefix":[Infinity]}`} {
-		if _, err := DecodeModelToolInput(ToolBash, []byte(raw)); err == nil {
-			t.Fatal("nonfinite option entered domain")
+		input, err := DecodeModelToolInput(ToolBash, []byte(raw))
+		if err != nil {
+			t.Fatal("SDK observation refused", err)
+		}
+		if _, err := json.Marshal(input); err == nil {
+			t.Fatal("nonfinite observation entered finite JSON")
+		}
+		if _, err := DecodeToolInput(ToolBash, []byte(raw)); err == nil {
+			t.Fatal("explicit caller admission widened")
 		}
 	}
 }

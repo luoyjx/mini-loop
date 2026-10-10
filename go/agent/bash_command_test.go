@@ -14,7 +14,16 @@ import (
 )
 
 func TestNonTextBashCommandsMatchActualSourceConsumers(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-bash-command.json")
+	assertBashConsumers(t, "../testdata/python-provider-bash-command.json", 36)
+}
+
+func TestNonfiniteBashFieldsMatchActualSourceConsumers(t *testing.T) {
+	assertBashConsumers(t, "../testdata/python-provider-nonfinite-bash.json", 36)
+}
+
+func assertBashConsumers(t *testing.T, fixturePath string, count int) {
+	t.Helper()
+	data, err := os.ReadFile(fixturePath)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +44,7 @@ func TestNonTextBashCommandsMatchActualSourceConsumers(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 36 {
+	if len(fixture.Cases) != count {
 		t.Fatal("Source non-text command inventory changed")
 	}
 	for i, row := range fixture.Cases {
@@ -91,7 +100,11 @@ func TestNonTextBashCommandsMatchActualSourceConsumers(t *testing.T) {
 			if s.backgroundInitialized() != row.Initialized || s.backgroundLive() != row.Live {
 				t.Fatal("Source background initialization/effects changed")
 			}
-			wire, err := json.Marshal(final)
+			observation, err := final.Observation()
+			if err != nil {
+				t.Fatal(err)
+			}
+			wire, err := observation.SortedPythonJSON()
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -100,11 +113,15 @@ func TestNonTextBashCommandsMatchActualSourceConsumers(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			expectedWire, err := json.Marshal(expected)
+			expectedObservation, err := expected.Observation()
+			if err != nil {
+				t.Fatal(err)
+			}
+			expectedWire, err := expectedObservation.SortedPythonJSON()
 			if err != nil || string(wire) != string(expectedWire) {
 				t.Fatal("Source rewrite/final input changed", string(wire), err)
 			}
-			if row.Mode != "rewrite" {
+			if out.Failed || out.Denied {
 				if _, ok := out.CommandResult(); ok {
 					t.Fatal("non-text command fabricated process metadata")
 				}

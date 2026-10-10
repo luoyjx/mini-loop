@@ -1,7 +1,6 @@
 package protocol
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -56,7 +55,7 @@ func (input ToolInput) BashBindingFailure() (BashBindingFailure, bool) {
 	return *input.bashBinding, true
 }
 
-// DecodeModelToolInput retains finite Bash/background invocation errors from
+// DecodeModelToolInput retains Bash/background invocation observations from
 // model replies. Strict explicit admission continues to use DecodeToolInput.
 // Known fields stay typed; only unrecognized parameters enter immutable extras.
 func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
@@ -88,19 +87,15 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 		input.bashBinding = &BashBindingFailure{kind: BashNonMappingArguments, argumentKind: rejected.kind}
 		return input, input.Validate()
 	}
-	known, extra := []jsonvalue.Field{}, []jsonvalue.Field{}
+	extra := []jsonvalue.Field{}
 	for _, key := range object.Keys() {
 		value, _ := object.Lookup(key)
 		switch key {
 		case "command", "run_in_background", "approval_prefix":
-			known = append(known, jsonvalue.Field{Name: key, Value: value})
+			// Known values enter their named observation variants below.
 		default:
 			extra = append(extra, jsonvalue.Field{Name: key, Value: value})
 		}
-	}
-	encoded, err := jsonvalue.ObjectValue(known).MarshalJSON()
-	if err != nil {
-		return ToolInput{}, err
 	}
 	command, commandPresent := object.Lookup("command")
 	text, commandIsText := command.Text()
@@ -137,9 +132,10 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 		}
 		input.bashBinding = &failure
 	}
-	if err := json.Unmarshal(encoded, &input.nulls); err != nil {
-		return ToolInput{}, err
-	}
+	background, _ := object.Lookup("run_in_background")
+	prefix, _ := object.Lookup("approval_prefix")
+	input.nulls.Background = nullField(backgroundPresent && background.Kind() == jsonvalue.Null)
+	input.nulls.ApprovalPrefix = nullField(prefixPresent && prefix.Kind() == jsonvalue.Null)
 	return input, input.Validate()
 }
 func (input ToolInput) marshalBashBinding() ([]byte, error) {

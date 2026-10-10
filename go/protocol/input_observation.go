@@ -37,19 +37,16 @@ func (input ToolInput) Observation() (InputObservation, error) {
 	if err := input.Validate(); err != nil {
 		return InputObservation{}, err
 	}
-	original := input.bashExtra
-	clone := input.clone()
-	clone.bashExtra = jsonvalue.Value{}
-	data, err := clone.MarshalJSON()
+	if input.name == ToolBash && (input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil) {
+		return InputObservation{value: input.bashObservation()}, nil
+	}
+	data, err := input.MarshalJSON()
 	if err != nil {
 		return InputObservation{}, err
 	}
 	value, err := jsonvalue.Decode(string(data))
 	if err != nil {
 		return InputObservation{}, err
-	}
-	if input.bashBinding != nil && len(original.Keys()) > 0 {
-		value = observationFields(value, original)
 	}
 	return InputObservation{value: value}, nil
 }

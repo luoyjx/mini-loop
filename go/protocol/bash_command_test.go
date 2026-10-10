@@ -71,8 +71,15 @@ func TestNonTextBashCommandObservationsSurviveCloneMaskAndHistory(t *testing.T) 
 		}
 	}
 	for _, raw := range []string{`{"command":NaN}`, `{"command":{"nested":Infinity}}`} {
-		if _, err := DecodeModelToolInput(ToolBash, []byte(raw)); err == nil {
-			t.Fatal("nonfinite command entered finite observation")
+		input, err := DecodeModelToolInput(ToolBash, []byte(raw))
+		if err != nil {
+			t.Fatal("SDK observation refused", err)
+		}
+		if _, err := json.Marshal(input); err == nil {
+			t.Fatal("nonfinite observation entered finite JSON")
+		}
+		if _, err := DecodeToolInput(ToolBash, []byte(raw)); err == nil {
+			t.Fatal("explicit caller admission widened")
 		}
 	}
 }

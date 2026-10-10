@@ -4413,3 +4413,15 @@ lowering still retain original immutable tool variants. A projection never becom
 an executable input or a grant. Four real Source/native managed recordings verify
 NaN/Infinity, content on/off, cache controls, masking and live-input preservation.
 Broader historical scalar consumers and SDK error-text fidelity remain open.
+
+## Nonfinite Bash invocation observations — 2026-10-11
+
+Baseline `4c807ae` plus this slice. Known Bash fields use immutable named
+observations and detached masking; finite caller/request encoders remain strict.
+Session dispatch prepares every input before entering the single execution gate.
+An invalid later root therefore prevents earlier effects. Source batch dict-copy
+failures differ from standalone late invocation failures. Actual 36 standalone
+and 24 managed profiles retain that ordering; selected lazy-copy and finite
+journal mutations are caught after passing baselines. Non-string pair keys are
+explicitly unsupported; new SQLite restart profiles and global SDK error text
+equality are not claimed. Shared background_run decoding remains finite.

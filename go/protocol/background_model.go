@@ -87,6 +87,10 @@ func decodeModelBackgroundInput(data []byte) (ToolInput, error) {
 	if err != nil {
 		return ToolInput{}, err
 	}
+	// Shared Bash observations support legacy numbers; background profiles remain finite.
+	if _, err := object.MarshalJSON(); err != nil {
+		return ToolInput{}, err
+	}
 	args := &backgroundModelArguments{extra: jsonvalue.ObjectValue(nil)}
 	if object.Kind() != jsonvalue.Object {
 		rejected, err := rejectedBashArguments(object)

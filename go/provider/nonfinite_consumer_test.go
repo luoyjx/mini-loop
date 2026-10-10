@@ -8,26 +8,38 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strings"
 	"sync/atomic"
 	"testing"
 )
 
 func TestDirectNonfiniteSDKObservationsFailNextEncodingBeforeTransport(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-nonfinite-consumer.json")
+	assertNonfiniteSDKConsumers(t, "../testdata/python-provider-nonfinite-consumer.json", 4)
+}
+
+func TestNonfiniteKnownBashSDKInputsFailNextEncodingBeforeTransport(t *testing.T) {
+	assertNonfiniteSDKConsumers(t, "../testdata/python-provider-nonfinite-bash.json", 36)
+}
+
+func assertNonfiniteSDKConsumers(t *testing.T, fixturePath string, count int) {
+	t.Helper()
+	data, err := os.ReadFile(fixturePath)
 	if err != nil {
 		t.Fatal(err)
 	}
 	var fixture struct {
 		Cases []struct {
-			Kind, Name string
-			Response   string `json:"response_json"`
-			Content    string `json:"content_json"`
+			Kind, Name    string
+			Response      string `json:"response_json"`
+			Content       string `json:"content_json"`
+			SSE           string `json:"sse"`
+			StreamContent string `json:"stream_content_json"`
 		}
 	}
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 4 {
+	if len(fixture.Cases) != count {
 		t.Fatal("Source inventory changed")
 	}
 	for _, row := range fixture.Cases {
@@ -52,6 +64,33 @@ func TestDirectNonfiniteSDKObservationsFailNextEncodingBeforeTransport(t *testin
 			b, _ := expected.Sorted().MarshalLegacyUTF8()
 			if string(a) != string(b) {
 				t.Fatalf("direct SDK observation changed: %s != %s", a, b)
+			}
+			if row.SSE != "" {
+				client, err := New(Config{APIKey: "fixture-key"})
+				if err != nil {
+					t.Fatal(err)
+				}
+				streamed, err := client.readStream(context.Background(), strings.NewReader(row.SSE), nil)
+				if err != nil {
+					t.Fatal("SDK stream input refused", err)
+				}
+				data, err := protocol.MarshalObservedBlocks(streamed.Content)
+				if err != nil {
+					t.Fatal(err)
+				}
+				observed, err := jsonvalue.Decode(string(data))
+				if err != nil {
+					t.Fatal(err)
+				}
+				expected, err := jsonvalue.Decode(row.StreamContent)
+				if err != nil {
+					t.Fatal(err)
+				}
+				a, _ := observed.Sorted().MarshalLegacyUTF8()
+				b, _ := expected.Sorted().MarshalLegacyUTF8()
+				if string(a) != string(b) {
+					t.Fatal("SDK stream snapshot changed", string(a), string(b))
+				}
 			}
 			var requests atomic.Int32
 			server := httptest.NewServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) { requests.Add(1) }))

@@ -26,7 +26,7 @@ const (
 	BashCommandLower BashCommandOperation = "lower"
 )
 
-// BashCommandObservation retains finite non-text model input, never shell text.
+// BashCommandObservation retains non-text model input, never shell text.
 // PolicyString is the Source str(value) projection for permission, approval and
 // display consumers. Native handlers settle a named failure before shell argv.
 type BashCommandObservation struct {
@@ -52,7 +52,7 @@ func observeBashCommand(value jsonvalue.Value) (BashCommandObservation, error) {
 	default:
 		return BashCommandObservation{}, errors.New("non-text Bash command observation required")
 	}
-	if _, err := value.MarshalJSON(); err != nil {
+	if _, err := value.MarshalLegacyUTF8(); err != nil {
 		return BashCommandObservation{}, err
 	}
 	return BashCommandObservation{kind: kind, observed: value}, nil

@@ -2,7 +2,7 @@ package protocol
 
 import "github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 
-// BashBackgroundRequest retains a finite model observation. Execution receives
+// BashBackgroundRequest retains a model observation. Execution receives
 // only its explicit Python-truth projection; the observed tree is never arguments.
 type BashBackgroundRequest struct{ observed jsonvalue.Value }
 
@@ -37,12 +37,12 @@ func (proposal BashApprovalProposal) MarshalJSON() ([]byte, error) {
 
 func (input ToolInput) validateBashOptions() error {
 	if input.bashBackground != nil {
-		if _, err := input.bashBackground.MarshalJSON(); err != nil {
+		if _, err := input.bashBackground.observed.MarshalLegacyUTF8(); err != nil {
 			return err
 		}
 	}
 	if input.bashApproval != nil {
-		if _, err := input.bashApproval.MarshalJSON(); err != nil {
+		if _, err := input.bashApproval.observed.MarshalLegacyUTF8(); err != nil {
 			return err
 		}
 	}

@@ -17,7 +17,7 @@ const (
 	BashArgumentBoolean BashArgumentKind = "bool"
 )
 
-// BashRejectedArguments is a finite non-mapping observation, never handler args.
+// BashRejectedArguments is a non-mapping observation, never handler args.
 // The immutable closed JSON tree retains unsupported array elements and scalars;
 // known executable Bash fields still belong exclusively to BashInput.
 type BashRejectedArguments struct {
@@ -43,7 +43,7 @@ func rejectedBashArguments(value jsonvalue.Value) (BashRejectedArguments, error)
 	default:
 		return BashRejectedArguments{}, errors.New("rejected Bash arguments must be non-mapping")
 	}
-	if _, err := value.MarshalJSON(); err != nil {
+	if _, err := value.MarshalLegacyUTF8(); err != nil {
 		return BashRejectedArguments{}, err
 	}
 	return BashRejectedArguments{kind: kind, observation: value}, nil

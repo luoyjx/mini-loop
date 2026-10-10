@@ -87,3 +87,33 @@ func TestBashObservedOptionsDoNotBypassPermission(t *testing.T) {
 		t.Fatal("observed metadata supplied execution authority", out, err)
 	}
 }
+
+func TestNonfiniteBashOptionsAndCommandsCannotGrantReadonlyPermission(t *testing.T) {
+	data, err := os.ReadFile("../testdata/python-provider-nonfinite-bash.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture struct {
+		Cases []struct {
+			Mode  string
+			Input string `json:"input_json"`
+		}
+	}
+	if err = json.Unmarshal(data, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	s := backgroundRuntime(t, t.TempDir(), &recordingProvider{}, true)
+	for _, row := range fixture.Cases {
+		if row.Mode != "keep" {
+			continue
+		}
+		input, err := protocol.DecodeModelToolInput(protocol.ToolBash, []byte(row.Input))
+		if err != nil {
+			t.Fatal(err)
+		}
+		out, err := s.gate.Dispatch(context.Background(), ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: ModeReadonly}, ToolCall{ID: "nonfinite-readonly", Input: input})
+		if err != nil || !out.Denied || s.backgroundInitialized() {
+			t.Fatal("observation supplied authority", out, err)
+		}
+	}
+}

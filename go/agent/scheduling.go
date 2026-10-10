@@ -21,6 +21,11 @@ func (s *Session) dispatchBatch(ctx context.Context, run RunContext, blocks []pr
 	attempts := make([]toolAttempt, 0)
 	for _, block := range blocks {
 		if use, ok := block.ToolUse(); ok {
+			input, prepareErr := use.Input.ForModelBatch()
+			if prepareErr != nil {
+				return nil, prepareErr
+			}
+			use.Input = input
 			attempts = append(attempts, toolAttempt{use: use})
 		}
 	}

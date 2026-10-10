@@ -474,7 +474,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `591a3c9` plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `4c807ae` plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -686,7 +686,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call input copy before effects · ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -754,7 +754,7 @@ flowchart LR
         GoEntry -->|owned bounded document| GoTraceView
         GoTraceCLI -->|operator read| GoTraces
         GoTraceCLI --> GoTraceView
-        GoSession -->|parallel groups / barriers| GoGate --> GoBash
+        GoSession -->|prepare all call inputs, then parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
         GoManager -. owner / admission / lease / preview + commit .-> GoDraftLibrary
         GoSession -. standalone non-live preview .-> GoDraftLibrary
@@ -2858,3 +2858,20 @@ body runs. Stage receipts and initialization reports contain the safe fault code
 Close returns the typed error, retains admission fencing, and caches no success.
 Twenty-five actual Source operations cover three stages and initialize/close,
 including 2**1024 milliseconds that remains finite only after ratio conversion.
+
+### Nonfinite known Bash inputs and batch preparation — 2026-10-11
+
+Named Bash command, option and rejected-root observations retain SDK NaN and
+Infinity without producing executable argv or grants. Strict explicit callers
+and outbound HTTP JSON remain finite. The entire model batch prepares copied
+inputs before any hook or effect; a later invalid root prevents an earlier valid
+call from executing. The original assistant observations remain in history.
+
+Actual pinned Source captures cover 24 unique direct/SSE inputs, 36 standalone
+gate profiles and 24 managed runs. Six managed roots fail before the gate; eighteen
+object inputs fail finite journal fingerprinting after before/guard, without an
+action entry or after hook. Named archive round trips retain identity; these new
+profiles do not establish SQLite restart parity. Native readonly checks are
+separate from Source profile comparisons. Falsy roots and string-key pair lists
+have explicit batch normalization; non-string pair keys are unsupported. Broader
+background inputs, SDK error-text fidelity and complete migration remain open.

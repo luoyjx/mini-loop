@@ -15,7 +15,7 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
-	if input.bashBinding != nil {
+	if input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil {
 		observation, err := input.Observation()
 		if err != nil {
 			return "", err

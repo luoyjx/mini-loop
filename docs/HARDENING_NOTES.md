@@ -8430,3 +8430,15 @@ JSONL/fresh-reader comparison proves retained NaN/Infinity, cache annotations,
 content-off redaction and no mutation of live inputs. A valid next request fails
 finite encoding before transport. This does not prove broader historical profiles,
 SDK error-text equality, watcher reliability or complete migration acceptance.
+
+## Go migration — prepare every model call before effects — 2026-10-11
+
+Baseline `4c807ae` plus this slice. Known Bash fields use immutable named
+observations and detached masking; finite caller/request encoders remain strict.
+Session dispatch prepares every input before entering the single execution gate.
+An invalid later root therefore prevents earlier effects. Source batch dict-copy
+failures differ from standalone late invocation failures. Actual 36 standalone
+and 24 managed profiles retain that ordering; selected lazy-copy and finite
+journal mutations are caught after passing baselines. Non-string pair keys are
+explicitly unsupported; new SQLite restart profiles and global SDK error text
+equality are not claimed. Shared background_run decoding remains finite.
