@@ -29,14 +29,16 @@ def provider_usage_contracts() -> dict:
             "inference_geo": "us", "output_tokens_details": {"thinking_tokens": 3},
             "server_tool_use": {"web_fetch_requests": 2, "web_search_requests": 4},
             "service_tier": "priority"}},
+        {"name": "partial-nested", "usage": {**core, "cache_creation": {"ephemeral_5m_input_tokens": 0}, "output_tokens_details": {}, "server_tool_use": {"web_search_requests": 4}}},
         {"name": "future-extension", "usage": {**core, "future_counter": {"generation": 8}}},
+        {"name": "server-delta", "modes": ["stream"], "usage": core, "delta_usage": {"output_tokens": 5, "server_tool_use": {"web_fetch_requests": 7, "web_search_requests": 11}}},
         {"name": "scalar-strings", "usage": {"input_tokens": "13", "output_tokens": "5", "cache_creation_input_tokens": "17"}},
     ]
 
     async def capture():
         rows = []
         for profile in profiles:
-            for mode in (["direct", "stream"] if profile.get("stream") else ["direct"]):
+            for mode in (profile.get("modes") or (["direct", "stream"] if profile.get("stream") else ["direct"])):
                 requests = []
                 body = {"id": "fixture", "type": "message", "role": "assistant", "model": "fixture-model",
                     "content": [{"type": "text", "text": "ok"}], "stop_reason": "end_turn",
@@ -53,7 +55,7 @@ def provider_usage_contracts() -> dict:
                         ("content_block_start", {"type": "content_block_start", "index": 0, "content_block": {"type": "text", "text": ""}}),
                         ("content_block_delta", {"type": "content_block_delta", "index": 0, "delta": {"type": "text_delta", "text": "ok"}}),
                         ("content_block_stop", {"type": "content_block_stop", "index": 0}),
-                        ("message_delta", {"type": "message_delta", "delta": {"stop_reason": "end_turn", "stop_sequence": None}, "usage": {"output_tokens": 5}}),
+                        ("message_delta", {"type": "message_delta", "delta": {"stop_reason": "end_turn", "stop_sequence": None}, "usage": profile.get("delta_usage", {"output_tokens": 5})}),
                         ("message_stop", {"type": "message_stop"}),
                     ]
                     text = "".join(f"event: {name}\ndata: {json.dumps(value)}\n\n" for name, value in events)
@@ -71,6 +73,8 @@ def provider_usage_contracts() -> dict:
                             response = await stream.get_final_message()
                     rows.append({"name": profile["name"], "mode": mode, "wire_usage": profile["usage"],
                         "request": requests[0], "event_usage": _usage_payload(response)})
+                    if "delta_usage" in profile:
+                        rows[-1]["delta_usage"] = profile["delta_usage"]
         return rows
 
     return {"sdk_version": anthropic.__version__, "pydantic_version": pydantic.__version__,
