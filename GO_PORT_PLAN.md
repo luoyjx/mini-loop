@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `caa135c` plus usage SQL/recording reopen proof. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `b3a4bd9` plus named container-upload reply support. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,10 +6864,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 203 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 204 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16264,3 +16264,33 @@ and Source fixtures were unchanged. Previous application coverage is 89.60%.
 This recipe does not prove new process-kill/power-loss durability. Scalar coercion,
 provider variant/custom extension audit and complete G4/G7 acceptance remain open.
 git diff --check and staged diff --check passed. No merge or push.
+
+## 2026-10-10 named container-upload reply adoption
+
+Baseline: `b3a4bd9`; six pinned SDK captures committed independently at `3dd7a47`.
+Native protocol adds a named FileID and explicit observed null flags in its closed
+Block union. Direct/SSE decoding, clone/accessor isolation, ordinary forwarding,
+masked stored-message codec and SQLite FileID UTF-8 validation support the variant.
+Source stream capture exposed the ParsedTextBlock union's text/citations/parsed_output
+null defaults; those are retained instead of treating both transport shapes as equal.
+Empty and Unicode IDs are accepted according to the captured declared string shape.
+Missing/null/numeric IDs and mixed domain variants are refused. This metadata does
+not become a client tool call; the Source decision content allowlist still refuses it.
+
+Verification passed: full Go ordinary and race suites
+`go test -p=1 -count=1 -timeout=300s ./...` and
+`go test -race -p=1 -count=1 -timeout=300s ./...`; six Go decoder/forwarding/archival comparisons; protocol
+clone/mask/atomic-ingress/variant/pairing checks; existing sqlitestate targeted suite;
+Python source-capture test (1 passed); Source export check (204 current files);
+scans (19 anchored guards); go vet; typeaudit (413 production files, 1332 named
+types, zero findings); Python `verify_guards.py -k block` (3 caught with
+passing baselines; this is a named subset, not the full mutation sweep);
+git diff --check and staged diff --check. Architecture regenerated with Archify, 9/9 checks and
+zero errors/warnings. Specification SHA256
+0e7135faec88a57bc75b5cbdad9de5b2d6a611a7802987ceacf0b3ceae45ce0e;
+HTML SHA256 0e3157ee70db8856227ccc5c49ac35b12cf1c71900decbb8dc817f0ec0fd7914.
+Fresh visual inspection remains unavailable under the earlier browser access denial.
+No full Python or coverage refresh; no merge/push. This is not a new upload/download
+endpoint or real native container-specific SQLite restart recipe. Seven remaining
+SDK server-tool/result variants, external extensions and scalar usage consumer
+reconciliation remain open; the complete G4/G7 migration is not accepted.

@@ -121,3 +121,19 @@ scalar-string 场景仍明确拒绝，属于原生整数适配。真实 SQLite/r
 记录文件检查实际 JSONL 与重新实例化的 reader 输出，保留全部元数据与 null/扩展形状，
 且注册密钥的值与字段名均被脱敏。引用数据转发、owner 隔离和 lease 释放的原测试
 仍保留。此证明覆盖实际关闭重开配方，不代表进程崩溃/断电持久性或完整 G4/G7 验收。
+
+## Container-upload 回复与 usage 消费者核对
+
+基线 `b3a4bd9` 后增加 `container_upload` 的具名 FileID、闭合 Block 分支、
+direct/SSE 解码、克隆、脱敏/存储 codec 及 SQLite 文本校验。六个 SDK 0.107.1
+捕获覆盖普通、空串、Unicode ID。SDK 流式投影还包含 text/citations/parsed_output
+三个 null 默认字段，原生实现显式保留这一形状。它不进入 client tool dispatch；
+decision_llm 的 Source allowlist 明确不包含该块，Go 保持相同拒绝。
+SDK ContentBlock 十二类中的另外七类 server-tool/result 回复仍需审计和实现，
+本轮没有把一种新变体等同于完整 provider 验收。
+
+usage 消费者核对：Python metering._field 仅对 int/float（包括 bool）转 int，
+忽略字符串；decision_llm.evaluate 则尝试 int(value)。因此字符串 usage 的事件
+原值、prompt 计量与 decision 计数不是一个统一转换规则。Go 严格整数 ingress
+目前会提前拒绝该场景，不能宣称已实现这一 Source 适配；后续需要独立核对
+有限/不受限整数、float/bool 和各消费者语义。

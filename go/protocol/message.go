@@ -24,6 +24,7 @@ const (
 	BlockText             BlockKind = "text"
 	BlockThinking         BlockKind = "thinking"
 	BlockRedactedThinking BlockKind = "redacted_thinking"
+	BlockContainerUpload  BlockKind = "container_upload"
 	BlockToolUse          BlockKind = "tool_use"
 	BlockToolResult       BlockKind = "tool_result"
 )
@@ -44,6 +45,11 @@ type ThinkingBlock struct {
 	Thinking  string `json:"thinking"`
 	Signature string `json:"signature"`
 }
+type ContainerUploadBlock struct {
+	FileID                                    string `json:"file_id"`
+	textNull, citationsNull, parsedOutputNull bool
+}
+
 type RedactedThinkingBlock struct {
 	Data string `json:"data"`
 }
@@ -68,6 +74,7 @@ type Block struct {
 	text             *TextBlock
 	thinking         *ThinkingBlock
 	redactedThinking *RedactedThinkingBlock
+	containerUpload  *ContainerUploadBlock
 	toolUse          *ToolUseBlock
 	toolResult       *ToolResultBlock
 }
@@ -139,6 +146,23 @@ func (text *TextBlock) UnmarshalJSON(data []byte) error {
 func NewThinkingBlock(thinking, signature string) Block {
 	return Block{kind: BlockThinking, thinking: &ThinkingBlock{Thinking: thinking, Signature: signature}}
 }
+func NewContainerUploadBlock(fileID string) Block {
+	return Block{kind: BlockContainerUpload, containerUpload: &ContainerUploadBlock{FileID: fileID}}
+}
+
+// NewStreamedContainerUploadBlock retains the SDK stream union's null text defaults.
+func NewStreamedContainerUploadBlock(fileID string) Block {
+	b := NewContainerUploadBlock(fileID)
+	b.containerUpload.textNull, b.containerUpload.citationsNull, b.containerUpload.parsedOutputNull = true, true, true
+	return b
+}
+func (b Block) ContainerUpload() (ContainerUploadBlock, bool) {
+	if b.kind != BlockContainerUpload || b.containerUpload == nil {
+		return ContainerUploadBlock{}, false
+	}
+	return *b.containerUpload, true
+}
+
 func NewRedactedThinkingBlock(data string) Block {
 	return Block{kind: BlockRedactedThinking, redactedThinking: &RedactedThinkingBlock{Data: data}}
 }
@@ -215,6 +239,15 @@ func (b Block) ToolResult() (ToolResultBlock, bool) {
 }
 
 func (b Block) Validate() error {
+	if b.kind != BlockContainerUpload && b.containerUpload != nil {
+		return errors.New("block has an unexpected container-upload variant")
+	}
+	if b.kind == BlockContainerUpload {
+		if b.containerUpload == nil || b.redactedThinking != nil || b.text != nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
+			return errors.New("container upload requires file_id and no other variant")
+		}
+		return nil
+	}
 	if b.kind != BlockRedactedThinking && b.redactedThinking != nil {
 		return errors.New("block has an unexpected redacted-thinking variant")
 	}
@@ -256,6 +289,16 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		return nil, err
 	}
 	switch b.kind {
+	case BlockContainerUpload:
+		v := b.containerUpload
+		return json.Marshal(struct {
+			Type         BlockKind                `json:"type"`
+			FileID       string                   `json:"file_id"`
+			Text         *wireOptional[string]    `json:"text,omitempty"`
+			Citations    *wireOptional[Citations] `json:"citations,omitempty"`
+			ParsedOutput *wireOptional[string]    `json:"parsed_output,omitempty"`
+			CacheControl *CacheControl            `json:"cache_control,omitempty"`
+		}{BlockContainerUpload, v.FileID, usageOptional[string](nil, v.textNull), usageOptional[Citations](nil, v.citationsNull), usageOptional[string](nil, v.parsedOutputNull), control})
 	case BlockRedactedThinking:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
@@ -344,6 +387,29 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 	}
 	var next Block
 	switch tag.Type {
+	case BlockContainerUpload:
+		var wire struct {
+			Type         BlockKind       `json:"type"`
+			FileID       *string         `json:"file_id"`
+			Text         json.RawMessage `json:"text"`
+			Citations    json.RawMessage `json:"citations"`
+			ParsedOutput json.RawMessage `json:"parsed_output"`
+		}
+		if err := decodeStrictMode(data, &wire, bounded); err != nil {
+			return Block{}, err
+		}
+		if wire.FileID == nil {
+			return Block{}, errors.New("container upload requires file_id")
+		}
+		next = NewContainerUploadBlock(*wire.FileID)
+		for _, raw := range []json.RawMessage{wire.Text, wire.Citations, wire.ParsedOutput} {
+			if len(raw) > 0 && string(bytes.TrimSpace(raw)) != "null" {
+				return Block{}, errors.New("container stream metadata must be null")
+			}
+		}
+		next.containerUpload.textNull = len(wire.Text) > 0
+		next.containerUpload.citationsNull = len(wire.Citations) > 0
+		next.containerUpload.parsedOutputNull = len(wire.ParsedOutput) > 0
 	case BlockRedactedThinking:
 		var wire struct {
 			Type BlockKind `json:"type"`
@@ -456,6 +522,10 @@ func (c Content) Clone() Content {
 		if b.thinking != nil {
 			v := *b.thinking
 			blocks[i].thinking = &v
+		}
+		if b.containerUpload != nil {
+			v := *b.containerUpload
+			blocks[i].containerUpload = &v
 		}
 		if b.redactedThinking != nil {
 			v := *b.redactedThinking

@@ -51,6 +51,7 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		Text      *string            `json:"text"`
 		Thinking  *string            `json:"thinking"`
 		Signature *string            `json:"signature"`
+		FileID    *string            `json:"file_id"`
 		Data      *string            `json:"data"`
 		ID        *string            `json:"id"`
 		Name      *protocol.ToolName `json:"name"`
@@ -65,6 +66,11 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		return protocol.Block{}, errors.New("malformed block")
 	}
 	switch wire.Type {
+	case protocol.BlockContainerUpload:
+		if wire.FileID == nil {
+			return protocol.Block{}, errors.New("container upload has no file_id")
+		}
+		return protocol.NewContainerUploadBlock(*wire.FileID), nil
 	case protocol.BlockRedactedThinking:
 		if wire.Data == nil {
 			return protocol.Block{}, errors.New("redacted thinking has no data")

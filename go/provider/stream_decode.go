@@ -22,6 +22,7 @@ type streamBlock struct {
 	citationBytes int
 	signature, id string
 	redacted      string
+	fileID        string
 	name          protocol.ToolName
 	caller        *protocol.ToolCaller
 	input         []byte
@@ -295,6 +296,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			Text      *string              `json:"text"`
 			Thinking  *string              `json:"thinking"`
 			Signature *string              `json:"signature"`
+			FileID    *string              `json:"file_id"`
 			Data      *string              `json:"data"`
 			ID        *string              `json:"id"`
 			Name      *protocol.ToolName   `json:"name"`
@@ -307,6 +309,11 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		b := streamBlock{kind: block.Type, text: &strings.Builder{}}
 		switch block.Type {
+		case protocol.BlockContainerUpload:
+			if block.FileID == nil {
+				return badStream("container upload file_id missing")
+			}
+			b.fileID = *block.FileID
 		case protocol.BlockRedactedThinking:
 			if block.Data == nil {
 				return badStream("redacted thinking data missing")
@@ -354,6 +361,8 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 	b := &s.blocks[i]
 	if event == "content_block_stop" {
 		switch b.kind {
+		case protocol.BlockContainerUpload:
+			b.block = protocol.NewStreamedContainerUploadBlock(b.fileID)
 		case protocol.BlockRedactedThinking:
 			b.block = protocol.NewRedactedThinkingBlock(b.redacted)
 		case protocol.BlockText:

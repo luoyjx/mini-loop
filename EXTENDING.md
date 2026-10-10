@@ -4012,3 +4012,17 @@ typed archival reads, explicit Manager restoration and resumed writes, plus raw
 private JSONL and independently reopened recording readers. Registered secrets in
 usage metadata and extension keys/values are masked at these durable boundaries.
 This proves the tested reconstruction recipe; full provider scope acceptance remains open.
+
+### Named container-upload reply blocks
+
+`protocol.NewContainerUploadBlock` and `NewStreamedContainerUploadBlock` retain
+a named FileID plus the observed SDK stream null defaults. The closed Block union
+provides a detached ContainerUpload accessor, cloning, wire/cache serialization and
+stored decoding. Provider direct/SSE adapters accept it and SQLite validates FileID
+UTF-8 at persistence. It is observational metadata, so client-tool authority and
+tool pairing rules do not select it. Decision responses retain the Source allowlist
+of text/thinking/redacted-thinking and continue to refuse this content variant.
+Six actual SDK 0.107.1 captures cover normal, empty and Unicode file IDs under both
+transports; remaining server-tool/result variants and extension scope still need
+reconciliation. The recipe tests serialization and archival codec, not a new actual
+container-file upload/download endpoint or a new native SQLite restart recipe.

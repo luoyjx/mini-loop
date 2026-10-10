@@ -2,14 +2,14 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `caa135c` plus usage SQL/recording reopen proof. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `b3a4bd9` plus named container-upload reply support. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `477a209` plus seven actual SDK usage captures | Passed: 203 files current; this checks exported recipes, not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `3dd7a47` | Passed: 204 current files, including six SDK container-upload captures; recipe freshness is not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
@@ -24,6 +24,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
 | Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
 | Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
+| Provider container-upload blocks | Six actual SDK direct/SSE captures in `go/testdata/python-provider-container-upload.json` | Named FileID and stream null defaults in the closed Block union; forwarding, clone/mask/stored codec tests; remaining server-tool/result variants and extension audit open |
 | Provider usage metadata | Nine actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON and HTTP/SSE adoption implemented; actual SQL events, reopen/restored writes, raw JSONL and reopened recording readers verified; scalar-string adaptation and final scope reconciliation remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
@@ -8461,3 +8462,33 @@ and Source fixtures were unchanged. Previous application coverage is 89.60%.
 This recipe does not prove new process-kill/power-loss durability. Scalar coercion,
 provider variant/custom extension audit and complete G4/G7 acceptance remain open.
 git diff --check and staged diff --check passed. No merge or push.
+
+## 2026-10-10 named container-upload reply adoption
+
+Baseline: `b3a4bd9`; six pinned SDK captures committed independently at `3dd7a47`.
+Native protocol adds a named FileID and explicit observed null flags in its closed
+Block union. Direct/SSE decoding, clone/accessor isolation, ordinary forwarding,
+masked stored-message codec and SQLite FileID UTF-8 validation support the variant.
+Source stream capture exposed the ParsedTextBlock union's text/citations/parsed_output
+null defaults; those are retained instead of treating both transport shapes as equal.
+Empty and Unicode IDs are accepted according to the captured declared string shape.
+Missing/null/numeric IDs and mixed domain variants are refused. This metadata does
+not become a client tool call; the Source decision content allowlist still refuses it.
+
+Verification passed: full Go ordinary and race suites
+`go test -p=1 -count=1 -timeout=300s ./...` and
+`go test -race -p=1 -count=1 -timeout=300s ./...`; six Go decoder/forwarding/archival comparisons; protocol
+clone/mask/atomic-ingress/variant/pairing checks; existing sqlitestate targeted suite;
+Python source-capture test (1 passed); Source export check (204 current files);
+scans (19 anchored guards); go vet; typeaudit (413 production files, 1332 named
+types, zero findings); Python `verify_guards.py -k block` (3 caught with
+passing baselines; this is a named subset, not the full mutation sweep);
+git diff --check and staged diff --check. Architecture regenerated with Archify, 9/9 checks and
+zero errors/warnings. Specification SHA256
+0e7135faec88a57bc75b5cbdad9de5b2d6a611a7802987ceacf0b3ceae45ce0e;
+HTML SHA256 0e3157ee70db8856227ccc5c49ac35b12cf1c71900decbb8dc817f0ec0fd7914.
+Fresh visual inspection remains unavailable under the earlier browser access denial.
+No full Python or coverage refresh; no merge/push. This is not a new upload/download
+endpoint or real native container-specific SQLite restart recipe. Seven remaining
+SDK server-tool/result variants, external extensions and scalar usage consumer
+reconciliation remain open; the complete G4/G7 migration is not accepted.

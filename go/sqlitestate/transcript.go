@@ -156,6 +156,9 @@ func validateMessageText(message protocol.Message) error {
 	for _, block := range blocks {
 		var err error
 		switch block.Kind() {
+		case protocol.BlockContainerUpload:
+			value, _ := block.ContainerUpload()
+			err = validateText(value.FileID)
 		case protocol.BlockText:
 			value, _ := block.Text()
 			err = validateText(value.Text)
