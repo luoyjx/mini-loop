@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `400b6b0` plus named non-text Bash command observations. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `9f0e9db` plus non-text Bash display alignment. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -17041,3 +17041,72 @@ uses str(command), while Go agent.ToolLabel currently reads the executable
 BashInput.Command shadow (empty for rejected observations). Error/permission/input
 parity above does not prove complete event-display parity. Capture Source display
 fields and align this observation-only consumer before accepting the full slice.
+
+## Non-text Bash display alignment — 2026-10-10
+
+Baseline: `9f0e9db` plus this implementation; Source display contract `fdb47d8`.
+ToolLabel now reads ShellCommand's observation text for Bash, preserving actual
+Python str(command) instead of the executable string shadow. Thirty-six real
+Source Agent tool_use display fields and twelve independent Source SecretRegistry
+mask_payload/tool_label profiles match native display. Cases cover null/bool/int/
+float, nested arrays/objects, quotes, Unicode, opaque text, secret-key collisions,
+mask-before-preview and the 60-character cap. Existing typed-text activity tests
+still pass. Neither display nor policy text becomes argv or supplies authority.
+
+The actual maskedEvent path recomputes display from a masked immutable input copy.
+Native checks compare labels and canonical JSON values/kinds and prove that the live
+input remains unchanged. Initial comparisons confused HTML/Unicode JSON escaping
+with value changes; canonical comparison fixes the test without changing codecs.
+No new production type or dependency. The previous recorded label gap is resolved.
+Nonfinite inputs, other default tools, broader SDK/caller/default scope and complete
+G7 acceptance remain open; this is not complete event/provider acceptance.
+
+Validation on local Darwin arm64:
+- Full `go test -p=1 -count=1 -timeout=300s ./...`: passed.
+- Full `go test -race -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-bash-display-integrated.cover ./...`: passed; no race report.
+- `go vet ./...`: passed; existing Darwin FSEvents/linker warnings remain.
+- Type audit: 428 production files, 1400 named types, zero direct open-payload findings.
+- Focused Source pytest: one passed. Native display/activity/masking checks passed.
+- Scans: 19 anchored. Selected `verify_guards.py -k secret`: two caught mutations,
+  not a full mutation sweep.
+- Archify: 9/9 checks, zero warnings; README outline reviewed.
+  Specification SHA256 186e36575b751a44ff7ee4afd75b3ff7fb102db33f2eace2a4d134d7b7b9757f;
+  HTML SHA256 c9d33da7eaff9465d40ad153d2a92824385bd95910b01c9aa1f353f924bee942.
+  No fresh browser visual inspection (earlier access denied).
+- No Python runtime package change; full Python regression/invariant verifier
+  were not rerun. No non-Darwin verification, merge, push or full-port claim.
+
+### Coverage refresh on the Bash display worktree
+
+Successful full race run with `-coverpkg=./...` and
+`-coverprofile=/tmp/mini-loop-bash-display-integrated.cover`. Identical source
+locations merge with maximum hits, asserting identical statement counts. The
+1,186,287 raw blocks reduce to 24,713 unique blocks; zero-statement packages have
+no percentage. Profile SHA256: 3d2e0a3ca57c9299224ffba4322e064521f81e1e0b18789f080fd36eb54f2855.
+[Package metrics](docs/audits/go-coverage-bash-display-2026-10-10.json) pin baseline
+`9f0e9db` plus this display implementation and Source contract `fdb47d8`.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| Application excluding tools | 31,628 / 35,408 | 89.32% |
+| All Go | 31,675 / 35,472 | 89.30% |
+| agent | 9,023 / 10,023 | 90.02% |
+| protocol | 3,435 / 3,910 | 87.85% |
+| provider | 1,359 / 1,577 | 86.18% |
+| sqlitestate | 583 / 706 | 82.58% |
+
+Comparable previous application snapshot at bf4c866: 31,391/35,115 (89.39%).
+Covered statements increased by 237, total by 293; overall rate fell by roughly
+0.07 percentage points. This includes usage, command and optional-field changes
+since that snapshot, not solely the current display fix. Darwin build-tag
+statement coverage excludes CLI child-process internals and native C; it is not
+migration completion, branch/mutation strength or non-Darwin validation.
+
+Source export observation: the first full `export_go_contracts.py --check`
+reported only `python-watchfiles.json` stale, after native Go suites had ended.
+An isolated actual watchfiles capture then matched the committed fixture exactly.
+The fixture was not rewritten; this records intermittent capture drift rather
+than claiming that the initial check passed.
+The full Source export retry passed: 219 current files, with native Go watcher
+jobs terminal. Initial drift and the matching isolated observation above remain
+explicit. Working-tree and staged `git diff --check` passed.

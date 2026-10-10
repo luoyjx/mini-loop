@@ -27,8 +27,8 @@ const (
 )
 
 // BashCommandObservation retains finite non-text model input, never shell text.
-// PolicyString is only the Source str(value) projection used by permission and
-// approval consumers. Native handlers settle a named failure before shell argv.
+// PolicyString is the Source str(value) projection for permission, approval and
+// display consumers. Native handlers settle a named failure before shell argv.
 type BashCommandObservation struct {
 	kind     BashCommandKind
 	observed jsonvalue.Value

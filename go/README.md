@@ -3363,3 +3363,22 @@ is now enforced. Earlier statements of 28 distinct inputs are corrected to 28
 samples (27 unique). Source authority decisions remain actual captured behavior.
 Nonfinite inputs, other default tools, broader SDK/caller/coercion scope, default
 syntax diagnostics dependency approval and full G7 acceptance remain open.
+
+## Non-text Bash display alignment — 2026-10-10
+
+Baseline: `9f0e9db` plus this implementation; Source display contract `fdb47d8`.
+ToolLabel now reads ShellCommand's observation text for Bash, preserving actual
+Python str(command) instead of the executable string shadow. Thirty-six real
+Source Agent tool_use display fields and twelve independent Source SecretRegistry
+mask_payload/tool_label profiles match native display. Cases cover null/bool/int/
+float, nested arrays/objects, quotes, Unicode, opaque text, secret-key collisions,
+mask-before-preview and the 60-character cap. Existing typed-text activity tests
+still pass. Neither display nor policy text becomes argv or supplies authority.
+
+The actual maskedEvent path recomputes display from a masked immutable input copy.
+Native checks compare labels and canonical JSON values/kinds and prove that the live
+input remains unchanged. Initial comparisons confused HTML/Unicode JSON escaping
+with value changes; canonical comparison fixes the test without changing codecs.
+No new production type or dependency. The previous recorded label gap is resolved.
+Nonfinite inputs, other default tools, broader SDK/caller/default scope and complete
+G7 acceptance remain open; this is not complete event/provider acceptance.

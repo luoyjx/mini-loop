@@ -60,14 +60,14 @@ func ToolLabel(input protocol.ToolInput) ToolDisplay {
 		v, _ := input.Glob()
 		return ToolDisplay{"search", oneLine(v.Pattern, 60)}
 	case protocol.ToolBash:
-		v, _ := input.Bash()
-		preview := oneLine(v.Command, 60)
+		command, _ := input.ShellCommand()
+		preview := oneLine(command, 60)
 		for _, marker := range []string{"|", "$(", "`", ">", "<", ";", "&&", "||", "\n"} {
-			if strings.Contains(v.Command, marker) {
+			if strings.Contains(command, marker) {
 				return ToolDisplay{"run", preview}
 			}
 		}
-		tokens := strings.Fields(v.Command)
+		tokens := strings.Fields(command)
 		if len(tokens) == 0 {
 			return ToolDisplay{"run", preview}
 		}

@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `400b6b0` plus named non-text Bash command observations;
+reviewed **2026-10-10** (Go baseline `9f0e9db` plus non-text Bash display alignment;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash binding failures / finite non-mapping observations / named Bash option projections / non-text command observations · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -2644,8 +2644,12 @@ matching Source, without starting a task. Extra-argument failure and before/guar
 rewrites or denials retain precedence. Thirty-six actual consumer profiles and
 20 actual permission profiles match; 44 unique command/option inputs retain raw
 values through direct/SSE, clones, masking, history and SQLite reopen. Nonfinite
-inputs and other default-tool consumer types remain open. This does not complete
-provider or port acceptance.
+inputs and other default-tool consumer types remain open. Tool display now reads
+the same observation text after recording-copy masking, preserving Source None,
+number/container representations and bounded previews without executing that text.
+Thirty-six actual Source tool_use event labels and 12 independent masking/display
+profiles match; key collisions, Unicode and opaque shell previews preserve the
+live input. This does not complete provider or port acceptance.
 
 ## Repository map
 
