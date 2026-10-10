@@ -2,6 +2,9 @@ package provider
 
 type ErrorClass string
 
+const ClassCredentialProvider ErrorClass = "AnthropicError"
+const ClassWorkloadIdentity ErrorClass = "WorkloadIdentityError"
+
 const (
 	ClassStatus            ErrorClass = "APIStatusError"
 	ClassBadRequest        ErrorClass = "BadRequestError"
@@ -21,6 +24,9 @@ const (
 )
 
 func (e *Failure) Class() ErrorClass {
+	if e.class != "" {
+		return e.class
+	}
 	switch e.Kind {
 	case FailureConnection:
 		return ClassConnection

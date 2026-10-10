@@ -42,6 +42,7 @@ const (
 // Failure contains bounded, credential-scrubbed diagnostic text, never raw wire
 // bytes or a response handle. Status and retry headers retain their own meanings.
 type Failure struct {
+	class             ErrorClass
 	recoveryKind      protocol.ModelFailureKind
 	Kind              FailureKind
 	Status            int
@@ -98,8 +99,9 @@ func (timerWaiter) Wait(ctx context.Context, d time.Duration) error {
 }
 
 type Config struct {
-	AuthToken                         string   `json:"-"`
-	Headers                           []Header `json:"-"`
+	Credentials                       CredentialProvider `json:"-"`
+	AuthToken                         string             `json:"-"`
+	Headers                           []Header           `json:"-"`
 	BaseURL                           string
 	APIKey                            string       `json:"-"`
 	HTTPClient                        *http.Client `json:"-"`
@@ -117,6 +119,8 @@ type Description struct {
 	Credential string `json:"credential"`
 }
 type Client struct {
+	credentials                 *credentialCache
+	activeToken                 string
 	authToken                   string
 	headers                     []Header
 	endpoint, requestURL, key   string
@@ -186,7 +190,11 @@ func New(cfg Config) (*Client, error) {
 	// x-api-key is not a standard sensitive header stripped by net/http on a
 	// cross-host redirect. Refuse redirects instead of forwarding a credential.
 	client.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
-	return &Client{endpoint: cfg.BaseURL, requestURL: strings.TrimRight(u.String(), "/") + "/v1/messages", key: cfg.APIKey,
+	var credentials *credentialCache
+	if cfg.Credentials != nil {
+		credentials = &credentialCache{provider: cfg.Credentials, now: cfg.Now, advisoryFailure: time.Unix(0, 0)}
+	}
+	return &Client{credentials: credentials, endpoint: cfg.BaseURL, requestURL: strings.TrimRight(u.String(), "/") + "/v1/messages", key: cfg.APIKey,
 		authToken: cfg.AuthToken, headers: append([]Header(nil), cfg.Headers...), compatible: compatible,
 		defaultTimeout: defaultTimeout, http: &client, timeout: cfg.Timeout, requestLimit: cfg.MaxRequestBytes,
 		responseLimit: cfg.MaxResponseBytes, retries: retries, wait: cfg.Waiter, jitter: cfg.Jitter, now: cfg.Now}, nil
@@ -254,7 +262,13 @@ func (c *Client) attempt(ctx context.Context, body []byte, attempt int) (protoco
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Anthropic-Version", APIVersion)
 	req.Header.Set("X-Stainless-Retry-Count", strconv.Itoa(attempt))
-	c.applyHeaders(req.Header)
+	token, err := c.authenticate(callCtx, req.Header)
+	if err != nil {
+		return protocol.ModelReply{}, nil, false, 0, err
+	}
+	requestClient := *c
+	requestClient.activeToken = token
+	c = &requestClient
 	response, err := c.http.Do(req)
 	if err != nil {
 		if ctx.Err() != nil {
@@ -375,7 +389,7 @@ func (c *Client) backoff(attempt int, retryAfter *time.Duration) time.Duration {
 func (c *Client) requireCredential() error {
 	h := make(http.Header)
 	c.applyHeaders(h)
-	if h.Get("X-Api-Key") == "" && h.Get("Authorization") == "" {
+	if h.Get("X-Api-Key") == "" && h.Get("Authorization") == "" && c.credentials == nil {
 		return &Failure{Kind: FailureCredential, Message: "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\""}
 	}
 	return nil

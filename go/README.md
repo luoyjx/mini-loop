@@ -490,8 +490,17 @@ matching Python Settings/provider_for; an explicitly empty environment key can
 accompany bearer auth as an empty X-Api-Key header. Custom headers can override
 static authentication. Inspection/snapshots discard live tokens and header values;
 provider identity retains explicit API-key presence, so bearer-only selection
-still reports an absent key. SDK profile/federation discovery, remaining request
-options and production endpoint/cache conformance remain pending.
+still reports an absent key. Explicit `Config.Credentials` supplies a typed callback returning validated
+immutable AccessToken values. One synchronized process-local cache belongs to
+the Client and is shared with streaming. SDK 120/30s windows, five-second
+advisory failure backoff and one token-exchange 401 forced retry are retained.
+Callbacks must honor contexts; waiting callers can cancel independently. Static
+auth headers bypass dynamic fetch. Dynamic tokens add OAuth API beta. Model 401
+does not refresh/replay; InvalidateCredentials explicitly forces the next fetch
+without fencing a fetch in flight. Each response scrubs its own token during
+concurrent rotation. File/provider lifetime stays caller-owned. SDK profile/
+federation discovery, native token exchange, remaining request options and
+production endpoint/cache conformance remain pending.
 
 ### Typed decision operator library
 

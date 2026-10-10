@@ -465,7 +465,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `7398b32` plus Launcher authentication environment selection,
+Runtime review baseline: `65ac890` plus dynamic credential cache and request-local redaction,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured key / bearer / headers · request auth before HTTP / retry<br/>typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · process-local token cache<br/>request auth before HTTP / retry<br/>typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1202,8 +1202,16 @@ credentials; Launcher captures `ANTHROPIC_AUTH_TOKEN` and
 `ANTHROPIC_CUSTOM_HEADERS` in secret settings. A nonempty Settings API key
 suppresses environment bearer selection, matching Python Settings/provider_for.
 Explicit empty environment keys retain an empty header alongside bearer auth.
-Snapshots and configuration reports discard these live credentials; SDK
-profile/federation discovery remains open. The launcher explicitly passes
+Snapshots and configuration reports discard these live credentials. Explicit
+`Config.Credentials` adds a context-owned token provider and one shared process-local
+cache per Client, with SDK 120/30-second refresh windows, five-second advisory
+failure backoff and one token-endpoint 401 forced retry. Static effective auth
+headers bypass dynamic fetch. Dynamic auth adds the OAuth API beta flag; model
+401 does not invalidate or replay a request. Request-local client projections
+scrub their own token even during concurrent rotation. Waiters can cancel;
+provider callbacks must honor contexts. Explicit invalidation does not fence an
+in-flight fetch or external effects. SDK profile/federation discovery and native
+token exchange remain open. The launcher explicitly passes
 its validated environment settings. This
 adapter supplies SDK-level retry; the session now applies separate default Agent
 recovery: at most ten transient retries, bounded outer waits, token escalation,

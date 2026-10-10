@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `7398b32` plus Launcher provider auth and native citation SQLite/recording recovery proof. This section is the current delivery index;
+Reviewed 2026-10-10 at `65ac890` plus dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -15720,4 +15720,54 @@ existing SDK/pathspec warnings and a child-watcher diagnostic but exits zero
 with matching fixtures. No fresh full Python, race, invariant/mutation,
 coverage, performance, type audit or architecture render was run for this
 fixture-only slice; Go/Python package runtime and topology are unchanged.
+Diff/cached checks pass. No merge or push was performed.
+
+## 2026-10-10 Typed dynamic credentials and process-local token cache
+
+Baseline `65ac890` plus this slice adds immutable validated AccessToken and
+CredentialProvider.FetchToken(context, force) as an explicit provider injection
+seam. Named CredentialError kinds retain classification/status without raw
+exchange bodies or callback messages. Construction/description perform no fetch.
+Each Client owns one synchronized cache; direct and streaming views share it.
+No token provider is installed by default, and provider/file lifetime remains
+caller-owned. This is the prerequisite for native profile/federation drivers,
+not their completed discovery/HTTP exchange implementation.
+
+The cache follows the inspected pinned SDK: >120s/no expiry serves cached;
+>30s and <=120s starts advisory refresh while concurrent callers retain cached tokens;
+<=30s/missing cache joins one refresh. Recoverable typed credential errors permit
+advisory fallback with five-second backoff; invalid/callback errors propagate.
+Token-endpoint exchange 401 retries once with force=true. Explicit invalidation
+forces a subsequent fetch without cancelling/fencing an in-flight provider.
+Model HTTP 401 does not invalidate credentials or replay a request.
+
+Context-owned waits can cancel independently; callbacks must honor context.
+Panic/error paths always release mandatory waiters. Static effective API-key/
+Authorization headers bypass dynamic callbacks. Dynamic tokens add the OAuth
+API beta using whole-flag deduplication. Direct/SSE attempts retain a private
+request-local token solely for diagnostic redaction; overlapping requests keep
+their own token after a shared-cache rotation. Callback diagnostics are generic
+credential failures; exchange failures keep WorkloadIdentityError/status while
+ordinary typed credential failures use AnthropicError. No raw callback message
+is projected into model-facing errors.
+
+Tests cover exact 121/120/30-second boundaries, advisory backoff, forced exchange
+retry, joined/cancelled waits, panic recovery, static bypass, direct/stream model
+401 caching/no replay, beta normalization and concurrent old/new-token response
+redaction. Provider package race passes. This uses the prior SDK source/26
+discovery recipes as the reference; native file-profile/refresh/federation replay
+of that whole fixture remains open. README canonical Mermaid/boundary, EXTENDING
+and regenerated interactive JSON/HTML record the explicit process-local seam.
+
+Final unchanged implementation gates pass: provider package race, complete
+ordinary `go test -p=1 -count=1 -timeout=300s ./...`, complete race with `-race`,
+and `go vet ./...`. Type audit reports 404 production files / 1309 named
+package-level types / zero direct open-payload findings. Logs are
+/tmp/mini-loop-token-cache-{go,race,vet,types}.log. Archify delivery passes 9/9
+with specification SHA-256 `46359fb516c9b7428c08432a3cc6e1b21ffda6c0d7c6798afdf634a73a460919`
+and HTML SHA-256 `c97e609be795a3d0fa74c44ad206e25b9fa70e1509c803460023395ac8720821`.
+Existing macOS compiler/linker warnings remain. No fresh browser review,
+Python regression/verifiers, Source export, coverage, performance or Linux/
+CGO-disabled run was performed; Python runtime/export recipes/default-tool
+catalogue are unchanged, and prior evidence retains its measured baseline.
 Diff/cached checks pass. No merge or push was performed.

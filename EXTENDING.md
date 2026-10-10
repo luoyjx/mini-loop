@@ -1578,8 +1578,14 @@ Launcher now captures bearer/custom-header environment settings without live
 environment reads during composition. Nonempty Settings API keys suppress bearer
 selection; ordered custom headers can override them. Inspection reports explicit
 key presence and removes live credential fields. SDK profile/federation discovery
-remains open. It retains no dynamic
-payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
+remains open. `Config.Credentials` now accepts a typed CredentialProvider returning
+immutable AccessToken values. The client owns one shared process-local cache;
+provider/file lifetime stays caller-owned. Static auth headers bypass it. Contexts
+own fetches/waits; callbacks must cooperate with cancellation. SDK refresh windows
+and token-endpoint 401 retry are retained. Model 401 does not refresh/replay.
+Explicit InvalidateCredentials requests a forced next fetch without fencing an
+in-flight fetch. Callback messages/panics are contained; request-local token
+redaction survives concurrent rotation. It retains no dynamic payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
 `agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
 The native adapter retains five named citation variants and closed extension data

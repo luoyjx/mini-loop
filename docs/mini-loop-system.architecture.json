@@ -299,7 +299,7 @@
       "id": "goFake",
       "type": "external",
       "label": "Go model providers",
-      "sublabel": "HTTP / SSE · captured key / bearer",
+      "sublabel": "HTTP / SSE · process-local token cache",
       "pos": [
         330,
         1180

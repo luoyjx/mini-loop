@@ -85,7 +85,13 @@ func (c *StreamingClient) attempt(ctx context.Context, body []byte, attempt int,
 	req.Header.Set("Accept", "application/json") // AsyncAnthropic also uses this with stream=true.
 	req.Header.Set("Anthropic-Version", APIVersion)
 	req.Header.Set("X-Stainless-Retry-Count", strconv.Itoa(attempt))
-	client.applyHeaders(req.Header)
+	token, err := client.authenticate(callCtx, req.Header)
+	if err != nil {
+		return protocol.ModelReply{}, nil, false, 0, err
+	}
+	requestClient := *client
+	requestClient.activeToken = token
+	client = &requestClient
 	response, err := client.http.Do(req)
 	if err != nil {
 		if ctx.Err() != nil {

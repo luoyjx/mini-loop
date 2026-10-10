@@ -44,7 +44,7 @@ func (c *Client) applyHeaders(h http.Header) {
 }
 
 func (c *Client) redactCredentials(text string) string {
-	values := []string{c.key, c.authToken}
+	values := []string{c.key, c.authToken, c.activeToken}
 	for _, h := range c.headers {
 		if strings.EqualFold(h.Name, "X-Api-Key") || strings.EqualFold(h.Name, "Authorization") {
 			values = append(values, h.Value)
