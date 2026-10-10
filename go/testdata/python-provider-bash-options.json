@@ -1,0 +1,2519 @@
+{
+  "cases": [
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\"}",
+      "input_json": "{\"command\": \"printf field-fixture\"}",
+      "name": "absent",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": null
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": null}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": null}",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": false
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": false}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": false}",
+      "name": "false",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": true
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": true}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": true}",
+      "name": "true",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 0
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0}",
+      "name": "zero",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 7
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 7}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 7}",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": -2
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": -2}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": -2}",
+      "name": "negative",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 0.0
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.0}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.0}",
+      "name": "float-zero",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 0.5
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.5}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.5}",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": ""
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"\"}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"\"}",
+      "name": "empty-text",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"false\"}",
+      "name": "text-false",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": []
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": []}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": []}",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": [
+              false
+            ]
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": [false]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": [false]}",
+      "name": "array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": {}
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {}}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {}}",
+      "name": "empty-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": {
+              "secret-key": "secret-value"
+            }
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {\"secret-key\": \"secret-value\"}}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {\"secret-key\": \"secret-value\"}}",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\"}",
+      "input_json": "{\"command\": \"printf field-fixture\"}",
+      "name": "absent",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": null,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": null}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": null}",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": false,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": false}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": false}",
+      "name": "false",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": 7,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 7}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 7}",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": 0.5,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 0.5}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 0.5}",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": "printf field-fixture",
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": \"printf field-fixture\"}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": \"printf field-fixture\"}",
+      "name": "text",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": []}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": []}",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf"
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\"]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\"]}",
+      "name": "one-token",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              "field-fixture"
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"field-fixture\"]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"field-fixture\"]}",
+      "name": "valid",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              "other"
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"other\"]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"other\"]}",
+      "name": "mismatch",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              7
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", 7]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", 7]}",
+      "name": "mixed",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              null
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", null]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", null]}",
+      "name": "null-element",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": {
+              "secret-key": "secret-value"
+            },
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": {\"secret-key\": \"secret-value\"}}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": {\"secret-key\": \"secret-value\"}}",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\"}",
+      "input_json": "{\"command\": \"printf field-fixture\"}",
+      "name": "absent",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": null
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": null}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": null}",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": false
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": false}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": false}",
+      "name": "false",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": true
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "background:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": true}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": true}",
+      "name": "true",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "background:printf field-fixture"
+        }
+      ],
+      "output": "background:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "background",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 0
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0}",
+      "name": "zero",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 7
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "background:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 7}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 7}",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "background:printf field-fixture"
+        }
+      ],
+      "output": "background:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "background",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": -2
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "background:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": -2}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": -2}",
+      "name": "negative",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "background:printf field-fixture"
+        }
+      ],
+      "output": "background:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "background",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 0.0
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.0}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.0}",
+      "name": "float-zero",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": 0.5
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "background:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.5}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": 0.5}",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "background:printf field-fixture"
+        }
+      ],
+      "output": "background:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "background",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": ""
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"\"}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"\"}",
+      "name": "empty-text",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "background:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": \"false\"}",
+      "name": "text-false",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "background:printf field-fixture"
+        }
+      ],
+      "output": "background:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "background",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": []
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": []}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": []}",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": [
+              false
+            ]
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "background:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": [false]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": [false]}",
+      "name": "array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "background:printf field-fixture"
+        }
+      ],
+      "output": "background:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "background",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": {}
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {}}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {}}",
+      "name": "empty-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture",
+            "run_in_background": {
+              "secret-key": "secret-value"
+            }
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "background:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "run_in_background",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {\"secret-key\": \"secret-value\"}}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"run_in_background\": {\"secret-key\": \"secret-value\"}}",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "background:printf field-fixture"
+        }
+      ],
+      "output": "background:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "background",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\"}",
+      "input_json": "{\"command\": \"printf field-fixture\"}",
+      "name": "absent",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": null,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": null}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": null}",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": false,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": false}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": false}",
+      "name": "false",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": 7,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 7}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 7}",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": 0.5,
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 0.5}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": 0.5}",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": "printf field-fixture",
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": \"printf field-fixture\"}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": \"printf field-fixture\"}",
+      "name": "text",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": []}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": []}",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf"
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\"]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\"]}",
+      "name": "one-token",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              "field-fixture"
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"field-fixture\"]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"field-fixture\"]}",
+      "name": "valid",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              "other"
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"other\"]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", \"other\"]}",
+      "name": "mismatch",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              7
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", 7]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", 7]}",
+      "name": "mixed",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": [
+              "printf",
+              null
+            ],
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", null]}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": [\"printf\", null]}",
+      "name": "null-element",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "default_candidate": [
+        "bash",
+        "printf",
+        "field-fixture"
+      ],
+      "events": [
+        {
+          "input": {
+            "approval_prefix": {
+              "secret-key": "secret-value"
+            },
+            "command": "printf field-fixture"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "foreground:printf field-fixture",
+          "type": "tool_result"
+        }
+      ],
+      "field": "approval_prefix",
+      "final_input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": {\"secret-key\": \"secret-value\"}}",
+      "input_json": "{\"command\": \"printf field-fixture\", \"approval_prefix\": {\"secret-key\": \"secret-value\"}}",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "foreground:printf field-fixture"
+        }
+      ],
+      "output": "foreground:printf field-fixture",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "foreground",
+        "after",
+        "result"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "builtins._bash": "46041d52d94328cc68c4abc916f9b160d47b2bc68f27127dfbb10e5d72ede732",
+    "grant_candidate": "89e9deac921548cbf489102f62d0f889eb226d19469c8d81b7b1b648b00b9b92",
+    "proposed_candidate": "ca63205bc892974f9e28c799edb9b97a0ddfbed74739fb8a2156d9c09115c089",
+    "should_run_background": "53849430b4d9a3f4a237d57f2c9d29667b7c1d88116b41419c765eb7cfd8552f"
+  }
+}
