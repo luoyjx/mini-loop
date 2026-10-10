@@ -474,7 +474,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `73d3dbc` plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `591a3c9` plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -691,7 +691,7 @@ flowchart LR
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
-        GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
+        GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival model snapshots / metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>SQLite sessions · epochs · events · leases · audit<br/>explicit caller store · operator restore<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
@@ -1277,8 +1277,12 @@ preserve the captured Bash observations in SSE and live archives. Their action
 journals refuse finite input fingerprints before creating authority; before/guard
 run, after is skipped, and result receives the encoding failure. Detached
 observation queries and cache-bearing request estimates retain legacy numbers;
-standard request/event JSON remains finite. Native legacy trajectory model
-snapshots and broader nonfinite historical consumers still need separate proofs.
+standard request/event JSON remains finite. Native managed trajectory model snapshots now preserve the captured Bash NaN/Infinity
+observations through actual JSONL writes and fresh readers. Four Source/native
+cases cover content on/off, decoded key/value masking, cache-bearing next-request
+messages, and unchanged live inputs. Request optimization uses detached observation
+values and retains the protocol shape guard; actual transport encoding stays finite.
+Broader nonfinite historical consumers still need separate proofs.
 Actual SQLite close/reopen and Manager restore now retain the two captured Bash
 observations, restore interactive mode, and re-decode catch-up records as untrusted.
 Neither restoration nor catch-up creates actions or invokes handlers. A resumed

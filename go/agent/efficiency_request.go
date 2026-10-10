@@ -3,7 +3,6 @@ package agent
 import (
 	"context"
 	"crypto/sha256"
-	"encoding/json"
 	"math"
 	"math/big"
 	"reflect"
@@ -106,14 +105,14 @@ func messageProtocolShape(v jsonvalue.Value) ([]protocolMessageShape, bool) {
 }
 
 func protocolMessagesValue(messages []protocol.Message) (jsonvalue.Value, error) {
-	data, err := json.Marshal(messages)
+	data, err := protocol.ObservedMessagesPythonJSON(messages, true, true)
 	if err != nil {
 		return jsonvalue.Value{}, err
 	}
 	return jsonvalue.Decode(string(data))
 }
 func messageProjectionDigest(message protocol.Message) ([32]byte, error) {
-	data, err := json.Marshal(message)
+	data, err := message.MarshalArchiveJSON()
 	if err != nil {
 		return [32]byte{}, err
 	}

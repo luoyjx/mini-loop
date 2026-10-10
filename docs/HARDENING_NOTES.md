@@ -8417,3 +8417,16 @@ no new action entry. Subsequent model encoding fails before transport. The two
 captured Source restores use current construction policy as well. No persisted
 input supplies grants or execution authority. Broader trajectory/restore and SDK
 error-text fidelity remain unaccepted.
+
+### Go migration — nonfinite model snapshots retain observation boundaries
+
+Baseline `591a3c9` plus this slice. Trajectory model output and next-request
+messages use named SDK/archive observations, with detached string/key masking.
+Privacy redaction precedes the writer's final UTF-8 policy. Standard request/event
+JSON remains finite. The request optimization ledger uses observation bytes but
+still freezes protocol identities and lowers only eligible text/results; tool
+inputs remain their original immutable variants. Actual four-case Source/native
+JSONL/fresh-reader comparison proves retained NaN/Infinity, cache annotations,
+content-off redaction and no mutation of live inputs. A valid next request fails
+finite encoding before transport. This does not prove broader historical profiles,
+SDK error-text equality, watcher reliability or complete migration acceptance.

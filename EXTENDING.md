@@ -4401,3 +4401,15 @@ owner and history, restore interactive mode, create no action, and keep the
 resumed request out of transport. The operator still explicitly selects restore;
 catch-up claims no lease or live authority. Broader archival/trajectory consumers
 and full SDK error-text parity remain open.
+
+## Nonfinite trajectory model snapshots — 2026-10-11
+
+TrajectoryRecord.MarshalArchiveJSON uses concrete event, observed-block and
+cache-bearing message encoders. The finite MarshalJSON and request encoders remain
+separate. Masking applies to detached keys/strings before the file writer applies
+capture_content and UTF-8 policy. Request optimizer inputs and ledger digests now
+use observed message values; protocol shape comparison and concrete text/result
+lowering still retain original immutable tool variants. A projection never becomes
+an executable input or a grant. Four real Source/native managed recordings verify
+NaN/Infinity, content on/off, cache controls, masking and live-input preservation.
+Broader historical scalar consumers and SDK error-text fidelity remain open.
