@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `9495de6` plus HTTP/SSE usage metadata adoption;
+reviewed **2026-10-10** (Go baseline `caa135c` plus citation/usage SQL and recording reopen proof;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1241,7 +1241,9 @@ without mutating authoritative usage. Stored event decoding retains this shape.
 Direct HTTP and SSE now decode complete named usage, preserve closed extensions
 and apply SDK null defaults, including missing nested counters. SSE updates server-tool
 counts according to the SDK accumulator. Native non-negative bounded integers remain
-strict; scalar-string inputs are refused. Real SQLite/restart usage composition remains pending.
+strict; scalar-string inputs are refused. Direct/SSE integration verifies masked usage in actual SQL event payloads before
+and after database reopen, typed archival reads and resumed writes, and newly opened
+recording readers over private JSONL files. Complete provider scope acceptance remains open.
 Both profile grant paths use the Source 30-second default token timeout. Launcher now selects explicit
 profiles (including active pointers), complete environment federation, then fallback
 profiles when API key/auth token are undefined. Defined empty static credentials

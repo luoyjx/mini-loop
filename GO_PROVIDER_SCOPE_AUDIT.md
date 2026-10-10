@@ -112,3 +112,12 @@ SDK Message 的 container/stop_details 与完整 Usage 是不同问题：当前 
 原生 sparse codec 保留缺省/null/零区别。SSE 服务端工具计数按 SDK accumulator 更新。
 scalar-string 场景仍明确拒绝，属于原生整数适配。真实 SQLite/recording restart
 组合证明与完整 G4/G7 审计仍未完成。上方初始审计及基础提交状态保留为历史基线。
+
+## SQLite 与记录文件组合证明
+
+`caa135c` 后的 direct/SSE 集成测试组合 SDK nested usage 与服务端工具 delta，
+增加注册密钥 canary 和嵌套扩展。真实 HTTP 经 Agent、原生 SQLite、Manager 停止/
+显式恢复与恢复后第三轮，逐字段比较 SQL 原始事件 payload 和 typed archival reader。
+记录文件检查实际 JSONL 与重新实例化的 reader 输出，保留全部元数据与 null/扩展形状，
+且注册密钥的值与字段名均被脱敏。引用数据转发、owner 隔离和 lease 释放的原测试
+仍保留。此证明覆盖实际关闭重开配方，不代表进程崩溃/断电持久性或完整 G4/G7 验收。

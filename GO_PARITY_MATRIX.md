@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `9495de6` plus HTTP/SSE usage adoption. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage adoption is delivered; usage restart composition remains. The entries below retain their historical
+Reviewed code/test baseline: `caa135c` plus usage SQL/recording reopen proof. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -24,7 +24,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
 | Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
 | Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
-| Provider usage metadata | Nine actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON and HTTP/SSE adoption implemented; scalar-string adaptation and real restart composition remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
+| Provider usage metadata | Nine actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON and HTTP/SSE adoption implemented; actual SQL events, reopen/restored writes, raw JSONL and reopened recording readers verified; scalar-string adaptation and final scope reconciliation remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 The latest authentication-slice Source export retry at `477a209` passed with
@@ -8432,3 +8432,32 @@ Coverage: application excluding tools 89.60% (29939/33413); all Go 89.57%
 child-process/native C and Linux-only counters. Full Python was not refreshed;
 no merge or push. Real usage SQLite/recording restart composition, scalar coercion
 reconciliation and complete G4/G7 scope acceptance remain open.
+
+## 2026-10-10 usage SQL and recording reconstruction evidence
+
+Baseline: `caa135c`. Extended the existing citation HTTP/SQLite/recording recipe
+with named usage from pinned SDK nested direct/stream captures and server-tool
+delta capture. Registered secrets are injected into inference geography and
+root/nested extension keys/values. This is local composition evidence, not a new
+SDK capture or a paid-provider deployment check.
+
+The test checks raw SQL event payloads and typed archival reads after two turns,
+closes the Manager/database, reopens a new SQLite connection and rereads events,
+explicitly restores the session and executes a third turn. All fields, nulls and
+extensions match the masked SDK expectation. Raw private JSONL and a newly
+instantiated recording reader also preserve full usage for each of the three
+turns. Existing citation forwarding, owner refusal, lease release, restored write
+status and 0600 file checks remain. No runtime implementation or dependency changed.
+
+Targeted direct/SSE reconstruction and the full ordinary Go suite
+`go test -p=1 -count=1 -timeout=300s ./...` passed; the full sqlitestate race suite
+`go test -race -count=1 -timeout=300s ./sqlitestate` and `go vet ./...` passed.
+Architecture status was regenerated with Archify: 9/9 checks, zero errors/warnings.
+Specification SHA256 d34cf46f1ffdc6da042fc5e7f246d3580472eef250112671bd7043876b45a78e;
+HTML SHA256 6ed721f9ab4c9a5d66890d1bc17324282b81bdaf54520bca41ac747456bd832e.
+No fresh browser visual inspection (earlier access denial), Source export, scans,
+Python suite, type audit or coverage refresh is claimed; their production targets
+and Source fixtures were unchanged. Previous application coverage is 89.60%.
+This recipe does not prove new process-kill/power-loss durability. Scalar coercion,
+provider variant/custom extension audit and complete G4/G7 acceptance remain open.
+git diff --check and staged diff --check passed. No merge or push.

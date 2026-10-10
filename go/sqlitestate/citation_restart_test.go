@@ -171,13 +171,14 @@ func citationRestartAssistant(t *testing.T, messages []protocol.Message, expecte
 	}
 }
 
-func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
+func TestCitationAndUsageNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 	for _, streamed := range []bool{false, true} {
 		t.Run(fmt.Sprintf("stream=%t", streamed), func(t *testing.T) {
 			ctx := context.Background()
 			root := t.TempDir()
 			path := filepath.Join(root, "state.db")
 			raw, expected, sse := citationRestartPayloads(t, streamed)
+			usageWire, usageExpected, sse := usageRestartPayloads(t, streamed, sse)
 			registry := secrets.New(secrets.Config{})
 			registry.RegisterValue("CITATION_VALUE", "fixture-secret")
 			registry.RegisterValue("CITATION_KEY", "secret-key")
@@ -186,6 +187,11 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 				t.Fatal(err)
 			}
 			expectedMasked := []byte(masked)
+			maskedUsage, err := protocol.MaskedPythonJSON(json.RawMessage(usageExpected), registry.MaskText, false, true)
+			if err != nil {
+				t.Fatal(err)
+			}
+			expectedUsageMasked := []byte(maskedUsage)
 			if bytes.Contains(expectedMasked, []byte("fixture-secret")) || bytes.Contains(expectedMasked, []byte("secret-key")) {
 				t.Fatal("expected mask missing")
 			}
@@ -210,7 +216,7 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 					return
 				}
 				w.Header().Set("Content-Type", "application/json")
-				fmt.Fprintf(w, `{"id":"citation-restart","type":"message","role":"assistant","model":"citation-model","content":[%s],"stop_reason":"end_turn","usage":{"input_tokens":1,"output_tokens":2}}`, raw)
+				fmt.Fprintf(w, `{"id":"citation-restart","type":"message","role":"assistant","model":"citation-model","content":[%s],"stop_reason":"end_turn","usage":%s}`, raw, usageWire)
 			}))
 			defer upstream.Close()
 			zero := 0
@@ -336,6 +342,7 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 			if storedRows != len(history.Messages) {
 				t.Fatal("SQL rows missing")
 			}
+			usageRestartEvents(t, store, created.ID, expectedUsageMasked, 2)
 			api.Close()
 			stopRestartManager(t, manager)
 			if _, held, err := store.LeaseHolder(ctx, created.ID); err != nil || held {
@@ -348,6 +355,7 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 				t.Fatal("old store still readable", err)
 			}
 			store = open()
+			usageRestartEvents(t, store, created.ID, expectedUsageMasked, 2)
 			manager = makeManager(store)
 			api = serve(manager)
 			if _, err := manager.Get("alice", created.ID); err == nil {
@@ -410,6 +418,11 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 			}
 			api.Close()
 			stopRestartManager(t, manager)
+			usageRestartEvents(t, store, created.ID, expectedUsageMasked, 3)
+			recordings, err = trajectory.New(trajectory.Config{Root: filepath.Join(root, "recordings"), CaptureContent: true})
+			if err != nil {
+				t.Fatal(err)
+			}
 			summaries, err := recordings.List(agent.TrajectoryQuery{Session: &created.ID, Limit: 10})
 			if err != nil || len(summaries) != 3 {
 				t.Fatal("recordings missing", err, len(summaries))
@@ -429,6 +442,26 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 				if !bytes.Contains(data, []byte(`"model_output"`)) || !bytes.Contains(data, []byte(`"citations"`)) {
 					t.Fatal("raw trajectory omitted citation output")
 				}
+				usageEvents := 0
+				for _, line := range bytes.Split(data, []byte("\n")) {
+					if len(bytes.TrimSpace(line)) == 0 {
+						continue
+					}
+					var event struct {
+						Type  string
+						Usage json.RawMessage
+					}
+					if err := json.Unmarshal(line, &event); err != nil {
+						t.Fatal(err)
+					}
+					if event.Type == "model_end" {
+						citationRestartEqual(t, event.Usage, expectedUsageMasked)
+						usageEvents++
+					}
+				}
+				if usageEvents != 1 {
+					t.Fatal("raw recording lost usage", usageEvents)
+				}
 				info, err := os.Stat(file)
 				if err != nil || info.Mode().Perm() != 0600 {
 					t.Fatal("recording permissions", err)
@@ -445,6 +478,7 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 				var recorded struct {
 					Events []struct {
 						ModelOutput json.RawMessage `json:"model_output"`
+						Usage       json.RawMessage `json:"usage"`
 					}
 				}
 				if err := json.Unmarshal(encoded, &recorded); err != nil {
@@ -454,6 +488,7 @@ func TestCitationNativeSQLiteHTTPRecordingAndReopen(t *testing.T) {
 				for _, event := range recorded.Events {
 					if len(event.ModelOutput) > 0 {
 						outputs++
+						citationRestartEqual(t, event.Usage, expectedUsageMasked)
 						citationRestartEqual(t, event.ModelOutput, append(append([]byte("["), expectedMasked...), ']'))
 					}
 				}

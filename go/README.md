@@ -3070,4 +3070,8 @@ without mutating provider values; stored event decoding retains shape and never
 grants authority. Direct HTTP and SSE now preserve this metadata and extensions. SSE updates
 server-tool counts with the SDK accumulator semantics. Native non-negative bounded
 integers remain an ingress adaptation; scalar-string Source output is refused.
-Real SQLite/restart usage composition remains pending.
+Direct/SSE integration now checks actual SQL event payloads, database close/reopen,
+typed archival reads, explicit Manager restoration and resumed writes, plus raw
+private JSONL and independently reopened recording readers. Registered secrets in
+usage metadata and extension keys/values are masked at these durable boundaries.
+This proves the tested reconstruction recipe; full provider scope acceptance remains open.

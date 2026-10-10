@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `9495de6` plus HTTP/SSE usage adoption. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata adoption is delivered; usage restart composition remains. This section is the current delivery index;
+Reviewed 2026-10-10 at `caa135c` plus usage SQL/recording reopen proof. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,7 +6864,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; scalar-string adaptation and restart composition remain; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
 | G7 | 203 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
@@ -6887,8 +6887,9 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    `cache_creation`, `inference_geo`, `output_tokens_details` and `server_tool_use`
    reach Python `model_end.usage` and are now preserved by native HTTP/SSE decoding.
    Named types, nullable/default selection, extensions, clones, masked event projection
-   and stored-event JSON codecs are now implemented; recordings and
-   real restart composition remain. See
+   and stored-event JSON codecs are implemented; direct/SSE SQLite close/reopen,
+   restored writes and independently reopened JSONL readers preserve complete usage.
+   Scalar-string adaptation and remaining provider scope reconciliation stay open. See
    [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md). Structured output request
    options are not emitted by the current repository request producers; audit
    custom extension behavior separately instead of adding unrelated SDK features.
@@ -16234,3 +16235,32 @@ Coverage: application excluding tools 89.60% (29939/33413); all Go 89.57%
 child-process/native C and Linux-only counters. Full Python was not refreshed;
 no merge or push. Real usage SQLite/recording restart composition, scalar coercion
 reconciliation and complete G4/G7 scope acceptance remain open.
+
+## 2026-10-10 usage SQL and recording reconstruction evidence
+
+Baseline: `caa135c`. Extended the existing citation HTTP/SQLite/recording recipe
+with named usage from pinned SDK nested direct/stream captures and server-tool
+delta capture. Registered secrets are injected into inference geography and
+root/nested extension keys/values. This is local composition evidence, not a new
+SDK capture or a paid-provider deployment check.
+
+The test checks raw SQL event payloads and typed archival reads after two turns,
+closes the Manager/database, reopens a new SQLite connection and rereads events,
+explicitly restores the session and executes a third turn. All fields, nulls and
+extensions match the masked SDK expectation. Raw private JSONL and a newly
+instantiated recording reader also preserve full usage for each of the three
+turns. Existing citation forwarding, owner refusal, lease release, restored write
+status and 0600 file checks remain. No runtime implementation or dependency changed.
+
+Targeted direct/SSE reconstruction and the full ordinary Go suite
+`go test -p=1 -count=1 -timeout=300s ./...` passed; the full sqlitestate race suite
+`go test -race -count=1 -timeout=300s ./sqlitestate` and `go vet ./...` passed.
+Architecture status was regenerated with Archify: 9/9 checks, zero errors/warnings.
+Specification SHA256 d34cf46f1ffdc6da042fc5e7f246d3580472eef250112671bd7043876b45a78e;
+HTML SHA256 6ed721f9ab4c9a5d66890d1bc17324282b81bdaf54520bca41ac747456bd832e.
+No fresh browser visual inspection (earlier access denial), Source export, scans,
+Python suite, type audit or coverage refresh is claimed; their production targets
+and Source fixtures were unchanged. Previous application coverage is 89.60%.
+This recipe does not prove new process-kill/power-loss durability. Scalar coercion,
+provider variant/custom extension audit and complete G4/G7 acceptance remain open.
+git diff --check and staged diff --check passed. No merge or push.
