@@ -8061,3 +8061,25 @@ rejects every nonempty citations array, and the stream decoder rejects citation
 deltas. Capture complete Source citation recipes and implement named citation
 variants/masking/cloning/request forwarding before claiming that scope accepted.
 No provider call, dependency or runtime change was made in this observation.
+
+## 2026-10-10 pinned provider citation Source contracts
+
+Baseline: `b16bf0a` plus this contract capture. The installed anthropic 0.107.1
+SDK is exercised through offline HTTP and SSE MockTransport, with its streaming
+accumulator source hash recorded in `go/testdata/python-provider-citations.json`.
+Seventeen completed reply/forwarding cases cover all five citation variants,
+nullable and empty metadata, negative and arbitrary-size indices, extra members,
+unknown variants and malformed declared fields. Two streams capture initial
+citations plus ordered citation deltas and the SDK's separate text/citation events.
+SDK-normalized payloads are forwarded back through the actual request serializer.
+
+The fixture preserves the SDK's permissive extension behavior. Native Go citation
+types, provider decoding/stream accumulation, detached cloning, masking and request
+forwarding remain pending; this commit establishes their Source contract only.
+No dependency, runtime topology, authority, persistence or default changes.
+README architecture map reviewed and visible baseline updated.
+
+Validation: targeted capture test passes; full Python regression reports
+2195 passed, 28 skipped and 24 subtests passed (3 existing warnings). Source export
+check reports all 202 files current; all 19 scanner guards pass. Diff checks pass.
+Go runtime tests, race, vet and coverage were not rerun for this fixture-only slice.

@@ -1,0 +1,1351 @@
+{
+  "accumulator_sha256": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098",
+  "completed": [
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "char_location",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "page_location",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "content_block_location",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "web_search_result_location",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "search_result_location",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": null,
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "absent",
+      "normalized": {
+        "citations": null,
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": null,
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": null,
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "null",
+      "normalized": {
+        "citations": null,
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "empty",
+      "normalized": {
+        "citations": [],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          },
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          },
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          },
+          {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          },
+          {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          },
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          },
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          },
+          {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          },
+          {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "all_variants",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          },
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          },
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          },
+          {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          },
+          {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": -1,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": -1,
+            "file_id": null,
+            "start_char_index": -2,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": -1,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": -1,
+            "file_id": null,
+            "start_char_index": -2,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "negative_indices",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": -1,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": -1,
+            "file_id": null,
+            "start_char_index": -2,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 100000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 100000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "unbounded_index",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 100000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "extension": {
+              "secret-key": [
+                "fixture-secret",
+                3
+              ]
+            },
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "extension": {
+              "secret-key": [
+                "fixture-secret",
+                3
+              ]
+            },
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "extra_members",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "extension": {
+              "secret-key": [
+                "fixture-secret",
+                3
+              ]
+            },
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": null,
+            "document_index": null,
+            "document_title": null,
+            "end_char_index": null,
+            "extension": [
+              "fixture-secret",
+              null
+            ],
+            "file_id": null,
+            "start_char_index": null,
+            "type": "future_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "extension": [
+              "fixture-secret",
+              null
+            ],
+            "type": "future_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "unknown_variant",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": null,
+            "document_index": null,
+            "document_title": null,
+            "end_char_index": null,
+            "extension": [
+              "fixture-secret",
+              null
+            ],
+            "file_id": null,
+            "start_char_index": null,
+            "type": "future_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": [
+        "UserWarning"
+      ]
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": 7,
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": 7,
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "wrong_known_field",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": 7,
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": [
+        "UserWarning"
+      ]
+    },
+    {
+      "forwarded": {
+        "citations": [
+          {
+            "cited_text": "partial",
+            "document_index": null,
+            "document_title": null,
+            "end_char_index": null,
+            "file_id": null,
+            "start_char_index": null,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          {
+            "cited_text": "partial",
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "missing_known_field",
+      "normalized": {
+        "citations": [
+          {
+            "cited_text": "partial",
+            "document_index": null,
+            "document_title": null,
+            "end_char_index": null,
+            "file_id": null,
+            "start_char_index": null,
+            "type": "char_location"
+          }
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    },
+    {
+      "forwarded": {
+        "citations": "opaque fixture-secret",
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": "opaque fixture-secret",
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "non_array",
+      "normalized": {
+        "citations": "opaque fixture-secret",
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": [
+        "UserWarning"
+      ]
+    },
+    {
+      "forwarded": {
+        "citations": [
+          null
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "input": {
+        "citations": [
+          null
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "name": "null_item",
+      "normalized": {
+        "citations": [
+          null
+        ],
+        "text": "answer",
+        "type": "text"
+      },
+      "requests": 2,
+      "warnings": []
+    }
+  ],
+  "sdk_version": "0.107.1",
+  "streams": [
+    {
+      "content": [
+        {
+          "citations": [
+            {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_char_index": 5,
+              "file_id": null,
+              "start_char_index": 0,
+              "type": "char_location"
+            },
+            {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_char_index": 5,
+              "file_id": null,
+              "start_char_index": 0,
+              "type": "char_location"
+            },
+            {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_page_number": 2,
+              "file_id": null,
+              "start_page_number": 1,
+              "type": "page_location"
+            },
+            {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_block_index": 1,
+              "file_id": null,
+              "start_block_index": 0,
+              "type": "content_block_location"
+            },
+            {
+              "cited_text": "web fixture-secret",
+              "encrypted_index": "opaque fixture-secret",
+              "title": null,
+              "type": "web_search_result_location",
+              "url": "https://example.invalid/fixture-secret"
+            },
+            {
+              "cited_text": "search fixture-secret",
+              "end_block_index": 1,
+              "search_result_index": 0,
+              "source": "local fixture-secret",
+              "start_block_index": 0,
+              "title": "search title",
+              "type": "search_result_location"
+            }
+          ],
+          "parsed_output": null,
+          "text": "prefix tail",
+          "type": "text"
+        }
+      ],
+      "events": [
+        {
+          "message": {
+            "content": [],
+            "id": "source-citation",
+            "model": "citation-model",
+            "role": "assistant",
+            "stop_reason": null,
+            "stop_sequence": null,
+            "type": "message",
+            "usage": {
+              "input_tokens": 1,
+              "output_tokens": 2
+            }
+          },
+          "type": "message_start"
+        },
+        {
+          "content_block": {
+            "citations": [
+              {
+                "cited_text": "quote 📎 fixture-secret",
+                "document_index": 0,
+                "document_title": "标题 fixture-secret",
+                "end_char_index": 5,
+                "file_id": null,
+                "start_char_index": 0,
+                "type": "char_location"
+              }
+            ],
+            "text": "prefix",
+            "type": "text"
+          },
+          "index": 0,
+          "type": "content_block_start"
+        },
+        {
+          "delta": {
+            "text": " tail",
+            "type": "text_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_char_index": 5,
+              "file_id": null,
+              "start_char_index": 0,
+              "type": "char_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_page_number": 2,
+              "file_id": null,
+              "start_page_number": 1,
+              "type": "page_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_block_index": 1,
+              "file_id": null,
+              "start_block_index": 0,
+              "type": "content_block_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "web fixture-secret",
+              "encrypted_index": "opaque fixture-secret",
+              "title": null,
+              "type": "web_search_result_location",
+              "url": "https://example.invalid/fixture-secret"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "search fixture-secret",
+              "end_block_index": 1,
+              "search_result_index": 0,
+              "source": "local fixture-secret",
+              "start_block_index": 0,
+              "title": "search title",
+              "type": "search_result_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "index": 0,
+          "type": "content_block_stop"
+        },
+        {
+          "delta": {
+            "stop_reason": "end_turn",
+            "stop_sequence": null
+          },
+          "type": "message_delta",
+          "usage": {
+            "output_tokens": 2
+          }
+        },
+        {
+          "type": "message_stop"
+        }
+      ],
+      "name": "seed_plus_all_deltas",
+      "observed": [
+        {
+          "text": " tail",
+          "type": "text"
+        },
+        {
+          "citation": {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          },
+          "type": "citation"
+        }
+      ]
+    },
+    {
+      "content": [
+        {
+          "citations": [
+            {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_char_index": 5,
+              "file_id": null,
+              "start_char_index": 0,
+              "type": "char_location"
+            },
+            {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_page_number": 2,
+              "file_id": null,
+              "start_page_number": 1,
+              "type": "page_location"
+            },
+            {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_block_index": 1,
+              "file_id": null,
+              "start_block_index": 0,
+              "type": "content_block_location"
+            },
+            {
+              "cited_text": "web fixture-secret",
+              "encrypted_index": "opaque fixture-secret",
+              "title": null,
+              "type": "web_search_result_location",
+              "url": "https://example.invalid/fixture-secret"
+            },
+            {
+              "cited_text": "search fixture-secret",
+              "end_block_index": 1,
+              "search_result_index": 0,
+              "source": "local fixture-secret",
+              "start_block_index": 0,
+              "title": "search title",
+              "type": "search_result_location"
+            }
+          ],
+          "parsed_output": null,
+          "text": "prefix tail",
+          "type": "text"
+        }
+      ],
+      "events": [
+        {
+          "message": {
+            "content": [],
+            "id": "source-citation",
+            "model": "citation-model",
+            "role": "assistant",
+            "stop_reason": null,
+            "stop_sequence": null,
+            "type": "message",
+            "usage": {
+              "input_tokens": 1,
+              "output_tokens": 2
+            }
+          },
+          "type": "message_start"
+        },
+        {
+          "content_block": {
+            "citations": null,
+            "text": "prefix",
+            "type": "text"
+          },
+          "index": 0,
+          "type": "content_block_start"
+        },
+        {
+          "delta": {
+            "text": " tail",
+            "type": "text_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_char_index": 5,
+              "file_id": null,
+              "start_char_index": 0,
+              "type": "char_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_page_number": 2,
+              "file_id": null,
+              "start_page_number": 1,
+              "type": "page_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "quote 📎 fixture-secret",
+              "document_index": 0,
+              "document_title": "标题 fixture-secret",
+              "end_block_index": 1,
+              "file_id": null,
+              "start_block_index": 0,
+              "type": "content_block_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "web fixture-secret",
+              "encrypted_index": "opaque fixture-secret",
+              "title": null,
+              "type": "web_search_result_location",
+              "url": "https://example.invalid/fixture-secret"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "delta": {
+            "citation": {
+              "cited_text": "search fixture-secret",
+              "end_block_index": 1,
+              "search_result_index": 0,
+              "source": "local fixture-secret",
+              "start_block_index": 0,
+              "title": "search title",
+              "type": "search_result_location"
+            },
+            "type": "citations_delta"
+          },
+          "index": 0,
+          "type": "content_block_delta"
+        },
+        {
+          "index": 0,
+          "type": "content_block_stop"
+        },
+        {
+          "delta": {
+            "stop_reason": "end_turn",
+            "stop_sequence": null
+          },
+          "type": "message_delta",
+          "usage": {
+            "output_tokens": 2
+          }
+        },
+        {
+          "type": "message_stop"
+        }
+      ],
+      "name": "null_then_deltas",
+      "observed": [
+        {
+          "text": " tail",
+          "type": "text"
+        },
+        {
+          "citation": {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_char_index": 5,
+            "file_id": null,
+            "start_char_index": 0,
+            "type": "char_location"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_page_number": 2,
+            "file_id": null,
+            "start_page_number": 1,
+            "type": "page_location"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "quote 📎 fixture-secret",
+            "document_index": 0,
+            "document_title": "标题 fixture-secret",
+            "end_block_index": 1,
+            "file_id": null,
+            "start_block_index": 0,
+            "type": "content_block_location"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "web fixture-secret",
+            "encrypted_index": "opaque fixture-secret",
+            "title": null,
+            "type": "web_search_result_location",
+            "url": "https://example.invalid/fixture-secret"
+          },
+          "type": "citation"
+        },
+        {
+          "citation": {
+            "cited_text": "search fixture-secret",
+            "end_block_index": 1,
+            "search_result_index": 0,
+            "source": "local fixture-secret",
+            "start_block_index": 0,
+            "title": "search title",
+            "type": "search_result_location"
+          },
+          "type": "citation"
+        }
+      ]
+    }
+  ]
+}
