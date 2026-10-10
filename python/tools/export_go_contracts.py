@@ -6523,6 +6523,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_partial_json_contracts import provider_partial_json_contracts
     from tools.provider_tool_input_consumer_contracts import provider_tool_input_consumer_contracts
     from tools.provider_nonmapping_input_contracts import provider_nonmapping_input_contracts
+    from tools.provider_nonfinite_consumer_contracts import provider_nonfinite_consumer_contracts
     from tools.provider_bash_options_contracts import provider_bash_options_contracts
     from tools.provider_bash_command_contracts import provider_bash_command_contracts
     from tools.provider_background_input_contracts import provider_background_input_contracts
@@ -6894,6 +6895,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-partial-json.json": _json_bytes(provider_partial_json_contracts()),
         "python-provider-tool-input-consumer.json": _json_bytes(provider_tool_input_consumer_contracts(scratch)),
         "python-provider-nonmapping-input.json": _json_bytes(provider_nonmapping_input_contracts()),
+        "python-provider-nonfinite-consumer.json": _json_bytes(provider_nonfinite_consumer_contracts(scratch)),
         "python-provider-bash-options.json": _json_bytes(provider_bash_options_contracts(scratch)),
         "python-provider-bash-command.json": _json_bytes(provider_bash_command_contracts(scratch)),
         "python-provider-background-input.json": _json_bytes(provider_background_input_contracts(scratch)),

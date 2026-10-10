@@ -1,0 +1,51 @@
+{
+  "baseline": "03d71c2",
+  "conclusion": "Native readStream still rejects nonfinite inputs at block stop. Source retains observations through tool binding and SQLite close/reopen; next HTTP encoding rejects them before transport. This is a prerequisite capture, not native parity implementation.",
+  "full_replay_sha256": "4de17516d5e9213371724b9ec63b4233d9369bc51cff4b3f4668e9fa6ab3a9a1",
+  "jiter_version": "0.15.0",
+  "remaining_differences": [
+    {
+      "kind": "tool_use",
+      "name": "nonfinite-nan",
+      "native_delta_count": 1,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "same_outcome": false,
+      "sdk_error": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "nonfinite-infinity",
+      "native_delta_count": 1,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "same_outcome": false,
+      "sdk_error": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "nonfinite-nan",
+      "native_delta_count": 1,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "same_outcome": false,
+      "sdk_error": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "nonfinite-infinity",
+      "native_delta_count": 1,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "same_outcome": false,
+      "sdk_error": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+    }
+  ],
+  "sdk_replayed_cases": 98,
+  "sdk_version": "0.107.1",
+  "source_consumer_fixture_sha256": "b063760750a8bc3f87e04e3240852eba7998730edf3a950ca09487071b847bfb"
+}

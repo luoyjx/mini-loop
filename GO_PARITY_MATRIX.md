@@ -9883,3 +9883,47 @@ regression or visual check. Fixtures and deadlines remain unchanged. Native
 reliability acceptance remains open; repeated Source/native timing experiments
 alone must not be substituted for the broader remaining SDK/default/G7 closure.
 Architecture and feature defaults remain unchanged. No merge or push.
+
+## Nonfinite SDK downstream consumers — 2026-10-11
+
+Runtime baseline: `03d71c2`. The explicitly requested provider diagnostic replay
+at this baseline has 98 cases and four remaining differences (client/server
+NaN and Infinity). [Current audit](docs/audits/provider-nonfinite-consumer-2026-10-11.json)
+pins the full replay hash and the new downstream Source fixture hash. Its diagnostic
+job is an observation report, not a passing parity gate.
+
+`python-provider-nonfinite-consumer.json` captures four actual AsyncAnthropic
+0.107.1 direct responses through httpx 0.28.1, repository _content_payload, actual
+SQLite message/event append and close/reopen, and the next SDK request. Legacy
+nonfinite response bytes are passed as response content; using Response(json=...)
+would refuse them before the SDK and measure a different stage. All nonfinite
+values in the fixture are inside JSON strings; strict outer JSON is asserted.
+
+Source retains NaN/Infinity in input.keep. The existing actual Agent._exec_tool /
+Tool.run / builtins._bash consumer captures are included for the two client cases:
+before → guard → after → result, binding error for unexpected keyword keep,
+no execution callback. This does not claim new permission-mode coverage or actual
+shell execution. Both server and client observation values survive actual SQLite
+messages/events after a separate close/reopen. This proves reconstruction, not
+killed-process recovery, new leases or stronger durability.
+
+All four next SDK requests fail during finite HTTP request encoding with
+ValueError: Out of range float values are not JSON compliant. The mock transport
+receives only the initial request, so no failed-forward request reaches transport.
+Source SDK observation/archive acceptance and finite request encoding are distinct
+boundaries. Go currently rejects all four earlier at content_block_stop. Merely
+loosening request JSON or serializing the values as strings would not match Source.
+Native implementation must preserve typed inert observations and archival legacy
+numbers through the correct consumers, then retain finite request admission.
+No Go production decoder, execution authority or default changed in this capture.
+
+Passed: new nonfinite consumer test plus existing Bash consumer test (2 tests;
+8 expected SDK serializer warnings), 19 anchored scanner guards, standard-JSON
+fixture/audit consistency checks and git diff --check. Source export --check passed
+sequentially: 222 current files. No fixture expectations were widened. Python
+runtime modules were unchanged, so no package invariant check was required;
+full Python regression, full Go/race/vet/type/mutation gates, new coverage,
+performance, non-Darwin and browser checks were not run. Their prior baselines
+remain explicit; native watcher ordinary failures remain unresolved. Architecture
+is unchanged. This is Source prerequisite delivery, not four-gap closure, G4/G7
+acceptance or complete port acceptance. No merge or push.
