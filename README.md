@@ -465,7 +465,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `39dbca4` plus production named-type audit tooling,
+Runtime review baseline: `723853e` plus cross-language performance tooling,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -2500,6 +2500,13 @@ From `go/`, `go run ./tools/typeaudit -root .` checks package-level production
 type bodies across all platform files for `any`, empty interfaces and JSON raw
 messages. Function-local ingress DTOs and generic constraints are excluded.
 This check complements review of external types and runtime data flow.
+
+`python/tools/go_port_performance.py` compares isolated default Python/Go fake
+HTTP workloads with actual Bash file effects and joined server shutdown. Build
+Go separately, then run `.venv/bin/python python/tools/go_port_performance.py
+--go-binary /absolute/path/to/miniloop --output /tmp/go-port-performance.json`.
+The report retains raw samples, build identity and host metadata; default access
+logging is retained, and sampled RSS is not peak memory.
 
 The default test suite is offline and deterministic. Runnable documentation
 examples select the fake provider inside their test fixture, including examples

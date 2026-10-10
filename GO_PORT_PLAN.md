@@ -15234,3 +15234,27 @@ warning remains. Full application race was last passed at ba1c43f; it was not
 rerun because only developer audit tooling changed. Full Python/invariants,
 guard mutation, Source export and coverage were not rerun; their runtime/contract
 targets remain unchanged. No merge/push or migration-completion claim.
+
+
+## 2026-10-10 cross-language fake HTTP performance instrument
+
+Baseline: `723853e` plus this local developer command. The instrument starts
+Python and prebuilt Go in isolated environments/workspaces with zero-delay fake
+providers, alternates execution order and verifies identical final text plus
+actual Bash file effects. It measures startup-to-health, persistent HTTP health,
+create, turn and delete latency; output contains raw samples and sampled server
+RSS. No provider credentials/features/reload settings are inherited. Both
+servers join and release the port; Source Uvicorn's post-lifespan SIGTERM
+re-raise is recognized only after requested termination and completed shutdown.
+
+Four instrument tests and small/three-pair actual runs pass. Full Python:
+2177 passed, 28 skipped, 24 subtests, 3 existing warnings (71.58s). Fresh
+verify_invariants 77 and verify_scans 19 pass. Go CLI readonly build succeeds
+with the existing FSEvents deprecation warning. No Go runtime changed; full Go
+was last passed at 723853e, full application race at ba1c43f. Source exports
+and coverage were not refreshed. A full 378-guard sweep was stopped after 81
+caught mutations; it is incomplete, not a passing full mutation gate. No
+survived/stale/ambiguous result was printed before interruption. Performance
+results and reproduction evidence are delivered separately; this command does
+not establish comprehensive G7 performance or migration acceptance. README
+architecture baseline reviewed; no runtime map change. git diff --check passes.
