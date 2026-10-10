@@ -108,6 +108,9 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	case ToolCancelCron:
 		input.cancelCron.JobID = mask(input.cancelCron.JobID)
 	case ToolBackgroundRun:
+		if input.backgroundModel != nil {
+			input.backgroundModel.mask(mask)
+		}
 		input.backgroundRun.Command = mask(input.backgroundRun.Command)
 		if input.backgroundRun.ApprovalPrefix != nil {
 			for i, v := range *input.backgroundRun.ApprovalPrefix {

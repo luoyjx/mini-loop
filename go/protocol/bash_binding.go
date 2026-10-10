@@ -56,10 +56,13 @@ func (input ToolInput) BashBindingFailure() (BashBindingFailure, bool) {
 	return *input.bashBinding, true
 }
 
-// DecodeModelToolInput retains finite default-Bash invocation errors from model
-// replies. Strict explicit input admission continues to use DecodeToolInput.
+// DecodeModelToolInput retains finite Bash/background invocation errors from
+// model replies. Strict explicit admission continues to use DecodeToolInput.
 // Known fields stay typed; only unrecognized parameters enter immutable extras.
 func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
+	if name == ToolBackgroundRun {
+		return decodeModelBackgroundInput(data)
+	}
 	if name != ToolBash {
 		return DecodeToolInput(name, data)
 	}

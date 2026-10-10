@@ -200,6 +200,7 @@ type ToolInput struct {
 	createWorktree     CreateWorktreeInput
 	removeWorktree     RemoveWorktreeInput
 	backgroundRun      BackgroundRunInput
+	backgroundModel    *backgroundModelArguments
 	checkBackground    CheckBackgroundInput
 	worktreeName       WorktreeNameInput
 	scheduleCron       ScheduleCronInput
@@ -374,6 +375,9 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() {
 		result.nulls = input.nulls
+		if input.backgroundModel != nil {
+			result.backgroundModel = input.backgroundModel.clone()
+		}
 		if input.name == ToolBash {
 			if input.bashCommand != nil {
 				value := *input.bashCommand
@@ -464,6 +468,12 @@ func (input ToolInput) clone() (result ToolInput) {
 }
 
 func (input ToolInput) Validate() error {
+	if input.backgroundModel != nil {
+		if input.name != ToolBackgroundRun {
+			return errors.New("background model arguments on another tool")
+		}
+		return input.backgroundModel.validate()
+	}
 	if input.bashCommand != nil {
 		if input.name != ToolBash {
 			return errors.New("Bash command observation on non-Bash input")
@@ -564,6 +574,9 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	if input.backgroundModel != nil {
+		return input.marshalBackgroundModel()
+	}
 	if input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil {
 		if err := input.Validate(); err != nil {
 			return nil, err

@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `957b73a` plus background argument capture. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `d632a6e` plus named background consumers. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -15,7 +15,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | Native/polling CLI tests and Source archives; callback admission at 5656802, exact timelines at cf808fe, readiness calibration at e3fc640 | Three native recipe rounds, sequential full ordinary/race and Source export pass after actual probe acknowledgement; full runtime handoff/temporal G3/G7 audit remains |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` at e3fc640 | 428 production files, 1400 named types, zero direct open-payload findings; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` on d632a6e plus named background consumers | 429 production files, 1402 named types, zero direct open-payload findings; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -9583,3 +9583,43 @@ remain anchored; working-tree diff check passed. Native diagnostic rejected all
 invariants, full mutation sweep and coverage were not rerun for this capture slice.
 The preceding e3fc640 full ordinary/race/vet and coverage gates retain their own
 baseline. No merge or push; full migration goal remains incomplete.
+
+## Named direct background argument consumers — 2026-10-11
+
+Baseline: `d632a6e` plus this implementation, using the 18 actual Source recipes.
+BackgroundBindingFailure and private backgroundModelArguments retain invocation
+stage observations separately from executable BackgroundRunInput. Finite command
+observations reuse the common named split-failure projection; closed immutable
+extras remain inert unknown parameters. Strict DecodeToolInput admission stays
+separate. Before hooks may rewrite or deny; guards/permission/journal admission
+precede binding-failure settlement in the single ToolGate. Command split failure
+occurs after lazy scoped-manager initialization and before task allocation.
+
+All 18 actual Source cases compare exact output, masked display, final input,
+before/guard/after/result trace and failed/denied outcomes. Tests additionally
+start the next real inert background command and assert its ID, proving invalid
+commands did not advance task allocation. Named cloning/masking, canonical sorted
+step identity and stored-message restoration preserve root/command kind, unknown
+parameter order and explicit known-option nulls without mutating live inputs.
+Nonfinite observations refuse admission. Broader timeout/approval-prefix coercion,
+other default-tool consumers and complete G3/G4/G7 acceptance remain open.
+
+Architecture Mermaid and boundary text reviewed; Archify regenerated HTML from
+the JSON specification with showcase 9/9, zero errors/warnings. Specification
+SHA256 dea510a34d205f8f0b01652595e804794d5fce48f678099afaf85eafca7a8225;
+HTML SHA256 2ec2fc5974f68e39453ad46a96f5e6e3a44c7d010f5dfb3becc84165b313a324.
+No fresh visual inspection (earlier browser access denied). No dependencies,
+Python runtime modules, fixture expectations or feature activation defaults changed.
+No new coverage measurement; e3fc640's 89.34% application coverage remains pinned
+to that prior baseline. No merge, push or complete-port acceptance claim.
+
+Fresh validation: focused BackgroundModel/BackgroundDisplay/BashBinding tests
+passed; sequential full Go ordinary and race suites passed; vet passed. Type audit: 429 production files / 1,402 named types / zero
+findings. Selected Source guard mutation tool-input-unmasked was caught (passing
+baseline, failed test call); this is one Source mutation, not a full mutation sweep
+or a native Go mutation claim. Full Python regression, package invariants and
+scanner verification were not rerun: no Python package or scanner targets changed.
+
+Full Source export --check passed after all native Go jobs and the selected
+mutation completed: 220 current files. No fixture or diagnostics output was
+rewritten. Working-tree diff check passed.

@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `957b73a` plus background argument capture. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-11 at `d632a6e` plus named background consumers. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 219 exported Source recipe files including actual SDK usage, non-mapping input and Bash option/command consumer captures; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 220 exported Source recipe files including actual SDK usage, non-mapping input and Bash option/command consumer captures; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -6904,10 +6904,11 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    This proves a capture precondition repair; complete runtime handoff and
    temporal equivalence still require the G3/G7 scope audit.
 
-5. Direct background model arguments: actual Source capture now has 18 recipes
-   and a pinned native admission diagnostic. Go still rejects these before the
-   Source before/guard/binding/command-consumer stages. Implement named observed
-   arguments and deferred binding errors without adding an executable open payload.
+5. Broader background option/consumer fidelity: all 18 direct background
+   command/binding recipes now match native stages, initialization, task numbering
+   and masked display. Named observations and binding failures are implemented.
+   Audit timeout/approval-prefix coercion and remaining default tools; complete
+   provider/default acceptance remains open.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -17393,3 +17394,43 @@ remain anchored; working-tree diff check passed. Native diagnostic rejected all
 invariants, full mutation sweep and coverage were not rerun for this capture slice.
 The preceding e3fc640 full ordinary/race/vet and coverage gates retain their own
 baseline. No merge or push; full migration goal remains incomplete.
+
+## Named direct background argument consumers — 2026-10-11
+
+Baseline: `d632a6e` plus this implementation, using the 18 actual Source recipes.
+BackgroundBindingFailure and private backgroundModelArguments retain invocation
+stage observations separately from executable BackgroundRunInput. Finite command
+observations reuse the common named split-failure projection; closed immutable
+extras remain inert unknown parameters. Strict DecodeToolInput admission stays
+separate. Before hooks may rewrite or deny; guards/permission/journal admission
+precede binding-failure settlement in the single ToolGate. Command split failure
+occurs after lazy scoped-manager initialization and before task allocation.
+
+All 18 actual Source cases compare exact output, masked display, final input,
+before/guard/after/result trace and failed/denied outcomes. Tests additionally
+start the next real inert background command and assert its ID, proving invalid
+commands did not advance task allocation. Named cloning/masking, canonical sorted
+step identity and stored-message restoration preserve root/command kind, unknown
+parameter order and explicit known-option nulls without mutating live inputs.
+Nonfinite observations refuse admission. Broader timeout/approval-prefix coercion,
+other default-tool consumers and complete G3/G4/G7 acceptance remain open.
+
+Architecture Mermaid and boundary text reviewed; Archify regenerated HTML from
+the JSON specification with showcase 9/9, zero errors/warnings. Specification
+SHA256 dea510a34d205f8f0b01652595e804794d5fce48f678099afaf85eafca7a8225;
+HTML SHA256 2ec2fc5974f68e39453ad46a96f5e6e3a44c7d010f5dfb3becc84165b313a324.
+No fresh visual inspection (earlier browser access denied). No dependencies,
+Python runtime modules, fixture expectations or feature activation defaults changed.
+No new coverage measurement; e3fc640's 89.34% application coverage remains pinned
+to that prior baseline. No merge, push or complete-port acceptance claim.
+
+Fresh validation: focused BackgroundModel/BackgroundDisplay/BashBinding tests
+passed; sequential full Go ordinary and race suites passed; vet passed. Type audit: 429 production files / 1,402 named types / zero
+findings. Selected Source guard mutation tool-input-unmasked was caught (passing
+baseline, failed test call); this is one Source mutation, not a full mutation sweep
+or a native Go mutation claim. Full Python regression, package invariants and
+scanner verification were not rerun: no Python package or scanner targets changed.
+
+Full Source export --check passed after all native Go jobs and the selected
+mutation completed: 220 current files. No fixture or diagnostics output was
+rewritten. Working-tree diff check passed.

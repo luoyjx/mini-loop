@@ -357,6 +357,8 @@ func (gate *ToolGate) dispatchProjected(ctx context.Context, authority ToolAutho
 		var executeErr error
 		if failure, ok := call.Input.BashBindingFailure(); ok {
 			executeErr = failure
+		} else if failure, ok := call.Input.BackgroundBindingFailure(); ok {
+			executeErr = failure
 		} else if handler, ok := definition.handler.(detailedToolHandler); ok {
 			var command *shell.Result
 			output, command, executeErr = handler.executeDetailedTool(ctx, authority, call.Input)

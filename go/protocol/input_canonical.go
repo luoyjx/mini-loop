@@ -15,6 +15,17 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
+	if input.backgroundModel != nil {
+		raw, err := input.marshalBackgroundModel()
+		if err != nil {
+			return "", err
+		}
+		value, err := jsonvalue.Decode(string(raw))
+		if err != nil {
+			return "", err
+		}
+		return PythonJSON(value.Sorted(), false, compact)
+	}
 	if IsMCPToolName(input.Name()) {
 		return PythonJSON(input.mcpArguments.Sorted(), false, compact)
 	}

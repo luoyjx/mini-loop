@@ -49,6 +49,9 @@ func (v ToolInput) ShellCommand() (string, bool) {
 		}
 		return v.bash.Command, true
 	case ToolBackgroundRun:
+		if command, ok := v.BackgroundCommandObservation(); ok {
+			return command.PolicyString(), true
+		}
 		return v.backgroundRun.Command, true
 	}
 	return "", false

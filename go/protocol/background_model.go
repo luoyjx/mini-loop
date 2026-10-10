@@ -1,0 +1,208 @@
+package protocol
+
+import (
+	"errors"
+	"fmt"
+
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+)
+
+// BackgroundBindingFailure is an invocation failure settled after admission.
+// Its finite argument kinds and parameter name grant no shell authority.
+type BackgroundBindingFailure struct {
+	kind         BashBindingFailureKind
+	parameter    string
+	argumentKind BashArgumentKind
+}
+
+func (failure BackgroundBindingFailure) Error() string {
+	if failure.kind == BashNonMappingArguments {
+		return fmt.Sprintf("mini_loop.registry.Tool.run() argument after ** must be a mapping, not %s", failure.argumentKind)
+	}
+	if failure.kind == BashMissingCommand {
+		return "install_background.<locals>.background_run() missing 1 required positional argument: 'command'"
+	}
+	return fmt.Sprintf("install_background.<locals>.background_run() got an unexpected keyword argument '%s'", failure.parameter)
+}
+
+// backgroundModelArguments separates observations from the executable typed
+// BackgroundRunInput. Unknown parameters are immutable metadata, never argv.
+type backgroundModelArguments struct {
+	command  *BashCommandObservation
+	failure  *BackgroundBindingFailure
+	rejected *BashRejectedArguments
+	extra    jsonvalue.Value
+	missing  bool
+}
+
+func (args backgroundModelArguments) clone() *backgroundModelArguments {
+	if args.command != nil {
+		value := *args.command
+		args.command = &value
+	}
+	if args.failure != nil {
+		value := *args.failure
+		args.failure = &value
+	}
+	if args.rejected != nil {
+		value := *args.rejected
+		args.rejected = &value
+	}
+	return &args
+}
+
+func (args backgroundModelArguments) validate() error {
+	if args.command != nil {
+		if err := args.command.Validate(); err != nil {
+			return err
+		}
+	}
+	if args.failure != nil {
+		failure := args.failure
+		if err := (BashBindingFailure{kind: failure.kind, parameter: failure.parameter, argumentKind: failure.argumentKind}).Validate(); err != nil {
+			return err
+		}
+		if failure.kind == BashNonMappingArguments {
+			if args.rejected == nil || args.rejected.kind != failure.argumentKind {
+				return errors.New("background non-mapping failure requires matching arguments")
+			}
+			return args.rejected.Validate()
+		}
+	}
+	if args.rejected != nil {
+		return errors.New("background rejected arguments require non-mapping failure")
+	}
+	if args.extra.Kind() != jsonvalue.Object {
+		return errors.New("background extra parameters must be an object")
+	}
+	_, err := args.extra.MarshalJSON()
+	return err
+}
+
+func decodeModelBackgroundInput(data []byte) (ToolInput, error) {
+	if len(data) > MaxWireBytes {
+		return ToolInput{}, errors.New("background model input exceeds wire bound")
+	}
+	object, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return ToolInput{}, err
+	}
+	args := &backgroundModelArguments{extra: jsonvalue.ObjectValue(nil)}
+	if object.Kind() != jsonvalue.Object {
+		rejected, err := rejectedBashArguments(object)
+		if err != nil {
+			return ToolInput{}, err
+		}
+		args.rejected = &rejected
+		args.failure = &BackgroundBindingFailure{kind: BashNonMappingArguments, argumentKind: rejected.kind}
+		input := BackgroundRunToolInput(BackgroundRunInput{})
+		input.backgroundModel = args
+		return input, input.Validate()
+	}
+	known, extra := []jsonvalue.Field{}, []jsonvalue.Field{}
+	for _, key := range object.Keys() {
+		value, _ := object.Lookup(key)
+		switch key {
+		case "command": // Selected below, preserving the observed value separately.
+		case "timeout", "approval_prefix":
+			known = append(known, jsonvalue.Field{Name: key, Value: value})
+		default:
+			extra = append(extra, jsonvalue.Field{Name: key, Value: value})
+		}
+	}
+	command, present := object.Lookup("command")
+	text, isText := command.Text()
+	args.missing = !present
+	if present && !isText {
+		value, err := observeBashCommand(command)
+		if err != nil {
+			return ToolInput{}, err
+		}
+		args.command = &value
+	}
+	if len(extra) == 0 && present && isText {
+		return DecodeToolInput(ToolBackgroundRun, data)
+	}
+	known = append(known, jsonvalue.Field{Name: "command", Value: jsonvalue.TextValue(text)})
+	encoded, err := jsonvalue.ObjectValue(known).MarshalJSON()
+	if err != nil {
+		return ToolInput{}, err
+	}
+	input, err := DecodeToolInput(ToolBackgroundRun, encoded)
+	if err != nil {
+		return ToolInput{}, err
+	}
+	args.extra = jsonvalue.ObjectValue(extra)
+	if len(extra) > 0 {
+		args.failure = &BackgroundBindingFailure{kind: BashUnexpectedParameter, parameter: extra[0].Name}
+	} else if !present {
+		args.failure = &BackgroundBindingFailure{kind: BashMissingCommand}
+	}
+	input.backgroundModel = args
+	return input, input.Validate()
+}
+
+func (input ToolInput) BackgroundBindingFailure() (BackgroundBindingFailure, bool) {
+	if input.name != ToolBackgroundRun || input.backgroundModel == nil || input.backgroundModel.failure == nil {
+		return BackgroundBindingFailure{}, false
+	}
+	return *input.backgroundModel.failure, true
+}
+
+func (input ToolInput) BackgroundCommandObservation() (BashCommandObservation, bool) {
+	if input.name != ToolBackgroundRun || input.backgroundModel == nil || input.backgroundModel.command == nil {
+		return BashCommandObservation{}, false
+	}
+	return *input.backgroundModel.command, true
+}
+
+func (input ToolInput) marshalBackgroundModel() ([]byte, error) {
+	if err := input.Validate(); err != nil {
+		return nil, err
+	}
+	args := input.backgroundModel
+	if args.rejected != nil {
+		return args.rejected.MarshalJSON()
+	}
+	plain := input
+	plain.backgroundModel = nil
+	encoded, err := plain.marshalOptionalJSON()
+	if err != nil {
+		return nil, err
+	}
+	object, err := jsonvalue.Decode(string(encoded))
+	if err != nil {
+		return nil, err
+	}
+	fields := []jsonvalue.Field{}
+	for _, key := range object.Keys() {
+		value, _ := object.Lookup(key)
+		if key == "command" {
+			if args.missing {
+				continue
+			}
+			if args.command != nil {
+				value = args.command.observed
+			}
+		}
+		fields = append(fields, jsonvalue.Field{Name: key, Value: value})
+	}
+	for _, key := range args.extra.Keys() {
+		value, _ := args.extra.Lookup(key)
+		fields = append(fields, jsonvalue.Field{Name: key, Value: value})
+	}
+	return jsonvalue.ObjectValue(fields).MarshalJSON()
+}
+
+func (args *backgroundModelArguments) mask(mask func(string) string) {
+	if args.command != nil {
+		args.command.observed = args.command.observed.MapStrings(mask)
+	}
+	if args.failure != nil {
+		args.failure.parameter = mask(args.failure.parameter)
+	}
+	if args.rejected != nil {
+		*args.rejected = args.rejected.mapStrings(mask)
+	}
+	args.extra = args.extra.MapStrings(mask)
+}

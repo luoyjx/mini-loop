@@ -616,7 +616,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `957b73a` plus direct background argument Source capture;
+reviewed **2026-10-11** (Go baseline `d632a6e` plus direct background argument consumers;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -677,7 +677,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash and background binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -2657,8 +2657,16 @@ Thirty-six actual Source tool_use event labels and 12 independent masking/displa
 profiles match; key collisions, Unicode and opaque shell previews preserve the
 live input. Explicit background_run now shares the Source shell label rules;
 14 actual masked string-command profiles verify search/list/read, opaque shell,
-Unicode and bounded previews without changing the live command. Non-text
-background_run consumer parity remains open. This does not complete provider or port acceptance.
+Unicode and bounded previews without changing the live command. Direct
+background_run now retains named command observations and binding failures through
+model decoding, cloning, masking, historical reads and canonical action identity.
+The common gate settles invocation failures after hooks/guards/permission and
+journal admission, while actual command consumers initialize the owned manager
+before split failure without allocating a task. Eighteen actual Source profiles
+match display, final input, hook/result order and background initialization/task
+numbering. Before rewrites and denials retain precedence. Known timeout/prefix
+fields remain typed; their broader coercion audit, nonfinite inputs and complete
+provider/port acceptance remain open.
 
 ## Repository map
 

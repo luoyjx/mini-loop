@@ -157,6 +157,9 @@ func (handler *runtimeHandler) executeBackground(ctx context.Context, input prot
 	if !ok {
 		return "", errors.New("unsupported background input")
 	}
+	if command, ok := input.BackgroundCommandObservation(); ok {
+		return "", command.Failure(protocol.BashCommandSplit)
+	}
 	var timeout *time.Duration
 	if value.Timeout != nil {
 		const maxSeconds = int64(1<<63-1) / int64(time.Second)
