@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `ab1833a` plus provider scope audit;
+reviewed **2026-10-10** (Go baseline `14e1ca1` plus typed usage metadata and event projection;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + citations + usage schema · SSE · UTF-8 tool-result wire · core usage decoding · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1230,8 +1230,17 @@ file cache survives client reconstruction, reuses tokens with more than 30 secon
 remaining, and supports forced bypass. Invalid expiry re-exchanges; atomic writes
 preserve refresh-token/extension fields. Filesystem write failure leaves the
 exchanged token usable in memory. Profile credentials retain private-file guards,
-and workspace selection belongs in federation's token body. Both profile grant
-paths use the Source 30-second default token timeout. Launcher now selects explicit
+and workspace selection belongs in federation's token body.
+
+`protocol.TokenUsage` now models cache-creation buckets, inference geography,
+thinking-token details and server-tool request counts with named nested types.
+Its codec preserves absent/null/value and closed future extensions; clones detach
+mutable fields. `WithSDKDefaults` explicitly materializes nullable SDK fields.
+Event projection masks metadata strings and extension keys/values before escaping,
+without mutating authoritative usage. Stored event decoding retains this shape.
+HTTP/SSE provider adoption is still pending; current model transport decodes core
+usage only, and native integer/required-nested-count admission remains strict.
+Both profile grant paths use the Source 30-second default token timeout. Launcher now selects explicit
 profiles (including active pointers), complete environment federation, then fallback
 profiles when API key/auth token are undefined. Defined empty static credentials
 suppress discovery. A defined empty auth token still emits `Authorization: Bearer `,

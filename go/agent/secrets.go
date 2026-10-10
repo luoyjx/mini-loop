@@ -105,6 +105,10 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 	maskStringPointer(mask, &event.modelStart.CapabilityFingerprint)
 	event.modelStart.SpanID = SpanID(mask(string(event.modelStart.SpanID)))
 	event.modelEnd.SpanID = SpanID(mask(string(event.modelEnd.SpanID)))
+	if event.modelEnd.Usage != nil {
+		usage := event.modelEnd.Usage.MapStrings(mask)
+		event.modelEnd.Usage = &usage
+	}
 	maskStringPointer(mask, &event.modelEnd.Error)
 	maskStringPointer(mask, &event.modelEnd.ServedModel)
 	maskStringPointer(mask, &event.modelEnd.ToolCatalogFingerprint)

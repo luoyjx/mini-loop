@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `477a209` plus SDK usage Source inventory. Automatic Launcher discovery and defined-empty auth are delivered; usage metadata remains a confirmed implementation gap. The entries below retain their historical
+Reviewed code/test baseline: `14e1ca1` plus named usage metadata/event foundation. Automatic Launcher discovery and defined-empty auth are delivered; provider adoption and restart composition remain confirmed implementation gaps. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -15,7 +15,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 412 production files, 1327 named types at `477a209`, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 413 production files, 1331 named types on the usage foundation snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -24,7 +24,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
 | Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
 | Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
-| Provider usage metadata | Seven actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Four named metadata fields, SDK nullable event defaults and future extension preservation are a confirmed native gap; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
+| Provider usage metadata | Seven actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON foundation implemented; HTTP/SSE adoption, coercion reconciliation and real restart composition remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 The latest authentication-slice Source export retry at `477a209` passed with
@@ -8357,3 +8357,49 @@ full Python, invariants/mutation, coverage, performance or architecture regenera
 was run; native runtime/Python package modules/default tool types are unchanged.
 Diff/cached checks pass. No merge or push. Original P0/P1/G0-G7 acceptance and
 the default diagnostics dependency decision remain open.
+
+## 2026-10-10 typed usage metadata and safe archival event foundation
+
+Baseline `14e1ca1` plus protocol/event implementation. TokenUsage now has named
+cache-creation buckets, inference geography, output thinking-token details and
+server-tool counters. Optional fields preserve absent/null/value; closed immutable
+extensions survive at top and nested levels. Deep clones detach every mutable
+pointer. Explicit WithSDKDefaults materializes seven optional SDK nulls while
+native/fake constructors preserve sparse shape.
+
+Protocol tests round-trip the six structurally valid usage Source cases; the
+scalar-string case explicitly asserts existing strict native integer refusal.
+Required nested counts are non-negative native integers. This is not full seven-
+case SDK normalization parity. Negative/missing/mistyped/oversized ingress fails
+atomically. Existing core replies and recovery fixtures retain their representation.
+
+New event tests verify clone isolation, string/extension-key masking before JSON
+escaping and exact stored-event round-trip with inert archival provenance. Metadata
+masking leaves caller usage unchanged. Future extension data cannot become actor,
+permissions or tool authority. Actual SQLite/trajectory restart composition remains
+for the following transport adoption proof; JSON archival round-trip is not that proof.
+
+HTTP/SSE provider decoders are unchanged and still discard metadata. This commit
+establishes the named representation and event path; provider adoption, SDK defaults,
+nullable/coercion reconciliation and final G4/G7 remain open. No dependency or
+activation flag changes. README canonical label/boundary/review baseline, extension
+notes and interactive specification describe this exact state.
+
+Type audit passed: 413 production files, 1331 package-level types, zero findings.
+The targeted `verify_guards.py -k secret` selection caught both matched mutations
+with passing baselines; it is not a fresh full mutation sweep or Go mutation proof.
+Archify regenerated from the reviewed specification with 9/9 checks, zero errors
+and warnings. Specification SHA256 a65761be4c5abe6e918cf50235b5173772ddc36a1c26efc6417e90a4c2c0ae16;
+HTML SHA256 eacf0c9c075b30a9ed7b3402d5bcc38356d9d1e90a5da9857d628dbf9f253342.
+No browser visual inspection was performed. Source export, scans, full Python,
+Python package invariants, coverage, performance, Linux and CGO-disabled runs were
+not refreshed; Python package modules, fixtures, scanners and default tool types
+are unchanged. Native metadata tests provide the direct Go guard evidence.
+
+Final frozen code/test/fixture snapshot passed narrow protocol/agent/provider tests,
+full `go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...`.
+Logs: `/tmp/mini-loop-usage-metadata-{targeted,go,race,vet,types,guards}.log`.
+Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings remain nonfatal.
+Code/tests stayed unchanged during full jobs. README outline and worktree/staged
+diff checks pass. No merge or push. Full port acceptance remains open.

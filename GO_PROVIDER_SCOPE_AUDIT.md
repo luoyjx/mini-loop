@@ -96,3 +96,10 @@ SDK Message 的 container/stop_details 与完整 Usage 是不同问题：当前 
   Go 运行时未变，Source fixture 与审计文档没有修复 native usage。
 
 验证日志位于 `/tmp/mini-loop-provider-usage-{export,scans}.log`；没有 merge 或 push。
+
+## 具名协议与事件基础更新
+
+`14e1ca1` 后的实现增加四个 metadata 字段、三个具名嵌套结构、null 状态和闭合扩展。
+协议可往返六个结构有效的 Source usage 输出；scalar-string 明确保留 native 拒绝。
+克隆、事件脱敏、存储事件 JSON 往返已有测试；没有把 JSON 往返当成真实 SQL restart。
+当前 HTTP/SSE 解码仍丢弃 metadata，后续必须完成 provider 接入与持久化组合证明。

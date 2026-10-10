@@ -3054,3 +3054,17 @@ projected identity files still reject empty stripped contents. Live identity rea
 are re-invoked on refresh: rotated literals exchange again, disappeared values fail
 before a new token/model request. Explicit SDK maps remain captured unless given a
 reader. All these observations are pinned to actual SDK 0.107.1 offline recipes.
+
+### Typed usage metadata and projection
+
+`protocol.TokenUsage` adds named CacheCreationUsage, OutputTokenDetails and
+ServerToolUsage plus InferenceGeo. Optional pointers retain concrete values;
+the codec separately preserves explicit null and closed immutable extensions,
+including nested metadata extensions. Native sparse/fake usage remains sparse.
+`WithSDKDefaults` explicitly supplies all seven optional SDK null defaults.
+Cloning detaches mutable pointers; MapStrings projects metadata values and
+extension keys/values before serialization. Agent event projection uses this
+without mutating provider values; stored event decoding retains shape and never
+grants authority. Current HTTP/SSE decoding still discards metadata and is the
+next adoption task. Native non-negative bounded integers and required nested
+counts remain ingress adaptations; scalar-string Source output is refused here.

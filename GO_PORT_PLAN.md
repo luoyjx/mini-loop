@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `477a209` plus the provider usage Source inventory. Launcher automatic discovery and defined-empty auth alignment are delivered; SDK usage metadata preservation is the next confirmed runtime gap. This section is the current delivery index;
+Reviewed 2026-10-10 at `14e1ca1` plus named usage metadata/event foundation. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata adoption and restart composition are the next confirmed runtime gaps. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,7 +6864,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; four SDK usage metadata fields and SDK null/default event shape remain unimplemented; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; named metadata/event foundation implemented; HTTP/SSE metadata decoding, SDK defaults/coercion and restart composition remain; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
 | G7 | 203 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
@@ -6885,9 +6885,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 
 3. Complete usage event fidelity: actual SDK direct/SSE fixtures show that
    `cache_creation`, `inference_geo`, `output_tokens_details` and `server_tool_use`
-   reach Python `model_end.usage` but are discarded by native decoding. Preserve
-   the SDK's nullable defaults and future extension fields through named types,
-   event projection, recordings and restart paths. See
+   reach Python `model_end.usage` but are still discarded by native HTTP/SSE decoding.
+   Named types, nullable/default selection, extensions, clones, masked event projection
+   and stored-event JSON codecs are now implemented; wire adoption, recordings and
+   real restart composition remain. See
    [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md). Structured output request
    options are not emitted by the current repository request producers; audit
    custom extension behavior separately instead of adding unrelated SDK features.
@@ -16160,3 +16161,49 @@ full Python, invariants/mutation, coverage, performance or architecture regenera
 was run; native runtime/Python package modules/default tool types are unchanged.
 Diff/cached checks pass. No merge or push. Original P0/P1/G0-G7 acceptance and
 the default diagnostics dependency decision remain open.
+
+## 2026-10-10 typed usage metadata and safe archival event foundation
+
+Baseline `14e1ca1` plus protocol/event implementation. TokenUsage now has named
+cache-creation buckets, inference geography, output thinking-token details and
+server-tool counters. Optional fields preserve absent/null/value; closed immutable
+extensions survive at top and nested levels. Deep clones detach every mutable
+pointer. Explicit WithSDKDefaults materializes seven optional SDK nulls while
+native/fake constructors preserve sparse shape.
+
+Protocol tests round-trip the six structurally valid usage Source cases; the
+scalar-string case explicitly asserts existing strict native integer refusal.
+Required nested counts are non-negative native integers. This is not full seven-
+case SDK normalization parity. Negative/missing/mistyped/oversized ingress fails
+atomically. Existing core replies and recovery fixtures retain their representation.
+
+New event tests verify clone isolation, string/extension-key masking before JSON
+escaping and exact stored-event round-trip with inert archival provenance. Metadata
+masking leaves caller usage unchanged. Future extension data cannot become actor,
+permissions or tool authority. Actual SQLite/trajectory restart composition remains
+for the following transport adoption proof; JSON archival round-trip is not that proof.
+
+HTTP/SSE provider decoders are unchanged and still discard metadata. This commit
+establishes the named representation and event path; provider adoption, SDK defaults,
+nullable/coercion reconciliation and final G4/G7 remain open. No dependency or
+activation flag changes. README canonical label/boundary/review baseline, extension
+notes and interactive specification describe this exact state.
+
+Type audit passed: 413 production files, 1331 package-level types, zero findings.
+The targeted `verify_guards.py -k secret` selection caught both matched mutations
+with passing baselines; it is not a fresh full mutation sweep or Go mutation proof.
+Archify regenerated from the reviewed specification with 9/9 checks, zero errors
+and warnings. Specification SHA256 a65761be4c5abe6e918cf50235b5173772ddc36a1c26efc6417e90a4c2c0ae16;
+HTML SHA256 eacf0c9c075b30a9ed7b3402d5bcc38356d9d1e90a5da9857d628dbf9f253342.
+No browser visual inspection was performed. Source export, scans, full Python,
+Python package invariants, coverage, performance, Linux and CGO-disabled runs were
+not refreshed; Python package modules, fixtures, scanners and default tool types
+are unchanged. Native metadata tests provide the direct Go guard evidence.
+
+Final frozen code/test/fixture snapshot passed narrow protocol/agent/provider tests,
+full `go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...`.
+Logs: `/tmp/mini-loop-usage-metadata-{targeted,go,race,vet,types,guards}.log`.
+Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings remain nonfatal.
+Code/tests stayed unchanged during full jobs. README outline and worktree/staged
+diff checks pass. No merge or push. Full port acceptance remains open.

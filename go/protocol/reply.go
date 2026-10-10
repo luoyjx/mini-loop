@@ -34,68 +34,6 @@ func (reason StopReason) Resumable() bool { return reason == StopPauseTurn }
 
 type ServiceTier string
 
-// TokenUsage preserves absent cache fields separately from explicit zeroes.
-// The final provider response always reports input and output token counts.
-type TokenUsage struct {
-	InputTokens              int          `json:"input_tokens"`
-	OutputTokens             int          `json:"output_tokens"`
-	CacheReadInputTokens     *int         `json:"cache_read_input_tokens,omitempty"`
-	CacheCreationInputTokens *int         `json:"cache_creation_input_tokens,omitempty"`
-	ServiceTier              *ServiceTier `json:"service_tier,omitempty"`
-}
-
-func (usage TokenUsage) Validate() error {
-	if usage.InputTokens < 0 || usage.OutputTokens < 0 ||
-		(usage.CacheReadInputTokens != nil && *usage.CacheReadInputTokens < 0) ||
-		(usage.CacheCreationInputTokens != nil && *usage.CacheCreationInputTokens < 0) {
-		return errors.New("token counts must be non-negative")
-	}
-	return nil
-}
-
-func (usage TokenUsage) clone() TokenUsage {
-	if usage.CacheReadInputTokens != nil {
-		value := *usage.CacheReadInputTokens
-		usage.CacheReadInputTokens = &value
-	}
-	if usage.CacheCreationInputTokens != nil {
-		value := *usage.CacheCreationInputTokens
-		usage.CacheCreationInputTokens = &value
-	}
-	if usage.ServiceTier != nil {
-		value := *usage.ServiceTier
-		usage.ServiceTier = &value
-	}
-	return usage
-}
-
-func (usage *TokenUsage) UnmarshalJSON(data []byte) error {
-	var wire struct {
-		InputTokens              *int         `json:"input_tokens"`
-		OutputTokens             *int         `json:"output_tokens"`
-		CacheReadInputTokens     *int         `json:"cache_read_input_tokens"`
-		CacheCreationInputTokens *int         `json:"cache_creation_input_tokens"`
-		ServiceTier              *ServiceTier `json:"service_tier"`
-	}
-	if err := decodeStrict(data, &wire); err != nil {
-		return err
-	}
-	if wire.InputTokens == nil || wire.OutputTokens == nil {
-		return errors.New("usage requires input_tokens and output_tokens")
-	}
-	next := TokenUsage{
-		InputTokens: *wire.InputTokens, OutputTokens: *wire.OutputTokens,
-		CacheReadInputTokens:     wire.CacheReadInputTokens,
-		CacheCreationInputTokens: wire.CacheCreationInputTokens,
-		ServiceTier:              wire.ServiceTier,
-	}
-	if err := next.Validate(); err != nil {
-		return err
-	}
-	*usage = next
-	return nil
-}
-
 // ModelReply is the completed provider response. An empty Content slice is
 // valid for a refusal; request transcript messages retain their own rules.
 type ModelReply struct {
