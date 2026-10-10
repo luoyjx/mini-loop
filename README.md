@@ -465,7 +465,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `2ecbee7` plus native file-profile credentials and OAuth refresh,
+Runtime review baseline: `a43b1da` plus explicit native federation token exchange,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · file profile / OAuth refresh<br/>process-local token cache · request auth before HTTP / retry<br/>typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · file profile / OAuth / federation<br/>process-local token cache · request auth before HTTP / retry<br/>typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1218,7 +1218,15 @@ headers are copied into caller configuration. Refresh writes a unique private
 0600 temporary file, syncs it, atomically replaces the credential file and
 best-effort syncs the parent. Unknown credential extensions survive; named
 credential fields remain private. Profile construction does not discover the
-environment. Launcher automatic discovery and federation exchange remain open. The launcher explicitly passes
+environment. Explicit `provider.NewFederation` now exchanges a named immutable
+identity assertion with the jwt-bearer grant. Literal assertions are captured;
+projected token files are reopened on every exchange and follow their rotated
+symlinks. Federation sends both beta flags only to the token endpoint. Scope is
+informational; organization/rule and optional service-account/workspace fields
+retain named request ownership. Token replies are bounded to 1 MiB, assertions
+to 16 KiB, and callbacks/errors cannot expose secret diagnostics. The same Client
+cache owns reuse and forced exchange retry. Profile federation disk-cache dispatch
+and Launcher automatic discovery remain open. The launcher explicitly passes
 its validated environment settings. This
 adapter supplies SDK-level retry; the session now applies separate default Agent
 recovery: at most ten transient retries, bounded outer waits, token escalation,

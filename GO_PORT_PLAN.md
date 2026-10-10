@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `2ecbee7` plus native file-profile/OAuth refresh and dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
+Reviewed 2026-10-10 at `a43b1da` plus native federation exchange, file-profile/OAuth refresh and dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6882,6 +6882,17 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    Citation-bearing HTTP/SQLite/recording recovery is verified for direct and stream
    profiles with an explicit registry. Reconcile remaining provider content, request
    and auth options against Python public behavior before accepting G4/G7.
+
+3. Federation profile dispatch: compose the implemented explicit driver with
+   CredentialsFile profile selection, required-field admission before disk-cache
+   reads, the Source 30-second disk freshness window, forced bypass, preserved
+   credential extensions and best-effort private atomic write-back. Capture
+   additional actual SDK profile recipes before accepting this path.
+
+4. Launcher credential discovery: capture environment/home/profile configuration
+   once; preserve static-key/bearer defined-empty distinctions, explicit profile
+   and active-pointer selection, environment federation before fallback profile,
+   and Source constructor-versus-request failures. Use the current native drivers.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -15861,4 +15872,62 @@ HTML SHA256:
 No fresh browser visual inspection, Python regression/verifiers, Source export,
 coverage, performance, Linux-host or CGO-disabled run was performed. Python
 runtime/export recipes and default-tool catalogue did not change. Diff/cached
+checks pass. No merge or push was performed.
+
+## 2026-10-10 explicit native federation token exchange
+
+Code/test baseline: `a43b1da` plus this implementation. Installed Source SDK
+Anthropic 0.107.1 WorkloadIdentityCredentials __call__/__init__/bind_base_url,
+IdentityTokenFile and constants define exchange semantics. Six existing pinned
+Source recipes compare native construction/request/error/cache behavior:
+federation-environment, file-before-literal, refuses-http, exchange-failure,
+model-401 and file-rotation. These tests supply explicit captured identity sources;
+they do not prove the still-pending Launcher environment/profile discovery chain.
+
+`provider.NewFederation` implements CredentialProvider with named rule,
+organization and optional service-account/workspace fields. Optional values are
+copied, preserving absent versus empty. Scope is copied informational metadata,
+never sent. One deployment URL owns direct exchange/model selection. Each fetch
+re-invokes IdentityTokenProvider, including forced retries. Literal sources capture
+the string and validate on fetch; IdentityTokenFile reopens a projected token,
+follows rotated symlinks and retains Python strip whitespace semantics. Source
+assertion/response caps are 16 KiB/1 MiB; default exchange timeout is 30 seconds.
+The closed JWT assertion carries no interpreted claims or local authority.
+
+The jwt-bearer request sends OAuth and federation beta flags; model auth sends
+OAuth beta only. Optional/None bearer token_type and case-insensitive Bearer are
+accepted; expires_in is required and uses PythonInteger conversion. Checked
+civil-time expiry retains the documented 0001–9999 native bound. Client's existing
+cache owns reuse/advisory/mandatory windows and one forced token-endpoint 401
+retry. Model 401 does not invalidate/replay. The driver itself caches/writes
+nothing. Response statuses below 400 can supply a valid token as in Source.
+
+Native adaptations retain strict UTF-8/string/header ingress, an 8 MiB raw-file
+cap before strip, parsed exact-loopback HTTP admission, refused redirects on a
+private HTTP client copy, and safe error kind/status without raw error bodies.
+Identity callback errors/panics are contained. Actual HTTP tests cover copied
+optional fields/scope omission/201, SSE model-401 cache reuse and redirect refusal;
+file tests cover projected symlink replacement, empty/invalid/oversized assertions
+and UTF-8 byte boundaries. Cancellation and invalid reply/wire bounds are tested.
+
+Profile oidc_federation dispatch/disk-cache persistence and automatic Launcher
+discovery remain implementation items. No default/dependency/tool selection
+changed. README canonical map and generated interactive specification describe
+the explicit federation path. Coverage retains measured baseline `a9585cb`.
+Final gates passed from `go/`: `go test -race -count=1 ./provider`, full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...`, `go vet ./...` and
+`go run ./tools/typeaudit -root .` (408 production files, 1320 package-level
+types, zero findings). Logs: `/tmp/mini-loop-federation-{go,race,vet,types}.log`.
+Source/test/fixture files remained unchanged during full validation jobs.
+Existing Darwin FSEvents deprecation and LC_DYSYMTAB warnings did not prevent
+passing gates.
+
+Archify regeneration passed 9/9 checks. Specification SHA256:
+`c9931eb37e6eea885f5c3fc998a7f8bf594bfa3b010750a0e5284e06b99aaafd`;
+HTML SHA256:
+`1593cdf84120b32bfda50daf2032eb4108d61e9b637ff6b36a15988677799f5a`.
+No fresh browser visual inspection, Python regression/verifiers, Source export,
+coverage, performance, Linux-host or CGO-disabled run was performed. Python
+runtime/export recipes and default-tool catalogue are unchanged. Diff/cached
 checks pass. No merge or push was performed.

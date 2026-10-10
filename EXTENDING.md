@@ -1600,7 +1600,21 @@ outside civil years 0001–9999 are explicitly refused. Parsed exact loopback HT
 is allowed; remote token exchange requires HTTPS. Secret leaf symlinks and
 world-readable POSIX files are refused; group mode is accepted. This adds no
 cross-process lock or automatic Launcher discovery. It retains no opaque config
-payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
+payload in the service layer. `NewFederation(FederationConfig)` supplies the
+explicit native jwt-bearer driver through `Config.Credentials`. Use its
+`ModelBaseURL()` for model Config; direct federation binds exchange and model
+requests to the same deployment. `IdentityTokenProvider` returns an immutable
+`IdentityAssertion`; `NewLiteralIdentityToken` captures a literal and validates
+it on fetch, while `NewIdentityTokenFile` reopens a projected token on every
+exchange. Projected-file symlinks are followed. Optional request strings are
+copied, preserving nil versus empty; `Scope()` returns a copied informational
+value and scope is never sent. Default token timeout is 30 seconds. Assertions
+are capped at 16 KiB, token responses at 1 MiB, and raw projected files at 8 MiB
+before stripping. Shared callbacks/clock/client transports must support concurrent
+calls and respect context. Callback errors/panics retain safe classifications;
+redirects are refused on a private HTTP client copy. This driver has no internal
+cache or disk write; Client owns refresh policy. Profile federation disk-cache
+selection and Launcher automatic discovery remain pending. `provider.NewStreaming` adds the optional consumer-owned
 `agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
 The native adapter retains five named citation variants and closed extension data

@@ -508,8 +508,16 @@ refresh token. Without client_id, rotation remains external. Named model and
 exchange endpoints preserve caller/profile precedence. Profile defaults are
 explicit captured values; it never reads environment variables. Bounded JSON,
 strict string fields, checked civil-time expiry and exact-loopback HTTP admission
-are documented native adaptations. Automatic Launcher discovery, federation
-exchange, remaining request options and production conformance remain pending.
+are documented native adaptations. `NewFederation(FederationConfig)` now supplies
+explicit native jwt-bearer exchange with a typed identity source. Literal tokens
+are detached; projected token files follow symlinks and reopen for each exchange.
+Optional request fields are copied; scope remains informational. The driver sends
+both exchange beta flags, validates required expiry/token type, and bounds
+assertions/responses to 16 KiB/1 MiB. Client's existing cache owns reuse and forced
+401 retry. Model 401 does not invalidate/replay. Callback errors/panics and
+exchange replies cannot leak token bodies through diagnostics. Profile federation
+disk-cache dispatch, automatic Launcher discovery, remaining request options and
+production conformance remain pending.
 
 ### Typed decision operator library
 
