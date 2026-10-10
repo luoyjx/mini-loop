@@ -15526,3 +15526,37 @@ deprecation warning remains. No fresh race, vet, Python, mutation, Source
 export or performance run was performed for this documentation-only refresh;
 their prior evidence retains its recorded baseline. `git diff --check` and
 the cached diff check pass. No merge or push was performed.
+
+## 2026-10-10 Source provider authentication inventory
+
+At `f85b928` plus this fixture slice, `provider_auth_contracts.py` captures ten
+additional cases through the actual `AnthropicCompatibleProvider.create_client`
+and pinned Anthropic SDK 0.107.1. Only the SDK HTTP client is injected with an
+offline `httpx.MockTransport`; environment and home are isolated. The SDK
+constructor source hash is retained alongside the existing four deferred-auth
+validation cases. No external requests or host credentials are used.
+
+Observed Source behavior: a truthy explicit API key suppresses environment
+credential discovery; an empty Source key falls through to SDK discovery.
+Environment API key and bearer token can produce both headers. Custom header
+lines can supply authentication or override the static headers; duplicate
+fixture header names keep their last value. Explicit base URL wins over the
+environment endpoint. Source `describe()` reports the explicitly configured
+key, so an environment bearer-only client still reports `<absent>`.
+
+The current Go provider does not yet implement bearer/custom-header discovery.
+This fixture establishes the next native auth slice; it does not establish Go
+parity. SDK profile/federation discovery is outside these ten cases and remains
+part of the final provider inventory. No runtime, topology, dependency or
+default changed in this slice.
+
+Validation: `pytest -q python/tests/test_provider_auth_contracts.py` passed
+(two tests); the existing Go deferred-auth test passed; complete ordinary
+`go test -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` passed. Source
+export `--check` reports 202 current files; `verify_scans.py` passed all 19
+anchors. The initial targeted Go command from the repository root failed
+because the module is under `go/`; its corrected module-directory run passed.
+Existing SDK/macOS deprecation warnings remain. No fresh full Python, race,
+coverage, mutation, invariant or architecture rendering was run: this slice
+changes capture tooling/tests and a fixture, not package runtime or topology.
+Diff and cached diff checks pass. No merge or push was performed.
