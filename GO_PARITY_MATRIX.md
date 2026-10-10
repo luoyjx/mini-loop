@@ -10403,3 +10403,35 @@ the full port goal remains active.
 
 Next: distinguish raw FSEvents callback delivery from Go flag/root admission at
 the exact failing runtime baseline before proposing a listener implementation fix.
+
+## Raw Darwin callback boundary experiment — 2026-10-11
+
+Baseline `7b6c3ad`; production runtime `ea35cd3` unchanged. Temporary C logging
+records time, subscription key, event ID, flags and path before calling Go; a
+temporary test trace records the operation wall-clock epoch. The instrumented
+full ordinary Go run fails only reload lower-mtime-write, identical-write,
+same-mtime-touch, rename-source, ignored-hidden and ignored-backup (110.951s).
+Each failed subscription has two or three raw callbacks before its acknowledged
+readiness probe and **zero raw C entries after the operation epoch**. The last
+raw entry precedes the operation by about 151–157ms. Thus Go flag/root admission,
+lexical filtering and batching are not the direct source of these six missing
+callback entries in this run. This narrows the failure boundary before C entry;
+it does not determine whether event stream delivery or dispatch queue service is
+responsible, and it does not establish a kernel/fseventsd defect.
+
+[Raw callback audit](docs/audits/go-reload-raw-c-entry-2026-10-11.json) preserves
+per-subscription evidence, event IDs/flags, exact command, log and file hashes.
+The run is instrumented: logging may affect scheduling, so it does not replace an
+uninstrumented acceptance gate or prove a root cause. No same-pressure Source
+comparison was made; prior Source captures retain their own scope. Temporary C
+and Go files were restored byte-for-byte and verified against baseline hashes;
+git status was clean before writing this evidence. No listener/runtime/test
+change is retained, no deadline/fixture/fallback was relaxed and no dependency
+was added. git diff --check passes. No new race/vet/type audit/export/Python suite,
+coverage, non-Darwin, performance or architecture visual gate is claimed.
+Native temporal reliability and complete migration acceptance remain open.
+No merge or push.
+
+Next: measure private serial dispatch queue progress independently of event
+callbacks during the failing operation window, separating queue service from
+upstream stream delivery before proposing an implementation change.

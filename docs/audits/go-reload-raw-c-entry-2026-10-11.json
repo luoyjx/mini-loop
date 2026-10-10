@@ -1,0 +1,206 @@
+{
+  "baseline_commit": "7b6c3ad",
+  "production_runtime": "ea35cd3 unchanged",
+  "experiment": "Temporary before-Go C callback fprintf records wall-clock nanoseconds, subscription key, event ID, flags and lexical path; temporary test trace records wall-clock operation epoch. No listener behavior, deadline, roots, flags or defaults deliberately changed. Logging is an observation intervention.",
+  "command": "cd go && go test -v -p=1 -count=1 -timeout=300s ./...",
+  "result": "failed only reload; six recipe failures, reload 110.951s",
+  "log": "/tmp/mini-loop-reload-raw-c-full.log",
+  "log_sha256": "d43c950af36bd4d6d27dd425853b7bded4953fc35a0dd03c2462bb88b347d5b5",
+  "raw_callback_records": 354,
+  "failed_profiles": [
+    {
+      "name": "lower-mtime-write",
+      "operation": "write",
+      "operation_unix_ns": 1791672381249989000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write2546524342/001",
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672381098969000,
+          "key": 41,
+          "event_id": 1899337066,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write2546524342/001"
+        },
+        {
+          "unix_ns": 1791672381099115000,
+          "key": 41,
+          "event_id": 1899337078,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write2546524342/001/source.go"
+        },
+        {
+          "unix_ns": 1791672381099212000,
+          "key": 41,
+          "event_id": 1899337087,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write2546524342/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "last_callback_before_operation_ms": 150.777
+    },
+    {
+      "name": "identical-write",
+      "operation": "unchanged-write",
+      "operation_unix_ns": 1791672386808570000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write429627067/001",
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672386654057000,
+          "key": 42,
+          "event_id": 1899338963,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write429627067/001"
+        },
+        {
+          "unix_ns": 1791672386654354000,
+          "key": 42,
+          "event_id": 1899338975,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write429627067/001/source.go"
+        },
+        {
+          "unix_ns": 1791672386654450000,
+          "key": 42,
+          "event_id": 1899339170,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesidentical-write429627067/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "last_callback_before_operation_ms": 154.12
+    },
+    {
+      "name": "same-mtime-touch",
+      "operation": "touch",
+      "operation_unix_ns": 1791672393605926000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch269668938/001",
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672393451221000,
+          "key": 43,
+          "event_id": 1899341277,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch269668938/001"
+        },
+        {
+          "unix_ns": 1791672393451757000,
+          "key": 43,
+          "event_id": 1899341289,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch269668938/001/source.go"
+        },
+        {
+          "unix_ns": 1791672393451984000,
+          "key": 43,
+          "event_id": 1899341310,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch269668938/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "last_callback_before_operation_ms": 153.942
+    },
+    {
+      "name": "rename-source",
+      "operation": "rename",
+      "operation_unix_ns": 1791672408017335000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source1835399398/001",
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672407863447000,
+          "key": 46,
+          "event_id": 1899350849,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source1835399398/001"
+        },
+        {
+          "unix_ns": 1791672407863678000,
+          "key": 46,
+          "event_id": 1899350861,
+          "flags": 103680,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source1835399398/001/source.go"
+        },
+        {
+          "unix_ns": 1791672407863748000,
+          "key": 46,
+          "event_id": 1899350870,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source1835399398/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "last_callback_before_operation_ms": 153.587
+    },
+    {
+      "name": "ignored-hidden",
+      "operation": "add",
+      "operation_unix_ns": 1791672411544205000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-hidden3174580403/001",
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672411386658000,
+          "key": 47,
+          "event_id": 1899352877,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-hidden3174580403/001"
+        },
+        {
+          "unix_ns": 1791672411387705000,
+          "key": 47,
+          "event_id": 1899352904,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-hidden3174580403/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "last_callback_before_operation_ms": 156.5
+    },
+    {
+      "name": "ignored-backup",
+      "operation": "add",
+      "operation_unix_ns": 1791672417888932000,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup2134471674/001",
+      "raw_callbacks": [
+        {
+          "unix_ns": 1791672417735097000,
+          "key": 48,
+          "event_id": 1899354728,
+          "flags": 164096,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup2134471674/001"
+        },
+        {
+          "unix_ns": 1791672417735384000,
+          "key": 48,
+          "event_id": 1899354752,
+          "flags": 102656,
+          "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup2134471674/001/reload_observer_ready.go"
+        }
+      ],
+      "callbacks_after_operation": 0,
+      "last_callback_before_operation_ms": 153.548
+    }
+  ],
+  "temporary_files": {
+    "go/reload/native_events_darwin.c": {
+      "baseline_sha256": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e",
+      "instrumented_sha256": "6ddde697be561fc2905d6262ff22f66bf8934cc7b749190f03de737fa9192010",
+      "restored_sha256": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e"
+    },
+    "go/reload/native_events_recipes_test.go": {
+      "baseline_sha256": "10c9774fa7324cbc4ede1d0621d43080092a329cce43dfeddb9c4f150ca1b9e9",
+      "instrumented_sha256": "07b92bfdce78b7a49b39b380174c6b602597b7140395991c9b8ec36b0876ecb9",
+      "restored_sha256": "10c9774fa7324cbc4ede1d0621d43080092a329cce43dfeddb9c4f150ca1b9e9"
+    }
+  },
+  "conclusion": "All six failing subscriptions had raw callbacks before the acknowledged readiness probe, but zero raw C callback entries after the recorded operation epoch. Go flag/root admission, lexical filtering and batching cannot directly suppress a callback that never entered this C boundary. These observations locate the gap before raw C entry for this instrumented run.",
+  "limits": [
+    "Does not distinguish OS/fseventsd/stream delivery from dispatch queue service or establish a root cause",
+    "Logging may affect native scheduling; instrumented run is not an uninstrumented acceptance gate",
+    "No fresh concurrent or same-pressure Source comparator; prior Source results retain their original experiment scope",
+    "No production/test changes retained; restored file hashes exactly equal baseline",
+    "No new uninstrumented full Go, race, vet, type audit, Source export, Python suite, coverage, non-Darwin, performance or architecture visual gate",
+    "Full native temporal reliability and complete port acceptance remain open; no merge or push"
+  ],
+  "next_action": "Probe serial dispatch queue progress independently of event callbacks during the failing operation window; distinguish queue service from upstream event stream delivery without changing event deadlines or falling back to polling"
+}
