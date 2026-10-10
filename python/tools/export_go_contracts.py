@@ -6525,6 +6525,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_nonmapping_input_contracts import provider_nonmapping_input_contracts
     from tools.provider_bash_options_contracts import provider_bash_options_contracts
     from tools.provider_bash_command_contracts import provider_bash_command_contracts
+    from tools.provider_background_input_contracts import provider_background_input_contracts
     from tools.dotenv_contracts import dotenv_contracts
     from tools.dotenv_file_contracts import dotenv_file_contracts
     from tools.dotenv_boot_contracts import dotenv_boot_contracts
@@ -6894,6 +6895,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-nonmapping-input.json": _json_bytes(provider_nonmapping_input_contracts()),
         "python-provider-bash-options.json": _json_bytes(provider_bash_options_contracts(scratch)),
         "python-provider-bash-command.json": _json_bytes(provider_bash_command_contracts(scratch)),
+        "python-provider-background-input.json": _json_bytes(provider_background_input_contracts(scratch)),
         "python-dotenv.json": _json_bytes(dotenv_contracts()),
         "python-dotenv-files.json": _json_bytes(dotenv_file_contracts(Path(scratch) / "dotenv-files")),
         "python-dotenv-boot.json": _json_bytes(dotenv_boot_contracts(Path(scratch) / "dotenv-boot")),

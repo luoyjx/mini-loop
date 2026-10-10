@@ -2,20 +2,20 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `e3fc640`. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `957b73a` plus background argument capture. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | Full export check followed by read-only full `_snapshot()`/TARGET byte comparison after native suites, `45d086b` plus native callback/loop correction | First --check failed only python-watchfiles.json; equivalent full snapshot retry matched all 219 files. First failed event difference was not retained; capture determinism remains open |
+| Source recipe freshness | Full export --check after native jobs ended: 219 files at e3fc640; 220 files with direct background argument capture | Current snapshot matches; prior failed captures remain retained in observer drift audits |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | Native/polling CLI tests, Source WatchFiles archives; observer source pins in docs/audits/go-fsevents-boundary-2026-10-10.json | Implementation delivered; native callback root/change filtering and continuous slice servicing aligned. Full race passes; isolated ordinary hidden-parent-source timeout and actual Source watchfiles capture drift remain open |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 428 production files, 1400 named types on the named non-text command snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Development reload | Native/polling CLI tests and Source archives; callback admission at 5656802, exact timelines at cf808fe, readiness calibration at e3fc640 | Three native recipe rounds, sequential full ordinary/race and Source export pass after actual probe acknowledgement; full runtime handoff/temporal G3/G7 audit remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` at e3fc640 | 428 production files, 1400 named types, zero direct open-payload findings; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -9549,3 +9549,37 @@ instrumented. Python coverage, branch coverage and migration acceptance are not
 measured. Source export: 219 current files; vet passed, type audit zero findings,
 19 scanner guards anchored and five export diagnostic tests passed. Full Python
 regression and non-Darwin gates were not rerun; no merge or push.
+
+## Direct background argument Source capture — 2026-10-10
+
+Baseline: `957b73a`; actual Source Agent._exec_tool, installed background_run,
+Tool.run, BackgroundManager.run and looks_dangerous source hashes are captured.
+Eighteen recipes cover finite non-text command values, missing/extra/ordered-extra
+parameters, non-mapping roots, before/guard denial and argument rewriting.
+The source contract is `go/testdata/python-provider-background-input.json`.
+
+All eight non-text commands pass before/guard, lazily initialize the actual
+BackgroundManager, then fail its `.split()` consumer before counter/task creation.
+Missing/extra/non-mapping invocation errors retain after/result hooks while leaving
+background uninitialized. Before denial skips guard/after; guard denial skips
+after. A before rewrite to a real inert printf command starts bg_0001, and the
+actual task is cancelled/joined by manager.close. No Source handler or executor is
+mocked. The probe observes actual state instead of treating admission as execution.
+
+[Native admission audit](docs/audits/go-background-input-drift-2026-10-10.json)
+retains all 18 differences: DecodeModelToolInput rejects before these consumers,
+including cases that Source hooks can rewrite or deny. This is a pinned diagnostic,
+not a passing parity assertion. The next implementation slice must model observed
+command and binding failures with named variants, preserve mask/display/archive
+observations, and settle binding failures after the common before/guard/permission
+gate; command consumer failure must preserve actual manager initialization without
+creating a task. Strict explicit API admission remains a separately audited seam.
+No runtime implementation, dependency, default or architecture topology changed.
+
+Validation: full Source export --check passed, 220 current files. Existing native
+Background/BashBinding tests in agent and protocol passed. All 19 scanner guards
+remain anchored; working-tree diff check passed. Native diagnostic rejected all
+18 cases as recorded. No Go/Python runtime module changed; full Go/Python suites,
+invariants, full mutation sweep and coverage were not rerun for this capture slice.
+The preceding e3fc640 full ordinary/race/vet and coverage gates retain their own
+baseline. No merge or push; full migration goal remains incomplete.

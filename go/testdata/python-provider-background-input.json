@@ -1,0 +1,766 @@
+{
+  "cases": [
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'NoneType' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": null}",
+      "input_json": "{\"command\": null}",
+      "mode": "keep",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'NoneType' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'NoneType' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "True",
+            "verb": "run"
+          },
+          "input": {
+            "command": true
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'bool' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": true}",
+      "input_json": "{\"command\": true}",
+      "mode": "keep",
+      "name": "boolean",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'bool' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'bool' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "17",
+            "verb": "run"
+          },
+          "input": {
+            "command": 17
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'int' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": 17}",
+      "input_json": "{\"command\": 17}",
+      "mode": "keep",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'int' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'int' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "13.75",
+            "verb": "run"
+          },
+          "input": {
+            "command": 13.75
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'float' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": 13.75}",
+      "input_json": "{\"command\": 13.75}",
+      "mode": "keep",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "[]",
+            "verb": "run"
+          },
+          "input": {
+            "command": []
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": []}",
+      "input_json": "{\"command\": []}",
+      "mode": "keep",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "['alpha']",
+            "verb": "run"
+          },
+          "input": {
+            "command": [
+              "alpha"
+            ]
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": [\"alpha\"]}",
+      "input_json": "{\"command\": [\"alpha\"]}",
+      "mode": "keep",
+      "name": "array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "{}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {}
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": {}}",
+      "input_json": "{\"command\": {}}",
+      "mode": "keep",
+      "name": "empty-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": true,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "{'command': 'inert'}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {
+              "command": "inert"
+            }
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": {\"command\": \"inert\"}}",
+      "input_json": "{\"command\": {\"command\": \"inert\"}}",
+      "mode": "keep",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "",
+            "verb": "run"
+          },
+          "input": {},
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: install_background.<locals>.background_run() missing 1 required positional argument: 'command'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "missing",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: install_background.<locals>.background_run() missing 1 required positional argument: 'command'"
+        }
+      ],
+      "output": "Error: install_background.<locals>.background_run() missing 1 required positional argument: 'command'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null,
+            "extra": 1
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": null, \"extra\": 1}",
+      "input_json": "{\"command\": null, \"extra\": 1}",
+      "mode": "keep",
+      "name": "extra",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'"
+        }
+      ],
+      "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "a_extra": 2,
+            "command": null,
+            "z_extra": 1
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'z_extra'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": null, \"z_extra\": 1, \"a_extra\": 2}",
+      "input_json": "{\"command\": null, \"z_extra\": 1, \"a_extra\": 2}",
+      "mode": "keep",
+      "name": "ordered-extra",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'z_extra'"
+        }
+      ],
+      "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'z_extra'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "",
+            "verb": "run"
+          },
+          "input": {
+            "extra": 1
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"extra\": 1}",
+      "input_json": "{\"extra\": 1}",
+      "mode": "keep",
+      "name": "extra-and-missing",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'"
+        }
+      ],
+      "output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "",
+            "verb": "run"
+          },
+          "input": null,
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not NoneType",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "keep",
+      "name": "root-null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not NoneType"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not NoneType",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "",
+            "verb": "run"
+          },
+          "input": [],
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "[]",
+      "input_json": "[]",
+      "mode": "keep",
+      "name": "root-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "",
+            "verb": "run"
+          },
+          "input": 17,
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "background_run",
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not int",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "17",
+      "input_json": "17",
+      "mode": "keep",
+      "name": "root-integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not int"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not int",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 1,
+      "background_initialized": true,
+      "background_live": 1,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "background_run",
+          "output": "Started background task bg_0001: printf background-input-rewritten",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": \"printf background-input-rewritten\"}",
+      "input_json": "{\"command\": null}",
+      "mode": "rewrite",
+      "name": "null-rewrite",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf background-input-rewritten"
+        }
+      ],
+      "output": "Started background task bg_0001: printf background-input-rewritten",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "denied": true,
+          "error": false,
+          "name": "background_run",
+          "output": "denied by source probe",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": null}",
+      "input_json": "{\"command\": null}",
+      "mode": "deny",
+      "name": "null-deny",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "background_counter": 0,
+      "background_initialized": false,
+      "background_live": 0,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null
+          },
+          "name": "background_run",
+          "type": "tool_use"
+        },
+        {
+          "denied": true,
+          "error": false,
+          "name": "background_run",
+          "output": "denied by source guard",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": null}",
+      "input_json": "{\"command\": null}",
+      "mode": "guard-deny",
+      "name": "null-guard-deny",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source guard"
+        }
+      ],
+      "output": "denied by source guard",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "BackgroundManager.run": "ecfae7c58a20150d65482726c10485c113da042733fd21d859904db9e5ca9a4f",
+    "Tool.run": "1b83461c5fa2a0aabf4daf74fd9eb42a1752b94fc6d59f250b2e7170cb6bb897",
+    "background._mgr": "8a796cc4d22a457f3385a81df9defd0d759620c0b4b77b77e359c92f9cf325c3",
+    "install_background": "b0cdc35ad06bfdbb4c92562b881ccc7fa12de15b2384bbb89efc76cf3e53ee61",
+    "looks_dangerous": "024752847820124ea07cc2957b4243c67a7b2b4ef988b0896b8ff4a610cc45d1"
+  }
+}

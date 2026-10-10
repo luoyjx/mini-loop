@@ -1,0 +1,260 @@
+{
+  "baseline": "957b73a",
+  "cases": [
+    {
+      "input_json": "{\"command\": null}",
+      "name": "null",
+      "native_decode_error": "background_run requires command",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'NoneType' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": true}",
+      "name": "boolean",
+      "native_decode_error": "json: cannot unmarshal bool into Go struct field .command of type string",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'bool' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": 17}",
+      "name": "integer",
+      "native_decode_error": "json: cannot unmarshal number into Go struct field .command of type string",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'int' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": 13.75}",
+      "name": "float",
+      "native_decode_error": "json: cannot unmarshal number into Go struct field .command of type string",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'float' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": []}",
+      "name": "empty-array",
+      "native_decode_error": "json: cannot unmarshal array into Go struct field .command of type string",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'list' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": [\"alpha\"]}",
+      "name": "array",
+      "native_decode_error": "json: cannot unmarshal array into Go struct field .command of type string",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'list' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": {}}",
+      "name": "empty-object",
+      "native_decode_error": "json: cannot unmarshal object into Go struct field .command of type string",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'dict' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": {\"command\": \"inert\"}}",
+      "name": "object",
+      "native_decode_error": "json: cannot unmarshal object into Go struct field .command of type string",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Error: 'dict' object has no attribute 'split'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{}",
+      "name": "missing",
+      "native_decode_error": "background_run requires command",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "Error: install_background.<locals>.background_run() missing 1 required positional argument: 'command'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": null, \"extra\": 1}",
+      "name": "extra",
+      "native_decode_error": "json: unknown field \"extra\"",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": null, \"z_extra\": 1, \"a_extra\": 2}",
+      "name": "ordered-extra",
+      "native_decode_error": "json: unknown field \"z_extra\"",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'z_extra'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"extra\": 1}",
+      "name": "extra-and-missing",
+      "native_decode_error": "json: unknown field \"extra\"",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "Error: install_background.<locals>.background_run() got an unexpected keyword argument 'extra'",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "null",
+      "name": "root-null",
+      "native_decode_error": "tool input must be a JSON object",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not NoneType",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "[]",
+      "name": "root-array",
+      "native_decode_error": "tool input must be a JSON object",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "17",
+      "name": "root-integer",
+      "native_decode_error": "tool input must be a JSON object",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not int",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": null}",
+      "name": "null-rewrite",
+      "native_decode_error": "background_run requires command",
+      "native_decoded": false,
+      "source_background_initialized": true,
+      "source_output": "Started background task bg_0001: printf background-input-rewritten",
+      "source_trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": null}",
+      "name": "null-deny",
+      "native_decode_error": "background_run requires command",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "denied by source probe",
+      "source_trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "input_json": "{\"command\": null}",
+      "name": "null-guard-deny",
+      "native_decode_error": "background_run requires command",
+      "native_decoded": false,
+      "source_background_initialized": false,
+      "source_output": "denied by source guard",
+      "source_trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    }
+  ],
+  "native_source_sha256": {
+    "go/protocol/bash_binding.go": "dc2a8ead1ed7a636b23fc153fb13be8bb48a5e99b15ad4f026a9f7540e9151f9",
+    "go/protocol/tool_input.go": "9dc66936474867c82058e68743e4003ecb37d8345b642c67cbf68ff0e72fcd3a"
+  },
+  "scope": "DecodeModelToolInput admission compared with actual Source Agent._exec_tool; native downstream execution is not claimed",
+  "source_fixture_sha256": "200b3c13823b2f80e32db324d50dbd5ae76888ddbe0fc6694c53e9a6d4e58360"
+}

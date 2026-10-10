@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `e3fc640`. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `957b73a` plus background argument capture. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6894,16 +6894,20 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    options are not emitted by the current repository request producers; audit
    custom extension behavior separately instead of adding unrelated SDK features.
 
-4. Native Darwin reload reliability: callback root/change admission and continuous
-   owner-thread servicing are aligned on the `45d086b` plus current implementation
-   worktree. Three independent boundary probes demonstrate repaired differences;
-   native and actual Source recipes each passed three repeated captures. Full race
-   passes, but isolated ordinary hidden-parent-source timed out. Full Source
-   export check drifted only python-watchfiles.json, then a read-only full snapshot
-   retry matched all 219 files; the failed difference was not retained.
-   Current evidence does not prove the temporal failures' cause. Investigate the
-   subscription/capture/handoff boundary before final G3/G7 acceptance; never widen
-   fixture expectations or treat a quiet timeout as kernel readiness proof.
+4. Native Darwin reload reliability: callback admission and loop servicing are
+   delivered at `5656802`; retained exact drift captures and timelines at `cf808fe`
+   proved delayed setup events could arrive after a quiet drain timeout. Source
+   and Go recipes now acknowledge a post-subscription probe at `e3fc640`.
+   Three repeated native recipe rounds, sequential full ordinary/race Go runs,
+   and the full 219-file Source export passed there; the current background
+   capture's 220-file export also passes. Recipe expectations were unchanged.
+   This proves a capture precondition repair; complete runtime handoff and
+   temporal equivalence still require the G3/G7 scope audit.
+
+5. Direct background model arguments: actual Source capture now has 18 recipes
+   and a pinned native admission diagnostic. Go still rejects these before the
+   Source before/guard/binding/command-consumer stages. Implement named observed
+   arguments and deferred binding errors without adding an executable open payload.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -17355,3 +17359,37 @@ instrumented. Python coverage, branch coverage and migration acceptance are not
 measured. Source export: 219 current files; vet passed, type audit zero findings,
 19 scanner guards anchored and five export diagnostic tests passed. Full Python
 regression and non-Darwin gates were not rerun; no merge or push.
+
+## Direct background argument Source capture — 2026-10-10
+
+Baseline: `957b73a`; actual Source Agent._exec_tool, installed background_run,
+Tool.run, BackgroundManager.run and looks_dangerous source hashes are captured.
+Eighteen recipes cover finite non-text command values, missing/extra/ordered-extra
+parameters, non-mapping roots, before/guard denial and argument rewriting.
+The source contract is `go/testdata/python-provider-background-input.json`.
+
+All eight non-text commands pass before/guard, lazily initialize the actual
+BackgroundManager, then fail its `.split()` consumer before counter/task creation.
+Missing/extra/non-mapping invocation errors retain after/result hooks while leaving
+background uninitialized. Before denial skips guard/after; guard denial skips
+after. A before rewrite to a real inert printf command starts bg_0001, and the
+actual task is cancelled/joined by manager.close. No Source handler or executor is
+mocked. The probe observes actual state instead of treating admission as execution.
+
+[Native admission audit](docs/audits/go-background-input-drift-2026-10-10.json)
+retains all 18 differences: DecodeModelToolInput rejects before these consumers,
+including cases that Source hooks can rewrite or deny. This is a pinned diagnostic,
+not a passing parity assertion. The next implementation slice must model observed
+command and binding failures with named variants, preserve mask/display/archive
+observations, and settle binding failures after the common before/guard/permission
+gate; command consumer failure must preserve actual manager initialization without
+creating a task. Strict explicit API admission remains a separately audited seam.
+No runtime implementation, dependency, default or architecture topology changed.
+
+Validation: full Source export --check passed, 220 current files. Existing native
+Background/BashBinding tests in agent and protocol passed. All 19 scanner guards
+remain anchored; working-tree diff check passed. Native diagnostic rejected all
+18 cases as recorded. No Go/Python runtime module changed; full Go/Python suites,
+invariants, full mutation sweep and coverage were not rerun for this capture slice.
+The preceding e3fc640 full ordinary/race/vet and coverage gates retain their own
+baseline. No merge or push; full migration goal remains incomplete.
