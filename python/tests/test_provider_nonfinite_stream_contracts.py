@@ -26,3 +26,14 @@ def test_managed_nonfinite_input_sse_and_journal_failure(tmp_path):
             assert len(stored) == 1
             restored = stored[0]["input"]["keep"]
             assert math.isnan(restored) if row["name"] == "nan" else restored == float("inf")
+            replay = row["restore"]
+            assert replay["owner"] == "alice"
+            assert replay["permission_mode"] == "interactive"
+            assert replay["resume_transport_requests"] == 0
+            assert replay["resume_final"] == "[Error] ValueError: Out of range float values are not JSON compliant"
+            before = json.loads(replay["messages_before_json"])
+            resumed = json.loads(replay["messages_restored_json"])
+            assert len(before) == len(resumed) == 4
+            assert len(json.loads(replay["messages_after_json"])) == 6
+            value = resumed[1]["content"][0]["input"]["keep"]
+            assert math.isnan(value) if row["name"] == "nan" else value == float("inf")

@@ -86,6 +86,15 @@
         "done"
       ],
       "name": "nan",
+      "restore": {
+        "messages_after_json": "[{\"content\": \"hello\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}, {\"content\": \"resume\", \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}]",
+        "messages_before_json": "[{\"content\": \"hello\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}]",
+        "messages_restored_json": "[{\"content\": \"hello\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}]",
+        "owner": "alice",
+        "permission_mode": "interactive",
+        "resume_final": "[Error] ValueError: Out of range float values are not JSON compliant",
+        "resume_transport_requests": 0
+      },
       "status": 200,
       "store": "sqlite",
       "stored_tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
@@ -119,6 +128,15 @@
         "done"
       ],
       "name": "infinity",
+      "restore": {
+        "messages_after_json": "[{\"content\": \"hello\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}, {\"content\": \"resume\", \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}]",
+        "messages_before_json": "[{\"content\": \"hello\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}]",
+        "messages_restored_json": "[{\"content\": \"hello\", \"role\": \"user\"}, {\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}, {\"content\": [{\"content\": \"Error: Out of range float values are not JSON compliant\", \"tool_use_id\": \"call\", \"type\": \"tool_result\"}], \"role\": \"user\"}, {\"content\": [{\"text\": \"[Error] ValueError: Out of range float values are not JSON compliant\", \"type\": \"text\"}], \"role\": \"assistant\"}]",
+        "owner": "alice",
+        "permission_mode": "interactive",
+        "resume_final": "[Error] ValueError: Out of range float values are not JSON compliant",
+        "resume_transport_requests": 0
+      },
       "status": 200,
       "store": "sqlite",
       "stored_tool_events_json": "[{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
@@ -135,6 +153,8 @@
   "sdk_version": "0.107.1",
   "source_sha256": {
     "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "AgentSession.restore": "cf118ef4366679806d6ba20fe442952ee267febfee84f2d4c517ce718fb068ac",
+    "SessionManager.restore_sessions": "345106fe057f1b723f1f03c854fe2c4f77e154450294bed2f5fde7ee0cc29608",
     "actions._payload_hash": "e190c7796123d6ab4f80eebb4c25397bae60b1b242bac655deea240b8a75cc1b",
     "server._register_routes": "d3564ed51475cb02a16d03c5130bb686df70e64f7cdb697193131d7d69348705"
   }

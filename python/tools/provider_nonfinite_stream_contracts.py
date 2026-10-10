@@ -15,6 +15,7 @@ from mini_loop.agent import Agent
 from mini_loop.auth import TokenAuth
 from mini_loop.registry import Hook, Hooks
 from mini_loop.server import create_app, _register_routes
+from mini_loop.session import AgentSession
 from mini_loop.storage import SQLiteStateStore
 
 
@@ -86,10 +87,34 @@ def provider_nonfinite_stream_contracts(scratch: Path | str) -> dict:
                              for event in persisted if event["type"] == "tool_use"], sort_keys=True)
                     rows.append(row)
                     client.portal.call(sdk.close)
+                if store is not None:
+                    before = store.load_messages(session_id)
+                    store.close()
+                    store = SQLiteStateStore(root / "state.sqlite3")
+                    sdk = anthropic.AsyncAnthropic(api_key="fixture-key", base_url="https://fixture.invalid", max_retries=0,
+                        http_client=httpx.AsyncClient(transport=httpx.MockTransport(transport)))
+                    fresh = SessionManager(Settings(fake_llm=True, workspace_root=root / "ws", skills_dir=root / "skills"),
+                                           sdk, state_store=store)
+                    with TestClient(create_app(manager=fresh)) as restored_client:
+                        sessions = restored_client.portal.call(fresh.restore_sessions)
+                        if len(sessions) != 1:
+                            raise RuntimeError("nonfinite Source restore changed session inventory")
+                        restored = sessions[0]
+                        row["restore"] = {"messages_before_json": json.dumps(before, sort_keys=True),
+                                          "messages_restored_json": json.dumps(restored.agent.messages, sort_keys=True),
+                                          "owner": restored.owner,
+                                          "permission_mode": restored.agent.state.get("permission_mode")}
+                        count = len(requests)
+                        row["restore"]["resume_final"] = restored_client.portal.call(restored.run, "resume")
+                        row["restore"]["resume_transport_requests"] = len(requests) - count
+                        row["restore"]["messages_after_json"] = json.dumps(store.load_messages(session_id), sort_keys=True)
+                        restored_client.portal.call(sdk.close)
             finally:
                 if store is not None:
                     store.close()
     return {"sdk_version": anthropic.__version__, "httpx_version": httpx.__version__,
             "source_sha256": {name: hashlib.sha256(inspect.getsource(fn).encode()).hexdigest()
                               for name, fn in {"Agent._exec_tool": Agent._exec_tool, "actions._payload_hash": _payload_hash,
-                                               "server._register_routes": _register_routes}.items()}, "cases": rows}
+                                               "server._register_routes": _register_routes,
+                                               "SessionManager.restore_sessions": SessionManager.restore_sessions,
+                                               "AgentSession.restore": AgentSession.restore}.items()}, "cases": rows}
