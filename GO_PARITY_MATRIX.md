@@ -10098,3 +10098,40 @@ Sequential Source export --check reports 224 current files; git diff --check
 passes. Intermediate commits were not independently full-suite replayed.
 
 Source prerequisite: `5870a1d`; native adoption: `935cf83`.
+
+## Nonfinite known Bash inputs and batch preparation — 2026-10-11
+
+Source prerequisite `c3f555a`; native implementation `770f065`, baseline
+`4c807ae`. Actual pinned Anthropic 0.107.1 captures cover 24 unique direct/SSE
+inputs, 36 standalone gate profiles and 24 managed runs. Named command/options
+and rejected roots preserve NaN/Infinity through observations and archive identity.
+Explicit caller and outbound HTTP admission remain finite; background_run remains
+finite. Every Bash batch prepares inputs before effects: a valid first call plus
+an invalid second root has no hooks, actions or handler effects. Six managed
+roots fail before the gate; eighteen objects fail finite journal fingerprints
+after before/guard, without after hooks or action entries.
+
+Targeted Go consumers pass, as does the actual Source test (six expected SDK
+warnings). Nineteen scanner anchors pass; selected lazy-batch-copy and nonfinite
+journal mutants are caught after passing baselines. Source export check reports
+225 current files. Vet passes with existing FSEvents warnings; type audit reports
+439 production files / 1,407 named types / zero findings. Archify passes 9/9,
+zero errors/warnings; fresh browser visual inspection was not performed.
+
+Full ordinary Go fails only reload identical-write, same-mtime-touch, rename-source
+and ignored-hidden. Full race with coverage passes reload but fails SQLite decision
+restart maximum on context deadline. No data race was reported. One subsequent
+maximum-only race check without coverage passes in 13.744 seconds; it does not
+replace the full failing result. Latest measured application coverage is
+32,196/36,106 = **89.17%**; all Go is 32,243/36,170 = **89.14%**. This is a
+measurement from the failing coverage run; the timed-out profile may undercount.
+
+See [consumer audit](docs/audits/provider-nonfinite-bash-2026-10-11.json) and
+[coverage audit](docs/audits/go-coverage-nonfinite-bash-2026-10-11.json).
+Non-string batch pair keys are explicitly unsupported. Falsy/string-key pair
+normalization lacks a complete cross-language profile corpus. These new shapes
+have named archive round-trip proof, not new SQLite restart proof. Broader inputs,
+SDK error-class/text equality, watcher reliability, default diagnostics and full
+migration acceptance remain open. No full Python, non-Darwin or performance check;
+combined worktree gates do not claim independent replay of intermediate commits.
+No dependency added in this slice; no push or merge.
