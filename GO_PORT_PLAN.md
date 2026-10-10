@@ -16075,3 +16075,49 @@ Source contracts checked current (202 files), 19 scanning guards passed. Logs:
 `/tmp/mini-loop-discovery-{go,race,vet,types,export,scans}.log`. Existing Darwin
 FSEvents deprecation and LC_DYSYMTAB warnings did not prevent passing. README outline,
 architecture artifact hashes, worktree and staged diff checks passed. No merge/push.
+
+## 2026-10-10 defined-empty authentication and literal identity Source alignment
+
+Baseline `4e92d28`. Eight real SDK 0.107.1 discovery recipes extend the inventory
+from 43 to 51; the preceding 43 outputs are identical after JSON decoding.
+They cover empty key/auth shadowing of a missing explicit profile, nonempty bearer
+shadowing, custom-header non-shadowing, empty selector fallback, empty literal
+identity, literal rotation and literal disappearance after expiry.
+
+The new managed comparison initially failed for empty auth: native settings lost
+the SDK's `Authorization: Bearer ` header. Named config mapping now retains that
+presence without treating an empty Secret as a nonempty token. Nonempty API-key
+priority and ordered custom-header override remain intact. No raw env payload or
+new domain type is introduced. Empty literal identity already matched Source;
+projected files continue rejecting empty content. Explicit readers already rotate
+and report disappearance; the new harness injects that live boundary and advances
+the shared clock. The fixture's original environment remains captured for selectors.
+
+Six Python provider-auth tests and narrow Go config/provider/Launcher tests pass.
+Managed tests compare 50 recipes; one same-client forced invalidation recipe remains
+explicitly skipped at Launcher and covered by existing provider tests. No production
+network/provider charge, dependency, Python runtime module or default tool change.
+README boundary and visible baseline, extension notes and architecture specification
+are updated together. Full migration/G7 acceptance remains open. Coverage has not
+been refreshed for this slice; `4e92d28` retains the 89.59% application snapshot.
+No merge or push.
+
+Source export initially exited 1 for unchanged `python-watchfiles.json`; no watcher
+fixture was rewritten. A fresh retry exited 0 with all 202 files current. Both logs
+are retained (`/tmp/mini-loop-credential-presence-export{,-retry}.log`). All 19 scan
+guards passed. Type audit: 412 production files, 1327 package-level types, zero
+findings. Archify regenerated from the specification with 9/9 checks, zero errors
+and warnings. Specification SHA256 411f4f4d899675ede3465afc5ac8decd07c1fecb8e11809ef1a35facf60b8bd0;
+HTML SHA256 191e687bca229a841f93fe93f0a2151286837bbab7963f1fdd302a60e6cc3e8f.
+No browser visual inspection was performed. Full Python regression, Python package
+invariants/guard mutation, coverage, performance and non-Darwin runs were not rerun;
+Python runtime modules/default tools/mutation anchors remain unchanged.
+
+Final frozen code/test/fixture snapshot passed full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...`.
+Six Python auth tests passed. Logs:
+`/tmp/mini-loop-credential-presence-{go,race,vet,types,scans}.log`.
+Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings remain nonfatal.
+README architecture map reviewed; topology remains unchanged. Specification/artifact
+hashes match generated files. Worktree/staged diff checks pass. No merge or push.

@@ -70,3 +70,27 @@ func TestProviderCredentialExplicitReaderRotates(t *testing.T) {
 		t.Fatal("reader hid disappearance")
 	}
 }
+
+func TestDefinedEmptyBearerHeaderAndStaticKeyPriority(t *testing.T) {
+	for _, key := range []string{"", "static-key"} {
+		env := map[string]string{"ANTHROPIC_AUTH_TOKEN": ""}
+		if key != "" {
+			env["ANTHROPIC_API_KEY"] = key
+		}
+		settings, err := Load(env, LoadOptions{Directory: t.TempDir(), HomeDirectory: t.TempDir()})
+		if err != nil {
+			t.Fatal(err)
+		}
+		token, headers := settings.ProviderAuthentication()
+		if token.Present() {
+			t.Fatal("empty bearer became a secret value")
+		}
+		if key == "" {
+			if len(headers) != 1 || headers[0].Name != "Authorization" || headers[0].Value.Reveal() != "Bearer " {
+				t.Fatal("defined empty bearer header lost")
+			}
+		} else if len(headers) != 0 {
+			t.Fatal("static key did not suppress environment bearer")
+		}
+	}
+}

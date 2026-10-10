@@ -3978,3 +3978,16 @@ CLI process readers remain live regardless of dotenv selection. Snapshot discard
 live selectors, literals and readers. `Options.ProviderTransport` is borrowed and
 never closed by App; nil owns a private transport. `ProviderNow` supplies an optional
 clock. Token exchanges use the Source 30-second timeout. Fake providers skip discovery.
+
+### Defined-empty auth and literal identity lifecycle
+
+Environment auth presence differs from truthiness: an empty auth token suppresses
+discovery and emits `Authorization: Bearer `, unless a nonempty settings API key
+suppresses bearer selection. An empty API key alone suppresses discovery but still
+fails missing authentication at request admission. Custom authorization headers do
+not independently suppress explicit profile construction. Empty profile/config-dir
+selectors allow fallback. Literal federation identity may be an empty string;
+projected identity files still reject empty stripped contents. Live identity readers
+are re-invoked on refresh: rotated literals exchange again, disappeared values fail
+before a new token/model request. Explicit SDK maps remain captured unless given a
+reader. All these observations are pinned to actual SDK 0.107.1 offline recipes.

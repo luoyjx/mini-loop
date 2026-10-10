@@ -37,6 +37,8 @@ func TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns(t *testing.T)
 				IdentityFile        *string `json:"identity_file"`
 				RotateIdentity      string  `json:"rotate_identity"`
 				AdvanceClock        int64   `json:"advance_clock"`
+				RotateLiteral       string  `json:"rotate_literal"`
+				UnsetLiteral        bool    `json:"unset_literal"`
 				Mode                *uint32
 				Symlink             bool
 				TokenStatus         *int  `json:"token_status"`
@@ -63,7 +65,7 @@ func TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns(t *testing.T)
 	if err := json.Unmarshal(raw, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 43 {
+	if len(fixture.Cases) != 51 {
 		t.Fatal("Source discovery inventory changed")
 	}
 	for _, row := range fixture.Cases {
@@ -145,7 +147,17 @@ func TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns(t *testing.T)
 			for name, value := range row.Environment {
 				env[name] = strings.ReplaceAll(value, "<scratch>", root)
 			}
-			settings, err := config.Load(env, config.LoadOptions{Directory: caseRoot, HomeDirectory: home})
+			loadOptions := config.LoadOptions{Directory: caseRoot, HomeDirectory: home}
+			literal, literalPresent := env["ANTHROPIC_IDENTITY_TOKEN"]
+			if row.Spec.RotateLiteral != "" || row.Spec.UnsetLiteral {
+				loadOptions.IdentityTokenReader = func(ctx context.Context) (string, bool, error) {
+					if err := ctx.Err(); err != nil {
+						return "", false, err
+					}
+					return literal, literalPresent, nil
+				}
+			}
+			settings, err := config.Load(env, loadOptions)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -223,6 +235,12 @@ func TestLauncherDiscoveryMatchesSourceConstructorsAndManagedTurns(t *testing.T)
 				}
 				if turn == 1 && row.Spec.AdvanceClock != 0 {
 					now = now.Add(time.Duration(row.Spec.AdvanceClock) * time.Second)
+					if row.Spec.RotateLiteral != "" {
+						literal = row.Spec.RotateLiteral
+					}
+					if row.Spec.UnsetLiteral {
+						literalPresent = false
+					}
 					if row.Spec.RotateIdentity != "" {
 						if err := os.WriteFile(identityPath, []byte(row.Spec.RotateIdentity), 0644); err != nil {
 							t.Fatal(err)

@@ -17,6 +17,11 @@ func (s Settings) ProviderAuthentication() (Secret, []ProviderHeader) {
 		token = Secret{}
 	}
 	var headers []ProviderHeader
+	// SDK distinguishes an undefined auth token from a defined empty token.
+	// The latter still produces a bearer header and suppresses discovery.
+	if s.authTokenDefined && !s.AuthToken.Present() && !s.APIKey.Present() {
+		headers = append(headers, ProviderHeader{Name: "Authorization", Value: Secret{"Bearer "}})
+	}
 	if s.apiKeyDefined && !s.APIKey.Present() {
 		headers = append(headers, ProviderHeader{Name: "X-Api-Key", Value: Secret{}})
 	}

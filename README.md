@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `c910c57` plus Launcher credential discovery integration;
+reviewed **2026-10-10** (Go baseline `4e92d28` plus defined-empty authentication fidelity;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1234,7 +1234,9 @@ and workspace selection belongs in federation's token body. Both profile grant
 paths use the Source 30-second default token timeout. Launcher now selects explicit
 profiles (including active pointers), complete environment federation, then fallback
 profiles when API key/auth token are undefined. Defined empty static credentials
-suppress discovery. Explicit profile faults occur at construction; bad fallback
+suppress discovery. A defined empty auth token still emits `Authorization: Bearer `,
+matching SDK presence semantics; an empty key alone remains missing request auth.
+Explicit profile faults occur at construction; bad fallback
 profiles defer missing-auth refusal until requests. Fake providers bypass discovery.
 Selectors are captured; projected files and explicit identity readers can rotate.
 Real CLI process identity reads remain live independently of dotenv selection;

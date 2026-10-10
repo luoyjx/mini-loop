@@ -38,7 +38,7 @@ def test_settings_provider_key_suppresses_environment_bearer(tmp_path):
 
 def test_discovery_phases_caching_refresh_and_file_guards(tmp_path):
     rows = {row["spec"]["name"]: row for row in provider_auth_contracts(tmp_path)["discovery_cases"]}
-    assert len(rows) == 43
+    assert len(rows) == 51
     for name in ["explicit-config-dir-missing", "missing-explicit-profile", "missing-active-profile",
                  "invalid-profile-name", "corrupt-explicit-profile", "federation-refuses-http"]:
         assert not rows[name]["constructed"] and not rows[name]["requests"]
@@ -92,3 +92,27 @@ def test_federation_profile_disk_cache_refresh_and_reconstruction(tmp_path):
     assert env["federation_rule_id"] == "env-rule" and env["organization_id"] == "env-org"
     assert env["workspace_id"] == "env-workspace"
     assert rows["profile-federation-env-fill"]["credentials_mode"] == 0o600
+
+
+def test_discovery_defined_empty_and_literal_reader_lifecycle(tmp_path):
+    rows = {row["spec"]["name"]: row for row in provider_auth_contracts(tmp_path)["discovery_cases"]}
+    key = rows["empty-key-shadows-explicit-profile"]
+    assert key["constructed"] and key["fault"]["type"] == "TypeError"
+    assert not key["requests"] and not key["exchanges"]
+    for name, value in [("empty-auth-shadows-explicit-profile", "Bearer "),
+                        ("static-auth-shadows-explicit-profile", "Bearer static-bearer")]:
+        row = rows[name]
+        assert row["constructed"] and row["fault"] is None and not row["exchanges"]
+        assert [request["headers"]["authorization"] for request in row["requests"]] == [value, value]
+    custom = rows["custom-auth-does-not-shadow-explicit-profile"]
+    assert not custom["constructed"] and custom["fault"]["type"] == "AnthropicError"
+    fallback = rows["empty-selectors-fallback-profile"]
+    assert fallback["constructed"] and fallback["fault"] is None
+    assert fallback["requests"][0]["headers"]["authorization"] == "Bearer profile-token"
+    empty = rows["federation-empty-literal"]
+    assert empty["fault"] is None and empty["exchanges"][0]["body"]["assertion"] == ""
+    rotation = rows["federation-literal-rotation"]
+    assert [item["body"]["assertion"] for item in rotation["exchanges"]] == ["fixture.jwt.assertion", "rotated.literal.assertion"]
+    missing = rows["federation-literal-disappearance"]
+    assert missing["constructed"] and missing["fault"]["type"] == "AnthropicError"
+    assert len(missing["requests"]) == len(missing["exchanges"]) == 1

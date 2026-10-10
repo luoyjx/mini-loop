@@ -2183,6 +2183,357 @@
         "ok",
         "ok"
       ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_API_KEY": "",
+        "ANTHROPIC_PROFILE": "missing"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\"",
+        "type": "TypeError"
+      },
+      "requests": [],
+      "spec": {
+        "environment": {
+          "ANTHROPIC_API_KEY": "",
+          "ANTHROPIC_PROFILE": "missing"
+        },
+        "name": "empty-key-shadows-explicit-profile"
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_AUTH_TOKEN": "",
+        "ANTHROPIC_PROFILE": "missing"
+      },
+      "exchanges": [],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "authorization": "Bearer "
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "authorization": "Bearer "
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "environment": {
+          "ANTHROPIC_AUTH_TOKEN": "",
+          "ANTHROPIC_PROFILE": "missing"
+        },
+        "name": "empty-auth-shadows-explicit-profile"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_AUTH_TOKEN": "static-bearer",
+        "ANTHROPIC_PROFILE": "missing"
+      },
+      "exchanges": [],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "authorization": "Bearer static-bearer"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "authorization": "Bearer static-bearer"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "environment": {
+          "ANTHROPIC_AUTH_TOKEN": "static-bearer",
+          "ANTHROPIC_PROFILE": "missing"
+        },
+        "name": "static-auth-shadows-explicit-profile"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": false,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_CUSTOM_HEADERS": "Authorization: Bearer custom-bearer",
+        "ANTHROPIC_PROFILE": "missing"
+      },
+      "exchanges": [],
+      "fault": {
+        "message": "Config file not found at <scratch>/custom-auth-does-not-shadow-explicit-profile/home/.config/anthropic/configs/missing.json (profile 'missing'). Set ANTHROPIC_PROFILE to select a different profile, or set ANTHROPIC_CONFIG_DIR to relocate the config directory.",
+        "type": "AnthropicError"
+      },
+      "requests": [],
+      "spec": {
+        "environment": {
+          "ANTHROPIC_CUSTOM_HEADERS": "Authorization: Bearer custom-bearer",
+          "ANTHROPIC_PROFILE": "missing"
+        },
+        "name": "custom-auth-does-not-shadow-explicit-profile"
+      },
+      "texts": []
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_CONFIG_DIR": "",
+        "ANTHROPIC_PROFILE": ""
+      },
+      "exchanges": [],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer profile-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer profile-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "config": {
+          "authentication": {
+            "type": "user_oauth"
+          }
+        },
+        "credentials": {
+          "access_token": "profile-token",
+          "expires_at": 2000000000
+        },
+        "environment": {
+          "ANTHROPIC_CONFIG_DIR": "",
+          "ANTHROPIC_PROFILE": ""
+        },
+        "name": "empty-selectors-fallback-profile"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_FEDERATION_RULE_ID": "fixture-rule",
+        "ANTHROPIC_IDENTITY_TOKEN": "",
+        "ANTHROPIC_ORGANIZATION_ID": "fixture-org"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "environment": {
+          "ANTHROPIC_FEDERATION_RULE_ID": "fixture-rule",
+          "ANTHROPIC_IDENTITY_TOKEN": "",
+          "ANTHROPIC_ORGANIZATION_ID": "fixture-org"
+        },
+        "name": "federation-empty-literal"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_FEDERATION_RULE_ID": "fixture-rule",
+        "ANTHROPIC_IDENTITY_TOKEN": "fixture.jwt.assertion",
+        "ANTHROPIC_ORGANIZATION_ID": "fixture-org"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "fixture.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        },
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "rotated.literal.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": null,
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        },
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "advance_clock": 3600,
+        "environment": {
+          "ANTHROPIC_FEDERATION_RULE_ID": "fixture-rule",
+          "ANTHROPIC_IDENTITY_TOKEN": "fixture.jwt.assertion",
+          "ANTHROPIC_ORGANIZATION_ID": "fixture-org"
+        },
+        "name": "federation-literal-rotation",
+        "rotate_literal": "rotated.literal.assertion"
+      },
+      "texts": [
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "constructed": true,
+      "constructors": [
+        {}
+      ],
+      "credentials_after": null,
+      "credentials_mode": null,
+      "environment": {
+        "ANTHROPIC_FEDERATION_RULE_ID": "fixture-rule",
+        "ANTHROPIC_IDENTITY_TOKEN": "fixture.jwt.assertion",
+        "ANTHROPIC_ORGANIZATION_ID": "fixture-org"
+      },
+      "exchanges": [
+        {
+          "beta": "oauth-2025-04-20,oidc-federation-2026-04-01",
+          "body": {
+            "assertion": "fixture.jwt.assertion",
+            "federation_rule_id": "fixture-rule",
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "organization_id": "fixture-org"
+          },
+          "url": "https://api.anthropic.com/v1/oauth/token"
+        }
+      ],
+      "fault": {
+        "message": "ANTHROPIC_IDENTITY_TOKEN is not set; the workload-identity chain selected this provider at construction time but the env var is no longer present.",
+        "type": "AnthropicError"
+      },
+      "requests": [
+        {
+          "headers": {
+            "anthropic-beta": "oauth-2025-04-20",
+            "authorization": "Bearer exchanged-token"
+          },
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "spec": {
+        "advance_clock": 3600,
+        "environment": {
+          "ANTHROPIC_FEDERATION_RULE_ID": "fixture-rule",
+          "ANTHROPIC_IDENTITY_TOKEN": "fixture.jwt.assertion",
+          "ANTHROPIC_ORGANIZATION_ID": "fixture-org"
+        },
+        "name": "federation-literal-disappearance",
+        "unset_literal": true
+      },
+      "texts": [
+        "ok"
+      ]
     }
   ],
   "discovery_hashes": {

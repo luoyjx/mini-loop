@@ -72,6 +72,16 @@ async def provider_discovery_cases(scratch):
         dict(name="profile-federation-write-failure", config={**profile_federation, "authentication": {**profile_federation["authentication"], "credentials_path": "<cache-parent-file>/cache.json"}}, identity_file="file.jwt.assertion", write_failure=True),
         dict(name="profile-federation-env-fill", config={"authentication": {"type": "oidc_federation"}}, identity_file="file.jwt.assertion", environment={"ANTHROPIC_PROFILE": "default", "ANTHROPIC_FEDERATION_RULE_ID": "env-rule", "ANTHROPIC_ORGANIZATION_ID": "env-org", "ANTHROPIC_WORKSPACE_ID": "env-workspace", "ANTHROPIC_SCOPE": "env-scope"}),
     ])
+    profiles.extend([
+        dict(name="empty-key-shadows-explicit-profile", environment={"ANTHROPIC_API_KEY": "", "ANTHROPIC_PROFILE": "missing"}),
+        dict(name="empty-auth-shadows-explicit-profile", environment={"ANTHROPIC_AUTH_TOKEN": "", "ANTHROPIC_PROFILE": "missing"}),
+        dict(name="static-auth-shadows-explicit-profile", environment={"ANTHROPIC_AUTH_TOKEN": "static-bearer", "ANTHROPIC_PROFILE": "missing"}),
+        dict(name="custom-auth-does-not-shadow-explicit-profile", environment={"ANTHROPIC_CUSTOM_HEADERS": "Authorization: Bearer custom-bearer", "ANTHROPIC_PROFILE": "missing"}),
+        dict(name="empty-selectors-fallback-profile", environment={"ANTHROPIC_PROFILE": "", "ANTHROPIC_CONFIG_DIR": ""}, config=oauth, credentials=credentials),
+        dict(name="federation-empty-literal", environment={**federation, "ANTHROPIC_IDENTITY_TOKEN": ""}),
+        dict(name="federation-literal-rotation", environment=federation, advance_clock=3600, rotate_literal="rotated.literal.assertion"),
+        dict(name="federation-literal-disappearance", environment=federation, advance_clock=3600, unset_literal=True),
+    ])
     rows = []
     for spec in profiles:
         root = scratch / spec["name"]
@@ -163,6 +173,10 @@ async def provider_discovery_cases(scratch):
                         clock[0] += spec["advance_clock"]
                         if spec.get("rotate_identity"):
                             (root / "identity.jwt").write_text(spec["rotate_identity"])
+                        if "rotate_literal" in spec:
+                            os.environ["ANTHROPIC_IDENTITY_TOKEN"] = spec["rotate_literal"]
+                        if spec.get("unset_literal"):
+                            os.environ.pop("ANTHROPIC_IDENTITY_TOKEN", None)
             except Exception as exc:
                 fault = dict(type=type(exc).__name__, message=str(exc).replace(str(scratch), "<scratch>"))
             finally:
