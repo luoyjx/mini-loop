@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `d05004c` plus measured fake HTTP evidence. The entries below retain their historical
+Reviewed code/test baseline: `dcd9f7c` plus composite guard evidence. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -18,6 +18,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 399 production files, 1291 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
+| Provider citation variants | Source SDK 0.107.1 TextBlock and agent._content_payload offline probe; Go provider decode/stream refusals | Confirmed open: known nonempty citations retained in Python and rejected by Go; capture/typed implementation remains |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 The latest Source export check at `ba1c43f` exited zero with 201 matching files
@@ -8039,3 +8040,24 @@ Source modules, Go runtime and contract exports are unchanged; Go gates,
 Source export, coverage and invariants were not rerun. Last invariant check
 is 77 at d05004c. README architecture baseline reviewed; map/spec unchanged.
 Diff checks pass; no merge/push. Structured audit evidence follows separately.
+
+
+## 2026-10-10 composite current Python guard evidence
+
+Corrected instrument baseline: `dcd9f7c`. [Structured guard evidence](docs/validation/python-guards-2026-10-10.json)
+records the complete initial sweep (exit 1: 376 caught, 2 INVALID) and two
+passing corrected reruns. Inventory comparison with 73c14ad proves exactly
+those two metadata entries changed. Their corrected captures plus the unchanged
+376 names equal all 378 current names; the artifact records inventory/log hashes.
+A fresh single full command returning zero was not run. This is composite
+coverage, not Go mutation coverage. The new syntax/collection preflight and
+2194-pass Python regression cover the corrected snapshot. Diff checks pass.
+
+G4 inspection also confirms a remaining provider implementation gap: installed
+anthropic 0.107.1 TextBlock accepts a known char_location citation, and Python
+agent._content_payload preserves its nonempty citation via model_dump. An actual
+offline constructor/projection probe passes. Go provider.decodeBlock currently
+rejects every nonempty citations array, and the stream decoder rejects citation
+deltas. Capture complete Source citation recipes and implement named citation
+variants/masking/cloning/request forwarding before claiming that scope accepted.
+No provider call, dependency or runtime change was made in this observation.

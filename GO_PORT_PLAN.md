@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `d05004c` plus the measured fake HTTP baseline. This section is the current delivery index;
+Reviewed 2026-10-10 at `dcd9f7c` plus composite guard evidence. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,7 +6864,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Known nonempty citation blocks/deltas remain unimplemented; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
 | G7 | 201 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
@@ -6876,6 +6876,11 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    works with an injected diagnostics provider. Default CLI full activation still
    refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
    outstanding explicit dependency decision. SQLite driver approval does not approve it.
+
+2. Provider citations: Source's installed anthropic 0.107.1 SDK emits known
+   char_location citations preserved by agent._content_payload. Go currently
+   rejects nonempty citations and citation deltas. Named variants, Source
+   fixtures and complete clone/mask/request/stream handling remain required.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -15329,3 +15334,24 @@ Source modules, Go runtime and contract exports are unchanged; Go gates,
 Source export, coverage and invariants were not rerun. Last invariant check
 is 77 at d05004c. README architecture baseline reviewed; map/spec unchanged.
 Diff checks pass; no merge/push. Structured audit evidence follows separately.
+
+
+## 2026-10-10 composite current Python guard evidence
+
+Corrected instrument baseline: `dcd9f7c`. [Structured guard evidence](docs/validation/python-guards-2026-10-10.json)
+records the complete initial sweep (exit 1: 376 caught, 2 INVALID) and two
+passing corrected reruns. Inventory comparison with 73c14ad proves exactly
+those two metadata entries changed. Their corrected captures plus the unchanged
+376 names equal all 378 current names; the artifact records inventory/log hashes.
+A fresh single full command returning zero was not run. This is composite
+coverage, not Go mutation coverage. The new syntax/collection preflight and
+2194-pass Python regression cover the corrected snapshot. Diff checks pass.
+
+G4 inspection also confirms a remaining provider implementation gap: installed
+anthropic 0.107.1 TextBlock accepts a known char_location citation, and Python
+agent._content_payload preserves its nonempty citation via model_dump. An actual
+offline constructor/projection probe passes. Go provider.decodeBlock currently
+rejects every nonempty citations array, and the stream decoder rejects citation
+deltas. Capture complete Source citation recipes and implement named citation
+variants/masking/cloning/request forwarding before claiming that scope accepted.
+No provider call, dependency or runtime change was made in this observation.
