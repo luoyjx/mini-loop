@@ -2,7 +2,6 @@ package agent
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 )
@@ -64,7 +63,7 @@ func (session *ManagedSession) CatchUpEvents(ctx context.Context, cursor EventSe
 		}
 		// Re-decode the closed archival projection. Even an embedding backend
 		// cannot introduce live capabilities or aliased mutable payloads here.
-		encoded, err := json.Marshal(row)
+		encoded, err := row.MarshalArchiveJSON()
 		if row.Event.workflow.observation != nil {
 			encoded, err = row.MarshalWorkflowArchiveJSON(nil)
 		}

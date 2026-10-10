@@ -474,7 +474,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `d36323d` plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `73d3dbc` plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -1278,7 +1278,11 @@ journals refuse finite input fingerprints before creating authority; before/guar
 run, after is skipped, and result receives the encoding failure. Detached
 observation queries and cache-bearing request estimates retain legacy numbers;
 standard request/event JSON remains finite. Native legacy trajectory model
-snapshots and complete nonfinite historical restore still need separate proofs.
+snapshots and broader nonfinite historical consumers still need separate proofs.
+Actual SQLite close/reopen and Manager restore now retain the two captured Bash
+observations, restore interactive mode, and re-decode catch-up records as untrusted.
+Neither restoration nor catch-up creates actions or invokes handlers. A resumed
+model request retains the observation and fails finite encoding before transport.
 Declared ToolCaller variants retain unknown fields as immutable extension metadata
 across client/server tool-use and web-search/web-fetch replies. Direct caller
 `tool_id` is retained as an extension; typed ToolID remains empty. Code-execution

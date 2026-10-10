@@ -4390,3 +4390,14 @@ and model request encoders remain finite. Mask failures return no raw projection
 of executable/decision input variants. `ObservedMessagesPythonJSON` and
 `ObservedWireMessagesPythonJSON` support inspection/estimation, retaining detached
 cache annotations. None of these projections supplies live authority.
+
+## Nonfinite historical event restore and catch-up — 2026-10-11
+
+`RestoreSessions` validates known historical events with their named archival
+codec; `CatchUpEvents` uses the same codec before re-decoding untrusted records.
+Standard JSON remains finite. Scope/order/window and explicit restore identity
+checks are preserved. Actual SQLite close/reopen tests retain Bash NaN/Infinity,
+owner and history, restore interactive mode, create no action, and keep the
+resumed request out of transport. The operator still explicitly selects restore;
+catch-up claims no lease or live authority. Broader archival/trajectory consumers
+and full SDK error-text parity remain open.

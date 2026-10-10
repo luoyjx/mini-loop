@@ -2,7 +2,6 @@ package agent
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -334,7 +333,7 @@ func (p *sessionPersistence) loadRestoreLocked(ctx context.Context, row SessionR
 	}
 	for _, event := range events {
 		// Unknown variants are unsupported; they are never silently projected away.
-		encoded, e := json.Marshal(event)
+		encoded, e := event.MarshalArchiveJSON()
 		if e != nil {
 			return snapshot, fmt.Errorf("%w: event: %w", ErrStateRestore, e)
 		}

@@ -8405,3 +8405,15 @@ recording projection: Launcher LLM/Jev and SQLite decision regressions exposed
 that distinction and were repaired. Projection bytes remain separate from finite
 request JSON. Legacy trajectory/model snapshots and complete restore consumer
 proofs remain open; native watcher reliability is unchanged.
+
+### Go migration — archived nonfinite input is not restored authority
+
+Baseline: `73d3dbc` plus this slice. Historical event validation must use a
+concrete archive codec rather than standard JSON when a known Bash observation
+contains legacy numbers. Manager restore and catch-up still re-decode closed
+variants and retain scope/order checks. Actual database close/reopen tests prove
+owner/history retention, interactive mode and untrusted catch-up context, with
+no new action entry. Subsequent model encoding fails before transport. The two
+captured Source restores use current construction policy as well. No persisted
+input supplies grants or execution authority. Broader trajectory/restore and SDK
+error-text fidelity remain unaccepted.
