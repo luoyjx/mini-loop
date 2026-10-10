@@ -6493,6 +6493,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_container_contracts import provider_container_contracts
     from tools.provider_web_search_contracts import provider_web_search_contracts
     from tools.provider_web_fetch_contracts import provider_web_fetch_contracts
+    from tools.provider_code_execution_contracts import provider_code_execution_contracts
     from tools.provider_tool_search_contracts import provider_tool_search_contracts
     from tools.provider_server_tool_contracts import provider_server_tool_contracts
     from tools.dotenv_contracts import dotenv_contracts
@@ -6851,6 +6852,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-container-upload.json": _json_bytes(provider_container_contracts()),
         "python-provider-web-search.json": _json_bytes(provider_web_search_contracts()),
         "python-provider-web-fetch.json": _json_bytes(provider_web_fetch_contracts()),
+        "python-provider-code-execution.json": _json_bytes(provider_code_execution_contracts()),
         "python-provider-tool-search.json": _json_bytes(provider_tool_search_contracts()),
         "python-provider-server-tool.json": _json_bytes(provider_server_tool_contracts()),
         "python-dotenv.json": _json_bytes(dotenv_contracts()),
