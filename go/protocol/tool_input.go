@@ -179,6 +179,7 @@ type ToolInput struct {
 	name               ToolName
 	nulls              inputNullFields
 	bash               BashInput
+	bashCommand        *BashCommandObservation
 	bashBinding        *BashBindingFailure
 	bashRejected       *BashRejectedArguments
 	bashBackground     *BashBackgroundRequest
@@ -374,6 +375,10 @@ func (input ToolInput) clone() (result ToolInput) {
 	defer func() {
 		result.nulls = input.nulls
 		if input.name == ToolBash {
+			if input.bashCommand != nil {
+				value := *input.bashCommand
+				result.bashCommand = &value
+			}
 			result.bashExtra = input.bashExtra
 			result.bashCommandMissing = input.bashCommandMissing
 			if input.bashBackground != nil {
@@ -459,6 +464,14 @@ func (input ToolInput) clone() (result ToolInput) {
 }
 
 func (input ToolInput) Validate() error {
+	if input.bashCommand != nil {
+		if input.name != ToolBash {
+			return errors.New("Bash command observation on non-Bash input")
+		}
+		if err := input.bashCommand.Validate(); err != nil {
+			return err
+		}
+	}
 	if input.bashBackground != nil || input.bashApproval != nil {
 		if input.name != ToolBash {
 			return errors.New("Bash options on non-Bash input")
@@ -551,7 +564,7 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
-	if input.bashBinding != nil || input.bashBackground != nil || input.bashApproval != nil {
+	if input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil {
 		if err := input.Validate(); err != nil {
 			return nil, err
 		}

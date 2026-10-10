@@ -2,20 +2,20 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `9c01921` plus named Bash option projections. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `400b6b0` plus named non-text Bash command observations. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `ffc3265` plus named Bash option projections | Passed: 218 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `d12d58b` plus named non-text command observations | Passed: 219 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 427 production files, 1395 named types on the named Bash options snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 428 production files, 1400 named types on the named non-text command snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -9160,7 +9160,7 @@ Actual Source Agent/default Bash consumers cover 56 profiles: 15 background requ
 shapes and 13 proposal shapes, each with background tools enabled and disabled.
 Text "false", nonzero numbers and nonempty containers request background execution;
 empty text/containers, zero, false and null do not. Disabled background support
-executes foreground regardless of the request. Twenty-eight distinct wire inputs
+executes foreground regardless of the request. Twenty-eight wire samples (27 unique inputs)
 retain exact original JSON values and kinds through direct/SSE decoding, clone,
 masking, historical message reads and SQLite close/reopen. Native tests execute real
 foreground shells/background tasks, compare Source candidate selection, and prove
@@ -9191,3 +9191,60 @@ Validation on local Darwin arm64:
 
 Source export freshness after all native watcher suites ended: passed, 218 current files.
 Diff and staged diff checks passed.
+
+## Named non-text Bash command consumers — 2026-10-10
+
+Baseline: `400b6b0` plus this implementation. Source contract commit `d12d58b`
+pins actual Agent, default _bash, real Toolset/background consumption, candidate
+functions and PermissionHook. Thirty-six consumption profiles and twenty permission
+profiles cover finite null/bool/integer/float/array/object commands, foreground and
+background activation, extra-keyword priority, before rewrites, before/guard denial,
+readonly and immutable deny-list behavior. No invalid command starts a process/task.
+
+BashCommandObservation owns a closed BashCommandKind and immutable finite value.
+Permission and approval use Python str(value) as a policy-only projection. Native
+handlers return named BashCommandFailure with split/lower stage: foreground split;
+background auto selection lower; explicit background initializes the owned manager
+then fails split. Original JSON stays in model/event/history records. Explicit
+caller admission remains strict, and the existing gate still controls permission,
+journal/replay, after hooks and result observation. Rejected command observations
+are never shell argv. Before rewrite can replace them with executable text.
+
+Protocol clone/masking/history and native direct/SSE/SQLite reopen cover 44 unique
+inputs: 27 optional-field values and 17 non-text command objects. The prior options
+inventory had 28 samples including the repeated absent-options object; uniqueness
+is now enforced. Earlier statements of 28 distinct inputs are corrected to 28
+samples (27 unique). Source authority decisions remain actual captured behavior.
+Nonfinite inputs, other default tools, broader SDK/caller/coercion scope, default
+syntax diagnostics dependency approval and full G7 acceptance remain open.
+
+Validation on local Darwin arm64:
+- Full ordinary Go suite: initial run found one legacy test rejecting numeric
+  command observations in stored events. That assertion now rejects an invalid
+  name type, and 36 positive event round trips preserve observed commands. Targeted
+  repair passed; full `go test -p=1 -count=1 -timeout=300s ./...` retry passed.
+- Full `go test -race -p=1 -count=1 -timeout=300s ./...`: passed; no race report.
+- `go vet ./...`: passed; existing Darwin FSEvents/linker warnings remain.
+- Type audit: 428 production files, 1400 named types, zero direct open-payload findings.
+- Focused Source pytest: one passed; consumers use real Toolset/background code.
+  The initial permission probe lacked agent.state, so it selected interactive mode;
+  the probe now supplies actual agent state. Python runtime modules are unchanged.
+- Scans: 19 anchored. Selected `verify_guards.py -k readonly`: five caught mutations,
+  not a full mutation sweep. Native consumer/permission/protocol/provider/SQLite
+  checks passed; 44 unique direct/SSE/reopen inputs preserve JSON kinds and values.
+- Archify regeneration: 9/9 checks, zero warnings; README outline reviewed.
+  Specification SHA256 ee939347fa22c61c8d58d40c25fd9cd6b5a6614c6b05f83aac697ffbc4edf8f3;
+  HTML SHA256 2895a635a21b01141b8080b22ef56820103ff079abba266e678f541ad7740a66.
+  No fresh visual inspection (prior browser access denied).
+- No Python runtime package change; full Python regression/invariant verifier
+  were not rerun. No new coverage collection, non-Darwin verification, merge/push
+  or full-port acceptance claim. Last 89.39% application coverage is bf4c866 evidence.
+
+Source export freshness after native watcher suites ended: passed, 219 current files.
+Diff and staged diff checks passed.
+
+Next observed gap: non-text command display labels. Python activity.tool_label
+uses str(command), while Go agent.ToolLabel currently reads the executable
+BashInput.Command shadow (empty for rejected observations). Error/permission/input
+parity above does not prove complete event-display parity. Capture Source display
+fields and align this observation-only consumer before accepting the full slice.

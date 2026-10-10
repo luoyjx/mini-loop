@@ -245,6 +245,9 @@ func (handler bashHandler) executeDetailedTool(ctx context.Context, authority To
 	if bound, ok := handler.executor.(interface{ Workspace() string }); ok && bound.Workspace() != authority.Workspace {
 		return "", nil, errors.New("bash executor is bound to a different workspace")
 	}
+	if command, ok := input.BashCommandObservation(); ok {
+		return "", nil, command.Failure(protocol.BashCommandSplit)
+	}
 	if executor, ok := handler.executor.(BashResultExecutor); ok {
 		result, err := executor.ExecuteBashResult(ctx, bash)
 		return result.Render(), &result, err

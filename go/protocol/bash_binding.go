@@ -94,22 +94,23 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 	if err != nil {
 		return ToolInput{}, err
 	}
-	var wire struct {
-		Command *string `json:"command"`
+	command, commandPresent := object.Lookup("command")
+	text, commandIsText := command.Text()
+	var observed *BashCommandObservation
+	if commandPresent && !commandIsText {
+		value, err := observeBashCommand(command)
+		if err != nil {
+			return ToolInput{}, err
+		}
+		observed = &value
 	}
-	if err := json.Unmarshal(encoded, &wire); err != nil {
-		return ToolInput{}, err
-	}
-	_, commandPresent := object.Lookup("command")
-	if commandPresent && wire.Command == nil {
-		return DecodeToolInput(name, data)
-	} // known null/type policy is still strict
 	_, backgroundPresent := object.Lookup("run_in_background")
 	_, prefixPresent := object.Lookup("approval_prefix")
-	if len(extra) == 0 && commandPresent && !backgroundPresent && !prefixPresent {
+	if len(extra) == 0 && commandPresent && observed == nil && !backgroundPresent && !prefixPresent {
 		return DecodeToolInput(name, data)
 	}
 	input := BashToolInput(BashInput{})
+	input.bashCommand = observed
 	if backgroundPresent {
 		value, _ := object.Lookup("run_in_background")
 		input.bashBackground = &BashBackgroundRequest{observed: value}
@@ -118,9 +119,7 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 		value, _ := object.Lookup("approval_prefix")
 		input.bashApproval = &BashApprovalProposal{observed: value}
 	}
-	if wire.Command != nil {
-		input.bash.Command = *wire.Command
-	}
+	input.bash.Command = text
 	input.bashCommandMissing = !commandPresent
 	input.bashExtra = jsonvalue.ObjectValue(extra)
 	if !commandPresent || len(extra) > 0 {
@@ -139,9 +138,9 @@ func (input ToolInput) marshalBashBinding() ([]byte, error) {
 	if input.bashRejected != nil {
 		return input.bashRejected.MarshalJSON()
 	}
-	var command *string
+	var command *modelBashCommand
 	if !input.bashCommandMissing {
-		value := input.bash.Command
+		value := modelBashCommand{text: input.bash.Command, observation: input.bashCommand}
 		command = &value
 	}
 	background := input.bashBackground
@@ -165,7 +164,7 @@ func (input ToolInput) marshalBashBinding() ([]byte, error) {
 		prefix = &BashApprovalProposal{observed: value}
 	}
 	return marshalMetadataObject(struct {
-		Command    *string                `json:"command,omitempty"`
+		Command    *modelBashCommand      `json:"command,omitempty"`
 		Background *BashBackgroundRequest `json:"run_in_background,omitempty"`
 		Prefix     *BashApprovalProposal  `json:"approval_prefix,omitempty"`
 	}{command, background, prefix}, input.bashExtra)

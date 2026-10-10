@@ -131,6 +131,9 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	case ToolKeepWorktree, ToolEnterWorktree:
 		input.worktreeName.Name = mask(input.worktreeName.Name)
 	case ToolBash:
+		if input.bashCommand != nil {
+			input.bashCommand.observed = input.bashCommand.observed.MapStrings(mask)
+		}
 		input.bashExtra = input.bashExtra.MapStrings(mask)
 		if input.bashBackground != nil {
 			input.bashBackground.observed = input.bashBackground.observed.MapStrings(mask)

@@ -320,7 +320,7 @@ Actual Source Agent/default Bash consumers cover 56 profiles: 15 background requ
 shapes and 13 proposal shapes, each with background tools enabled and disabled.
 Text "false", nonzero numbers and nonempty containers request background execution;
 empty text/containers, zero, false and null do not. Disabled background support
-executes foreground regardless of the request. Twenty-eight distinct wire inputs
+executes foreground regardless of the request. Twenty-eight wire samples (27 unique inputs)
 retain exact original JSON values and kinds through direct/SSE decoding, clone,
 masking, historical message reads and SQLite close/reopen. Native tests execute real
 foreground shells/background tasks, compare Source candidate selection, and prove
@@ -329,3 +329,29 @@ readonly denial starts no background manager. Explicit DecodeToolInput is strict
 This closes the captured finite Bash optional-field adaptation. Nonfinite inputs,
 non-text command values, other default tools, broader SDK/caller/coercion scope,
 default diagnostics dependency approval and complete G7 acceptance remain open.
+
+## Named non-text Bash command consumers — 2026-10-10
+
+Baseline: `400b6b0` plus this implementation. Source contract commit `d12d58b`
+pins actual Agent, default _bash, real Toolset/background consumption, candidate
+functions and PermissionHook. Thirty-six consumption profiles and twenty permission
+profiles cover finite null/bool/integer/float/array/object commands, foreground and
+background activation, extra-keyword priority, before rewrites, before/guard denial,
+readonly and immutable deny-list behavior. No invalid command starts a process/task.
+
+BashCommandObservation owns a closed BashCommandKind and immutable finite value.
+Permission and approval use Python str(value) as a policy-only projection. Native
+handlers return named BashCommandFailure with split/lower stage: foreground split;
+background auto selection lower; explicit background initializes the owned manager
+then fails split. Original JSON stays in model/event/history records. Explicit
+caller admission remains strict, and the existing gate still controls permission,
+journal/replay, after hooks and result observation. Rejected command observations
+are never shell argv. Before rewrite can replace them with executable text.
+
+Protocol clone/masking/history and native direct/SSE/SQLite reopen cover 44 unique
+inputs: 27 optional-field values and 17 non-text command objects. The prior options
+inventory had 28 samples including the repeated absent-options object; uniqueness
+is now enforced. Earlier statements of 28 distinct inputs are corrected to 28
+samples (27 unique). Source authority decisions remain actual captured behavior.
+Nonfinite inputs, other default tools, broader SDK/caller/coercion scope, default
+syntax diagnostics dependency approval and full G7 acceptance remain open.

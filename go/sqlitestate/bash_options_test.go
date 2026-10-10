@@ -13,15 +13,25 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-func TestBashObservedOptionsSurviveSQLiteReopen(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-bash-options.json")
+func TestBashModelObservationsSurviveSQLiteReopen(t *testing.T) {
+	for _, fixture := range []struct {
+		name  string
+		count int
+	}{{"options", 27}, {"command", 17}} {
+		t.Run(fixture.name, func(t *testing.T) {
+			assertBashModelReopen(t, "../testdata/python-provider-bash-"+fixture.name+".json", fixture.count)
+		})
+	}
+}
+func assertBashModelReopen(t *testing.T, fixturePath string, expectedCount int) {
+	t.Helper()
+	data, err := os.ReadFile(fixturePath)
 	if err != nil {
 		t.Fatal(err)
 	}
 	var fixture struct {
 		Cases []struct {
-			Input   string `json:"input_json"`
-			Enabled bool   `json:"background_enabled"`
+			Input string `json:"input_json"`
 		}
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
@@ -31,10 +41,12 @@ func TestBashObservedOptionsSurviveSQLiteReopen(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "state.db")
 	store := openStore(t, path)
 	expected := []string{}
+	seen := map[string]bool{}
 	for _, row := range fixture.Cases {
-		if row.Enabled {
+		if seen[row.Input] {
 			continue
 		}
+		seen[row.Input] = true
 		input, err := protocol.DecodeModelToolInput(protocol.ToolBash, []byte(row.Input))
 		if err != nil {
 			t.Fatal(err)
@@ -46,7 +58,7 @@ func TestBashObservedOptionsSurviveSQLiteReopen(t *testing.T) {
 		}
 		expected = append(expected, row.Input)
 	}
-	if len(expected) != 28 {
+	if len(expected) != expectedCount {
 		t.Fatal("distinct Source option inventory changed")
 	}
 	if err := store.Close(); err != nil {

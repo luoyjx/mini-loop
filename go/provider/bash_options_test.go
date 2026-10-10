@@ -11,8 +11,19 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-func TestBashObservedOptionsSurviveDirectAndStreamIngress(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-bash-options.json")
+func TestBashModelObservationsSurviveDirectAndStreamIngress(t *testing.T) {
+	for _, fixture := range []struct {
+		name  string
+		count int
+	}{{"options", 27}, {"command", 17}} {
+		t.Run(fixture.name, func(t *testing.T) {
+			assertBashModelIngress(t, "../testdata/python-provider-bash-"+fixture.name+".json", fixture.count)
+		})
+	}
+}
+func assertBashModelIngress(t *testing.T, path string, expectedCount int) {
+	t.Helper()
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -20,7 +31,6 @@ func TestBashObservedOptionsSurviveDirectAndStreamIngress(t *testing.T) {
 		Cases []struct {
 			Field, Name string
 			Input       string `json:"input_json"`
-			Enabled     bool   `json:"background_enabled"`
 		}
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
@@ -41,10 +51,12 @@ func TestBashObservedOptionsSurviveDirectAndStreamIngress(t *testing.T) {
 		t.Fatal("SDK stream envelope missing")
 	}
 	count := 0
+	seen := map[string]bool{}
 	for _, row := range fixture.Cases {
-		if row.Enabled {
+		if seen[row.Input] {
 			continue
-		} // same wire input, two Source consumer activation profiles
+		}
+		seen[row.Input] = true
 		t.Run(row.Field+"/"+row.Name, func(t *testing.T) {
 			direct, err := decodeReply([]byte(`{"id":"fixture","type":"message","role":"assistant","model":"fixture-model","stop_sequence":null,"content":[{"type":"tool_use","id":"options","name":"bash","input":` + row.Input + `}],"stop_reason":"tool_use","usage":{"input_tokens":1,"output_tokens":2}}`))
 			if err != nil {
@@ -93,7 +105,7 @@ func TestBashObservedOptionsSurviveDirectAndStreamIngress(t *testing.T) {
 		})
 		count++
 	}
-	if count != 28 {
+	if count != expectedCount {
 		t.Fatal("distinct Source wire inventory changed", count)
 	}
 }

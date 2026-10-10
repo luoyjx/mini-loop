@@ -151,7 +151,7 @@ func TestStoredEventRejectsUnsupportedAndInvalidRows(t *testing.T) {
 		`"type":"system_prompt","text":[]`, `"type":"system_prompt","text":[{"type":"thinking"}]`,
 		`"type":"system_prompt","text":[{"type":"text","text":"x"}]`,
 		`"type":"tool_use","name":"future","input":{}`,
-		`"type":"tool_use","name":"bash","input":{"command":42}`,
+		`"type":"tool_use","name":42,"input":{"command":"true"}`,
 		`"type":"todo","items":"invalid"`, `"type":"status","status":42`,
 		`"type":"turn_queued","depth":-1`,
 	} {

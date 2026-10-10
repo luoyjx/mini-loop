@@ -44,6 +44,9 @@ func (v ToolInput) CheckBackground() (CheckBackgroundInput, bool) {
 func (v ToolInput) ShellCommand() (string, bool) {
 	switch v.name {
 	case ToolBash:
+		if v.bashCommand != nil {
+			return v.bashCommand.PolicyString(), true
+		}
 		return v.bash.Command, true
 	case ToolBackgroundRun:
 		return v.backgroundRun.Command, true

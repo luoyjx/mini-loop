@@ -191,6 +191,15 @@ func (handler *runtimeHandler) executeDetailedTool(ctx context.Context, authorit
 	}
 	value, _ := input.Bash()
 	explicit := value.RunInBackground != nil && *value.RunInBackground
+	if command, ok := input.BashCommandObservation(); ok && handler.background != nil {
+		if !explicit {
+			return "", nil, command.Failure(protocol.BashCommandLower)
+		}
+		if _, err := handler.background.get(ctx, false); err != nil {
+			return "", nil, err
+		}
+		return "", nil, command.Failure(protocol.BashCommandSplit)
+	}
 	if handler.background != nil && background.ShouldRunBackground(value.Command, explicit) {
 		manager, err := handler.background.get(ctx, false)
 		if err != nil {

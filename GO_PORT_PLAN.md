@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `9c01921` plus named Bash option projections. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `400b6b0` plus named non-text Bash command observations. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 218 exported Source recipe files including actual SDK usage, non-mapping input and Bash option consumer captures; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 219 exported Source recipe files including actual SDK usage, non-mapping input and Bash option/command consumer captures; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16953,7 +16953,7 @@ Actual Source Agent/default Bash consumers cover 56 profiles: 15 background requ
 shapes and 13 proposal shapes, each with background tools enabled and disabled.
 Text "false", nonzero numbers and nonempty containers request background execution;
 empty text/containers, zero, false and null do not. Disabled background support
-executes foreground regardless of the request. Twenty-eight distinct wire inputs
+executes foreground regardless of the request. Twenty-eight wire samples (27 unique inputs)
 retain exact original JSON values and kinds through direct/SSE decoding, clone,
 masking, historical message reads and SQLite close/reopen. Native tests execute real
 foreground shells/background tasks, compare Source candidate selection, and prove
@@ -16984,3 +16984,60 @@ Validation on local Darwin arm64:
 
 Source export freshness after all native watcher suites ended: passed, 218 current files.
 Diff and staged diff checks passed.
+
+## Named non-text Bash command consumers — 2026-10-10
+
+Baseline: `400b6b0` plus this implementation. Source contract commit `d12d58b`
+pins actual Agent, default _bash, real Toolset/background consumption, candidate
+functions and PermissionHook. Thirty-six consumption profiles and twenty permission
+profiles cover finite null/bool/integer/float/array/object commands, foreground and
+background activation, extra-keyword priority, before rewrites, before/guard denial,
+readonly and immutable deny-list behavior. No invalid command starts a process/task.
+
+BashCommandObservation owns a closed BashCommandKind and immutable finite value.
+Permission and approval use Python str(value) as a policy-only projection. Native
+handlers return named BashCommandFailure with split/lower stage: foreground split;
+background auto selection lower; explicit background initializes the owned manager
+then fails split. Original JSON stays in model/event/history records. Explicit
+caller admission remains strict, and the existing gate still controls permission,
+journal/replay, after hooks and result observation. Rejected command observations
+are never shell argv. Before rewrite can replace them with executable text.
+
+Protocol clone/masking/history and native direct/SSE/SQLite reopen cover 44 unique
+inputs: 27 optional-field values and 17 non-text command objects. The prior options
+inventory had 28 samples including the repeated absent-options object; uniqueness
+is now enforced. Earlier statements of 28 distinct inputs are corrected to 28
+samples (27 unique). Source authority decisions remain actual captured behavior.
+Nonfinite inputs, other default tools, broader SDK/caller/coercion scope, default
+syntax diagnostics dependency approval and full G7 acceptance remain open.
+
+Validation on local Darwin arm64:
+- Full ordinary Go suite: initial run found one legacy test rejecting numeric
+  command observations in stored events. That assertion now rejects an invalid
+  name type, and 36 positive event round trips preserve observed commands. Targeted
+  repair passed; full `go test -p=1 -count=1 -timeout=300s ./...` retry passed.
+- Full `go test -race -p=1 -count=1 -timeout=300s ./...`: passed; no race report.
+- `go vet ./...`: passed; existing Darwin FSEvents/linker warnings remain.
+- Type audit: 428 production files, 1400 named types, zero direct open-payload findings.
+- Focused Source pytest: one passed; consumers use real Toolset/background code.
+  The initial permission probe lacked agent.state, so it selected interactive mode;
+  the probe now supplies actual agent state. Python runtime modules are unchanged.
+- Scans: 19 anchored. Selected `verify_guards.py -k readonly`: five caught mutations,
+  not a full mutation sweep. Native consumer/permission/protocol/provider/SQLite
+  checks passed; 44 unique direct/SSE/reopen inputs preserve JSON kinds and values.
+- Archify regeneration: 9/9 checks, zero warnings; README outline reviewed.
+  Specification SHA256 ee939347fa22c61c8d58d40c25fd9cd6b5a6614c6b05f83aac697ffbc4edf8f3;
+  HTML SHA256 2895a635a21b01141b8080b22ef56820103ff079abba266e678f541ad7740a66.
+  No fresh visual inspection (prior browser access denied).
+- No Python runtime package change; full Python regression/invariant verifier
+  were not rerun. No new coverage collection, non-Darwin verification, merge/push
+  or full-port acceptance claim. Last 89.39% application coverage is bf4c866 evidence.
+
+Source export freshness after native watcher suites ended: passed, 219 current files.
+Diff and staged diff checks passed.
+
+Next observed gap: non-text command display labels. Python activity.tool_label
+uses str(command), while Go agent.ToolLabel currently reads the executable
+BashInput.Command shadow (empty for rejected observations). Error/permission/input
+parity above does not prove complete event-display parity. Capture Source display
+fields and align this observation-only consumer before accepting the full slice.
