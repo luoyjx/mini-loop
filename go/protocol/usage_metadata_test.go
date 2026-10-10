@@ -23,7 +23,7 @@ func TestUsageMetadataMatchesSourceEventShapes(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 7 {
+	if len(fixture.Cases) != 9 {
 		t.Fatal("Source usage inventory changed")
 	}
 	for _, row := range fixture.Cases {
@@ -49,9 +49,9 @@ func TestUsageMetadataMatchesSourceEventShapes(t *testing.T) {
 				t.Fatal("SDK usage event shape lost", string(actual))
 			}
 			cloned := (ModelReply{Usage: usage}).Clone().Usage
-			if usage.CacheCreation != nil {
-				cloned.CacheCreation.Ephemeral1hInputTokens = 999
-				if usage.CacheCreation.Ephemeral1hInputTokens == 999 {
+			if usage.CacheCreation != nil && usage.CacheCreation.Ephemeral1hInputTokens != nil {
+				*cloned.CacheCreation.Ephemeral1hInputTokens = 999
+				if *usage.CacheCreation.Ephemeral1hInputTokens == 999 {
 					t.Fatal("cache metadata aliases clone")
 				}
 			}
@@ -61,15 +61,15 @@ func TestUsageMetadataMatchesSourceEventShapes(t *testing.T) {
 					t.Fatal("geo aliases clone")
 				}
 			}
-			if usage.OutputTokensDetails != nil {
-				cloned.OutputTokensDetails.ThinkingTokens = 999
-				if usage.OutputTokensDetails.ThinkingTokens == 999 {
+			if usage.OutputTokensDetails != nil && usage.OutputTokensDetails.ThinkingTokens != nil {
+				*cloned.OutputTokensDetails.ThinkingTokens = 999
+				if *usage.OutputTokensDetails.ThinkingTokens == 999 {
 					t.Fatal("output metadata aliases clone")
 				}
 			}
-			if usage.ServerToolUse != nil {
-				cloned.ServerToolUse.WebFetchRequests = 999
-				if usage.ServerToolUse.WebFetchRequests == 999 {
+			if usage.ServerToolUse != nil && usage.ServerToolUse.WebFetchRequests != nil {
+				*cloned.ServerToolUse.WebFetchRequests = 999
+				if *usage.ServerToolUse.WebFetchRequests == 999 {
 					t.Fatal("server metadata aliases clone")
 				}
 			}
@@ -110,7 +110,7 @@ func TestUsageSparseNullDefaultsAndNestedExtensions(t *testing.T) {
 
 func TestUsageMetadataFailureIsAtomicAndBounded(t *testing.T) {
 	initial := TokenUsage{InputTokens: 7, OutputTokens: 8}
-	for _, raw := range []string{`{"input_tokens":1}`, `{"input_tokens":1,"output_tokens":2,"cache_creation":{"ephemeral_1h_input_tokens":-1,"ephemeral_5m_input_tokens":0}}`, `{"input_tokens":1,"output_tokens":2,"inference_geo":5}`, `{"input_tokens":1,"output_tokens":2,"output_tokens_details":{}}`, strings.Repeat(" ", MaxWireBytes+1)} {
+	for _, raw := range []string{`{"input_tokens":1}`, `{"input_tokens":1,"output_tokens":2,"cache_creation":{"ephemeral_1h_input_tokens":-1,"ephemeral_5m_input_tokens":0}}`, `{"input_tokens":1,"output_tokens":2,"inference_geo":5}`, `{"input_tokens":1,"output_tokens":2,"output_tokens_details":{"thinking_tokens":"invalid"}}`, strings.Repeat(" ", MaxWireBytes+1)} {
 		target := initial
 		if err := json.Unmarshal([]byte(raw), &target); err == nil {
 			t.Fatal("invalid usage accepted")

@@ -130,7 +130,10 @@ func TestStreamingMatchesActualSDKAndPythonTransport(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if !reflect.DeepEqual(reply, *spec.Reply) {
+				// Older captures project core usage; materialize the SDK nullable fields.
+				expectedReply := spec.Reply.Clone()
+				expectedReply.Usage = expectedReply.Usage.WithSDKDefaults()
+				if !reflect.DeepEqual(reply, expectedReply) {
 					t.Fatalf("reply differs: %#v / %#v", reply, *spec.Reply)
 				}
 			} else {

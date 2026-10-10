@@ -205,7 +205,10 @@ func TestDirectHTTPMatchesActualPythonSDK(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if !reflect.DeepEqual(reply, *c.Reply) {
+				// Older captures project core usage; materialize the SDK nullable fields.
+				expectedReply := c.Reply.Clone()
+				expectedReply.Usage = expectedReply.Usage.WithSDKDefaults()
+				if !reflect.DeepEqual(reply, expectedReply) {
 					a, _ := json.Marshal(reply)
 					b, _ := json.Marshal(c.Reply)
 					t.Fatalf("reply %s != %s", a, b)

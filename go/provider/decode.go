@@ -9,7 +9,8 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-// Local ingress DTOs discard SDK-only response metadata, then normalize every
+// Local ingress DTOs preserve named usage and discard unconsumed message metadata.
+// Normalize every
 // consumed field into a closed domain variant. Raw bytes never reach a session.
 func decodeReply(data []byte) (protocol.ModelReply, error) {
 	if !utf8.Valid(data) {
@@ -23,21 +24,15 @@ func decodeReply(data []byte) (protocol.ModelReply, error) {
 		Content      *[]json.RawMessage   `json:"content"`
 		StopReason   *protocol.StopReason `json:"stop_reason"`
 		StopSequence *string              `json:"stop_sequence"`
-		Usage        *struct {
-			Input         *int                  `json:"input_tokens"`
-			Output        *int                  `json:"output_tokens"`
-			CacheRead     *int                  `json:"cache_read_input_tokens"`
-			CacheCreation *int                  `json:"cache_creation_input_tokens"`
-			Tier          *protocol.ServiceTier `json:"service_tier"`
-		} `json:"usage"`
+		Usage        *protocol.TokenUsage `json:"usage"`
 	}
 	if err := json.Unmarshal(data, &wire); err != nil {
 		return protocol.ModelReply{}, errors.New("malformed JSON")
 	}
-	if wire.ID == nil || wire.Type == nil || wire.Role == nil || wire.Model == nil || wire.Content == nil || wire.StopReason == nil || wire.Usage == nil || wire.Usage.Input == nil || wire.Usage.Output == nil {
+	if wire.ID == nil || wire.Type == nil || wire.Role == nil || wire.Model == nil || wire.Content == nil || wire.StopReason == nil || wire.Usage == nil {
 		return protocol.ModelReply{}, errors.New("missing completed-message fields")
 	}
-	reply := protocol.ModelReply{ID: *wire.ID, Type: *wire.Type, Role: *wire.Role, Model: *wire.Model, Content: []protocol.Block{}, StopReason: *wire.StopReason, StopSequence: wire.StopSequence, Usage: protocol.TokenUsage{InputTokens: *wire.Usage.Input, OutputTokens: *wire.Usage.Output, CacheReadInputTokens: wire.Usage.CacheRead, CacheCreationInputTokens: wire.Usage.CacheCreation, ServiceTier: wire.Usage.Tier}}
+	reply := protocol.ModelReply{ID: *wire.ID, Type: *wire.Type, Role: *wire.Role, Model: *wire.Model, Content: []protocol.Block{}, StopReason: *wire.StopReason, StopSequence: wire.StopSequence, Usage: wire.Usage.WithSDKDefaults()}
 	for i, raw := range *wire.Content {
 		block, err := decodeBlock(raw)
 		if err != nil {

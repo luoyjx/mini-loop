@@ -184,10 +184,11 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			StopSequence *string              `json:"stop_sequence"`
 		} `json:"delta"`
 		Usage struct {
-			Input    *int `json:"input_tokens"`
-			Output   *int `json:"output_tokens"`
-			Read     *int `json:"cache_read_input_tokens"`
-			Creation *int `json:"cache_creation_input_tokens"`
+			Input    *int                      `json:"input_tokens"`
+			Output   *int                      `json:"output_tokens"`
+			Read     *int                      `json:"cache_read_input_tokens"`
+			Creation *int                      `json:"cache_creation_input_tokens"`
+			Server   *protocol.ServerToolUsage `json:"server_tool_use"`
 		} `json:"usage"`
 	}
 	if err := json.Unmarshal(data, &wire); err != nil {
@@ -204,23 +205,17 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			return badStream("duplicate message_start")
 		}
 		var start struct {
-			ID      *string             `json:"id"`
-			Type    *protocol.ReplyKind `json:"type"`
-			Role    *protocol.Role      `json:"role"`
-			Model   *string             `json:"model"`
-			Content *[]json.RawMessage  `json:"content"`
-			Usage   *struct {
-				Input    *int                  `json:"input_tokens"`
-				Output   *int                  `json:"output_tokens"`
-				Read     *int                  `json:"cache_read_input_tokens"`
-				Creation *int                  `json:"cache_creation_input_tokens"`
-				Tier     *protocol.ServiceTier `json:"service_tier"`
-			} `json:"usage"`
+			ID      *string              `json:"id"`
+			Type    *protocol.ReplyKind  `json:"type"`
+			Role    *protocol.Role       `json:"role"`
+			Model   *string              `json:"model"`
+			Content *[]json.RawMessage   `json:"content"`
+			Usage   *protocol.TokenUsage `json:"usage"`
 		}
-		if json.Unmarshal(wire.Message, &start) != nil || start.ID == nil || start.Type == nil || start.Role == nil || start.Model == nil || start.Content == nil || start.Usage == nil || start.Usage.Input == nil || start.Usage.Output == nil {
+		if json.Unmarshal(wire.Message, &start) != nil || start.ID == nil || start.Type == nil || start.Role == nil || start.Model == nil || start.Content == nil || start.Usage == nil {
 			return badStream("missing message_start fields")
 		}
-		s.reply = protocol.ModelReply{ID: *start.ID, Type: *start.Type, Role: *start.Role, Model: *start.Model, Content: []protocol.Block{}, Usage: protocol.TokenUsage{InputTokens: *start.Usage.Input, OutputTokens: *start.Usage.Output, CacheReadInputTokens: start.Usage.Read, CacheCreationInputTokens: start.Usage.Creation, ServiceTier: start.Usage.Tier}}
+		s.reply = protocol.ModelReply{ID: *start.ID, Type: *start.Type, Role: *start.Role, Model: *start.Model, Content: []protocol.Block{}, Usage: start.Usage.WithSDKDefaults()}
 		if err := s.reply.Usage.Validate(); err != nil {
 			return badStream("invalid initial usage")
 		}
@@ -261,6 +256,10 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		if wire.Usage.Creation != nil {
 			s.reply.Usage.CacheCreationInputTokens = wire.Usage.Creation
 		}
+		if wire.Usage.Server != nil {
+			s.reply.Usage.ServerToolUse = wire.Usage.Server
+		}
+		s.reply.Usage = s.reply.Usage.WithSDKDefaults()
 		if err := s.reply.Usage.Validate(); err != nil {
 			return badStream("invalid delta usage")
 		}

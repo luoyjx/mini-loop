@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `14e1ca1` plus named usage metadata/event foundation. Automatic Launcher discovery and defined-empty auth are delivered; provider adoption and restart composition remain confirmed implementation gaps. The entries below retain their historical
+Reviewed code/test baseline: `9495de6` plus HTTP/SSE usage adoption. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage adoption is delivered; usage restart composition remains. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -24,7 +24,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
 | Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
 | Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
-| Provider usage metadata | Seven actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON foundation implemented; HTTP/SSE adoption, coercion reconciliation and real restart composition remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
+| Provider usage metadata | Nine actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON and HTTP/SSE adoption implemented; scalar-string adaptation and real restart composition remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 The latest authentication-slice Source export retry at `477a209` passed with
@@ -32,11 +32,13 @@ The latest authentication-slice Source export retry at `477a209` passed with
 six Python authentication tests, 19 scans and type audit passed at `477a209`.
 No new Go runtime validation is claimed by this fixture/inventory slice.
 
-Latest measured coverage is code/test baseline `4e92d28`: all packages **89.56%
-(29839/33318)**; application packages excluding `tools/` **89.59% (29792/33254)**.
-It is not refreshed after `477a209`. CLI child-process/native C counters and
-Linux-only inotify are outside the Darwin denominator. Full Python, broader
-performance, external type closure and final G7 acceptance remain unrefreshed.
+Latest measured coverage is `387cf80` plus HTTP/SSE usage adoption: all packages
+**89.57% (29986/33477)**; application packages excluding `tools/`
+**89.60% (29939/33413)**. This refresh runs the full ordinary Go suite with
+`-coverpkg=./...`; repeated source locations are combined before counting.
+CLI child-process/native C counters and Linux-only inotify are outside the Darwin
+coverage denominator. Full Python, broader performance, external type closure and
+final G7 acceptance remain unrefreshed.
 No merge or push was performed.
 
 
@@ -8403,3 +8405,30 @@ Logs: `/tmp/mini-loop-usage-metadata-{targeted,go,race,vet,types,guards}.log`.
 Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings remain nonfatal.
 Code/tests stayed unchanged during full jobs. README outline and worktree/staged
 diff checks pass. No merge or push. Full port acceptance remains open.
+
+## 2026-10-10 HTTP/SSE usage metadata adoption
+
+Baseline: `9495de6`; Source additions committed separately at `387cf80`.
+Direct HTTP and message_start use named TokenUsage decoding with SDK null defaults;
+message_delta updates server-tool counts with SDK accumulation semantics. Nested
+counts retain absent/null/value via named optional integers, and clones detach their
+pointers. Nine actual SDK cases cover eight structural matches plus explicit native
+scalar-string refusal. Initial partial-nested mismatch was resolved by preserving
+sparse codecs and normalizing missing nested fields only at SDK transport projection.
+
+Verification: targeted protocol/provider/agent tests; full ordinary Go suite with
+`-p=1 -count=1 -timeout=300s -coverpkg=./...`; full Go race suite
+`-race -p=1 -count=1 -timeout=300s`; go vet; typeaudit (413 production files,
+1331 named types, zero findings); Python usage capture test (1 passed, expected
+Pydantic scalar-string warning); Source export check (203 current files); scans
+(19 anchored guards); git diff --check. Architecture regenerated with Archify,
+9/9 checks and zero errors/warnings. Specification SHA256
+630d3fc26c3d9d18fed072c4d4ba6fbbad26bf7f2b791d0021f4086c51ace356;
+HTML SHA256 534ae6b64dfe18def1ba9e6f521b29514829846a6a964a2d89b55a8504c64d51.
+No fresh browser visual inspection was possible under the earlier access denial.
+
+Coverage: application excluding tools 89.60% (29939/33413); all Go 89.57%
+(29986/33477). Profile: /tmp/mini-loop-usage-adoption.cover. Darwin excludes CLI
+child-process/native C and Linux-only counters. Full Python was not refreshed;
+no merge or push. Real usage SQLite/recording restart composition, scalar coercion
+reconciliation and complete G4/G7 scope acceptance remain open.

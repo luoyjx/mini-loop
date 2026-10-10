@@ -9,18 +9,21 @@ import (
 
 // Named nested SDK usage. Counts retain the native non-negative integer boundary.
 type CacheCreationUsage struct {
-	Ephemeral1hInputTokens int `json:"ephemeral_1h_input_tokens"`
-	Ephemeral5mInputTokens int `json:"ephemeral_5m_input_tokens"`
+	Ephemeral1hInputTokens *int `json:"ephemeral_1h_input_tokens"`
+	Ephemeral5mInputTokens *int `json:"ephemeral_5m_input_tokens"`
 	extra                  jsonvalue.Value
+	nulls                  usageNulls
 }
 type OutputTokenDetails struct {
-	ThinkingTokens int `json:"thinking_tokens"`
+	ThinkingTokens *int `json:"thinking_tokens"`
 	extra          jsonvalue.Value
+	nulls          usageNulls
 }
 type ServerToolUsage struct {
-	WebFetchRequests  int `json:"web_fetch_requests"`
-	WebSearchRequests int `json:"web_search_requests"`
+	WebFetchRequests  *int `json:"web_fetch_requests"`
+	WebSearchRequests *int `json:"web_search_requests"`
 	extra             jsonvalue.Value
+	nulls             usageNulls
 }
 
 // TokenUsage keeps absent/null/value for optional fields. Closed extension members
@@ -52,13 +55,7 @@ const (
 )
 
 func (u TokenUsage) Validate() error {
-	counts := []int{u.InputTokens, u.OutputTokens}
-	if u.CacheReadInputTokens != nil {
-		counts = append(counts, *u.CacheReadInputTokens)
-	}
-	if u.CacheCreationInputTokens != nil {
-		counts = append(counts, *u.CacheCreationInputTokens)
-	}
+	counts := []*int{&u.InputTokens, &u.OutputTokens, u.CacheReadInputTokens, u.CacheCreationInputTokens}
 	if u.CacheCreation != nil {
 		counts = append(counts, u.CacheCreation.Ephemeral1hInputTokens, u.CacheCreation.Ephemeral5mInputTokens)
 	}
@@ -68,14 +65,16 @@ func (u TokenUsage) Validate() error {
 	if u.ServerToolUse != nil {
 		counts = append(counts, u.ServerToolUse.WebFetchRequests, u.ServerToolUse.WebSearchRequests)
 	}
+	return validateUsageCounts(counts...)
+}
+func validateUsageCounts(counts ...*int) error {
 	for _, count := range counts {
-		if count < 0 {
+		if count != nil && *count < 0 {
 			return errors.New("usage counts must be non-negative")
 		}
 	}
 	return nil
 }
-
 func copyUsagePointer[T any](p *T) *T {
 	if p == nil {
 		return nil
@@ -91,6 +90,18 @@ func (u TokenUsage) clone() TokenUsage {
 	u.InferenceGeo = copyUsagePointer(u.InferenceGeo)
 	u.OutputTokensDetails = copyUsagePointer(u.OutputTokensDetails)
 	u.ServerToolUse = copyUsagePointer(u.ServerToolUse)
+	if u.CacheCreation != nil {
+		u.CacheCreation.Ephemeral1hInputTokens = copyUsagePointer(u.CacheCreation.Ephemeral1hInputTokens)
+		u.CacheCreation.Ephemeral5mInputTokens = copyUsagePointer(u.CacheCreation.Ephemeral5mInputTokens)
+	}
+	if u.OutputTokensDetails != nil {
+		u.OutputTokensDetails.ThinkingTokens = copyUsagePointer(u.OutputTokensDetails.ThinkingTokens)
+	}
+	if u.ServerToolUse != nil {
+		u.ServerToolUse.WebFetchRequests = copyUsagePointer(u.ServerToolUse.WebFetchRequests)
+		u.ServerToolUse.WebSearchRequests = copyUsagePointer(u.ServerToolUse.WebSearchRequests)
+	}
+
 	return u
 }
 
@@ -100,24 +111,57 @@ func (u TokenUsage) WithSDKDefaults() TokenUsage {
 	u = u.clone()
 	if u.CacheReadInputTokens == nil {
 		u.nulls |= nullCacheRead
+	} else {
+		u.nulls &^= nullCacheRead
 	}
 	if u.CacheCreationInputTokens == nil {
 		u.nulls |= nullCacheInput
+	} else {
+		u.nulls &^= nullCacheInput
 	}
 	if u.ServiceTier == nil {
 		u.nulls |= nullTier
+	} else {
+		u.nulls &^= nullTier
 	}
 	if u.CacheCreation == nil {
 		u.nulls |= nullCacheCreation
+	} else {
+		u.nulls &^= nullCacheCreation
 	}
 	if u.InferenceGeo == nil {
 		u.nulls |= nullGeo
+	} else {
+		u.nulls &^= nullGeo
 	}
 	if u.OutputTokensDetails == nil {
 		u.nulls |= nullOutputDetails
+	} else {
+		u.nulls &^= nullOutputDetails
 	}
 	if u.ServerToolUse == nil {
 		u.nulls |= nullServerTool
+	} else {
+		u.nulls &^= nullServerTool
+	}
+	if u.CacheCreation != nil {
+		if u.CacheCreation.Ephemeral1hInputTokens == nil {
+			u.CacheCreation.nulls |= 1
+		}
+		if u.CacheCreation.Ephemeral5mInputTokens == nil {
+			u.CacheCreation.nulls |= 2
+		}
+	}
+	if u.OutputTokensDetails != nil && u.OutputTokensDetails.ThinkingTokens == nil {
+		u.OutputTokensDetails.nulls |= 1
+	}
+	if u.ServerToolUse != nil {
+		if u.ServerToolUse.WebFetchRequests == nil {
+			u.ServerToolUse.nulls |= 1
+		}
+		if u.ServerToolUse.WebSearchRequests == nil {
+			u.ServerToolUse.nulls |= 2
+		}
 	}
 	return u
 }
@@ -234,65 +278,74 @@ func (u *TokenUsage) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func usageNullFields(value jsonvalue.Value, keys ...string) usageNulls {
+	var flags usageNulls
+	for i, key := range keys {
+		if v, present := value.Lookup(key); present && v.Kind() == jsonvalue.Null {
+			flags |= 1 << i
+		}
+	}
+	return flags
+}
 func (v CacheCreationUsage) MarshalJSON() ([]byte, error) {
 	return marshalUsageObject(struct {
-		Hour   int `json:"ephemeral_1h_input_tokens"`
-		Minute int `json:"ephemeral_5m_input_tokens"`
-	}{v.Ephemeral1hInputTokens, v.Ephemeral5mInputTokens}, v.extra)
+		Hour   *wireOptional[int] `json:"ephemeral_1h_input_tokens,omitempty"`
+		Minute *wireOptional[int] `json:"ephemeral_5m_input_tokens,omitempty"`
+	}{usageOptional(v.Ephemeral1hInputTokens, v.nulls&1 != 0), usageOptional(v.Ephemeral5mInputTokens, v.nulls&2 != 0)}, v.extra)
 }
 func (v *CacheCreationUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
 		Hour   *int `json:"ephemeral_1h_input_tokens"`
 		Minute *int `json:"ephemeral_5m_input_tokens"`
 	}
-	_, extra, err := decodeUsageObject(data, &wire, []string{"ephemeral_1h_input_tokens", "ephemeral_5m_input_tokens"})
+	value, extra, err := decodeUsageObject(data, &wire, []string{"ephemeral_1h_input_tokens", "ephemeral_5m_input_tokens"})
 	if err != nil {
 		return err
 	}
-	if wire.Hour == nil || wire.Minute == nil || *wire.Hour < 0 || *wire.Minute < 0 {
-		return errors.New("cache creation requires non-negative counts")
+	if err := validateUsageCounts(wire.Hour, wire.Minute); err != nil {
+		return err
 	}
-	*v = CacheCreationUsage{*wire.Hour, *wire.Minute, extra}
+	*v = CacheCreationUsage{Ephemeral1hInputTokens: wire.Hour, Ephemeral5mInputTokens: wire.Minute, extra: extra, nulls: usageNullFields(value, "ephemeral_1h_input_tokens", "ephemeral_5m_input_tokens")}
 	return nil
 }
 func (v OutputTokenDetails) MarshalJSON() ([]byte, error) {
 	return marshalUsageObject(struct {
-		Thinking int `json:"thinking_tokens"`
-	}{v.ThinkingTokens}, v.extra)
+		Thinking *wireOptional[int] `json:"thinking_tokens,omitempty"`
+	}{usageOptional(v.ThinkingTokens, v.nulls&1 != 0)}, v.extra)
 }
 func (v *OutputTokenDetails) UnmarshalJSON(data []byte) error {
 	var wire struct {
 		Thinking *int `json:"thinking_tokens"`
 	}
-	_, extra, err := decodeUsageObject(data, &wire, []string{"thinking_tokens"})
+	value, extra, err := decodeUsageObject(data, &wire, []string{"thinking_tokens"})
 	if err != nil {
 		return err
 	}
-	if wire.Thinking == nil || *wire.Thinking < 0 {
-		return errors.New("output details requires non-negative count")
+	if err := validateUsageCounts(wire.Thinking); err != nil {
+		return err
 	}
-	*v = OutputTokenDetails{*wire.Thinking, extra}
+	*v = OutputTokenDetails{ThinkingTokens: wire.Thinking, extra: extra, nulls: usageNullFields(value, "thinking_tokens")}
 	return nil
 }
 func (v ServerToolUsage) MarshalJSON() ([]byte, error) {
 	return marshalUsageObject(struct {
-		Fetch  int `json:"web_fetch_requests"`
-		Search int `json:"web_search_requests"`
-	}{v.WebFetchRequests, v.WebSearchRequests}, v.extra)
+		Fetch  *wireOptional[int] `json:"web_fetch_requests,omitempty"`
+		Search *wireOptional[int] `json:"web_search_requests,omitempty"`
+	}{usageOptional(v.WebFetchRequests, v.nulls&1 != 0), usageOptional(v.WebSearchRequests, v.nulls&2 != 0)}, v.extra)
 }
 func (v *ServerToolUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
 		Fetch  *int `json:"web_fetch_requests"`
 		Search *int `json:"web_search_requests"`
 	}
-	_, extra, err := decodeUsageObject(data, &wire, []string{"web_fetch_requests", "web_search_requests"})
+	value, extra, err := decodeUsageObject(data, &wire, []string{"web_fetch_requests", "web_search_requests"})
 	if err != nil {
 		return err
 	}
-	if wire.Fetch == nil || wire.Search == nil || *wire.Fetch < 0 || *wire.Search < 0 {
-		return errors.New("server usage requires non-negative counts")
+	if err := validateUsageCounts(wire.Fetch, wire.Search); err != nil {
+		return err
 	}
-	*v = ServerToolUsage{*wire.Fetch, *wire.Search, extra}
+	*v = ServerToolUsage{WebFetchRequests: wire.Fetch, WebSearchRequests: wire.Search, extra: extra, nulls: usageNullFields(value, "web_fetch_requests", "web_search_requests")}
 	return nil
 }
 

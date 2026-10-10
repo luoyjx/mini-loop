@@ -33,15 +33,15 @@ func TestUsageMetadataEventCloneMaskAndArchivalRoundTrip(t *testing.T) {
 	}
 	restored := assertStoredEventRoundTrip(t, wire)
 	event, ok := restored.Event.ModelEnd()
-	if !ok || event.Usage == nil || event.Usage.CacheCreation.Ephemeral1hInputTokens != 7 || event.Usage.OutputTokensDetails.ThinkingTokens != 3 || event.Usage.ServerToolUse.WebFetchRequests != 2 {
+	if !ok || event.Usage == nil || *event.Usage.CacheCreation.Ephemeral1hInputTokens != 7 || *event.Usage.OutputTokensDetails.ThinkingTokens != 3 || *event.Usage.ServerToolUse.WebFetchRequests != 2 {
 		t.Fatal("archival usage metadata lost")
 	}
 	if usage.InferenceGeo == nil || *usage.InferenceGeo != runtimeCanary {
 		t.Fatal("mask changed caller metadata")
 	}
-	event.Usage.CacheCreation.Ephemeral1hInputTokens = 999
+	*event.Usage.CacheCreation.Ephemeral1hInputTokens = 999
 	untouched, _ := records[0].Event.ModelEnd()
-	if untouched.Usage.CacheCreation.Ephemeral1hInputTokens != 7 {
+	if *untouched.Usage.CacheCreation.Ephemeral1hInputTokens != 7 {
 		t.Fatal("event accessor aliases metadata")
 	}
 	usageWire, _ := json.Marshal(event.Usage)

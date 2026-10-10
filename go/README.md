@@ -3061,10 +3061,13 @@ reader. All these observations are pinned to actual SDK 0.107.1 offline recipes.
 ServerToolUsage plus InferenceGeo. Optional pointers retain concrete values;
 the codec separately preserves explicit null and closed immutable extensions,
 including nested metadata extensions. Native sparse/fake usage remains sparse.
-`WithSDKDefaults` explicitly supplies all seven optional SDK null defaults.
+`WithSDKDefaults` explicitly supplies seven optional SDK null defaults and missing
+nested counter nulls. Nested counters are named optional integers; sparse native
+constructors preserve omission until this normalization.
 Cloning detaches mutable pointers; MapStrings projects metadata values and
 extension keys/values before serialization. Agent event projection uses this
 without mutating provider values; stored event decoding retains shape and never
-grants authority. Current HTTP/SSE decoding still discards metadata and is the
-next adoption task. Native non-negative bounded integers and required nested
-counts remain ingress adaptations; scalar-string Source output is refused here.
+grants authority. Direct HTTP and SSE now preserve this metadata and extensions. SSE updates
+server-tool counts with the SDK accumulator semantics. Native non-negative bounded
+integers remain an ingress adaptation; scalar-string Source output is refused.
+Real SQLite/restart usage composition remains pending.

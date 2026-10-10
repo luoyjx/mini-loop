@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `14e1ca1` plus named usage metadata/event foundation. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata adoption and restart composition are the next confirmed runtime gaps. This section is the current delivery index;
+Reviewed 2026-10-10 at `9495de6` plus HTTP/SSE usage adoption. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata adoption is delivered; usage restart composition remains. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,7 +6864,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; named metadata/event foundation implemented; HTTP/SSE metadata decoding, SDK defaults/coercion and restart composition remain; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; scalar-string adaptation and restart composition remain; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
 | G7 | 203 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
@@ -6885,9 +6885,9 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 
 3. Complete usage event fidelity: actual SDK direct/SSE fixtures show that
    `cache_creation`, `inference_geo`, `output_tokens_details` and `server_tool_use`
-   reach Python `model_end.usage` but are still discarded by native HTTP/SSE decoding.
+   reach Python `model_end.usage` and are now preserved by native HTTP/SSE decoding.
    Named types, nullable/default selection, extensions, clones, masked event projection
-   and stored-event JSON codecs are now implemented; wire adoption, recordings and
+   and stored-event JSON codecs are now implemented; recordings and
    real restart composition remain. See
    [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md). Structured output request
    options are not emitted by the current repository request producers; audit
@@ -16207,3 +16207,30 @@ Logs: `/tmp/mini-loop-usage-metadata-{targeted,go,race,vet,types,guards}.log`.
 Existing Darwin FSEvents deprecation/LC_DYSYMTAB warnings remain nonfatal.
 Code/tests stayed unchanged during full jobs. README outline and worktree/staged
 diff checks pass. No merge or push. Full port acceptance remains open.
+
+## 2026-10-10 HTTP/SSE usage metadata adoption
+
+Baseline: `9495de6`; Source additions committed separately at `387cf80`.
+Direct HTTP and message_start use named TokenUsage decoding with SDK null defaults;
+message_delta updates server-tool counts with SDK accumulation semantics. Nested
+counts retain absent/null/value via named optional integers, and clones detach their
+pointers. Nine actual SDK cases cover eight structural matches plus explicit native
+scalar-string refusal. Initial partial-nested mismatch was resolved by preserving
+sparse codecs and normalizing missing nested fields only at SDK transport projection.
+
+Verification: targeted protocol/provider/agent tests; full ordinary Go suite with
+`-p=1 -count=1 -timeout=300s -coverpkg=./...`; full Go race suite
+`-race -p=1 -count=1 -timeout=300s`; go vet; typeaudit (413 production files,
+1331 named types, zero findings); Python usage capture test (1 passed, expected
+Pydantic scalar-string warning); Source export check (203 current files); scans
+(19 anchored guards); git diff --check. Architecture regenerated with Archify,
+9/9 checks and zero errors/warnings. Specification SHA256
+630d3fc26c3d9d18fed072c4d4ba6fbbad26bf7f2b791d0021f4086c51ace356;
+HTML SHA256 534ae6b64dfe18def1ba9e6f521b29514829846a6a964a2d89b55a8504c64d51.
+No fresh browser visual inspection was possible under the earlier access denial.
+
+Coverage: application excluding tools 89.60% (29939/33413); all Go 89.57%
+(29986/33477). Profile: /tmp/mini-loop-usage-adoption.cover. Darwin excludes CLI
+child-process/native C and Linux-only counters. Full Python was not refreshed;
+no merge or push. Real usage SQLite/recording restart composition, scalar coercion
+reconciliation and complete G4/G7 scope acceptance remain open.

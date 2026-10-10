@@ -103,3 +103,12 @@ SDK Message 的 container/stop_details 与完整 Usage 是不同问题：当前 
 协议可往返六个结构有效的 Source usage 输出；scalar-string 明确保留 native 拒绝。
 克隆、事件脱敏、存储事件 JSON 往返已有测试；没有把 JSON 往返当成真实 SQL restart。
 当前 HTTP/SSE 解码仍丢弃 metadata，后续必须完成 provider 接入与持久化组合证明。
+
+## HTTP/SSE usage 接入更新
+
+基线 `9495de6` 后，direct HTTP 与 SSE 接入具名 usage 解码、SDK null 默认值与闭合扩展。
+新增部分嵌套计数与 server-tool delta 两个 SDK 捕获，共九例；八个结构有效场景
+通过真实 Go Client 对照。嵌套计数使用具名可选整数，缺省在 SDK 投影时补 null，
+原生 sparse codec 保留缺省/null/零区别。SSE 服务端工具计数按 SDK accumulator 更新。
+scalar-string 场景仍明确拒绝，属于原生整数适配。真实 SQLite/recording restart
+组合证明与完整 G4/G7 审计仍未完成。上方初始审计及基础提交状态保留为历史基线。
