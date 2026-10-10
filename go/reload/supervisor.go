@@ -28,14 +28,17 @@ const (
 type LifecycleEvent struct {
 	Kind   LifecycleKind
 	Path   string
+	Paths  []string
 	PID    int
 	Forced bool
 	Error  error
 }
 
 type SupervisorConfig struct {
-	Builder   *Builder
-	Watcher   *Watcher
+	Builder *Builder
+	Watcher *Watcher
+	// Observer replaces Watcher. Run owns Close only after listener admission.
+	Observer  Observer
 	Directory string
 	Arguments []string
 	// Nil captures the process environment once; empty supplies an empty base.
@@ -51,6 +54,7 @@ type Supervisor struct {
 	used                   bool
 	builder                *Builder
 	watcher                *Watcher
+	observer               Observer
 	directory              string
 	arguments, environment []string
 	stdout, stderr         io.Writer
@@ -62,8 +66,8 @@ func (*Supervisor) String() string              { return "<native reload supervi
 func (supervisor *Supervisor) GoString() string { return supervisor.String() }
 
 func NewSupervisor(config SupervisorConfig) (*Supervisor, error) {
-	if config.Builder == nil || config.Watcher == nil || config.StopGrace < 0 {
-		return nil, errors.New("reload supervisor requires builder, watcher and nonnegative stop grace")
+	if config.Builder == nil || (config.Watcher == nil) == (config.Observer == nil) || config.StopGrace < 0 {
+		return nil, errors.New("reload supervisor requires builder, exactly one watcher/observer and nonnegative stop grace")
 	}
 	directory := config.Directory
 	if directory == "" {
@@ -99,7 +103,7 @@ func NewSupervisor(config SupervisorConfig) (*Supervisor, error) {
 	if stderr == nil {
 		stderr = io.Discard
 	}
-	return &Supervisor{builder: config.Builder, watcher: config.Watcher, directory: directory,
+	return &Supervisor{builder: config.Builder, watcher: config.Watcher, observer: config.Observer, directory: directory,
 		arguments: append([]string{}, config.Arguments...), environment: append([]string{}, env...),
 		stdout: stdout, stderr: stderr, grace: grace, onEvent: config.OnEvent}, nil
 }
@@ -187,6 +191,19 @@ func (supervisor *Supervisor) Run(ctx context.Context, listener *net.TCPListener
 	supervisor.used = true
 	supervisor.mu.Unlock()
 	defer listener.Close()
+	var observationDone <-chan struct{}
+	var cancelObservation context.CancelFunc
+	if supervisor.observer != nil {
+		defer func() {
+			if cancelObservation != nil {
+				cancelObservation()
+			}
+			err = errors.Join(err, supervisor.observer.Close())
+			if observationDone != nil {
+				<-observationDone
+			}
+		}()
+	}
 	file, err := listener.File()
 	if err != nil {
 		return err
@@ -199,14 +216,28 @@ func (supervisor *Supervisor) Run(ctx context.Context, listener *net.TCPListener
 			err = errors.Join(err, stopErr, supervisor.emit(LifecycleEvent{Kind: ChildStopped, PID: child.command.Process.Pid, Forced: forced}))
 		}
 	}()
-	interval := supervisor.watcher.delay
-	if interval == 0 {
-		interval = time.Nanosecond
+	var ticks <-chan time.Time
+	var observations <-chan supervisorObservation
+	prime := func() error { return nil }
+	if supervisor.watcher != nil {
+		interval := supervisor.watcher.delay
+		if interval == 0 {
+			interval = time.Nanosecond
+		}
+		ticker := time.NewTicker(interval)
+		defer ticker.Stop()
+		ticks = ticker.C
+		// StatReload must snapshot before building; native/polling subscriptions
+		// were already constructed and retain events throughout builds.
+		prime = func() error { supervisor.watcher.Reset(); _, err := supervisor.watcher.Scan(ctx); return err }
+	} else {
+		observationCtx, cancel := context.WithCancel(ctx)
+		cancelObservation = cancel
+		results := make(chan supervisorObservation)
+		done := make(chan struct{})
+		observations, observationDone = results, done
+		go supervisor.readObservations(observationCtx, results, done)
 	}
-	ticker := time.NewTicker(interval)
-	defer ticker.Stop()
-	// Prime before building so edits during a slow build are observed afterward.
-	prime := func() error { supervisor.watcher.Reset(); _, err := supervisor.watcher.Scan(ctx); return err }
 	if err := prime(); err != nil {
 		if ctx.Err() != nil {
 			return nil
@@ -266,7 +297,22 @@ func (supervisor *Supervisor) Run(ctx context.Context, listener *net.TCPListener
 			if err := supervisor.emit(LifecycleEvent{Kind: ChildExited, PID: pid, Error: exitErr}); err != nil {
 				return err
 			}
-		case <-ticker.C:
+		case observation := <-observations:
+			if ctx.Err() != nil {
+				return nil
+			}
+			if observation.err != nil {
+				return observation.err
+			}
+			if len(observation.batch.Paths) == 0 {
+				continue
+			}
+			paths := append([]string{}, observation.batch.Paths...)
+			if err := supervisor.emit(LifecycleEvent{Kind: SourceChanged, Path: paths[0], Paths: paths}); err != nil {
+				return err
+			}
+			rebuild = true
+		case <-ticks:
 			change, scanErr := supervisor.watcher.Scan(ctx)
 			if ctx.Err() != nil {
 				return nil
@@ -275,7 +321,7 @@ func (supervisor *Supervisor) Run(ctx context.Context, listener *net.TCPListener
 				return scanErr
 			}
 			if change.Path != "" {
-				if err := supervisor.emit(LifecycleEvent{Kind: SourceChanged, Path: change.Path}); err != nil {
+				if err := supervisor.emit(LifecycleEvent{Kind: SourceChanged, Path: change.Path, Paths: []string{change.Path}}); err != nil {
 					return err
 				}
 				if err := prime(); err != nil {
@@ -286,6 +332,29 @@ func (supervisor *Supervisor) Run(ctx context.Context, listener *net.TCPListener
 				}
 				rebuild = true
 			}
+		}
+	}
+}
+
+// A synchronous handoff bounds read-ahead while a compiler/child replacement is
+// running. Empty filtered batches do not request a build. Backend faults terminate
+// the supervisor after child and subscription cleanup; they are not source changes.
+type supervisorObservation struct {
+	batch EventBatch
+	err   error
+}
+
+func (supervisor *Supervisor) readObservations(ctx context.Context, results chan<- supervisorObservation, done chan<- struct{}) {
+	defer close(done)
+	for {
+		batch, err := supervisor.observer.Next(ctx)
+		select {
+		case <-ctx.Done():
+			return
+		case results <- supervisorObservation{batch: batch, err: err}:
+		}
+		if err != nil {
+			return
 		}
 	}
 }

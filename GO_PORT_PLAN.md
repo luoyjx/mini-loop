@@ -15026,3 +15026,38 @@ including reload (31.608s) and sqlitestate (30.170s). This closes the separate r
 gate without claiming that the combined race+coverage command passed.
 The existing macOS FSEvents deprecation and instrumented CGO linker warnings
 remain nonfatal. No Python runtime/dependency/default change, merge or push.
+
+
+## Go reload — supervisor event subscription binding (2026-10-10)
+
+Baseline: `04bf277` plus this slice. SupervisorConfig selects exactly one Watcher
+or narrow Observer. The existing StatReload contract remains a separate choice.
+Run owns an event subscription only after listener admission; it starts a typed
+synchronous read worker before the initial build, retaining observation through
+builds without an unbounded result queue. Empty filtered batches do not rebuild.
+Backend errors terminate with child/artifact/subscription cleanup. SourceChanged
+retains Path and adds the detached full Paths batch. The final listener remains
+owned until the child and observer reader are joined.
+
+Real HTTP child tests now run through StatReload, forced polling and macOS native
+subscriptions, including source replacement, failed compilation/correction,
+retained port, captured child environment, joined PIDs and released BuildWorkspace
+leases. A typed observer fault checks empty-batch inertness, exact backend error,
+forced-stop/artifact/socket cleanup and Close. Ambiguous watcher/observer selection
+is refused; rejected listener admission leaves the caller subscription open.
+No dependency or executable default changes. CLI still uses StatReload; native
+Linux events and CLI observer-profile binding remain required next work.
+
+Validation: focused real native/polling/StatReload supervisor recovery and fault
+checks pass. Full ordinary Go suite (`-p=1 -count=1 -timeout=300s ./...`)
+and go vet pass. CGO_ENABLED=0 polling/admission/fault supervisor checks pass.
+Architecture delivery passes 9/9 with zero errors/warnings and exact hash/byte
+checks; README outline and git diff --check pass. No new visual inspection after
+the previous browser denial. Python runtime/scanner/invariant/mutation targets
+are unchanged; their suites were not rerun, and no merge/push is requested.
+Coverage was not refreshed: the 89.73% record is the preceding 2d2b608 snapshot,
+not a claim about this code. No Go domain/service any/interface{}/RawMessage added.
+
+Full `go test -race -p=1 -count=1 -timeout=300s ./...` passes, including
+reload 43.143s and sqlitestate 28.770s. Existing FSEvents deprecation and Darwin
+CGO linker warnings are nonfatal. No push.

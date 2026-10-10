@@ -3861,3 +3861,16 @@ workspace Close fail explicitly. TemporaryParent and Workspace are exclusive.
 Compiler GOTMPDIR/TMPDIR overrides do not alter the server environment. The SDK
 excludes only the allocated workspace subtree; it supplies no arbitrary exclusion
 path or model-controlled authority. CLI observer binding remains pending.
+
+
+## Go supervised event subscription ownership
+
+SupervisorConfig requires exactly one Watcher or Observer. A constructed Observer
+stays caller-owned until Run accepts its listener/platform/single-use admission;
+rejected runs do not close it. An admitted Run owns Close even when descriptor
+duplication fails. It joins the child and closes artifacts before cancelling and
+closing the subscription and joining its reader. BuildWorkspace stays caller-owned;
+close it only after Run returns. SourceChanged.Paths is a detached batch; Path is
+the first entry. Empty batches are inert; backend errors return after cleanup.
+The synchronous reader handoff bounds read-ahead during builds. CLI selection is
+still StatReload; native Linux and executable event-profile selection remain open.

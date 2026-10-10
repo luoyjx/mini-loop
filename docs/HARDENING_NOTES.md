@@ -8281,3 +8281,15 @@ refused before runtime allocation; Bash environment excludes the private marker.
 The Python mutation suite covers its existing Source targets; these Go ownership
 and authority boundaries are verified by the native process tests, not by those
 Python mutations. No restart resumes durable approvals/goals/cron automatically.
+
+
+## Go event supervisor shutdown boundary — 2026-10-10
+
+Event observation transfers ownership only after listener admission. A backend
+fault is not a source change and must terminate supervision after stopping/joining
+the child, closing its artifact and closing/joining the subscription reader.
+Empty filtered batches must not cause a restart. Real native/polling HTTP recovery
+tests exercise retained socket and workspace leases; a typed faulting subscription
+checks empty-batch inertness, backend-error preservation, forced child stop,
+subscription close, artifact removal and socket release. Rejected Run admission
+leaves a caller subscription open. No Python mutation anchor changed.
