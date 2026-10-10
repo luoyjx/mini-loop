@@ -465,7 +465,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `a387bcf` plus CLI event-profile and compiler-workspace binding,
+Runtime review baseline: `39dbca4` plus production named-type audit tooling,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -2495,6 +2495,11 @@ it follows the construction seams from caller identity through serving.
 integration; it does not enable workflows on the default FastAPI server.
 
 ## Validation
+
+From `go/`, `go run ./tools/typeaudit -root .` checks package-level production
+type bodies across all platform files for `any`, empty interfaces and JSON raw
+messages. Function-local ingress DTOs and generic constraints are excluded.
+This check complements review of external types and runtime data flow.
 
 The default test suite is offline and deterministic. Runnable documentation
 examples select the fake provider inside their test fixture, including examples

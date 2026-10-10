@@ -2,30 +2,30 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `552541f`. The entries below retain their historical
+Reviewed code/test baseline: `39dbca4` plus package-level type audit. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, run this iteration | Passed: 199 files current; this checks exported recipes, not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, last checked at `ba1c43f` | Passed: 201 files current; this checks exported recipes, not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | Python `__main__.py` passes `reload=bool(os.getenv("MINILOOP_RELOAD"))`; Go `config/server.go` refuses it | Confirmed open public-entry behavior gap; cannot be erased by its default-off status |
+| Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 399 production files, 1291 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-The exporter exited zero. It emitted existing dependency deprecation warnings and
-one child-process return-code warning while still producing all 199 matching
-files; these are recorded, not hidden as a warning-free run. No runtime/test,
-dependency, scanner target or architecture topology changes in this iteration.
-Documentation validation: current source/test paths and Source reload/cleanup
-bodies inspected; README boundary reviewed; Markdown outlines and
-`git diff --check` checked. Runtime/race/Python/mutation/coverage gates were not
-rerun for these status corrections. No push.
+The latest Source export check at `ba1c43f` exited zero with 201 matching files
+and existing dependency warnings. Runtime ordinary/race/vet, actual Linux CLI
+and macOS CGO-disabled polling gates passed there. Coverage was refreshed at
+`39dbca4`: 89.72% for the measured application code baseline. These results do
+not include the new audit command. Current command-specific and full Go checks
+are recorded in the audit delivery entry below. No full Python or merge/push
+was performed in this index refresh.
 
 ## 2026-10-09 native SQLite killed-generation process recovery
 
@@ -7901,3 +7901,45 @@ Fresh full ordinary/race/vet gates passed independently of coverage. No
 SQLite fallback profile was necessary in this refresh. No full Python,
 mutation gate, merge or push was run. This update changes documentation only;
 git diff --check and cached diff checks pass.
+
+
+## 2026-10-10 package-level Go type audit
+
+Baseline: `39dbca4` plus this developer command. `go run ./tools/typeaudit
+-root .` from go/ parses every production Go file, including inactive platform
+files, excluding tests/vendor/.git. It examines package-level named type bodies,
+including aliases, nested maps/slices and interface/function signatures. Direct
+any, empty interfaces and encoding/json.RawMessage (including renamed or dot
+imports) are findings. Generic constraints and function-local ingress DTOs are
+excluded. Syntax/read failures fail the command; an empty source tree is refused.
+
+Current result: 399 production files, 1291 package-level declarations, zero
+findings. Source inspection of provider.decodeReply/decodeBlock confirms local
+raw JSON is normalized into validated protocol.ModelReply/Block/ToolInput
+variants before returning to services. This is a sampled data-flow observation,
+not a whole-program proof. External named types, concrete generic instantiations,
+anonymous escaping values and authority still require review. The static check
+does not establish final G0/G7 completion.
+
+Command tests exercise map/slice any, empty interfaces, RawMessage aliases and
+dot imports, inactive Windows source, allowed generic constraints/local ingress,
+test exclusion and parse failure. Narrow command race tests pass. Python
+verify_scans still passes all 19 scanner anchors; it does not validate this Go
+scanner, which has its own tests. Full Go/vet results are recorded below.
+
+The current plan/index now removes the stale StatReload/CLI-pending queue and
+records ba1c43f native/polling/workspace delivery. The 201 Source exports and
+89.72% application coverage retain their measured baselines. The new audit
+command is not part of the previous coverage denominator. Default full-feature
+CLI syntax-parser selection and final performance/scope/release audits remain
+open. No dependency, runtime topology or default behavior changes. README
+architecture baseline reviewed; canonical Mermaid/spec remain unchanged.
+
+Validation completed: full `go test -p=1 -count=1 -timeout=300s ./...` and
+`go vet ./...` pass; `go test -race ./tools/typeaudit` passes; the actual
+audit reports 399/1291/0. verify_scans passes 19 anchors. README heading outline,
+git diff --check and cached diff check pass. Existing macOS FSEvents compiler
+warning remains. Full application race was last passed at ba1c43f; it was not
+rerun because only developer audit tooling changed. Full Python/invariants,
+guard mutation, Source export and coverage were not rerun; their runtime/contract
+targets remain unchanged. No merge/push or migration-completion claim.

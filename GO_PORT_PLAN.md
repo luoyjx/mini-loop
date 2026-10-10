@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `552541f`. This section is the current delivery index;
+Reviewed 2026-10-10 at `39dbca4` plus the package-level type audit. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6860,10 +6860,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Final audit of domain/service type boundaries; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level open-payload syntax audit passes; external type closure/data-flow review remains; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
-| G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; native CLI reload is wired, but installed Source WatchFiles event profile remains pending; audit public-entry parity |
+| G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
@@ -6877,26 +6877,15 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
    outstanding explicit dependency decision. SQLite driver approval does not approve it.
 
-2. Default reload observation: CLI process/listener/build integration is implemented
-   and tested, currently using the explicit StatReload fallback observer. A live
-   dependency check shows installed Uvicorn 0.49.0 selects WatchFilesReload with
-   watchfiles 1.2.0. Its add/remove/modify events and default filename filtering
-   differ from StatReload mtime baselines. Actual native cases, filtering, environment
-   selection and cancellation are now exported, and the Go default lexical
-   EventFilter and the explicit macOS native subscription are implemented/replayed.
-   Typed environment selection and owned forced-polling are implemented in the SDK.
-   Implement Linux native observation and select/own the event profile in CLI
-   before claiming default reload parity.
-
-
 ### Resolved items that must not remain on the implementation queue
 
 - Native CLI development reload is implemented on macOS/Linux: nonempty Source
   selection, cwd observation, local module builds, retained listener and child
   replacement/recovery. Actual miniloop tests verify source rebuilding, dotenv
   refresh, process-local reset and inherited-bind authority. G7 must reconcile
-  documented native/platform adaptations and the still-open default WatchFiles
-  event profile; the process/listener/CLI integration itself is implemented.
+  documented native/platform adaptations. Native Linux inotify, macOS/CGO
+  FSEvents, forced/WSL polling and shared compiler workspace ownership are now
+  delivered through CLI selection at `ba1c43f`.
 - SQLite is implemented using approved `mattn/go-sqlite3 v1.14.52`; native opening,
   transactional stores and real reopen/restore tests exist in `go/sqlitestate/`.
 - Launcher has explicit caller-owned state injection and restoration; construction
@@ -15203,3 +15192,45 @@ Fresh full ordinary/race/vet gates passed independently of coverage. No
 SQLite fallback profile was necessary in this refresh. No full Python,
 mutation gate, merge or push was run. This update changes documentation only;
 git diff --check and cached diff checks pass.
+
+
+## 2026-10-10 package-level Go type audit
+
+Baseline: `39dbca4` plus this developer command. `go run ./tools/typeaudit
+-root .` from go/ parses every production Go file, including inactive platform
+files, excluding tests/vendor/.git. It examines package-level named type bodies,
+including aliases, nested maps/slices and interface/function signatures. Direct
+any, empty interfaces and encoding/json.RawMessage (including renamed or dot
+imports) are findings. Generic constraints and function-local ingress DTOs are
+excluded. Syntax/read failures fail the command; an empty source tree is refused.
+
+Current result: 399 production files, 1291 package-level declarations, zero
+findings. Source inspection of provider.decodeReply/decodeBlock confirms local
+raw JSON is normalized into validated protocol.ModelReply/Block/ToolInput
+variants before returning to services. This is a sampled data-flow observation,
+not a whole-program proof. External named types, concrete generic instantiations,
+anonymous escaping values and authority still require review. The static check
+does not establish final G0/G7 completion.
+
+Command tests exercise map/slice any, empty interfaces, RawMessage aliases and
+dot imports, inactive Windows source, allowed generic constraints/local ingress,
+test exclusion and parse failure. Narrow command race tests pass. Python
+verify_scans still passes all 19 scanner anchors; it does not validate this Go
+scanner, which has its own tests. Full Go/vet results are recorded below.
+
+The current plan/index now removes the stale StatReload/CLI-pending queue and
+records ba1c43f native/polling/workspace delivery. The 201 Source exports and
+89.72% application coverage retain their measured baselines. The new audit
+command is not part of the previous coverage denominator. Default full-feature
+CLI syntax-parser selection and final performance/scope/release audits remain
+open. No dependency, runtime topology or default behavior changes. README
+architecture baseline reviewed; canonical Mermaid/spec remain unchanged.
+
+Validation completed: full `go test -p=1 -count=1 -timeout=300s ./...` and
+`go vet ./...` pass; `go test -race ./tools/typeaudit` passes; the actual
+audit reports 399/1291/0. verify_scans passes 19 anchors. README heading outline,
+git diff --check and cached diff check pass. Existing macOS FSEvents compiler
+warning remains. Full application race was last passed at ba1c43f; it was not
+rerun because only developer audit tooling changed. Full Python/invariants,
+guard mutation, Source export and coverage were not rerun; their runtime/contract
+targets remain unchanged. No merge/push or migration-completion claim.
