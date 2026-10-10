@@ -514,7 +514,7 @@ func (input ToolInput) Validate() error {
 		if input.bashRejected != nil {
 			return errors.New("rejected Bash arguments require non-mapping failure")
 		}
-		_, err := input.bashExtra.MarshalJSON()
+		_, err := input.bashExtra.MarshalLegacyUTF8()
 		return err
 	}
 	if IsASTTool(input.name) {

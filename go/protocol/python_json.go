@@ -16,6 +16,10 @@ func PythonJSON[T any](value T, ascii, compact bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	return formatPythonJSONBytes(data, ascii, compact)
+}
+
+func formatPythonJSONBytes(data []byte, ascii, compact bool) (string, error) {
 	var out strings.Builder
 	for i := 0; i < len(data); {
 		if data[i] == '"' {

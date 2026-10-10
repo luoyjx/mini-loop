@@ -857,7 +857,12 @@ func (m *Message) UnmarshalJSON(data []byte) error {
 // DecodeStoredMessage decodes a known historical message without the network-frame
 // size cap. Tool input decoding retains its separate admission contract. Reading
 // this value grants no actor, permissions or live execution authority.
-func DecodeStoredMessage(data []byte) (Message, error) { return decodeMessage(data, false) }
+func DecodeStoredMessage(data []byte) (Message, error) {
+	if !json.Valid(data) {
+		return decodeLegacyStoredMessage(data)
+	}
+	return decodeMessage(data, false)
+}
 
 func decodeMessage(data []byte, bounded bool) (Message, error) {
 	if bounded && len(data) > MaxWireBytes {

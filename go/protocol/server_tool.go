@@ -20,7 +20,7 @@ const (
 	ServerToolSearchBM25          ServerToolName = "tool_search_tool_bm25"
 )
 
-// ServerToolInput retains finite SDK input observations, including unsupported roots. It has no
+// ServerToolInput retains immutable SDK input observations, including legacy numbers and unsupported roots. It has no
 // declared input fields and carries no client ToolInput or execution authority.
 // Its recursive value is immutable, with explicit scalar/array/object variants.
 type ServerToolInput struct{ value jsonvalue.Value }
@@ -42,7 +42,7 @@ func decodeServerToolInput(data []byte, bounded bool) (ServerToolInput, error) {
 	return ServerToolInput{value: value}, nil
 }
 func (input ServerToolInput) Validate() error {
-	_, err := input.value.MarshalJSON()
+	_, err := input.value.MarshalLegacyUTF8()
 	return err
 }
 func (input ServerToolInput) MarshalJSON() ([]byte, error) {

@@ -15,6 +15,17 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
+	if input.bashBinding != nil {
+		observation, err := input.Observation()
+		if err != nil {
+			return "", err
+		}
+		data, err := observation.value.Sorted().MarshalLegacyUTF8()
+		if err != nil {
+			return "", err
+		}
+		return formatPythonJSONBytes(data, false, compact)
+	}
 	if input.unknownModelTool != nil {
 		return PythonJSON(input.unknownModelTool.arguments.Sorted(), false, compact)
 	}
