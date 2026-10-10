@@ -3850,3 +3850,14 @@ hard batch cap still applies. Debug writers are selected operator effects and mu
 return promptly; native Go text preserves raw paths without claiming Rust formatting.
 CLI integration must own Close on every exit and preserve observations during
 native builds; owned compiler temporaries must not recursively trigger themselves.
+
+
+## Go reload compiler workspace ownership
+
+Use NewBuildWorkspace for a shared compiler/artifact parent and pass its capability
+to BuildConfig.Workspace and ObserverConfig.Workspace. Join children before closing
+artifacts; close the observer before closing the workspace. Active leases make
+workspace Close fail explicitly. TemporaryParent and Workspace are exclusive.
+Compiler GOTMPDIR/TMPDIR overrides do not alter the server environment. The SDK
+excludes only the allocated workspace subtree; it supplies no arbitrary exclusion
+path or model-controlled authority. CLI observer binding remains pending.

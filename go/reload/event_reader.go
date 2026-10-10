@@ -26,19 +26,20 @@ type eventFingerprint struct {
 }
 
 type eventReader struct {
-	mu           sync.Mutex
-	nextMu       sync.Mutex
-	pending      map[string]struct{}
-	fingerprints map[eventFingerprint]struct{}
-	seen         bool
-	fault        error
-	filter       EventFilter
-	wake         chan struct{}
-	stop         chan struct{}
-	done         chan struct{}
-	closeOnce    sync.Once
-	backend      ObserverBackend
-	diagnostic   io.Writer
+	mu                sync.Mutex
+	nextMu            sync.Mutex
+	pending           map[string]struct{}
+	fingerprints      map[eventFingerprint]struct{}
+	seen              bool
+	fault             error
+	filter            EventFilter
+	wake              chan struct{}
+	stop              chan struct{}
+	done              chan struct{}
+	closeOnce         sync.Once
+	backend           ObserverBackend
+	diagnostic        io.Writer
+	excludedWorkspace string
 }
 
 var ErrEventsClosed = errors.New("event subscription closed")
@@ -78,6 +79,10 @@ func (source *eventReader) recordPolling(path string, kind observationKind) {
 func (source *eventReader) recordEvent(event eventFingerprint) {
 	path, flags := event.path, event.flags
 	source.mu.Lock()
+	if insideBuildWorkspace(source.excludedWorkspace, path) && flags&7 == 0 {
+		source.mu.Unlock()
+		return
+	}
 	source.seen = true
 	if source.diagnostic != nil {
 		if err := source.writeDiagnostic(path, flags); err != nil {

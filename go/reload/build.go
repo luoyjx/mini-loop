@@ -26,11 +26,14 @@ type BuildConfig struct {
 	// Nil captures the current environment once; empty means an explicit empty base.
 	Environment     []string
 	TemporaryParent string
+	// Workspace is caller-owned; it replaces TemporaryParent when selected.
+	Workspace *BuildWorkspace
 }
 
 type Builder struct {
 	module, target, toolchain, temporaryParent string
 	environment                                []string
+	workspace                                  *BuildWorkspace
 }
 
 func (*Builder) String() string           { return "<native reload builder>" }
@@ -43,6 +46,7 @@ type Artifact struct {
 	root, path string
 	digest     [sha256.Size]byte
 	closed     bool
+	workspace  *BuildWorkspace
 }
 
 func NewBuilder(config BuildConfig) (*Builder, error) {
@@ -92,6 +96,15 @@ func NewBuilder(config BuildConfig) (*Builder, error) {
 	if err != nil {
 		return nil, err
 	}
+	if config.Workspace != nil && config.TemporaryParent != "" {
+		return nil, errors.New("reload build selects workspace or temporary parent, not both")
+	}
+	if config.Workspace != nil {
+		if _, err := config.Workspace.acquire(); err != nil {
+			return nil, err
+		}
+		config.Workspace.release()
+	}
 	parent := config.TemporaryParent
 	if parent != "" {
 		parent, err = filepath.Abs(parent)
@@ -107,7 +120,7 @@ func NewBuilder(config BuildConfig) (*Builder, error) {
 	// A development child must run on this host. Use the installed toolchain;
 	// an edited go.mod cannot cause an automatic toolchain download.
 	env = append(env, "GOTOOLCHAIN=local", "GOOS="+runtime.GOOS, "GOARCH="+runtime.GOARCH)
-	return &Builder{module: module, target: target, toolchain: toolchain, temporaryParent: parent, environment: env}, nil
+	return &Builder{module: module, target: target, toolchain: toolchain, temporaryParent: parent, environment: env, workspace: config.Workspace}, nil
 }
 
 // Build streams diagnostics to the caller and returns only a validated Go
@@ -117,7 +130,22 @@ func (builder *Builder) Build(ctx context.Context, diagnostics io.Writer) (artif
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	root, err := os.MkdirTemp(builder.temporaryParent, "miniloop-reload-build-")
+	parent := builder.temporaryParent
+	leased := false
+	if builder.workspace != nil {
+		var err error
+		parent, err = builder.workspace.acquire()
+		if err != nil {
+			return nil, err
+		}
+		leased = true
+	}
+	defer func() {
+		if artifact == nil && leased {
+			builder.workspace.release()
+		}
+	}()
+	root, err := os.MkdirTemp(parent, "miniloop-reload-build-")
 	if err != nil {
 		return nil, err
 	}
@@ -126,6 +154,10 @@ func (builder *Builder) Build(ctx context.Context, diagnostics io.Writer) (artif
 			err = errors.Join(err, os.RemoveAll(root))
 		}
 	}()
+	scratch := filepath.Join(root, "compiler-work")
+	if err := os.Mkdir(scratch, 0700); err != nil {
+		return nil, err
+	}
 	path := filepath.Join(root, "miniloop")
 	if runtime.GOOS == "windows" {
 		path += ".exe"
@@ -135,6 +167,9 @@ func (builder *Builder) Build(ctx context.Context, diagnostics io.Writer) (artif
 	}
 	command := exec.CommandContext(ctx, builder.toolchain, "build", "-mod=readonly", "-buildmode=exe", "-o", path, builder.target)
 	command.Dir, command.Env = builder.module, append([]string{}, builder.environment...)
+	// Only the compiler receives these overrides; server/tool environment remains
+	// the supervisor caller's captured environment.
+	command.Env = append(command.Env, "GOTMPDIR="+scratch, "TMPDIR="+scratch)
 	command.Stdout, command.Stderr = diagnostics, diagnostics
 	configureBuildGroup(command)
 	command.Cancel = func() error {
@@ -171,7 +206,7 @@ func (builder *Builder) Build(ctx context.Context, diagnostics io.Writer) (artif
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	return &Artifact{root: root, path: path, digest: digest}, nil
+	return &Artifact{root: root, path: path, digest: digest, workspace: builder.workspace}, nil
 }
 
 func artifactDigest(ctx context.Context, path string) ([sha256.Size]byte, error) {
@@ -234,5 +269,8 @@ func (artifact *Artifact) Close() error {
 		return err
 	}
 	artifact.closed = true
+	if artifact.workspace != nil {
+		artifact.workspace.release()
+	}
 	return nil
 }

@@ -436,7 +436,15 @@ The CLI currently uses this fallback observer. Installed Python Uvicorn 0.49.0
 selects WatchFilesReload (watchfiles 1.2.0); matching its default event/filter
 profile remains a required next slice, so default reload parity is not yet claimed.
 
-Runtime review baseline: `c48e38a` plus typed observer profiles and owned polling SDK,
+The explicit `reload.BuildWorkspace` allocates a private compiler/artifact parent.
+Build attempts, returned artifacts and bound observers lease it; `Close` refuses
+active users. Builder sets `GOTMPDIR` and `TMPDIR` only for its compiler process.
+A bound observer excludes this allocated subtree before batching/capacity accounting;
+polling also skips directory aliases into it. Kernel-loss flags still report faults.
+Real CGO compilation inside a watched root verifies temporary `.go` files do not
+trigger source batches. This SDK binding is not yet selected by the CLI.
+
+Runtime review baseline: `0c09a1e` plus owned compiler workspaces,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -580,7 +588,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `c48e38a` plus typed observer profiles and owned polling SDK;
+reviewed **2026-10-10** (Go baseline `0c09a1e` plus owned compiler workspaces;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -634,7 +642,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd StatReload observer · readonly native build<br/>CLI native event profile pending<br/>retained TCP socket · stop / join / replace<br/>build-failure recovery · child artifact cleanup"]
-        GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO FSEvents or owned PollWatcher<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>Linux native / CLI selection pending"]
+        GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO FSEvents or owned PollWatcher<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>Linux native / CLI selection pending"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]

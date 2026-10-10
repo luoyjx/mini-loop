@@ -16,7 +16,12 @@ import (
 )
 
 func TestBuildCancellationKillsCompilerDescendants(t *testing.T) {
-	root, outputs := buildFixture(t), t.TempDir()
+	root := buildFixture(t)
+	workspace, err := NewBuildWorkspace(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = workspace.Close() })
 	pidPath := filepath.Join(root, "child.pid")
 	toolchain := filepath.Join(root, "waiting-go")
 	// The explicit test toolchain starts a helper that holds diagnostic pipes.
@@ -24,7 +29,7 @@ func TestBuildCancellationKillsCompilerDescendants(t *testing.T) {
 	if err := os.WriteFile(toolchain, []byte(script), 0700); err != nil {
 		t.Fatal(err)
 	}
-	builder, err := NewBuilder(BuildConfig{ModuleDirectory: root, Toolchain: toolchain, TemporaryParent: outputs, Environment: append(os.Environ(), "RELOAD_HELPER_PID_PATH="+pidPath)})
+	builder, err := NewBuilder(BuildConfig{ModuleDirectory: root, Toolchain: toolchain, Workspace: workspace, Environment: append(os.Environ(), "RELOAD_HELPER_PID_PATH="+pidPath)})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,6 +53,9 @@ func TestBuildCancellationKillsCompilerDescendants(t *testing.T) {
 		t.Fatal("test compiler helper did not start")
 	}
 	t.Cleanup(func() { _ = syscall.Kill(pid, syscall.SIGKILL) })
+	if err := workspace.Close(); !errors.Is(err, ErrBuildWorkspaceBusy) {
+		t.Fatal("active compiler lease", err)
+	}
 	cancel()
 	select {
 	case err := <-done:
@@ -57,7 +65,10 @@ func TestBuildCancellationKillsCompilerDescendants(t *testing.T) {
 	case <-time.After(5 * time.Second):
 		t.Fatal("cancelled compiler was not joined")
 	}
-	assertNoBuildOutputs(t, outputs)
+	assertNoBuildOutputs(t, workspace.root)
+	if err := workspace.Close(); err != nil {
+		t.Fatal("cancelled compiler lease", err)
+	}
 	// macOS reaps this helper immediately. Linux may briefly retain a dead zombie;
 	// a zombie has no running code or inherited file descriptors.
 	for time.Now().Before(deadline) {

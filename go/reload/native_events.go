@@ -12,10 +12,10 @@ type EventBatch struct{ Paths []string }
 type NativeEvents struct{ *eventReader }
 
 func NewNativeEvents(roots []string, language Language) (*NativeEvents, error) {
-	return newNativeEvents(roots, language, nil)
+	return newNativeEvents(roots, language, nil, "")
 }
 
-func newNativeEvents(roots []string, language Language, diagnostic io.Writer) (*NativeEvents, error) {
+func newNativeEvents(roots []string, language Language, diagnostic io.Writer, excludedWorkspace string) (*NativeEvents, error) {
 	filter, err := NewEventFilter(language)
 	if err != nil {
 		return nil, err
@@ -25,6 +25,7 @@ func newNativeEvents(roots []string, language Language, diagnostic io.Writer) (*
 		return nil, err
 	}
 	source := &NativeEvents{eventReader: newEventReader(filter, NativeBackend, diagnostic)}
+	source.excludedWorkspace = excludedWorkspace
 	if err := source.start(owned); err != nil {
 		return nil, err
 	}

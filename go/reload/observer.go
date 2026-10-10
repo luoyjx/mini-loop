@@ -20,17 +20,37 @@ type ObserverConfig struct {
 	Roots    []string
 	Language Language
 	Profile  ObserverProfile
+	// Workspace is the allocated compiler workspace excluded for this subscription.
+	Workspace *BuildWorkspace
 	// Debug output reports raw lexical observer names with native flags (or zero
 	// for polling). A selected writer must return promptly. Nil uses os.Stdout.
 	DiagnosticWriter io.Writer
 }
 
-func NewObserver(ctx context.Context, config ObserverConfig) (Observer, error) {
+func NewObserver(ctx context.Context, config ObserverConfig) (observer Observer, err error) {
 	if ctx == nil {
 		return nil, errors.New("observer requires a construction context")
 	}
 	if err := ctx.Err(); err != nil {
 		return nil, err
+	}
+	excludedWorkspace := ""
+	if config.Workspace != nil {
+		excludedWorkspace, err = config.Workspace.acquire()
+		if err != nil {
+			return nil, err
+		}
+		defer func() {
+			if observer == nil {
+				config.Workspace.release()
+			}
+		}()
+	}
+	bind := func(source Observer) Observer {
+		if config.Workspace == nil {
+			return source
+		}
+		return &workspaceObserver{Observer: source, workspace: config.Workspace}
 	}
 	var diagnostic io.Writer
 	if config.Profile.debug {
@@ -41,13 +61,20 @@ func NewObserver(ctx context.Context, config ObserverConfig) (Observer, error) {
 	}
 	switch config.Profile.backend {
 	case NativeBackend:
-		source, err := newNativeEvents(config.Roots, config.Language, diagnostic)
+		source, err := newNativeEvents(config.Roots, config.Language, diagnostic, excludedWorkspace)
 		if err == nil && ctx.Err() != nil {
 			return nil, errors.Join(ctx.Err(), source.Close())
 		}
-		return source, err
+		if err != nil {
+			return nil, err
+		}
+		return bind(source), nil
 	case PollingBackend:
-		return newPollingEvents(ctx, config.Roots, config.Language, config.Profile.pollDelayMilliseconds, diagnostic)
+		source, err := newPollingEvents(ctx, config.Roots, config.Language, config.Profile.pollDelayMilliseconds, diagnostic, excludedWorkspace)
+		if err != nil {
+			return nil, err
+		}
+		return bind(source), nil
 	default:
 		return nil, errors.New("observer requires a selected native or polling profile")
 	}

@@ -7664,3 +7664,36 @@ FSEvents API deprecation and Darwin CGO linker warnings are recorded and nonfata
 Full Python, mutation and coverage were not rerun; Python runtime/default tools/
 mutation anchors are unchanged. The 4acefcc coverage snapshot is not current after
 this implementation. No push.
+
+
+## Go reload — owned compiler workspace (2026-10-10)
+
+Baseline: `0c09a1e` plus this slice. BuildWorkspace allocates a private parent;
+active build attempts, returned artifacts and bound observers lease its lifetime.
+Close refuses active leases; failed/cancelled builds release only after compiler
+join and attempt-directory cleanup. Builder overrides GOTMPDIR/TMPDIR only for
+its compiler. Server/tool environment is unchanged.
+
+NewObserver accepts the allocated workspace capability. Native callbacks exclude
+its lexical subtree before filtering, batching and capacity accounting; kernel-loss
+flags remain faults. Polling skips this subtree and directory aliases into it.
+This is a Go compilation adaptation, not a new Python WatchFiles exclusion rule.
+Ordinary hidden-parent source paths outside the allocated root remain observable.
+The CLI still uses StatReload; event-profile activation and Linux native observation
+remain pending. No new dependency or runtime default is selected.
+
+Evidence: real CGO build inside a watched root retains actual generated .cgo1.go
+files with go build -work, verifies both compiler environment overrides, runs the
+resulting executable and observes no source batch through artifact removal.
+Portable tests verify failed admission/build lease release, active artifact/observer
+close refusal, outside-source observation, queue capacity and retained kernel-loss
+faults. Compiler cancellation verifies active lease refusal, process-group join,
+attempt cleanup and final workspace close.
+
+Validation: focused real-CGO/workspace and compiler-cancellation tests pass;
+full Go ordinary suite (`-p=1 -count=1 -timeout=300s ./...`) and go vet pass.
+CGO_ENABLED=0 targeted workspace/observer/polling suite passes. Architecture
+regeneration passes 9/9 with zero errors/warnings and matching hashes/bytes;
+README outline and git diff --check pass. Fresh visual review remains unavailable
+following the earlier browser access denial. Full Python/mutation gates were not
+rerun for this Go-only slice; no merge or push is requested.

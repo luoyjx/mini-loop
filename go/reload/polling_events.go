@@ -21,7 +21,7 @@ type pollMetadata struct {
 	missing         bool
 }
 
-func newPollingEvents(ctx context.Context, roots []string, language Language, delay uint64, diagnostic io.Writer) (*PollingEvents, error) {
+func newPollingEvents(ctx context.Context, roots []string, language Language, delay uint64, diagnostic io.Writer, excludedWorkspace string) (*PollingEvents, error) {
 	filter, err := NewEventFilter(language)
 	if err != nil {
 		return nil, err
@@ -30,18 +30,19 @@ func newPollingEvents(ctx context.Context, roots []string, language Language, de
 	if err != nil {
 		return nil, err
 	}
-	previous, err := pollSnapshot(ctx, owned)
+	previous, err := pollSnapshotOwned(ctx, owned, nil, excludedWorkspace)
 	if err != nil {
 		return nil, err
 	}
 	source := &PollingEvents{eventReader: newEventReader(filter, PollingBackend, diagnostic)}
+	source.excludedWorkspace = excludedWorkspace
 	go func() {
 		defer close(source.done)
 		ctx := context.Background()
 		// The scanning worker observes stop directly between filesystem operations;
 		// no extra cancellation goroutine is left behind.
 		for waitPollDelay(source.stop, delay) {
-			current, err := pollSnapshotWithStop(ctx, owned, source.stop)
+			current, err := pollSnapshotOwned(ctx, owned, source.stop, excludedWorkspace)
 			if err != nil {
 				if !errors.Is(err, ErrEventsClosed) {
 					source.fail(err)
@@ -97,9 +98,15 @@ func pollSnapshot(ctx context.Context, roots []string) (map[string]pollMetadata,
 	return pollSnapshotWithStop(ctx, roots, nil)
 }
 func pollSnapshotWithStop(ctx context.Context, roots []string, stop <-chan struct{}) (map[string]pollMetadata, error) {
+	return pollSnapshotOwned(ctx, roots, stop, "")
+}
+func pollSnapshotOwned(ctx context.Context, roots []string, stop <-chan struct{}, excludedWorkspace string) (map[string]pollMetadata, error) {
 	snapshot := make(map[string]pollMetadata)
 	var walk func(string, map[string]bool) error
 	walk = func(path string, ancestors map[string]bool) error {
+		if insideBuildWorkspace(excludedWorkspace, path) {
+			return nil
+		}
 		if err := ctx.Err(); err != nil {
 			return err
 		}
@@ -141,6 +148,10 @@ func pollSnapshotWithStop(ctx context.Context, roots []string, stop <-chan struc
 		}
 		if ancestors[target] {
 			return fmt.Errorf("polling directory symlink cycle: %s", path)
+		}
+		if insideBuildWorkspace(excludedWorkspace, target) {
+			delete(snapshot, path)
+			return nil
 		}
 		ancestors[target] = true
 		defer delete(ancestors, target)
