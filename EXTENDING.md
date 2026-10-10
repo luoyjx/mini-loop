@@ -4063,3 +4063,23 @@ Twelve SDK recipes cover empty references, known/unknown/Unicode names, errors/f
 codes, messages and extensions. Five SDK reply variants and final provider/public-entry
 acceptance remain open. This slice adds reply representation; server tool-search
 request selection and dynamic client catalogue registration are not implemented here.
+
+### Named provider-owned tool-use observations
+
+`protocol.ServerToolUseBlock` exposes ID, ServerToolName, ServerToolInput and optional
+ToolCaller. Seven known server names have constants; future SDK names stay named
+strings. The SDK input contract declares an object without individual known fields.
+ServerToolInput owns immutable closed recursive JSON, with no open map, interface or
+raw payload in the domain. DecodeServerToolInput enforces object shape and network
+bounds; historical codecs accept larger accumulated records. WithInput changes only
+input, retaining caller and immutable root extensions. WithSDKDefaults supplies the
+observed caller null; native sparse codecs retain omission. SSE starts retain metadata,
+complete input deltas replace initial input, and empty deltas retain it. Strict final
+JSON/object admission remains the native boundary; SDK partial/malformed-input and
+caller extension behavior remain separate audit items. Caller supports the existing
+closed direct/code-execution variants. Server observations do not register/execute
+client tools, emit tool-input progress or require client result pairing. Decision
+admission keeps its existing Source allowlist. Thirty-two SDK direct/SSE captures
+match forwarding and archival codecs; actual SQLite close/reopen retains all captures
+and invalid UTF-8 named fields roll back the batch. Four remaining SDK reply kinds
+and final provider/default/public-entry acceptance remain open.

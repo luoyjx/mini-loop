@@ -309,6 +309,13 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		b := streamBlock{kind: block.Type, text: &strings.Builder{}}
 		switch block.Type {
+		case protocol.BlockServerToolUse:
+			initial, err := decodeBlock(wire.Block)
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			b.block = initial
+			b.input = append([]byte(nil), block.Input...)
 		case protocol.BlockToolSearchToolResult:
 			var result protocol.ToolSearchToolResultBlock
 			if err := json.Unmarshal(wire.Block, &result); err != nil {
@@ -378,6 +385,18 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 	b := &s.blocks[i]
 	if event == "content_block_stop" {
 		switch b.kind {
+		case protocol.BlockServerToolUse:
+			input, err := protocol.DecodeServerToolInput(b.input)
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			value, _ := b.block.ServerToolUse()
+			value = value.WithInput(input)
+			encoded, err := json.Marshal(value)
+			if err != nil || len(encoded) > protocol.MaxWireBytes {
+				return badStream("normalized server tool use exceeds protocol limit")
+			}
+			b.block = value.Block()
 		case protocol.BlockContainerUpload:
 			b.block = protocol.NewStreamedContainerUploadBlock(b.fileID)
 		case protocol.BlockRedactedThinking:
@@ -438,8 +457,11 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		b.signature = *wire.Delta.Signature
 	case "input_json_delta":
-		if b.kind != protocol.BlockToolUse || wire.Delta.PartialJSON == nil {
+		if (b.kind != protocol.BlockToolUse && b.kind != protocol.BlockServerToolUse) || wire.Delta.PartialJSON == nil {
 			return badStream("invalid tool input delta")
+		}
+		if b.kind == protocol.BlockServerToolUse && *wire.Delta.PartialJSON == "" {
+			return nil
 		}
 		if !b.partialInput {
 			b.input = nil

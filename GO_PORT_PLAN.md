@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `1c68fd0` plus named server tool-search result support. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `0781cd7` plus named server tool-use observations. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,10 +6864,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 206 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 207 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16366,3 +16366,37 @@ Application excluding tools: **89.47% (30239/33799)**; all Go:
 Darwin counters exclude CLI child-process/native C and Linux-only paths.
 Package-local measurement also passed: 86.46% (29224/33799), a different scope
 that excludes cross-package integration hits; use 89.47% for historical comparison.
+
+## 2026-10-10 named provider-owned tool-use observations
+
+Baseline: `0781cd7` plus this implementation; SDK Source capture committed at
+`8c0b442`. Thirty-two Anthropic SDK 0.107.1 direct/SSE captures compare complete
+server_tool_use metadata: seven known names, future name, input objects/nested
+scalars, null/direct/code-execution callers, root extensions, initial-input
+replacement and empty deltas. ServerToolName and ServerToolInput are separate
+from client ToolName/ToolInput. The SDK declares no individual input fields:
+ServerToolInput owns an immutable closed object with explicit recursive variants.
+No partial JSON, raw payload, open map or interface enters the domain.
+Sparse caller omission, SDK null defaults, root extensions, clone isolation,
+masking and large historical input are verified. Client dispatch/pairing and
+decision admission retain their existing boundaries. SQLite close/reopen
+compares every SDK capture, and invalid UTF-8 named ID/name rolls back batches.
+This proves database reconstruction, not a new killed-process/power-loss test.
+
+Passed: Python SDK capture test (1 passed); targeted protocol/provider/sqlitestate
+suites; full Go tests and race (`-p=1 -count=1 -timeout=300s ./...`); go vet;
+typeaudit (417 production files, 1348 named types, zero findings); scans (19
+guards); block mutation subset (3 guards); git diff --check. Source export
+check exited 1: only unchanged python-watchfiles.json is stale, the other
+206/207 files match. The unrelated watcher fixture was not rewritten.
+Logs: /tmp/mini-loop-server-tool-{source,targeted,go,race,vet,types,export,scans,guards}.log.
+
+Architecture regenerated from the specification with Archify: 9/9 checks, no
+errors/warnings. Specification SHA256
+9981465b5b0790e1ced31c69fcaf5a7086be92b4e7d38df5ee6a5661352ccadb;
+HTML SHA256 0ec43cfe4fbfbb5b3c6f4876c17366237bb19626b4effd058d6fb77a44bca256.
+No fresh browser visual inspection, full Python regression, full mutation sweep,
+coverage refresh or non-Darwin run; no merge/push. The previous application
+coverage remains 89.47% at the earlier tool-search snapshot, not this code.
+Four SDK reply kinds, SDK partial/malformed-input and caller extension audit,
+usage scalar consumer alignment, default diagnostics and final acceptance remain.

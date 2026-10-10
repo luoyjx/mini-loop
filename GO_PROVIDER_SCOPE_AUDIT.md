@@ -162,3 +162,15 @@ SDK 流式 ParsedTextBlock 的 text/citations/parsed_output null 默认值及错
 引用不注册或执行客户端工具，decision allowlist 保持 Source 拒绝。尚缺五种
 SDK 回复：server_tool_use、web_fetch_tool_result、code_execution_tool_result、
 bash_code_execution_tool_result、text_editor_code_execution_tool_result。完整验收未完成。
+
+## Provider-owned tool-use 回复更新
+
+基线 `0781cd7` 后支持 `server_tool_use` 的具名 ID/ServerToolName/ServerToolInput/
+ToolCaller。SDK 的 input 是无具体字段定义的对象，Go 以具名封装的不可变闭合 JSON
+保存；它不进入客户端 ToolInput。7 个已知名称有常量，future 名称保留字符串。
+32 个 SDK direct/SSE 配方验证输入对象、caller null/三个具名变体、扩展及流式输入
+替换/空 delta 保留。完整 JSON/object 是原生停止块的准入边界；SDK partial 或畸形
+输入及 caller 扩展仍需审计。转发、脱敏、克隆、大历史记录和实际 SQLite 重开保留
+元数据；无效 UTF-8 具名字段使批次回滚。不会执行客户端工具或要求客户端结果配对。
+剩余四类 SDK 回复：web_fetch_tool_result、code_execution_tool_result、
+bash_code_execution_tool_result、text_editor_code_execution_tool_result。完整验收未完成。

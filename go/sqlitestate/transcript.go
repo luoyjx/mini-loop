@@ -156,6 +156,13 @@ func validateMessageText(message protocol.Message) error {
 	for _, block := range blocks {
 		var err error
 		switch block.Kind() {
+		case protocol.BlockServerToolUse:
+			value, _ := block.ServerToolUse()
+			err = validateText(value.ID, string(value.Name))
+			if err == nil && value.Caller != nil {
+				err = validateText(value.Caller.ToolID())
+			}
+
 		case protocol.BlockToolSearchToolResult:
 			value, _ := block.ToolSearchToolResult()
 			err = validateText(value.ToolUseID)
