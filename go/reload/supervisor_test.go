@@ -118,9 +118,26 @@ func testSupervisorRecovery(t *testing.T, profile *ObserverProfile) {
 	if observer != nil {
 		t.Cleanup(func() { _ = observer.Close() })
 	}
+	if profile != nil && profile.Backend() == NativeBackend {
+		// FSEvents can deliver the fixture's pre-registration atomic rename
+		// after subscription construction. Drain only before ownership handoff;
+		// actual source edits start after the first child responds.
+		for {
+			ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+			_, err := observer.Next(ctx)
+			cancel()
+			if errors.Is(err, context.DeadlineExceeded) {
+				break
+			}
+			if err != nil {
+				t.Fatal("fixture initialization events", err)
+			}
+		}
+	}
+
 	events := make(chan LifecycleEvent, 64)
 	environment := append(os.Environ(), "CHILD_VALUE=captured")
-	supervisor, err := NewSupervisor(SupervisorConfig{Builder: builder, Watcher: watcher, Observer: observer, Directory: root, Environment: environment, StopGrace: time.Second, OnEvent: func(event LifecycleEvent) { events <- event }})
+	supervisor, err := NewSupervisor(SupervisorConfig{Builder: builder, Watcher: watcher, Observer: observer, Directory: root, Environment: environment, StopGrace: time.Second, OnEvent: func(event LifecycleEvent) { t.Logf("reload lifecycle: %+v", event); events <- event }})
 	if err != nil {
 		t.Fatal(err)
 	}

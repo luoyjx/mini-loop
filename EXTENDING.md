@@ -3874,3 +3874,18 @@ close it only after Run returns. SourceChanged.Paths is a detached batch; Path i
 the first entry. Empty batches are inert; backend errors return after cleanup.
 The synchronous reader handoff bounds read-ahead during builds. CLI selection is
 still StatReload; native Linux and executable event-profile selection remain open.
+
+
+## Linux native reload observation
+
+NewNativeEvents/NewObserver select native inotify on Linux, independently of CGO.
+The worker owns its descriptor and registration maps; callers own Close, or transfer
+it through Supervisor.Run admission. NewObserver's construction context cancels
+initial directory traversal and releases partial watches; it does not own successful
+subscription lifetime. Dynamic traversal observes the subscription stop signal.
+Registration follows Source filesystem iteration order and retains the last lexical
+alias for an inode. Native link loops are skipped; forced polling still reports its
+captured loop fault. Access-only opens are inert. Root moves retain the original
+lexical projection, including subsequent file events; callers must handle that
+projection without resolving deleted leaf paths. Queue overflow/unmount requires
+operator recovery. CLI still selects StatReload; executable activation is pending.

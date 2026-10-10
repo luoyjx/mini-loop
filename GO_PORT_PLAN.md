@@ -15095,3 +15095,51 @@ write retains the old lexical root projection. Raw batches are [<root>] then
 matches the checked-in fixture exactly. Main Source export --check passes 201
 files; invariant verification passes 77 and scanner verification passes 19.
 No new project dependency or default CLI selection is introduced by this evidence.
+
+
+## Go reload — owned Linux native backend (2026-10-10)
+
+Baseline: `3b523aa` plus this implementation. Native events now support Linux
+with Go/syscall APIs, no new dependency and no CGO requirement. One worker owns
+its nonblocking CLOEXEC descriptor, watch registrations and bounded record reads.
+Recursive filesystem-order registration follows links, skips native directory/file
+cycles and retains notify 8's last lexical alias projection. Dynamic directory
+creation/movement updates the subtree registrations. Access-only opens do not
+produce source batches; root moves retain the old lexical projection.
+
+Linux native event identity is distinct from Darwin flags, so IN_MODIFY is not
+misclassified as dropped data. Truncated headers/names are refused; kernel queue
+overflow and unmount return explicit recovery faults. Existing batch capacities,
+cancellation retention and allocated-workspace exclusions are preserved. Public
+NewNativeEvents remains compatible; NewObserver passes its construction context
+through Linux traversal. Successful subscriptions remain caller-owned. Initial
+cancellation closes the fd and partial watches; Close joins the worker.
+
+Evidence: actual Linux aarch64 Go 1.23.3 replays all 18 Source native recipes,
+link-loop/noop-open/root-move boundaries, dynamic directory replacement/move-out,
+blocked Next shutdown, exact /proc/self/fd release, and cancellation after observing
+an opened constructor descriptor. Real native HTTP children rebuild, repair failed
+compilation, retain the port and release workspace leases. CGO=0 full reload tests
+and CGO=1 race/vet reload tests pass. This is SDK delivery; CLI is still StatReload.
+
+Initial macOS full test/race attempts exposed delayed fixture setup rename events:
+FSEvents flags 67584 on main.go and 105728 on .reload-source-* were emitted before
+its first child start and caused replacement. The test now drains only completed
+fixture initialization before supervisor ownership transfer, matching the existing
+native Source-replay harness. Actual edits still begin after first HTTP readiness;
+production Darwin behavior is unchanged. Native replay/supervisor tests then pass
+three consecutive runs, followed by fresh full host ordinary/race/vet success.
+
+Gates: full host go test/go test -race with -p=1 -count=1 -timeout=300s; go vet;
+Linux reload ordinary with CGO=0 and race/vet with CGO=1; main Source export --check
+201; Linux Source final recapture exact match; verify_scans 19; verify_invariants 77;
+git diff --check. The final root-move correction touched only Linux-only source/tests
+and its dedicated Source exporter/fixture, followed by fresh Linux full reload
+race/vet. Host-compiled Go files remained unchanged from the passing full gates.
+Python runtime/mutation targets are unchanged; full Python/mutation gates were not
+rerun. No merge/push. Coverage was not refreshed; 89.73% is the older 2d2b608 snapshot.
+
+Architecture regeneration passes 9/9, zero errors/warnings, with exact hash/byte
+checks. README outline and diff checks pass. Visual review is not repeated after
+the previous browser access denial. The explicit unmount kernel-record refusal
+check also passes. Source/scanner/invariant gates remain 201/19/77 respectively.

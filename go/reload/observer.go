@@ -61,7 +61,7 @@ func NewObserver(ctx context.Context, config ObserverConfig) (observer Observer,
 	}
 	switch config.Profile.backend {
 	case NativeBackend:
-		source, err := newNativeEvents(config.Roots, config.Language, diagnostic, excludedWorkspace)
+		source, err := newNativeEvents(ctx, config.Roots, config.Language, diagnostic, excludedWorkspace)
 		if err == nil && ctx.Err() != nil {
 			return nil, errors.Join(ctx.Err(), source.Close())
 		}

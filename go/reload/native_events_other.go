@@ -1,10 +1,13 @@
-//go:build !darwin || !cgo
+//go:build !linux && (!darwin || !cgo)
 
 package reload
 
-import "errors"
+import (
+	"context"
+	"errors"
+)
 
-func (source *NativeEvents) start(roots []string) error {
+func (source *NativeEvents) start(ctx context.Context, roots []string) error {
 	close(source.done)
-	return errors.New("native event SDK requires macOS with CGO")
+	return errors.New("native event SDK requires Linux or macOS with CGO")
 }

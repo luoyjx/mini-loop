@@ -1,6 +1,9 @@
 package reload
 
-import "io"
+import (
+	"context"
+	"io"
+)
 
 // EventBatch distinguishes a batch containing only excluded names from no batch.
 // Paths are sorted, unique, lexical observer paths, never leaf-stat-resolved.
@@ -12,10 +15,10 @@ type EventBatch struct{ Paths []string }
 type NativeEvents struct{ *eventReader }
 
 func NewNativeEvents(roots []string, language Language) (*NativeEvents, error) {
-	return newNativeEvents(roots, language, nil, "")
+	return newNativeEvents(context.Background(), roots, language, nil, "")
 }
 
-func newNativeEvents(roots []string, language Language, diagnostic io.Writer, excludedWorkspace string) (*NativeEvents, error) {
+func newNativeEvents(ctx context.Context, roots []string, language Language, diagnostic io.Writer, excludedWorkspace string) (*NativeEvents, error) {
 	filter, err := NewEventFilter(language)
 	if err != nil {
 		return nil, err
@@ -26,7 +29,7 @@ func newNativeEvents(roots []string, language Language, diagnostic io.Writer, ex
 	}
 	source := &NativeEvents{eventReader: newEventReader(filter, NativeBackend, diagnostic)}
 	source.excludedWorkspace = excludedWorkspace
-	if err := source.start(owned); err != nil {
+	if err := source.start(ctx, owned); err != nil {
 		return nil, err
 	}
 	return source, nil

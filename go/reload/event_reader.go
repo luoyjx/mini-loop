@@ -17,6 +17,7 @@ const (
 	addedObservation
 	modifiedObservation
 	deletedObservation
+	linuxNativeObservation
 )
 
 type eventFingerprint struct {
@@ -78,8 +79,9 @@ func (source *eventReader) recordPolling(path string, kind observationKind) {
 }
 func (source *eventReader) recordEvent(event eventFingerprint) {
 	path, flags := event.path, event.flags
+	dropped := event.kind == nativeObservation && flags&7 != 0
 	source.mu.Lock()
-	if insideBuildWorkspace(source.excludedWorkspace, path) && flags&7 == 0 {
+	if insideBuildWorkspace(source.excludedWorkspace, path) && !dropped {
 		source.mu.Unlock()
 		return
 	}
@@ -89,7 +91,7 @@ func (source *eventReader) recordEvent(event eventFingerprint) {
 			source.fault = err
 		}
 	}
-	if flags&7 != 0 {
+	if dropped {
 		source.fault = errors.New("native filesystem events dropped; rescan required")
 	}
 	if source.filter.Matches(path) {

@@ -10,6 +10,7 @@ package reload
 import "C"
 
 import (
+	"context"
 	"errors"
 	"runtime"
 	"strings"
@@ -34,7 +35,7 @@ func goMiniLoopNativeEvent(key C.uintptr_t, path *C.char, flags C.uint32_t) {
 	}
 }
 
-func (source *NativeEvents) start(roots []string) error {
+func (source *NativeEvents) start(ctx context.Context, roots []string) error {
 	nativeRegistry.Lock()
 	nativeRegistry.next++
 	key := nativeRegistry.next

@@ -8293,3 +8293,18 @@ tests exercise retained socket and workspace leases; a typed faulting subscripti
 checks empty-batch inertness, backend-error preservation, forced child stop,
 subscription close, artifact removal and socket release. Rejected Run admission
 leaves a caller subscription open. No Python mutation anchor changed.
+
+
+## Linux inotify subscription ownership — 2026-10-10
+
+The worker owns one CLOEXEC/nonblocking inotify descriptor and its directory map.
+Close joins descriptor release; cancelled construction closes partial registrations.
+A native Linux event mask is distinguished from Darwin flags: IN_MODIFY's low bit
+must not be treated as a FSEvents dropped-event flag. ABI lengths are checked before
+slicing; queue overflow/unmount returns an explicit recovery fault. Owned compiler
+workspace traversal and event exclusions remain scoped to the allocated capability.
+Actual /proc/self/fd checks pin close and in-flight-construction cancellation.
+Real Linux HTTP child recovery verifies retained listener and joined artifact leases.
+Native link loops/access-only opens/root moves retain captured Source behavior.
+Python mutation targets are unchanged; these new boundaries have Go process/kernel
+and fault-record tests. No model-facing path, dependency or CLI default is added.
