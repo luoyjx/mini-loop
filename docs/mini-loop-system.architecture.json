@@ -299,7 +299,7 @@
       "id": "goFake",
       "type": "external",
       "label": "Go model providers",
-      "sublabel": "HTTP / SSE · process-local token cache",
+      "sublabel": "HTTP / SSE · file profile / OAuth · token cache",
       "pos": [
         330,
         1180

@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `a9585cb` including typed dynamic credential caching and native citation SQLite/recording recovery proof. The entries below retain their historical
+Reviewed code/test baseline: `2ecbee7` plus native file-profile/OAuth refresh and typed dynamic credential caching and native citation SQLite/recording recovery proof. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -15,12 +15,13 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 404 production files, 1309 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 406 production files, 1313 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
-| Explicit provider authentication | Ten pinned Source recipes, each compared against native direct and SSE request headers; detached configuration, effective-header admission and credential redaction tests | Explicit key/bearer/ordered-header seam and Launcher environment selection implemented; four Settings/provider_for Source captures match managed native turns; SDK profile/federation remain open |
-| Dynamic credential cache | Typed callback/token/error seam; provider race tests for SDK windows/backoff, forced exchange retry, cancellation/panic release, direct/SSE auth and concurrent token redaction | Explicit process-local cache implemented; native file-profile/federation drivers and Launcher discovery remain open |
+| Explicit provider authentication | Ten pinned Source recipes, each compared against native direct and SSE request headers; detached configuration, effective-header admission and credential redaction tests | Explicit key/bearer/ordered-header seam and Launcher environment selection implemented; four Settings/provider_for Source captures match managed native turns; SDK automatic profile/federation discovery remains open |
+| Dynamic credential cache | Typed callback/token/error seam; provider race tests for SDK windows/backoff, forced exchange retry, cancellation/panic release, direct/SSE auth and concurrent token redaction | Explicit process-local cache implemented; native file-profile/user OAuth implemented; federation driver and Launcher discovery remain open |
+| Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; Launcher discovery and federation remain open; bounded ingress adaptations recorded |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 The latest Source export check at `aee0437` plus native citation integration exited

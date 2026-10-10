@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `65ac890` plus dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
+Reviewed 2026-10-10 at `2ecbee7` plus native file-profile/OAuth refresh and dynamic credential caching and native citation SQLite/recording recovery proof. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -15807,3 +15807,58 @@ performance evidence retain their prior recorded baselines. No runtime code,
 architecture, dependency version or default behavior changed. The approved
 SQLite driver remains `github.com/mattn/go-sqlite3 v1.14.52` in `go/go.mod`.
 No merge or push was performed.
+
+## 2026-10-10 native file-profile credentials and user OAuth refresh
+
+Code/test baseline: `2ecbee7` plus this implementation. Source is installed
+Anthropic SDK 0.107.1 CredentialsFile, including _load_config, _read_credentials,
+_call_user_oauth, _atomic_write_credentials and _fill_missing_from_env. Eight
+existing pinned Source recipes are replayed by `provider/profile_test.go`:
+default, unknown auth kind, missing token, world-readable file, secret symlink,
+profile endpoint/workspace, explicit model endpoint and OAuth refresh.
+
+`provider.NewFileProfile` eagerly reads config into named fields and defers secret
+reads/exchange to FetchToken. Caller-owned ProfileConfig carries detached defaults,
+HTTP client and clock. Explicit model URL wins model requests; profile URL owns
+refresh. Workspace headers are returned separately for ordered configuration.
+Externally rotated profiles re-read tokens on fetch. With client_id, refresh_token
+is required before expiry validation, even while fresh. Strict expiry/forced refresh
+uses the refresh_token grant with only the OAuth API beta flag. Shared Client cache
+policy remains responsible for advisory/mandatory windows and exchange-401 retry.
+
+Native refresh validates the token before writes, preserves named refresh token
+when omitted and closed immutable extension members, writes a unique mode-0600
+file, fsyncs/closes, atomically replaces it and best-effort syncs the parent.
+One instance serializes fetches with cancellable waits. Separate instances and
+external writers remain last-writer-wins; no lease/fencing/power-loss guarantee
+is claimed. Config and default credential paths resolve existing ancestors for
+root containment; explicit credentials_path overrides may be outside that root,
+as in Source. POSIX leaf symlinks/world-readable files are refused; group mode
+is accepted. Configuration/secrets/exchange JSON is capped at 8 MiB. Named
+truthy fields must be strings; non-object documents are refused. Expiry coercion
+uses existing PythonInteger semantics but refuses times outside civil years
+0001–9999. Token endpoints require parsed HTTPS or exact localhost/127.0.0.1/::1
+HTTP, stricter than Source's loopback prefix test. Redirects are refused on a
+private client copy. Errors retain safe class/status only, never secret bodies.
+
+Automatic Launcher discovery and federation exchange remain implementation
+items. No default/dependency selection changes. The README canonical map and
+interactive specification identify the explicit file/OAuth path. Current coverage
+retains measured baseline `a9585cb`; no coverage claim covers this new code.
+Final gates passed: `go test -race -count=1 ./provider`, full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...`, `go vet ./...` and
+`go run ./tools/typeaudit -root .` (406 production files, 1313 package-level
+types, zero findings), all from `go/`. Logs are
+`/tmp/mini-loop-file-profile-{go,race,vet}.log`. Source/test/fixture files remained
+unchanged while full validation jobs ran. Existing Darwin FSEvents deprecation
+and LC_DYSYMTAB linker warnings did not prevent passing gates.
+
+Archify regeneration passed 9/9 checks. Specification SHA256:
+`60bbb09961d66b5ec4911d746bfb67ea68ff07fcb2a0ec55f1e991b4bfe1f8b4`;
+HTML SHA256:
+`23ee01a7ce617882a1c536edc5253ed2e896b401195afe66191efe87557384b4`.
+No fresh browser visual inspection, Python regression/verifiers, Source export,
+coverage, performance, Linux-host or CGO-disabled run was performed. Python
+runtime/export recipes and default-tool catalogue did not change. Diff/cached
+checks pass. No merge or push was performed.

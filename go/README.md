@@ -498,9 +498,18 @@ Callbacks must honor contexts; waiting callers can cancel independently. Static
 auth headers bypass dynamic fetch. Dynamic tokens add OAuth API beta. Model 401
 does not refresh/replay; InvalidateCredentials explicitly forces the next fetch
 without fencing a fetch in flight. Each response scrubs its own token during
-concurrent rotation. File/provider lifetime stays caller-owned. SDK profile/
-federation discovery, native token exchange, remaining request options and
-production endpoint/cache conformance remain pending.
+concurrent rotation. File/provider lifetime stays caller-owned. `NewFileProfile(ProfileConfig)` now
+implements explicit file-profile user OAuth credentials. Supply its
+`ModelBaseURL()` and `Headers()` to provider Config, and the profile as Credentials.
+Configuration is read at construction; secrets are re-read when the cache fetches.
+With client_id, expired/forced tokens use the refresh_token grant and atomically
+replace a private 0600 file while preserving extension members and an omitted
+refresh token. Without client_id, rotation remains external. Named model and
+exchange endpoints preserve caller/profile precedence. Profile defaults are
+explicit captured values; it never reads environment variables. Bounded JSON,
+strict string fields, checked civil-time expiry and exact-loopback HTTP admission
+are documented native adaptations. Automatic Launcher discovery, federation
+exchange, remaining request options and production conformance remain pending.
 
 ### Typed decision operator library
 

@@ -1585,7 +1585,22 @@ own fetches/waits; callbacks must cooperate with cancellation. SDK refresh windo
 and token-endpoint 401 retry are retained. Model 401 does not refresh/replay.
 Explicit InvalidateCredentials requests a forced next fetch without fencing an
 in-flight fetch. Callback messages/panics are contained; request-local token
-redaction survives concurrent rotation. It retains no dynamic payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
+redaction survives concurrent rotation. Explicit `NewFileProfile(ProfileConfig)` supplies the native user OAuth driver.
+Pass its `ModelBaseURL()`, `Headers()` and the profile as `Config.Credentials`;
+merge profile headers before ordered caller overrides. `Directory` and `Name`
+select the config, `HomeDirectory` expands a credentials `~/` override, and
+`DefaultBaseURL`/`DefaultWorkspaceID` are detached environment fallbacks.
+The profile endpoint owns refresh while explicit `BaseURL` owns model requests.
+No constructor performs token exchange. File rotation is observed on cache fetch;
+without client_id, an external rotator owns refresh. With client_id, refresh_token
+is required even for a fresh token. Each instance serializes context-owned fetches;
+separate instances/processes remain last-writer-wins. Config/credentials/response
+JSON is bounded to 8 MiB. Non-string truthy credential/config fields and expiries
+outside civil years 0001–9999 are explicitly refused. Parsed exact loopback HTTP
+is allowed; remote token exchange requires HTTPS. Secret leaf symlinks and
+world-readable POSIX files are refused; group mode is accepted. This adds no
+cross-process lock or automatic Launcher discovery. It retains no opaque config
+payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
 `agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
 The native adapter retains five named citation variants and closed extension data
