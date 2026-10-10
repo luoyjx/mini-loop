@@ -43,16 +43,20 @@ func (failure ModelBatchInputFailure) Error() string {
 	}
 }
 
-// ForModelBatch copies the observed Bash arguments as Source dict(input or {}).
+// ForModelBatch copies the observed shell arguments as Source dict(input or {}).
 // The original assistant block remains unchanged. Non-string mapping-key
 // profiles remain explicit rather than entering a string-key domain object.
 func (input ToolInput) ForModelBatch() (ToolInput, error) {
-	if input.bashRejected == nil {
+	rejected := input.bashRejected
+	if input.backgroundModel != nil {
+		rejected = input.backgroundModel.rejected
+	}
+	if rejected == nil {
 		return input, nil
 	}
-	value := input.bashRejected.observation
+	value := rejected.observation
 	if !value.Truth() {
-		return DecodeModelToolInput(ToolBash, []byte(`{}`))
+		return DecodeModelToolInput(input.Name(), []byte(`{}`))
 	}
 	switch value.Kind() {
 	case jsonvalue.Array:
@@ -84,10 +88,10 @@ func (input ToolInput) ForModelBatch() (ToolInput, error) {
 		if err != nil {
 			return ToolInput{}, err
 		}
-		return DecodeModelToolInput(ToolBash, data)
+		return DecodeModelToolInput(input.Name(), data)
 	case jsonvalue.Text:
 		return ToolInput{}, ModelBatchInputFailure{kind: batchWrongPairLength, index: 0, length: 1}
 	default:
-		return ToolInput{}, ModelBatchInputFailure{kind: batchNotIterable, rootKind: input.bashRejected.kind}
+		return ToolInput{}, ModelBatchInputFailure{kind: batchNotIterable, rootKind: rejected.kind}
 	}
 }

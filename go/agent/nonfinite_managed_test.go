@@ -18,7 +18,16 @@ import (
 )
 
 func TestNonfiniteManagedBashMatchesSourceBatchAndJournalStages(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-nonfinite-bash.json")
+	assertNonfiniteManagedShell(t, "../testdata/python-provider-nonfinite-bash.json", 24, false)
+}
+
+func TestNonfiniteManagedBackgroundMatchesSourceBatchAndJournalStages(t *testing.T) {
+	assertNonfiniteManagedShell(t, "../testdata/python-provider-nonfinite-background.json", 18, true)
+}
+
+func assertNonfiniteManagedShell(t *testing.T, path string, count int, background bool) {
+	t.Helper()
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,7 +48,7 @@ func TestNonfiniteManagedBashMatchesSourceBatchAndJournalStages(t *testing.T) {
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Managed) != 24 {
+	if len(fixture.Managed) != count {
 		t.Fatal("Source managed inventory changed")
 	}
 	for _, row := range fixture.Managed {
@@ -78,7 +87,7 @@ func TestNonfiniteManagedBashMatchesSourceBatchAndJournalStages(t *testing.T) {
 					return nil
 				})},
 			}
-			manager, err := NewSessionManager(ManagerConfig{WorkspaceRoot: t.TempDir(), Defaults: SessionDefaults{Model: "model", PermissionMode: ModeAuto, MaxRounds: 3}, Services: ManagerServices{Provider: model, ActionJournal: journal, Hooks: hooks}})
+			manager, err := NewSessionManager(ManagerConfig{WorkspaceRoot: t.TempDir(), Defaults: SessionDefaults{Model: "model", PermissionMode: ModeAuto, MaxRounds: 3}, Services: ManagerServices{Provider: model, BackgroundTools: background, ActionJournal: journal, Hooks: hooks}})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -104,6 +113,9 @@ func TestNonfiniteManagedBashMatchesSourceBatchAndJournalStages(t *testing.T) {
 			}
 			if requests.Load() != row.Requests || len(session.Messages()) != row.Messages || !reflect.DeepEqual(trace, row.Trace) {
 				t.Fatal("Source phase changed", requests.Load(), len(session.Messages()), trace, row)
+			}
+			if background && session.core.backgroundInitialized() {
+				t.Fatal("managed observation initialized background service")
 			}
 			uses := 0
 			for _, event := range session.Events() {

@@ -75,8 +75,15 @@ func TestBackgroundModelObservationsRetainHistoryMaskAndIdentity(t *testing.T) {
 		})
 	}
 	for _, raw := range []string{`{"command":NaN}`, `{"command":{"nested":Infinity}}`} {
-		if _, err := DecodeModelToolInput(ToolBackgroundRun, []byte(raw)); err == nil {
-			t.Fatal("nonfinite input entered finite observation")
+		input, err := DecodeModelToolInput(ToolBackgroundRun, []byte(raw))
+		if err != nil {
+			t.Fatal("SDK observation refused", err)
+		}
+		if _, err := json.Marshal(input); err == nil {
+			t.Fatal("nonfinite input entered finite encoding")
+		}
+		if _, err := DecodeToolInput(ToolBackgroundRun, []byte(raw)); err == nil {
+			t.Fatal("strict caller admitted nonfinite input")
 		}
 	}
 }

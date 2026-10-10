@@ -89,7 +89,16 @@ func TestBashObservedOptionsDoNotBypassPermission(t *testing.T) {
 }
 
 func TestNonfiniteBashOptionsAndCommandsCannotGrantReadonlyPermission(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-nonfinite-bash.json")
+	assertNonfiniteShellReadonly(t, "../testdata/python-provider-nonfinite-bash.json", protocol.ToolBash)
+}
+
+func TestNonfiniteBackgroundCommandsCannotGrantReadonlyPermission(t *testing.T) {
+	assertNonfiniteShellReadonly(t, "../testdata/python-provider-nonfinite-background.json", protocol.ToolBackgroundRun)
+}
+
+func assertNonfiniteShellReadonly(t *testing.T, path string, name protocol.ToolName) {
+	t.Helper()
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -107,7 +116,7 @@ func TestNonfiniteBashOptionsAndCommandsCannotGrantReadonlyPermission(t *testing
 		if row.Mode != "keep" {
 			continue
 		}
-		input, err := protocol.DecodeModelToolInput(protocol.ToolBash, []byte(row.Input))
+		input, err := protocol.DecodeModelToolInput(name, []byte(row.Input))
 		if err != nil {
 			t.Fatal(err)
 		}

@@ -15,7 +15,7 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
-	if input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil {
+	if input.backgroundModel != nil || input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil {
 		observation, err := input.Observation()
 		if err != nil {
 			return "", err
@@ -28,17 +28,6 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	}
 	if input.unknownModelTool != nil {
 		return PythonJSON(input.unknownModelTool.arguments.Sorted(), false, compact)
-	}
-	if input.backgroundModel != nil {
-		raw, err := input.marshalBackgroundModel()
-		if err != nil {
-			return "", err
-		}
-		value, err := jsonvalue.Decode(string(raw))
-		if err != nil {
-			return "", err
-		}
-		return PythonJSON(value.Sorted(), false, compact)
 	}
 	if IsMCPToolName(input.Name()) {
 		return PythonJSON(input.mcpArguments.Sorted(), false, compact)

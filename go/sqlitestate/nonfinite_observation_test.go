@@ -13,20 +13,36 @@ import (
 )
 
 func TestNonfiniteSourceMessagesSurviveSQLiteCloseAndReopen(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-nonfinite-consumer.json")
+	assertNonfiniteSourceMessagesReopen(t, "../testdata/python-provider-nonfinite-consumer.json", 4)
+}
+
+func TestNonfiniteBackgroundSourceMessagesSurviveSQLiteCloseAndReopen(t *testing.T) {
+	assertNonfiniteSourceMessagesReopen(t, "../testdata/python-provider-nonfinite-background.json", 18)
+}
+
+func assertNonfiniteSourceMessagesReopen(t *testing.T, pathFixture string, count int) {
+	t.Helper()
+	data, err := os.ReadFile(pathFixture)
 	if err != nil {
 		t.Fatal(err)
 	}
 	var fixture struct {
 		Cases []struct {
-			Kind, Name string
-			Messages   string `json:"reopened_messages_json"`
+			Kind, Name, Mode string
+			Messages         string `json:"reopened_messages_json"`
 		}
 	}
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 4 {
+	selected := fixture.Cases[:0]
+	for _, row := range fixture.Cases {
+		if row.Mode == "" || row.Mode == "keep" {
+			selected = append(selected, row)
+		}
+	}
+	fixture.Cases = selected
+	if len(fixture.Cases) != count {
 		t.Fatal("Source inventory changed")
 	}
 	ctx := context.Background()

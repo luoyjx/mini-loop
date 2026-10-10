@@ -8441,4 +8441,18 @@ failures differ from standalone late invocation failures. Actual 36 standalone
 and 24 managed profiles retain that ordering; selected lazy-copy and finite
 journal mutations are caught after passing baselines. Non-string pair keys are
 explicitly unsupported; new SQLite restart profiles and global SDK error text
-equality are not claimed. Shared background_run decoding remains finite.
+equality are not claimed. At that checkpoint, shared background_run decoding remained finite.
+
+## Nonfinite background shell observations — 2026-10-11
+
+Baseline `7992994` plus this slice. backgroundModelArguments reuses named
+BashCommandObservation/BashRejectedArguments for legacy SDK numbers; immutable
+extras retain only unknown parameters. Detached observation/archive encoding
+and finite caller/HTTP/event encoding remain separate. Batch preparation selects
+the actual shell variant and prepares every call before hooks/effects. Standalone
+command split faults create the owned manager without tasks; roots and unknown
+parameters fail before manager creation. Managed finite journal refusal precedes
+that initialization. Actual 27 standalone and 18 managed comparisons, 18 unique
+direct/SSE captures and Python/native SQLite message close/reopen cover these
+boundaries. Native readonly checks are separate from Source permission captures.
+Named timeout/prefix coercion and global SDK error text remain open.

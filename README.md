@@ -474,7 +474,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `4c807ae` plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `7992994` plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -681,7 +681,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -2688,7 +2688,7 @@ journal admission, while actual command consumers initialize the owned manager
 before split failure without allocating a task. Eighteen actual Source profiles
 match display, final input, hook/result order and background initialization/task
 numbering. Before rewrites and denials retain precedence. Known timeout/prefix
-fields remain typed; their broader coercion audit, nonfinite inputs and complete
+fields remain typed; their broader coercion audit, nonfinite optional fields and complete
 provider/port acceptance remain open.
 
 ### Missing model tool observations
@@ -2875,3 +2875,22 @@ profiles do not establish SQLite restart parity. Native readonly checks are
 separate from Source profile comparisons. Falsy roots and string-key pair lists
 have explicit batch normalization; non-string pair keys are unsupported. Broader
 background inputs, SDK error-text fidelity and complete migration remain open.
+
+### Nonfinite background command and root observations — 2026-10-11
+
+The background model decoder now retains named nonfinite commands, rejected
+roots and immutable unknown parameters through direct/SSE, masking, identity
+and archives. Standard caller/request/event encoding remains finite. The same
+shell batch preparation applies before the gate; a later bad root prevents an
+earlier valid background call from creating a manager or task. Standalone
+command consumers initialize the owned manager before split failure, allocating
+no task. Unknown parameters and non-mapping invocation failures do not initialize
+it; before rewrites and denials retain precedence.
+
+Actual Source/native comparisons cover 27 standalone profiles, 18 managed
+profiles and 18 unique SDK inputs. Python and native SQLite message close/reopen
+preserve those 18 observations; valid next HTTP encoding fails before transport.
+Managed journal fingerprint refusal precedes manager initialization. Native
+readonly checks show no observation supplies a grant. Shared capture helpers
+retain the existing Bash fixture observations unchanged. Timeout/approval-prefix
+coercion, broader input variants and complete migration acceptance remain open.

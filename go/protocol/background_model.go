@@ -8,7 +8,7 @@ import (
 )
 
 // BackgroundBindingFailure is an invocation failure settled after admission.
-// Its finite argument kinds and parameter name grant no shell authority.
+// Its observed argument kinds and parameter name grant no shell authority.
 type BackgroundBindingFailure struct {
 	kind         BashBindingFailureKind
 	parameter    string
@@ -75,7 +75,7 @@ func (args backgroundModelArguments) validate() error {
 	if args.extra.Kind() != jsonvalue.Object {
 		return errors.New("background extra parameters must be an object")
 	}
-	_, err := args.extra.MarshalJSON()
+	_, err := args.extra.MarshalLegacyUTF8()
 	return err
 }
 
@@ -85,10 +85,6 @@ func decodeModelBackgroundInput(data []byte) (ToolInput, error) {
 	}
 	object, err := jsonvalue.Decode(string(data))
 	if err != nil {
-		return ToolInput{}, err
-	}
-	// Shared Bash observations support legacy numbers; background profiles remain finite.
-	if _, err := object.MarshalJSON(); err != nil {
 		return ToolInput{}, err
 	}
 	args := &backgroundModelArguments{extra: jsonvalue.ObjectValue(nil)}
@@ -161,22 +157,30 @@ func (input ToolInput) BackgroundCommandObservation() (BashCommandObservation, b
 }
 
 func (input ToolInput) marshalBackgroundModel() ([]byte, error) {
-	if err := input.Validate(); err != nil {
+	value, err := input.backgroundObservation()
+	if err != nil {
 		return nil, err
+	}
+	return value.MarshalJSON()
+}
+
+func (input ToolInput) backgroundObservation() (jsonvalue.Value, error) {
+	if err := input.Validate(); err != nil {
+		return jsonvalue.Value{}, err
 	}
 	args := input.backgroundModel
 	if args.rejected != nil {
-		return args.rejected.MarshalJSON()
+		return args.rejected.observation, nil
 	}
 	plain := input
 	plain.backgroundModel = nil
 	encoded, err := plain.marshalOptionalJSON()
 	if err != nil {
-		return nil, err
+		return jsonvalue.Value{}, err
 	}
 	object, err := jsonvalue.Decode(string(encoded))
 	if err != nil {
-		return nil, err
+		return jsonvalue.Value{}, err
 	}
 	fields := []jsonvalue.Field{}
 	for _, key := range object.Keys() {
@@ -195,7 +199,7 @@ func (input ToolInput) marshalBackgroundModel() ([]byte, error) {
 		value, _ := args.extra.Lookup(key)
 		fields = append(fields, jsonvalue.Field{Name: key, Value: value})
 	}
-	return jsonvalue.ObjectValue(fields).MarshalJSON()
+	return jsonvalue.ObjectValue(fields), nil
 }
 
 func (args *backgroundModelArguments) mask(mask func(string) string) {

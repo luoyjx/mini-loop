@@ -40,6 +40,10 @@ func (input ToolInput) Observation() (InputObservation, error) {
 	if input.name == ToolBash && (input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil) {
 		return InputObservation{value: input.bashObservation()}, nil
 	}
+	if input.backgroundModel != nil {
+		value, err := input.backgroundObservation()
+		return InputObservation{value: value}, err
+	}
 	data, err := input.MarshalJSON()
 	if err != nil {
 		return InputObservation{}, err

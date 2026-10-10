@@ -14,7 +14,16 @@ import (
 )
 
 func TestBackgroundModelArgumentsMatchActualSourceConsumers(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-background-input.json")
+	assertBackgroundModelConsumers(t, "../testdata/python-provider-background-input.json", 18)
+}
+
+func TestNonfiniteBackgroundModelArgumentsMatchActualSourceConsumers(t *testing.T) {
+	assertBackgroundModelConsumers(t, "../testdata/python-provider-nonfinite-background.json", 27)
+}
+
+func assertBackgroundModelConsumers(t *testing.T, path string, count int) {
+	t.Helper()
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,7 +43,7 @@ func TestBackgroundModelArgumentsMatchActualSourceConsumers(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 18 {
+	if len(fixture.Cases) != count {
 		t.Fatal("Source non-text command inventory changed")
 	}
 	for i, row := range fixture.Cases {
@@ -101,7 +110,7 @@ func TestBackgroundModelArgumentsMatchActualSourceConsumers(t *testing.T) {
 				}
 			}
 
-			wire, err := json.Marshal(final)
+			wire, err := final.SortedPythonJSON()
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -110,7 +119,7 @@ func TestBackgroundModelArgumentsMatchActualSourceConsumers(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			expectedWire, err := json.Marshal(expected)
+			expectedWire, err := expected.SortedPythonJSON()
 			if err != nil || string(wire) != string(expectedWire) {
 				t.Fatal("Source rewrite/final input changed", string(wire), err)
 			}

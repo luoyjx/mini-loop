@@ -7,7 +7,16 @@ import (
 )
 
 func TestNonfiniteBashVariantsRetainArchiveIdentityAndStrictCallerBoundary(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-nonfinite-bash.json")
+	assertNonfiniteShellArchives(t, "../testdata/python-provider-nonfinite-bash.json", ToolBash, 24)
+}
+
+func TestNonfiniteBackgroundVariantsRetainArchiveIdentityAndStrictCallerBoundary(t *testing.T) {
+	assertNonfiniteShellArchives(t, "../testdata/python-provider-nonfinite-background.json", ToolBackgroundRun, 18)
+}
+
+func assertNonfiniteShellArchives(t *testing.T, path string, name ToolName, wantCount int) {
+	t.Helper()
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,7 +37,7 @@ func TestNonfiniteBashVariantsRetainArchiveIdentityAndStrictCallerBoundary(t *te
 		}
 		count++
 		t.Run(row.Name, func(t *testing.T) {
-			input, err := DecodeModelToolInput(ToolBash, []byte(row.Input))
+			input, err := DecodeModelToolInput(name, []byte(row.Input))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -36,7 +45,7 @@ func TestNonfiniteBashVariantsRetainArchiveIdentityAndStrictCallerBoundary(t *te
 			if err != nil || canonical != row.Canonical {
 				t.Fatal("Source identity changed", canonical, row.Canonical, err)
 			}
-			if _, err := DecodeToolInput(ToolBash, []byte(row.Input)); err == nil {
+			if _, err := DecodeToolInput(name, []byte(row.Input)); err == nil {
 				t.Fatal("strict caller admitted SDK nonfinite input")
 			}
 			if _, err := json.Marshal(input); err == nil {
@@ -61,7 +70,7 @@ func TestNonfiniteBashVariantsRetainArchiveIdentityAndStrictCallerBoundary(t *te
 			}
 		})
 	}
-	if count != 24 {
+	if count != wantCount {
 		t.Fatal("Source unique input inventory changed", count)
 	}
 }

@@ -21,6 +21,10 @@ func TestNonfiniteKnownBashSDKInputsFailNextEncodingBeforeTransport(t *testing.T
 	assertNonfiniteSDKConsumers(t, "../testdata/python-provider-nonfinite-bash.json", 36)
 }
 
+func TestNonfiniteBackgroundSDKInputsFailNextEncodingBeforeTransport(t *testing.T) {
+	assertNonfiniteSDKConsumers(t, "../testdata/python-provider-nonfinite-background.json", 27)
+}
+
 func assertNonfiniteSDKConsumers(t *testing.T, fixturePath string, count int) {
 	t.Helper()
 	data, err := os.ReadFile(fixturePath)
