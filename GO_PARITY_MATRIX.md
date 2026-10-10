@@ -9720,3 +9720,39 @@ mutation completed: 221 current files. No fixture expectations or watcher runtim
 were changed. Working-tree diff check passed. The unknown-model feature is scoped
 and verified; full ordinary Go validation remains failed in native reload, so no
 complete migration, complete release gate or native reliability claim follows.
+
+## Coverage refresh after unknown model tool delivery — 2026-10-11
+
+Measured runtime baseline: `f2cdbca`. The full sequential race coverage gate
+passed: `go test -race -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-f2cdbca-integrated.cover ./...`.
+[Package metrics](docs/audits/go-coverage-unknown-model-2026-10-11.json)
+retain the profile hash and exact source-location aggregation.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| Application excluding tools | 31,807 / 35,601 | 89.34% |
+| All Go | 31,854 / 35,665 | 89.31% |
+
+The 1,193,343 raw blocks merge into 24,860 unique source locations using
+maximum hit counts, with matching statement counts asserted. Relative to
+`e3fc640`, application covered statements increased by 163 and total statements
+by 183; the exact percentage decreased approximately 0.0014 percentage points.
+This is Darwin arm64 Go statement coverage. Native C and CLI subprocess
+internals are not instrumented; Python coverage, branch coverage and migration
+completion are not measured.
+
+Reload passed this race coverage run in 39.542 seconds. This does not supersede
+the two preceding full ordinary native reload failures retained in
+[the timeout audit](docs/audits/go-native-remove-timeout-2026-10-11.json).
+Native temporal acceptance remains open. No new full ordinary, vet, type audit,
+Source export, Python regression, mutation sweep or non-Darwin gate was run in
+this documentation iteration. The prior 221-file Source export and 430-file /
+1,404-named-type audit retain their original validation baseline. Runtime source,
+tests and fixtures were frozen throughout the coverage gate.
+
+README canonical architecture map reviewed: no topology, ownership, authority,
+flow, persistence or default changed. Only its visible review baseline was
+advanced; interactive specification and generated HTML are unchanged.
+Validation for this documentation slice: full race coverage gate, JSON metrics
+consistency assertions and `git diff --check`. No merge or push.

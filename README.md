@@ -616,7 +616,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-11** (Go baseline `47b44de` plus inert unknown-model tool calls;
+reviewed **2026-10-11** (Go baseline `f2cdbca`; coverage refreshed after inert
+unknown-model tool delivery, with native watcher temporal acceptance still open;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
