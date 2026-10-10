@@ -3167,3 +3167,25 @@ code and nested extensions. Forwarding, masking, SQLite close/reopen and batch
 rollback on invalid named UTF-8 fields are verified. Client tool dispatch/pairing
 and decision admission keep their existing authority boundaries. Three SDK execution
 result kinds and broader caller/partial-input/default/public-entry audit remain.
+
+### Named provider code-execution results
+
+`protocol.CodeExecutionToolResultBlock` exposes ToolUseID and a closed
+CodeExecutionContent ordinary/encrypted/error union. Ordinary results have named
+OutputFiles, ReturnCode, Stdout and Stderr; encrypted results use EncryptedStdout.
+CodeExecutionOutput preserves FileID and immutable extensions. ExecutionReturnCode
+owns only the closed JSON integer variant, preserving SDK Python integers above
+machine width; Decimal exposes its spelling. Strings/floats/bools/null are refused
+rather than silently coerced. Four known errors have constants; future codes stay
+named strings. All known metadata fields enter named types. Unrecognized fields
+remain immutable closed extensions. Clone/accessor methods detach output slices.
+WithSDKDefaults(streamed) retains observed stream text/citations/parsed_output
+nulls; native sparse codecs retain omission. Larger historical stdout and ordinary
+network bounds remain separate. Twenty-eight SDK 0.107.1 direct/SSE captures
+compare ordinary/encrypted output, empty/nonempty file arrays, large signed return
+codes, errors/future codes and extensions. Forwarding, masked keys/values, atomic
+nested refusals, SQLite reopen and invalid UTF-8 batch rollback are verified.
+Outputs do not execute code, open files, decrypt ciphertext or grant client tool
+pairing/dispatch authority. The existing Source decision allowlist remains intact.
+Two SDK execution-result kinds and broader caller/partial-input/default/public-entry
+acceptance remain.

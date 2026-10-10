@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `d271228` plus named web-fetch document replies. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `897cad8` plus named code-execution result replies. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,10 +6864,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code-execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 208 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 209 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16447,3 +16447,45 @@ exit 1 remains recorded. Watchfiles-only capture and quiet full capture both
 matched; no watcher golden or helper was rewritten. This establishes current
 recipe freshness while leaving the intermittent concurrent capture behavior
 explicit. Avoid rewriting the fixture to hide that observation.
+
+## 2026-10-10 named code-execution result replies
+
+Baseline: `897cad8` plus this implementation; SDK Source captures committed at
+`bc77abb`. Twenty-eight Anthropic SDK 0.107.1 direct/SSE recipes compare ordinary,
+encrypted and error result projections, empty/nonempty output files, large signed
+return codes, four errors/future code and root/result/output/error extensions.
+ExecutionReturnCode preserves the closed integer variant above machine width;
+other scalar kinds are refused. Named stdout/encrypted stdout/stderr and FileID
+remain observations, with no execution, file-opening, decryption or client grants.
+Output accessors/clones detach slices; extensions remain immutable closed JSON.
+Sparse codecs and explicit SDK stream nulls remain distinct. Forwarding, masking
+of keys/values, nested atomic refusals and historical stdout above frame limits
+are verified. SQLite close/reopen retains all twenty-eight recipes, and invalid
+UTF-8 in named ordinary/encrypted/error fields rolls back batches. Database
+reconstruction is proved, not a new killed-process/power-loss scenario.
+
+Passed: Python SDK capture test (1 passed, expected future-code serializer warning);
+targeted protocol/provider/sqlitestate suites; full Go tests and race
+(`-p=1 -count=1 -timeout=300s ./...`); go vet; typeaudit (420 production files,
+1368 named types, zero findings); scans (19 guards); block mutation subset
+(3 guards); git diff --check. Source export capture runs after full native Go
+watcher suites are terminal, following the previous concurrent-capture drift
+observation. Its terminal outcome is recorded below.
+Logs: /tmp/mini-loop-code-execution-{source,targeted,go,race,vet,types,export,scans,guards}.log.
+
+Architecture regenerated from specification with Archify: 9/9 checks, no errors
+or warnings. Specification SHA256
+1a07c80da4d5c9e7e80d65c03c0f3aa89243f443a3f7d4e18eaf976cfc337728;
+HTML SHA256 fd273d9dc256c6af987f7545e1575a699e97b662507abf56bd23f5fea6be465f.
+No fresh browser visual inspection, full Python regression, full mutation sweep,
+coverage refresh or non-Darwin run; no merge/push. Previous application coverage
+remains 89.47% at the older tool-search snapshot, not this implementation.
+Two SDK result kinds (bash and text-editor), caller/partial-input audit, usage
+scalar consumer alignment, default diagnostics and final migration acceptance
+remain.
+
+Final Source export check: `.venv/bin/python python/tools/export_go_contracts.py
+--check` exited 0, Python→Go contracts current: 209 files. It ran after ordinary
+and race Go suites completed, with no watcher golden/helper changes. The older
+concurrent-capture drift remains in the previous checkpoint, not hidden by a
+fixture rewrite. Log: /tmp/mini-loop-code-execution-export.log.

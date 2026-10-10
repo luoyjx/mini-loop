@@ -21,16 +21,17 @@ const (
 type BlockKind string
 
 const (
-	BlockText                 BlockKind = "text"
-	BlockThinking             BlockKind = "thinking"
-	BlockRedactedThinking     BlockKind = "redacted_thinking"
-	BlockContainerUpload      BlockKind = "container_upload"
-	BlockWebSearchToolResult  BlockKind = "web_search_tool_result"
-	BlockToolSearchToolResult BlockKind = "tool_search_tool_result"
-	BlockToolUse              BlockKind = "tool_use"
-	BlockServerToolUse        BlockKind = "server_tool_use"
-	BlockWebFetchToolResult   BlockKind = "web_fetch_tool_result"
-	BlockToolResult           BlockKind = "tool_result"
+	BlockText                    BlockKind = "text"
+	BlockThinking                BlockKind = "thinking"
+	BlockRedactedThinking        BlockKind = "redacted_thinking"
+	BlockContainerUpload         BlockKind = "container_upload"
+	BlockWebSearchToolResult     BlockKind = "web_search_tool_result"
+	BlockToolSearchToolResult    BlockKind = "tool_search_tool_result"
+	BlockToolUse                 BlockKind = "tool_use"
+	BlockServerToolUse           BlockKind = "server_tool_use"
+	BlockWebFetchToolResult      BlockKind = "web_fetch_tool_result"
+	BlockCodeExecutionToolResult BlockKind = "code_execution_tool_result"
+	BlockToolResult              BlockKind = "tool_result"
 )
 
 type ToolName string
@@ -83,6 +84,7 @@ type Block struct {
 	toolSearch       *ToolSearchToolResultBlock
 	serverTool       *ServerToolUseBlock
 	webFetch         *WebFetchToolResultBlock
+	codeExecution    *CodeExecutionToolResultBlock
 	toolUse          *ToolUseBlock
 	toolResult       *ToolResultBlock
 }
@@ -247,6 +249,16 @@ func (b Block) ToolResult() (ToolResultBlock, bool) {
 }
 
 func (b Block) Validate() error {
+	if b.kind != BlockCodeExecutionToolResult && b.codeExecution != nil {
+		return errors.New("block has an unexpected code execution variant")
+	}
+	if b.kind == BlockCodeExecutionToolResult {
+		if b.codeExecution == nil || b.webFetch != nil || b.serverTool != nil || b.toolSearch != nil || b.webSearch != nil || b.containerUpload != nil || b.redactedThinking != nil || b.text != nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
+			return errors.New("code execution block requires one variant")
+		}
+		return b.codeExecution.Validate()
+	}
+
 	if b.kind != BlockWebFetchToolResult && b.webFetch != nil {
 		return errors.New("block has an unexpected web fetch variant")
 	}
@@ -335,6 +347,8 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		return nil, err
 	}
 	switch b.kind {
+	case BlockCodeExecutionToolResult:
+		return b.codeExecution.marshal(control)
 	case BlockWebFetchToolResult:
 		return b.webFetch.marshal(control)
 	case BlockServerToolUse:
@@ -441,6 +455,12 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 	}
 	var next Block
 	switch tag.Type {
+	case BlockCodeExecutionToolResult:
+		result, err := decodeCodeExecutionBlock(data, bounded)
+		if err != nil {
+			return Block{}, err
+		}
+		next = Block{kind: BlockCodeExecutionToolResult, codeExecution: &result}
 	case BlockWebFetchToolResult:
 		result, err := decodeWebFetchBlock(data, bounded)
 		if err != nil {
@@ -600,6 +620,10 @@ func (c Content) Clone() Content {
 		if b.thinking != nil {
 			v := *b.thinking
 			blocks[i].thinking = &v
+		}
+		if b.codeExecution != nil {
+			v := b.codeExecution.clone()
+			blocks[i].codeExecution = &v
 		}
 		if b.webFetch != nil {
 			v := b.webFetch.clone()

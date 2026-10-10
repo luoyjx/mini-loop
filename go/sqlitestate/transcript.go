@@ -156,6 +156,29 @@ func validateMessageText(message protocol.Message) error {
 	for _, block := range blocks {
 		var err error
 		switch block.Kind() {
+		case protocol.BlockCodeExecutionToolResult:
+			value, _ := block.CodeExecutionToolResult()
+			err = validateText(value.ToolUseID)
+			if result, ok := value.Content.Plain(); ok && err == nil {
+				err = validateText(result.Stdout, result.Stderr)
+				for _, file := range result.OutputFiles {
+					if err != nil {
+						break
+					}
+					err = validateText(file.FileID)
+				}
+			} else if result, ok := value.Content.Encrypted(); ok && err == nil {
+				err = validateText(result.EncryptedStdout, result.Stderr)
+				for _, file := range result.OutputFiles {
+					if err != nil {
+						break
+					}
+					err = validateText(file.FileID)
+				}
+			} else if failure, ok := value.Content.Error(); ok && err == nil {
+				err = validateText(string(failure.Code))
+			}
+
 		case protocol.BlockWebFetchToolResult:
 			value, _ := block.WebFetchToolResult()
 			err = validateText(value.ToolUseID)

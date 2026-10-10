@@ -187,3 +187,15 @@ MediaType。42 个 SDK direct/SSE 配方覆盖文本/PDF、空文本、nullable 
 这是观察数据，不打开文档、取 URL 或执行客户端工具。尚缺三个执行结果类型：
 code_execution_tool_result、bash_code_execution_tool_result、
 text_editor_code_execution_tool_result。caller 扩展、partial 输入及完整验收仍待审计。
+
+## Code-execution result 回复更新
+
+基线 `897cad8` 后支持 `code_execution_tool_result` 的具名 ToolUseID 和普通/
+加密/错误闭合 union。OutputFiles、Stdout/EncryptedStdout、Stderr、FileID 均具名；
+ExecutionReturnCode 保留 Python 整数，不截断机器位宽。28 个 SDK direct/SSE 配方
+覆盖普通/加密、空/非空输出文件、大有符号整数、4 种错误、future code 和扩展。
+root/result/output/error 扩展进入不可变闭合 JSON；stream 的三个 null 默认字段
+显式保留。转发、脱敏、克隆、大历史记录和实际 SQLite 重开保留数据；无效 UTF-8
+具名字段使批次回滚。数据不触发代码执行、文件打开或解密，不进入客户端配对。
+剩余两类：bash_code_execution_tool_result、text_editor_code_execution_tool_result。
+caller/partial 输入、usage scalar、默认诊断与完整 provider/G7 验收仍待完成。

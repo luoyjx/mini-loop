@@ -66,6 +66,20 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		return protocol.Block{}, errors.New("malformed block")
 	}
 	switch wire.Type {
+	case protocol.BlockCodeExecutionToolResult:
+		var result protocol.CodeExecutionToolResultBlock
+		if err := json.Unmarshal(raw, &result); err != nil {
+			return protocol.Block{}, err
+		}
+		result = result.WithSDKDefaults(false)
+		encoded, err := json.Marshal(result)
+		if err != nil {
+			return protocol.Block{}, err
+		}
+		if len(encoded) > protocol.MaxWireBytes {
+			return protocol.Block{}, errors.New("normalized code execution block exceeds protocol limit")
+		}
+		return result.Block(), nil
 	case protocol.BlockWebFetchToolResult:
 		var result protocol.WebFetchToolResultBlock
 		if err := json.Unmarshal(raw, &result); err != nil {
