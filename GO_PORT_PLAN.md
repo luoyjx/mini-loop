@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 at `d632a6e` plus named background consumers. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-11 at `47b44de` plus missing-model-tool observations. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 220 exported Source recipe files including actual SDK usage, non-mapping input and Bash option/command consumer captures; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 221 exported Source recipe files including actual SDK usage, non-mapping input and Bash option/command consumer captures; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -6903,6 +6903,10 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    capture's 220-file export also passes. Recipe expectations were unchanged.
    This proves a capture precondition repair; complete runtime handoff and
    temporal equivalence still require the G3/G7 scope audit.
+   The unknown-model implementation full ordinary gate subsequently failed a
+   removed-source operation after acknowledged readiness; its exact timeline is
+   retained in docs/audits/go-native-remove-timeout-2026-10-11.json. No watcher
+   code or expectations changed. This keeps native temporal reliability open.
 
 5. Broader background option/consumer fidelity: all 18 direct background
    command/binding recipes now match native stages, initialization, task numbering
@@ -17460,3 +17464,74 @@ is claimed by this capture commit. Full Python regression and coverage were not
 refreshed; no merge or push.
 
 Scanner verification passed: all 19 anchored. Working-tree diff check passed.
+
+## Inert missing-model-tool observations — 2026-10-11
+
+Baseline: `47b44de` plus this implementation. UnsupportedToolNameError is a named
+private admission distinction; only absent native codecs take the model-observation
+branch. Known malformed input never silently downgrades. UnknownModelToolObservation
+retains finite immutable roots, with native wire/name bounds and UTF-8 admission,
+through model decoding, cloned/masked metadata, canonical action identity and
+stored-message restoration. Explicit DecodeToolInput still rejects unknown names.
+The common gate preserves missing catalogue lookup after hooks/guards/permission/
+journal and produces ordinary failed after/result outcomes. A schema without a
+concrete native codec cannot receive this observation as executable handler input.
+
+All 32 actual Source cases match output, final input, display, hook order and
+failed/denied flags across interactive/auto/readonly modes. No permission request
+or handler call occurs for an unregistered name. A separate custom-schema test
+proves the inert variant cannot execute a registered handler. Native direct and
+SSE decoding preserve all 32 recipe names and root kinds, including empty names;
+these wire tests are native transport checks, not a new complete SDK field audit.
+The initial wire test omitted SSE event headers and was corrected to standard
+named frames; runtime SSE admission was not changed. Finite/type/history tests
+also prove known decoder errors and nonfinite/malformed JSON do not fall back.
+Registered extension codec design, unknown MCP root shapes, malformed name-field
+SDK defaults, nonfinite inputs and complete G0/G4/G7 reconciliation remain open.
+
+README canonical Mermaid and boundary text reviewed; architecture HTML regenerated
+from JSON using Archify showcase 9/9, zero errors/warnings. Specification SHA256
+ d4476554b43dbb4a2e65169d26377b3a6f74ac25ce0e3f4e2cbf4c752e19072f;
+HTML SHA256 9e14f5da2703a0a7387d66a5f1914908514402c214c2d9b04d03477c5552a044.
+No fresh browser visual inspection (earlier access denied). No new dependencies,
+feature activation, executable tool catalogue or Python runtime module changes.
+Coverage was not refreshed; e3fc640's 89.34% application measurement retains
+that baseline. No merge, push or complete migration acceptance claim.
+
+First full ordinary gate failed in two packages: agent's prior archival rejection
+of name=future (now deliberately supported inert metadata), and reload's
+removed-source operation timeout after confirmed probe readiness. The archival
+assertion was replaced by a positive inert stored-event test; malformed names and
+unknown event kinds still refuse. Focused agent/protocol/provider tests passed.
+[Exact native failure](docs/audits/go-native-remove-timeout-2026-10-11.json)
+retains the complete admitted-event timeline and hashes of unchanged watcher
+sources/fixture. Readiness confirmation alone does not prove reliable subsequent
+mutation delivery; no raw callback absence or cause is claimed. No timeout,
+watcher implementation or fixture expectation was changed. A second full ordinary
+gate was started after the archive test correction, with code frozen. Native
+G3/G7 temporal acceptance stays open even if that run passes.
+
+Second full ordinary gate failed only in unchanged reload native recipes:
+symlink-target-write and lower-mtime-write timed out after acknowledged readiness.
+Agent/protocol/provider and every other package passed after the archive correction.
+Both full failures are retained in the native timeout audit. A progress statement
+that reload had passed was corrected when the terminal failure was inspected;
+package completion alone is not success evidence. No further ordinary freshness
+retry is substituted for these failures. Full race was started sequentially with
+code frozen. Final native temporal acceptance remains open.
+
+Full race gate passed sequentially, including reload (38.775s); no data race was
+reported. This does not supersede the two full ordinary failures retained above.
+Vet passed; type audit: 430 production files / 1,404 named types / zero findings.
+Selected Source mutation missing-tool-parks-for-approval was caught with passing
+baseline and failed test call (one mutation, not a full sweep). Scanner verification
+at Source capture passed all 19 anchored guards. Python full regression, package
+invariants, coverage and non-Darwin execution were not rerun; no Python runtime
+module or scanner target changed in this implementation slice. Runtime watcher
+reliability is still unaccepted. No merge or push.
+
+Final Source export --check passed after all native jobs and the selected guard
+mutation completed: 221 current files. No fixture expectations or watcher runtime
+were changed. Working-tree diff check passed. The unknown-model feature is scoped
+and verified; full ordinary Go validation remains failed in native reload, so no
+complete migration, complete release gate or native reliability claim follows.

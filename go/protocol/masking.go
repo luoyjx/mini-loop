@@ -15,6 +15,10 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 		return input.clone()
 	}
 	input = input.clone()
+	if input.unknownModelTool != nil {
+		input.unknownModelTool.arguments = input.unknownModelTool.arguments.MapStrings(mask)
+		return input
+	}
 	if IsASTTool(input.name) {
 		return input.maskAST(mask)
 	}

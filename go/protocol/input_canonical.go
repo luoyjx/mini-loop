@@ -15,6 +15,9 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
+	if input.unknownModelTool != nil {
+		return PythonJSON(input.unknownModelTool.arguments.Sorted(), false, compact)
+	}
 	if input.backgroundModel != nil {
 		raw, err := input.marshalBackgroundModel()
 		if err != nil {

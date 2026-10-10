@@ -64,7 +64,12 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 		return decodeModelBackgroundInput(data)
 	}
 	if name != ToolBash {
-		return DecodeToolInput(name, data)
+		input, err := DecodeToolInput(name, data)
+		var unsupported unsupportedToolNameError
+		if errors.As(err, &unsupported) {
+			return decodeUnknownModelTool(name, data)
+		}
+		return input, err
 	}
 	if len(data) > MaxWireBytes {
 		return ToolInput{}, errors.New("bash model input exceeds wire bound")

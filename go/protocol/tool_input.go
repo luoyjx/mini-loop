@@ -177,6 +177,7 @@ type ToolInput struct {
 	blockGoal          BlockGoalInput
 	exitPlanMode       ExitPlanModeInput
 	name               ToolName
+	unknownModelTool   *UnknownModelToolObservation
 	nulls              inputNullFields
 	bash               BashInput
 	bashCommand        *BashCommandObservation
@@ -375,6 +376,10 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() {
 		result.nulls = input.nulls
+		if input.unknownModelTool != nil {
+			value := *input.unknownModelTool
+			result.unknownModelTool = &value
+		}
 		if input.backgroundModel != nil {
 			result.backgroundModel = input.backgroundModel.clone()
 		}
@@ -468,6 +473,9 @@ func (input ToolInput) clone() (result ToolInput) {
 }
 
 func (input ToolInput) Validate() error {
+	if input.unknownModelTool != nil {
+		return input.unknownModelTool.validate(input.name)
+	}
 	if input.backgroundModel != nil {
 		if input.name != ToolBackgroundRun {
 			return errors.New("background model arguments on another tool")
@@ -574,6 +582,12 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	if input.unknownModelTool != nil {
+		if err := input.Validate(); err != nil {
+			return nil, err
+		}
+		return input.unknownModelTool.arguments.MarshalJSON()
+	}
 	if input.backgroundModel != nil {
 		return input.marshalBackgroundModel()
 	}
@@ -1048,7 +1062,7 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 		}
 		result = AskUserToolInput(AskUserInput{*wire.Question})
 	default:
-		return result, fmt.Errorf("unsupported tool %q", name)
+		return result, unsupportedToolNameError(name)
 	}
 	if err := json.Unmarshal(data, &result.nulls); err != nil {
 		return ToolInput{}, err

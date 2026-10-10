@@ -2,20 +2,20 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `d632a6e` plus named background consumers. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `47b44de` plus missing-model-tool observations. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | Full export --check after native jobs ended: 219 files at e3fc640; 220 files with direct background argument capture | Current snapshot matches; prior failed captures remain retained in observer drift audits |
+| Source recipe freshness | Full export --check after native jobs ended: 221 files at missing-tool capture 47b44de | Current Source snapshot matches; prior failed observer captures remain retained in drift audits |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | Native/polling CLI tests and Source archives; callback admission at 5656802, exact timelines at cf808fe, readiness calibration at e3fc640 | Three native recipe rounds, sequential full ordinary/race and Source export pass after actual probe acknowledgement; full runtime handoff/temporal G3/G7 audit remains |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` on d632a6e plus named background consumers | 429 production files, 1402 named types, zero direct open-payload findings; external type/data-flow review remains |
+| Development reload | Native/polling CLI tests; calibration at e3fc640; exact post-readiness timeouts in docs/audits/go-native-remove-timeout-2026-10-11.json | Two full ordinary gates at unknown-model worktree failed different native operation profiles after actual probe acknowledgement. All other packages pass after archive fix; runtime temporal/handoff G3/G7 acceptance remains open |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` on 47b44de plus missing-model-tool observations | 430 production files, 1404 named types, zero direct open-payload findings; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -9649,3 +9649,74 @@ is claimed by this capture commit. Full Python regression and coverage were not
 refreshed; no merge or push.
 
 Scanner verification passed: all 19 anchored. Working-tree diff check passed.
+
+## Inert missing-model-tool observations — 2026-10-11
+
+Baseline: `47b44de` plus this implementation. UnsupportedToolNameError is a named
+private admission distinction; only absent native codecs take the model-observation
+branch. Known malformed input never silently downgrades. UnknownModelToolObservation
+retains finite immutable roots, with native wire/name bounds and UTF-8 admission,
+through model decoding, cloned/masked metadata, canonical action identity and
+stored-message restoration. Explicit DecodeToolInput still rejects unknown names.
+The common gate preserves missing catalogue lookup after hooks/guards/permission/
+journal and produces ordinary failed after/result outcomes. A schema without a
+concrete native codec cannot receive this observation as executable handler input.
+
+All 32 actual Source cases match output, final input, display, hook order and
+failed/denied flags across interactive/auto/readonly modes. No permission request
+or handler call occurs for an unregistered name. A separate custom-schema test
+proves the inert variant cannot execute a registered handler. Native direct and
+SSE decoding preserve all 32 recipe names and root kinds, including empty names;
+these wire tests are native transport checks, not a new complete SDK field audit.
+The initial wire test omitted SSE event headers and was corrected to standard
+named frames; runtime SSE admission was not changed. Finite/type/history tests
+also prove known decoder errors and nonfinite/malformed JSON do not fall back.
+Registered extension codec design, unknown MCP root shapes, malformed name-field
+SDK defaults, nonfinite inputs and complete G0/G4/G7 reconciliation remain open.
+
+README canonical Mermaid and boundary text reviewed; architecture HTML regenerated
+from JSON using Archify showcase 9/9, zero errors/warnings. Specification SHA256
+ d4476554b43dbb4a2e65169d26377b3a6f74ac25ce0e3f4e2cbf4c752e19072f;
+HTML SHA256 9e14f5da2703a0a7387d66a5f1914908514402c214c2d9b04d03477c5552a044.
+No fresh browser visual inspection (earlier access denied). No new dependencies,
+feature activation, executable tool catalogue or Python runtime module changes.
+Coverage was not refreshed; e3fc640's 89.34% application measurement retains
+that baseline. No merge, push or complete migration acceptance claim.
+
+First full ordinary gate failed in two packages: agent's prior archival rejection
+of name=future (now deliberately supported inert metadata), and reload's
+removed-source operation timeout after confirmed probe readiness. The archival
+assertion was replaced by a positive inert stored-event test; malformed names and
+unknown event kinds still refuse. Focused agent/protocol/provider tests passed.
+[Exact native failure](docs/audits/go-native-remove-timeout-2026-10-11.json)
+retains the complete admitted-event timeline and hashes of unchanged watcher
+sources/fixture. Readiness confirmation alone does not prove reliable subsequent
+mutation delivery; no raw callback absence or cause is claimed. No timeout,
+watcher implementation or fixture expectation was changed. A second full ordinary
+gate was started after the archive test correction, with code frozen. Native
+G3/G7 temporal acceptance stays open even if that run passes.
+
+Second full ordinary gate failed only in unchanged reload native recipes:
+symlink-target-write and lower-mtime-write timed out after acknowledged readiness.
+Agent/protocol/provider and every other package passed after the archive correction.
+Both full failures are retained in the native timeout audit. A progress statement
+that reload had passed was corrected when the terminal failure was inspected;
+package completion alone is not success evidence. No further ordinary freshness
+retry is substituted for these failures. Full race was started sequentially with
+code frozen. Final native temporal acceptance remains open.
+
+Full race gate passed sequentially, including reload (38.775s); no data race was
+reported. This does not supersede the two full ordinary failures retained above.
+Vet passed; type audit: 430 production files / 1,404 named types / zero findings.
+Selected Source mutation missing-tool-parks-for-approval was caught with passing
+baseline and failed test call (one mutation, not a full sweep). Scanner verification
+at Source capture passed all 19 anchored guards. Python full regression, package
+invariants, coverage and non-Darwin execution were not rerun; no Python runtime
+module or scanner target changed in this implementation slice. Runtime watcher
+reliability is still unaccepted. No merge or push.
+
+Final Source export --check passed after all native jobs and the selected guard
+mutation completed: 221 current files. No fixture expectations or watcher runtime
+were changed. Working-tree diff check passed. The unknown-model feature is scoped
+and verified; full ordinary Go validation remains failed in native reload, so no
+complete migration, complete release gate or native reliability claim follows.

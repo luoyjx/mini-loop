@@ -616,7 +616,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-11** (Go baseline `5cfb518` plus missing-tool Source capture;
+reviewed **2026-10-11** (Go baseline `47b44de` plus inert unknown-model tool calls;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -677,7 +677,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash and background binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · inert unknown-model calls · deferred Bash and background binding failures / finite non-mapping observations / named Bash option projections / non-text command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -2667,6 +2667,22 @@ match display, final input, hook/result order and background initialization/task
 numbering. Before rewrites and denials retain precedence. Known timeout/prefix
 fields remain typed; their broader coercion audit, nonfinite inputs and complete
 provider/port acceptance remain open.
+
+### Missing model tool observations
+
+Unknown model tool names now retain an `UnknownModelToolObservation` with finite,
+immutable argument data. Missing registry entries settle as `Unknown tool: NAME`
+after before hooks, guards, permission and journal checks, through ordinary
+failed after/result handling. All 32 actual Source recipes match, including all
+three permission modes, scalar/container roots, empty/Unicode/case-sensitive
+names, input rewrites, denials and post-result replacement. Missing tools create
+no approval requests or handler effects. Direct and SSE model replies retain the
+same observations, as do masked clones, canonical identities and stored messages.
+Typed executable inputs still require their concrete native decoder. Malformed
+known-tool inputs cannot fall back to this observation. A custom schema alone
+cannot execute it; the gate reports the missing native input decoder instead.
+Registered extension codec design, unknown MCP root shapes and nonfinite inputs
+remain under audit. Strict explicit `DecodeToolInput` admission remains strict.
 
 ## Repository map
 
