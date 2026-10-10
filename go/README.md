@@ -3382,3 +3382,18 @@ with value changes; canonical comparison fixes the test without changing codecs.
 No new production type or dependency. The previous recorded label gap is resolved.
 Nonfinite inputs, other default tools, broader SDK/caller/default scope and complete
 G7 acceptance remain open; this is not complete event/provider acceptance.
+
+## Background command display alignment — 2026-10-10
+
+Baseline: `fbf75c1` plus this implementation; Source contract `2c3c027`.
+Actual Python tool_label selects the same shell rules for bash/background_run.
+Native ToolLabel now selects both named inputs through ShellCommand. Fourteen
+actual Source masked string-command profiles cover empty/simple heads, Unicode
+space, pipes/substitutions/backticks/redirects/chains/newlines, quotes, Unicode
+preview limits and secret masking before the cap. The existing lifecycle capture
+is otherwise unchanged; the native test failed against the previous generic call
+label and passes after the shared selection. The actual maskedEvent path preserves
+live executable input and emits no registered secret. No new dependency/type,
+execution route or tool catalogue change. Non-text background_run consumers and
+complete default/provider/G7 acceptance remain open. Prior coverage is pinned to
+the Bash display worktree; no coverage refresh is claimed for this slice.

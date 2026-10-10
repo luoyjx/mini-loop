@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `9f0e9db` plus non-text Bash display alignment. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `fbf75c1` plus background command display alignment. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6893,6 +6893,14 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md). Structured output request
    options are not emitted by the current repository request producers; audit
    custom extension behavior separately instead of adding unrelated SDK features.
+
+4. Native Darwin reload reliability: background display validation at `fbf75c1`
+   plus this slice exposed failed native event recipes in both overlapped and
+   sequential ordinary runs. Sequential cmd/miniloop passed, but reload reported
+   symlink-target-write `[linked.go]` instead of `[]` and removed-source timeout.
+   Full race passed. Source exports remain current; no watcher/fixture change was
+   made. Subscription readiness/coalescing versus the actual Source observer must
+   be investigated before final G3/G7 acceptance; overlap alone is not a cause.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -17110,3 +17118,50 @@ than claiming that the initial check passed.
 The full Source export retry passed: 219 current files, with native Go watcher
 jobs terminal. Initial drift and the matching isolated observation above remain
 explicit. Working-tree and staged `git diff --check` passed.
+
+## Background command display alignment — 2026-10-10
+
+Baseline: `fbf75c1` plus this implementation; Source contract `2c3c027`.
+Actual Python tool_label selects the same shell rules for bash/background_run.
+Native ToolLabel now selects both named inputs through ShellCommand. Fourteen
+actual Source masked string-command profiles cover empty/simple heads, Unicode
+space, pipes/substitutions/backticks/redirects/chains/newlines, quotes, Unicode
+preview limits and secret masking before the cap. The existing lifecycle capture
+is otherwise unchanged; the native test failed against the previous generic call
+label and passes after the shared selection. The actual maskedEvent path preserves
+live executable input and emits no registered secret. No new dependency/type,
+execution route or tool catalogue change. Non-text background_run consumers and
+complete default/provider/G7 acceptance remain open. Prior coverage is pinned to
+the Bash display worktree; no coverage refresh is claimed for this slice.
+
+Focused validation: actual Source lifecycle regeneration captured 14 new profiles
+and asserted every prior fixture field unchanged. Native BackgroundDisplay plus
+existing BashDisplay/ActivityContracts tests passed after reproducing the old
+label mismatch. `go vet ./...` passed; type audit: 428 production files, 1400
+named types, zero findings. Scans: 19 anchored; selected `verify_guards.py -k secret`:
+two caught mutations, not the full mutation sweep. README outline reviewed.
+Archify regenerated HTML from JSON: showcase 9/9, zero warnings; specification
+SHA256 b57db989c63ac455243ab591544bff7f131a79365a3ef34573b375e1a1967673,
+HTML SHA256 1a25d705d2544d211b756a0850683959675397c4b1dc6d0442ea514f9c6634dc.
+No fresh browser visual inspection (earlier access denied). No Python runtime
+package changes; full Python regression/invariant verifier were not rerun.
+No non-Darwin execution, merge, push or complete-port acceptance claim.
+
+Full race `go test -race -p=1 -count=1 -timeout=300s ./...` passed with no race
+report. Initial full ordinary run failed only in cmd/miniloop native reload
+readiness and reload native event recipes (hidden/lower-mtime/rename/directory).
+It overlapped the race run. The code was kept frozen; ordinary validation was
+restarted sequentially after race completion. This overlap is an observed
+condition, not proof of the failure's cause. Existing Darwin FSEvents deprecation
+and linker warnings remain. No fixture or watcher implementation was weakened.
+
+Sequential full ordinary `go test -p=1 -count=1 -timeout=300s ./...` failed:
+cmd/miniloop passed (25.433s), while reload native recipes failed symlink-target-write
+(`got [linked.go] want []`) and removed-source (`context deadline exceeded`).
+All other packages passed. This remains an unresolved native observation/reliability
+gate; passing race does not supersede it. The changed runtime path is ToolLabel;
+go/reload, cmd/miniloop and python-watchfiles fixture have no diff. No listener/
+watcher implementation or expectation was changed to hide this result.
+Source export check after both full runs terminated passed: 219 current files.
+Working-tree and staged diff checks pass. This slice adds no Python runtime module;
+full Python regression remains unrefreshed. Final G3/G7 acceptance stays open.

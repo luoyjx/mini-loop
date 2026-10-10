@@ -109,3 +109,48 @@ func TestBashDisplayUsesMaskedObservationsBeforePreviewAndKeepsLiveInput(t *test
 		})
 	}
 }
+
+func TestBackgroundDisplayMatchesMaskedSourceAndPreservesLiveCommand(t *testing.T) {
+	data, err := os.ReadFile("../testdata/python-lifecycle.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture struct {
+		Labels []struct {
+			Name    string
+			Input   protocol.BackgroundRunInput
+			Masked  protocol.BackgroundRunInput
+			Display ToolDisplay
+		} `json:"background_labels"`
+	}
+	if err := json.Unmarshal(data, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	if len(fixture.Labels) != 14 {
+		t.Fatal("Source background display inventory changed")
+	}
+	registry := secrets.New(secrets.Config{})
+	registry.RegisterValue("BACKGROUND_DISPLAY", "sk-background-display-123")
+	for _, row := range fixture.Labels {
+		t.Run(row.Name, func(t *testing.T) {
+			input := protocol.BackgroundRunToolInput(row.Input)
+			live := SessionEvent{kind: EventToolUse, toolUse: ToolUseEvent{Name: protocol.ToolBackgroundRun, ID: "background-display", Input: input, Display: ToolLabel(input)}}
+			projected := maskedEvent(registry, live)
+			if projected.toolUse.Display != row.Display {
+				t.Fatal("Source masked background display changed", projected.toolUse.Display, row.Display)
+			}
+			masked, ok := projected.toolUse.Input.BackgroundRun()
+			if !ok || masked.Command != row.Masked.Command {
+				t.Fatal("masked background input changed", masked.Command, row.Masked.Command)
+			}
+			original, ok := live.toolUse.Input.BackgroundRun()
+			if !ok || original.Command != row.Input.Command {
+				t.Fatal("display projection changed executable command")
+			}
+			wire, err := json.Marshal(projected)
+			if err != nil || strings.Contains(string(wire), "sk-background-display-123") {
+				t.Fatal("event projection leaked a registered secret", string(wire), err)
+			}
+		})
+	}
+}

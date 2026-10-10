@@ -59,7 +59,7 @@ func ToolLabel(input protocol.ToolInput) ToolDisplay {
 	case protocol.ToolGlob:
 		v, _ := input.Glob()
 		return ToolDisplay{"search", oneLine(v.Pattern, 60)}
-	case protocol.ToolBash:
+	case protocol.ToolBash, protocol.ToolBackgroundRun:
 		command, _ := input.ShellCommand()
 		preview := oneLine(command, 60)
 		for _, marker := range []string{"|", "$(", "`", ">", "<", ";", "&&", "||", "\n"} {
