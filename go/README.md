@@ -2930,4 +2930,23 @@ matching-suffix directories can match. Hidden/backup basenames are excluded;
 no stat, root-containment or execution authority follows. The zero value matches
 nothing and unknown languages fail construction. Actual Source default cases
 replay for both language profiles. This pure SDK does not start an event source
-or change the current CLI StatReload fallback; native observation remains next.
+or change the current CLI StatReload fallback. The native SDK below selects it.
+
+### Owned macOS native events SDK
+
+`reload.NewNativeEvents(roots, language)` starts an explicit macOS/CGO FSEvents
+subscription using system frameworks, flags 18, latency 0 and since-now. Roots
+must be existing operator-selected directories. `Next(ctx)` returns sorted unique
+lexical paths with a 50ms quiet window and 1600ms batch cap; an empty successful
+batch means native events were excluded by the default filename filter.
+Context cancellation retains unread events and leaves the subscription owned.
+The caller must `Close`, which stops/invalidates/releases the stream and joins its
+OS thread. Integer registry keys cross C; no Go pointer is retained by C.
+Kernel loss and a 4096-path queue overflow fail explicitly, requiring recovery.
+The API is unavailable without Darwin/CGO; no Go module dependency is added.
+
+All 16 actual Source native recipes replay against the real OS subscription,
+including removed/transient paths, identical and same/lower-mtime edits, renames,
+hidden parents, suffix directories and non-source symlink targets. This is an
+explicit SDK slice: WATCHFILES environment selection, Linux native observation
+and CLI selection remain pending. The CLI still uses the StatReload fallback.

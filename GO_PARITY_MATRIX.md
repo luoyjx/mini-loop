@@ -7529,3 +7529,49 @@ and exact spec/artifact hashes/bytes verified. Correction rounds 0; visual revie
 not repeated after prior browser denial. Python package runtime, existing mutation
 anchors and tool types did not change; full Python/invariant/mutation/coverage
 checks were not rerun. No push; owned native Go events and full G0–G7 remain open.
+
+## Owned macOS native-event SDK — 2026-10-10
+
+Baseline: `32cf034` plus this slice. `reload.NewNativeEvents` owns an actual
+macOS FSEvents subscription through existing CGO/system CoreServices and
+CoreFoundation frameworks; Go dependencies do not change. The captured Source
+configuration is flags 18 (FileEvents + NoDefer), latency 0 and since-now.
+Typed EventBatch paths are lexical, unique and sorted; default filename filtering
+retains removed names, suffix directories and hidden-parent sources. Next coalesces
+50ms quiet/1600ms maximum. Cancellation keeps unread events available, while Close
+joins the locked OS thread after stopping/invalidating/releasing the stream and
+removing its typed registry entry. Only integer keys cross C ownership.
+
+All 16 actual python-watchfiles.json native recipes replay with real Go OS events,
+including add/delete/transient, equal/lower mtime, identical writes/touches, rename
+in/out/both names, hidden/backup/text exclusions, hidden-parent sources, suffix
+directories and a non-source symlink target. Separate checks verify cancelled-batch
+retention, idempotent Close/blocked-reader release, no registry leak and explicit
+kernel-loss faults. The queue retains at most 4096 unique matching paths; kernel
+loss/capacity errors require explicit Close/recovery, not synthetic polling proof.
+Non-Darwin/CGO construction fails explicitly. WATCHFILES environment/forced-polling
+selection, Linux native events and CLI binding remain pending; CLI still uses
+StatReload. Full G0–G7 acceptance remains open.
+
+Validation: narrow `go test -run TestNative -count=1 -timeout=120s ./reload`,
+full `go test -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/native-events-coverage.out ./...`,
+full `go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...`
+passed from go/. Architecture delivery passed 9/9 with zero errors/warnings;
+spec/artifact hashes and byte counts match. README outline and git diff checks
+passed. Correction rounds 0; visual review not repeated after prior browser denial.
+System SDK emits an FSEventStreamScheduleWithRunLoop deprecation warning, and
+existing Darwin CGO linker LC_DYSYMTAB warnings remain nonfatal. Full Python,
+recipe freshness, invariant/scanner/mutation checks were not rerun: Python runtime,
+Source inventory, default-tool types and mutation targets do not change. No push.
+
+Fresh coverage at `32cf034` plus this implementation: **89.75%**
+(28501/31755 Go statements), merged from
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/native-events-coverage.out ./...`.
+Merge counts each source block once and takes maximum hits across package tests.
+reload is 81.91% (385/470); agent 89.88%, sqlitestate 83.36%, config 87.00%,
+launcher 80.61%, httpapi 89.48%, cmd/miniloop 46.41% and commandenv 0.00%.
+CLI child-process counters are not merged, so this is collected statement coverage,
+not CLI behavior acceptance; real subprocess tests separately verify startup/reload.
+C FSEvents callback code is outside Go's statement denominator. The previous
+cdd57c7 snapshot was 89.92% (28378/31559); subsequent CLI/native-event code changes
+the denominator, so the old result must not be presented as current.

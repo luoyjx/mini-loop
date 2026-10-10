@@ -3819,3 +3819,14 @@ HOST/PORT/reload changes. Parent config/bind admission precedes listening/build
 execution. Parent owns observer/build/socket, child owns its App/manager lifetime,
 and Supervisor joins children before artifact cleanup. Failures wait for source
 repair; reload resets process-local state and never restores durable human authority.
+
+### Native development event subscription ownership
+
+`reload.NewNativeEvents` is an explicit macOS/CGO SDK subscription. The caller
+owns Close after every successful construction, including a cancelled Next.
+Close joins stream stop/invalidate/release and registry removal; Next cancellation
+preserves unread batches. Only one Next may be active. Native names remain lexical
+so deleted files, suffix directories and hidden-parent sources retain captured
+Source behavior. Kernel loss or bounded-capacity faults require closing/recovery;
+this SDK performs no stat-based recovery that could miss transient events.
+Environment/backend selection and CLI binding remain separate pending slices.
