@@ -1,0 +1,95 @@
+{
+  "baseline": "b6f49c6; original Source prerequisite 5985636",
+  "runtime_commit": "4f56ef8",
+  "recorded_at_utc": "2026-10-10T22:07:58.879373+00:00",
+  "source_fixture_sha256": "c49cb09b404a97a5164d213c17caeceea6e771dc168341edd8677b2ee3bddcb8",
+  "production_sha256": {
+    "go/protocol/background_timeout.go": "8f67be7338ebf2d535c95d6dec36be52bcb4452698ebb4b68a52b2775dbe5465",
+    "go/protocol/background_model.go": "fcbe86a64bb0e06a5b804d3d4589d381254817997f0f9d2602af198c865beaa5",
+    "go/protocol/background_tools.go": "ba1380ac9c4a787c5f46269cd75e19460b27491a33099a34278a6b1e4e7e3eec",
+    "go/agent/background_tools.go": "0e99ec4a47287585f895db6ddb7f6544d63bda37c167abe6e89a848480a4c9c3",
+    "go/background/manager.go": "1b9771a1f516507e7e3c0440dae73c15d238c4b80798f2a9a54e1fff0b51062f",
+    "go/shell/background_wait.go": "96036ee0169edc82de924f421b382729957487219f7a0f9f5fa53da55ac7256f",
+    "go/shell/background.go": "f87f4a4e66c17897d419637aea1b97c7486d141700c4143ef613d4ffd92c2120",
+    "go/shell/executor.go": "d6c4b8b7aaa1f7d3fa3babb814e031887079ef815bab944b69acde07df83f15e"
+  },
+  "scope": [
+    "48 Source standalone accepted-call and settled-task observations",
+    "Named immutable timeout/proposal observations; explicit default/numeric/unbounded/immediate/fault wait policies",
+    "Native readonly candidate refusal, clone/masking/canonical/archive observations",
+    "Native direct/SSE decoders and SQLite message close/reopen for all 48 inputs",
+    "Post-spawn faults; joined process cleanup; masked caller timeout labels",
+    "Existing typed duration timers retain their exact timer path"
+  ],
+  "gates": {
+    "targeted": {
+      "command": "go test -p=1 -count=1 ./protocol ./provider ./agent ./background ./shell ./sqlitestate",
+      "result": "passed"
+    },
+    "full_ordinary": {
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "result": "failed only reload",
+      "recipes": [
+        "symlink-target-write",
+        "removed-source",
+        "same-mtime-write",
+        "lower-mtime-write",
+        "identical-write",
+        "same-mtime-touch"
+      ]
+    },
+    "full_race": {
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+      "result": "passed; no data race; existing macOS LC_DYSYMTAB linker warnings"
+    },
+    "vet": {
+      "command": "go vet ./...",
+      "result": "passed"
+    },
+    "typeaudit": {
+      "command": "go run ./tools/typeaudit -root .",
+      "production_files": 441,
+      "package_level_types": 1413,
+      "findings": 0
+    },
+    "source_tests": {
+      "command": ".venv/bin/python -m pytest -q python/tests/test_provider_background_options_contracts.py",
+      "result": "2 passed"
+    },
+    "full_source_export": {
+      "command": ".venv/bin/python python/tools/export_go_contracts.py --check --diagnostics-dir /tmp/mini-loop-background-options-final-export-diagnostics",
+      "result": "passed after native jobs terminal; 227 files current"
+    },
+    "archify": {
+      "command": "node /Users/yanjixiong/.codex/skills/archify/bin/archify.mjs deliver architecture docs/mini-loop-system.architecture.json docs/mini-loop-system.architecture.html --quality showcase --json",
+      "checks_passed": 9,
+      "check_count": 9,
+      "errors": 0,
+      "warnings": 0
+    },
+    "git_diff_check": "passed"
+  },
+  "adaptations": [
+    "NaN uses the direct-await immediate-timeout Source profile. A three-second Python observer watchdog yields completion instead; exact timer-heap interleavings are not aligned",
+    "Source type/overflow faults leave the spawned group alive; native faults kill/join before settlement to retain resource ownership",
+    "Native goroutine starts can race caller return; no claim of zero starts at return",
+    "Sub-nanosecond deadlines round up to one nanosecond; long finite deadlines use bounded steps"
+  ],
+  "limits": [
+    "Native ordinary watcher temporal failures remain open; passing race does not close them",
+    "New native direct/SSE tests construct envelopes from captured Source inputs; no new Python SDK transport/coercion capture",
+    "SQL proof is message observations, not complete event/session/trajectory recovery for all options",
+    "Broader managed option profiles, default diagnostics and complete migration acceptance remain open",
+    "No full Python, non-Darwin, coverage, performance or fresh browser visual check",
+    "No dependency added; no push or merge"
+  ],
+  "log_sha256": {
+    "mini-loop-background-options-current-full.log": "90f6cfb633072140573adc34407c779318eb2d4ba3013ab40c088ca279eb8848",
+    "mini-loop-background-options-current-race.log": "7efab89e29b683b48c2429a124ba0991059696f8d8e738c18aa21827ea7ab9b8",
+    "mini-loop-background-options-current-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mini-loop-background-options-current-typeaudit.log": "eabcf2698e95a2d0b9fc521f071fc25cae5dc180aa419ca2f72b58a09159d951",
+    "mini-loop-background-options-final-export.log": "edbe1649a89f72ce231b3759a034b89bf782da475ccaff47c8f95d1102ae154c",
+    "mini-loop-background-options-unguarded.log": "2e520ad8d1553815eaa0aa7c9e7ad0a9e3d9aec980fe8bcd39fde3cdd2dbb48d",
+    "mini-loop-background-options-archify.log": "2ff041dbedff12843611663fedf3d38c3361d2a8aa9d181c69ceee3028d81566"
+  }
+}

@@ -10280,3 +10280,38 @@ same. This correction changes the Source oracle, not Python production behavior.
 
 Correction gates: two Source tests pass; full export --check passes with 227
 current files; git diff --check passes. Native adoption is validated separately.
+
+## Named background optional policy delivery — 2026-10-11
+
+Runtime `4f56ef8`; corrected Source prerequisite `b6f49c6` (original `5985636`).
+BackgroundTimeoutObservation and BackgroundTimeoutPlan keep raw observations out
+of the service/shell; explicit BackgroundWait variants handle default truth,
+bool/fraction/negative values, immediate unguarded NaN, unbounded positive infinity
+and post-spawn comparison/integer-overflow faults. Known integer projections and
+strict typed caller admission remain available. Long finite deadlines use bounded
+timer steps; old time.Duration callers retain their exact timer path. Timeout
+labels are masked before returning. Approval metadata reaches existing validation
+only as string-array candidates and cannot initialize readonly background work.
+
+All 48 Source initial call outcomes and settled task results match; hook order,
+notifications and readonly candidate refusal are checked. Native direct/SSE,
+clone/masking/identity/archive and SQLite message close/reopen retain those inputs.
+These decoder envelopes are generated from Source inputs, not newly captured
+Python SDK transport/coercion observations. SQL proof is messages, not full-state
+recovery for all optional profiles. Source type/overflow faults leave processes
+alive; native code deliberately kills/joins before publishing the same error.
+Native goroutines may start before caller return; that scheduler property is not
+claimed aligned. The paired Source test proves a watchdog changes NaN from timeout
+to completion, so exact timer-heap behavior remains a documented adaptation.
+
+Gates: six relevant Go packages pass; full race and vet pass; type audit reports
+441 production files / 1,413 package-level types / zero findings. Two corrected
+Source tests and final full export --check pass (227 files after native jobs
+terminate). Archify passes 9/9 with zero errors/warnings; no fresh browser visual.
+Final ordinary full Go fails only reload symlink-target-write, removed-source,
+same-mtime-write, lower-mtime-write, identical-write and same-mtime-touch.
+See [background option audit](docs/audits/go-background-options-2026-10-11.json)
+for exact commands, source/implementation hashes, preserved logs and limits.
+No full Python, non-Darwin, coverage or performance refresh. Default diagnostics,
+broader managed option consumers and complete port acceptance remain open.
+git diff --check passes. No dependency added, merge or push.
