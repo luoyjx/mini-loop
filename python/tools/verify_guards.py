@@ -47,6 +47,13 @@ class Mutation:
 
 MUTATIONS = [
     Mutation(
+        "model-batch-input-preparation-lazy", 0, "mini_loop/agent.py",
+        '        calls = [\n            ToolCall(\n                _block(block, "name"),\n                dict(_block(block, "input") or {}),\n                _block(block, "id"),\n            )\n            for block in blocks\n        ]',
+        '        calls = (\n            ToolCall(\n                _block(block, "name"),\n                dict(_block(block, "input") or {}),\n                _block(block, "id"),\n            )\n            for block in blocks\n        )',
+        "tests/test_provider_nonfinite_bash_contracts.py::test_nonfinite_bash_sdk_gate_and_managed_batch_boundaries",
+        "Go migration Source probe: all model call inputs are copied before any hook or effect in the batch",
+    ),
+    Mutation(
         "journal-nonfinite-fingerprint-accepted", 0, "mini_loop/actions.py",
         "        allow_nan=False,",
         "        allow_nan=True,",
