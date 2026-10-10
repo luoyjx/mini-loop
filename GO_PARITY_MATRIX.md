@@ -7697,3 +7697,30 @@ regeneration passes 9/9 with zero errors/warnings and matching hashes/bytes;
 README outline and git diff --check pass. Fresh visual review remains unavailable
 following the earlier browser access denial. Full Python/mutation gates were not
 rerun for this Go-only slice; no merge or push is requested.
+
+
+## Go coverage — owned workspace snapshot (2026-10-10)
+
+Code baseline: `2d2b608` (owned compiler workspace implementation).
+Cross-package merged coverage is **89.73% (28712/31998 statements)**;
+reload **83.59% (596/713)**, agent 89.88%, sqlitestate 83.36%, config
+87.00%, launcher 80.61%, httpapi 89.65%, cmd/miniloop 46.41%,
+internal/commandenv 0.00%. Generated profiles are temporary, not tracked.
+
+Method: full `go test -race -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-workspace.cover ./...`, then the complete SQLite
+package with the same coverage scope without race in
+`/tmp/mini-loop-workspace-sqlite.cover`; merge identical location/statement-count
+blocks using maximum hit counts. The combined race+coverage run failed only
+TestDecisionNativeSQLiteReopenMatchesSource/maximum at its internal 30-second
+context deadline; this is recorded as a failed run. Its full-package coverage
+rerun passed in 11.926 seconds. The ordinary full suite passed separately.
+This merged profile supplements the failed contribution with the successful
+complete-package rerun; it is not a claim that the combined command passed.
+CLI subprocess counters and native C implementation are outside this denominator.
+
+Independent full `go test -race -p=1 -count=1 -timeout=300s ./...` passes,
+including reload (31.608s) and sqlitestate (30.170s). This closes the separate race
+gate without claiming that the combined race+coverage command passed.
+The existing macOS FSEvents deprecation and instrumented CGO linker warnings
+remain nonfatal. No Python runtime/dependency/default change, merge or push.
