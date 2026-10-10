@@ -1157,6 +1157,77 @@
         "before",
         "result"
       ]
+    },
+    {
+      "events_json": [
+        "{\"input\": 13.75, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "13.75",
+      "input_json": "13.75",
+      "mode": "keep",
+      "name": "root-float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": [\"original\"], \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:rewritten\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"rewritten\"}",
+      "input_json": "[\"original\"]",
+      "mode": "rewrite",
+      "name": "root-rewritten",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:rewritten"
+        }
+      ],
+      "output": "executed:rewritten",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": null, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"denied\": true, \"name\": \"bash\", \"output\": \"denied by source probe\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "deny",
+      "name": "root-denied-before",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "trace": [
+        "before",
+        "result"
+      ]
     }
   ],
   "jiter_version": "0.15.0",

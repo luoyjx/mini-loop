@@ -26,7 +26,10 @@ def provider_tool_input_consumer_contracts(scratch: Path | str) -> dict:
                ("extra-rewritten", {"command": "true", "keep": 1}, "rewrite"),
                ("missing-rewritten", {}, "rewrite"),
                ("extra-denied-before", {"command": "true", "keep": 1}, "deny"),
-               ("missing-denied-before", {}, "deny")]
+               ("missing-denied-before", {}, "deny"),
+               ("root-float", 13.75, "keep"),
+               ("root-rewritten", ["original"], "rewrite"),
+               ("root-denied-before", None, "deny")]
 
     async def scenario(index, name, value, mode):
         trace, events, outcomes = [], [], []
