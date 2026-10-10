@@ -13,18 +13,23 @@ type BashBindingFailureKind string
 const (
 	BashUnexpectedParameter BashBindingFailureKind = "unexpected_parameter"
 	BashMissingCommand      BashBindingFailureKind = "missing_command"
+	BashNonMappingArguments BashBindingFailureKind = "non_mapping_arguments"
 )
 
 // BashBindingFailure is a named invocation error, not executable arguments.
 // It is settled by the tool gate after hooks/permission and before any handler.
 type BashBindingFailure struct {
-	kind      BashBindingFailureKind
-	parameter string
+	kind         BashBindingFailureKind
+	parameter    string
+	argumentKind BashArgumentKind
 }
 
 func (failure BashBindingFailure) Kind() BashBindingFailureKind { return failure.kind }
 func (failure BashBindingFailure) Parameter() string            { return failure.parameter }
 func (failure BashBindingFailure) Error() string {
+	if failure.kind == BashNonMappingArguments {
+		return fmt.Sprintf("mini_loop.registry.Tool.run() argument after ** must be a mapping, not %s", failure.argumentKind)
+	}
 	if failure.kind == BashMissingCommand {
 		return "_bash() missing 1 required positional argument: 'command'"
 	}
@@ -32,6 +37,12 @@ func (failure BashBindingFailure) Error() string {
 }
 func (failure BashBindingFailure) Validate() error {
 	switch failure.kind {
+	case BashNonMappingArguments:
+		switch failure.argumentKind {
+		case BashArgumentArray, BashArgumentNull, BashArgumentText, BashArgumentInteger, BashArgumentFloat, BashArgumentBoolean:
+			return nil
+		}
+		return errors.New("invalid non-mapping Bash argument kind")
 	case BashMissingCommand, BashUnexpectedParameter:
 		return nil
 	default:
@@ -60,7 +71,14 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 		return ToolInput{}, err
 	}
 	if object.Kind() != jsonvalue.Object {
-		return DecodeToolInput(name, data)
+		rejected, err := rejectedBashArguments(object)
+		if err != nil {
+			return ToolInput{}, err
+		}
+		input := BashToolInput(BashInput{})
+		input.bashRejected = &rejected
+		input.bashBinding = &BashBindingFailure{kind: BashNonMappingArguments, argumentKind: rejected.kind}
+		return input, input.Validate()
 	}
 	known, extra := []jsonvalue.Field{}, []jsonvalue.Field{}
 	for _, key := range object.Keys() {
@@ -108,6 +126,9 @@ func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
 	return input, input.Validate()
 }
 func (input ToolInput) marshalBashBinding() ([]byte, error) {
+	if input.bashRejected != nil {
+		return input.bashRejected.MarshalJSON()
+	}
 	var command *string
 	if !input.bashCommandMissing {
 		value := input.bash.Command

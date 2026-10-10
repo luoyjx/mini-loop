@@ -41,13 +41,13 @@ func TestBashBindingMatchesActualSourceExecutionAndHookOrder(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 48 {
+	if len(fixture.Cases) != 51 {
 		t.Fatal("Source consumer inventory changed")
 	}
 	matched := 0
 	for _, row := range fixture.Cases {
 		switch row.Name {
-		case "root-array", "root-null", "root-string", "root-integer", "root-boolean", "nonfinite-nan", "nonfinite-infinity":
+		case "nonfinite-nan", "nonfinite-infinity":
 			continue
 		}
 		t.Run(row.Name, func(t *testing.T) {
@@ -107,20 +107,20 @@ func TestBashBindingMatchesActualSourceExecutionAndHookOrder(t *testing.T) {
 			matched++
 		})
 	}
-	if matched != 41 {
+	if matched != 49 {
 		t.Fatal("finite supported Source cases changed", matched)
 	}
 }
 
 func TestBashBindingStoredEventRetainsFailedArguments(t *testing.T) {
-	for _, raw := range []string{`{}`, `{"command":"true","z_extra":1,"a_extra":2}`} {
+	for _, raw := range []string{`{}`, `{"command":"true","z_extra":1,"a_extra":2}`, `null`, `[1,true]`, `"hello"`, `17`, `true`, `13.75`} {
 		data := []byte(`{"seq":1,"ts":10,"session":"s","transcript_epoch":2,"type":"tool_use","name":"bash","id":"u","span_id":"","parent_span_id":"","action_id":"","display":{"verb":"","object":""},"input":` + raw + `}`)
 		record := assertStoredEventRoundTrip(t, data)
 		failure, ok := record.Event.toolUse.Input.BashBindingFailure()
 		if !ok {
 			t.Fatal("stored event lost binding failure")
 		}
-		if raw != `{}` && failure.Parameter() != "z_extra" {
+		if failure.Kind() == protocol.BashUnexpectedParameter && failure.Parameter() != "z_extra" {
 			t.Fatal("stored event changed parameter order")
 		}
 	}

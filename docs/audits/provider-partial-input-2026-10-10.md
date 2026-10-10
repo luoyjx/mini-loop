@@ -106,3 +106,46 @@ uses baseline `d3c8203 plus deferred Bash binding failures`. Of 98 SDK profiles,
 14 final differences remain (7 client, 7 server), down from 40. The actual Source
 consumer fixture has 48 cases, of which 41 finite supported cases match execution
 outcomes and hook order. Reports are observations, not complete parity acceptance.
+
+## Finite non-mapping provider input adoption — 2026-10-10
+
+Baseline: `f187508` plus finite non-mapping tool input adoption. Source commits
+`a59d2d1` and `7748519` separately pin before-hook rewrite/denial order and actual
+SDK direct decoding/forwarding. The direct fixture contains 12 client/server
+profiles; the Bash consumer fixture has 51 profiles, including 49 finite cases.
+
+`BashRejectedArguments` retains a closed argument kind and immutable finite
+observation. Model ingress carries a named non-mapping binding failure; explicit
+caller admission remains strict. The existing tool gate settles the failure after
+before/guard/permission/journal and before handler invocation. Before-hook rewrite
+can replace it, and before denial takes precedence. Clone, masking and history
+retain the original root without inventing executable fields. Server input roots
+remain inert observations and cannot select client execution. No dependency added.
+
+All 78 finite stopped SDK client/server profiles match content, history and SQLite
+reopen. The diagnostic final differences fall from 14 to 4 (two client, two server),
+covering nonfinite inputs. Other known-field consumer adaptations, broader provider
+scope, default diagnostics approval and complete G7 remain open. Historical reports
+and coverage measurements retain their original baseline.
+
+Current diagnostic: [finite root adoption report](provider-nonmapping-input-native-2026-10-10.json).
+The earlier 14-difference report above remains historical evidence.
+
+Validation on local Darwin arm64:
+- Full ordinary Go suite and full race suite passed; no race report.
+- `go vet ./...` passed; existing Darwin linker/FSEvents warnings remain.
+- Type audit: 426 production files, 1393 named types, zero direct open-payload findings.
+- Source tests: two focused tests passed (nine SDK dependency warnings).
+- Scanning guards: 19 anchored; selected `verify_guards.py -k block`: three
+  caught mutations. This was not the full mutation sweep.
+- Explicit diagnostic replay passed: 98 profiles, four remaining differences.
+- Archify regeneration: 9/9 checks, zero warnings; README outline checked.
+  Specification SHA256 fb254bc3ac2a4166e9995b9a7f88326d3bbfe7b723be915af111552d906047d9;
+  HTML SHA256 9b63910e7897cae2d8721bc93b6d4681214063234b42038dc1a84602c53d1b86.
+  No fresh visual inspection because prior browser access was denied.
+- Full Python regression and invariant verifier were not rerun: no Python runtime
+  package modules changed. No fresh coverage collection; prior application 89.39%
+  measurement belongs to bf4c866. No non-Darwin, merge/push or full-port claim.
+
+Source export freshness after all watcher suites ended: passed, 217 current files.
+Diff and staged diff checks passed.

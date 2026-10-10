@@ -180,6 +180,7 @@ type ToolInput struct {
 	nulls              inputNullFields
 	bash               BashInput
 	bashBinding        *BashBindingFailure
+	bashRejected       *BashRejectedArguments
 	bashExtra          jsonvalue.Value
 	bashCommandMissing bool
 	readFile           ReadFileInput
@@ -365,6 +366,10 @@ func (input ToolInput) clone() (result ToolInput) {
 		if input.name == ToolBash {
 			result.bashExtra = input.bashExtra
 			result.bashCommandMissing = input.bashCommandMissing
+			if input.bashRejected != nil {
+				value := *input.bashRejected
+				result.bashRejected = &value
+			}
 			if input.bashBinding != nil {
 				value := *input.bashBinding
 				result.bashBinding = &value
@@ -442,6 +447,15 @@ func (input ToolInput) Validate() error {
 		}
 		if err := input.bashBinding.Validate(); err != nil {
 			return err
+		}
+		if input.bashBinding.kind == BashNonMappingArguments {
+			if input.bashRejected == nil || input.bashRejected.kind != input.bashBinding.argumentKind {
+				return errors.New("non-mapping Bash failure requires matching rejected arguments")
+			}
+			return input.bashRejected.Validate()
+		}
+		if input.bashRejected != nil {
+			return errors.New("rejected Bash arguments require non-mapping failure")
 		}
 		_, err := input.bashExtra.MarshalJSON()
 		return err

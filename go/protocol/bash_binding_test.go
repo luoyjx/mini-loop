@@ -9,7 +9,7 @@ import (
 )
 
 func TestBashModelBindingMetadataSurvivesCloneMaskAndHistory(t *testing.T) {
-	for _, raw := range []string{`{}`, `{"command":"true","secret-key":"secret-value"}`, `{"z_extra":1,"a_extra":2}`, `{"command":"true","":1}`} {
+	for _, raw := range []string{`null`, `["secret-value",{"secret-key":1}]`, `"secret-value"`, `17`, `13.75`, `true`, `{}`, `{"command":"true","secret-key":"secret-value"}`, `{"z_extra":1,"a_extra":2}`, `{"command":"true","":1}`} {
 		input, err := DecodeModelToolInput(ToolBash, []byte(raw))
 		if err != nil {
 			t.Fatal(err)

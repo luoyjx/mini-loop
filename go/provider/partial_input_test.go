@@ -116,7 +116,7 @@ func TestStreamPartialInputMatchesSDKAtEveryDelta(t *testing.T) {
 	}
 }
 
-func TestStreamPartialObjectsMatchSDKFinalAndHistory(t *testing.T) {
+func TestStreamPartialValuesMatchSDKFinalAndHistory(t *testing.T) {
 	client, err := New(Config{APIKey: "fixture-key"})
 	if err != nil {
 		t.Fatal(err)
@@ -130,9 +130,9 @@ func TestStreamPartialObjectsMatchSDKFinalAndHistory(t *testing.T) {
 			reply, err := client.readStream(context.Background(), strings.NewReader(row.SSE), nil)
 			input := partialSDKInput(t, row.Expected)
 			_, finiteErr := input.MarshalJSON()
-			if input.Kind() != jsonvalue.Object || finiteErr != nil {
+			if finiteErr != nil {
 				if err == nil {
-					t.Fatal("unsupported root/nonfinite adaptation changed")
+					t.Fatal("unsupported nonfinite adaptation changed")
 				}
 				return
 			}
@@ -175,8 +175,8 @@ func TestStreamPartialObjectsMatchSDKFinalAndHistory(t *testing.T) {
 			matched++
 		})
 	}
-	if matched != 68 {
-		t.Fatal("finite SDK object inventory changed", matched)
+	if matched != 78 {
+		t.Fatal("finite SDK input inventory changed", matched)
 	}
 }
 

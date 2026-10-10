@@ -81,9 +81,6 @@ func TestServerToolUseMatchesSDKDirectAndStream(t *testing.T) {
 	}
 	for _, raw := range []string{
 		`{"type":"server_tool_use","id":"id","name":"web_search"}`,
-		`{"type":"server_tool_use","id":"id","name":"web_search","input":null}`,
-		`{"type":"server_tool_use","id":"id","name":"web_search","input":[]}`,
-		`{"type":"server_tool_use","id":"id","name":"web_search","input":7}`,
 		`{"type":"server_tool_use","id":"id","input":{}}`,
 	} {
 		if _, err := decodeBlock([]byte(raw)); err == nil {

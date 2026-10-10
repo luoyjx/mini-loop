@@ -13,7 +13,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-func TestSDKPartialObjectsSurviveSQLiteReopen(t *testing.T) {
+func TestSDKPartialValuesSurviveSQLiteReopen(t *testing.T) {
 	data, err := os.ReadFile("../testdata/python-provider-partial-input.json")
 	if err != nil {
 		t.Fatal(err)
@@ -40,11 +40,6 @@ func TestSDKPartialObjectsSurviveSQLiteReopen(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		blocks, _ := content.Array()
-		input, _ := blocks[0].Lookup("input")
-		if input.Kind() != jsonvalue.Object {
-			continue
-		}
 		encoded, err := content.MarshalJSON()
 		if err != nil {
 			continue
@@ -60,7 +55,7 @@ func TestSDKPartialObjectsSurviveSQLiteReopen(t *testing.T) {
 		}
 		expectedRows = append(expectedRows, row.Expected)
 	}
-	if len(expectedRows) != 68 {
+	if len(expectedRows) != 78 {
 		t.Fatal("finite partial object inventory changed", len(expectedRows))
 	}
 	if err := store.Close(); err != nil {

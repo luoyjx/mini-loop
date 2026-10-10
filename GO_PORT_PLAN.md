@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `a5bde56` plus named usage count adoption. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `f187508` plus finite non-mapping tool input adoption. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 216 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 217 exported Source recipe files including actual SDK usage and non-mapping input capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16899,3 +16899,43 @@ Validation on local Darwin arm64:
   remaining provider/type/public-entry scope and complete G7 remain open.
 
 Source export freshness after all watcher suites ended: passed, 216 current files.
+
+## Finite non-mapping provider input adoption — 2026-10-10
+
+Baseline: `f187508` plus finite non-mapping tool input adoption. Source commits
+`a59d2d1` and `7748519` separately pin before-hook rewrite/denial order and actual
+SDK direct decoding/forwarding. The direct fixture contains 12 client/server
+profiles; the Bash consumer fixture has 51 profiles, including 49 finite cases.
+
+`BashRejectedArguments` retains a closed argument kind and immutable finite
+observation. Model ingress carries a named non-mapping binding failure; explicit
+caller admission remains strict. The existing tool gate settles the failure after
+before/guard/permission/journal and before handler invocation. Before-hook rewrite
+can replace it, and before denial takes precedence. Clone, masking and history
+retain the original root without inventing executable fields. Server input roots
+remain inert observations and cannot select client execution. No dependency added.
+
+All 78 finite stopped SDK client/server profiles match content, history and SQLite
+reopen. The diagnostic final differences fall from 14 to 4 (two client, two server),
+covering nonfinite inputs. Other known-field consumer adaptations, broader provider
+scope, default diagnostics approval and complete G7 remain open. Historical reports
+and coverage measurements retain their original baseline.
+
+Validation on local Darwin arm64:
+- Full ordinary Go suite and full race suite passed; no race report.
+- `go vet ./...` passed; existing Darwin linker/FSEvents warnings remain.
+- Type audit: 426 production files, 1393 named types, zero direct open-payload findings.
+- Source tests: two focused tests passed (nine SDK dependency warnings).
+- Scanning guards: 19 anchored; selected `verify_guards.py -k block`: three
+  caught mutations. This was not the full mutation sweep.
+- Explicit diagnostic replay passed: 98 profiles, four remaining differences.
+- Archify regeneration: 9/9 checks, zero warnings; README outline checked.
+  Specification SHA256 fb254bc3ac2a4166e9995b9a7f88326d3bbfe7b723be915af111552d906047d9;
+  HTML SHA256 9b63910e7897cae2d8721bc93b6d4681214063234b42038dc1a84602c53d1b86.
+  No fresh visual inspection because prior browser access was denied.
+- Full Python regression and invariant verifier were not rerun: no Python runtime
+  package modules changed. No fresh coverage collection; prior application 89.39%
+  measurement belongs to bf4c866. No non-Darwin, merge/push or full-port claim.
+
+Source export freshness after all watcher suites ended: passed, 217 current files.
+Diff and staged diff checks passed.

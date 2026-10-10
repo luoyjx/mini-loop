@@ -76,9 +76,9 @@ func TestServerToolInputAtomicFailureAndMixedVariants(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, raw := range []string{`null`, `[]`, `3`, `"value"`, `{"query":`} {
+	for _, raw := range []string{`{"query":`, `NaN`, `{"query":Infinity}`} {
 		if err := json.Unmarshal([]byte(raw), &input); err == nil {
-			t.Fatal("nonobject/malformed input admitted", raw)
+			t.Fatal("malformed/nonfinite input admitted", raw)
 		}
 		encoded, _ := json.Marshal(input)
 		if string(encoded) != `{"query":"initial"}` {
@@ -87,7 +87,7 @@ func TestServerToolInputAtomicFailureAndMixedVariants(t *testing.T) {
 	}
 	block := NewServerToolUseBlock("id", ServerWebSearch, input)
 	original, _ := json.Marshal(block)
-	if err := json.Unmarshal([]byte(`{"type":"server_tool_use","id":"id","name":"web_search","input":null}`), &block); err == nil {
+	if err := json.Unmarshal([]byte(`{"type":"server_tool_use","id":"id","name":"web_search","input":NaN}`), &block); err == nil {
 		t.Fatal("invalid input admitted")
 	}
 	encoded, _ := json.Marshal(block)
@@ -98,7 +98,7 @@ func TestServerToolInputAtomicFailureAndMixedVariants(t *testing.T) {
 	if err := block.Validate(); err == nil {
 		t.Fatal("mixed server/client variants admitted")
 	}
-	if _, err := json.Marshal(ServerToolInput{}); err == nil {
-		t.Fatal("zero input admitted")
+	if data, err := json.Marshal(ServerToolInput{}); err != nil || string(data) != "null" {
+		t.Fatal("zero observational input changed", err)
 	}
 }

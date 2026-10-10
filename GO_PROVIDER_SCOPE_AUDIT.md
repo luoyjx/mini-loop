@@ -297,3 +297,12 @@ Direct 与 SSE 对字符串、bool、integral float 的实际归一化不同；�
 重开场景匹配。计量投影与事件原值分开，摘要保持原值；decision 只接受
 非负整数变体。文本/结构化计数中的秘密按投影脱敏，原始值不受修改。
 原生整数/有限浮点边界、更多 SDK coercion/错误字段形状及 G4/G7 验收仍开放。
+
+## Finite non-mapping input 实际消费者接入
+
+Source 契约提交 `a59d2d1` / `7748519` 固定了 51 个 Bash 消费者场景
+和 12 个实际 SDK direct 解码/转发场景。49 个有限消费者场景匹配执行结果
+与 hook 顺序；78 个有限 client/server SSE 场景匹配最终值、历史与 SQLite
+重开。Bash 非 mapping 根保留具名失败，before 可重写、拒绝优先，handler
+不会执行；server 根仅为不可变观察值。最终诊断差异由 14 降到 4，仍为
+NaN/Infinity，不能据此宣称完整 provider 或 Go port 验收。

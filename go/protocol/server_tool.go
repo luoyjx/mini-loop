@@ -20,10 +20,10 @@ const (
 	ServerToolSearchBM25          ServerToolName = "tool_search_tool_bm25"
 )
 
-// ServerToolInput is the SDK's object-valued observational input. It has no
+// ServerToolInput retains finite SDK input observations, including unsupported roots. It has no
 // declared input fields and carries no client ToolInput or execution authority.
 // Its recursive value is immutable, with explicit scalar/array/object variants.
-type ServerToolInput struct{ object jsonvalue.Value }
+type ServerToolInput struct{ value jsonvalue.Value }
 
 func DecodeServerToolInput(data []byte) (ServerToolInput, error) {
 	return decodeServerToolInput(data, true)
@@ -36,22 +36,20 @@ func decodeServerToolInput(data []byte, bounded bool) (ServerToolInput, error) {
 	if err != nil {
 		return ServerToolInput{}, err
 	}
-	if value.Kind() != jsonvalue.Object {
-		return ServerToolInput{}, errors.New("server tool input must be an object")
+	if _, err := value.MarshalJSON(); err != nil {
+		return ServerToolInput{}, err
 	}
-	return ServerToolInput{object: value}, nil
+	return ServerToolInput{value: value}, nil
 }
 func (input ServerToolInput) Validate() error {
-	if input.object.Kind() != jsonvalue.Object {
-		return errors.New("server tool input must be an object")
-	}
-	return nil
+	_, err := input.value.MarshalJSON()
+	return err
 }
 func (input ServerToolInput) MarshalJSON() ([]byte, error) {
 	if err := input.Validate(); err != nil {
 		return nil, err
 	}
-	return json.Marshal(input.object)
+	return json.Marshal(input.value)
 }
 func (input *ServerToolInput) UnmarshalJSON(data []byte) error {
 	next, err := DecodeServerToolInput(data)

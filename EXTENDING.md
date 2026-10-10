@@ -4193,7 +4193,7 @@ closed immutable value, drops incomplete scalar members at EOF and retains
 completed nested values/duplicate-key semantics. Empty deltas keep initial input;
 invalid syntax is refused at the corresponding delta. The raw cumulative buffer
 is capped before parsing. At block stop the value must serialize as finite JSON
-and enter the existing named ToolInput or object-valued ServerToolInput decoder.
+and enter the existing named ToolInput or finite observational ServerToolInput decoder.
 No partial bytes enter service/domain records or authorize client tool effects.
 Complete/archival jsonvalue.Decode is unchanged. Ninety-eight SDK per-delta
 recipes and 42 direct jiter edge contracts are enforced as real assertions;
@@ -4211,8 +4211,9 @@ unknown extras. Forwarding and history preserve the sparse object and first unkn
 parameter order. ToolGate follows before/guard/permission/journal checks, then
 returns the binding error without invoking a handler; normal after/result hooks
 still run. A before rewrite can replace the fault with valid arguments. Permission
-denial takes precedence. Root/nonfinite and unsupported known scalar adaptations
-remain unresolved. This binding contract represents the default Python Bash handler.
+denial takes precedence. Nonfinite and unsupported known scalar adaptations remain
+unresolved; finite non-mapping observations now follow the named failure path.
+This binding contract represents the default Python Bash handler.
 
 ## Named SDK usage count observations
 
@@ -4231,3 +4232,21 @@ metering bounds remain explicit. Compaction receipts/events keep observed values
 decision consumers require integer kind and nonnegative value. Masking transforms
 count text and structured keys/values on detached projections. Historical/SQLite
 observations do not supply authority. Default diagnostics and G7 remain open.
+
+## Finite non-mapping model input observations
+
+Model Bash decoding now retains array/null/text/integer/float/bool values in named
+BashRejectedArguments with a closed BashArgumentKind and immutable observation.
+They carry BashNonMappingArguments failure with the actual Source registry TypeError
+wording. The existing ToolGate settles it after before/guard/permission/journal
+checks, without calling a handler, then executes after/result hooks. Before hooks
+may replace the call with valid named input or deny it. Explicit DecodeToolInput
+remains strict. Clone/masking and archival event/message codecs retain the observation
+and error kind; recording projections do not mutate live arguments.
+
+ServerToolInput now retains finite scalar/array/null roots as observational SDK
+metadata. It cannot become client ToolInput or supply grants. The SDK-declared
+object remains a common shape, not a rule that drops permissive SDK observations.
+Twelve actual direct SDK reply/forwarding cases, 49 finite Source execution cases,
+and 78 finite SSE/history/SQLite cases pass. Four nonfinite client/server SDK final
+cases and unsupported known-field scalar input adaptations remain open.

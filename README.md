@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `a5bde56` plus named usage count adoption;
+reviewed **2026-10-10** (Go baseline `f187508` plus finite non-mapping tool input adoption;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash binding failures · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · deferred Bash binding failures / finite non-mapping observations · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1251,11 +1251,13 @@ separate jiter-compatible partial decoder. Completed fields and nested container
 survive EOF; incomplete scalar members are omitted. Empty deltas retain initial
 client/server input. Invalid syntax is refused at its input delta, before block
 stop. Raw buffers remain bounded before parsing; stopped values still pass named
-client ToolInput or object-valued observational ServerToolInput validation.
-Strict complete/archival JSON decoding is unchanged. All 98 SDK input snapshots
-and 42 jiter edges match the boundary decoder; 34 finite server-object captures
-match final content, history and SQLite reopen. Client argument extra-field and
-root/nonfinite consumer adaptations remain open (40 final differences).
+client ToolInput or finite observational ServerToolInput validation.
+Strict complete JSON syntax and archival decoding remain enforced. All 98 SDK
+input snapshots and 42 jiter edges match the boundary decoder; 78 finite client
+and server captures match final content, history and SQLite reopen. Finite Bash
+non-mapping roots retain named binding failures, settled after hooks and permission
+without invoking the handler; 49 finite actual Source consumer cases match. Four
+nonfinite final differences and other known-field consumer adaptations remain open.
 Declared ToolCaller variants retain unknown fields as immutable extension metadata
 across client/server tool-use and web-search/web-fetch replies. Direct caller
 `tool_id` is retained as an extension; typed ToolID remains empty. Code-execution
@@ -1290,10 +1292,12 @@ captures survive SQLite close/reopen, with invalid named UTF-8 fields rolling ba
 the batch. Fetch observations do not open URLs/documents or execute client tools.
 Native `server_tool_use` observations retain named ID, ServerToolName,
 ServerToolInput and optional ToolCaller. The SDK declares input as an object without
-individual input fields; its named Go wrapper owns an immutable closed JSON tree.
+individual input fields, while actual SDK decoding also retains finite non-mapping
+roots. Its named Go wrapper owns an immutable closed JSON tree. Twelve actual
+client/server SDK direct captures retain these roots through forwarding and history.
 Root extensions and sparse/null caller state survive forwarding and history. SSE
-input fragments replace the initial input, while empty fragments leave it intact;
-no partial input enters the domain. These observations never select client execution
+input fragments accumulate through the partial decoder, while empty fragments
+leave initial input intact; stopped values undergo named domain validation. These observations never select client execution
 or require client tool-result pairing. SQLite reopen preserves all 32 SDK captures.
 Native `tool_search_tool_result` replies retain a named ToolUseID and a closed
 references-or-error union. Tool references preserve their names, including names
@@ -2616,15 +2620,14 @@ explicit adaptations; complete provider/port acceptance remains open.
 
 ### Model Bash input binding failures
 
-Finite model-reply Bash objects with extra parameters or a missing command retain
-named binding failures through direct/SSE decoding, clone/masking and historical
+Finite model-reply Bash objects with extra parameters or a missing command, and
+non-mapping array/null/text/number/bool inputs, retain named binding failures through direct/SSE decoding, clone/masking and historical
 reads. Known fields remain typed; immutable extras contain only unknown parameters.
 The gate settles the failure after before hooks, guards, permission and journal
 checks, before invoking any handler. Before hooks can replace the input with valid
 arguments; denial still takes precedence. Failed outcomes use the existing after
 hooks and result observers. Explicit `DecodeToolInput` admission stays strict.
-Non-object/nonfinite roots and unsupported known-field scalar types remain open
-Source consumer adaptations. This does not complete provider or port acceptance.
+BashRejectedArguments retains finite non-mapping observations with a closed named kind; no handler receives them. ServerToolInput retains finite observational roots without client dispatch. Nonfinite inputs and unsupported known-field scalar types remain open Source consumer adaptations. This does not complete provider or port acceptance.
 
 ## Repository map
 
