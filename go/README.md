@@ -3248,3 +3248,20 @@ in client/server tool-use and web-search/web-fetch results. Forwarding and SQLit
 close/reopen preserve them. Masks cover extension keys/values without changing
 original messages. Nested historical callers follow archival bounds; network
 inputs remain capped. Caller metadata does not select or authorize a client tool.
+
+### Native streamed partial input boundary
+
+On selected SSE client/server tool-use paths, the wire adapter reparses each
+nonempty cumulative delta using internal/jsonvalue.DecodePartial. It returns a
+closed immutable value, drops incomplete scalar members at EOF and retains
+completed nested values/duplicate-key semantics. Empty deltas keep initial input;
+invalid syntax is refused at the corresponding delta. The raw cumulative buffer
+is capped before parsing. At block stop the value must serialize as finite JSON
+and enter the existing named ToolInput or object-valued ServerToolInput decoder.
+No partial bytes enter service/domain records or authorize client tool effects.
+Complete/archival jsonvalue.Decode is unchanged. Ninety-eight SDK per-delta
+recipes and 42 direct jiter edge contracts are enforced as real assertions;
+34 finite server-object results also match forwarding/history and SQLite reopen.
+Client extra/missing fields and root/nonfinite adaptations remain audited gaps.
+The opt-in audit reporter requires MINILOOP_PROVIDER_AUDIT_BASELINE explicitly;
+a successful diagnostic run is not a parity gate.

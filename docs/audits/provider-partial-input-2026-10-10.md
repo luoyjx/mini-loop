@@ -51,12 +51,13 @@
 
 ```sh
 MINILOOP_PROVIDER_AUDIT_OUTPUT=/absolute/path/report.json \
+MINILOOP_PROVIDER_AUDIT_BASELINE="explicit production snapshot" \
   go test -p=1 -count=1 ./provider -run TestProviderPartialInputAudit
 ```
 
 诊断任务默认跳过，仅在指定输出时记录观察；不会把当前已知差异变成绿灯验收。
-报告的 Go baseline 固定为本次 `689a1d9` 生产代码快照，后续原生实现迭代重放时
-应同步更新该字段；不要把本报告当成之后版本的当前结果。
+本报告保留 `689a1d9` 的历史生产代码快照。诊断任务现在要求显式传入
+MINILOOP_PROVIDER_AUDIT_BASELINE，避免把新实现误标为旧基线；历史结果不代表之后版本。
 
 Source fixture SHA256: c4098b590fd737169fab87ce5b2a61a40290b08ecc8b29d1c2a3720ccd9d2795。
 
@@ -67,3 +68,23 @@ Source helper 单测 1 passed（4 个预期 SDK serializer 警告）；显式原
 测试结束后 Source export --check 通过：213 份契约均为当前结果。
 本轮未修改生产代码，也未刷新 race、完整 Python、类型/变异门禁或覆盖率；
 诊断差异仍然开放，普通测试通过不能证明这些差异已解决。
+
+## 原生逐 delta 实现后的对照
+
+原生实现快照为 `4b1aec7` plus native partial parsing；
+[新观察报告](provider-partial-input-native-2026-10-10.json)保留全部 98 个结果。
+独立 partial decoder 的 98 个 SDK 逐 delta 快照、对应拒绝阶段及 42 个 jiter
+边缘契约已通过断言。34 个 finite server object 对上最终结果、历史和 SQLite 重开。
+最终差异现在为 40（client 33、server 7），比原始 69 少 29；16 个语法拒绝均已
+提前到对应 input delta。client named 参数额外/缺失字段和 root/nonfinite 消费者
+仍待 Source 对照；此更新不证明所有 98 个最终回复已达到迁移一致。
+
+原生实现验证：普通全量 Go 测试通过。首次全量 race 的 CLI reload 进程测试收到
+HTTP 500（第二轮环境检查），未报告数据竞争；该用例单独 race 重跑与无并行
+验证任务的完整 race 重试均通过。首次 500 根因未确认，未修改 reload 代码或测试。
+首次失败和重试日志均保留，不宣称首次 race 全量无中断通过。
+
+最终 Source export --check 通过：214 份契约当前，包含 42 个直接 jiter 边缘场景。
+该捕获在所有原生 watcher 测试结束后执行，未重写 watcher helper/golden。
+定向套件、vet、类型审计（423/1386/0）、19 项扫描及 3 项 block 变异子集通过。
+本轮未刷新完整 Python、浏览器视觉、非 Darwin、覆盖率或完整变异测试。

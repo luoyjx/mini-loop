@@ -2,20 +2,20 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `b56975b` plus declared caller extension preservation. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `4b1aec7` plus native partial-input accumulation. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `d984cbd` | Passed: 213 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `6ad4600` | Passed: 214 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 422 production files, 1385 named types on the declared-caller extension snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 423 production files, 1386 named types on the native partial-input snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -24,7 +24,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
 | Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
 | Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
-| Stream partial-input Source audit | 98 actual SDK SSE captures; native diagnostic at `689a1d9`; [audit](docs/audits/provider-partial-input-2026-10-10.md) | 69 final differences and 16 delayed refusal observations recorded; per-delta native implementation and consumer reconciliation still open; diagnostic run is not a conformance gate |
+| Stream partial-input Source audit | 98 actual SDK SSE captures; native diagnostic at `689a1d9`; [audit](docs/audits/provider-partial-input-2026-10-10.md) | Boundary per-delta parsing now matches all 98 SDK snapshots and 42 jiter edges; 16 rejection stages aligned; 34 finite server-object final/history/SQLite cases match; 40 final consumer differences remain; diagnostic report is separate from parity assertions |
 | Declared caller extensions | Forty-eight SDK direct/SSE cases in `go/testdata/python-provider-caller.json` | Three named kinds retain immutable extensions across client/server tool-use and web-search/web-fetch replies, masks/clones/forwarding/SQLite reopen and historical bounds; unknown caller kind/scalar audit remains |
 | Text-editor execution replies | Forty-eight SDK direct/SSE captures in `go/testdata/python-provider-text-editor.json` | Named view/create/replace/error, nullable line integers/arrays/messages and SDK defaults, immutable extensions, selected SSE caller parsing, mask/clone/historical codecs, SQLite reopen and UTF-8 rollback implemented; twelve SDK kinds represented, complete field/default acceptance remains |
 | Bash execution result replies | Twenty-six SDK direct/SSE captures in `go/testdata/python-provider-bash-execution.json` | Separate named result/error and output-file tags, shared integer return code, five errors/future codes, immutable extensions and SDK stream nulls; forwarding/mask/clone/historical codecs, SQLite reopen and UTF-8 rollback implemented; text-editor kind remains |
@@ -8879,3 +8879,63 @@ explicit native diagnostic observation, 19 anchored scanning guards and
 export check exited 0: all 213 recipe files current. No watcher helper or golden
 was changed. No Go production implementation changed, so this is not a refreshed
 runtime/race parity claim. Logs: /tmp/mini-loop-partial-{go,vet,source,scans,native-audit,export}.log.
+
+## 2026-10-10 native SDK partial-input boundary and stream adoption
+
+Baseline: `4b1aec7` plus this implementation; jiter edge capture `6ad4600`.
+Separate internal/jsonvalue.DecodePartial returns immutable closed variants and
+retains completed members/nested containers at EOF while omitting incomplete
+scalars. Complete/archival Decode remains strict. Unicode/UTF-16 pairs, partial
+hex escapes, duplicate keys, unexpected separators and the SDK 200/201 depth
+edge are covered by 42 pinned jiter 0.15.0 observations. The 98 actual SDK
+client/server cases assert every delivered input snapshot and rejection stage.
+
+Selected native SSE paths parse each nonempty cumulative input delta. Empty
+client/server deltas preserve initial input, raw buffers are capped before parse
+and malformed input fails at its input delta. At block stop finite serialization
+and existing named client ToolInput/object-valued ServerToolInput conversion
+still apply. No partial bytes enter service/domain records and no new authority
+or client effects are granted. Thirty-four finite server-object SDK cases match
+final content, forwarding/history and actual SQLite close/reopen. Reconstruction
+is proved, not new process-kill or power-loss semantics.
+
+The audit's final differences shrink from 69 to 40 (client 33/server 7), and all
+16 previously delayed syntax failures now occur at the corresponding delta.
+Client extra/missing argument fields, root scalars/nonfinite consumers and
+unknown caller kinds remain Source reconciliation work. Real boundary/final
+assertion tests are separate from the opt-in diagnostic report; it now requires
+an explicit MINILOOP_PROVIDER_AUDIT_BASELINE so new results cannot silently keep
+the old snapshot label. The old native report is preserved; the new report is
+[the implemented boundary observation](docs/audits/provider-partial-input-native-2026-10-10.json).
+
+Passed so far: Source edge helper test (1 passed), targeted jsonvalue/provider/
+sqlitestate suites; go vet; typeaudit (423 production files, 1386 named types,
+zero findings); 19 scanning guards and the three block mutation guards.
+Full Go ordinary/race and Source export results follow below.
+Archify regeneration passed 9/9 checks, zero errors/warnings. Spec SHA256
+b31a8fc1373730a99c829f57ea677d47eb4f969796d182d1fe599d68b005b544;
+HTML SHA256 598d651444e54aef89f509300ac57da4d08d01f4d273de7cd17e7423578e6f4d.
+No fresh browser inspection, full Python regression, full mutation sweep,
+coverage refresh or non-Darwin run; no merge/push. Application coverage remains
+89.28% at b56975b, not this implementation. Diagnostics default approval,
+provider consumer/caller scope, external type/public-entry/default audits,
+broader matched performance and final acceptance remain open.
+
+Full ordinary Go suite passed. The first full race run failed only
+TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv: HTTP 500 at the second
+environment check, with no data-race report. The exact race test retry passed;
+a second full race suite, run without concurrent validation jobs, passed.
+The root cause of the first 500 is not proven. No reload code/tests were changed.
+Both attempts remain recorded; this is not an uninterrupted initial race pass.
+Logs: /tmp/mini-loop-partial-decoder-race.log,
+/tmp/mini-loop-partial-decoder-race-reload.log,
+/tmp/mini-loop-partial-decoder-race-retry.log.
+Source export result follows after all native watcher jobs were terminal.
+
+Final Source export check exited 0: all 214 recipe files are current, including
+the 42-case jiter edge fixture. It ran after full ordinary and both full race
+attempts were terminal; no watcher golden/helper was changed. git diff --check
+passed. The narrow Source helper, targeted suites, full ordinary suite, exact CLI
+race retry, full race retry, vet, typeaudit, 19 scans and three block mutation
+guards are the gates run. Full Python/visual/non-Darwin/coverage/full mutation
+checks remain unrefreshed. Logs: /tmp/mini-loop-partial-decoder-{source,targeted,go,race,race-reload,race-retry,vet,types,scans,guards,audit,export}.log.

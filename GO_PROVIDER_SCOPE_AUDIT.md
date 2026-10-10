@@ -257,3 +257,15 @@ caller 的扩展、partial/畸形输入、usage scalar 消费者、默认诊断�
 - 本轮新增 Source fixture、诊断重放和审计，没有修复原生 parser，也不关闭 G4。
   后续按 [完整审计与实现顺序](docs/audits/provider-partial-input-2026-10-10.md)
   实现逐 delta 累计解析，并单独核对实际 Python 工具输入/转发/持久化消费者。
+
+## Native partial-input 逐 delta 解析更新
+
+- 新增独立闭合 Value partial 解码器，严格完整/历史 JSON Decode 保持不变。
+  原生 SSE 在每个非空累计 delta 后解析；EOF 未完成标量不进入已完成成员，
+  空 delta 保留初始输入，畸形内容在对应 delta 拒绝。原始输入先检查尺寸上限。
+- 98 个实际 SDK 场景逐 delta 快照与拒绝阶段全部匹配；另有 42 个固定 jiter
+  0.15.0 边缘契约（Unicode、UTF-16 pair、separator 和 200/201 层）通过。
+  34 个服务端有限对象的最终内容、历史解码和 SQLite 重开匹配 SDK。
+- 最终差异从 69 降至 40：client 33、server 7；先前 16 个延迟拒绝现均发生在
+  input delta。剩余 client 额外/缺失字段、非对象和非有限数消费者适配仍需核对。
+  不据此宣布完整 provider 或迁移验收。最新原生观察报告另存，旧基线保留。

@@ -10,6 +10,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
@@ -26,6 +27,7 @@ type streamBlock struct {
 	name          protocol.ToolName
 	caller        *protocol.ToolCaller
 	input         []byte
+	parsedInput   jsonvalue.Value
 	partialInput  bool
 	stopped       bool
 	block         protocol.Block
@@ -435,6 +437,13 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 	}
 	b := &s.blocks[i]
 	if event == "content_block_stop" {
+		if b.partialInput {
+			encoded, err := b.parsedInput.MarshalJSON()
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			b.input = encoded
+		}
 		switch b.kind {
 		case protocol.BlockServerToolUse:
 			input, err := protocol.DecodeServerToolInput(b.input)
@@ -468,6 +477,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		b.stopped = true
 		b.input = nil
+		b.parsedInput = jsonvalue.Value{}
 		return nil
 	}
 	var progress protocol.StreamDelta
@@ -511,14 +521,22 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		if (b.kind != protocol.BlockToolUse && b.kind != protocol.BlockServerToolUse) || wire.Delta.PartialJSON == nil {
 			return badStream("invalid tool input delta")
 		}
-		if b.kind == protocol.BlockServerToolUse && *wire.Delta.PartialJSON == "" {
+		if *wire.Delta.PartialJSON == "" {
 			return nil
 		}
 		if !b.partialInput {
 			b.input = nil
 			b.partialInput = true
 		}
+		if len(b.input)+len(*wire.Delta.PartialJSON) > protocol.MaxWireBytes {
+			return &Failure{Kind: FailureLimit, Message: "provider streamed block exceeds protocol limit"}
+		}
 		b.input = append(b.input, []byte(*wire.Delta.PartialJSON)...)
+		parsed, err := jsonvalue.DecodePartial(string(b.input))
+		if err != nil {
+			return badStream("malformed partial tool input")
+		}
+		b.parsedInput = parsed
 	default:
 		return badStream("unsupported content delta")
 	}

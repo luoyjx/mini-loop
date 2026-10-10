@@ -16,6 +16,11 @@ func TestProviderPartialInputAudit(t *testing.T) {
 	if outputPath == "" {
 		t.Skip("diagnostic provider audit output was not requested")
 	}
+	baseline := os.Getenv("MINILOOP_PROVIDER_AUDIT_BASELINE")
+	if baseline == "" {
+		t.Fatal("diagnostic audit requires an explicit production baseline")
+	}
+
 	data, err := os.ReadFile("../testdata/python-provider-partial-input.json")
 	if err != nil {
 		t.Fatal(err)
@@ -90,7 +95,7 @@ func TestProviderPartialInputAudit(t *testing.T) {
 		SDK      string        `json:"sdk_version"`
 		Jiter    string        `json:"jiter_version"`
 		Cases    []observation `json:"cases"`
-	}{"689a1d9", fixture.SDK, fixture.Jiter, rows}
+	}{baseline, fixture.SDK, fixture.Jiter, rows}
 	output, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)
