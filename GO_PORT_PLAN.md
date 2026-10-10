@@ -15771,3 +15771,39 @@ Python regression/verifiers, Source export, coverage, performance or Linux/
 CGO-disabled run was performed; Python runtime/export recipes/default-tool
 catalogue are unchanged, and prior evidence retains its measured baseline.
 Diff/cached checks pass. No merge or push was performed.
+
+## 2026-10-10 coverage refresh after dynamic credential cache delivery
+
+Measured code/test baseline: `a9585cb` on Darwin arm64. The complete command
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-a9585cb-current.cover ./...` from `go/` passed.
+Log: `/tmp/mini-loop-a9585cb-coverage.log`. Identical source-location blocks
+are counted once, taking the maximum hit count across package tests.
+
+All Go packages, including `tools/typeaudit`: **89.63% (29248/32633 statements)**.
+Application packages excluding `tools/`: **89.66% (29201/32569)**. Compared
+with `dd7571a`, covered statements increased by 139 and total statements by
+165. These are statement coverage measurements; feature parity, branch
+coverage and migration completion are not measured here.
+
+| Package | Covered / total statements | Coverage |
+| --- | --- | --- |
+| provider | 706 / 816 | 86.52% |
+| config | 364 / 416 | 87.50% |
+| launcher | 216 / 267 | 80.90% |
+| agent | 8997 / 10004 | 89.93% |
+| sqlitestate | 522 / 625 | 83.52% |
+| reload | 635 / 752 | 84.44% |
+| httpapi | 1616 / 1806 | 89.48% |
+| cmd/miniloop | 71 / 170 | 41.76% |
+| internal/commandenv | 0 / 28 | 0.00% |
+| tools/typeaudit | 47 / 64 | 73.44% |
+
+CLI child-process and native C counters are not merged. Linux-only inotify
+code is outside this Darwin denominator. Existing macOS FSEvents deprecation
+warnings remain. This documentation-only refresh reran the full ordinary
+coverage suite and diff checks; race, vet, Python, Source export, mutation and
+performance evidence retain their prior recorded baselines. No runtime code,
+architecture, dependency version or default behavior changed. The approved
+SQLite driver remains `github.com/mattn/go-sqlite3 v1.14.52` in `go/go.mod`.
+No merge or push was performed.

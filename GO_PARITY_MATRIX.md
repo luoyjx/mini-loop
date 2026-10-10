@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `65ac890` plus typed dynamic credential caching and native citation SQLite/recording recovery proof. The entries below retain their historical
+Reviewed code/test baseline: `a9585cb` including typed dynamic credential caching and native citation SQLite/recording recovery proof. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
@@ -25,9 +25,9 @@ for today's implementation queue. The complete migration is not yet accepted.
 
 The latest Source export check at `aee0437` plus native citation integration exited
 zero with 202 matching files and existing dependency warnings. Runtime ordinary/race/vet, actual Linux CLI
-and macOS CGO-disabled polling gates passed there. Coverage was freshly measured at `dd7571a`: **89.65% (29109/32468)** across
+and macOS CGO-disabled polling gates passed there. Coverage was freshly measured at `a9585cb`: **89.63% (29248/32633)** across
 all Go packages, including the audit command; application packages excluding
-`tools/` measure **89.69% (29062/32404)**. The complete ordinary coverage run
+`tools/` measure **89.66% (29201/32569)**. The complete ordinary coverage run
 passed on Darwin arm64; CLI child-process/native C counters and Linux-only
 inotify code are outside the collected denominator. See the current plan's
 coverage refresh entry for package counts and exact command. Current command-specific and full Go checks
