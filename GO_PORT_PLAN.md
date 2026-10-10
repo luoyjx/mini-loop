@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `4b1aec7` plus native partial-input accumulation. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
+Reviewed 2026-10-10 at `d3c8203` plus deferred Bash argument binding. Launcher automatic discovery and defined-empty auth alignment are delivered; HTTP/SSE metadata and usage SQL/recording reopen composition are delivered. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 214 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 215 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -16732,3 +16732,73 @@ passed. The narrow Source helper, targeted suites, full ordinary suite, exact CL
 race retry, full race retry, vet, typeaudit, 19 scans and three block mutation
 guards are the gates run. Full Python/visual/non-Darwin/coverage/full mutation
 checks remain unrefreshed. Logs: /tmp/mini-loop-partial-decoder-{source,targeted,go,race,race-reload,race-retry,vet,types,scans,guards,audit,export}.log.
+
+## 2026-10-10 deferred default Bash argument binding
+
+Implementation baseline: `d3c8203`; actual consumer Source contract: `cea0e39`.
+The actual SDK SSE and Python `Agent._exec_tool` capture has 48 cases, including
+before rewrites/denials and first-unknown-parameter order. Forty-one supported
+finite-object cases match native execution outcomes and hook order; seven
+non-object/nonfinite cases remain outside this adoption.
+
+`DecodeModelToolInput` retains a named Bash binding failure with typed known
+arguments, missing-command state and immutable unknown extras. Strict explicit
+`DecodeToolInput` still rejects these inputs. Direct HTTP/SSE, history, clone,
+masking and stored event reads preserve the input boundary. ToolGate settles the
+failure after before/guard/permission/journal checks without calling an executor,
+then runs ordinary after/result hooks. A valid before rewrite executes; permission
+denial takes precedence. This models the default Source Bash handler's signature.
+
+All 68 finite client/server SDK final objects match native stream output, historical
+reads and SQLite close/reopen. A named stored-event test preserves failure and
+unknown-parameter order without supplying authority. The explicit native diagnostic
+report `docs/audits/provider-bash-binding-native-2026-10-10.json` observes 14 final
+SDK differences (client 7, server 7), down from 40. It is not a complete parity gate.
+Known-field scalar/null consumer adaptations, root/nonfinite values, usage scalar
+alignment, caller-kind scope, default diagnostics and complete G7 remain open.
+
+README canonical Mermaid/provider boundary, review baseline, extension docs and
+interactive specification updated together. Archify regeneration passed 9/9 checks,
+zero warnings; no new browser visual inspection (earlier access was denied).
+Specification SHA256: ecca8ac9149099b87bd90865ecba8d1ab2bb9d15403b922388064d8145d86010.
+HTML SHA256: c2ffae9ff35cda96777b43a36e1497dcd2e8c4b6ae0459dcd95fc0dbdf83e6c3.
+
+Validation on local Darwin arm64:
+
+- Source consumer helper: 1 passed, 4 expected SDK warnings.
+- Targeted protocol/provider/agent/SQLite tests passed; the newly added archival
+  event test initially omitted ordinary emitted metadata defaults, then passed
+  after the test row included them. No runtime workaround was made.
+- `go test -p=1 -count=1 -timeout=300s ./...`: passed.
+- `go test -race -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-bash-binding-integrated.cover ./...`: passed, no race report.
+- `go vet ./...`: passed. Darwin FSEvents deprecation and existing linker
+  LC_DYSYMTAB warnings were emitted; no check failure.
+- `go run ./tools/typeaudit -root .`: 424 production files, 1388 named types,
+  zero findings.
+- Python `verify_scans.py`: 19 anchored guards; `verify_guards.py -k block`:
+  3 caught mutations (selected subset, not the full mutation sweep).
+- Archify: 9/9 checks; README outline and `git diff --check`: passed.
+
+### Coverage refresh on the deferred Bash binding worktree
+
+Cross-package profile collected with the successful full race run above. Profile
+blocks are merged by source location using maximum hits, counting each statement
+once. Measured baseline is `cea0e39` plus this Go implementation, before its commit.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| Application (excluding tools) | 31,391 / 35,115 | 89.39% |
+| All Go packages | 31,438 / 35,179 | 89.37% |
+| protocol | 3,211 / 3,635 | 88.34% |
+| provider | 1,357 / 1,573 | 86.27% |
+| sqlitestate | 583 / 706 | 82.58% |
+
+Previous comparable application snapshot at `b56975b`: 31,132 / 34,871 (89.28%).
+This refresh includes intervening caller/partial-input changes as well as this
+binding slice, so its increase is not attributed solely to Bash binding.
+This is executed Go statement coverage, not migration completion, mutation
+strength, subprocess-internal coverage, native SQLite C coverage or non-Darwin
+verification. Full Python regression was not rerun; Python runtime package modules
+were unchanged. No merge or push. Goal remains incomplete.
+
+Source export check after all native watcher jobs ended: passed, 215 current files.

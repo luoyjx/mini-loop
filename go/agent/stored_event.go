@@ -415,7 +415,7 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 		if err != nil {
 			return SessionEvent{}, err
 		}
-		input, err := protocol.DecodeToolInput(v.Name, v.Input)
+		input, err := protocol.DecodeModelToolInput(v.Name, v.Input)
 		event.toolUse = ToolUseEvent{Name: v.Name, ID: v.ID, Input: input, SpanID: v.Span, ParentSpanID: v.Parent,
 			ActionID: v.Action, ActivityID: v.Activity, Display: ToolDisplay{Verb: v.Display.Verb, Object: v.Display.Object}}
 		return event, err

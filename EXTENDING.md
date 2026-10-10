@@ -4202,3 +4202,15 @@ recipes and 42 direct jiter edge contracts are enforced as real assertions;
 Client extra/missing fields and root/nonfinite adaptations remain audited gaps.
 The opt-in audit reporter requires MINILOOP_PROVIDER_AUDIT_BASELINE explicitly;
 a successful diagnostic run is not a parity gate.
+
+## Deferred model Bash argument binding — 2026-10-10
+
+Model replies use `protocol.DecodeModelToolInput`; explicit caller admission uses
+strict `DecodeToolInput`. Finite Bash objects with extra parameters or missing
+command carry a named `BashBindingFailure`, typed known arguments and immutable
+unknown extras. Forwarding and history preserve the sparse object and first unknown
+parameter order. ToolGate follows before/guard/permission/journal checks, then
+returns the binding error without invoking a handler; normal after/result hooks
+still run. A before rewrite can replace the fault with valid arguments. Permission
+denial takes precedence. Root/nonfinite and unsupported known scalar adaptations
+remain unresolved. This binding contract represents the default Python Bash handler.

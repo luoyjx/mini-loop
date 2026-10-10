@@ -604,7 +604,7 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 		if len(wire.Input) == 0 {
 			return Block{}, errors.New("tool_use requires input")
 		}
-		input, err := DecodeToolInput(wire.Name, wire.Input)
+		input, err := DecodeModelToolInput(wire.Name, wire.Input)
 		if err != nil {
 			return Block{}, err
 		}

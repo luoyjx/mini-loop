@@ -269,3 +269,15 @@ caller 的扩展、partial/畸形输入、usage scalar 消费者、默认诊断�
 - 最终差异从 69 降至 40：client 33、server 7；先前 16 个延迟拒绝现均发生在
   input delta。剩余 client 额外/缺失字段、非对象和非有限数消费者适配仍需核对。
   不据此宣布完整 provider 或迁移验收。最新原生观察报告另存，旧基线保留。
+
+## Default Bash 实际消费者绑定更新
+
+- Source 通过实际 SDK SSE 和 `Agent._exec_tool` 捕获 48 场景，固定
+  before/guard/execute/after/result 顺序、缺失 command 和额外参数错误。
+- 原生匹配 41 个有限对象消费者场景；before 可重写为合法输入或拒绝。
+  参数绑定错误在权限/日志检查后、执行器之前形成 Failed 结果。
+- 68 个 client/server 有限对象的最终内容、历史和 SQLite 重开匹配 SDK。
+  严格显式输入入口保持拒绝；具名字段不转换为开放映射。
+- 最新 98 场景最终差异从 40 降至 14（client 7、server 7）；非对象与
+  nonfinite、已知字段错误类型及完整 provider 验收仍开放。报告另存
+  `docs/audits/provider-bash-binding-native-2026-10-10.json`，历史报告保留。

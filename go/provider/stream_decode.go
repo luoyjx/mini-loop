@@ -466,7 +466,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		case protocol.BlockThinking:
 			b.block = protocol.NewThinkingBlock(b.text.String(), b.signature)
 		case protocol.BlockToolUse:
-			input, err := protocol.DecodeToolInput(b.name, b.input)
+			input, err := protocol.DecodeModelToolInput(b.name, b.input)
 			if err != nil {
 				return badStream(c.clean(err.Error(), 500))
 			}

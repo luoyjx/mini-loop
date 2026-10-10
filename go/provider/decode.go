@@ -201,7 +201,7 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		if wire.ID == nil || wire.Name == nil || len(wire.Input) == 0 {
 			return protocol.Block{}, errors.New("tool_use fields missing")
 		}
-		input, err := protocol.DecodeToolInput(*wire.Name, wire.Input)
+		input, err := protocol.DecodeModelToolInput(*wire.Name, wire.Input)
 		if err != nil {
 			return protocol.Block{}, err
 		}

@@ -88,3 +88,21 @@ HTTP 500（第二轮环境检查），未报告数据竞争；该用例单独 ra
 该捕获在所有原生 watcher 测试结束后执行，未重写 watcher helper/golden。
 定向套件、vet、类型审计（423/1386/0）、19 项扫描及 3 项 block 变异子集通过。
 本轮未刷新完整 Python、浏览器视觉、非 Darwin、覆盖率或完整变异测试。
+
+## Deferred model Bash argument binding — 2026-10-10
+
+Model replies use `protocol.DecodeModelToolInput`; explicit caller admission uses
+strict `DecodeToolInput`. Finite Bash objects with extra parameters or missing
+command carry a named `BashBindingFailure`, typed known arguments and immutable
+unknown extras. Forwarding and history preserve the sparse object and first unknown
+parameter order. ToolGate follows before/guard/permission/journal checks, then
+returns the binding error without invoking a handler; normal after/result hooks
+still run. A before rewrite can replace the fault with valid arguments. Permission
+denial takes precedence. Root/nonfinite and unsupported known scalar adaptations
+remain unresolved. This binding contract represents the default Python Bash handler.
+
+Latest observation: [native Bash binding report](provider-bash-binding-native-2026-10-10.json)
+uses baseline `d3c8203 plus deferred Bash binding failures`. Of 98 SDK profiles,
+14 final differences remain (7 client, 7 server), down from 40. The actual Source
+consumer fixture has 48 cases, of which 41 finite supported cases match execution
+outcomes and hook order. Reports are observations, not complete parity acceptance.

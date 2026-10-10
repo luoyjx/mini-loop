@@ -52,9 +52,7 @@ func TestPythonFakeTurnRoundTrip(t *testing.T) {
 func TestRejectsUnknownToolAndInputFields(t *testing.T) {
 	for _, block := range []string{
 		`{"type":"tool_use","id":"toolu_1","name":"mystery","input":{"command":"echo x"}}`,
-		`{"type":"tool_use","id":"toolu_1","name":"bash","input":{"command":"echo x","opaque":1}}`,
 		`{"type":"tool_use","id":"toolu_1","name":"bash","input":"echo x"}`,
-		`{"type":"tool_use","id":"toolu_1","name":"bash","input":{}}`,
 		`{"type":"tool_use","id":"toolu_1","name":"bash"}`,
 	} {
 		var got Block

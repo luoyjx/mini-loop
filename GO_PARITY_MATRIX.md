@@ -2,20 +2,20 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `4b1aec7` plus native partial-input accumulation. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `d3c8203` plus deferred Bash argument binding. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `6ad4600` | Passed: 214 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `cea0e39` | Passed: 215 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 423 production files, 1386 named types on the native partial-input snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 424 production files, 1388 named types on the deferred Bash binding snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -8939,3 +8939,73 @@ passed. The narrow Source helper, targeted suites, full ordinary suite, exact CL
 race retry, full race retry, vet, typeaudit, 19 scans and three block mutation
 guards are the gates run. Full Python/visual/non-Darwin/coverage/full mutation
 checks remain unrefreshed. Logs: /tmp/mini-loop-partial-decoder-{source,targeted,go,race,race-reload,race-retry,vet,types,scans,guards,audit,export}.log.
+
+## 2026-10-10 deferred default Bash argument binding
+
+Implementation baseline: `d3c8203`; actual consumer Source contract: `cea0e39`.
+The actual SDK SSE and Python `Agent._exec_tool` capture has 48 cases, including
+before rewrites/denials and first-unknown-parameter order. Forty-one supported
+finite-object cases match native execution outcomes and hook order; seven
+non-object/nonfinite cases remain outside this adoption.
+
+`DecodeModelToolInput` retains a named Bash binding failure with typed known
+arguments, missing-command state and immutable unknown extras. Strict explicit
+`DecodeToolInput` still rejects these inputs. Direct HTTP/SSE, history, clone,
+masking and stored event reads preserve the input boundary. ToolGate settles the
+failure after before/guard/permission/journal checks without calling an executor,
+then runs ordinary after/result hooks. A valid before rewrite executes; permission
+denial takes precedence. This models the default Source Bash handler's signature.
+
+All 68 finite client/server SDK final objects match native stream output, historical
+reads and SQLite close/reopen. A named stored-event test preserves failure and
+unknown-parameter order without supplying authority. The explicit native diagnostic
+report `docs/audits/provider-bash-binding-native-2026-10-10.json` observes 14 final
+SDK differences (client 7, server 7), down from 40. It is not a complete parity gate.
+Known-field scalar/null consumer adaptations, root/nonfinite values, usage scalar
+alignment, caller-kind scope, default diagnostics and complete G7 remain open.
+
+README canonical Mermaid/provider boundary, review baseline, extension docs and
+interactive specification updated together. Archify regeneration passed 9/9 checks,
+zero warnings; no new browser visual inspection (earlier access was denied).
+Specification SHA256: ecca8ac9149099b87bd90865ecba8d1ab2bb9d15403b922388064d8145d86010.
+HTML SHA256: c2ffae9ff35cda96777b43a36e1497dcd2e8c4b6ae0459dcd95fc0dbdf83e6c3.
+
+Validation on local Darwin arm64:
+
+- Source consumer helper: 1 passed, 4 expected SDK warnings.
+- Targeted protocol/provider/agent/SQLite tests passed; the newly added archival
+  event test initially omitted ordinary emitted metadata defaults, then passed
+  after the test row included them. No runtime workaround was made.
+- `go test -p=1 -count=1 -timeout=300s ./...`: passed.
+- `go test -race -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-bash-binding-integrated.cover ./...`: passed, no race report.
+- `go vet ./...`: passed. Darwin FSEvents deprecation and existing linker
+  LC_DYSYMTAB warnings were emitted; no check failure.
+- `go run ./tools/typeaudit -root .`: 424 production files, 1388 named types,
+  zero findings.
+- Python `verify_scans.py`: 19 anchored guards; `verify_guards.py -k block`:
+  3 caught mutations (selected subset, not the full mutation sweep).
+- Archify: 9/9 checks; README outline and `git diff --check`: passed.
+
+### Coverage refresh on the deferred Bash binding worktree
+
+Cross-package profile collected with the successful full race run above. Profile
+blocks are merged by source location using maximum hits, counting each statement
+once. Measured baseline is `cea0e39` plus this Go implementation, before its commit.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| Application (excluding tools) | 31,391 / 35,115 | 89.39% |
+| All Go packages | 31,438 / 35,179 | 89.37% |
+| protocol | 3,211 / 3,635 | 88.34% |
+| provider | 1,357 / 1,573 | 86.27% |
+| sqlitestate | 583 / 706 | 82.58% |
+
+Previous comparable application snapshot at `b56975b`: 31,132 / 34,871 (89.28%).
+This refresh includes intervening caller/partial-input changes as well as this
+binding slice, so its increase is not attributed solely to Bash binding.
+This is executed Go statement coverage, not migration completion, mutation
+strength, subprocess-internal coverage, native SQLite C coverage or non-Darwin
+verification. Full Python regression was not rerun; Python runtime package modules
+were unchanged. No merge or push. Goal remains incomplete.
+
+Source export check after all native watcher jobs ended: passed, 215 current files.

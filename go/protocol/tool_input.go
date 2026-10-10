@@ -179,6 +179,9 @@ type ToolInput struct {
 	name               ToolName
 	nulls              inputNullFields
 	bash               BashInput
+	bashBinding        *BashBindingFailure
+	bashExtra          jsonvalue.Value
+	bashCommandMissing bool
 	readFile           ReadFileInput
 	writeFile          WriteFileInput
 	editFile           EditFileInput
@@ -357,7 +360,17 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 }
 
 func (input ToolInput) clone() (result ToolInput) {
-	defer func() { result.nulls = input.nulls }()
+	defer func() {
+		result.nulls = input.nulls
+		if input.name == ToolBash {
+			result.bashExtra = input.bashExtra
+			result.bashCommandMissing = input.bashCommandMissing
+			if input.bashBinding != nil {
+				value := *input.bashBinding
+				result.bashBinding = &value
+			}
+		}
+	}()
 	switch input.name {
 	case ToolRepoMap:
 		return RepoMapToolInput(input.repoMap)
@@ -423,6 +436,16 @@ func (input ToolInput) clone() (result ToolInput) {
 }
 
 func (input ToolInput) Validate() error {
+	if input.bashBinding != nil {
+		if input.name != ToolBash {
+			return errors.New("Bash binding failure on non-Bash input")
+		}
+		if err := input.bashBinding.Validate(); err != nil {
+			return err
+		}
+		_, err := input.bashExtra.MarshalJSON()
+		return err
+	}
 	if IsASTTool(input.name) {
 		return input.validateAST()
 	}
@@ -488,6 +511,12 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	if input.bashBinding != nil {
+		if err := input.Validate(); err != nil {
+			return nil, err
+		}
+		return input.marshalBashBinding()
+	}
 	if IsASTTool(input.name) {
 		return input.marshalAST()
 	}

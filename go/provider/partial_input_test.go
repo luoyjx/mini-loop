@@ -116,17 +116,17 @@ func TestStreamPartialInputMatchesSDKAtEveryDelta(t *testing.T) {
 	}
 }
 
-func TestStreamServerPartialObjectsMatchSDKFinalAndHistory(t *testing.T) {
+func TestStreamPartialObjectsMatchSDKFinalAndHistory(t *testing.T) {
 	client, err := New(Config{APIKey: "fixture-key"})
 	if err != nil {
 		t.Fatal(err)
 	}
 	matched := 0
 	for _, row := range partialSDKCases(t) {
-		if row.Kind != "server_tool_use" || row.Error != nil {
+		if row.Error != nil {
 			continue
 		}
-		t.Run(row.Name, func(t *testing.T) {
+		t.Run(row.Kind+"/"+row.Name, func(t *testing.T) {
 			reply, err := client.readStream(context.Background(), strings.NewReader(row.SSE), nil)
 			input := partialSDKInput(t, row.Expected)
 			_, finiteErr := input.MarshalJSON()
@@ -169,13 +169,13 @@ func TestStreamServerPartialObjectsMatchSDKFinalAndHistory(t *testing.T) {
 			if err != nil || !got.PythonEqual(expected) {
 				t.Fatal("partial input changed in history")
 			}
-			if _, clientTool := blocks[0].ToolUse(); clientTool {
+			if _, clientTool := blocks[0].ToolUse(); row.Kind == "server_tool_use" && clientTool {
 				t.Fatal("observational input became executable")
 			}
 			matched++
 		})
 	}
-	if matched != 34 {
+	if matched != 68 {
 		t.Fatal("finite SDK object inventory changed", matched)
 	}
 }

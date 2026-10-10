@@ -131,6 +131,10 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	case ToolKeepWorktree, ToolEnterWorktree:
 		input.worktreeName.Name = mask(input.worktreeName.Name)
 	case ToolBash:
+		input.bashExtra = input.bashExtra.MapStrings(mask)
+		if input.bashBinding != nil {
+			input.bashBinding.parameter = mask(input.bashBinding.parameter)
+		}
 		input.bash.Command = mask(input.bash.Command)
 		if input.bash.ApprovalPrefix != nil {
 			for i, value := range *input.bash.ApprovalPrefix {
