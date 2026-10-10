@@ -1570,7 +1570,11 @@ system=, max_tokens=)` returning `.content` (blocks) + `.stop_reason` works.
 The Go `agent.Provider` consumer accepts concrete `protocol.ModelRequest` and
 `ModelReply`. `go/provider.New` supplies an explicit direct Anthropic-compatible
 HTTP adapter with SDK-level bounded retries, cache wire annotations and served-model
-identity. It reads no environment/profile credentials and retains no dynamic
+identity. `Config.AuthToken` supplies an explicit bearer token; ordered `Config.Headers`
+override static headers with last-value precedence. Header names/values are
+validated and copied during construction. Both direct and streaming errors scrub
+static and header credentials. Environment/profile discovery is caller-owned;
+launcher bearer/custom-header selection remains open. It retains no dynamic
 payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
 `agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.

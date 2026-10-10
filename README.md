@@ -465,7 +465,8 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `dff40b4` plus citation-bearing native SQLite recovery proof,
+Runtime review baseline: `2133e26` plus explicit typed provider authentication,
+plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -670,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>absent-key inspection · request auth before HTTP / retry<br/>typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>explicit key / bearer / headers · request auth before HTTP / retry<br/>typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1193,7 +1194,12 @@ served-model identity, signed thinking and default-tool input variants. HTTP ret
 match the pinned Python SDK 0.107.1: two retries, selected status codes, retry override
 headers and bounded SDK backoff/Retry-After rules. Request and reply bytes are capped,
 contexts own calls/waits, redirects are refused, and diagnostics scrub the configured
-API key. The adapter never discovers credentials; the launcher explicitly passes
+API key, bearer token and custom authentication header values. Explicit typed
+`provider.Config.AuthToken` and ordered `Headers` support SDK header precedence
+for direct and streaming requests. Construction captures header values; later
+caller edits cannot change request authority. The adapter never discovers
+credentials; launcher bearer/custom-header environment selection remains open.
+The launcher explicitly passes
 its validated environment settings. This
 adapter supplies SDK-level retry; the session now applies separate default Agent
 recovery: at most ten transient retries, bounded outer waits, token escalation,

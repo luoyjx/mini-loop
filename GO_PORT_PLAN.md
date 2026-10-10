@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `dff40b4` plus native citation SQLite/recording recovery proof. This section is the current delivery index;
+Reviewed 2026-10-10 at `2133e26` plus explicit provider auth and native citation SQLite/recording recovery proof. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas and forwarding implemented; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 201 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 202 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -15560,3 +15560,45 @@ Existing SDK/macOS deprecation warnings remain. No fresh full Python, race,
 coverage, mutation, invariant or architecture rendering was run: this slice
 changes capture tooling/tests and a fixture, not package runtime or topology.
 Diff and cached diff checks pass. No merge or push was performed.
+
+## 2026-10-10 Explicit typed provider authentication
+
+Baseline `2133e26` plus this implementation adds explicit `Config.AuthToken`
+and ordered `[]Header` to the native provider. Construction validates names,
+values and bounds, then captures a detached slice. Direct and SSE requests
+share static key/bearer projection followed by last-value custom-header
+overrides. Admission checks the effective authentication headers before
+transport/retries; an empty custom auth header cannot grant admission.
+
+Ten Source auth recipes each run through native direct and streaming HTTP
+requests (20 profiles). The fixture environment is resolved only by the test
+into explicit configuration; the provider reads no environment. Tests compare
+actual authentication headers, verify post-construction caller edits cannot
+change request authority, and verify parsed error messages/request IDs scrub
+static and custom-header credentials. Invalid names, newline injection and
+empty authentication are also tested. Existing provider tests pass.
+
+This completes the explicit provider seam only. Launcher/config environment
+bearer/custom-header selection, SDK profile/federation discovery and the final
+provider inventory remain open. Source descriptions retain explicit-key
+credential presence; no bearer-only default CLI claim is made.
+
+README canonical Mermaid and authority explanation, EXTENDING and interactive
+specification are updated together. Generated HTML is regenerated with Archify;
+the initial render rejected an unsupported component description property,
+which was removed before successful delivery. No fresh browser visual
+inspection was performed.
+
+Final gates on the unchanged implementation snapshot: provider package tests,
+full ordinary `go test -p=1 -count=1 -timeout=300s ./...`, full race with the
+same arguments plus `-race`, and `go vet ./...` all passed. Type audit reports
+402 production files / 1303 package-level types / zero direct open-payload
+findings. Archify delivery passes 9/9: specification SHA-256
+`8230fb28a0a8a9c880948f2421ed17025bbb9abaf43ae0745bec091ffbcd19ed`,
+HTML SHA-256 `d9e271d62e95832a0193a327171bb1fda99da2a1a3d53606e89182ec2617cfd8`.
+Initial test compilation used an invalid Content literal; its correction to
+PlainContent then exposed a missing required request purpose. Both were fixed
+before the final package/full gates. Existing macOS linker/compiler warnings
+remain. No Python, Source export, mutation, coverage or performance rerun was
+performed; these keep their recorded baselines. Diff/cached checks pass.
+No merge or push was performed.

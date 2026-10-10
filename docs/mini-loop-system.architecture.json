@@ -299,7 +299,7 @@
       "id": "goFake",
       "type": "external",
       "label": "Go model providers",
-      "sublabel": "Fake / HTTP / SSE / Jev",
+      "sublabel": "HTTP / SSE · explicit key / bearer",
       "pos": [
         330,
         1180

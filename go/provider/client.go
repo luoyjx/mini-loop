@@ -98,6 +98,8 @@ func (timerWaiter) Wait(ctx context.Context, d time.Duration) error {
 }
 
 type Config struct {
+	AuthToken                         string   `json:"-"`
+	Headers                           []Header `json:"-"`
 	BaseURL                           string
 	APIKey                            string       `json:"-"`
 	HTTPClient                        *http.Client `json:"-"`
@@ -115,6 +117,8 @@ type Description struct {
 	Credential string `json:"credential"`
 }
 type Client struct {
+	authToken                   string
+	headers                     []Header
 	endpoint, requestURL, key   string
 	compatible                  bool
 	defaultTimeout              bool
@@ -139,6 +143,9 @@ func New(cfg Config) (*Client, error) {
 	}
 	if len(cfg.APIKey) > 4096 || (cfg.APIKey != "" && strings.TrimSpace(cfg.APIKey) == "") || strings.IndexFunc(cfg.APIKey, func(r rune) bool { return r < 32 || r == 127 }) >= 0 {
 		return nil, errors.New("provider API key must be a single header value when supplied")
+	}
+	if err := validateAuth(cfg.AuthToken, cfg.Headers); err != nil {
+		return nil, err
 	}
 	retries := DefaultRetries
 	if cfg.MaxRetries != nil {
@@ -179,7 +186,10 @@ func New(cfg Config) (*Client, error) {
 	// x-api-key is not a standard sensitive header stripped by net/http on a
 	// cross-host redirect. Refuse redirects instead of forwarding a credential.
 	client.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
-	return &Client{cfg.BaseURL, strings.TrimRight(u.String(), "/") + "/v1/messages", cfg.APIKey, compatible, defaultTimeout, &client, cfg.Timeout, cfg.MaxRequestBytes, cfg.MaxResponseBytes, retries, cfg.Waiter, cfg.Jitter, cfg.Now}, nil
+	return &Client{endpoint: cfg.BaseURL, requestURL: strings.TrimRight(u.String(), "/") + "/v1/messages", key: cfg.APIKey,
+		authToken: cfg.AuthToken, headers: append([]Header(nil), cfg.Headers...), compatible: compatible,
+		defaultTimeout: defaultTimeout, http: &client, timeout: cfg.Timeout, requestLimit: cfg.MaxRequestBytes,
+		responseLimit: cfg.MaxResponseBytes, retries: retries, wait: cfg.Waiter, jitter: cfg.Jitter, now: cfg.Now}, nil
 }
 func (c *Client) Describe() Description {
 	name := "anthropic"
@@ -242,9 +252,9 @@ func (c *Client) attempt(ctx context.Context, body []byte, attempt int) (protoco
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("X-Api-Key", c.key)
 	req.Header.Set("Anthropic-Version", APIVersion)
 	req.Header.Set("X-Stainless-Retry-Count", strconv.Itoa(attempt))
+	c.applyHeaders(req.Header)
 	response, err := c.http.Do(req)
 	if err != nil {
 		if ctx.Err() != nil {
@@ -363,15 +373,12 @@ func (c *Client) backoff(attempt int, retryAfter *time.Duration) time.Duration {
 // Construction and inspection do not require authentication. Request admission
 // follows Source's body/streaming checks and fails before transport or retries.
 func (c *Client) requireCredential() error {
-	if c.key == "" {
+	h := make(http.Header)
+	c.applyHeaders(h)
+	if h.Get("X-Api-Key") == "" && h.Get("Authorization") == "" {
 		return &Failure{Kind: FailureCredential, Message: "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\""}
 	}
 	return nil
 }
 
-func (c *Client) redactKey(text string) string {
-	if c.key == "" {
-		return text
-	}
-	return strings.ReplaceAll(text, c.key, "[REDACTED]")
-}
+func (c *Client) redactKey(text string) string { return c.redactCredentials(text) }
