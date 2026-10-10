@@ -1,21 +1,21 @@
 # Python to Go parity matrix
 
-## Current acceptance index — 2026-10-10
+## Current acceptance index — 2026-10-11
 
-Reviewed code/test baseline: `47b44de` plus missing-model-tool observations. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed baseline: `5d1c99b`; latest production `ea35cd3`, recipe setup tests `e5064d8`. Background option policies, actual SDK/managed consumers and nonfinite final error text are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | Full export --check after native jobs ended: 221 files at missing-tool capture 47b44de | Current Source snapshot matches; prior failed observer captures remain retained in drift audits |
+| Source recipe freshness | Last full export --check after native jobs ended: 228 files at encoding-error slice ea35cd3 | Current Source snapshot matches; prior failed observer captures remain retained in drift audits |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | Native/polling CLI tests; calibration at e3fc640; exact post-readiness timeouts in docs/audits/go-native-remove-timeout-2026-10-11.json | Two full ordinary gates at unknown-model worktree failed different native operation profiles after actual probe acknowledgement. All other packages pass after archive fix; runtime temporal/handoff G3/G7 acceptance remains open |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` on 47b44de plus missing-model-tool observations | 430 production files, 1404 named types, zero direct open-payload findings; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` at encoding slice ea35cd3 | 443 production files, 1414 named types, zero direct open-payload findings; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -35,12 +35,16 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Server web-search result replies | Fourteen SDK direct/SSE captures in `go/testdata/python-provider-web-search.json` | Named results/error union, optional age/caller defaults, immutable extensions, forwarding/mask/clone/historical codec implemented; all twelve declared SDK kinds represented; complete field/consumer/default audit remains |
 | Provider container-upload blocks | Six actual SDK direct/SSE captures in `go/testdata/python-provider-container-upload.json` | Named FileID and stream null defaults in the closed Block union; forwarding, clone/mask/stored codec tests; remaining server-tool/result variants and extension audit open |
 | Provider usage metadata | Nine actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON and HTTP/SSE adoption implemented; actual SQL events, reopen/restored writes, raw JSONL and reopened recording readers verified; broader usage coercion/field audit and final scope reconciliation remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
+| Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-The latest authentication-slice Source export retry at `477a209` passed with
-202 files; this slice adds the 203rd usage fixture. Native full Go ordinary/race/vet,
-six Python authentication tests, 19 scans and type audit passed at `477a209`.
-No new Go runtime validation is claimed by this fixture/inventory slice.
+Current acceptance refresh: full Python regression passes at unchanged Source
+runtime: **2230 passed, 28 skipped, 50 warnings, 24 subtests passed** (85.80s).
+Invariant declaration verification checks 77 modules; 19 scan guards pass.
+This refresh does not include a full mutation sweep, new full Go/race/vet/type
+measurement or new export sweep; those gates retain their own pinned baselines.
+Default full-feature diagnostics still awaits the explicit CPython dependency
+decision; the approval question was issued during this review.
 
 Latest measured coverage: application excluding tools **89.17% (32196/36106)**;
 all Go **89.14% (32243/36170)** on runtime `770f065`. This measurement comes from
