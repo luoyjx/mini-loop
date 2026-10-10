@@ -156,6 +156,25 @@ func validateMessageText(message protocol.Message) error {
 	for _, block := range blocks {
 		var err error
 		switch block.Kind() {
+		case protocol.BlockWebSearchToolResult:
+			value, _ := block.WebSearchToolResult()
+			err = validateText(value.ToolUseID)
+			if err == nil && value.Caller != nil {
+				err = validateText(value.Caller.ToolID())
+			}
+			if results, ok := value.Content.Results(); ok {
+				for _, row := range results {
+					if err != nil {
+						break
+					}
+					err = validateText(row.Title, row.URL, row.EncryptedContent)
+					if err == nil && row.PageAge != nil {
+						err = validateText(*row.PageAge)
+					}
+				}
+			} else if failure, ok := value.Content.Error(); ok && err == nil {
+				err = validateText(string(failure.Code))
+			}
 		case protocol.BlockContainerUpload:
 			value, _ := block.ContainerUpload()
 			err = validateText(value.FileID)

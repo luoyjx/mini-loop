@@ -309,6 +309,12 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		b := streamBlock{kind: block.Type, text: &strings.Builder{}}
 		switch block.Type {
+		case protocol.BlockWebSearchToolResult:
+			initial, err := decodeBlock(wire.Block)
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			b.block = initial
 		case protocol.BlockContainerUpload:
 			if block.FileID == nil {
 				return badStream("container upload file_id missing")

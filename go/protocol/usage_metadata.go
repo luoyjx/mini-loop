@@ -1,7 +1,6 @@
 package protocol
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
@@ -75,31 +74,24 @@ func validateUsageCounts(counts ...*int) error {
 	}
 	return nil
 }
-func copyUsagePointer[T any](p *T) *T {
-	if p == nil {
-		return nil
-	}
-	v := *p
-	return &v
-}
 func (u TokenUsage) clone() TokenUsage {
-	u.CacheReadInputTokens = copyUsagePointer(u.CacheReadInputTokens)
-	u.CacheCreationInputTokens = copyUsagePointer(u.CacheCreationInputTokens)
-	u.ServiceTier = copyUsagePointer(u.ServiceTier)
-	u.CacheCreation = copyUsagePointer(u.CacheCreation)
-	u.InferenceGeo = copyUsagePointer(u.InferenceGeo)
-	u.OutputTokensDetails = copyUsagePointer(u.OutputTokensDetails)
-	u.ServerToolUse = copyUsagePointer(u.ServerToolUse)
+	u.CacheReadInputTokens = copyMetadataPointer(u.CacheReadInputTokens)
+	u.CacheCreationInputTokens = copyMetadataPointer(u.CacheCreationInputTokens)
+	u.ServiceTier = copyMetadataPointer(u.ServiceTier)
+	u.CacheCreation = copyMetadataPointer(u.CacheCreation)
+	u.InferenceGeo = copyMetadataPointer(u.InferenceGeo)
+	u.OutputTokensDetails = copyMetadataPointer(u.OutputTokensDetails)
+	u.ServerToolUse = copyMetadataPointer(u.ServerToolUse)
 	if u.CacheCreation != nil {
-		u.CacheCreation.Ephemeral1hInputTokens = copyUsagePointer(u.CacheCreation.Ephemeral1hInputTokens)
-		u.CacheCreation.Ephemeral5mInputTokens = copyUsagePointer(u.CacheCreation.Ephemeral5mInputTokens)
+		u.CacheCreation.Ephemeral1hInputTokens = copyMetadataPointer(u.CacheCreation.Ephemeral1hInputTokens)
+		u.CacheCreation.Ephemeral5mInputTokens = copyMetadataPointer(u.CacheCreation.Ephemeral5mInputTokens)
 	}
 	if u.OutputTokensDetails != nil {
-		u.OutputTokensDetails.ThinkingTokens = copyUsagePointer(u.OutputTokensDetails.ThinkingTokens)
+		u.OutputTokensDetails.ThinkingTokens = copyMetadataPointer(u.OutputTokensDetails.ThinkingTokens)
 	}
 	if u.ServerToolUse != nil {
-		u.ServerToolUse.WebFetchRequests = copyUsagePointer(u.ServerToolUse.WebFetchRequests)
-		u.ServerToolUse.WebSearchRequests = copyUsagePointer(u.ServerToolUse.WebSearchRequests)
+		u.ServerToolUse.WebFetchRequests = copyMetadataPointer(u.ServerToolUse.WebFetchRequests)
+		u.ServerToolUse.WebSearchRequests = copyMetadataPointer(u.ServerToolUse.WebSearchRequests)
 	}
 
 	return u
@@ -165,72 +157,6 @@ func (u TokenUsage) WithSDKDefaults() TokenUsage {
 	}
 	return u
 }
-func usageOptional[T any](p *T, null bool) *wireOptional[T] {
-	if p != nil {
-		return &wireOptional[T]{value: p}
-	}
-	if null {
-		return &wireOptional[T]{}
-	}
-	return nil
-}
-func marshalUsageObject[T any](wire T, extra jsonvalue.Value) ([]byte, error) {
-	data, err := json.Marshal(wire)
-	if err != nil {
-		return nil, err
-	}
-	if len(extra.Keys()) == 0 {
-		return data, nil
-	}
-	value, err := jsonvalue.Decode(string(data))
-	if err != nil {
-		return nil, err
-	}
-	fields := make([]jsonvalue.Field, 0, len(value.Keys())+len(extra.Keys()))
-	for _, key := range value.Keys() {
-		v, _ := value.Lookup(key)
-		fields = append(fields, jsonvalue.Field{Name: key, Value: v})
-	}
-	for _, key := range extra.Keys() {
-		v, _ := extra.Lookup(key)
-		fields = append(fields, jsonvalue.Field{Name: key, Value: v})
-	}
-	return jsonvalue.ObjectValue(fields).MarshalJSON()
-}
-func decodeUsageObject[T any](data []byte, wire *T, known []string) (jsonvalue.Value, jsonvalue.Value, error) {
-	if len(data) > MaxWireBytes {
-		return jsonvalue.Value{}, jsonvalue.Value{}, errors.New("usage JSON exceeds wire bound")
-	}
-	value, err := jsonvalue.Decode(string(data))
-	if err != nil {
-		return jsonvalue.Value{}, jsonvalue.Value{}, err
-	}
-	if value.Kind() != jsonvalue.Object {
-		return jsonvalue.Value{}, jsonvalue.Value{}, errors.New("usage must be an object")
-	}
-	if err := json.Unmarshal(data, wire); err != nil {
-		return jsonvalue.Value{}, jsonvalue.Value{}, err
-	}
-	fields := []jsonvalue.Field{}
-	for _, key := range value.Keys() {
-		recognized := false
-		for _, name := range known {
-			if name == key {
-				recognized = true
-				break
-			}
-		}
-		if !recognized {
-			v, _ := value.Lookup(key)
-			fields = append(fields, jsonvalue.Field{Name: key, Value: v})
-		}
-	}
-	if len(fields) == 0 {
-		return value, jsonvalue.Value{}, nil
-	}
-	return value, jsonvalue.ObjectValue(fields), nil
-}
-
 func (u TokenUsage) MarshalJSON() ([]byte, error) {
 	wire := struct {
 		Input         int                               `json:"input_tokens"`
@@ -242,8 +168,8 @@ func (u TokenUsage) MarshalJSON() ([]byte, error) {
 		Geo           *wireOptional[string]             `json:"inference_geo,omitempty"`
 		Details       *wireOptional[OutputTokenDetails] `json:"output_tokens_details,omitempty"`
 		Server        *wireOptional[ServerToolUsage]    `json:"server_tool_use,omitempty"`
-	}{u.InputTokens, u.OutputTokens, usageOptional(u.CacheReadInputTokens, u.nulls&nullCacheRead != 0), usageOptional(u.CacheCreationInputTokens, u.nulls&nullCacheInput != 0), usageOptional(u.ServiceTier, u.nulls&nullTier != 0), usageOptional(u.CacheCreation, u.nulls&nullCacheCreation != 0), usageOptional(u.InferenceGeo, u.nulls&nullGeo != 0), usageOptional(u.OutputTokensDetails, u.nulls&nullOutputDetails != 0), usageOptional(u.ServerToolUse, u.nulls&nullServerTool != 0)}
-	return marshalUsageObject(wire, u.extra)
+	}{u.InputTokens, u.OutputTokens, optionalWireValue(u.CacheReadInputTokens, u.nulls&nullCacheRead != 0), optionalWireValue(u.CacheCreationInputTokens, u.nulls&nullCacheInput != 0), optionalWireValue(u.ServiceTier, u.nulls&nullTier != 0), optionalWireValue(u.CacheCreation, u.nulls&nullCacheCreation != 0), optionalWireValue(u.InferenceGeo, u.nulls&nullGeo != 0), optionalWireValue(u.OutputTokensDetails, u.nulls&nullOutputDetails != 0), optionalWireValue(u.ServerToolUse, u.nulls&nullServerTool != 0)}
+	return marshalMetadataObject(wire, u.extra)
 }
 func (u *TokenUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
@@ -258,7 +184,7 @@ func (u *TokenUsage) UnmarshalJSON(data []byte) error {
 		Server        *ServerToolUsage    `json:"server_tool_use"`
 	}
 	keys := []string{"input_tokens", "output_tokens", "cache_read_input_tokens", "cache_creation_input_tokens", "service_tier", "cache_creation", "inference_geo", "output_tokens_details", "server_tool_use"}
-	value, extra, err := decodeUsageObject(data, &wire, keys)
+	value, extra, err := decodeMetadataObject(data, &wire, keys, true)
 	if err != nil {
 		return err
 	}
@@ -288,17 +214,17 @@ func usageNullFields(value jsonvalue.Value, keys ...string) usageNulls {
 	return flags
 }
 func (v CacheCreationUsage) MarshalJSON() ([]byte, error) {
-	return marshalUsageObject(struct {
+	return marshalMetadataObject(struct {
 		Hour   *wireOptional[int] `json:"ephemeral_1h_input_tokens,omitempty"`
 		Minute *wireOptional[int] `json:"ephemeral_5m_input_tokens,omitempty"`
-	}{usageOptional(v.Ephemeral1hInputTokens, v.nulls&1 != 0), usageOptional(v.Ephemeral5mInputTokens, v.nulls&2 != 0)}, v.extra)
+	}{optionalWireValue(v.Ephemeral1hInputTokens, v.nulls&1 != 0), optionalWireValue(v.Ephemeral5mInputTokens, v.nulls&2 != 0)}, v.extra)
 }
 func (v *CacheCreationUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
 		Hour   *int `json:"ephemeral_1h_input_tokens"`
 		Minute *int `json:"ephemeral_5m_input_tokens"`
 	}
-	value, extra, err := decodeUsageObject(data, &wire, []string{"ephemeral_1h_input_tokens", "ephemeral_5m_input_tokens"})
+	value, extra, err := decodeMetadataObject(data, &wire, []string{"ephemeral_1h_input_tokens", "ephemeral_5m_input_tokens"}, true)
 	if err != nil {
 		return err
 	}
@@ -309,15 +235,15 @@ func (v *CacheCreationUsage) UnmarshalJSON(data []byte) error {
 	return nil
 }
 func (v OutputTokenDetails) MarshalJSON() ([]byte, error) {
-	return marshalUsageObject(struct {
+	return marshalMetadataObject(struct {
 		Thinking *wireOptional[int] `json:"thinking_tokens,omitempty"`
-	}{usageOptional(v.ThinkingTokens, v.nulls&1 != 0)}, v.extra)
+	}{optionalWireValue(v.ThinkingTokens, v.nulls&1 != 0)}, v.extra)
 }
 func (v *OutputTokenDetails) UnmarshalJSON(data []byte) error {
 	var wire struct {
 		Thinking *int `json:"thinking_tokens"`
 	}
-	value, extra, err := decodeUsageObject(data, &wire, []string{"thinking_tokens"})
+	value, extra, err := decodeMetadataObject(data, &wire, []string{"thinking_tokens"}, true)
 	if err != nil {
 		return err
 	}
@@ -328,17 +254,17 @@ func (v *OutputTokenDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 func (v ServerToolUsage) MarshalJSON() ([]byte, error) {
-	return marshalUsageObject(struct {
+	return marshalMetadataObject(struct {
 		Fetch  *wireOptional[int] `json:"web_fetch_requests,omitempty"`
 		Search *wireOptional[int] `json:"web_search_requests,omitempty"`
-	}{usageOptional(v.WebFetchRequests, v.nulls&1 != 0), usageOptional(v.WebSearchRequests, v.nulls&2 != 0)}, v.extra)
+	}{optionalWireValue(v.WebFetchRequests, v.nulls&1 != 0), optionalWireValue(v.WebSearchRequests, v.nulls&2 != 0)}, v.extra)
 }
 func (v *ServerToolUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
 		Fetch  *int `json:"web_fetch_requests"`
 		Search *int `json:"web_search_requests"`
 	}
-	value, extra, err := decodeUsageObject(data, &wire, []string{"web_fetch_requests", "web_search_requests"})
+	value, extra, err := decodeMetadataObject(data, &wire, []string{"web_fetch_requests", "web_search_requests"}, true)
 	if err != nil {
 		return err
 	}

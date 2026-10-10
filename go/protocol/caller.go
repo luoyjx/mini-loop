@@ -14,7 +14,7 @@ const (
 	CallerCodeExecution2026 CallerKind = "code_execution_20260120"
 )
 
-// ToolCaller is the closed provider caller union for a tool_use block.
+// ToolCaller is the closed provider caller union for tool-use and server-result blocks.
 // The fake provider leaves it absent; server-side tool callers carry a tool ID.
 type ToolCaller struct {
 	kind   CallerKind

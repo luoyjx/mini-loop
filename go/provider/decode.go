@@ -66,6 +66,20 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		return protocol.Block{}, errors.New("malformed block")
 	}
 	switch wire.Type {
+	case protocol.BlockWebSearchToolResult:
+		var result protocol.WebSearchToolResultBlock
+		if err := json.Unmarshal(raw, &result); err != nil {
+			return protocol.Block{}, err
+		}
+		result = result.WithSDKDefaults()
+		encoded, err := json.Marshal(result)
+		if err != nil {
+			return protocol.Block{}, err
+		}
+		if len(encoded) > protocol.MaxWireBytes {
+			return protocol.Block{}, errors.New("normalized web search block exceeds protocol limit")
+		}
+		return result.Block(), nil
 	case protocol.BlockContainerUpload:
 		if wire.FileID == nil {
 			return protocol.Block{}, errors.New("container upload has no file_id")

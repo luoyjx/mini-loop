@@ -137,3 +137,16 @@ usage 消费者核对：Python metering._field 仅对 int/float（包括 bool）
 原值、prompt 计量与 decision 计数不是一个统一转换规则。Go 严格整数 ingress
 目前会提前拒绝该场景，不能宣称已实现这一 Source 适配；后续需要独立核对
 有限/不受限整数、float/bool 和各消费者语义。
+
+## Server web-search result 回复更新
+
+基线 `ada45b2` 后支持 `web_search_tool_result`：ToolUseID/Caller 与成功列表或
+错误的闭合 union。结果具名保留 Title/URL/EncryptedContent/PageAge；错误保留
+具名 code，未知 future_code 按实际 SDK 捕获保留。root/result/error 扩展进入
+不可变闭合 JSON 对象，不替代具名字段。14 个 SDK direct/SSE 配方核对空列表、
+成功、错误/caller/扩展；transport 显式补 caller/page_age 的 SDK null 默认值，
+历史 codec 保留缺省且允许超网络边界的大记录。此块是服务端观察，不进入 client
+tool dispatch/pairing；decision content allowlist 继续与 Source 一致地拒绝它。
+SDK ContentBlock 尚缺其余六种：server_tool_use、web_fetch_tool_result、
+tool_search_tool_result、code_execution_tool_result、bash_code_execution_tool_result、
+text_editor_code_execution_tool_result。完整 provider/default/G7 验收仍未完成。

@@ -2,20 +2,20 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `b3a4bd9` plus named container-upload reply support. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
+Reviewed code/test baseline: `ada45b2` plus named server web-search result support. Automatic Launcher discovery and defined-empty auth are delivered; HTTP/SSE usage and SQL/recording reopen composition are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `3dd7a47` | Passed: 204 current files, including six SDK container-upload captures; recipe freshness is not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `a83e10f` | Passed: 205 current files, including fourteen SDK web-search result captures; recipe freshness is not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 413 production files, 1331 named types on the usage foundation snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 415 production files, 1338 named types on the server web-search result snapshot, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -24,6 +24,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Explicit file-profile / OAuth | Eight pinned Source cases replayed through native model/token HTTP mocks; actual loopback refresh, forced rotation, extension preservation, mode, cancellation, malformed exchange and redirect tests | Named native driver implemented with atomic private-file replacement; file-profile federation disk cache implemented; Launcher automatic discovery delivered; bounded ingress adaptations recorded |
 | Explicit federation exchange | Six pinned Source exchange recipes compared through native model/token transport mocks; actual HTTP optional-field/copy/status tests, projected-file symlink rotation, SSE model-401, wire bounds, context and callback containment | Named jwt-bearer driver implemented; profile disk cache implemented; Source discovery precedence implemented; Client cache owns reuse |
 | Federation profile file cache | Seventeen pinned Source profiles compared against native exchange/model headers, calls, errors, reconstructed clients, files and modes | Native profile dispatch, 30-second/fractional freshness, forced bypass, guarded reads, extension preservation and best-effort atomic writes implemented; Launcher automatic discovery delivered |
+| Server web-search result replies | Fourteen SDK direct/SSE captures in `go/testdata/python-provider-web-search.json` | Named results/error union, optional age/caller defaults, immutable extensions, forwarding/mask/clone/historical codec implemented; six remaining SDK reply kinds and final scope audit open |
 | Provider container-upload blocks | Six actual SDK direct/SSE captures in `go/testdata/python-provider-container-upload.json` | Named FileID and stream null defaults in the closed Block union; forwarding, clone/mask/stored codec tests; remaining server-tool/result variants and extension audit open |
 | Provider usage metadata | Nine actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON and HTTP/SSE adoption implemented; actual SQL events, reopen/restored writes, raw JSONL and reopened recording readers verified; scalar-string adaptation and final scope reconciliation remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
@@ -8492,3 +8493,39 @@ No full Python or coverage refresh; no merge/push. This is not a new upload/down
 endpoint or real native container-specific SQLite restart recipe. Seven remaining
 SDK server-tool/result variants, external extensions and scalar usage consumer
 reconciliation remain open; the complete G4/G7 migration is not accepted.
+
+## 2026-10-10 named web-search result replies
+
+Baseline: `ada45b2`; fourteen SDK direct/SSE recipes committed independently at
+`a83e10f`. The native closed Block union now accepts web_search_tool_result, with
+ToolUseID/Caller and a closed results-or-error content union. Results name Title,
+URL, EncryptedContent and optional PageAge; errors name Code and preserve observed
+future string codes. Root/result/error extensions retain immutable closed JSON
+values, never replacing named fields. Provider ingress selects SDK caller/page-age
+null defaults; native sparse serialization and larger historical frames are retained.
+Client-tool pairing/dispatch and the decision allowlist stay on their Source paths.
+
+Metadata codec helpers are shared with usage under generic private names; the usage
+codec's integer/null/default contract is unchanged. SQLite validates named strings
+before encoding; masks cover metadata and extension keys/values. Tests compare all
+14 SDK content projections and forwarded/stored message codecs, cloned accessors,
+registered-secret extension masking, atomic rejection, closed variant validation,
+empty results and >512 KiB historical metadata versus bounded network input. This
+is decoder/composition evidence, not a new server-search request/execution option
+or a new actual web-result SQL/restart recipe.
+
+Verification: full ordinary Go suite `go test -p=1 -count=1 -timeout=300s ./...`;
+full race suite `go test -race -p=1 -count=1 -timeout=300s ./...`;
+targeted protocol/provider/sqlitestate suites; go vet; typeaudit (415 production
+files, 1338 named types, zero findings); Python SDK capture test (1 passed, expected
+future-code serializer warning); Source export check (205 files current); scans
+(19 anchored guards); Python `verify_guards.py -k block` (3 caught with passing
+baselines; a named subset, not the complete mutation sweep); git diff --check and
+staged diff --check. Architecture regenerated with Archify,
+9/9 checks and zero errors/warnings. Specification SHA256
+97b02a4ee4436c6246415d42f63f362fad51fc61004096af88e4710aadb1ee0f;
+HTML SHA256 9bc048ea55c9d540c5389ddf94ff62a4d5f6c7726ebf75b7cbe75a6de5dfacdd.
+No fresh browser visual inspection under the earlier access denial, full Python
+regression or coverage refresh. Six remaining SDK reply variants, caller/external
+extensions, scalar usage semantics and complete G4/G7 acceptance remain open.
+No merge or push.

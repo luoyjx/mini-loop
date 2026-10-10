@@ -4026,3 +4026,23 @@ Six actual SDK 0.107.1 captures cover normal, empty and Unicode file IDs under b
 transports; remaining server-tool/result variants and extension scope still need
 reconciliation. The recipe tests serialization and archival codec, not a new actual
 container-file upload/download endpoint or a new native SQLite restart recipe.
+
+### Named server web-search results
+
+`protocol.WebSearchToolResultBlock` exposes ToolUseID, Content and Caller. Content
+is a closed results-or-error union, with detached Results/Error accessors. Each
+result has named Title, URL, EncryptedContent and optional PageAge; errors have a
+named WebSearchErrorCode. Root/result/error extension objects are immutable closed
+JSON values. Recognized fields never remain opaque payloads.
+`WithSDKDefaults` supplies observed caller/page-age nulls; `Block` converts a
+detached result into the closed transcript union. Domain/native sparse codecs
+retain omission. Direct/SSE provider decoding uses these types; stopped SSE blocks
+retain the decoded result. Historical readers support larger frames without changing
+network bounds. SQLite validates all named text fields before writing. Generic
+masked JSON projection includes extension keys/values; this metadata never selects
+client tool execution or tool pairing. The Source decision content allowlist still
+rejects this variant.
+Fourteen pinned SDK 0.107.1 recipes cover empty results, successes, errors/future
+codes, caller variants and extensions. Remaining six SDK reply kinds, caller/other
+external extensions and default/public-entry acceptance remain under audit. This
+slice adds reply representation, not a server search request option or execution backend.
