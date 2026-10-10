@@ -4146,3 +4146,28 @@ SQLite close/reopen and invalid UTF-8 batch rollback are verified. This metadata
 has no client BashInput, command execution, file opening, result pairing or grant
 semantics. Decision admission retains its Source allowlist. The text-editor SDK
 reply kind and broader caller/partial-input/default/public-entry acceptance remain.
+
+### Named provider text-editor results
+
+`protocol.TextEditorToolResultBlock` retains ToolUseID and a closed
+TextEditorContent view/create/replace/error union. View retains Content, FileType,
+optional NumLines/StartLine/TotalLines; create retains IsFileUpdate; replace retains
+optional Lines/NewLines/NewStart/OldLines/OldStart; errors retain Code and optional
+Message. EditorInteger preserves the SDK's signed Python integers above machine
+width; other scalar kinds are refused. Lines retain absent/null/empty/value forms,
+and invalid element kinds are refused without silently substituting empty strings.
+All recognized fields enter named types. Only unrecognized fields enter immutable
+closed extensions. Clone and accessors detach line arrays and nullable pointers.
+WithSDKDefaults(streamed) selects SDK nulls for nested optional fields and stream
+text/citations/parsed_output defaults. Native sparse/history codecs preserve
+omission and larger view data. Forty-eight SDK 0.107.1 direct/SSE captures cover
+text/image/PDF view, create/update, replace, empty/null/value fields, large integers,
+all five errors/future code, extensions and opaque root caller metadata. SSE now
+selects caller decoding by block kind; client ToolCaller admission remains validated.
+The previous eager caller parse failed the actual SDK editor-extension recipe; the
+new regression verifies preservation and retained client rejection behavior.
+Forwarding, masked metadata, atomic refusals, SQLite reopen and invalid UTF-8 batch
+rollback are verified. Observations never read/create/modify files, execute client
+tools or grant result pairing. SDK's twelve declared ContentBlock kinds now have
+named variants, but caller extensions, partial/malformed inputs, consumer scalar
+alignment, defaults/public entry points and complete migration acceptance remain.

@@ -292,23 +292,34 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			return badStream("nonsequential content index")
 		}
 		var block struct {
-			Type      protocol.BlockKind   `json:"type"`
-			Text      *string              `json:"text"`
-			Thinking  *string              `json:"thinking"`
-			Signature *string              `json:"signature"`
-			FileID    *string              `json:"file_id"`
-			Data      *string              `json:"data"`
-			ID        *string              `json:"id"`
-			Name      *protocol.ToolName   `json:"name"`
-			Input     json.RawMessage      `json:"input"`
-			Caller    *protocol.ToolCaller `json:"caller"`
-			Citations json.RawMessage      `json:"citations"`
+			Type      protocol.BlockKind `json:"type"`
+			Text      *string            `json:"text"`
+			Thinking  *string            `json:"thinking"`
+			Signature *string            `json:"signature"`
+			FileID    *string            `json:"file_id"`
+			Data      *string            `json:"data"`
+			ID        *string            `json:"id"`
+			Name      *protocol.ToolName `json:"name"`
+			Input     json.RawMessage    `json:"input"`
+			Caller    json.RawMessage    `json:"caller"`
+			Citations json.RawMessage    `json:"citations"`
 		}
 		if json.Unmarshal(wire.Block, &block) != nil {
 			return badStream("malformed starting block")
 		}
 		b := streamBlock{kind: block.Type, text: &strings.Builder{}}
 		switch block.Type {
+		case protocol.BlockTextEditorToolResult:
+			var result protocol.TextEditorToolResultBlock
+			if err := json.Unmarshal(wire.Block, &result); err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			result = result.WithSDKDefaults(true)
+			encoded, err := json.Marshal(result)
+			if err != nil || len(encoded) > protocol.MaxWireBytes {
+				return badStream("normalized text editor block exceeds protocol limit")
+			}
+			b.block = result.Block()
 		case protocol.BlockBashExecutionToolResult:
 			var result protocol.BashExecutionToolResultBlock
 			if err := json.Unmarshal(wire.Block, &result); err != nil {
@@ -399,13 +410,20 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			b.text.WriteString(*block.Thinking)
 			b.signature = *block.Signature
 		case protocol.BlockToolUse:
+			var caller *protocol.ToolCaller
+			if len(block.Caller) > 0 && string(block.Caller) != "null" {
+				caller = &protocol.ToolCaller{}
+				if json.Unmarshal(block.Caller, caller) != nil {
+					return badStream("malformed starting block")
+				}
+			}
 			if block.ID == nil || block.Name == nil || len(block.Input) == 0 {
 				return badStream("tool fields missing")
 			}
 			b.id = *block.ID
 			b.name = *block.Name
 			b.input = append([]byte(nil), block.Input...)
-			b.caller = block.Caller
+			b.caller = caller
 		default:
 			return badStream("unsupported content block")
 		}

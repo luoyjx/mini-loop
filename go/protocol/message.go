@@ -32,6 +32,7 @@ const (
 	BlockWebFetchToolResult      BlockKind = "web_fetch_tool_result"
 	BlockCodeExecutionToolResult BlockKind = "code_execution_tool_result"
 	BlockBashExecutionToolResult BlockKind = "bash_code_execution_tool_result"
+	BlockTextEditorToolResult    BlockKind = "text_editor_code_execution_tool_result"
 	BlockToolResult              BlockKind = "tool_result"
 )
 
@@ -87,6 +88,7 @@ type Block struct {
 	webFetch         *WebFetchToolResultBlock
 	codeExecution    *CodeExecutionToolResultBlock
 	bashExecution    *BashExecutionToolResultBlock
+	textEditor       *TextEditorToolResultBlock
 	toolUse          *ToolUseBlock
 	toolResult       *ToolResultBlock
 }
@@ -251,6 +253,16 @@ func (b Block) ToolResult() (ToolResultBlock, bool) {
 }
 
 func (b Block) Validate() error {
+	if b.kind != BlockTextEditorToolResult && b.textEditor != nil {
+		return errors.New("block has an unexpected text editor variant")
+	}
+	if b.kind == BlockTextEditorToolResult {
+		if b.textEditor == nil || b.bashExecution != nil || b.codeExecution != nil || b.webFetch != nil || b.serverTool != nil || b.toolSearch != nil || b.webSearch != nil || b.containerUpload != nil || b.redactedThinking != nil || b.text != nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
+			return errors.New("text editor block requires one variant")
+		}
+		return b.textEditor.Validate()
+	}
+
 	if b.kind != BlockBashExecutionToolResult && b.bashExecution != nil {
 		return errors.New("block has an unexpected bash execution variant")
 	}
@@ -359,6 +371,8 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		return nil, err
 	}
 	switch b.kind {
+	case BlockTextEditorToolResult:
+		return b.textEditor.marshal(control)
 	case BlockBashExecutionToolResult:
 		return b.bashExecution.marshal(control)
 	case BlockCodeExecutionToolResult:
@@ -469,6 +483,12 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 	}
 	var next Block
 	switch tag.Type {
+	case BlockTextEditorToolResult:
+		result, err := decodeTextEditorBlock(data, bounded)
+		if err != nil {
+			return Block{}, err
+		}
+		next = Block{kind: BlockTextEditorToolResult, textEditor: &result}
 	case BlockBashExecutionToolResult:
 		result, err := decodeBashExecutionBlock(data, bounded)
 		if err != nil {
@@ -640,6 +660,10 @@ func (c Content) Clone() Content {
 		if b.thinking != nil {
 			v := *b.thinking
 			blocks[i].thinking = &v
+		}
+		if b.textEditor != nil {
+			v := b.textEditor.clone()
+			blocks[i].textEditor = &v
 		}
 		if b.bashExecution != nil {
 			v := b.bashExecution.clone()

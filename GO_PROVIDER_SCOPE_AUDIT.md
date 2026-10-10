@@ -212,3 +212,22 @@ execution 标签不会在此类型中混用。26 个 SDK direct/SSE 配方覆盖
 不调用客户端 Bash、不执行命令或打开文件，也不要求客户端结果配对。尚缺
 text_editor_code_execution_tool_result；caller/partial 输入、usage scalar、默认
 诊断与完整 G4/G7 验收仍未完成。
+
+## Text-editor result 回复更新
+
+基线 `2d8ba81` 后支持 `text_editor_code_execution_tool_result` 的具名 ToolUseID
+和 view/create/replace/error 闭合 union。Content/FileType/IsFileUpdate/Lines 具名；
+可空行号/行数用 EditorInteger 保留大有符号整数，错误保留 Code/可空 Message。
+48 个 SDK direct/SSE 配方覆盖三个 view 文件类型、create/update、replace、缺省/
+null/空数组/值、大整数、5 种错误、future code 与扩展。SSE 曾提前将不属于该
+SDK 类定义的 caller 扩展当客户端 caller 验证；新配方复现失败后修复为按 block
+类型选择解码，客户端 caller 拒绝规则仍受回归检查。扩展保持不可变闭合 JSON。
+转发、脱敏、克隆、历史大记录与实际 SQLite 重开保真，无效 UTF-8 使批次回滚。
+
+已核对 SDK `types/content_block.py` 的 12 类：text、thinking、redacted_thinking、
+tool_use、server_tool_use、web_search_tool_result、web_fetch_tool_result、
+code_execution_tool_result、bash_code_execution_tool_result、
+text_editor_code_execution_tool_result、tool_search_tool_result、container_upload。
+当前均有具名 Go 变体。这证明种类覆盖，不能代替完整字段与消费者验收。已声明
+caller 的扩展、partial/畸形输入、usage scalar 消费者、默认诊断和最终 G4/G7
+验收仍未完成；元数据不触发文件读取、创建、编辑或客户端工具权限。

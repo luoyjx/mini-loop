@@ -610,7 +610,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `37d4451` plus named Bash execution result replies;
+reviewed **2026-10-10** (Go baseline `2d8ba81` plus named text-editor result replies;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -671,7 +671,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code and Bash outputs + citations + usage schema · SSE · UTF-8 tool-result wire · SDK usage metadata · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · SDK usage metadata · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1238,6 +1238,16 @@ Its codec preserves absent/null/value and closed future extensions; clones detac
 mutable fields. `WithSDKDefaults` explicitly materializes nullable SDK fields.
 Event projection masks metadata strings and extension keys/values before escaping,
 without mutating authoritative usage. Stored event decoding retains this shape.
+Native `text_editor_code_execution_tool_result` replies retain a closed
+view/create/replace/error union. Named content, file type, update flag, lines,
+nullable integer line metadata and nullable error messages preserve SDK values,
+including integers above machine width. SDK null defaults and sparse/history
+forms stay distinct. Immutable extensions, masked clones and SQLite reopen retain
+all 48 SDK captures. Stream caller decoding is selected by block kind, so opaque
+caller extensions on editor observations are preserved while client caller
+validation stays intact. Editor observations do not read, create or modify files.
+The SDK's 12 declared ContentBlock kinds are represented; complete provider and
+default-path parity still require the remaining field/consumer audit.
 Native `bash_code_execution_tool_result` observations use a separate named
 result/error union, output files, stdout/stderr and shared ExecutionReturnCode.
 Five SDK errors include output_file_too_large; future codes and extensions survive.

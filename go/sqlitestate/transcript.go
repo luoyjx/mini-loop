@@ -156,6 +156,25 @@ func validateMessageText(message protocol.Message) error {
 	for _, block := range blocks {
 		var err error
 		switch block.Kind() {
+		case protocol.BlockTextEditorToolResult:
+			value, _ := block.TextEditorToolResult()
+			err = validateText(value.ToolUseID)
+			if result, ok := value.Content.View(); ok && err == nil {
+				err = validateText(result.Content, string(result.FileType))
+			} else if result, ok := value.Content.Replace(); ok && err == nil && result.Lines != nil {
+				for _, line := range *result.Lines {
+					if err != nil {
+						break
+					}
+					err = validateText(line)
+				}
+			} else if failure, ok := value.Content.Error(); ok && err == nil {
+				err = validateText(string(failure.Code))
+				if err == nil && failure.Message != nil {
+					err = validateText(*failure.Message)
+				}
+			}
+
 		case protocol.BlockBashExecutionToolResult:
 			value, _ := block.BashExecutionToolResult()
 			err = validateText(value.ToolUseID)
