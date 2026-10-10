@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from mini_loop.agent import Agent
+from mini_loop.activity import tool_label
 from mini_loop.approvals import grant_candidate, proposed_candidate
 from mini_loop.background import BackgroundManager, install_background, should_run_background
 from mini_loop.builtins import _bash, default_registry
@@ -14,6 +15,7 @@ from mini_loop.config import Settings
 from mini_loop.fake_llm import FakeAsyncAnthropic
 from mini_loop.permissions import PermissionHook
 from mini_loop.registry import Hook, Hooks, ToolCall, ToolContext
+from mini_loop.secrets import SecretRegistry
 from mini_loop.tools import Toolset, looks_dangerous
 
 
@@ -54,7 +56,7 @@ def provider_bash_command_contracts(scratch: Path | str) -> dict:
         async def emit(event):
             if event["type"] in {"tool_use", "tool_result"}:
                 events.append({key: copy.deepcopy(event[key]) for key in
-                               ("type", "name", "input", "output", "denied", "error") if key in event})
+                               ("type", "name", "input", "output", "denied", "error", "display") if key in event})
 
         tools = default_registry()
         if enabled:
@@ -101,10 +103,29 @@ def provider_bash_command_contracts(scratch: Path | str) -> dict:
         return rows, permission_rows
 
     rows, permissions = asyncio.run(capture())
+    registry = SecretRegistry()
+    registry.register("DISPLAY_KEY", "sk-display-key-123")
+    registry.register("DISPLAY_VALUE", "sk-display-value-123")
+    labels = []
+    for name, command in [
+        ("null", None), ("boolean", True), ("integer", 17), ("float", 13.75),
+        ("unicode-array", ["中文🌟 " * 30]), ("quoted-array", ["a'b\"c", "line\nbreak"]),
+        ("masked-array", ["sk-display-value-123", {"sk-display-key-123": "sk-display-value-123"}]),
+        ("masked-object", {"sk-display-key-123": "sk-display-value-123"}),
+        ("masked-collision", {"sk-display-key-123": "first", "sk-display-value-123": "last"}),
+        ("text-search", "rg term"), ("text-opaque", "cat one | wc -l"),
+        ("masked-text-cap", "echo sk-display-value-123 " + "中文🌟 " * 30),
+    ]:
+        value = {"command": command}
+        masked = registry.mask_payload(value)
+        labels.append({"name": name, "input_json": json.dumps(value, ensure_ascii=True),
+                       "masked_input_json": json.dumps(masked, ensure_ascii=True),
+                       "display": tool_label("bash", masked)})
     sources = {"Agent._exec_tool": Agent._exec_tool, "builtins._bash": _bash,
                "Toolset.run_bash_result": Toolset.run_bash_result, "looks_dangerous": looks_dangerous,
                "should_run_background": should_run_background, "BackgroundManager.run": BackgroundManager.run,
                "PermissionHook.before_tool": PermissionHook.before_tool,
+               "activity.tool_label": tool_label, "SecretRegistry.mask_payload": SecretRegistry.mask_payload,
                "grant_candidate": grant_candidate, "proposed_candidate": proposed_candidate}
     return {"source_sha256": {name: hashlib.sha256(inspect.getsource(fn).encode()).hexdigest()
-                              for name, fn in sources.items()}, "cases": rows, "permissions": permissions}
+                              for name, fn in sources.items()}, "cases": rows, "permissions": permissions, "labels": labels}

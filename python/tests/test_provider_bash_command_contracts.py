@@ -1,5 +1,7 @@
 import json
 
+from mini_loop.activity import tool_label
+from mini_loop.secrets import MASK
 from tools.provider_bash_command_contracts import provider_bash_command_contracts
 
 
@@ -7,8 +9,10 @@ def test_actual_nontext_command_failures_keep_consumer_and_initialization_order(
     fixture = provider_bash_command_contracts(tmp_path)
     assert len(fixture["cases"]) == 36
     assert len(fixture["permissions"]) == 20
+    assert len(fixture["labels"]) == 12
     for row in fixture["cases"]:
         assert row["background_live"] == 0
+        assert row["events"][0]["display"] == tool_label("bash", json.loads(row["input_json"]))
         if row["mode"] == "keep":
             value = json.loads(row["input_json"])["command"]
             kind = type(value).__name__
@@ -32,3 +36,12 @@ def test_actual_nontext_command_failures_keep_consumer_and_initialization_order(
             assert row["output"] == "Permission denied: this session is read-only (tool risk: exec)"
         else:
             assert row["output"] is None
+    labels = {row["name"]: row for row in fixture["labels"]}
+    assert labels["null"]["display"] == {"verb": "run", "object": "None"}
+    assert labels["text-search"]["display"] == {"verb": "search", "object": "term"}
+    assert labels["text-opaque"]["display"] == {"verb": "run", "object": "cat one | wc -l"}
+    assert json.loads(labels["masked-collision"]["masked_input_json"])["command"] == {MASK: "last"}
+    for row in fixture["labels"]:
+        assert "sk-display-" not in row["masked_input_json"]
+        assert "sk-display-" not in row["display"]["object"]
+        assert len(row["display"]["object"]) <= 60
