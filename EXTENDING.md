@@ -4046,3 +4046,20 @@ Fourteen pinned SDK 0.107.1 recipes cover empty results, successes, errors/futur
 codes, caller variants and extensions. Remaining six SDK reply kinds, caller/other
 external extensions and default/public-entry acceptance remain under audit. This
 slice adds reply representation, not a server search request option or execution backend.
+
+### Named server tool-search results
+
+`protocol.ToolSearchToolResultBlock` retains ToolUseID and a closed references-or-error
+Content union. Results expose detached References with named ToolName values, including
+unknown client names; errors expose Code and optional Message. Root/result/reference/
+error extensions remain immutable closed JSON values. Recognized fields enter named
+types, and references remain inert observations rather than catalogue registrations.
+`WithSDKDefaults(streamed)` selects null error-message defaults and stream-only null
+text/citations/parsed_output fields captured from SDK 0.107.1. Native sparse codecs
+retain omission. Direct/SSE decoding, forwarding/cache encoding, clone isolation,
+masked projections, historical frames and SQLite named-string validation support
+this variant. Decision content admission retains the Source allowlist and rejects it.
+Twelve SDK recipes cover empty references, known/unknown/Unicode names, errors/future
+codes, messages and extensions. Five SDK reply variants and final provider/public-entry
+acceptance remain open. This slice adds reply representation; server tool-search
+request selection and dynamic client catalogue registration are not implemented here.

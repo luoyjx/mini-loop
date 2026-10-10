@@ -21,13 +21,14 @@ const (
 type BlockKind string
 
 const (
-	BlockText                BlockKind = "text"
-	BlockThinking            BlockKind = "thinking"
-	BlockRedactedThinking    BlockKind = "redacted_thinking"
-	BlockContainerUpload     BlockKind = "container_upload"
-	BlockWebSearchToolResult BlockKind = "web_search_tool_result"
-	BlockToolUse             BlockKind = "tool_use"
-	BlockToolResult          BlockKind = "tool_result"
+	BlockText                 BlockKind = "text"
+	BlockThinking             BlockKind = "thinking"
+	BlockRedactedThinking     BlockKind = "redacted_thinking"
+	BlockContainerUpload      BlockKind = "container_upload"
+	BlockWebSearchToolResult  BlockKind = "web_search_tool_result"
+	BlockToolSearchToolResult BlockKind = "tool_search_tool_result"
+	BlockToolUse              BlockKind = "tool_use"
+	BlockToolResult           BlockKind = "tool_result"
 )
 
 type ToolName string
@@ -77,6 +78,7 @@ type Block struct {
 	redactedThinking *RedactedThinkingBlock
 	containerUpload  *ContainerUploadBlock
 	webSearch        *WebSearchToolResultBlock
+	toolSearch       *ToolSearchToolResultBlock
 	toolUse          *ToolUseBlock
 	toolResult       *ToolResultBlock
 }
@@ -241,6 +243,15 @@ func (b Block) ToolResult() (ToolResultBlock, bool) {
 }
 
 func (b Block) Validate() error {
+	if b.kind != BlockToolSearchToolResult && b.toolSearch != nil {
+		return errors.New("block has an unexpected tool-search-result variant")
+	}
+	if b.kind == BlockToolSearchToolResult {
+		if b.toolSearch == nil || b.webSearch != nil || b.containerUpload != nil || b.redactedThinking != nil || b.text != nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
+			return errors.New("tool search result requires one variant")
+		}
+		return b.toolSearch.Validate()
+	}
 	if b.kind != BlockWebSearchToolResult && b.webSearch != nil {
 		return errors.New("block has an unexpected web-search-result variant")
 	}
@@ -300,6 +311,8 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		return nil, err
 	}
 	switch b.kind {
+	case BlockToolSearchToolResult:
+		return b.toolSearch.marshal(control)
 	case BlockWebSearchToolResult:
 		return b.webSearch.marshal(control)
 	case BlockContainerUpload:
@@ -400,6 +413,12 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 	}
 	var next Block
 	switch tag.Type {
+	case BlockToolSearchToolResult:
+		result, err := decodeToolSearchBlock(data, bounded)
+		if err != nil {
+			return Block{}, err
+		}
+		next = Block{kind: BlockToolSearchToolResult, toolSearch: &result}
 	case BlockWebSearchToolResult:
 		result, err := decodeWebSearchBlock(data, bounded)
 		if err != nil {
@@ -541,6 +560,10 @@ func (c Content) Clone() Content {
 		if b.thinking != nil {
 			v := *b.thinking
 			blocks[i].thinking = &v
+		}
+		if b.toolSearch != nil {
+			v := b.toolSearch.clone()
+			blocks[i].toolSearch = &v
 		}
 		if b.webSearch != nil {
 			v := b.webSearch.clone()

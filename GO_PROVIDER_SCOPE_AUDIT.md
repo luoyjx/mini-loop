@@ -150,3 +150,15 @@ tool dispatch/pairing；decision content allowlist 继续与 Source 一致地拒
 SDK ContentBlock 尚缺其余六种：server_tool_use、web_fetch_tool_result、
 tool_search_tool_result、code_execution_tool_result、bash_code_execution_tool_result、
 text_editor_code_execution_tool_result。完整 provider/default/G7 验收仍未完成。
+
+## Server tool-search result 回复更新
+
+基线 `1c68fd0` 后支持 `tool_search_tool_result` 的具名 ToolUseID 和引用/错误
+闭合 union。工具引用只保留 ToolName；错误保留 Code/可空 Message。root/result/
+reference/error 的扩展进入不可变闭合 JSON，已知字段仍进入具名类型。12 个 SDK
+direct/SSE 配方验证空引用、已知/未知/Unicode 名称、错误/future code、消息和扩展。
+SDK 流式 ParsedTextBlock 的 text/citations/parsed_output null 默认值及错误消息
+默认 null 均显式保留；原生 sparse codec 区分缺省，历史 codec 支持大记录。
+引用不注册或执行客户端工具，decision allowlist 保持 Source 拒绝。尚缺五种
+SDK 回复：server_tool_use、web_fetch_tool_result、code_execution_tool_result、
+bash_code_execution_tool_result、text_editor_code_execution_tool_result。完整验收未完成。
