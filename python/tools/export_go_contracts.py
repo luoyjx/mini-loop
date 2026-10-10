@@ -6490,6 +6490,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_auth_contracts import provider_auth_contracts
     from tools.provider_citation_contracts import provider_citation_contracts
     from tools.provider_usage_contracts import provider_usage_contracts
+    from tools.provider_usage_consumer_contracts import provider_usage_consumer_contracts
     from tools.provider_container_contracts import provider_container_contracts
     from tools.provider_web_search_contracts import provider_web_search_contracts
     from tools.provider_web_fetch_contracts import provider_web_fetch_contracts
@@ -6855,6 +6856,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-auth.json": _json_bytes(provider_auth_contracts(Path(scratch) / "provider-auth")),
         "python-provider-citations.json": _json_bytes(provider_citation_contracts()),
         "python-provider-usage.json": _json_bytes(provider_usage_contracts()),
+        "python-provider-usage-consumer.json": _json_bytes(provider_usage_consumer_contracts()),
         "python-provider-container-upload.json": _json_bytes(provider_container_contracts()),
         "python-provider-web-search.json": _json_bytes(provider_web_search_contracts()),
         "python-provider-web-fetch.json": _json_bytes(provider_web_fetch_contracts()),

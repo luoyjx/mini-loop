@@ -281,3 +281,11 @@ caller 的扩展、partial/畸形输入、usage scalar 消费者、默认诊断�
 - 最新 98 场景最终差异从 40 降至 14（client 7、server 7）；非对象与
   nonfinite、已知字段错误类型及完整 provider 验收仍开放。报告另存
   `docs/audits/provider-bash-binding-native-2026-10-10.json`，历史报告保留。
+
+## Usage scalar 实际消费与差异固定
+
+34 个真实 SDK + Meter 场景成功；Go 拒绝 30 个，4 个的事件和计量匹配。
+Direct 与 SSE 对字符串、bool、integral float 的实际归一化不同；分数计量
+截断，负 anchor 接受，字符串不计量。已捕获 start/delta 快照，详见
+[消费契约与实现顺序](docs/audits/provider-usage-consumer-2026-10-10.md)。
+本轮未改变原生 usage 适配，完整字段/消费者/持久化交付仍开放。

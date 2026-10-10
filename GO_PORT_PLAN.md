@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; scalar-string adaptation and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | 215 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | 216 exported Source recipe files including actual SDK usage capture; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -6889,7 +6889,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    Named types, nullable/default selection, extensions, clones, masked event projection
    and stored-event JSON codecs are implemented; direct/SSE SQLite close/reopen,
    restored writes and independently reopened JSONL readers preserve complete usage.
-   Scalar-string adaptation and remaining provider scope reconciliation stay open. See
+   Scalar usage normalization, metering and remaining provider scope reconciliation stay open. See
    [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md). Structured output request
    options are not emitted by the current repository request producers; audit
    custom extension behavior separately instead of adding unrelated SDK features.
@@ -16802,3 +16802,35 @@ verification. Full Python regression was not rerun; Python runtime package modul
 were unchanged. No merge or push. Goal remains incomplete.
 
 Source export check after all native watcher jobs ended: passed, 215 current files.
+
+## 2026-10-10 actual usage scalar consumers and native discrepancy capture
+
+Runtime baseline: `bf4c866`. This iteration adds Source/test/diagnostic evidence,
+not a native usage implementation. Actual SDK direct/SSE + repository metering
+produce 34 successful profiles. Native decoding refuses 30; 4 match both event
+value/kind and prompt count. Diagnostic test success is not a parity gate.
+
+Direct required counts retain numeric strings, booleans and floats. SSE can
+normalize integer-like strings, booleans and integral floats at message_start or
+message_delta. Fractional floats remain observable; metering truncates them,
+counts bool as int, ignores text/null/structured values, returns no observation
+for zero and accepts negative anchors before clamping used(). Required text plus
+coerced cache fields gives different actual direct/SSE prompt totals.
+
+Capture includes the actual wire, stage snapshots and _field/prompt_tokens/
+TokenMeter.observe hashes. Existing 9 usage metadata profiles remain unchanged.
+See [scope, native report and implementation sequence](docs/audits/provider-usage-consumer-2026-10-10.md).
+Known counts require named variants and separate observation/metering semantics;
+SDK normalization, compaction and strict decision consumers, clone/masking and
+historical/SQLite/recording recovery still require implementation and validation.
+This evidence does not close G4/G7. Production coverage remains the bf4c866
+worktree measurement, application 89.39%; no new measurement is claimed.
+
+Validation for this capture: Source helpers 2 passed (12 SDK warnings); full
+provider package tests passed; selected legacy usage race tests passed and the
+explicit 34-case diagnostic race replay passed. `verify_scans.py` passed 19
+anchored guards; Source export check passed 216 current files; README outline,
+`git diff --check` and staged diff check passed. Production modules and runtime
+architecture were unchanged; no new full Go/Python suite, coverage refresh,
+mutation sweep or architecture regeneration was required or claimed. Existing
+bf4c866 full Go/race/vet/type evidence remains the runtime baseline. No push.

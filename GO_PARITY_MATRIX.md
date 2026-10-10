@@ -9,7 +9,7 @@ for today's implementation queue. The complete migration is not yet accepted.
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `cea0e39` | Passed: 215 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `bf4c866` plus usage consumer capture | Passed: 216 current files, captured after native Go watcher suites ended. Previous concurrent watchfiles drift remains recorded; recipe freshness is not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
@@ -9009,3 +9009,35 @@ verification. Full Python regression was not rerun; Python runtime package modul
 were unchanged. No merge or push. Goal remains incomplete.
 
 Source export check after all native watcher jobs ended: passed, 215 current files.
+
+## 2026-10-10 actual usage scalar consumers and native discrepancy capture
+
+Runtime baseline: `bf4c866`. This iteration adds Source/test/diagnostic evidence,
+not a native usage implementation. Actual SDK direct/SSE + repository metering
+produce 34 successful profiles. Native decoding refuses 30; 4 match both event
+value/kind and prompt count. Diagnostic test success is not a parity gate.
+
+Direct required counts retain numeric strings, booleans and floats. SSE can
+normalize integer-like strings, booleans and integral floats at message_start or
+message_delta. Fractional floats remain observable; metering truncates them,
+counts bool as int, ignores text/null/structured values, returns no observation
+for zero and accepts negative anchors before clamping used(). Required text plus
+coerced cache fields gives different actual direct/SSE prompt totals.
+
+Capture includes the actual wire, stage snapshots and _field/prompt_tokens/
+TokenMeter.observe hashes. Existing 9 usage metadata profiles remain unchanged.
+See [scope, native report and implementation sequence](docs/audits/provider-usage-consumer-2026-10-10.md).
+Known counts require named variants and separate observation/metering semantics;
+SDK normalization, compaction and strict decision consumers, clone/masking and
+historical/SQLite/recording recovery still require implementation and validation.
+This evidence does not close G4/G7. Production coverage remains the bf4c866
+worktree measurement, application 89.39%; no new measurement is claimed.
+
+Validation for this capture: Source helpers 2 passed (12 SDK warnings); full
+provider package tests passed; selected legacy usage race tests passed and the
+explicit 34-case diagnostic race replay passed. `verify_scans.py` passed 19
+anchored guards; Source export check passed 216 current files; README outline,
+`git diff --check` and staged diff check passed. Production modules and runtime
+architecture were unchanged; no new full Go/Python suite, coverage refresh,
+mutation sweep or architecture regeneration was required or claimed. Existing
+bf4c866 full Go/race/vet/type evidence remains the runtime baseline. No push.

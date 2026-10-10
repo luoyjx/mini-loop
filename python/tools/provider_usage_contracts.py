@@ -14,13 +14,14 @@ import httpx
 from anthropic.lib.streaming._messages import accumulate_event
 from anthropic.types import Usage
 from mini_loop.agent import _usage_payload
+from mini_loop.metering import TokenMeter, _field, prompt_tokens
 
 
-def provider_usage_contracts() -> dict:
+def provider_usage_contracts(*, profiles: list[dict] | None = None, capture_consumers: bool = False) -> dict:
     if anthropic.__version__ != "0.107.1":
         raise RuntimeError("usage contracts require anthropic 0.107.1")
     core = {"input_tokens": 13, "output_tokens": 5}
-    profiles = [
+    profiles = profiles if profiles is not None else [
         {"name": "minimal", "usage": core, "stream": True},
         {"name": "explicit-null", "usage": {**core, **{key: None for key in Usage.model_fields if key not in core}}},
         {"name": "nested", "stream": True, "usage": {**core,
@@ -40,6 +41,8 @@ def provider_usage_contracts() -> dict:
         for profile in profiles:
             for mode in (profile.get("modes") or (["direct", "stream"] if profile.get("stream") else ["direct"])):
                 requests = []
+                streams = []
+                stages = []
                 body = {"id": "fixture", "type": "message", "role": "assistant", "model": "fixture-model",
                     "content": [{"type": "text", "text": "ok"}], "stop_reason": "end_turn",
                     "stop_sequence": None, "usage": profile["usage"]}
@@ -59,6 +62,7 @@ def provider_usage_contracts() -> dict:
                         ("message_stop", {"type": "message_stop"}),
                     ]
                     text = "".join(f"event: {name}\ndata: {json.dumps(value)}\n\n" for name, value in events)
+                    streams.append(text)
                     return httpx.Response(200, headers={"content-type": "text/event-stream"}, text=text)
 
                 async with anthropic.AsyncAnthropic(api_key="fixture-key", base_url="https://fixture.invalid", max_retries=0,
@@ -68,16 +72,35 @@ def provider_usage_contracts() -> dict:
                         response = await client.messages.create(**kwargs)
                     else:
                         async with client.messages.stream(**kwargs) as stream:
-                            async for _ in stream:
-                                pass
+                            async for event in stream:
+                                if capture_consumers and event.type in {"message_start", "message_delta"}:
+                                    stages.append({"event": event.type,
+                                        "usage": _usage_payload(stream.current_message_snapshot)})
                             response = await stream.get_final_message()
                     rows.append({"name": profile["name"], "mode": mode, "wire_usage": profile["usage"],
                         "request": requests[0], "event_usage": _usage_payload(response)})
+                    if capture_consumers:
+                        rows[-1]["response_json"] = json.dumps(body, separators=(",", ":"))
+                        if mode == "stream":
+                            rows[-1]["sse"] = streams[0]
+                            rows[-1]["usage_stages"] = stages
+                        meter = TokenMeter()
+                        messages = [{"role": "user", "content": "hello"}]
+                        try:
+                            observed = meter.observe(response.usage, messages, envelope="fixture")
+                            rows[-1]["consumer"] = {"prompt_tokens": prompt_tokens(response.usage),
+                                "observed": observed, "anchor": meter.anchor,
+                                "observations": meter.observations, "used": meter.used(messages)}
+                        except (ValueError, OverflowError, TypeError) as exc:
+                            rows[-1]["consumer"] = {"error": {"class": type(exc).__name__, "message": str(exc)}}
                     if "delta_usage" in profile:
                         rows[-1]["delta_usage"] = profile["delta_usage"]
         return rows
 
+    symbols = [_usage_payload, accumulate_event, Usage]
+    if capture_consumers:
+        symbols += [_field, prompt_tokens, TokenMeter.observe]
     return {"sdk_version": anthropic.__version__, "pydantic_version": pydantic.__version__,
         "python_version": sys.version.split()[0], "usage_fields": list(Usage.model_fields),
         "source_hashes": {symbol.__qualname__: hashlib.sha256(inspect.getsource(symbol).encode()).hexdigest()
-            for symbol in [_usage_payload, accumulate_event, Usage]}, "cases": asyncio.run(capture())}
+            for symbol in symbols}, "cases": asyncio.run(capture())}
