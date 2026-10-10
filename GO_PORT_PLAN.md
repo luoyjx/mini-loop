@@ -17619,3 +17619,38 @@ mutation sweep and non-Darwin gates were not rerun. No merge or push.
 Final Source export --check passed after all native Go jobs were terminal: 221
 current files, no fixture changes. Working-tree diff check passed. Lifecycle
 alignment is scoped; full ordinary native temporal validation remains failed.
+
+## Darwin raw callback boundary diagnosis — 2026-10-11
+
+Baseline: `936c1c7`. [Captured audit](docs/audits/go-fsevents-raw-callback-2026-10-11.json)
+retains the temporary C callback instrumentation, its SHA256, restored source and
+fixture hashes, all failed-subscription raw records, exact failure timelines,
+full log hash, Source comparator results and its reproducible script.
+
+Temporary stderr logging was inserted before every Go callback forwarding call.
+Full ordinary `go test -p=1 -count=1 -timeout=300s ./...` failed only reload:
+hidden-parent-source, same-mtime-write and lower-mtime-write. All three observed
+a post-subscription readiness probe, then timed out on the operation. Each failed
+subscription's raw C records contain only setup/readiness events; no operation
+callback was recorded before the deadline and cleanup. These failures do not
+support attributing the timeout to Go lexical admission or batch deduplication.
+They do not prove kernel event loss, absent stream registration or a host cause.
+Stderr instrumentation may affect scheduling; event IDs are not timestamps.
+
+After that Go process terminated, a sequential actual Python/watchfiles native
+comparison first constructed/closed 32 RustNotify subscriptions, then ran all 16
+WatchFilesReload recipes using the existing Source helper. All matched the pinned
+fixture, including the three failed Go names. Source kept its 3-second operation
+window. Its workload is not the full Go package workload or identical scheduling;
+this does not prove a Go-only defect or explain causality.
+
+Instrumentation was fully removed after capture; the restored C SHA256 is
+73e544bdcd054012392a9123ac8230d716b05d41ae65c6a191296dcd47389649,
+with `git diff --exit-code -- go python` confirming no runtime/test/fixture edits.
+No fixture widening, deadline extension, fallback backend or default change.
+Next diagnosis targets registration/delivery before the Go callback and matched
+Source workload, not wider callback admission. Native temporal acceptance remains
+open. Documentation validation: audit assertions and diff checks; no fresh full
+race, vet, type audit, export sweep, Python regression, coverage or visual gate.
+Prior gates retain their original baselines. Architecture is unchanged. No merge
+or push, and no complete migration claim.
