@@ -10060,3 +10060,41 @@ c8491d2. Full Python, non-Darwin, performance and fresh browser visual checks we
 not run. Broader historical/trajectory/model consumers, SDK error fidelity,
 watcher reliability, default diagnostics and complete migration acceptance remain
 open. No dependency was added; no merge or push.
+
+## Nonfinite managed trajectory snapshots — 2026-10-11
+
+Baseline `591a3c9`. [Source fixture](go/testdata/python-provider-nonfinite-trajectory.json)
+adds four real AsyncAnthropic 0.107.1 / Manager.run / JSONL / fresh-reader cases:
+NaN/Infinity in unknown Bash input parameters, with capture_content on/off.
+Selected model outputs, tool inputs and both model-start message snapshots match
+native sorted legacy JSON exactly. The next-request snapshot includes the detached
+cache annotation; registered secret keys/values are masked. Content-off projections
+match Source redaction. Live inputs retain original unmasked observations. Only
+one initial request reaches transport; recording remains healthy and status error
+reflects the subsequent finite request failure.
+
+TrajectoryRecord.MarshalArchiveJSON now uses concrete event and SDK observation
+encoders, preserving the writer's privacy-before-UTF-8 policy. Standard MarshalJSON
+and model HTTP encoding remain finite. The first implementation missed the second
+model_start: request optimizer documents/digests still encoded finite messages.
+Those now use detached observed messages; the existing protocol shape guard and
+concrete text/result lowering retain original immutable tool variants and grants.
+No dependency or execution path was added. Full transcript/system/catalogue bytes,
+SDK error-class/text fidelity, broader historical scalar consumers, watcher
+reliability, default diagnostics and complete migration acceptance remain open.
+
+Completed native gates on the combined worktree: targeted trajectory/agent
+consumer comparison and projection/archive selectors; full Go race; go vet;
+type audit (437 production files / 1,405 named types / zero findings). One Source
+test covers four actual profiles; 19 scanner anchors pass and the selected journal
+fingerprint mutation is caught after a passing baseline. Full ordinary Go fails
+only reload removed-source, same-mtime-write and rename-out recipes. Archify passes
+9/9 with zero errors/warnings; no fresh browser visual inspection was performed.
+See the [trajectory audit](docs/audits/provider-nonfinite-trajectory-2026-10-11.json).
+Coverage is not refreshed: 89.26% application / 89.23% all Go belongs to c8491d2.
+Full Python, non-Darwin and performance checks were not run. No merge or push.
+
+Sequential Source export --check reports 224 current files; git diff --check
+passes. Intermediate commits were not independently full-suite replayed.
+
+Source prerequisite: `5870a1d`; native adoption: `935cf83`.
