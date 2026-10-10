@@ -1,0 +1,73 @@
+{
+  "baseline": "7992994",
+  "source_commit": "49ee982",
+  "fixture": "go/testdata/python-provider-nonfinite-background.json",
+  "fixture_sha256": "9757fbc84f559a050553dd196e86c361ad13ad6a4c4386adc41d86ea92e98ecc",
+  "profiles": {
+    "unique_direct_and_sse": 18,
+    "standalone_gate": 27,
+    "managed": 18,
+    "managed_root_before_gate": 6,
+    "managed_finite_journal_refusals": 12,
+    "python_and_native_sqlite_message_reopen": 18
+  },
+  "implementation": [
+    "Existing named command, rejected-root and immutable extra variants; no new production domain types",
+    "Detached legacy observations and archive identity separated from finite caller/HTTP/event JSON",
+    "Shared shell batch prepares every call before effects; invalid later background root prevents earlier manager/task creation",
+    "Standalone command split fault initializes owned manager without allocating tasks",
+    "Unknown parameters and non-mapping invocation failures do not initialize the manager",
+    "Managed journal refusal precedes manager initialization",
+    "Source capture helper shared with Bash; original Bash fixture remains current"
+  ],
+  "gates": {
+    "targeted_go": "protocol/provider/agent/sqlitestate passed",
+    "source_tests": "2 passed, 12 expected SDK warnings",
+    "scanners": "19 anchored",
+    "selected_mutations": {
+      "background-nonfinite-batch-preparation-lazy": "caught after passing baseline",
+      "background-nonfinite-journal-fingerprint-accepted": "caught after passing baseline"
+    },
+    "vet": "passed; existing FSEvents deprecation warning",
+    "typeaudit": {
+      "production_files": 439,
+      "named_types": 1407,
+      "findings": 0
+    },
+    "archify": "9/9, zero errors/warnings",
+    "full_ordinary": {
+      "result": "failed only native reload",
+      "recipes": [
+        "removed-source",
+        "same-mtime-write",
+        "lower-mtime-write",
+        "identical-write",
+        "same-mtime-touch",
+        "rename-out",
+        "rename-source",
+        "ignored-hidden",
+        "ignored-backup"
+      ]
+    },
+    "full_race": "passed; no data race reported; existing macOS linker and FSEvents warnings",
+    "full_source_export_check": {
+      "result": "failed before all fixture comparisons",
+      "failure": "Python Watchfiles native Source observer did not arm",
+      "diagnostics_dir": "Not created: snapshot construction raised before comparison/diagnostic writer"
+    },
+    "selected_source_export_check": "Bash/background helpers checked using exact _json_bytes export encoding; two fixtures current",
+    "git_diff_check": "passed"
+  },
+  "limits": [
+    "Timeout and approval-prefix coercion remain typed and unaudited for broader values",
+    "Non-string batch pair keys remain unsupported",
+    "New SQLite proof covers message observations, not complete event/session/trajectory restore for these shapes",
+    "Native readonly property is separate from Source permission corpus",
+    "Global SDK error-class/text equality and complete migration acceptance remain open",
+    "Native watcher reliability and default diagnostic selection remain open",
+    "No refreshed coverage/full Python/non-Darwin/performance/fresh browser visual check",
+    "Combined-worktree validation does not claim independently replayed intermediate commits",
+    "No push or merge"
+  ],
+  "runtime_commit": "83d12e2"
+}

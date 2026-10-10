@@ -17950,3 +17950,52 @@ SDK error-class/text equality, watcher reliability, default diagnostics and full
 migration acceptance remain open. No full Python, non-Darwin or performance check;
 combined worktree gates do not claim independent replay of intermediate commits.
 No dependency added in this slice; no push or merge.
+
+## Nonfinite background command/root consumers — 2026-10-11
+
+Baseline `7992994`; Source prerequisite `49ee982`. Shared actual SDK/standalone/
+managed capture helpers retain the original Bash fixture observations. New
+background profiles cover NaN/Infinity/-Infinity in roots, arrays, command
+scalars/arrays/objects and unknown parameters: 18 unique direct/SSE inputs,
+27 standalone consumers and 18 actual Manager runs. Before rewrite/deny/guard
+priority matches. Standalone command split failures create the scoped background
+manager without tasks; root/binding failures do not initialize it. Managed
+batch-copy failure precedes hooks/effects; finite journal refusal precedes
+background manager initialization. A valid earlier call plus a later bad root
+creates no manager/task.
+
+Existing named BashCommandObservation, BashRejectedArguments and background
+argument types retain legacy numbers. Observations, canonical identity and
+archives are separate from strict caller/request/event JSON. Both Python and
+native SQLite message close/reopen retain all 18 unique SDK inputs. Native
+readonly checks cannot obtain a grant or initialize background work. Known
+timeout/approval-prefix coercion remains explicitly outside this slice. No new
+production type or dependency was introduced.
+
+Validation on the combined worktree: targeted protocol/provider/agent/SQLite
+consumers pass; full Go race passes; vet passes with existing FSEvents warning;
+type audit has 439 production files / 1,407 named types / zero findings. Two
+Source tests pass with 12 expected SDK warnings; 19 scanner anchors pass; selected
+background lazy-copy and finite-journal mutants are caught after passing baselines.
+Archify passes 9/9 with zero errors/warnings; no fresh browser visual inspection.
+Full ordinary Go fails only native reload removed-source, same-mtime-write,
+lower-mtime-write, identical-write, same-mtime-touch, rename-out, rename-source,
+ignored-hidden and ignored-backup. Race passing does not close watcher reliability.
+
+See [background audit](docs/audits/provider-nonfinite-background-2026-10-11.json).
+No coverage refresh: 89.17% application / 89.14% all Go belongs to runtime
+`770f065` and its failing instrumented SQLite maximum profile. New persistence
+proof covers message observations, not full event/session/trajectory recovery for
+these inputs. Non-string batch keys, broader optional fields, global SDK error
+class/text, default diagnostics and complete migration acceptance remain open.
+Full Python, non-Darwin and performance checks were not run. Intermediate commits
+were not independently full-suite replayed. No push or merge.
+
+Full Source export --check did not complete: Python Watchfiles native observer
+did not arm during snapshot construction, before all fixture comparisons and
+the diagnostic writer. No diagnostic directory was created. A separate exact
+_json_bytes check of the current Bash/background helper exports confirms both
+task-owned fixtures byte-for-byte. This narrow check does not establish that
+all 226 export targets are current. git diff --check passes.
+
+Native implementation: `83d12e2`; Source prerequisite: `49ee982`.
