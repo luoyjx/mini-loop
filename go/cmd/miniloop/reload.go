@@ -56,7 +56,7 @@ func reloadEnvironment(environment map[string]string) []string {
 	return values
 }
 
-func serveReload(ctx context.Context, args []string, environment map[string]string, settings config.ServerSettings, module string, stdout, stderr io.Writer) error {
+func serveReload(ctx context.Context, args []string, environment map[string]string, settings config.ServerSettings, module string, stdout, stderr io.Writer) (err error) {
 	current, err := os.Getwd()
 	if err != nil {
 		return err
@@ -65,15 +65,30 @@ func serveReload(ctx context.Context, args []string, environment map[string]stri
 	if err != nil {
 		return err
 	}
-	builder, err := reload.NewBuilder(reload.BuildConfig{ModuleDirectory: directory})
+	host, err := captureReloadHost()
 	if err != nil {
 		return err
 	}
-	watcher, err := reload.NewWatcher(reload.WatchConfig{Roots: []string{current}})
+	profile, err := reload.SelectObserverProfile(environment, host, nil)
 	if err != nil {
 		return err
 	}
-	supervisor, err := reload.NewSupervisor(reload.SupervisorConfig{Builder: builder, Watcher: watcher, Directory: current, Arguments: args, Environment: reloadEnvironment(environment), Stdout: stdout, Stderr: stderr, OnEvent: func(event reload.LifecycleEvent) {
+	workspace, err := reload.NewBuildWorkspace(environment["TMPDIR"])
+	if err != nil {
+		return err
+	}
+	defer func() { err = errors.Join(err, workspace.Close()) }()
+	builder, err := reload.NewBuilder(reload.BuildConfig{ModuleDirectory: directory, Environment: reloadEnvironment(environment), Workspace: workspace})
+	if err != nil {
+		return err
+	}
+	observer, err := reload.NewObserver(ctx, reload.ObserverConfig{Roots: []string{current}, Language: reload.GoSource, Profile: profile, Workspace: workspace, DiagnosticWriter: stdout})
+	if err != nil {
+		return err
+	}
+	// Run owns Close after admission; this also covers earlier CLI failures.
+	defer func() { err = errors.Join(err, observer.Close()) }()
+	supervisor, err := reload.NewSupervisor(reload.SupervisorConfig{Builder: builder, Observer: observer, Directory: current, Arguments: args, Environment: reloadEnvironment(environment), Stdout: stdout, Stderr: stderr, OnEvent: func(event reload.LifecycleEvent) {
 		if event.Error != nil {
 			fmt.Fprintf(stderr, "mini-loop reload %s: %v\n", event.Kind, event.Error)
 			return
@@ -92,6 +107,6 @@ func serveReload(ctx context.Context, args []string, environment map[string]stri
 		return err
 	}
 	defer listener.Close() // also releases the socket if platform admission fails
-	fmt.Fprintf(stderr, "mini-loop Go reload listening on %s (watch cwd; process-local sessions reset on replacement)\n", listener.Addr())
+	fmt.Fprintf(stderr, "mini-loop Go reload listening on %s (observer=%s; watch cwd; process-local sessions reset on replacement)\n", listener.Addr(), profile.Backend())
 	return supervisor.Run(ctx, listener)
 }

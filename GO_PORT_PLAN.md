@@ -15143,3 +15143,37 @@ Architecture regeneration passes 9/9, zero errors/warnings, with exact hash/byte
 checks. README outline and diff checks pass. Visual review is not repeated after
 the previous browser access denial. The explicit unmount kernel-record refusal
 check also passes. Source/scanner/invariant gates remain 201/19/77 respectively.
+
+
+## 2026-10-10 CLI captured observer and workspace activation
+
+Baseline: `a387bcf` plus this implementation. The reload parent now selects an
+owned Observer from prepared WATCHFILES environment and a captured host. Linux
+uname release drives WSL automatic polling; ordinary Linux and macOS/CGO select
+native events. Explicit forced polling supports macOS without CGO. Inspection
+still performs no observer construction or host probe. StatReload remains an
+explicit SDK choice. No dependency or toolchain change is introduced.
+
+Builder and Observer share a private BuildWorkspace under captured TMPDIR.
+Compiler-only temporary overrides remain inside that allocation. Child/tool
+environments retain prepared values with the private role marker removed.
+Supervisor admission owns observer Close; CLI defers cover earlier failures and
+close the workspace only after artifacts and observer leases are released.
+
+Actual CLI tests exercise native and forced polling (`WATCHFILES_FORCE_POLLING=0`),
+retained TCP, source replacement, dotenv refresh, failed-build repair, process-local
+session reset, joined children and empty compiler workspace after shutdown. The
+compiler temporary parent is inside the watched module. Fixture source publication
+stamps a hidden temporary file before atomic rename, avoiding half-written sources
+or intermediate polling timestamps. Actual Linux aarch64 Go 1.23.3 CLI tests and
+macOS CGO-disabled forced-polling/dump tests pass.
+
+Gates: fresh full host `go test -p=1 -count=1 -timeout=300s ./...`,
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` pass.
+Actual Linux aarch64 CLI native/polling/dump tests pass; macOS CGO=0 forced
+polling/dump tests pass. Source export --check reports 201 current files.
+README architecture outline and regenerated map pass 9/9, with exact byte/hash
+verification. git diff --check passes. Existing FSEvents deprecation and macOS
+linker warnings remain. Visual review was not repeated after prior browser denial.
+No Python module/scanner/guard target changed; corresponding full Python,
+invariant/scanner/mutation checks were not rerun. No merge or push.

@@ -8308,3 +8308,20 @@ Real Linux HTTP child recovery verifies retained listener and joined artifact le
 Native link loops/access-only opens/root moves retain captured Source behavior.
 Python mutation targets are unchanged; these new boundaries have Go process/kernel
 and fault-record tests. No model-facing path, dependency or CLI default is added.
+
+
+## 2026-10-10 CLI owned event-profile binding
+
+The reload parent captures its prepared environment and host once, before observer
+allocation. Linux uname release permits Source WSL automatic polling; explicit
+WATCHFILES settings select forced polling. Native Linux uses inotify and native
+macOS requires CGO; explicit forced polling remains available without CGO.
+Inspection/dump does not probe the host or construct an observer.
+
+Builder and Observer share one private BuildWorkspace rooted under the captured
+TMPDIR. Compiler-only temporary directories stay inside that allocated capability
+and are excluded from source batches. Child/tool environments retain their prepared
+values and never receive the compiler-only overrides or listener role marker.
+Run owns the subscription after listener admission; CLI defers cover earlier failures.
+Cleanup joins child/artifact and observer before closing the workspace. Native loss
+faults terminate with cleanup; an empty filtered batch causes no rebuild.

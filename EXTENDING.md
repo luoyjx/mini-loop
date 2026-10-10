@@ -3832,7 +3832,7 @@ this SDK performs no stat-based recovery that could miss transient events.
 The pure profile selector and owned native/polling factory now bind captured
 WATCHFILES environment/host choices. Successful subscriptions still require explicit
 Close; construction context cancellation affects initial traversal only. StatReload
-remains separate. Default Linux native events and CLI binding remain pending.
+remains separate. Linux native events and CLI binding are delivered below.
 
 ### Captured observer and polling boundaries
 
@@ -3860,7 +3860,7 @@ artifacts; close the observer before closing the workspace. Active leases make
 workspace Close fail explicitly. TemporaryParent and Workspace are exclusive.
 Compiler GOTMPDIR/TMPDIR overrides do not alter the server environment. The SDK
 excludes only the allocated workspace subtree; it supplies no arbitrary exclusion
-path or model-controlled authority. CLI observer binding remains pending.
+path or model-controlled authority. CLI binding is described below.
 
 
 ## Go supervised event subscription ownership
@@ -3872,8 +3872,8 @@ duplication fails. It joins the child and closes artifacts before cancelling and
 closing the subscription and joining its reader. BuildWorkspace stays caller-owned;
 close it only after Run returns. SourceChanged.Paths is a detached batch; Path is
 the first entry. Empty batches are inert; backend errors return after cleanup.
-The synchronous reader handoff bounds read-ahead during builds. CLI selection is
-still StatReload; native Linux and executable event-profile selection remain open.
+The synchronous reader handoff bounds read-ahead during builds. The CLI now
+selects the owned event-profile path described below.
 
 
 ## Linux native reload observation
@@ -3888,4 +3888,21 @@ alias for an inode. Native link loops are skipped; forced polling still reports 
 captured loop fault. Access-only opens are inert. Root moves retain the original
 lexical projection, including subsequent file events; callers must handle that
 projection without resolving deleted leaf paths. Queue overflow/unmount requires
-operator recovery. CLI still selects StatReload; executable activation is pending.
+operator recovery. CLI event-profile activation is described below.
+
+
+## 2026-10-10 CLI owned event-profile binding
+
+The reload parent captures its prepared environment and host once, before observer
+allocation. Linux uname release permits Source WSL automatic polling; explicit
+WATCHFILES settings select forced polling. Native Linux uses inotify and native
+macOS requires CGO; explicit forced polling remains available without CGO.
+Inspection/dump does not probe the host or construct an observer.
+
+Builder and Observer share one private BuildWorkspace rooted under the captured
+TMPDIR. Compiler-only temporary directories stay inside that allocated capability
+and are excluded from source batches. Child/tool environments retain their prepared
+values and never receive the compiler-only overrides or listener role marker.
+Run owns the subscription after listener admission; CLI defers cover earlier failures.
+Cleanup joins child/artifact and observer before closing the workspace. Native loss
+faults terminate with cleanup; an empty filtered batch causes no rebuild.

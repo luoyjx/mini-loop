@@ -61,7 +61,10 @@ func copyReloadModule(t *testing.T) string {
 	return target
 }
 
-func TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv(t *testing.T) {
+func TestForcedPollingCLIRebuildsSourceRetainsPortAndReloadsDotenv(t *testing.T) {
+	testActualCLIRebuildsSource(t, reload.PollingBackend)
+}
+func testActualCLIRebuildsSource(t *testing.T, backend reload.ObserverBackend) {
 	module := copyReloadModule(t)
 	probe := filepath.Join(module, "cmd", "miniloop", "reload_version.go")
 	generation := 0
@@ -72,11 +75,15 @@ func TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv(t *testing.T) {
 		if broken {
 			source = "package main\nfunc broken( {"
 		}
-		if err := os.WriteFile(probe, []byte(source), 0600); err != nil {
+		pending := filepath.Join(filepath.Dir(probe), ".reload-source")
+		if err := os.WriteFile(pending, []byte(source), 0600); err != nil {
 			t.Fatal(err)
 		}
 		stamp := time.Unix(int64(100+generation), 0)
-		if err := os.Chtimes(probe, stamp, stamp); err != nil {
+		if err := os.Chtimes(pending, stamp, stamp); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Rename(pending, probe); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -117,10 +124,16 @@ func TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv(t *testing.T) {
 		}
 	}
 	writeEnv("first", true)
-	builds := t.TempDir()
+	builds := filepath.Join(module, "compiler-temporaries")
+	if err := os.Mkdir(builds, 0700); err != nil {
+		t.Fatal(err)
+	}
 	command := exec.Command(binary, "--reload-module", module)
 	command.Dir = module
 	command.Env = []string{"PATH=" + os.Getenv("PATH"), "HOME=" + os.Getenv("HOME"), "GOMAXPROCS=2", "TMPDIR=" + builds, "MINILOOP_WORKSPACE_ROOT=" + filepath.Join(module, "workspaces")}
+	if backend == reload.PollingBackend {
+		command.Env = append(command.Env, "WATCHFILES_FORCE_POLLING=0", "WATCHFILES_POLL_DELAY_MS=10")
+	}
 	log, err := os.Create(filepath.Join(module, "runtime.log"))
 	if err != nil {
 		t.Fatal(err)
@@ -221,6 +234,10 @@ func TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv(t *testing.T) {
 		return info
 	}
 	first := health("reload-first")
+	data, err := os.ReadFile(log.Name())
+	if err != nil || !bytes.Contains(data, []byte("observer="+string(backend))) {
+		t.Fatal("CLI observer selection", string(data), err)
+	}
 	session := checkEnvironment("first")
 	writeEnv("second", true)
 	writeSource("reload-second", false)
