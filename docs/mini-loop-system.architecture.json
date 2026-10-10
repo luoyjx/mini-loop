@@ -26,7 +26,7 @@
           "context",
           "provider"
         ],
-        "note": "Follow an authenticated request through owner binding into one serialized session and out to the model provider."
+        "note": "Authenticated owner → serialized session → provider. Nonfinite encoding fails before credentials/HTTP with bounded named error detail."
       },
       {
         "id": "tool-path",

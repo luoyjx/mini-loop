@@ -341,7 +341,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			if errors.Is(err, ErrStateTranscript) || errors.Is(err, ErrSessionLeaseLost) {
 				return "", err
 			}
-			detail := boundedError(err)
+			detail := providerRunError(err)
 			text := "[Error] " + detail
 			s.appendMessages(protocol.Message{Role: protocol.RoleAssistant, Content: protocol.BlockContent(protocol.NewTextBlock(text))})
 			s.events.append(SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorProvider, detail: detail}})

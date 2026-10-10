@@ -34,6 +34,7 @@ const (
 	FailureConnection        FailureKind = "connection"
 	FailureTimeout           FailureKind = "timeout"
 	FailureProtocol          FailureKind = "protocol"
+	FailureNonfiniteRequest  FailureKind = "nonfinite_request"
 	FailureCredential        FailureKind = "credential"
 	FailureLimit             FailureKind = "wire_limit"
 	FailureStreamingRequired FailureKind = "streaming_required"
@@ -66,7 +67,7 @@ func (e *Failure) RecoveryFailure() protocol.ModelFailure {
 		kind = protocol.ModelFailureStatus
 	case FailureStreamingRequired:
 		kind = protocol.ModelFailureStreamingRequired
-	case FailureProtocol:
+	case FailureProtocol, FailureNonfiniteRequest:
 		kind = protocol.ModelFailureProtocol
 	case FailureLimit:
 		kind = protocol.ModelFailureLimit
@@ -227,7 +228,7 @@ func (c *Client) Complete(ctx context.Context, input protocol.ModelRequest) (pro
 	}
 	body, err := json.Marshal(input)
 	if err != nil {
-		return protocol.ModelReply{}, &Failure{Kind: FailureProtocol, Message: "cannot encode provider request"}
+		return protocol.ModelReply{}, requestEncodingFailure(err, "cannot encode provider request")
 	}
 	if int64(len(body)) > c.requestLimit {
 		return protocol.ModelReply{}, &Failure{Kind: FailureLimit, Message: "provider request exceeds wire limit"}

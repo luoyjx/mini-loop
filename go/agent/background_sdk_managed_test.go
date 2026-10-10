@@ -106,10 +106,7 @@ func TestBackgroundSDKOptionsMatchSourceManagedAdmissionAndTasks(t *testing.T) {
 			if len(session.Messages()) != row.Messages {
 				t.Fatal("Source message phase changed", len(session.Messages()), row.Messages)
 			}
-			if !row.Initialized && final != row.Final {
-				t.Logf("SDK error-text adaptation: native=%q source=%q", final, row.Final)
-			}
-			if row.Initialized && final != row.Final {
+			if final != row.Final {
 				t.Fatal("Source final reply changed", final, row.Final)
 			}
 			uses, results := 0, 0

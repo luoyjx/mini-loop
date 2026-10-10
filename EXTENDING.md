@@ -1568,7 +1568,13 @@ system=, max_tokens=)` returning `.content` (blocks) + `.stop_reason` works.
   a `scripted([...])` responder for exact tool sequences.
 
 The Go `agent.Provider` consumer accepts concrete `protocol.ModelRequest` and
-`ModelReply`. `go/provider.New` supplies an explicit direct Anthropic-compatible
+`ModelReply`. Providers may implement the named `agent.ProviderErrorDetail`
+error interface to supply a bounded Source diagnostic at the final Session provider
+failure boundary. The native adapter opts in only for `FailureNonfiniteRequest`,
+with SDK `ValueError` class and fixed JSON encoding text. Recovery still sees a
+nonretryable protocol failure; general lifecycle errors keep native formatting.
+
+`go/provider.New` supplies an explicit direct Anthropic-compatible
 HTTP adapter with SDK-level bounded retries, cache wire annotations and served-model
 identity. `Config.AuthToken` supplies an explicit bearer token; ordered `Config.Headers`
 override static headers with last-value precedence. Header names/values are

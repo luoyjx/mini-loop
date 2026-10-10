@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `b6f49c6` plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `98f94be` plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -747,7 +747,7 @@ flowchart LR
         GoManager -->|create / fork / restore · owned teammate idle turns · bind resources / sandbox| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoProvider
-        GoProvider --> GoSession
+        GoProvider -->|typed replies / bounded provider error detail| GoSession
         GoContext --> GoArchives
         GoManaged -->|start / ordered capture / finish| GoTraces
         GoManaged -->|successful terminal flush + capture capability| GoSkillCapture
@@ -2708,8 +2708,16 @@ Source type/overflow faults leave processes running. Native execution deliberate
 kills and joins those groups before settling the same error text, preserving its
 resource-ownership boundary. NaN uses the unguarded Source profile's immediate timeout. An outer Python
 watchdog changes that profile to completion; exact timer-heap parity is not claimed. Native direct/SSE and SQLite message close/reopen preserve all 48 option inputs.
-Broader managed turns, Source SDK coercion, full-state recovery and default
-diagnostics remain open.
+The 48 captured SDK and managed optional profiles are checked separately below;
+broader SDK consumers, full-state recovery and default diagnostics remain open.
+
+The captured SDK forwarding path rejects nonfinite request observations before
+credential fetch or HTTP. Go direct and streaming adapters classify this as
+`FailureNonfiniteRequest` / `ValueError` and retain nonretryable protocol recovery
+evidence. Session accepts the optional named `ProviderErrorDetail` projection
+only at its final provider error boundary, bounds it to 500 runes, and emits the
+same assistant/event detail. Other failures retain native diagnostics. All 48
+captured managed optional profiles now assert their final reply text.
 
 ### Missing model tool observations
 

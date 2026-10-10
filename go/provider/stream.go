@@ -49,7 +49,7 @@ func (c *StreamingClient) CompleteStream(ctx context.Context, request protocol.M
 		Stream bool `json:"stream"`
 	}{wire, true})
 	if err != nil {
-		return protocol.ModelReply{}, &Failure{Kind: FailureProtocol, Message: "cannot encode streaming request"}
+		return protocol.ModelReply{}, requestEncodingFailure(err, "cannot encode streaming request")
 	}
 	if int64(len(body)) > c.client.requestLimit {
 		return protocol.ModelReply{}, &Failure{Kind: FailureLimit, Message: "provider request exceeds wire limit"}
