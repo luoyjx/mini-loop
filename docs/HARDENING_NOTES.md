@@ -8325,3 +8325,22 @@ values and never receive the compiler-only overrides or listener role marker.
 Run owns the subscription after listener admission; CLI defers cover earlier failures.
 Cleanup joins child/artifact and observer before closing the workspace. Native loss
 faults terminate with cleanup; an empty filtered batch causes no rebuild.
+
+
+## 2026-10-10 mutation verification requires a passing baseline
+
+verify_guards previously counted every nonzero pytest exit as a caught mutation.
+A renamed request-size selector and a restore mutation leaving an orphaned elif
+therefore appeared load-bearing without exercising their tests. The runner now
+passes each unmodified selector (cached per invocation), reads pytest's built-in
+JUnit report and accepts only exit 1 with a test-call failure and no framework
+errors. Collection/fixture errors, missing/empty/skipped reports and timeouts
+are INVALID. Fresh copies and PYTHONDONTWRITEBYTECODE prevent a same-size rewrite
+from executing baseline bytecode. No new dependency or runtime guard is added.
+
+The request-size selector now names the existing direct middleware test. Restore
+mutation replaces only its repair assignment, retaining the if/elif syntax.
+Tests preflight all mutant Python syntax and collect all selectors, and execute
+passing, surviving, bad-baseline, syntax-error and missing-selector probes.
+This protects the verification instrument; Python mutation coverage is distinct
+from Go observer, permission or persistence mutation coverage.

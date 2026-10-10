@@ -465,7 +465,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `723853e` plus cross-language performance tooling,
+Runtime review baseline: `73c14ad` plus baseline-checked mutation verification,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -2518,6 +2518,11 @@ that reload settings and construct their own client:
 ```
 
 Additional mutation guards and source scans protect load-bearing boundaries:
+The mutation runner first passes the unmodified target, then requires a pytest
+test-call failure from its mutant. Collection/fixture errors, skipped or empty
+baselines and timeouts are invalid evidence. Fast tests also validate mutation
+syntax and collect every recorded selector.
+
 
 ```sh
 .venv/bin/python python/tools/verify_guards.py

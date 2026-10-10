@@ -8012,3 +8012,30 @@ gates are recorded in the preceding delivery. Full mutation verification is
 still incomplete (81/378 caught before intentional stop), and G7 default
 parser/provider/public-entry/type scope audits remain open. Documentation/data
 only: git diff --check and cached checks pass. No merge/push.
+
+
+## 2026-10-10 non-vacuous mutation verification and inventory repair
+
+Baseline: `73c14ad` plus this correction. The runner now requires a passing
+unmodified selector, then pytest exit 1 with JUnit test-call failure and no
+framework errors. Empty/skipped baselines, missing reports, collection/fixture
+errors and timeouts are INVALID. Baselines cache by selector within one run;
+mutants use fresh Python-tree copies. Bytecode writes are disabled to prevent
+same-size/mtime replacements from reading unmodified cache. No new dependency.
+
+Full inventory sweep exposed 376 valid captures and two invalid entries:
+request-content-length-unchecked named a removed test; restore-skips-the-repair
+removed an if before its surviving elif and failed during collection. Corrected
+selector and assignment-only restore mutation each pass their baseline and fail
+the target call. Other 376 metadata entries are unchanged. New tests compile all
+Python mutants and collect all recorded selectors, plus actual pytest positive,
+surviving, baseline-failure, syntax-error and missing-selector cases.
+
+Gates: 29 targeted tests; fresh full Python 2194 passed, 28 skipped, 24 subtests,
+3 existing warnings (73.60s); verify_scans 19. All 378 entries have composite
+evidence (376 initial full sweep plus two corrected target reruns). The initial
+full command exited 1; no fresh single full command exit-zero is claimed.
+Source modules, Go runtime and contract exports are unchanged; Go gates,
+Source export, coverage and invariants were not rerun. Last invariant check
+is 77 at d05004c. README architecture baseline reviewed; map/spec unchanged.
+Diff checks pass; no merge/push. Structured audit evidence follows separately.

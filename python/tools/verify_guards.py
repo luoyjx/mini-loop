@@ -7,7 +7,8 @@ stash silently did nothing, reported ten passes, and would have been read as
 question. A verification that can no-op is not a verification.
 
 This does it deterministically: copy the tree, apply one precise mutation to the
-copy, run the test that is supposed to catch it, and require a failure. The
+copy, first pass its unmodified test, then require a failed test call from the
+mutant. Collection, fixture, timeout and runner errors are INVALID. The
 working tree is never touched, so an interrupted run cannot leave the repo in a
 half-mutated state.
 
@@ -20,12 +21,15 @@ guard is vacuous or it is pinned somewhere other than where it is documented.
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import subprocess
 import sys
 import tempfile
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -836,7 +840,7 @@ MUTATIONS = [
         "request-content-length-unchecked", 150, "mini_loop/server.py",
         "                    if int(value) > self.max_bytes:",
         "                    if False:",
-        "tests/test_request_size.py::test_an_oversized_body_is_refused_without_being_buffered",
+        "tests/test_request_size.py::test_content_length_over_cap_is_refused_without_reading_the_body",
         "an oversized body is refused from its Content-Length before it is "
         "buffered: reading a multi-gigabyte body to parse it OOMs the shared "
         "server, every tenant on it with it",
@@ -1205,7 +1209,7 @@ MUTATIONS = [
     ),
     Mutation(
         "restore-skips-the-repair", 72, "mini_loop/session.py",
-        "        repaired = self._close_unanswered_tools(self._expire_parked_approvals())\n        if repaired:\n            self._flush_messages()\n            self._unknown_tool_uses = tuple(repaired)",
+        "        repaired = self._close_unanswered_tools(self._expire_parked_approvals())",
         "        repaired = []",
         "tests/test_restart_continuity.py",
         "a restored session can make another request the provider accepts",
@@ -3609,15 +3613,51 @@ MUTATIONS.append(Mutation(
 ))
 
 
+@dataclass(frozen=True)
+class TestObservation:
+    status: Literal["passed", "caught", "invalid"]
+    detail: str
+
+
+def _classify(returncode: int, report: Path) -> TestObservation:
+    try:
+        root = ET.parse(report).getroot()
+    except (OSError, ET.ParseError) as error:
+        return TestObservation("invalid", f"missing/invalid pytest report: {error}")
+    cases = root.findall(".//testcase")
+    failures = sum(case.find("failure") is not None for case in cases)
+    errors = sum(case.find("error") is not None for case in cases)
+    executed = sum(case.find("skipped") is None for case in cases)
+    if errors or not executed:
+        return TestObservation("invalid", f"{errors} collection/fixture errors; {executed} non-skipped testcase records")
+    if returncode == 0 and failures == 0:
+        return TestObservation("passed", f"{executed} executed tests passed")
+    if returncode == 1 and failures:
+        return TestObservation("caught", f"{failures} test-call failures")
+    return TestObservation("invalid", f"pytest exit {returncode}, {failures} test-call failures")
+
+
+def _pytest(work: Path, selector: str, report: Path) -> TestObservation:
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", selector, "-q", "-x", "--no-header",
+             f"--junitxml={report}"],
+            cwd=work, capture_output=True, text=True, timeout=300,
+            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+        )
+    except subprocess.TimeoutExpired:
+        return TestObservation("invalid", "pytest timed out after 300 seconds")
+    observation = _classify(result.returncode, report)
+    if observation.status == "invalid":
+        print((result.stdout + result.stderr)[-4000:])
+    return observation
+
+
 def _run(selector: str | None, start: int = 1, end: int | None = None) -> int:
     chosen = [m for m in MUTATIONS if not selector or selector in m.name]
     if not chosen:
         print(f"no mutation matches {selector!r}")
         return 2
-    # Bounded slices (--from/--to, 1-based inclusive) exist so a full sweep
-    # can run as a few FOREGROUND chunks: background sweeps kept being
-    # reaped by the environment mid-run with nothing written, which reads
-    # as verification and is not.
     total = len(chosen)
     chosen = chosen[start - 1:end if end is not None else total]
     if not chosen:
@@ -3626,8 +3666,10 @@ def _run(selector: str | None, start: int = 1, end: int | None = None) -> int:
     if (start, end) != (1, None):
         print(f"slice {start}..{end or total} of {total}")
 
-    survived, missing = [], []
-    print(f"verifying {len(chosen)} guard(s)\n")
+    survived, missing, invalid = [], [], []
+    # Cache only unmodified results. Every mutant still receives a fresh copy.
+    baselines: dict[str, TestObservation] = {}
+    print(f"verifying {len(chosen)} guard(s) with unmodified baselines\n")
     for mutation in chosen:
         with tempfile.TemporaryDirectory() as tmp:
             work = Path(tmp) / "repo"
@@ -3641,42 +3683,42 @@ def _run(selector: str | None, start: int = 1, end: int | None = None) -> int:
             source = target.read_text()
             occurrences = source.count(mutation.old)
             if occurrences == 0:
-                # The code moved. Reporting this is the whole point: a mutation
-                # that cannot be applied is a check that silently stops running.
                 missing.append(mutation)
                 print(f"  STALE     {mutation.name}  (anchor not found in {mutation.file})")
                 continue
             if occurrences > 1:
-                # `replace(..., 1)` would silently break the *first* match, which
-                # need not be the site the named test covers -- exactly the
-                # ambiguous-edit defect round 162 fixed in `edit_file`, here in
-                # the instrument that checks for such defects. A guard aimed at
-                # the wrong site reports "caught" or "SURVIVED" about code nobody
-                # asked it to check, so refuse rather than guess.
                 missing.append(mutation)
-                print(f"  AMBIGUOUS {mutation.name}  (anchor matches {occurrences} "
-                      f"places in {mutation.file}; it would mutate the first)")
+                print(f"  AMBIGUOUS {mutation.name}  (anchor matches {occurrences} places in {mutation.file})")
+                continue
+            baseline = baselines.get(mutation.test)
+            if baseline is None:
+                baseline = _pytest(work, mutation.test, Path(tmp) / "baseline.xml")
+                baselines[mutation.test] = baseline
+            if baseline.status != "passed":
+                invalid.append(mutation)
+                print(f"  INVALID   {mutation.name}  (unmodified baseline: {baseline.detail})")
                 continue
             target.write_text(source.replace(mutation.old, mutation.new, 1))
-
-            result = subprocess.run(
-                [sys.executable, "-m", "pytest", mutation.test, "-q", "-x", "--no-header"],
-                cwd=work, capture_output=True, text=True, timeout=300,
-            )
-            if result.returncode == 0:
+            observation = _pytest(work, mutation.test, Path(tmp) / "mutant.xml")
+            if observation.status == "passed":
                 survived.append(mutation)
                 print(f"  SURVIVED  {mutation.name}  ({mutation.test} still passed)")
-            else:
+            elif observation.status == "caught":
                 print(f"  caught    {mutation.name}  (r{mutation.round}: {mutation.claim})")
+            else:
+                invalid.append(mutation)
+                print(f"  INVALID   {mutation.name}  ({observation.detail})")
 
     print()
-    if survived or missing:
+    if survived or missing or invalid:
         for mutation in survived:
             print(f"SURVIVED: {mutation.name} -- {mutation.test} does not pin: {mutation.claim}")
         for mutation in missing:
-            print(f"STALE: {mutation.name} -- anchor gone from {mutation.file}")
+            print(f"STALE: {mutation.name} -- anchor unavailable in {mutation.file}")
+        for mutation in invalid:
+            print(f"INVALID: {mutation.name} -- no valid baseline-to-test-failure evidence")
         return 1
-    print(f"all {len(chosen)} guards are load-bearing.")
+    print(f"all {len(chosen)} guards are load-bearing (passing baseline, failed test call).")
     return 0
 
 
