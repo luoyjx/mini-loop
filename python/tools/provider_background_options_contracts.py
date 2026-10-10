@@ -20,8 +20,7 @@ from mini_loop.fake_llm import FakeAsyncAnthropic
 from mini_loop.registry import Hook, Hooks, ToolCall
 
 
-def provider_background_options_contracts(scratch: Path | str) -> dict:
-    """Keep task acceptance separate from eventual timeout/consumer failure."""
+def background_option_inputs() -> list:
     values = [("null", None), ("false", False), ("true", True), ("zero", 0),
               ("float-zero", 0.0), ("negative-zero", -0.0), ("integer", 2),
               ("fraction", 0.005), ("negative", -1), ("negative-fraction", -0.5),
@@ -40,6 +39,13 @@ def provider_background_options_contracts(scratch: Path | str) -> dict:
     profiles += [("prefix-valid", {"command": "printf options-done", "approval_prefix": ["printf", "options-done"]}),
                  ("prefix-mixed", {"command": "printf options-done", "approval_prefix": ["printf", 1]}),
                  ("prefix-mismatch", {"command": "printf options-done", "approval_prefix": ["printf", "other"]})]
+
+    return profiles
+
+
+def provider_background_options_contracts(scratch: Path | str) -> dict:
+    """Keep task acceptance separate from eventual timeout/consumer failure."""
+    profiles = background_option_inputs()
 
     async def capture():
         rows = []
@@ -97,7 +103,8 @@ def provider_background_options_contracts(scratch: Path | str) -> dict:
     sources = {"Agent._exec_tool": Agent._exec_tool, "BackgroundManager.run": BackgroundManager.run,
                "BackgroundManager._exec": BackgroundManager._exec, "BackgroundManager._settle": BackgroundManager._settle,
                "grant_candidate": grant_candidate, "proposed_candidate": proposed_candidate,
-               "asyncio.wait_for": asyncio.wait_for, "capture.background_options": provider_background_options_contracts}
+               "asyncio.wait_for": asyncio.wait_for, "capture.background_options": provider_background_options_contracts,
+               "capture.background_option_inputs": background_option_inputs}
     return {"task_wait": "direct handle await without an observer timer", "cases": asyncio.run(capture()),
             "source_sha256": {name: hashlib.sha256(inspect.getsource(fn).encode()).hexdigest() for name, fn in sources.items()},
             "limits": ["Standalone actual gate/task execution; no managed journal or SDK transport acceptance claim",
