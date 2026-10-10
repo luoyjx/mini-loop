@@ -6860,7 +6860,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level open-payload syntax audit passes; external type closure/data-flow review remains; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax and active-profile compiler-resolved exported payload audits pass; foreign internals, unexported roots, inactive profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
@@ -18288,3 +18288,20 @@ previous full ordinary failures and coverage baseline retain their limits.
 git diff --check passes; no merge/push; complete port acceptance remains open.
 Next: compare actual Source after preceding compiler/CLI volume workload,
 separating shared filesystem workload from process-local subscription history.
+
+## 2026-10-11 compiler-resolved exported payload audit
+
+Implementation `3fd151a` adds `go run ./tools/typeaudit -root . -public`.
+Compiler export data resolves cross-package aliases, generic arguments and
+nested retained payloads. Fixtures cover erased imported interfaces, recursive
+closed types, identifier shadowing and failed compiler inventory. Active-profile
+result: 50 packages / 1182 exported types / zero findings; syntax result:
+444 production files / 1417 declarations / zero findings. Foreign structs and
+named nonempty capabilities stay opaque; top-level functions, named struct
+methods, unexported roots, inactive profiles and runtime data flow remain review
+scope. G0/G7 is not complete.
+
+Focused ordinary/race/vet, full vet, and 19 scanning guards pass. Full ordinary
+Go fails only `TestNativeEventsActualSourceRecipes` in six native reload profiles;
+all other tested packages pass. No full race or coverage refresh, merge or push.
+See [audit and exact gates](docs/audits/go-public-types-2026-10-11.json).
