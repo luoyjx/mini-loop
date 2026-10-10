@@ -8,7 +8,7 @@ import inspect
 import json
 import warnings
 
-from anthropic import AsyncAnthropic
+from anthropic import AsyncAnthropic, _models
 from anthropic.lib.streaming import _messages
 import httpx
 
@@ -67,9 +67,15 @@ async def _completed(name: str, block: dict) -> dict:
 async def _stream(name: str, events: list[dict]) -> dict:
     wire = "".join(f"event: {event['type']}\ndata: {json.dumps(event, ensure_ascii=False)}\n\n" for event in events)
 
+    requests = []
+
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.host == "source.invalid"
-        return httpx.Response(200, content=wire.encode(), headers={"content-type": "text/event-stream"})
+        body = json.loads(request.content)
+        requests.append(body)
+        if body.get("stream"):
+            return httpx.Response(200, content=wire.encode(), headers={"content-type": "text/event-stream"})
+        return httpx.Response(200, json=_reply([dict(type="text", text="next")]))
 
     observed = []
     transport = httpx.AsyncClient(transport=httpx.MockTransport(handler))
@@ -83,7 +89,13 @@ async def _stream(name: str, events: list[dict]) -> dict:
                 elif event.type == "citation":
                     observed.append(dict(type="citation", citation=event.citation.model_dump()))
             result = await stream.get_final_message()
-    return dict(name=name, events=events, content=_content_payload(result.content), observed=observed)
+        content = _content_payload(result.content)
+        await client.messages.create(model="citation-model", max_tokens=8,
+                                     messages=[dict(role="user", content="probe"),
+                                               dict(role="assistant", content=content),
+                                               dict(role="user", content="next")])
+    return dict(name=name, events=events, content=content, observed=observed,
+                forwarded=requests[1]["messages"][1]["content"], requests=len(requests))
 
 
 def _events(initial: dict, deltas: list[dict]) -> list[dict]:
@@ -115,10 +127,25 @@ async def _capture() -> dict:
         ("non_array", {"citations": "opaque fixture-secret"}),
         ("null_item", {"citations": [None]}),
     ])
+    additional = [
+        ("numeric_string", dict(citations[0], document_index="2")),
+        ("float_integer", dict(citations[0], document_index=2.0)),
+        ("fractional_index", dict(citations[0], document_index=2.5)),
+        ("boolean_index", dict(citations[0], document_index=True)),
+        ("nullable_absent", {k: v for k, v in citations[0].items() if k not in ("file_id", "document_title")}),
+        ("empty_object", {}), ("scalar_item", 7),
+        ("nested_items", [dict(citations[0])]),
+        ("invalid_discriminator", dict(citations[0], type=7)),
+    ]
+    additional.extend(("index_text_" + str(i), dict(citations[0], document_index=value))
+                      for i, value in enumerate(["2.0", "+2", " 2 ", "1e2", "1_000", "01", "-0.0", "2.00", "2e0"]))
+    cases.extend((name, dict(type="text", text="answer", citations=[citation]))
+                 for name, citation in additional)
     completed = [await _completed(name, block) for name, block in cases]
     streams = [await _stream("seed_plus_all_deltas", _events(dict(type="text", text="prefix", citations=[citations[0]]), citations)),
                await _stream("null_then_deltas", _events(dict(type="text", text="prefix", citations=None), citations))]
-    return dict(sdk_version=SDK_VERSION,
+    return dict(sdk_version=SDK_VERSION, pydantic_version=version("pydantic"),
+                model_constructor_sha256=hashlib.sha256(inspect.getsource(_models.construct_type).encode()).hexdigest(),
                 accumulator_sha256=hashlib.sha256(inspect.getsource(_messages.accumulate_event).encode()).hexdigest(),
                 completed=completed, streams=streams)
 

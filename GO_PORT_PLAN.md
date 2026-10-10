@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-10 at `dcd9f7c` plus composite guard evidence. This section is the current delivery index;
+Reviewed 2026-10-10 at `aee0437` plus native citation HTTP/SSE integration. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6864,7 +6864,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Known nonempty citation blocks/deltas remain unimplemented; final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas and forwarding implemented; citation-bearing managed restart/recording acceptance and final supported-provider variant/options audit; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
 | G7 | 201 exported Source recipe files freshly checked after installed WatchFiles capture, native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
@@ -6877,10 +6877,11 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
    outstanding explicit dependency decision. SQLite driver approval does not approve it.
 
-2. Provider citations: Source's installed anthropic 0.107.1 SDK emits known
-   char_location citations preserved by agent._content_payload. Go currently
-   rejects nonempty citations and citation deltas. Named variants, Source
-   fixtures and complete clone/mask/request/stream handling remain required.
+2. Provider citation acceptance: native named variants, SDK-normalized HTTP
+   replies, ordered SSE deltas, forwarding, immutable cloning/masking and text
+   rewrites are implemented against 35 completed and two streamed Source cases.
+   G7 still needs citation-bearing managed transcript/restart/recording evidence
+   and reconciliation of remaining provider content, request and auth options.
 
 ### Resolved items that must not remain on the implementation queue
 
@@ -15412,3 +15413,43 @@ both hashes match current files. No fresh browser visual inspection was performe
 Diff checks pass. Compiler output includes macOS FSEvents deprecation and race
 linker warnings. Python code and default-tool types are unchanged; Python gates,
 Source export check, coverage and performance were not rerun for this slice.
+
+## 2026-10-10 native citation HTTP/SSE and metadata-preserving rewrites
+
+Baseline: `aee0437` plus this provider integration. Completed HTTP text replies
+retain all five citation variants, nullable SDK fields, arbitrary-size signed
+indices and closed extension data. Native normalization mirrors whole-variant
+integer coercion and loose null-filled construction: if any declared field fails
+validation, original primitive values survive. Unknown discriminators use the
+SDK's first char model defaults while remaining extension data in Go. The Source
+capture records SDK 0.107.1, installed Pydantic version and constructor/accumulator
+source hashes; 35 completed replies are compared to actual SDK forwarding.
+
+SSE retains initial citations and appends ordered citation deltas with no text
+progress for citation events. Metadata is included in the block accumulation
+budget; invalid ownership, missing delta fields and non-array append fail. Two
+actual SDK streams and subsequent forwarding preserve final content, including
+default `parsed_output: null`. Structured output formats remain unsupported;
+only the default null output profile is admitted. Older direct/stream recipes now
+retain SDK citation metadata instead of projecting it away. Source exports remain
+202 files. Request lowering replaces text through TextBlock.WithText, preserving
+all metadata and the original authoritative history in all 35 Source cases.
+
+README Mermaid provider label, boundary prose, visible baseline, extension seam
+and interactive specification describe this integration. G4/G7 still require
+citation-bearing managed persistence/restart/recording acceptance plus the final
+provider content/request/auth inventory audit. No live paid-provider call, new
+dependency, default streaming selection or authority change is claimed.
+
+Validation on the complete worktree: targeted agent/provider/protocol tests pass;
+full `go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` pass.
+Full Python regression: 2195 passed, 28 skipped, 24 subtests passed, 3 existing
+warnings. Source export check: 202 current files. All 19 scanner guards pass.
+Production type audit: 401 files, 1302 package-level named types, zero direct
+open-payload findings. Archify delivery: 9/9 checks, current specification SHA256
+3a01e7ec602611b96b533cbd5676788267c55e089e538fc5b25085426292cccd and
+artifact SHA256 310745bff7ae30fad7fe63bd012518c3cacafe67cfc95e18bfbb74c8deaebbc2.
+Both hashes match current files. No fresh browser visual inspection, coverage,
+performance or Python mutation sweep was run. Compiler output includes existing
+macOS FSEvents deprecation and race linker warnings. Diff checks pass.

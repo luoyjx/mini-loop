@@ -465,7 +465,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `d04e417` plus immutable named citation protocol variants,
+Runtime review baseline: `aee0437` plus native citation HTTP/SSE integration,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -670,7 +670,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>absent-key inspection · request auth before HTTP / retry<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>absent-key inspection · request auth before HTTP / retry<br/>typed replies + citations · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1219,9 +1219,13 @@ page, content-block, web-search and search-result locations, including arbitrary
 signed indices and absent/null metadata. Unknown or malformed SDK citation data is
 preserved as closed JSON extension values; cloned requests and storage encoding
 retain it, and recording projections mask keys and values. These values describe
-provider output and confer no execution authority. Provider HTTP decoding and SSE
-citation accumulation still require integration, and currently reject nonempty
-citations/deltas. Search/server-tool content blocks remain unsupported. Production endpoint/cache savings are unverified.
+provider output and confer no execution authority. HTTP replies normalize missing
+SDK fields and validated integer coercions; SSE appends initial/delta citations in
+order without emitting text progress for citations. Default streamed text retains
+`parsed_output: null`; structured output formats remain unsupported. Request text
+rewrites retain immutable metadata. Thirty-five actual SDK mock HTTP cases and
+two streamed/forwarded cases pin this profile. Search/server-tool content blocks
+remain unsupported. Production endpoint/cache savings are unverified.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:

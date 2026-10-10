@@ -2,27 +2,27 @@
 
 ## Current acceptance index — 2026-10-10
 
-Reviewed code/test baseline: `dcd9f7c` plus composite guard evidence. The entries below retain their historical
+Reviewed code/test baseline: `aee0437` plus native citation HTTP/SSE integration. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, last checked at `ba1c43f` | Passed: 201 files current; this checks exported recipes, not complete port coverage |
+| Source recipe freshness | `.venv/bin/python python/tools/export_go_contracts.py --check`, `aee0437` plus native citation integration | Passed: 202 files current; this checks exported recipes, not complete port coverage |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | `go/cmd/miniloop/reload.go`, native/polling CLI process tests; Source WatchFiles archives | Delivered at `ba1c43f`: captured native/forced/WSL profiles, shared compiler workspace, retained listener and joined replacement; platform adaptations remain explicit |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 399 production files, 1291 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` from `go/` | 401 production files, 1302 named types, zero direct open-payload findings; local ingress DTOs and generic constraints permitted; external type/data-flow review remains |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
-| Provider citation variants | Source SDK 0.107.1 TextBlock and agent._content_payload offline probe; Go provider decode/stream refusals | Confirmed open: known nonempty citations retained in Python and rejected by Go; capture/typed implementation remains |
+| Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, metadata forwarding and text rewrite preservation implemented; managed restart/recording acceptance remains |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-The latest Source export check at `ba1c43f` exited zero with 201 matching files
-and existing dependency warnings. Runtime ordinary/race/vet, actual Linux CLI
+The latest Source export check at `aee0437` plus native citation integration exited
+zero with 202 matching files and existing dependency warnings. Runtime ordinary/race/vet, actual Linux CLI
 and macOS CGO-disabled polling gates passed there. Coverage was refreshed at
 `39dbca4`: 89.72% for the measured application code baseline. These results do
 not include the new audit command. Current command-specific and full Go checks
@@ -8118,3 +8118,43 @@ both hashes match current files. No fresh browser visual inspection was performe
 Diff checks pass. Compiler output includes macOS FSEvents deprecation and race
 linker warnings. Python code and default-tool types are unchanged; Python gates,
 Source export check, coverage and performance were not rerun for this slice.
+
+## 2026-10-10 native citation HTTP/SSE and metadata-preserving rewrites
+
+Baseline: `aee0437` plus this provider integration. Completed HTTP text replies
+retain all five citation variants, nullable SDK fields, arbitrary-size signed
+indices and closed extension data. Native normalization mirrors whole-variant
+integer coercion and loose null-filled construction: if any declared field fails
+validation, original primitive values survive. Unknown discriminators use the
+SDK's first char model defaults while remaining extension data in Go. The Source
+capture records SDK 0.107.1, installed Pydantic version and constructor/accumulator
+source hashes; 35 completed replies are compared to actual SDK forwarding.
+
+SSE retains initial citations and appends ordered citation deltas with no text
+progress for citation events. Metadata is included in the block accumulation
+budget; invalid ownership, missing delta fields and non-array append fail. Two
+actual SDK streams and subsequent forwarding preserve final content, including
+default `parsed_output: null`. Structured output formats remain unsupported;
+only the default null output profile is admitted. Older direct/stream recipes now
+retain SDK citation metadata instead of projecting it away. Source exports remain
+202 files. Request lowering replaces text through TextBlock.WithText, preserving
+all metadata and the original authoritative history in all 35 Source cases.
+
+README Mermaid provider label, boundary prose, visible baseline, extension seam
+and interactive specification describe this integration. G4/G7 still require
+citation-bearing managed persistence/restart/recording acceptance plus the final
+provider content/request/auth inventory audit. No live paid-provider call, new
+dependency, default streaming selection or authority change is claimed.
+
+Validation on the complete worktree: targeted agent/provider/protocol tests pass;
+full `go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` pass.
+Full Python regression: 2195 passed, 28 skipped, 24 subtests passed, 3 existing
+warnings. Source export check: 202 current files. All 19 scanner guards pass.
+Production type audit: 401 files, 1302 package-level named types, zero direct
+open-payload findings. Archify delivery: 9/9 checks, current specification SHA256
+3a01e7ec602611b96b533cbd5676788267c55e089e538fc5b25085426292cccd and
+artifact SHA256 310745bff7ae30fad7fe63bd012518c3cacafe67cfc95e18bfbb74c8deaebbc2.
+Both hashes match current files. No fresh browser visual inspection, coverage,
+performance or Python mutation sweep was run. Compiler output includes existing
+macOS FSEvents deprecation and race linker warnings. Diff checks pass.

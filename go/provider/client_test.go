@@ -67,7 +67,7 @@ func TestClientLimitsMalformedRepliesAndRedactsErrors(t *testing.T) {
 		{"invalid-utf8", strings.Replace(goodReply, "done", string([]byte{255}), 1), 200, 10000, FailureProtocol},
 		{"missing", `{}`, 200, 100, FailureProtocol},
 		{"unsigned", strings.Replace(goodReply, `{"type":"text","text":"done","citations":null}`, `{"type":"thinking","thinking":"private"}`, 1), 200, 10000, FailureProtocol},
-		{"citations", strings.Replace(goodReply, `"citations":null`, `"citations":[{"type":"unported"}]`, 1), 200, 10000, FailureProtocol},
+		{"invalid-text", strings.Replace(goodReply, `"text":"done"`, `"text":7`, 1), 200, 10000, FailureProtocol},
 		{"unknown", strings.Replace(goodReply, `"type":"text"`, `"type":"redacted_thinking"`, 1), 200, 10000, FailureProtocol},
 		{"key-echo", `{"error":{"message":"fixture-key says no"}}`, 401, 10000, FailureStatus},
 		{"plain-error", "fixture-key plaintext error", 502, 10000, FailureStatus},

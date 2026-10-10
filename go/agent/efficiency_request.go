@@ -156,7 +156,8 @@ func lowerRequestProjection(original []protocol.Message, value jsonvalue.Value) 
 				if !ok {
 					return nil, false
 				}
-				blocks[j] = protocol.NewTextBlock(text)
+				originalText, _ := block.Text()
+				blocks[j] = originalText.WithText(text)
 			case protocol.BlockToolResult:
 				v, _ := candidates[j].Lookup("content")
 				text, ok := v.Text()

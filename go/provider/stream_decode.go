@@ -18,6 +18,8 @@ import (
 type streamBlock struct {
 	kind          protocol.BlockKind
 	text          *strings.Builder
+	citations     protocol.Citations
+	citationBytes int
 	signature, id string
 	redacted      string
 	name          protocol.ToolName
@@ -176,6 +178,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			Text         *string              `json:"text"`
 			Thinking     *string              `json:"thinking"`
 			Signature    *string              `json:"signature"`
+			Citation     json.RawMessage      `json:"citation"`
 			PartialJSON  *string              `json:"partial_json"`
 			StopReason   *protocol.StopReason `json:"stop_reason"`
 			StopSequence *string              `json:"stop_sequence"`
@@ -314,9 +317,17 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			if block.Text == nil {
 				return badStream("text missing")
 			}
-			if _, err := decodeBlock(wire.Block); err != nil {
+			initial, err := decodeBlock(wire.Block)
+			if err != nil {
 				return badStream(c.clean(err.Error(), 500))
 			}
+			text, _ := initial.Text()
+			b.citations = text.Citations()
+			encoded, err := json.Marshal(b.citations)
+			if err != nil {
+				return badStream("invalid citation metadata")
+			}
+			b.citationBytes = len(encoded)
 			b.text.WriteString(*block.Text)
 		case protocol.BlockThinking:
 			if block.Thinking == nil || block.Signature == nil {
@@ -347,7 +358,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		case protocol.BlockRedactedThinking:
 			b.block = protocol.NewRedactedThinkingBlock(b.redacted)
 		case protocol.BlockText:
-			b.block = protocol.NewTextBlock(b.text.String())
+			b.block = protocol.NewStreamedTextBlock(b.text.String(), b.citations)
 		case protocol.BlockThinking:
 			b.block = protocol.NewThinkingBlock(b.text.String(), b.signature)
 		case protocol.BlockToolUse:
@@ -372,6 +383,24 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		b.text.WriteString(*wire.Delta.Text)
 		progress = protocol.StreamDelta{Kind: protocol.DeltaText, Text: *wire.Delta.Text}
+	case "citations_delta":
+		if b.kind != protocol.BlockText || len(wire.Delta.Citation) == 0 {
+			return badStream("invalid citation delta")
+		}
+		citation, err := providerCitation(wire.Delta.Citation)
+		if err != nil {
+			return badStream("malformed citation delta")
+		}
+		citations, err := b.citations.Append(citation)
+		if err != nil {
+			return badStream("citation delta requires null or array metadata")
+		}
+		encoded, err := json.Marshal(citation)
+		if err != nil {
+			return badStream("invalid normalized citation delta")
+		}
+		b.citations = citations
+		b.citationBytes += len(encoded) + 1
 	case "thinking_delta":
 		if b.kind != protocol.BlockThinking || wire.Delta.Thinking == nil {
 			return badStream("invalid thinking delta")
@@ -395,7 +424,7 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 	default:
 		return badStream("unsupported content delta")
 	}
-	if b.text.Len()+len(b.signature)+len(b.input) > protocol.MaxWireBytes {
+	if b.text.Len()+len(b.signature)+len(b.input)+b.citationBytes > protocol.MaxWireBytes {
 		return &Failure{Kind: FailureLimit, Message: "provider streamed block exceeds protocol limit"}
 	}
 	if progress.Text != "" && emit != nil {

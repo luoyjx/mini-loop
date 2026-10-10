@@ -79,13 +79,19 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		if wire.Text == nil {
 			return protocol.Block{}, errors.New("text block has no text")
 		}
-		if len(wire.Citations) > 0 {
-			var citations []struct{}
-			if json.Unmarshal(wire.Citations, &citations) != nil || len(citations) > 0 {
-				return protocol.Block{}, errors.New("citation blocks require a typed citation adapter")
-			}
+		citations, err := providerCitations(wire.Citations)
+		if err != nil {
+			return protocol.Block{}, err
 		}
-		return protocol.NewTextBlock(*wire.Text), nil
+		block := protocol.NewTextBlockWithCitations(*wire.Text, citations)
+		encoded, err := json.Marshal(block)
+		if err != nil {
+			return protocol.Block{}, err
+		}
+		if len(encoded) > protocol.MaxWireBytes {
+			return protocol.Block{}, errors.New("normalized citation block exceeds protocol limit")
+		}
+		return block, nil
 	case protocol.BlockThinking:
 		if wire.Thinking == nil || wire.Signature == nil {
 			return protocol.Block{}, errors.New("thinking block requires a signature")

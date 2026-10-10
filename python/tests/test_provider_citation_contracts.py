@@ -10,7 +10,7 @@ def test_sdk_citation_capture_preserves_semantic_and_extension_data():
     spec.loader.exec_module(module)
     capture = module.provider_citation_contracts()
     cases = {case["name"]: case for case in capture["completed"]}
-    assert len(cases) == 17
+    assert len(cases) == 35
     assert all(case["requests"] == 2 for case in cases.values())
     assert all(case["normalized"] == case["forwarded"] for case in cases.values())
     assert cases["absent"]["normalized"]["citations"] is None
@@ -20,7 +20,14 @@ def test_sdk_citation_capture_preserves_semantic_and_extension_data():
     assert cases["extra_members"]["normalized"]["citations"][0]["extension"]["secret-key"] == ["fixture-secret", 3]
     assert cases["wrong_known_field"]["normalized"]["citations"][0]["cited_text"] == 7
     assert cases["non_array"]["normalized"]["citations"] == "opaque fixture-secret"
+    for name, expected in [("numeric_string", 2), ("float_integer", 2), ("index_text_0", 2),
+                           ("index_text_1", 2), ("index_text_2", 2), ("index_text_5", 1), ("index_text_7", 2)]:
+        assert cases[name]["normalized"]["citations"][0]["document_index"] == expected
+    assert cases["boolean_index"]["normalized"]["citations"][0]["document_index"] == 1
+    assert cases["fractional_index"]["normalized"]["citations"][0]["document_index"] == 2.5
     for stream in capture["streams"]:
+        assert stream["requests"] == 2
+        assert stream["forwarded"] == stream["content"]
         assert stream["content"][0]["text"] == "prefix tail"
         citations = stream["content"][0]["citations"]
         assert len(citations) == (6 if stream["name"] == "seed_plus_all_deltas" else 5)

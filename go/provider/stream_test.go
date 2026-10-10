@@ -184,7 +184,7 @@ func TestStreamingRejectsIncompleteInvalidAndUnboundedWire(t *testing.T) {
 		{"invalid-json", strings.Replace(good, `"partial_json": "\"content\":\"你好\\n\"}"`, `"partial_json": "bad}"`, 1), FailureProtocol},
 		{"discriminator", strings.Replace(good, `"type": "text_delta"`, `"type": "thinking_delta"`, 1), FailureProtocol},
 		{"invalid-utf8", strings.Replace(good, "你好", "\xff", 1), FailureProtocol},
-		{"citation", strings.Replace(good, `"type": "text_delta"`, `"type": "citations_delta"`, 1), FailureProtocol},
+		{"citation-missing", strings.Replace(good, `"type": "text_delta"`, `"type": "citations_delta"`, 1), FailureProtocol},
 		{"after-stop", good + "event: message_delta\ndata: {}\n\n", FailureProtocol},
 	}
 	for _, v := range cases {

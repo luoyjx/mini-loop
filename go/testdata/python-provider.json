@@ -78,6 +78,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -316,6 +317,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -562,6 +564,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -808,6 +811,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -1054,6 +1058,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -1300,6 +1305,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -2372,6 +2378,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -2554,6 +2561,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -2737,6 +2745,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -2920,6 +2929,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -3103,6 +3113,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -3285,6 +3296,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -3467,6 +3479,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -3649,6 +3662,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -3831,6 +3845,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -4013,6 +4028,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -4195,6 +4211,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -4439,6 +4456,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -4830,6 +4848,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -4945,6 +4964,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -5064,6 +5084,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -5184,6 +5205,7 @@
             "type": "thinking"
           },
           {
+            "citations": null,
             "text": "working",
             "type": "text"
           },
@@ -5229,9 +5251,7 @@
       "wire": "anthropic"
     }
   ],
-  "omitted_nullable_sdk_fields": [
-    "text.citations"
-  ],
+  "omitted_nullable_sdk_fields": [],
   "request": {
     "max_tokens": 8000,
     "messages": [

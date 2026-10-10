@@ -35,8 +35,9 @@ const ToolBash ToolName = "bash"
 const MaxWireBytes = 512 * 1024
 
 type TextBlock struct {
-	Text      string `json:"text"`
-	citations Citations
+	Text             string `json:"text"`
+	citations        Citations
+	parsedOutputNull bool
 }
 
 type ThinkingBlock struct {
@@ -79,7 +80,28 @@ func NewTextBlockWithCitations(text string, citations Citations) Block {
 	return Block{kind: BlockText, text: &TextBlock{Text: text, citations: citations}}
 }
 
-func (text TextBlock) Citations() Citations { return text.citations }
+// NewStreamedTextBlock retains the default SDK ParsedTextBlock's null output.
+// Selecting a structured output format is a separate unsupported request profile.
+func NewStreamedTextBlock(text string, citations Citations) Block {
+	block := NewTextBlockWithCitations(text, citations)
+	block.text.parsedOutputNull = true
+	return block
+}
+
+func (text TextBlock) Citations() Citations   { return text.citations }
+func (text TextBlock) ParsedOutputNull() bool { return text.parsedOutputNull }
+
+// WithText replaces only text, retaining immutable provider metadata.
+func (text TextBlock) WithText(value string) Block {
+	text.Text = value
+	return Block{kind: BlockText, text: &text}
+}
+func (text TextBlock) parsedOutputWire() *wireOptional[string] {
+	if !text.parsedOutputNull {
+		return nil
+	}
+	return &wireOptional[string]{}
+}
 func (text TextBlock) citationWire() *Citations {
 	if !text.citations.Present() {
 		return nil
@@ -89,14 +111,16 @@ func (text TextBlock) citationWire() *Citations {
 }
 func (text TextBlock) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
-		Text      string     `json:"text"`
-		Citations *Citations `json:"citations,omitempty"`
-	}{text.Text, text.citationWire()})
+		Text         string                `json:"text"`
+		Citations    *Citations            `json:"citations,omitempty"`
+		ParsedOutput *wireOptional[string] `json:"parsed_output,omitempty"`
+	}{text.Text, text.citationWire(), text.parsedOutputWire()})
 }
 func (text *TextBlock) UnmarshalJSON(data []byte) error {
 	var wire struct {
-		Text      string          `json:"text"`
-		Citations json.RawMessage `json:"citations"`
+		Text         string          `json:"text"`
+		Citations    json.RawMessage `json:"citations"`
+		ParsedOutput json.RawMessage `json:"parsed_output"`
 	}
 	if err := decodeStrict(data, &wire); err != nil {
 		return err
@@ -105,7 +129,10 @@ func (text *TextBlock) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*text = TextBlock{Text: wire.Text, citations: citations}
+	if len(wire.ParsedOutput) > 0 && string(bytes.TrimSpace(wire.ParsedOutput)) != "null" {
+		return errors.New("structured parsed output is unsupported")
+	}
+	*text = TextBlock{Text: wire.Text, citations: citations, parsedOutputNull: len(wire.ParsedOutput) > 0}
 	return nil
 }
 
@@ -237,11 +264,12 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		}{BlockRedactedThinking, *b.redactedThinking, control})
 	case BlockText:
 		return json.Marshal(struct {
-			Type         BlockKind     `json:"type"`
-			Text         string        `json:"text"`
-			Citations    *Citations    `json:"citations,omitempty"`
-			CacheControl *CacheControl `json:"cache_control,omitempty"`
-		}{BlockText, b.text.Text, b.text.citationWire(), control})
+			Type         BlockKind             `json:"type"`
+			Text         string                `json:"text"`
+			Citations    *Citations            `json:"citations,omitempty"`
+			ParsedOutput *wireOptional[string] `json:"parsed_output,omitempty"`
+			CacheControl *CacheControl         `json:"cache_control,omitempty"`
+		}{BlockText, b.text.Text, b.text.citationWire(), b.text.parsedOutputWire(), control})
 	case BlockThinking:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
@@ -330,9 +358,10 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 		next = NewRedactedThinkingBlock(*wire.Data)
 	case BlockText:
 		var wire struct {
-			Type      BlockKind       `json:"type"`
-			Text      string          `json:"text"`
-			Citations json.RawMessage `json:"citations"`
+			Type         BlockKind       `json:"type"`
+			Text         string          `json:"text"`
+			Citations    json.RawMessage `json:"citations"`
+			ParsedOutput json.RawMessage `json:"parsed_output"`
 		}
 		if err := decodeStrictMode(data, &wire, bounded); err != nil {
 			return Block{}, err
@@ -342,6 +371,12 @@ func decodeBlock(data []byte, bounded bool) (Block, error) {
 			return Block{}, err
 		}
 		next = NewTextBlockWithCitations(wire.Text, citations)
+		if len(wire.ParsedOutput) > 0 {
+			if string(bytes.TrimSpace(wire.ParsedOutput)) != "null" {
+				return Block{}, errors.New("structured parsed output is unsupported")
+			}
+			next.text.parsedOutputNull = true
+		}
 	case BlockThinking:
 		var wire struct {
 			Type BlockKind `json:"type"`

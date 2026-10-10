@@ -38,7 +38,7 @@ func TestCitationSourceCompletedBlocksRoundTrip(t *testing.T) {
 	if err := json.Unmarshal(fixture, &corpus); err != nil {
 		t.Fatal(err)
 	}
-	if len(corpus.Completed) != 17 {
+	if len(corpus.Completed) != 35 {
 		t.Fatal("missing Source cases")
 	}
 	for _, test := range corpus.Completed {
@@ -126,6 +126,7 @@ func TestCitationPresenceAndCacheEncoding(t *testing.T) {
 		`{"type":"text","text":"x"}`,
 		`{"type":"text","text":"x","citations":null}`,
 		`{"type":"text","text":"x","citations":[]}`,
+		`{"type":"text","text":"x","citations":null,"parsed_output":null}`,
 	} {
 		var block Block
 		if err := json.Unmarshal([]byte(data), &block); err != nil {
@@ -232,4 +233,33 @@ func TestCitationStoredMessageHasIndependentFrameLimit(t *testing.T) {
 		t.Fatal(err)
 	}
 	citationJSONEqual(t, encoded, row.Content)
+}
+
+func TestTextReplacementPreservesDefaultStreamMetadata(t *testing.T) {
+	citations, err := DecodeCitations([]byte(`[{"type":"future_location","secret":"proof"}]`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	block := NewStreamedTextBlock("original", citations)
+	text, _ := block.Text()
+	replaced := text.WithText("rewritten")
+	got, err := json.Marshal(replaced)
+	if err != nil {
+		t.Fatal(err)
+	}
+	citationJSONEqual(t, got, []byte(`{"type":"text","text":"rewritten","citations":[{"type":"future_location","secret":"proof"}],"parsed_output":null}`))
+	original, _ := block.Text()
+	if original.Text != "original" || !original.ParsedOutputNull() {
+		t.Fatal("replacement mutated metadata source")
+	}
+	for _, data := range []string{`{"type":"text","text":"x","parsed_output":{}}`, `{"text":"x","parsed_output":7}`} {
+		var block Block
+		if json.Unmarshal([]byte(data), &block) == nil {
+			t.Fatal("structured output profile accepted")
+		}
+		var text TextBlock
+		if json.Unmarshal([]byte(data), &text) == nil {
+			t.Fatal("structured output projection accepted")
+		}
+	}
 }

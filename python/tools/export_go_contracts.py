@@ -1825,12 +1825,10 @@ def _provider_contracts() -> dict[str, object]:
         with patch("anthropic._base_client.random", return_value=0), patch("anthropic._base_client.anyio.sleep", wait), patch("anthropic._base_client.time.time", return_value=1700000000):
             try:
                 reply = await client.messages.create(**kwargs)
-                # Normalize only consumed domain fields; nullable citations are
-                # an explicit unported SDK metadata field, not fake evidence.
+                # Retain SDK citation metadata now consumed by the native adapter.
                 content = []
                 for block in reply.content:
                     row = block.model_dump()
-                    if row["type"]=="text": row.pop("citations",None)
                     content.append(row)
                 payload = {k:getattr(reply,k) for k in ("id","type","role","model","stop_reason","stop_sequence")}
                 payload["content"] = content
@@ -1872,7 +1870,7 @@ def _provider_contracts() -> dict[str, object]:
             "sdk_source_sha256":{name:hashlib.sha256((Path(anthropic.__file__).parent / name).read_bytes()).hexdigest()
                                  for name in ("_base_client.py", "_constants.py", "resources/messages/messages.py")},
             "sdk_model_ceilings":MODEL_NONSTREAMING_TOKENS,
-            "omitted_nullable_sdk_fields":["text.citations"], "request":request,
+            "omitted_nullable_sdk_fields":[], "request":request,
             "descriptions":[AnthropicCompatibleProvider(api_key="fixture-key").describe(),
                             AnthropicCompatibleProvider(base_url="https://provider.invalid/proxy/",api_key="fixture-key").describe()],
             "cases":asyncio.run(gather())}
@@ -1962,9 +1960,6 @@ def _stream_contracts() -> dict:
                 content=[]
                 for block in reply.content:
                     row=block.model_dump()
-                    if row["type"]=="text":
-                        row.pop("citations",None)
-                        row.pop("parsed_output",None)
                     if row["type"]=="tool_use": row={k:row[k] for k in ("type","id","name","input","caller")}
                     content.append(row)
                 reply={"id":reply.id,"type":reply.type,"role":reply.role,"model":reply.model,"content":content,"stop_reason":reply.stop_reason,"stop_sequence":reply.stop_sequence,

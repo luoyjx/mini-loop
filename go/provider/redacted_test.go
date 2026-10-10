@@ -40,6 +40,12 @@ func TestRedactedThinkingDirectAndSSEOpaqueRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// The SDK stream wraps text in ParsedTextBlock; the direct reply does not.
+	var streamText protocol.Block
+	if err := json.Unmarshal([]byte(`{"type":"text","text":"answer","citations":null,"parsed_output":null}`), &streamText); err != nil {
+		t.Fatal(err)
+	}
+	want.Content[1] = streamText
 	a, _ := json.Marshal(got)
 	b, _ := json.Marshal(want)
 	if string(a) != string(b) {

@@ -1574,6 +1574,12 @@ identity. It reads no environment/profile credentials and retains no dynamic
 payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
 `agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
+The native adapter retains five named citation variants and closed extension data
+through HTTP normalization, bounded SSE accumulation and request forwarding. Only
+text/thinking fragments produce progress callbacks; citations belong to final content.
+`TextBlock.WithText` preserves immutable metadata during request rewrites. The default
+SDK streaming text profile retains `parsed_output: null`; selecting a structured
+output format is not implemented.
 Implementations must stop callbacks before returning, including on failure. Session
 coalescing, stream IDs, masking and managed cancellation repair own progress.
 `RuntimeConfig.Recovery` and `ManagerServices.Recovery` select a typed policy.

@@ -397,3 +397,55 @@ func TestRequestProjectionLiveRunKeepsCachedPrefixAndAuthority(t *testing.T) {
 		t.Fatal("projection ledger did not retain both user deltas", len(s.requestProjections))
 	}
 }
+
+func TestRequestLoweringRetainsCitationAndDefaultStreamMetadata(t *testing.T) {
+	data, err := os.ReadFile("../testdata/python-provider-citations.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture struct {
+		Completed []struct {
+			Name       string
+			Normalized json.RawMessage
+		}
+	}
+	if err := json.Unmarshal(data, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	for _, spec := range fixture.Completed {
+		t.Run(spec.Name, func(t *testing.T) {
+			var block protocol.Block
+			if err := json.Unmarshal(spec.Normalized, &block); err != nil {
+				t.Fatal(err)
+			}
+			originalText, _ := block.Text()
+			// The default SDK streaming output also carries an explicit null output.
+			block = protocol.NewStreamedTextBlock(originalText.Text, originalText.Citations())
+			original := []protocol.Message{{Role: protocol.RoleAssistant, Content: protocol.BlockContent(block)}}
+			before, _ := json.Marshal(original)
+			value, err := protocolMessagesValue(original)
+			if err != nil {
+				t.Fatal(err)
+			}
+			rows, _ := value.Array()
+			content, _ := rows[0].Lookup("content")
+			blocks, _ := content.Array()
+			blocks[0] = replaceRequestField(blocks[0], "text", jsonvalue.TextValue("short"))
+			rows[0] = replaceRequestField(rows[0], "content", jsonvalue.ArrayValue(blocks))
+			projected, ok := lowerRequestProjection(original, jsonvalue.ArrayValue(rows))
+			if !ok {
+				t.Fatal("projection refused")
+			}
+			expected := []protocol.Message{{Role: protocol.RoleAssistant, Content: protocol.BlockContent(protocol.NewStreamedTextBlock("short", originalText.Citations()))}}
+			actual, _ := json.Marshal(projected)
+			want, _ := json.Marshal(expected)
+			if string(actual) != string(want) {
+				t.Fatalf("metadata lost: %s / %s", actual, want)
+			}
+			after, _ := json.Marshal(original)
+			if string(before) != string(after) {
+				t.Fatal("projection mutated authoritative history")
+			}
+		})
+	}
+}
