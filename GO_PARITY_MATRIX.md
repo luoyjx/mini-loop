@@ -9839,3 +9839,47 @@ open. Documentation validation: audit assertions and diff checks; no fresh full
 race, vet, type audit, export sweep, Python regression, coverage or visual gate.
 Prior gates retain their original baselines. Architecture is unchanged. No merge
 or push, and no complete migration claim.
+
+## Immediate Source comparison after native timeout — 2026-10-11
+
+Baseline: `d3e6eee`. [Exact experiment audit](docs/audits/go-fsevents-immediate-source-2026-10-11.json)
+pins the temporary C/Go instrumentation hashes, restored-source hashes, complete
+failure timelines, raw Go callback records, actual Source outputs and comparator
+script. This refines the preceding isolated Source comparator.
+
+The full ordinary Go suite with experimental tracing failed only reload:
+added-source, hidden-parent-source and ignored-backup. After each operation Next
+timed out, the experimental test explicitly closed/joined that Go subscription,
+then immediately ran the same Source recipe in a Python subprocess. The Go test
+waited for that comparator and preserved its original failure. Source used the
+actual RustNotify/WatchFilesReload helper, native flags 18, latency zero and
+since-now, with the unchanged 3-second operation output window.
+
+| Failed Go recipe | Immediate Source changed | Matches pinned fixture |
+| --- | --- | --- |
+| added-source | new.py | yes |
+| hidden-parent-source | null: no result within the Source operation window | no |
+| ignored-backup | empty observed filtered batch | yes |
+
+Source helper completion/close succeeded in all three cases. Hidden-parent's null
+is distinct from an observed empty batch. It demonstrates that a native wait can
+expire in actual Source too; it does not prove identical causes, kernel loss or
+absence of raw Source callbacks. The Source total elapsed seconds include setup,
+readiness and cleanup and must not be reported as operation latency. Sequential
+same-host comparisons still differ in paths, times, language and scheduling.
+Raw Go records for each failed subscription contained only setup/readiness;
+no operation callback was recorded before its timeout/cleanup.
+
+Local Apple SDK FSEvents.h also documents purge as root-only and device query as
+zero for host-relative streams; this experiment ran as UID 501. No global purge
+was introduced or tested as a fix. Header path/hash and discussion line ranges
+are pinned. No conclusion that purge success/failure caused these timeouts.
+
+All temporary tracing/comparator test changes were removed only after the full Go
+process terminated. `git diff --exit-code -- go python` confirms no production,
+test or fixture changes remain. Audit assertions and diff checks passed. There
+is no new passing full ordinary gate, race/vet/type-audit/export/coverage/Python
+regression or visual check. Fixtures and deadlines remain unchanged. Native
+reliability acceptance remains open; repeated Source/native timing experiments
+alone must not be substituted for the broader remaining SDK/default/G7 closure.
+Architecture and feature defaults remain unchanged. No merge or push.
