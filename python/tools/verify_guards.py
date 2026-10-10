@@ -47,6 +47,20 @@ class Mutation:
 
 MUTATIONS = [
     Mutation(
+        "background-nonfinite-batch-preparation-lazy", 0, "mini_loop/agent.py",
+        '        calls = [\n            ToolCall(\n                _block(block, "name"),\n                dict(_block(block, "input") or {}),\n                _block(block, "id"),\n            )\n            for block in blocks\n        ]',
+        '        calls = (\n            ToolCall(\n                _block(block, "name"),\n                dict(_block(block, "input") or {}),\n                _block(block, "id"),\n            )\n            for block in blocks\n        )',
+        "tests/test_provider_nonfinite_background_contracts.py::test_nonfinite_background_sdk_gate_and_managed_stages",
+        "Go migration Source probe: all background model call inputs are copied before any hook or effect in the batch",
+    ),
+    Mutation(
+        "background-nonfinite-journal-fingerprint-accepted", 0, "mini_loop/actions.py",
+        "        allow_nan=False,",
+        "        allow_nan=True,",
+        "tests/test_provider_nonfinite_background_contracts.py::test_nonfinite_background_sdk_gate_and_managed_stages",
+        "Go migration Source probe: a journal refuses nonfinite background input before creating action authority or invoking after/execute",
+    ),
+    Mutation(
         "model-batch-input-preparation-lazy", 0, "mini_loop/agent.py",
         '        calls = [\n            ToolCall(\n                _block(block, "name"),\n                dict(_block(block, "input") or {}),\n                _block(block, "id"),\n            )\n            for block in blocks\n        ]',
         '        calls = (\n            ToolCall(\n                _block(block, "name"),\n                dict(_block(block, "input") or {}),\n                _block(block, "id"),\n            )\n            for block in blocks\n        )',
