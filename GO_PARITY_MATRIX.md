@@ -9988,3 +9988,40 @@ Source prerequisite gates completed: both nonfinite Source tests passed; the
 journal fingerprint mutation was caught, all 19 scanner guards are anchored,
 and sequential Source export --check reports 223 current files.
 [Managed stream fixture](go/testdata/python-provider-nonfinite-stream.json).
+
+## Managed nonfinite observation adoption — 2026-10-11
+
+Source prerequisite `d36323d`; native consumer adoption `cc5cb1d`.
+[Managed nonfinite audit](docs/audits/provider-nonfinite-stream-2026-10-11.json)
+records four Source and native managed message-stream cases: memory and real
+SQLite, NaN and Infinity in unknown Bash input.keep. SSE preserves the original
+observation; finite journal fingerprint admission fails before action creation.
+Before/guard/result run, after is skipped, no native handler executes, and the
+next request does not reach transport. Standard REST and model request JSON
+remain finite. Native live event/message archival projections mask decoded
+strings/keys and reconstruct stored records with untrusted authority. Request
+estimation retains detached cache annotations; observation queries use separate
+read-only values rather than marking executable decision inputs as projections.
+
+Verification on the combined worktree: targeted native tests including Source
+consumer comparison, mask panic/secret-key tests and finite cache JSON equality;
+full Go race; go vet; package type audit (436 production files / 1,405 types / zero
+findings); two Source tests; one caught journal fingerprint mutation with passing
+baseline; all 19 scanner anchors; sequential Source export --check (223 files);
+Archify 9/9 with no errors/warnings; git diff --check. Temporary Launcher diagnostic
+changes were restored. The initial full ordinary run exposed decision recording
+projection regressions in Launcher LLM/Jev and SQLite baseline/maximum paths;
+those were fixed and targeted proofs passed. The fresh full ordinary run passes
+those packages and fails only native reload same-mtime-write/lower-mtime-write
+recipes. That failure is retained, not superseded by race passing. Intermediate
+commits were not separately full-suite replayed.
+
+Coverage is not refreshed for this slice: 89.26% application / 89.23% all Go is
+the prior runtime c8491d2 snapshot, not current cc5cb1d measurement. Full Python
+regression, non-Darwin, performance and fresh browser visual checks were not run.
+Python package modules were unchanged; source scanner/mutation inventory gates
+were run for the changed tools. Legacy trajectory/model snapshots, complete
+historical restore consumers, broader known-field/unknown-tool input adaptations,
+native watcher reliability and default diagnostics remain open. This is concrete
+managed consumer delivery, not complete G4/G7 or migration acceptance. No merge
+or push.
