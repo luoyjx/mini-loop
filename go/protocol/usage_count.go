@@ -184,14 +184,28 @@ func (count UsageCount) sdkInteger() (UsageCount, bool) {
 		}
 	case UsageText:
 		raw := strings.TrimSpace(count.text)
-		if strings.ContainsAny(raw, "eExX_") {
-			return count, false
+		integer, fraction, decimal := strings.Cut(raw, ".")
+		if decimal {
+			if fraction == "" {
+				return count, false
+			}
+			for i := range fraction {
+				if fraction[i] != '0' {
+					return count, false
+				}
+			}
+			raw = integer
 		}
+		// SDK integer strings allow separators only between integer digits.
+		// Checking decimal zeroes before conversion avoids float rounding.
+		for i := range raw {
+			if raw[i] == '_' && (i == 0 || i+1 == len(raw) || raw[i-1] < '0' || raw[i-1] > '9' || raw[i+1] < '0' || raw[i+1] > '9') {
+				return count, false
+			}
+		}
+		raw = strings.ReplaceAll(raw, "_", "")
 		if n, err := strconv.Atoi(raw); err == nil {
 			return IntegerUsageCount(n), true
-		}
-		if n, err := strconv.ParseFloat(raw, 64); err == nil && math.Trunc(n) == n && n < float64(^uint(0)>>1) && n >= -float64(^uint(0)>>1) {
-			return IntegerUsageCount(int(n)), true
 		}
 	}
 	return count, false

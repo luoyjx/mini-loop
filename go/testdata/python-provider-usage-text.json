@@ -1,0 +1,4108 @@
+{
+  "cases": [
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "integer",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "integer",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "+0013",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "plus-leading-zero",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+0013\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "+0013",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "plus-leading-zero",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+0013\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"+0013\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "+0013",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "-13",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "negative",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-13\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "-13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": -13,
+        "observations": 1,
+        "observed": -13,
+        "prompt_tokens": -13,
+        "used": 0
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": -13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "negative",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-13\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"-13\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": -13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": -13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "-13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "\u000b13\f",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "ascii-space",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u000b13\\f\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "\u000b13\f",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "ascii-space",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u000b13\\f\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"\\u000b13\\f\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "\u000b13\f",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": " 13 ",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "nbsp",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u00a013\\u00a0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": " 13 ",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "nbsp",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u00a013\\u00a0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"\\u00a013\\u00a0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": " 13 ",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": " 13 ",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "em-space",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u200313\\u2003\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": " 13 ",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "em-space",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u200313\\u2003\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"\\u200313\\u2003\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": " 13 ",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "-0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "negative-zero",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "-0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 0,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "negative-zero",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"-0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 0,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "-0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.000",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "decimal-zero",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.000\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13.000",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "decimal-zero",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.000\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13.000\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13.000",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "-13.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "negative-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-13.0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "-13.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": -13,
+        "observations": 1,
+        "observed": -13,
+        "prompt_tokens": -13,
+        "used": 0
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": -13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "negative-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-13.0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"-13.0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": -13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": -13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "-13.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "+13.00",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "plus-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+13.00\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "+13.00",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "plus-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+13.00\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"+13.00\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "+13.00",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "9007199254740993.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "past-float-precision",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"9007199254740993.0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "9007199254740993.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 9007199254740993,
+        "observations": 1,
+        "observed": 9007199254740993,
+        "prompt_tokens": 9007199254740993,
+        "used": 9007199254740992
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 9007199254740993,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "past-float-precision",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"9007199254740993.0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"9007199254740993.0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 9007199254740993,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 9007199254740993,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "9007199254740993.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "9223372036854775807.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "native-max",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"9223372036854775807.0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "9223372036854775807.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 9223372036854775807,
+        "observations": 1,
+        "observed": 9223372036854775807,
+        "prompt_tokens": 9223372036854775807,
+        "used": 9223372036854775808
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 9223372036854775807,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "native-max",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"9223372036854775807.0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"9223372036854775807.0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 9223372036854775807,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 9223372036854775807,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "9223372036854775807.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "-9223372036854775808.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "native-min",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-9223372036854775808.0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "-9223372036854775808.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": -9223372036854775808,
+        "observations": 1,
+        "observed": -9223372036854775808,
+        "prompt_tokens": -9223372036854775808,
+        "used": 0
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": -9223372036854775808,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "native-min",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-9223372036854775808.0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"-9223372036854775808.0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": -9223372036854775808,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": -9223372036854775808,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "-9223372036854775808.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "missing-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13.",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "missing-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13.\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13.",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": ".0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "missing-integer",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\".0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": ".0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": ".0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "missing-integer",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\".0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \".0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": ".0",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": ".0",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": ".0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.0000000000000000000001",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.0000000000000000000001\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13.0000000000000000000001",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.0000000000000000000001",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.0000000000000000000001\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13.0000000000000000000001\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.0000000000000000000001",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.0000000000000000000001",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13.0000000000000000000001",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "-13.0000000000000000000001",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "negative-tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-13.0000000000000000000001\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "-13.0000000000000000000001",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "-13.0000000000000000000001",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "negative-tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"-13.0000000000000000000001\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"-13.0000000000000000000001\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "-13.0000000000000000000001",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "-13.0000000000000000000001",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "-13.0000000000000000000001",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.75",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.75\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13.75",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.75",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.75\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13.75\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.75",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.75",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13.75",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13e0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "exponent",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13e0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13e0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13e0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "exponent",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13e0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13e0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13e0",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13e0",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13e0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "1_3",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"1_3\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "1_3",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"1_3\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"1_3\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "1_3",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "١٣",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "arabic-digits",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u0661\\u0663\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "١٣",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "١٣",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "arabic-digits",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\u0661\\u0663\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"\\u0661\\u0663\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "١٣",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "١٣",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "١٣",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "１３",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "fullwidth-digits",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\uff11\\uff13\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "１３",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "１３",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "fullwidth-digits",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\\uff11\\uff13\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"\\uff11\\uff13\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "１３",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "１３",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "１３",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "empty",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "empty",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "+",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "sign-only",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "+",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "+",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "sign-only",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"+\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "+",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "+",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "+",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.0.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "double-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.0.0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13.0.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.0.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "double-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.0.0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13.0.0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.0.0",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.0.0",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13.0.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "1_3.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "underscore-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"1_3.0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "1_3.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "underscore-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"1_3.0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"1_3.0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "1_3.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "_13",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "leading-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"_13\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "_13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "_13",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "leading-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"_13\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"_13\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "_13",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "_13",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "_13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13_",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "trailing-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13_\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13_",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13_",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "trailing-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13_\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13_\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13_",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13_",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13_",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "1__3",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "double-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"1__3\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "1__3",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "1__3",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "double-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"1__3\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"1__3\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "1__3",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "1__3",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "1__3",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "+_13",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "sign-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+_13\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "+_13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "+_13",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "sign-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"+_13\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"+_13\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "+_13",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "+_13",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "+_13",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13_.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "underscore-before-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13_.0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13_.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13_.0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "underscore-before-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13_.0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13_.0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13_.0",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13_.0",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13_.0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13._0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "underscore-after-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13._0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13._0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13._0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "underscore-after-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13._0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13._0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13._0",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13._0",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13._0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.0_0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "fraction-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.0_0\",\"output_tokens\":5}}",
+      "wire_usage": {
+        "input_tokens": "13.0_0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null,
+        "used": 9
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.0_0",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "fraction-underscore",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":\"13.0_0\",\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": \"13.0_0\", \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.0_0",
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": "13.0_0",
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": "13.0_0",
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": "13.0000000000000000000001",
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "cache-input-tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"cache_creation_input_tokens\":\"13.0000000000000000000001\"}}",
+      "wire_usage": {
+        "cache_creation_input_tokens": "13.0000000000000000000001",
+        "input_tokens": 13,
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": "13.0000000000000000000001",
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "cache-input-tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"cache_creation_input_tokens\":\"13.0000000000000000000001\"}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 13, \"output_tokens\": 0, \"cache_creation_input_tokens\": \"13.0000000000000000000001\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": "13.0000000000000000000001",
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": "13.0000000000000000000001",
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "cache_creation_input_tokens": "13.0000000000000000000001",
+        "input_tokens": 13,
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 9007199254741006,
+        "observations": 1,
+        "observed": 9007199254741006,
+        "prompt_tokens": 9007199254741006,
+        "used": 9007199254741006
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": 9007199254740993,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "cache-read-large-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"cache_read_input_tokens\":\"9007199254740993.0\"}}",
+      "wire_usage": {
+        "cache_read_input_tokens": "9007199254740993.0",
+        "input_tokens": 13,
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 9007199254741006,
+        "observations": 1,
+        "observed": 9007199254741006,
+        "prompt_tokens": 9007199254741006,
+        "used": 9007199254741006
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": 9007199254740993,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "cache-read-large-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"cache_read_input_tokens\":\"9007199254740993.0\"}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 13, \"output_tokens\": 0, \"cache_read_input_tokens\": \"9007199254740993.0\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": 9007199254740993,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": 9007199254740993,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "cache_read_input_tokens": "9007199254740993.0",
+        "input_tokens": 13,
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": "13.",
+          "ephemeral_5m_input_tokens": null
+        },
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "nested-cache-trailing-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"cache_creation\":{\"ephemeral_1h_input_tokens\":\"13.\"}}}",
+      "wire_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": "13."
+        },
+        "input_tokens": 13,
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": "13.",
+          "ephemeral_5m_input_tokens": null
+        },
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "nested-cache-trailing-point",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"cache_creation\":{\"ephemeral_1h_input_tokens\":\"13.\"}}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 13, \"output_tokens\": 0, \"cache_creation\": {\"ephemeral_1h_input_tokens\": \"13.\"}}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": "13.",
+              "ephemeral_5m_input_tokens": null
+            },
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": "13.",
+              "ephemeral_5m_input_tokens": null
+            },
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": "13."
+        },
+        "input_tokens": 13,
+        "output_tokens": 5
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": {
+          "thinking_tokens": 9007199254740993
+        },
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "thinking-large-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"output_tokens_details\":{\"thinking_tokens\":\"9007199254740993.0\"}}}",
+      "wire_usage": {
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": {
+          "thinking_tokens": "9007199254740993.0"
+        }
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": {
+          "thinking_tokens": 9007199254740993
+        },
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "thinking-large-decimal",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"output_tokens_details\":{\"thinking_tokens\":\"9007199254740993.0\"}}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 13, \"output_tokens\": 0, \"output_tokens_details\": {\"thinking_tokens\": \"9007199254740993.0\"}}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": {
+              "thinking_tokens": 9007199254740993
+            },
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": {
+              "thinking_tokens": 9007199254740993
+            },
+            "server_tool_use": null,
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": {
+          "thinking_tokens": "9007199254740993.0"
+        }
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": {
+          "web_fetch_requests": "13.0000000000000000000001",
+          "web_search_requests": null
+        },
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "server-fetch-tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"server_tool_use\":{\"web_fetch_requests\":\"13.0000000000000000000001\"}}}",
+      "wire_usage": {
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "server_tool_use": {
+          "web_fetch_requests": "13.0000000000000000000001"
+        }
+      }
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13,
+        "used": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": {
+          "web_fetch_requests": "13.0000000000000000000001",
+          "web_search_requests": null
+        },
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "server-fetch-tiny-fraction",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[{\"type\":\"text\",\"text\":\"ok\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5,\"server_tool_use\":{\"web_fetch_requests\":\"13.0000000000000000000001\"}}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 13, \"output_tokens\": 0, \"server_tool_use\": {\"web_fetch_requests\": \"13.0000000000000000000001\"}}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"\"}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"text_delta\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "event": "message_start",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 0,
+            "output_tokens_details": null,
+            "server_tool_use": {
+              "web_fetch_requests": "13.0000000000000000000001",
+              "web_search_requests": null
+            },
+            "service_tier": null
+          }
+        },
+        {
+          "event": "message_delta",
+          "usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": {
+              "web_fetch_requests": "13.0000000000000000000001",
+              "web_search_requests": null
+            },
+            "service_tier": null
+          }
+        }
+      ],
+      "wire_usage": {
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "server_tool_use": {
+          "web_fetch_requests": "13.0000000000000000000001"
+        }
+      }
+    }
+  ],
+  "pydantic_version": "2.13.4",
+  "python_version": "3.11.3",
+  "sdk_version": "0.107.1",
+  "source_hashes": {
+    "TokenMeter.observe": "58390859b125751f526b3037a3c13f45afb94619434bc1aa65bd4641ee44ae68",
+    "Usage": "d51dd2ee42b225592fcc4b634109d979d6bfc93a7fd6a9232c75b37a14d280e8",
+    "_field": "b54b7798c6b644a7cd5818d4e4f3564478689cbb7a28499a8e3f99371de4e815",
+    "_usage_payload": "b2f08b622caaa77a3a527b0047a0bb75e5797935644f69d44e566911131a4a28",
+    "accumulate_event": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098",
+    "prompt_tokens": "df78201c12ff29a806c2cb3c4b9d74c96ed69f5c97efd22628caa96faa520f82"
+  },
+  "usage_fields": [
+    "cache_creation",
+    "cache_creation_input_tokens",
+    "cache_read_input_tokens",
+    "inference_geo",
+    "input_tokens",
+    "output_tokens",
+    "output_tokens_details",
+    "server_tool_use",
+    "service_tier"
+  ]
+}

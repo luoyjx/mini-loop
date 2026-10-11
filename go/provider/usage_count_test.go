@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
@@ -54,7 +55,16 @@ func assertSDKUsageShape(t *testing.T, usage protocol.TokenUsage, expected jsonv
 	}
 }
 func TestUsageCountsMatchActualSDKDirectAndStreamStages(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-usage-consumer.json")
+	assertUsageCountsFixture(t, "../testdata/python-provider-usage-consumer.json", 34)
+}
+
+func TestUsageTextCountsMatchActualSDKDirectAndStreamStages(t *testing.T) {
+	assertUsageCountsFixture(t, "../testdata/python-provider-usage-text.json", 76)
+}
+
+func assertUsageCountsFixture(t *testing.T, path string, expectedCases int) {
+	t.Helper()
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -63,7 +73,10 @@ func TestUsageCountsMatchActualSDKDirectAndStreamStages(t *testing.T) {
 			Name, Mode, SSE string
 			Response        string          `json:"response_json"`
 			Expected        jsonvalue.Value `json:"event_usage"`
-			Stages          []struct {
+			Consumer        struct {
+				Prompt *int `json:"prompt_tokens"`
+			} `json:"consumer"`
+			Stages []struct {
 				Event string
 				Usage jsonvalue.Value
 			} `json:"usage_stages"`
@@ -72,7 +85,7 @@ func TestUsageCountsMatchActualSDKDirectAndStreamStages(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 34 {
+	if len(fixture.Cases) != expectedCases {
 		t.Fatal("Source inventory changed")
 	}
 	client, err := New(Config{APIKey: "fixture-key"})
@@ -81,12 +94,20 @@ func TestUsageCountsMatchActualSDKDirectAndStreamStages(t *testing.T) {
 	}
 	for _, row := range fixture.Cases {
 		t.Run(row.Name+"/"+row.Mode, func(t *testing.T) {
+			assertPrompt := func(usage protocol.TokenUsage) {
+				t.Helper()
+				actual, present := agent.PromptTokens(usage)
+				if present != (row.Consumer.Prompt != nil) || (present && actual != *row.Consumer.Prompt) {
+					t.Fatalf("prompt count changed: got %d present=%v want %v", actual, present, row.Consumer.Prompt)
+				}
+			}
 			if row.Mode == "direct" {
 				reply, err := decodeReply([]byte(row.Response))
 				if err != nil {
 					t.Fatal(err)
 				}
 				assertSDKUsageShape(t, reply.Usage, row.Expected)
+				assertPrompt(reply.Usage)
 				return
 			}
 			state := streamAssembly{}
@@ -113,6 +134,7 @@ func TestUsageCountsMatchActualSDKDirectAndStreamStages(t *testing.T) {
 				t.Fatal("stream did not finish every captured stage")
 			}
 			assertSDKUsageShape(t, state.reply.Usage, row.Expected)
+			assertPrompt(state.reply.Usage)
 		})
 	}
 }
