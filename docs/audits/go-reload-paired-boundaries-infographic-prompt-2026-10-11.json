@@ -1,0 +1,19 @@
+{
+  "generator": "built-in image_gen",
+  "initial_prompt": "Create a polished readable Chinese engineering infographic, 1536x1024 landscape, white background navy typography, teal verified observations, amber unresolved. Title Go 原生 Reload：共享失败的测点证据. Two experiment cards: 新进程组 15/16 共同匹配 · 1 例操作超时; 持续进程组 15/16 共同匹配 · 1 例就绪超时. Central flow explains ONLY the fresh source-directory failed operation: shared file operation labelled source-directory → split into Go branch labelled C 回调入口 and Source branch labelled RustNotify 返回 → both amber counters 操作后变更记录 0. Include small accurate note 测点不同：Go 在 C 入口，Source 在原生绑定返回. Outcome line 此次失败发生在后续过滤与批处理之前；根因尚未证明. Metrics strip 32 个配对用例 · 31 次实际共享操作 · 0 个 Source/Go 不对称结果. Cleanup strip 34 个子进程正常退出 · 64 次订阅创建 / 64 次关闭. Footer 编译覆盖 + 诊断包装；生产源文件未改；日志会影响调度；IDNA、原生 Reload 与完整迁移验收仍未完成. Small baseline f9f6248. Avoid claims of kernel or daemon fault, no claim all tests pass or reload fixed. Precise technical diagram with restrained arrows and no unnecessary art.",
+  "correction_prompt": "Edit the supplied infographic preserving all diagrams, metrics, layout and typography. Correct the invented date at the upper right: replace '2024-XX-XX' with the factual date '2026-10-11'. Do not change baseline f9f6248 or any other text/count. No placeholders or invented metadata. Keep exact cards15/16 both for fresh/reused,1operationtimeout fresh1readinesstimeout reused,32pairedcases31actualoperations0asymmetric,34exitedchildren64opens64closes,postoperationGoCentry0 andSourceRustbindingchanges0,rootcauseunproved andcurrentacceptanceincomplete.",
+  "selected_image": "go-reload-paired-boundaries-infographic-2026-10-11.png",
+  "verified_counts": {
+    "paired_cases": 32,
+    "executed_shared_operations": 31,
+    "fresh_both_matches": 15,
+    "reused_both_matches": 15,
+    "common_operation_timeouts": 1,
+    "common_readiness_timeouts": 1,
+    "asymmetric_outcomes": 0,
+    "exited_children": 34,
+    "opened_subscriptions": 64,
+    "closed_subscriptions": 64
+  },
+  "boundary_note": "Go C callback entry and Source RustNotify return are different instrumentation boundaries; zero post-operation changes is scoped to the failed fresh source-directory case."
+}

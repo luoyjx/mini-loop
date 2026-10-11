@@ -10765,3 +10765,49 @@ boundaries with the same acknowledged root/operation before proposing changes to
 listener ownership, batching or required assertions. The built-in imagegen
 [graphic](docs/audits/go-reload-process-history-infographic-2026-10-11.png) is corrected
 to distinguish 32 paired cases from 27 executed shared operations.
+
+## Paired native callback/binding boundaries — 2026-10-11
+
+Diagnostic probe commit: `124222b`.
+
+Baseline `f9f6248` on local main. The retained history controller is reused with
+private stderr files, a build-only C overlay and a Source RustNotify proxy.
+Production Go/Python sources remain byte-for-byte unchanged. C records epoch,
+subscription key, event ID, flags and path before forwarding to Go. Source records
+actual RustNotify.watch return before WatchFiles/Uvicorn filtering. These are
+different boundaries: Source's internal notify/FSEvents callbacks are not traced.
+
+32 paired cases: fresh processes 15/16 both match, one common operation timeout;
+reused processes 15/16 both match, one common readiness timeout. Both failures
+are source-directory. Thirty-one shared mutations execute; readiness failure has
+no operation. Zero asymmetric outcomes. All 34 children exit 0; Source native
+__exit__ and Go Close counters balance 64/64 subscriptions. Matching raw-start
+root/key and PID bind Go C traces to each case; Source roots bind binding records.
+
+The fresh failed directory operation is preceded by shared nonce acknowledgement.
+Go has two setup/readiness C entries, then zero entries after the operation epoch.
+Source has one setup/readiness native-change return, then only timeout/stop returns
+and no operation changes. The reused failed readiness case has zero C entries and
+no Source native changes. These observations locate this cohort's missing changes
+before downstream Go admission/batching and WatchFiles/Uvicorn filtering; they do
+not prove a kernel/daemon defect or general reliability. Prior private-queue progress
+was measured in another cohort, not repeated here. Logging/context proxies alter
+scheduling; stderr uses owned files to avoid a full-pipe stall. Source diagnostic
+timers retain their stop-on-timeout distinction from Go Next cancellation.
+
+Overlay build/vet, syntax compilation, the full fixed 32-case experiment, cleanup
+assertions and diff checks pass. Full Python: 2236 passed, 28 skipped, 74 warnings, 24 subtests (200.94s).
+Full ordinary Go/race, Source export, coverage and non-Darwin gates are not rerun:
+production runtime, fixtures, exports and public types are unchanged. The preceding
+full Go gate still fails dotted-I, transient-source and native supervisor recovery;
+these remain required failures. No dependency, runtime default, fixture or deadline
+is changed. README canonical map reviewed, baseline advanced; graph unchanged.
+IDNA, default diagnostics, native reload and complete G0–G7 acceptance remain open.
+
+[Paired boundary evidence](docs/audits/go-reload-paired-boundaries-2026-10-11.json)
+retains all native/binding logs, the exact overlay C source and hashes. Reproduction
+scripts produce the overlay without modifying production files. The built-in
+imagegen [graphic](docs/audits/go-reload-paired-boundaries-infographic-2026-10-11.png)
+shows the two measured boundaries and preserves the uncertainty. Next: test stream
+liveness with an independent owned control root during a failed shared operation,
+or isolate host event delivery before proposing listener changes.
