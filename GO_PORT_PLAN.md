@@ -6851,16 +6851,19 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 after local main `f41b34c`; latest production implementation
-`4b68574`. Owned named ordered routing now matches all 168 actual Source requests
-across 40 business paths, including eight decoded-path boundary cases. The old
-160-request corpus's 43 differences and seven additional edge differences are
-fixed. Full Source export is current with 231 files. Full race Go, vet, type audits
-(448 files/1430 types, 50 packages/1189 exported types, zero findings), Python
-regression (2233 passed, 28 skipped, 24 subtests), 19 scan guards and two request-size
-guards pass. Ordinary full Go retains five native reload operation timeouts;
-race and Source success do not resolve timing reliability. This section is the
-current delivery index;
+Reviewed 2026-10-11 after local main `0b5545a`; latest production implementation
+`4da75a3`. Compatible-provider endpoint path construction now matches all 40
+actual SDK requests across 20 escaped-path profiles (22 prior differences fixed).
+Owned named routing at `4b68574` retains all 168 required Source assertions.
+This round's full Source export failed at WatchFiles native readiness; the last
+successful complete export remains 231 fixtures at the prior routing delivery.
+The new endpoint fixture is independently checked. Provider ordinary/race, vet,
+type audits (449 files/1430 types, 50 packages/1189 exported types, zero findings)
+and 19 scanning guards pass. Full ordinary Go fails hidden-parent-source delivery
+and native supervisor readiness; full race fails rename-source delivery, all in
+reload. These failures remain open. Python regression is recorded in the linked
+[endpoint audit](docs/audits/go-provider-endpoint-native-2026-10-11.json).
+This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6876,7 +6879,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Full export verified 231 Source recipes; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Last successful full export verified 231 Source recipes; current attempt fails native WatchFiles readiness; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -18494,3 +18497,26 @@ malformed URL/Unicode/mount/forwarded-host behavior, diagnostics dependency appr
 and the complete G0–G7 audit remain open.
 
 See [native routing evidence](docs/audits/go-http-routing-native-2026-10-11.json).
+
+## Captured SDK endpoint paths — 2026-10-11
+
+`4da75a3` constructs direct/SSE message URLs from the validated escaped base path.
+Captured HTTPX literal dot normalization preserves percent escapes and repeated
+slashes; the SDK adds a slash only when absent before `v1/messages`. Configured
+endpoint audit identity, credential admission and redirect refusal remain intact.
+All 40 actual SDK requests (20 paths, direct/SSE) pass required native assertions;
+22 pre-fix differences are eliminated. No dependency or domain type is added.
+
+Provider ordinary/race, vet, zero-finding type audits and 19 scanner guards pass.
+Full ordinary Go fails reload hidden-parent-source delivery and supervisor readiness;
+full race fails reload rename-source delivery. Full Source export fails WatchFiles
+native readiness, so complete freshness remains the prior 231-fixture checkpoint.
+Python regression reports 2233 passed, 28 skipped, 24 subtests and one existing
+concurrency timing assertion failure (0.557s vs 0.5s). A focused check of that
+assertion and the endpoint fixture passes (2 tests); it does not supersede the
+full-run failure. Complete gate outputs are retained in the
+[endpoint audit](docs/audits/go-provider-endpoint-native-2026-10-11.json).
+README canonical boundary and architecture source are updated; generation passes
+9/9 checks with no errors or warnings. Rendered review remains blocked by prior
+browser policy. General URL/hostname/port/custom-transport behavior, coverage
+refresh, default diagnostics decision and final G0–G7 acceptance remain open.

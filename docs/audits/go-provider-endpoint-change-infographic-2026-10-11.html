@@ -1,0 +1,58 @@
+<div id="ml-endpoint-changes">
+  <h2>Go provider · 请求路径修复</h2>
+  <div class="viz-controls" aria-label="对照版本">
+    <button type="button" class="btn" data-version="before" aria-pressed="false">修复前</button>
+    <button type="button" class="btn" data-version="after" aria-pressed="true">修复后</button>
+  </div>
+  <div class="viz-row"><span class="tabular-nums" id="ml-endpoint-count">40 / 40 请求路径匹配</span><span>20 个路径 · direct / SSE</span></div>
+  <div class="endpoint-bar" role="img" aria-label="40 个 SDK 请求路径全部匹配"><div class="endpoint-same" style="width:100%"></div><div class="endpoint-diff" style="width:0%"></div></div>
+  <div class="viz-row text-small"><span id="ml-endpoint-same">匹配 40</span><span id="ml-endpoint-diff">差异 0</span></div>
+  <table class="table table-sm">
+    <thead><tr><th>配置路径</th><th>Go 发出的路径</th></tr></thead>
+    <tbody><tr><td><code>/tenant//</code></td><td><code id="ml-endpoint-slashes">/tenant//v1/messages</code></td></tr>
+    <tr><td><code>/a/../tenant</code></td><td><code id="ml-endpoint-dots">/tenant/v1/messages</code></td></tr>
+    <tr><td><code>/tenant/%2e%2E/child</code></td><td><code>/tenant/%2e%2E/child/v1/messages</code></td></tr></tbody>
+  </table>
+  <div class="endpoint-flow" aria-label="请求路径构造顺序"><span>校验 base URL</span><span aria-hidden="true">→</span><span>转义路径</span><span aria-hidden="true">→</span><span>消除字面点段</span><span aria-hidden="true">→</span><span>缺少时补斜杠</span><span aria-hidden="true">→</span><span>追加 v1/messages</span></div>
+  <div class="viz-row text-small"><span>保留已有重复斜杠与百分号编码</span><span>配置 endpoint 作为审计标识</span><span>构造期无 HTTP 请求</span></div>
+  <hr><h3>本轮验证</h3><div id="ml-endpoint-gates" class="viz-row text-small">provider 普通 / race ✓ · vet ✓ · 类型审计 ✓ · 扫描 19 / 19 ✓ · 全量 Go 普通 / race：reload 超时 · Source：WatchFiles 就绪失败 · Python：2233 通过 / 1 个耗时断言失败</div>
+  <div class="text-small">完整迁移、reload 时序问题及默认诊断依赖决策仍在进行。</div>
+  <div id="ml-endpoint-live" class="sr-only" aria-live="polite"></div>
+</div>
+<style>
+  #ml-endpoint-changes .endpoint-bar{display:flex;height:20px;margin:12px 0 6px;background:var(--muted);overflow:hidden}
+  #ml-endpoint-changes .endpoint-same{background:var(--viz-series-1)}
+  #ml-endpoint-changes .endpoint-diff{background:var(--viz-series-2)}
+  #ml-endpoint-changes.changed .endpoint-same,#ml-endpoint-changes.changed .endpoint-diff{transition:width 180ms ease}
+  #ml-endpoint-changes .endpoint-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0;color:var(--foreground)}
+  #ml-endpoint-changes code,#ml-endpoint-changes td{overflow-wrap:anywhere}
+  @media(prefers-reduced-motion:reduce){#ml-endpoint-changes.changed .endpoint-same,#ml-endpoint-changes.changed .endpoint-diff{transition:none}}
+</style>
+<script>
+(() => {
+  const root = document.getElementById('ml-endpoint-changes');
+  let version = window.openai?.widgetState?.privateContent?.version === 'before' ? 'before' : 'after';
+  function render() {
+    const before = version === 'before', same = before ? 18 : 40, diff = 40 - same;
+    root.querySelector('#ml-endpoint-count').textContent = `${same} / 40 请求路径匹配`;
+    root.querySelector('#ml-endpoint-same').textContent = `匹配 ${same}`;
+    root.querySelector('#ml-endpoint-diff').textContent = `差异 ${diff}`;
+    root.querySelector('.endpoint-same').style.width = `${same/40*100}%`;
+    root.querySelector('.endpoint-diff').style.width = `${diff/40*100}%`;
+    root.querySelector('.endpoint-bar').setAttribute('aria-label',`40 个请求中 ${same} 个匹配，${diff} 个差异`);
+    root.querySelector('#ml-endpoint-slashes').textContent = before ? '/tenant/v1/messages' : '/tenant//v1/messages';
+    root.querySelector('#ml-endpoint-dots').textContent = before ? '/a/../tenant/v1/messages' : '/tenant/v1/messages';
+    root.querySelector('#ml-endpoint-live').textContent = `${version === 'before' ? '修复前' : '修复后'}：${same} 个匹配，${diff} 个差异`;
+    root.querySelectorAll('[data-version]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.version === version)));
+  }
+  root.querySelectorAll('[data-version]').forEach(button => button.addEventListener('click',() => {
+    root.classList.add('changed'); version = button.dataset.version; render();
+    window.openai?.setWidgetState?.({modelContent:{endpointView:version},privateContent:{version}}).catch(() => {});
+  }));
+  window.addEventListener('openai:set_globals',event => {
+    const saved = event.detail?.globals?.widgetState?.privateContent?.version;
+    if(saved === 'before' || saved === 'after'){version=saved;render();}
+  });
+  render();
+})();
+</script>

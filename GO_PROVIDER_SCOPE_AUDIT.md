@@ -2,14 +2,15 @@
 
 ## 摘要
 
-当前复核基线：`3916f71`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
+当前复核基线：`4da75a3`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
 元数据与实际计量消费者、十二个 SDK content discriminator 已有实现和组合证据。
 初始 usage 缺口已补齐，不能继续作为待实现项；下文早期章节保留各自历史基线。
 
 公开回复的 **`container` 与 `stop_details`** 已在 `3916f71` 补齐：具名闭合变体、
 direct/SSE 入口、不可变克隆与公开 JSON 对照全部 44 个真实 SDK 捕获通过。
-全量 Go 普通/race、vet、类型审计和 Python 回归通过；本轮 Source 全量导出在
-WatchFiles 原生观察器启动处失败，不能宣称全部契约已刷新。G4/G7 继续开放。
+当前 provider 普通/race、vet 和类型审计通过；全量 Go 普通/race 均有 reload
+时序失败，Source 全量导出也在 WatchFiles 就绪处失败。完整验证见本轮 endpoint
+审计；下文各章节保留历史基线，G4/G7 继续开放。
 
 ## 实际请求生成路径
 
@@ -441,3 +442,16 @@ JSON 往返。另验证 getter/扩展数组不可变、非有限数与孤立代�
 但历史超时与此次 Source 失败的根因仍未知，不能据此关闭时序验收。没有刷新覆盖率。
 
 [原生实现与门禁证据](docs/audits/go-provider-reply-metadata-native-2026-10-11.json)。
+
+## Captured SDK endpoint paths — 2026-10-11
+
+`4da75a3` 修复 direct/SSE 请求路径：使用 escaped path，消除字面 `.`/`..`，
+保留已有重复斜杠、编码点段与编码斜杠，仅在缺少时补一个结尾斜杠再追加
+`v1/messages`。实际 SDK 0.107.1 / HTTPX 0.28.1 的 20 个路径共 40 个请求
+全部成为 required native 断言；修复前 22 个差异，修复后 0 个。
+
+配置 endpoint 审计标识保持原值，构造阶段无 HTTP；认证与重定向拒绝仍保留。
+未新增依赖或领域类型。主机名、默认端口、IDNA、query/fragment 接受范围和
+custom transport 仍需最终核对，不能由这 40 个路径用例推导完整 URL 等价。
+完整验证与 reload/Source 失败记录见
+[endpoint audit](docs/audits/go-provider-endpoint-native-2026-10-11.json)。

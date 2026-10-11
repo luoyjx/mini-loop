@@ -10531,3 +10531,26 @@ Ordinary Go retains five native reload timeouts. Architecture generation passes
 nine checks; rendered review is blocked by browser policy. Broader URL/mount scope,
 coverage refresh, default diagnostics selection and full G3/G7 acceptance remain
 open. See [evidence](docs/audits/go-http-routing-native-2026-10-11.json).
+
+## Captured SDK endpoint paths — 2026-10-11
+
+`4da75a3` constructs direct/SSE message URLs from the validated escaped base path.
+Captured HTTPX literal dot normalization preserves percent escapes and repeated
+slashes; the SDK adds a slash only when absent before `v1/messages`. Configured
+endpoint audit identity, credential admission and redirect refusal remain intact.
+All 40 actual SDK requests (20 paths, direct/SSE) pass required native assertions;
+22 pre-fix differences are eliminated. No dependency or domain type is added.
+
+Provider ordinary/race, vet, zero-finding type audits and 19 scanner guards pass.
+Full ordinary Go fails reload hidden-parent-source delivery and supervisor readiness;
+full race fails reload rename-source delivery. Full Source export fails WatchFiles
+native readiness, so complete freshness remains the prior 231-fixture checkpoint.
+Python regression reports 2233 passed, 28 skipped, 24 subtests and one existing
+concurrency timing assertion failure (0.557s vs 0.5s). A focused check of that
+assertion and the endpoint fixture passes (2 tests); it does not supersede the
+full-run failure. Complete gate outputs are retained in the
+[endpoint audit](docs/audits/go-provider-endpoint-native-2026-10-11.json).
+README canonical boundary and architecture source are updated; generation passes
+9/9 checks with no errors or warnings. Rendered review remains blocked by prior
+browser policy. General URL/hostname/port/custom-transport behavior, coverage
+refresh, default diagnostics decision and final G0–G7 acceptance remain open.
