@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import time
 
@@ -16,13 +17,38 @@ SOURCE = ROOT / "go/sqlitestate/decision_restart_test.go"
 PREFIX = Path("/tmp/mini-loop-sqlite-decision-budget-2026-10-11")
 
 
+def capture_native_sample(process, binary, log, prefix):
+    assert process.args[0] == str(binary), "sample only the directly launched owned binary"
+    # Process discovery is diagnostic only; it is not a filesystem observer fallback.
+    while process.poll() is None:
+        if "decision-stage readonly-turn-start" in log.read_text():
+            table = subprocess.check_output(["/bin/ps", "-ww", "-p", str(process.pid), "-o", "pid=,ppid=,comm="], text=True)
+            fields = table.strip().split(None, 2)
+            if len(fields) == 3 and fields[0] == str(process.pid) and fields[2] == str(binary) and process.poll() is None:
+                pid = process.pid
+                destination = Path(str(prefix) + "-native.sample")
+                command = ["/usr/bin/sample", str(pid), "5", "1", "-mayDie", "-fullPaths", "-file", str(destination)]
+                began = time.monotonic()
+                result = subprocess.run(command, capture_output=True, text=True, timeout=20)
+                return {"pid": pid, "parent_pid": int(fields[1]), "binary": str(binary),
+                        "identity_table": table, "command": command, "exit_code": result.returncode,
+                        "seconds": round(time.monotonic() - began, 3),
+                        "stdout": result.stdout, "stderr": result.stderr, "path": str(destination),
+                        "raw_sample": destination.read_text() if destination.exists() else None}
+        time.sleep(0.05)
+    return {"not_captured": "owned binary did not remain live after readonly stage"}
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--modes", nargs="+", choices=["ordinary", "race", "coverage", "race-coverage"],
                         default=["ordinary", "race", "coverage", "race-coverage"])
     parser.add_argument("--output-prefix", default=str(PREFIX))
+    parser.add_argument("--native-sample", action="store_true", help="macOS: sample the owned race-coverage test child for 5s at readonly start")
     args = parser.parse_args()
     modes = args.modes
+    if args.native_sample:
+        assert sys.platform == "darwin" and modes == ["race-coverage"], "native sampling requires macOS and one race-coverage mode"
     prefix = Path(args.output_prefix)
     assert len(modes) == len(set(modes)), "each mode runs once"
     baseline = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
@@ -81,19 +107,37 @@ def main():
                                       "-cpuprofile=" + str(prefix) + ".cpu", "-o=" + str(prefix) + ".test"]}
         for name in modes:
             command = common[:2] + variants[name] + common[2:]
+            compilation = None
+            if args.native_sample:
+                binary = Path(str(prefix) + ".test")
+                compile_command = ["go", "test", "-c", "-race", "-coverpkg=./...", "-overlay=" + str(overlay), "-o=" + str(binary), "./sqlitestate"]
+                compiled = subprocess.run(compile_command, cwd=ROOT / "go", capture_output=True, text=True)
+                compilation = {"command": compile_command, "working_directory": str(ROOT / "go"),
+                               "exit_code": compiled.returncode, "stdout": compiled.stdout, "stderr": compiled.stderr}
+                assert compiled.returncode == 0, compilation
+                command = [str(binary), "-test.v", "-test.count=1", "-test.timeout=90s",
+                           "-test.run=^TestDecisionNativeSQLiteReopenMatchesSource/maximum$",
+                           "-test.coverprofile=" + str(prefix) + ".cover", "-test.cpuprofile=" + str(prefix) + ".cpu"]
             log = Path(str(prefix) + "-" + name + ".log")
             began = time.monotonic()
+            native_sample = None
+            working_directory = ROOT / "go/sqlitestate" if args.native_sample else ROOT / "go"
             with log.open("w") as output:
-                result = subprocess.run(command, cwd=ROOT / "go", stdout=output, stderr=subprocess.STDOUT)
-            receipts.append({"name": name, "command": command, "exit_code": result.returncode,
+                with subprocess.Popen(command, cwd=working_directory,
+                                      stdout=output, stderr=subprocess.STDOUT) as process:
+                    if args.native_sample:
+                        native_sample = capture_native_sample(process, Path(str(prefix) + ".test"), log, prefix)
+                    exit_code = process.wait()
+            receipts.append({"name": name, "command": command, "exit_code": exit_code,
+                             "working_directory": str(working_directory),
                              "seconds": round(time.monotonic() - began, 3), "log": str(log),
-                             "raw_log": log.read_text()})
-            print(name, result.returncode, flush=True)
+                             "raw_log": log.read_text(), "compilation": compilation, "native_sample": native_sample})
+            print(name, exit_code, flush=True)
     report = {"baseline": baseline, "fixture_sha256": fixture_sha256,
               "source_sha256": hashlib.sha256(original.encode()).hexdigest(),
               "overlay_sha256": hashlib.sha256(candidate.encode()).hexdigest(), "overlay_source": candidate,
               "original_context": "30 seconds shared across unchanged preparation, first turn, restart, replay and readonly",
-              "instrumentation": "stage/model logs only; exact original fixture, assertions and contexts retained",
+              "instrumentation": "stage/model logs, CPU profiling in race-coverage mode, optional owned-process native sample; exact original fixture, assertions and contexts retained",
               "runs": receipts}
     previous.write_text(json.dumps(report, indent=2) + "\n")
 

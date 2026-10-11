@@ -19213,3 +19213,49 @@ diagnostics/native reliability and full G0–G7 remain incomplete.
 [Raw stage/profile receipts](docs/audits/go-decision-post-spans-2026-10-11.json)
 and [built-in infographic](docs/audits/go-decision-post-spans-infographic-2026-10-11.png)
 retain the failed gate and attribution limits.
+
+## Owned native stacks for maximum decision budget — 2026-10-11
+
+Baseline `21a91e6`; Go runtime/test/fixture files unchanged. The reusable overlay
+diagnostic has an optional macOS `--native-sample` mode. It first compiles the
+same race+atomic-coverage test, directly launches that exact binary from its
+package directory and validates its PID/executable before invoking `/usr/bin/sample`
+for5s at readonly-start. Sampling reads only the launched owned process; it does
+not attach to other Go jobs or change filesystem observer implementation. Default
+four-mode execution remains serial; repeated-mode/baseline/fixture receipt guards
+remain. No dependency, erased Go type, polling fallback or context adjustment.
+
+Two setup attempts are preserved: wrapper `go test -o` saved output path did not
+identify the actually executed temporary test binary, so no PID matched/sample;
+the first direct launch used the Go root and failed opening the original relative
+fixture before the test. The corrected direct package launch captures PID72601
+(parent72549) with verified executable path. Sample requested5s/1ms; command8.237s
+includes symbol processing, not an estimate of added test latency. It covers only
+a readonly-stage window, not every lifecycle stage. The original512KiB/30s test
+still fails at34.04s inside readonly RunWithContext. Exact replay, current readonly
+permission and backend-once assertions remain intact; no retry-to-green.
+
+The native call graph shows JSON string routines leading into sync/atomic and
+named ThreadSanitizer functions. Reader.string disassembly includes emitted
+atomic coverage operations absent from its ordinary source. Collapsed native
+top-of-stack counts include atomic32_fetch_add1446/read387/atomic32_store263;
+these are counts across thread samples, not CPU shares, and the sample includes
+idle-thread waits. The full-run pprof still leaves26.85s/84.54% of31.76s CPU
+samples unresolved in runtime._ExternalCode (34.14s wall duration). Do not equate
+that aggregate fraction with the5s native window, attribute all external CPU to
+TSAN/SQLite/JSON, or claim an ordinary-runtime performance result. The evidence
+now supports measuring a safe string-span reader as the next concrete candidate.
+
+All1158 Go source/fixture/module hashes remain unchanged. Unsupported-mode,
+unrelated-binary and repeated-mode refusal checks pass without new Go dispatch
+or receipt mutation. Python full2239 passed/28 skipped/74 warnings/24 subtests
+in99.02s and diff check pass. Full Go/vet/race, full Source exporter, aggregate
+coverage, non-Darwin and rendered-map acceptance are not refreshed this diagnostic
+iteration. Existing native reload/Source observer/default diagnostics/broader IDNA
+and full G0–G7 acceptance remain open. README canonical map/boundaries reviewed
+and visible baseline updated; graph JSON/HTML unchanged, no push.
+
+[Complete raw receipts](docs/audits/go-decision-native-stacks-2026-10-11.json),
+[native sample](docs/audits/go-decision-native-stacks-2026-10-11.sample.txt),
+[reader disassembly](docs/audits/go-decision-native-stacks-2026-10-11.reader.disasm.txt)
+and [built-in infographic](docs/audits/go-decision-native-stacks-infographic-2026-10-11.png).

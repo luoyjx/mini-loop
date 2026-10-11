@@ -1,0 +1,757 @@
+TEXT github.com/luoyjx/mini-loop/go/internal/jsonvalue.(*reader).string(SB) /Users/yanjixiong/github/mini-loop/go/internal/jsonvalue/value.go
+  value.go:400		0x100266c80		f9400b90		MOVD 16(R28), R16
+  value.go:400		0x100266c84		d10103f1		SUB $64, RSP, R17
+  value.go:400		0x100266c88		eb10023f		CMP R16, R17
+  value.go:400		0x100266c8c		54005d29		BLS 745(PC)
+  value.go:400		0x100266c90		f8140ffe		MOVD.W R30, -192(RSP)
+  value.go:400		0x100266c94		f81f83fd		MOVD R29, -8(RSP)
+  value.go:400		0x100266c98		d10023fd		SUB $8, RSP, R29
+  value.go:401		0x100266c9c		f90067e0		MOVD R0, 200(RSP)
+  value.go:400		0x100266ca0		f94003e0		MOVD (RSP), R0
+  value.go:400		0x100266ca4		97f870ef		CALL runtime.racefuncenter(SB)
+  value.go:400		0x100266ca8		d00107a0		ADRP 34562048(PC), R0
+  value.go:400		0x100266cac		911a0000		ADD $1664, R0, R0
+  value.go:400		0x100266cb0		d28003a1		MOVD $29, R1
+  value.go:400		0x100266cb4		97f87777		CALL sync/atomic.StoreUint32(SB)
+  value.go:400		0x100266cb8		f0010680		ADRP 34418688(PC), R0
+  value.go:400		0x100266cbc		913ff000		ADD $4092, R0, R0
+  value.go:400		0x100266cc0		97f87098		CALL runtime.raceread(SB)
+  value.go:400		0x100266cc4		f001069b		ADRP 34418688(PC), R27
+  value.go:400		0x100266cc8		b94fff61		MOVWU 4092(R27), R1
+  value.go:400		0x100266ccc		d00107a0		ADRP 34562048(PC), R0
+  value.go:400		0x100266cd0		911a1000		ADD $1668, R0, R0
+  value.go:400		0x100266cd4		97f8776f		CALL sync/atomic.StoreUint32(SB)
+  value.go:400		0x100266cd8		d00107a0		ADRP 34562048(PC), R0
+  value.go:400		0x100266cdc		911a2000		ADD $1672, R0, R0
+  value.go:400		0x100266ce0		b27a03e1		ORR $64, ZR, R1
+  value.go:400		0x100266ce4		97f8776b		CALL sync/atomic.StoreUint32(SB)
+  value.go:400		0x100266ce8		d00107a0		ADRP 34562048(PC), R0
+  value.go:400		0x100266cec		911a3000		ADD $1676, R0, R0
+  value.go:400		0x100266cf0		b24003e1		ORR $1, ZR, R1
+  value.go:400		0x100266cf4		97f87797		CALL sync/atomic.AddUint32(SB)
+  value.go:401		0x100266cf8		f94067e0		MOVD 200(RSP), R0
+  value.go:401		0x100266cfc		3980001b		MOVB (R0), R27
+  value.go:401		0x100266d00		97f87088		CALL runtime.raceread(SB)
+  value.go:401		0x100266d04		f94067e1		MOVD 200(RSP), R1
+  value.go:401		0x100266d08		91004020		ADD $16, R1, R0
+  value.go:401		0x100266d0c		f9005be0		MOVD R0, 176(RSP)
+  value.go:401		0x100266d10		f9400422		MOVD 8(R1), R2
+  value.go:401		0x100266d14		f90047e2		MOVD R2, 136(RSP)
+  value.go:401		0x100266d18		97f87082		CALL runtime.raceread(SB)
+  value.go:401		0x100266d1c		f94067e0		MOVD 200(RSP), R0
+  value.go:401		0x100266d20		f9400801		MOVD 16(R0), R1
+  value.go:401		0x100266d24		f94047e2		MOVD 136(RSP), R2
+  value.go:401		0x100266d28		eb01005f		CMP R1, R2
+  value.go:401		0x100266d2c		54000240		BEQ 18(PC)
+  value.go:401		0x100266d30		97f8707c		CALL runtime.raceread(SB)
+  value.go:401		0x100266d34		f94067e1		MOVD 200(RSP), R1
+  value.go:401		0x100266d38		f9400422		MOVD 8(R1), R2
+  value.go:401		0x100266d3c		f90047e2		MOVD R2, 136(RSP)
+  value.go:401		0x100266d40		f9400023		MOVD (R1), R3
+  value.go:401		0x100266d44		f90057e3		MOVD R3, 168(RSP)
+  value.go:401		0x100266d48		f9405be0		MOVD 176(RSP), R0
+  value.go:401		0x100266d4c		97f87075		CALL runtime.raceread(SB)
+  value.go:401		0x100266d50		f94067e1		MOVD 200(RSP), R1
+  value.go:401		0x100266d54		f9400820		MOVD 16(R1), R0
+  value.go:401		0x100266d58		f94047e2		MOVD 136(RSP), R2
+  value.go:401		0x100266d5c		eb00005f		CMP R0, R2
+  value.go:401		0x100266d60		54005629		BLS 689(PC)
+  value.go:401		0x100266d64		f94057e2		MOVD 168(RSP), R2
+  value.go:401		0x100266d68		38606842		MOVBU (R2)(R0), R2
+  value.go:401		0x100266d6c		7100885f		CMPW $34, R2
+  value.go:401		0x100266d70		540002c0		BEQ 22(PC)
+  value.go:401		0x100266d74		d00107a0		ADRP 34562048(PC), R0
+  value.go:401		0x100266d78		911a6000		ADD $1688, R0, R0
+  value.go:401		0x100266d7c		b24003e1		ORR $1, ZR, R1
+  value.go:401		0x100266d80		97f87774		CALL sync/atomic.AddUint32(SB)
+  value.go:402		0x100266d84		f00087e0		ADRP 17821696(PC), R0
+  value.go:402		0x100266d88		91160000		ADD $1408, R0, R0
+  value.go:402		0x100266d8c		97f87065		CALL runtime.raceread(SB)
+  value.go:402		0x100266d90		f00087fb		ADRP 17821696(PC), R27
+  value.go:402		0x100266d94		f942c362		MOVD 1408(R27), R2
+  value.go:402		0x100266d98		f90043e2		MOVD R2, 128(RSP)
+  value.go:402		0x100266d9c		f00087fb		ADRP 17821696(PC), R27
+  value.go:402		0x100266da0		f942c763		MOVD 1416(R27), R3
+  value.go:402		0x100266da4		f90057e3		MOVD R3, 168(RSP)
+  value.go:402		0x100266da8		97f870b2		CALL runtime.racefuncexit(SB)
+  value.go:402		0x100266dac		aa1f03e0		MOVD ZR, R0
+  value.go:402		0x100266db0		aa1f03e1		MOVD ZR, R1
+  value.go:402		0x100266db4		f94043e2		MOVD 128(RSP), R2
+  value.go:402		0x100266db8		f94057e3		MOVD 168(RSP), R3
+  value.go:402		0x100266dbc		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:402		0x100266dc0		910303ff		ADD $192, RSP, RSP
+  value.go:402		0x100266dc4		d65f03c0		RET
+  value.go:404		0x100266dc8		d00107a0		ADRP 34562048(PC), R0
+  value.go:404		0x100266dcc		911a4000		ADD $1680, R0, R0
+  value.go:404		0x100266dd0		b24003e1		ORR $1, ZR, R1
+  value.go:404		0x100266dd4		97f8775f		CALL sync/atomic.AddUint32(SB)
+  value.go:404		0x100266dd8		f9405be0		MOVD 176(RSP), R0
+  value.go:404		0x100266ddc		97f87051		CALL runtime.raceread(SB)
+  value.go:404		0x100266de0		f94067e2		MOVD 200(RSP), R2
+  value.go:404		0x100266de4		f9400843		MOVD 16(R2), R3
+  value.go:404		0x100266de8		f90047e3		MOVD R3, 136(RSP)
+  value.go:404		0x100266dec		f9405be0		MOVD 176(RSP), R0
+  value.go:404		0x100266df0		97f87060		CALL runtime.racewrite(SB)
+  value.go:404		0x100266df4		f94047e2		MOVD 136(RSP), R2
+  value.go:404		0x100266df8		91000442		ADD $1, R2, R2
+  value.go:404		0x100266dfc		f94067e0		MOVD 200(RSP), R0
+  value.go:404		0x100266e00		f9000802		MOVD R2, 16(R0)
+  value.go:404		0x100266e04		aa1f03e1		MOVD ZR, R1
+  value.go:404		0x100266e08		aa1f03e2		MOVD ZR, R2
+  value.go:405		0x100266e0c		9100e3e3		ADD $56, RSP, R3
+  value.go:406		0x100266e10		14000003		JMP 3(PC)
+  value.go:455		0x100266e14		aa0003e3		MOVD R0, R3
+  value.go:406		0x100266e18		f94067e0		MOVD 200(RSP), R0
+  value.go:455		0x100266e1c		f90033e2		MOVD R2, 96(RSP)
+  value.go:455		0x100266e20		f9002fe1		MOVD R1, 88(RSP)
+  value.go:455		0x100266e24		f9004be3		MOVD R3, 144(RSP)
+  value.go:406		0x100266e28		97f8703e		CALL runtime.raceread(SB)
+  value.go:406		0x100266e2c		f94067e1		MOVD 200(RSP), R1
+  value.go:406		0x100266e30		f9400422		MOVD 8(R1), R2
+  value.go:406		0x100266e34		f90047e2		MOVD R2, 136(RSP)
+  value.go:406		0x100266e38		f9405be0		MOVD 176(RSP), R0
+  value.go:406		0x100266e3c		97f87039		CALL runtime.raceread(SB)
+  value.go:406		0x100266e40		f94067e1		MOVD 200(RSP), R1
+  value.go:406		0x100266e44		f9400822		MOVD 16(R1), R2
+  value.go:406		0x100266e48		f94047e3		MOVD 136(RSP), R3
+  value.go:406		0x100266e4c		eb02007f		CMP R2, R3
+  value.go:406		0x100266e50		54004b4d		BLE 602(PC)
+  value.go:406		0x100266e54		d00107a0		ADRP 34562048(PC), R0
+  value.go:406		0x100266e58		911a7000		ADD $1692, R0, R0
+  value.go:406		0x100266e5c		b24003e1		ORR $1, ZR, R1
+  value.go:406		0x100266e60		97f8773c		CALL sync/atomic.AddUint32(SB)
+  value.go:407		0x100266e64		f94067e0		MOVD 200(RSP), R0
+  value.go:407		0x100266e68		97f8702e		CALL runtime.raceread(SB)
+  value.go:407		0x100266e6c		f94067e2		MOVD 200(RSP), R2
+  value.go:407		0x100266e70		f9400443		MOVD 8(R2), R3
+  value.go:407		0x100266e74		f90047e3		MOVD R3, 136(RSP)
+  value.go:407		0x100266e78		f9400044		MOVD (R2), R4
+  value.go:407		0x100266e7c		f90057e4		MOVD R4, 168(RSP)
+  value.go:407		0x100266e80		f9405be0		MOVD 176(RSP), R0
+  value.go:407		0x100266e84		97f87027		CALL runtime.raceread(SB)
+  value.go:407		0x100266e88		f94067e2		MOVD 200(RSP), R2
+  value.go:407		0x100266e8c		f9400840		MOVD 16(R2), R0
+  value.go:407		0x100266e90		f94047e1		MOVD 136(RSP), R1
+  value.go:407		0x100266e94		eb00003f		CMP R0, R1
+  value.go:407		0x100266e98		54004c49		BLS 610(PC)
+  value.go:407		0x100266e9c		f94057e1		MOVD 168(RSP), R1
+  value.go:407		0x100266ea0		38606821		MOVBU (R1)(R0), R1
+  value.go:407		0x100266ea4		3900dfe1		MOVB R1, 55(RSP)
+  value.go:408		0x100266ea8		f9405be0		MOVD 176(RSP), R0
+  value.go:408		0x100266eac		97f8701d		CALL runtime.raceread(SB)
+  value.go:408		0x100266eb0		f94067e1		MOVD 200(RSP), R1
+  value.go:408		0x100266eb4		f9400822		MOVD 16(R1), R2
+  value.go:408		0x100266eb8		f90047e2		MOVD R2, 136(RSP)
+  value.go:408		0x100266ebc		f9405be0		MOVD 176(RSP), R0
+  value.go:408		0x100266ec0		97f8702c		CALL runtime.racewrite(SB)
+  value.go:408		0x100266ec4		f94047e1		MOVD 136(RSP), R1
+  value.go:408		0x100266ec8		91000421		ADD $1, R1, R1
+  value.go:408		0x100266ecc		f94067e2		MOVD 200(RSP), R2
+  value.go:408		0x100266ed0		f9000841		MOVD R1, 16(R2)
+  value.go:409		0x100266ed4		3940dfe1		MOVBU 55(RSP), R1
+  value.go:409		0x100266ed8		aa0103e3		MOVD R1, R3
+  value.go:409		0x100266edc		7100887f		CMPW $34, R3
+  value.go:409		0x100266ee0		54004480		BEQ 548(PC)
+  value.go:409		0x100266ee4		b9004fe3		MOVW R3, 76(RSP)
+  value.go:412		0x100266ee8		d00107a0		ADRP 34562048(PC), R0
+  value.go:412		0x100266eec		911a8000		ADD $1696, R0, R0
+  value.go:412		0x100266ef0		b24003e1		ORR $1, ZR, R1
+  value.go:412		0x100266ef4		97f87717		CALL sync/atomic.AddUint32(SB)
+  value.go:412		0x100266ef8		b9404fe2		MOVWU 76(RSP), R2
+  value.go:412		0x100266efc		7101705f		CMPW $92, R2
+  value.go:412		0x100266f00		54000500		BEQ 40(PC)
+  value.go:412		0x100266f04		d00107a0		ADRP 34562048(PC), R0
+  value.go:412		0x100266f08		911ac000		ADD $1712, R0, R0
+  value.go:412		0x100266f0c		b24003e1		ORR $1, ZR, R1
+  value.go:412		0x100266f10		97f87710		CALL sync/atomic.AddUint32(SB)
+  value.go:413		0x100266f14		b9404fe2		MOVWU 76(RSP), R2
+  value.go:413		0x100266f18		7100805f		CMPW $32, R2
+  value.go:413		0x100266f1c		54003743		BCC 442(PC)
+  value.go:416		0x100266f20		d00107a0		ADRP 34562048(PC), R0
+  value.go:416		0x100266f24		911ad000		ADD $1716, R0, R0
+  value.go:416		0x100266f28		b24003e1		ORR $1, ZR, R1
+  value.go:416		0x100266f2c		97f87709		CALL sync/atomic.AddUint32(SB)
+  value.go:416		0x100266f30		f9402fe2		MOVD 88(RSP), R2
+  value.go:416		0x100266f34		91000441		ADD $1, R2, R1
+  value.go:416		0x100266f38		f94033e3		MOVD 96(RSP), R3
+  value.go:416		0x100266f3c		eb01007f		CMP R1, R3
+  value.go:416		0x100266f40		54000063		BCC 3(PC)
+  value.go:416		0x100266f44		f9404be0		MOVD 144(RSP), R0
+  value.go:416		0x100266f48		14000009		JMP 9(PC)
+  value.go:416		0x100266f4c		f9404be0		MOVD 144(RSP), R0
+  value.go:416		0x100266f50		aa0303e2		MOVD R3, R2
+  value.go:416		0x100266f54		b24003e3		ORR $1, ZR, R3
+  value.go:416		0x100266f58		d0006144		ADRP 12754944(PC), R4
+  value.go:416		0x100266f5c		910c8084		ADD $800, R4, R4
+  value.go:416		0x100266f60		97f85260		CALL runtime.growslice(SB)
+  value.go:416		0x100266f64		aa0203e3		MOVD R2, R3
+  value.go:416		0x100266f68		f9402fe2		MOVD 88(RSP), R2
+  value.go:416		0x100266f6c		f90047e1		MOVD R1, 136(RSP)
+  value.go:416		0x100266f70		f9004be0		MOVD R0, 144(RSP)
+  value.go:416		0x100266f74		f90033e3		MOVD R3, 96(RSP)
+  value.go:416		0x100266f78		8b020004		ADD R2, R0, R4
+  value.go:416		0x100266f7c		aa0403e0		MOVD R4, R0
+  value.go:416		0x100266f80		97f86ffc		CALL runtime.racewrite(SB)
+  value.go:416		0x100266f84		f9402fe1		MOVD 88(RSP), R1
+  value.go:416		0x100266f88		3940dfe2		MOVBU 55(RSP), R2
+  value.go:416		0x100266f8c		f9404be0		MOVD 144(RSP), R0
+  value.go:416		0x100266f90		38216802		MOVB R2, (R0)(R1)
+  value.go:455		0x100266f94		f94033e2		MOVD 96(RSP), R2
+  value.go:455		0x100266f98		f94047e1		MOVD 136(RSP), R1
+  value.go:417		0x100266f9c		17ffff9e		JMP -98(PC)
+  value.go:419		0x100266fa0		d00107a0		ADRP 34562048(PC), R0
+  value.go:419		0x100266fa4		911a9000		ADD $1700, R0, R0
+  value.go:419		0x100266fa8		b24003e1		ORR $1, ZR, R1
+  value.go:419		0x100266fac		97f876e9		CALL sync/atomic.AddUint32(SB)
+  value.go:419		0x100266fb0		f94067e0		MOVD 200(RSP), R0
+  value.go:419		0x100266fb4		97f86fdb		CALL runtime.raceread(SB)
+  value.go:419		0x100266fb8		f94067e2		MOVD 200(RSP), R2
+  value.go:419		0x100266fbc		f9400443		MOVD 8(R2), R3
+  value.go:419		0x100266fc0		f90047e3		MOVD R3, 136(RSP)
+  value.go:419		0x100266fc4		f9405be0		MOVD 176(RSP), R0
+  value.go:419		0x100266fc8		97f86fd6		CALL runtime.raceread(SB)
+  value.go:419		0x100266fcc		f94067e2		MOVD 200(RSP), R2
+  value.go:419		0x100266fd0		f9400843		MOVD 16(R2), R3
+  value.go:419		0x100266fd4		f94047e4		MOVD 136(RSP), R4
+  value.go:419		0x100266fd8		eb03009f		CMP R3, R4
+  value.go:419		0x100266fdc		54003a00		BEQ 464(PC)
+  value.go:422		0x100266fe0		d00107a0		ADRP 34562048(PC), R0
+  value.go:422		0x100266fe4		911aa000		ADD $1704, R0, R0
+  value.go:422		0x100266fe8		b24003e1		ORR $1, ZR, R1
+  value.go:422		0x100266fec		97f876d9		CALL sync/atomic.AddUint32(SB)
+  value.go:422		0x100266ff0		f94067e0		MOVD 200(RSP), R0
+  value.go:422		0x100266ff4		97f86fcb		CALL runtime.raceread(SB)
+  value.go:422		0x100266ff8		f94067e2		MOVD 200(RSP), R2
+  value.go:422		0x100266ffc		f9400443		MOVD 8(R2), R3
+  value.go:422		0x100267000		f90047e3		MOVD R3, 136(RSP)
+  value.go:422		0x100267004		f9400044		MOVD (R2), R4
+  value.go:422		0x100267008		f90057e4		MOVD R4, 168(RSP)
+  value.go:422		0x10026700c		f9405be0		MOVD 176(RSP), R0
+  value.go:422		0x100267010		97f86fc4		CALL runtime.raceread(SB)
+  value.go:422		0x100267014		f94067e2		MOVD 200(RSP), R2
+  value.go:422		0x100267018		f9400840		MOVD 16(R2), R0
+  value.go:422		0x10026701c		f94047e1		MOVD 136(RSP), R1
+  value.go:422		0x100267020		eb01001f		CMP R1, R0
+  value.go:422		0x100267024		54003fc2		BCS 510(PC)
+  value.go:422		0x100267028		f94057e1		MOVD 168(RSP), R1
+  value.go:422		0x10026702c		38606821		MOVBU (R1)(R0), R1
+  value.go:422		0x100267030		3900dfe1		MOVB R1, 55(RSP)
+  value.go:423		0x100267034		f9405be0		MOVD 176(RSP), R0
+  value.go:423		0x100267038		97f86fba		CALL runtime.raceread(SB)
+  value.go:423		0x10026703c		f94067e1		MOVD 200(RSP), R1
+  value.go:423		0x100267040		f9400822		MOVD 16(R1), R2
+  value.go:423		0x100267044		f90047e2		MOVD R2, 136(RSP)
+  value.go:423		0x100267048		f9405be0		MOVD 176(RSP), R0
+  value.go:423		0x10026704c		97f86fc9		CALL runtime.racewrite(SB)
+  value.go:423		0x100267050		f94047e1		MOVD 136(RSP), R1
+  value.go:423		0x100267054		91000421		ADD $1, R1, R1
+  value.go:423		0x100267058		f94067e2		MOVD 200(RSP), R2
+  value.go:423		0x10026705c		f9000841		MOVD R1, 16(R2)
+  value.go:424		0x100267060		3940dfe1		MOVBU 55(RSP), R1
+  value.go:424		0x100267064		aa0103e3		MOVD R1, R3
+  value.go:424		0x100267068		7101887f		CMPW $98, R3
+  value.go:427		0x10026706c		54000988		BHI 76(PC)
+  value.go:424		0x100267070		7100bc7f		CMPW $47, R3
+  value.go:425		0x100267074		540000c8		BHI 6(PC)
+  value.go:425		0x100267078		7100887f		CMPW $34, R3
+  value.go:425		0x10026707c		540000c0		BEQ 6(PC)
+  value.go:424		0x100267080		7100bc7f		CMPW $47, R3
+  value.go:425		0x100267084		54000080		BEQ 4(PC)
+  value.go:425		0x100267088		14000190		JMP 400(PC)
+  value.go:425		0x10026708c		7101707f		CMPW $92, R3
+  value.go:425		0x100267090		54000421		BNE 33(PC)
+  value.go:425		0x100267094		b00107a0		ADRP 34557952(PC), R0
+  value.go:425		0x100267098		911b0000		ADD $1728, R0, R0
+  value.go:425		0x10026709c		b24003e1		ORR $1, ZR, R1
+  value.go:425		0x1002670a0		97f876ac		CALL sync/atomic.AddUint32(SB)
+  value.go:426		0x1002670a4		f9402fe2		MOVD 88(RSP), R2
+  value.go:426		0x1002670a8		91000441		ADD $1, R2, R1
+  value.go:426		0x1002670ac		f94033e3		MOVD 96(RSP), R3
+  value.go:426		0x1002670b0		eb01007f		CMP R1, R3
+  value.go:426		0x1002670b4		54000063		BCC 3(PC)
+  value.go:426		0x1002670b8		f9404be0		MOVD 144(RSP), R0
+  value.go:426		0x1002670bc		14000009		JMP 9(PC)
+  value.go:426		0x1002670c0		f9404be0		MOVD 144(RSP), R0
+  value.go:426		0x1002670c4		aa0303e2		MOVD R3, R2
+  value.go:426		0x1002670c8		b24003e3		ORR $1, ZR, R3
+  value.go:426		0x1002670cc		b0006144		ADRP 12750848(PC), R4
+  value.go:426		0x1002670d0		910c8084		ADD $800, R4, R4
+  value.go:426		0x1002670d4		97f85203		CALL runtime.growslice(SB)
+  value.go:426		0x1002670d8		aa0203e3		MOVD R2, R3
+  value.go:426		0x1002670dc		f9402fe2		MOVD 88(RSP), R2
+  value.go:426		0x1002670e0		f9004be0		MOVD R0, 144(RSP)
+  value.go:426		0x1002670e4		f90047e1		MOVD R1, 136(RSP)
+  value.go:426		0x1002670e8		f90033e3		MOVD R3, 96(RSP)
+  value.go:426		0x1002670ec		8b020004		ADD R2, R0, R4
+  value.go:426		0x1002670f0		aa0403e0		MOVD R4, R0
+  value.go:426		0x1002670f4		97f86f9f		CALL runtime.racewrite(SB)
+  value.go:426		0x1002670f8		f9402fe1		MOVD 88(RSP), R1
+  value.go:426		0x1002670fc		3940dfe2		MOVBU 55(RSP), R2
+  value.go:426		0x100267100		f9404be0		MOVD 144(RSP), R0
+  value.go:426		0x100267104		38216802		MOVB R2, (R0)(R1)
+  value.go:455		0x100267108		f94047e1		MOVD 136(RSP), R1
+  value.go:455		0x10026710c		f94033e2		MOVD 96(RSP), R2
+  value.go:426		0x100267110		17ffff41		JMP -191(PC)
+  value.go:424		0x100267114		7101887f		CMPW $98, R3
+  value.go:427		0x100267118		54002d81		BNE 364(PC)
+  value.go:427		0x10026711c		b00107a0		ADRP 34557952(PC), R0
+  value.go:427		0x100267120		911b1000		ADD $1732, R0, R0
+  value.go:427		0x100267124		b24003e1		ORR $1, ZR, R1
+  value.go:427		0x100267128		97f8768a		CALL sync/atomic.AddUint32(SB)
+  value.go:428		0x10026712c		f9402fe2		MOVD 88(RSP), R2
+  value.go:428		0x100267130		91000441		ADD $1, R2, R1
+  value.go:428		0x100267134		f94033e3		MOVD 96(RSP), R3
+  value.go:428		0x100267138		eb01007f		CMP R1, R3
+  value.go:428		0x10026713c		54000063		BCC 3(PC)
+  value.go:428		0x100267140		f9404be0		MOVD 144(RSP), R0
+  value.go:428		0x100267144		14000009		JMP 9(PC)
+  value.go:428		0x100267148		f9404be0		MOVD 144(RSP), R0
+  value.go:428		0x10026714c		aa0303e2		MOVD R3, R2
+  value.go:428		0x100267150		b24003e3		ORR $1, ZR, R3
+  value.go:428		0x100267154		b0006144		ADRP 12750848(PC), R4
+  value.go:428		0x100267158		910c8084		ADD $800, R4, R4
+  value.go:428		0x10026715c		97f851e1		CALL runtime.growslice(SB)
+  value.go:428		0x100267160		aa0203e3		MOVD R2, R3
+  value.go:428		0x100267164		f9402fe2		MOVD 88(RSP), R2
+  value.go:428		0x100267168		f90047e1		MOVD R1, 136(RSP)
+  value.go:428		0x10026716c		f90033e3		MOVD R3, 96(RSP)
+  value.go:428		0x100267170		f9004be0		MOVD R0, 144(RSP)
+  value.go:428		0x100267174		8b020004		ADD R2, R0, R4
+  value.go:428		0x100267178		aa0403e0		MOVD R4, R0
+  value.go:428		0x10026717c		97f86f7d		CALL runtime.racewrite(SB)
+  value.go:428		0x100267180		f9402fe1		MOVD 88(RSP), R1
+  value.go:428		0x100267184		b27d03e2		ORR $8, ZR, R2
+  value.go:428		0x100267188		f9404be0		MOVD 144(RSP), R0
+  value.go:428		0x10026718c		38216802		MOVB R2, (R0)(R1)
+  value.go:455		0x100267190		f94047e1		MOVD 136(RSP), R1
+  value.go:455		0x100267194		f94033e2		MOVD 96(RSP), R2
+  value.go:428		0x100267198		17ffff1f		JMP -225(PC)
+  value.go:424		0x10026719c		7101b87f		CMPW $110, R3
+  value.go:431		0x1002671a0		540008a8		BHI 69(PC)
+  value.go:429		0x1002671a4		7101987f		CMPW $102, R3
+  value.go:429		0x1002671a8		54000460		BEQ 35(PC)
+  value.go:424		0x1002671ac		7101b87f		CMPW $110, R3
+  value.go:431		0x1002671b0		540028c1		BNE 326(PC)
+  value.go:431		0x1002671b4		b00107a0		ADRP 34557952(PC), R0
+  value.go:431		0x1002671b8		911b3000		ADD $1740, R0, R0
+  value.go:431		0x1002671bc		b24003e1		ORR $1, ZR, R1
+  value.go:431		0x1002671c0		97f87664		CALL sync/atomic.AddUint32(SB)
+  value.go:432		0x1002671c4		f9402fe2		MOVD 88(RSP), R2
+  value.go:432		0x1002671c8		91000441		ADD $1, R2, R1
+  value.go:432		0x1002671cc		f94033e3		MOVD 96(RSP), R3
+  value.go:432		0x1002671d0		eb01007f		CMP R1, R3
+  value.go:432		0x1002671d4		54000063		BCC 3(PC)
+  value.go:432		0x1002671d8		f9404be0		MOVD 144(RSP), R0
+  value.go:432		0x1002671dc		14000009		JMP 9(PC)
+  value.go:432		0x1002671e0		f9404be0		MOVD 144(RSP), R0
+  value.go:432		0x1002671e4		aa0303e2		MOVD R3, R2
+  value.go:432		0x1002671e8		b24003e3		ORR $1, ZR, R3
+  value.go:432		0x1002671ec		b0006144		ADRP 12750848(PC), R4
+  value.go:432		0x1002671f0		910c8084		ADD $800, R4, R4
+  value.go:432		0x1002671f4		97f851bb		CALL runtime.growslice(SB)
+  value.go:432		0x1002671f8		aa0203e3		MOVD R2, R3
+  value.go:432		0x1002671fc		f9402fe2		MOVD 88(RSP), R2
+  value.go:432		0x100267200		f90033e3		MOVD R3, 96(RSP)
+  value.go:432		0x100267204		f9004be0		MOVD R0, 144(RSP)
+  value.go:432		0x100267208		f90047e1		MOVD R1, 136(RSP)
+  value.go:432		0x10026720c		8b020004		ADD R2, R0, R4
+  value.go:432		0x100267210		aa0403e0		MOVD R4, R0
+  value.go:432		0x100267214		97f86f57		CALL runtime.racewrite(SB)
+  value.go:432		0x100267218		f9402fe1		MOVD 88(RSP), R1
+  value.go:432		0x10026721c		d2800142		MOVD $10, R2
+  value.go:432		0x100267220		f9404be0		MOVD 144(RSP), R0
+  value.go:432		0x100267224		38216802		MOVB R2, (R0)(R1)
+  value.go:455		0x100267228		f94047e1		MOVD 136(RSP), R1
+  value.go:455		0x10026722c		f94033e2		MOVD 96(RSP), R2
+  value.go:432		0x100267230		17fffef9		JMP -263(PC)
+  value.go:429		0x100267234		b00107a0		ADRP 34557952(PC), R0
+  value.go:429		0x100267238		911b2000		ADD $1736, R0, R0
+  value.go:429		0x10026723c		b24003e1		ORR $1, ZR, R1
+  value.go:429		0x100267240		97f87644		CALL sync/atomic.AddUint32(SB)
+  value.go:430		0x100267244		f9402fe2		MOVD 88(RSP), R2
+  value.go:430		0x100267248		91000441		ADD $1, R2, R1
+  value.go:430		0x10026724c		f94033e3		MOVD 96(RSP), R3
+  value.go:430		0x100267250		eb01007f		CMP R1, R3
+  value.go:430		0x100267254		54000063		BCC 3(PC)
+  value.go:430		0x100267258		f9404be0		MOVD 144(RSP), R0
+  value.go:430		0x10026725c		14000009		JMP 9(PC)
+  value.go:430		0x100267260		f9404be0		MOVD 144(RSP), R0
+  value.go:430		0x100267264		aa0303e2		MOVD R3, R2
+  value.go:430		0x100267268		b24003e3		ORR $1, ZR, R3
+  value.go:430		0x10026726c		b0006144		ADRP 12750848(PC), R4
+  value.go:430		0x100267270		910c8084		ADD $800, R4, R4
+  value.go:430		0x100267274		97f8519b		CALL runtime.growslice(SB)
+  value.go:430		0x100267278		aa0203e3		MOVD R2, R3
+  value.go:430		0x10026727c		f9402fe2		MOVD 88(RSP), R2
+  value.go:430		0x100267280		f90047e1		MOVD R1, 136(RSP)
+  value.go:430		0x100267284		f90033e3		MOVD R3, 96(RSP)
+  value.go:430		0x100267288		f9004be0		MOVD R0, 144(RSP)
+  value.go:430		0x10026728c		8b020004		ADD R2, R0, R4
+  value.go:430		0x100267290		aa0403e0		MOVD R4, R0
+  value.go:430		0x100267294		97f86f37		CALL runtime.racewrite(SB)
+  value.go:430		0x100267298		f9402fe1		MOVD 88(RSP), R1
+  value.go:430		0x10026729c		b27e07e2		ORR $12, ZR, R2
+  value.go:430		0x1002672a0		f9404be0		MOVD 144(RSP), R0
+  value.go:430		0x1002672a4		38216802		MOVB R2, (R0)(R1)
+  value.go:455		0x1002672a8		f94047e1		MOVD 136(RSP), R1
+  value.go:455		0x1002672ac		f94033e2		MOVD 96(RSP), R2
+  value.go:430		0x1002672b0		17fffed9		JMP -295(PC)
+  value.go:433		0x1002672b4		7101c87f		CMPW $114, R3
+  value.go:433		0x1002672b8		54001660		BEQ 179(PC)
+  value.go:435		0x1002672bc		7101d07f		CMPW $116, R3
+  value.go:435		0x1002672c0		54000421		BNE 33(PC)
+  value.go:435		0x1002672c4		b00107a0		ADRP 34557952(PC), R0
+  value.go:435		0x1002672c8		911b5000		ADD $1748, R0, R0
+  value.go:435		0x1002672cc		b24003e1		ORR $1, ZR, R1
+  value.go:435		0x1002672d0		97f87620		CALL sync/atomic.AddUint32(SB)
+  value.go:436		0x1002672d4		f9402fe2		MOVD 88(RSP), R2
+  value.go:436		0x1002672d8		91000441		ADD $1, R2, R1
+  value.go:436		0x1002672dc		f94033e3		MOVD 96(RSP), R3
+  value.go:436		0x1002672e0		eb01007f		CMP R1, R3
+  value.go:436		0x1002672e4		54000063		BCC 3(PC)
+  value.go:436		0x1002672e8		f9404be0		MOVD 144(RSP), R0
+  value.go:436		0x1002672ec		14000009		JMP 9(PC)
+  value.go:436		0x1002672f0		f9404be0		MOVD 144(RSP), R0
+  value.go:436		0x1002672f4		aa0303e2		MOVD R3, R2
+  value.go:436		0x1002672f8		b24003e3		ORR $1, ZR, R3
+  value.go:436		0x1002672fc		b0006144		ADRP 12750848(PC), R4
+  value.go:436		0x100267300		910c8084		ADD $800, R4, R4
+  value.go:436		0x100267304		97f85177		CALL runtime.growslice(SB)
+  value.go:436		0x100267308		aa0203e3		MOVD R2, R3
+  value.go:436		0x10026730c		f9402fe2		MOVD 88(RSP), R2
+  value.go:436		0x100267310		f9004be0		MOVD R0, 144(RSP)
+  value.go:436		0x100267314		f90047e1		MOVD R1, 136(RSP)
+  value.go:436		0x100267318		f90033e3		MOVD R3, 96(RSP)
+  value.go:436		0x10026731c		8b020004		ADD R2, R0, R4
+  value.go:436		0x100267320		aa0403e0		MOVD R4, R0
+  value.go:436		0x100267324		97f86f13		CALL runtime.racewrite(SB)
+  value.go:436		0x100267328		f9402fe1		MOVD 88(RSP), R1
+  value.go:436		0x10026732c		d2800122		MOVD $9, R2
+  value.go:436		0x100267330		f9404be0		MOVD 144(RSP), R0
+  value.go:436		0x100267334		38216802		MOVB R2, (R0)(R1)
+  value.go:455		0x100267338		f94047e1		MOVD 136(RSP), R1
+  value.go:455		0x10026733c		f94033e2		MOVD 96(RSP), R2
+  value.go:436		0x100267340		17fffeb5		JMP -331(PC)
+  value.go:437		0x100267344		7101d47f		CMPW $117, R3
+  value.go:437		0x100267348		54001c01		BNE 224(PC)
+  value.go:437		0x10026734c		b00107a0		ADRP 34557952(PC), R0
+  value.go:437		0x100267350		911b6000		ADD $1752, R0, R0
+  value.go:437		0x100267354		b24003e1		ORR $1, ZR, R1
+  value.go:437		0x100267358		97f875fe		CALL sync/atomic.AddUint32(SB)
+  value.go:438		0x10026735c		f94067e0		MOVD 200(RSP), R0
+  value.go:438		0x100267360		97fffdb0		CALL github.com/luoyjx/mini-loop/go/internal/jsonvalue.(*reader).hex(SB)
+  value.go:439		0x100267364		b5001961		CBNZ R1, 203(PC)
+  value.go:438		0x100267368		b9003fe0		MOVW R0, 60(RSP)
+  value.go:442		0x10026736c		b00107a0		ADRP 34557952(PC), R0
+  value.go:442		0x100267370		911b7000		ADD $1756, R0, R0
+  value.go:442		0x100267374		b24003e1		ORR $1, ZR, R1
+  value.go:442		0x100267378		97f875f6		CALL sync/atomic.AddUint32(SB)
+  value.go:442		0x10026737c		b9803fe2		MOVW 60(RSP), R2
+  value.go:442		0x100267380		d29b0003		MOVD $55296, R3
+  value.go:442		0x100267384		cb030043		SUB R3, R2, R3
+  value.go:442		0x100267388		b9004be3		MOVW R3, 72(RSP)
+  value.go:442		0x10026738c		710ffc7f		CMPW $1023, R3
+  value.go:442		0x100267390		54000069		BLS 3(PC)
+  value.go:442		0x100267394		aa1f03e0		MOVD ZR, R0
+  value.go:442		0x100267398		14000011		JMP 17(PC)
+  value.go:442		0x10026739c		f94067e0		MOVD 200(RSP), R0
+  value.go:442		0x1002673a0		97f86ee0		CALL runtime.raceread(SB)
+  value.go:442		0x1002673a4		f94067e1		MOVD 200(RSP), R1
+  value.go:442		0x1002673a8		f9400422		MOVD 8(R1), R2
+  value.go:442		0x1002673ac		f90047e2		MOVD R2, 136(RSP)
+  value.go:442		0x1002673b0		f9405be0		MOVD 176(RSP), R0
+  value.go:442		0x1002673b4		97f86edb		CALL runtime.raceread(SB)
+  value.go:442		0x1002673b8		f94067e1		MOVD 200(RSP), R1
+  value.go:442		0x1002673bc		f9400822		MOVD 16(R1), R2
+  value.go:442		0x1002673c0		91001842		ADD $6, R2, R2
+  value.go:442		0x1002673c4		f94047e3		MOVD 136(RSP), R3
+  value.go:442		0x1002673c8		eb02007f		CMP R2, R3
+  value.go:442		0x1002673cc		9a9fb7e2		CSET GE, R2
+  utf16.go:38		0x1002673d0		b9804be3		MOVW 72(RSP), R3
+  value.go:442		0x1002673d4		aa0203e0		MOVD R2, R0
+  value.go:455		0x1002673d8		b9803fe2		MOVW 60(RSP), R2
+  value.go:442		0x1002673dc		37000060		TBNZ $0, R0, 3(PC)
+  value.go:442		0x1002673e0		aa1f03e0		MOVD ZR, R0
+  value.go:442		0x1002673e4		14000024		JMP 36(PC)
+  value.go:442		0x1002673e8		f9405be0		MOVD 176(RSP), R0
+  value.go:442		0x1002673ec		97f86ecd		CALL runtime.raceread(SB)
+  value.go:442		0x1002673f0		f94067e1		MOVD 200(RSP), R1
+  value.go:442		0x1002673f4		f9400822		MOVD 16(R1), R2
+  value.go:442		0x1002673f8		f90047e2		MOVD R2, 136(RSP)
+  value.go:442		0x1002673fc		f9405be0		MOVD 176(RSP), R0
+  value.go:442		0x100267400		97f86ec8		CALL runtime.raceread(SB)
+  value.go:442		0x100267404		f94067e0		MOVD 200(RSP), R0
+  value.go:442		0x100267408		f9400801		MOVD 16(R0), R1
+  value.go:442		0x10026740c		f9003fe1		MOVD R1, 120(RSP)
+  value.go:442		0x100267410		97f86ec4		CALL runtime.raceread(SB)
+  value.go:442		0x100267414		f94067e1		MOVD 200(RSP), R1
+  value.go:442		0x100267418		f9400422		MOVD 8(R1), R2
+  value.go:442		0x10026741c		f9403fe3		MOVD 120(RSP), R3
+  value.go:442		0x100267420		91000864		ADD $2, R3, R4
+  value.go:442		0x100267424		eb04005f		CMP R4, R2
+  value.go:442		0x100267428		54001f63		BCC 251(PC)
+  value.go:442		0x10026742c		f94047e0		MOVD 136(RSP), R0
+  value.go:442		0x100267430		eb04001f		CMP R4, R0
+  value.go:442		0x100267434		54001ec8		BHI 246(PC)
+  value.go:442		0x100267438		cb000062		SUB R0, R3, R2
+  value.go:442		0x10026743c		91000843		ADD $2, R2, R3
+  value.go:442		0x100267440		cb0303e3		NEG R3, R3
+  value.go:442		0x100267444		8a83fc03		AND R3->63, R0, R3
+  value.go:442		0x100267448		b50000e2		CBNZ R2, 7(PC)
+  value.go:442		0x10026744c		f9400022		MOVD (R1), R2
+  value.go:442		0x100267450		78636842		MOVHU (R2)(R3), R2
+  value.go:442		0x100267454		d28eab83		MOVD $30044, R3
+  value.go:442		0x100267458		6b03005f		CMPW R3, R2
+  value.go:442		0x10026745c		9a9f17e2		CSET EQ, R2
+  value.go:442		0x100267460		14000002		JMP 2(PC)
+  value.go:442		0x100267464		aa1f03e2		MOVD ZR, R2
+  utf16.go:38		0x100267468		b9804be3		MOVW 72(RSP), R3
+  value.go:442		0x10026746c		aa0203e0		MOVD R2, R0
+  value.go:455		0x100267470		b9803fe2		MOVW 60(RSP), R2
+  value.go:442		0x100267474		36000720		TBZ $0, R0, 57(PC)
+  value.go:442		0x100267478		b00107a0		ADRP 34557952(PC), R0
+  value.go:442		0x10026747c		911bb000		ADD $1772, R0, R0
+  value.go:442		0x100267480		b24003e1		ORR $1, ZR, R1
+  value.go:442		0x100267484		97f875b3		CALL sync/atomic.AddUint32(SB)
+  value.go:443		0x100267488		f9405be0		MOVD 176(RSP), R0
+  value.go:443		0x10026748c		97f86ea5		CALL runtime.raceread(SB)
+  value.go:443		0x100267490		f94067e2		MOVD 200(RSP), R2
+  value.go:443		0x100267494		f9400843		MOVD 16(R2), R3
+  value.go:443		0x100267498		f9002be3		MOVD R3, 80(RSP)
+  value.go:444		0x10026749c		f9405be0		MOVD 176(RSP), R0
+  value.go:444		0x1002674a0		97f86ea0		CALL runtime.raceread(SB)
+  value.go:444		0x1002674a4		f94067e2		MOVD 200(RSP), R2
+  value.go:444		0x1002674a8		f9400843		MOVD 16(R2), R3
+  value.go:444		0x1002674ac		f90047e3		MOVD R3, 136(RSP)
+  value.go:444		0x1002674b0		f9405be0		MOVD 176(RSP), R0
+  value.go:444		0x1002674b4		97f86eaf		CALL runtime.racewrite(SB)
+  value.go:444		0x1002674b8		f94047e2		MOVD 136(RSP), R2
+  value.go:444		0x1002674bc		91000842		ADD $2, R2, R2
+  value.go:444		0x1002674c0		f94067e0		MOVD 200(RSP), R0
+  value.go:444		0x1002674c4		f9000802		MOVD R2, 16(R0)
+  value.go:445		0x1002674c8		97fffd56		CALL github.com/luoyjx/mini-loop/go/internal/jsonvalue.(*reader).hex(SB)
+  value.go:446		0x1002674cc		b5000c61		CBNZ R1, 99(PC)
+  value.go:445		0x1002674d0		b9003be0		MOVW R0, 56(RSP)
+  value.go:449		0x1002674d4		b00107a0		ADRP 34557952(PC), R0
+  value.go:449		0x1002674d8		911bc000		ADD $1776, R0, R0
+  value.go:449		0x1002674dc		b24003e1		ORR $1, ZR, R1
+  value.go:449		0x1002674e0		97f8759c		CALL sync/atomic.AddUint32(SB)
+  value.go:449		0x1002674e4		b9803be2		MOVW 56(RSP), R2
+  value.go:449		0x1002674e8		d29b8003		MOVD $56320, R3
+  value.go:449		0x1002674ec		cb030042		SUB R3, R2, R2
+  value.go:449		0x1002674f0		710ffc5f		CMPW $1023, R2
+  value.go:449		0x1002674f4		540001e8		BHI 15(PC)
+  value.go:449		0x1002674f8		b90047e2		MOVW R2, 68(RSP)
+  value.go:449		0x1002674fc		b00107a0		ADRP 34557952(PC), R0
+  value.go:449		0x100267500		911be000		ADD $1784, R0, R0
+  value.go:449		0x100267504		b24003e1		ORR $1, ZR, R1
+  value.go:449		0x100267508		97f87592		CALL sync/atomic.AddUint32(SB)
+  utf16.go:38		0x10026750c		b9804be2		MOVW 72(RSP), R2
+  utf16.go:38		0x100267510		7110005f		CMPW $1024, R2
+  utf16.go:38		0x100267514		540000a2		BCS 5(PC)
+  utf16.go:39		0x100267518		b98047e3		MOVW 68(RSP), R3
+  utf16.go:39		0x10026751c		aa022862		ORR R2<<10, R3, R2
+  utf16.go:39		0x100267520		91404042		ADD $(16<<12), R2, R2
+  value.go:450		0x100267524		1400000d		JMP 13(PC)
+  value.go:450		0x100267528		d29fffa2		MOVD $65533, R2
+  value.go:450		0x10026752c		1400000b		JMP 11(PC)
+  value.go:451		0x100267530		b00107a0		ADRP 34557952(PC), R0
+  value.go:451		0x100267534		911bf000		ADD $1788, R0, R0
+  value.go:451		0x100267538		b24003e1		ORR $1, ZR, R1
+  value.go:451		0x10026753c		97f87585		CALL sync/atomic.AddUint32(SB)
+  value.go:452		0x100267540		f9405be0		MOVD 176(RSP), R0
+  value.go:452		0x100267544		97f86e8b		CALL runtime.racewrite(SB)
+  value.go:452		0x100267548		f9402be2		MOVD 80(RSP), R2
+  value.go:452		0x10026754c		f94067e3		MOVD 200(RSP), R3
+  value.go:452		0x100267550		f9000862		MOVD R2, 16(R3)
+  value.go:455		0x100267554		b9803fe2		MOVW 60(RSP), R2
+  value.go:455		0x100267558		b90043e2		MOVW R2, 64(RSP)
+  value.go:455		0x10026755c		b00107a0		ADRP 34557952(PC), R0
+  value.go:455		0x100267560		911b8000		ADD $1760, R0, R0
+  value.go:455		0x100267564		b24003e1		ORR $1, ZR, R1
+  value.go:455		0x100267568		97f8757a		CALL sync/atomic.AddUint32(SB)
+  value.go:455		0x10026756c		f9404be0		MOVD 144(RSP), R0
+  value.go:455		0x100267570		f9402fe1		MOVD 88(RSP), R1
+  value.go:455		0x100267574		f94033e2		MOVD 96(RSP), R2
+  value.go:455		0x100267578		b98043e3		MOVW 64(RSP), R3
+  value.go:455		0x10026757c		97ffee55		CALL github.com/luoyjx/mini-loop/go/internal/jsonvalue.appendRune(SB)
+  value.go:455		0x100267580		17fffe25		JMP -475(PC)
+  value.go:433		0x100267584		b00107a0		ADRP 34557952(PC), R0
+  value.go:433		0x100267588		911b4000		ADD $1744, R0, R0
+  value.go:433		0x10026758c		b24003e1		ORR $1, ZR, R1
+  value.go:433		0x100267590		97f87570		CALL sync/atomic.AddUint32(SB)
+  value.go:434		0x100267594		f9402fe2		MOVD 88(RSP), R2
+  value.go:434		0x100267598		91000441		ADD $1, R2, R1
+  value.go:434		0x10026759c		f94033e3		MOVD 96(RSP), R3
+  value.go:434		0x1002675a0		eb01007f		CMP R1, R3
+  value.go:434		0x1002675a4		54000063		BCC 3(PC)
+  value.go:434		0x1002675a8		f9404be0		MOVD 144(RSP), R0
+  value.go:434		0x1002675ac		14000009		JMP 9(PC)
+  value.go:434		0x1002675b0		f9404be0		MOVD 144(RSP), R0
+  value.go:434		0x1002675b4		aa0303e2		MOVD R3, R2
+  value.go:434		0x1002675b8		b24003e3		ORR $1, ZR, R3
+  value.go:434		0x1002675bc		b0006144		ADRP 12750848(PC), R4
+  value.go:434		0x1002675c0		910c8084		ADD $800, R4, R4
+  value.go:434		0x1002675c4		97f850c7		CALL runtime.growslice(SB)
+  value.go:434		0x1002675c8		aa0203e3		MOVD R2, R3
+  value.go:434		0x1002675cc		f9402fe2		MOVD 88(RSP), R2
+  value.go:434		0x1002675d0		f9004be0		MOVD R0, 144(RSP)
+  value.go:434		0x1002675d4		f90047e1		MOVD R1, 136(RSP)
+  value.go:434		0x1002675d8		f90033e3		MOVD R3, 96(RSP)
+  value.go:434		0x1002675dc		8b020004		ADD R2, R0, R4
+  value.go:434		0x1002675e0		aa0403e0		MOVD R4, R0
+  value.go:434		0x1002675e4		97f86e63		CALL runtime.racewrite(SB)
+  value.go:434		0x1002675e8		f9402fe1		MOVD 88(RSP), R1
+  value.go:434		0x1002675ec		d28001a2		MOVD $13, R2
+  value.go:434		0x1002675f0		f9404be0		MOVD 144(RSP), R0
+  value.go:434		0x1002675f4		38216802		MOVB R2, (R0)(R1)
+  value.go:455		0x1002675f8		f94047e1		MOVD 136(RSP), R1
+  value.go:455		0x1002675fc		f94033e2		MOVD 96(RSP), R2
+  value.go:434		0x100267600		17fffe05		JMP -507(PC)
+  value.go:413		0x100267604		b00107a0		ADRP 34557952(PC), R0
+  value.go:413		0x100267608		911ae000		ADD $1720, R0, R0
+  value.go:413		0x10026760c		b24003e1		ORR $1, ZR, R1
+  value.go:413		0x100267610		97f87550		CALL sync/atomic.AddUint32(SB)
+  value.go:414		0x100267614		d00087e0		ADRP 17817600(PC), R0
+  value.go:414		0x100267618		91160000		ADD $1408, R0, R0
+  value.go:414		0x10026761c		97f86e41		CALL runtime.raceread(SB)
+  value.go:414		0x100267620		d00087fb		ADRP 17817600(PC), R27
+  value.go:414		0x100267624		f942c362		MOVD 1408(R27), R2
+  value.go:414		0x100267628		f90043e2		MOVD R2, 128(RSP)
+  value.go:414		0x10026762c		d00087fb		ADRP 17817600(PC), R27
+  value.go:414		0x100267630		f942c763		MOVD 1416(R27), R3
+  value.go:414		0x100267634		f90057e3		MOVD R3, 168(RSP)
+  value.go:414		0x100267638		97f86e8e		CALL runtime.racefuncexit(SB)
+  value.go:414		0x10026763c		aa1f03e0		MOVD ZR, R0
+  value.go:414		0x100267640		aa1f03e1		MOVD ZR, R1
+  value.go:414		0x100267644		f94043e2		MOVD 128(RSP), R2
+  value.go:414		0x100267648		f94057e3		MOVD 168(RSP), R3
+  value.go:414		0x10026764c		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:414		0x100267650		910303ff		ADD $192, RSP, RSP
+  value.go:414		0x100267654		d65f03c0		RET
+  value.go:445		0x100267658		f9004fe2		MOVD R2, 152(RSP)
+  value.go:445		0x10026765c		f90037e1		MOVD R1, 104(RSP)
+  value.go:446		0x100267660		b00107a0		ADRP 34557952(PC), R0
+  value.go:446		0x100267664		911bd000		ADD $1780, R0, R0
+  value.go:446		0x100267668		b24003e1		ORR $1, ZR, R1
+  value.go:446		0x10026766c		97f87539		CALL sync/atomic.AddUint32(SB)
+  value.go:447		0x100267670		97f86e80		CALL runtime.racefuncexit(SB)
+  value.go:447		0x100267674		aa1f03e0		MOVD ZR, R0
+  value.go:447		0x100267678		aa1f03e1		MOVD ZR, R1
+  value.go:447		0x10026767c		f94037e2		MOVD 104(RSP), R2
+  value.go:447		0x100267680		f9404fe3		MOVD 152(RSP), R3
+  value.go:447		0x100267684		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:447		0x100267688		910303ff		ADD $192, RSP, RSP
+  value.go:447		0x10026768c		d65f03c0		RET
+  value.go:438		0x100267690		f90053e2		MOVD R2, 160(RSP)
+  value.go:438		0x100267694		f9003be1		MOVD R1, 112(RSP)
+  value.go:439		0x100267698		b00107a0		ADRP 34557952(PC), R0
+  value.go:439		0x10026769c		911ba000		ADD $1768, R0, R0
+  value.go:439		0x1002676a0		b24003e1		ORR $1, ZR, R1
+  value.go:439		0x1002676a4		97f8752b		CALL sync/atomic.AddUint32(SB)
+  value.go:440		0x1002676a8		97f86e72		CALL runtime.racefuncexit(SB)
+  value.go:440		0x1002676ac		aa1f03e0		MOVD ZR, R0
+  value.go:440		0x1002676b0		aa1f03e1		MOVD ZR, R1
+  value.go:440		0x1002676b4		f9403be2		MOVD 112(RSP), R2
+  value.go:440		0x1002676b8		f94053e3		MOVD 160(RSP), R3
+  value.go:440		0x1002676bc		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:440		0x1002676c0		910303ff		ADD $192, RSP, RSP
+  value.go:440		0x1002676c4		d65f03c0		RET
+  value.go:456		0x1002676c8		b00107a0		ADRP 34557952(PC), R0
+  value.go:456		0x1002676cc		911b9000		ADD $1764, R0, R0
+  value.go:456		0x1002676d0		b24003e1		ORR $1, ZR, R1
+  value.go:456		0x1002676d4		97f8751f		CALL sync/atomic.AddUint32(SB)
+  value.go:457		0x1002676d8		d00087e0		ADRP 17817600(PC), R0
+  value.go:457		0x1002676dc		91160000		ADD $1408, R0, R0
+  value.go:457		0x1002676e0		97f86e10		CALL runtime.raceread(SB)
+  value.go:457		0x1002676e4		d00087fb		ADRP 17817600(PC), R27
+  value.go:457		0x1002676e8		f942c362		MOVD 1408(R27), R2
+  value.go:457		0x1002676ec		f90043e2		MOVD R2, 128(RSP)
+  value.go:457		0x1002676f0		d00087fb		ADRP 17817600(PC), R27
+  value.go:457		0x1002676f4		f942c763		MOVD 1416(R27), R3
+  value.go:457		0x1002676f8		f90057e3		MOVD R3, 168(RSP)
+  value.go:457		0x1002676fc		97f86e5d		CALL runtime.racefuncexit(SB)
+  value.go:457		0x100267700		aa1f03e0		MOVD ZR, R0
+  value.go:457		0x100267704		aa1f03e1		MOVD ZR, R1
+  value.go:457		0x100267708		f94043e2		MOVD 128(RSP), R2
+  value.go:457		0x10026770c		f94057e3		MOVD 168(RSP), R3
+  value.go:457		0x100267710		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:457		0x100267714		910303ff		ADD $192, RSP, RSP
+  value.go:457		0x100267718		d65f03c0		RET
+  value.go:419		0x10026771c		b00107a0		ADRP 34557952(PC), R0
+  value.go:419		0x100267720		911af000		ADD $1724, R0, R0
+  value.go:419		0x100267724		b24003e1		ORR $1, ZR, R1
+  value.go:419		0x100267728		97f8750a		CALL sync/atomic.AddUint32(SB)
+  value.go:420		0x10026772c		d00087e0		ADRP 17817600(PC), R0
+  value.go:420		0x100267730		91160000		ADD $1408, R0, R0
+  value.go:420		0x100267734		97f86dfb		CALL runtime.raceread(SB)
+  value.go:420		0x100267738		d00087fb		ADRP 17817600(PC), R27
+  value.go:420		0x10026773c		f942c362		MOVD 1408(R27), R2
+  value.go:420		0x100267740		f90043e2		MOVD R2, 128(RSP)
+  value.go:420		0x100267744		d00087fb		ADRP 17817600(PC), R27
+  value.go:420		0x100267748		f942c763		MOVD 1416(R27), R3
+  value.go:420		0x10026774c		f90057e3		MOVD R3, 168(RSP)
+  value.go:420		0x100267750		97f86e48		CALL runtime.racefuncexit(SB)
+  value.go:420		0x100267754		aa1f03e0		MOVD ZR, R0
+  value.go:420		0x100267758		aa1f03e1		MOVD ZR, R1
+  value.go:420		0x10026775c		f94043e2		MOVD 128(RSP), R2
+  value.go:420		0x100267760		f94057e3		MOVD 168(RSP), R3
+  value.go:420		0x100267764		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:420		0x100267768		910303ff		ADD $192, RSP, RSP
+  value.go:420		0x10026776c		d65f03c0		RET
+  value.go:409		0x100267770		b00107a0		ADRP 34557952(PC), R0
+  value.go:409		0x100267774		911ab000		ADD $1708, R0, R0
+  value.go:409		0x100267778		b24003e1		ORR $1, ZR, R1
+  value.go:409		0x10026777c		97f874f5		CALL sync/atomic.AddUint32(SB)
+  value.go:410		0x100267780		aa1f03e0		MOVD ZR, R0
+  value.go:410		0x100267784		f9404be1		MOVD 144(RSP), R1
+  value.go:410		0x100267788		f9402fe2		MOVD 88(RSP), R2
+  value.go:410		0x10026778c		97f852a1		CALL runtime.slicebytetostring(SB)
+  value.go:410		0x100267790		f90057e0		MOVD R0, 168(RSP)
+  value.go:410		0x100267794		f90047e1		MOVD R1, 136(RSP)
+  value.go:410		0x100267798		97f86e36		CALL runtime.racefuncexit(SB)
+  value.go:410		0x10026779c		f94057e0		MOVD 168(RSP), R0
+  value.go:410		0x1002677a0		f94047e1		MOVD 136(RSP), R1
+  value.go:410		0x1002677a4		aa1f03e2		MOVD ZR, R2
+  value.go:410		0x1002677a8		aa1f03e3		MOVD ZR, R3
+  value.go:410		0x1002677ac		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:410		0x1002677b0		910303ff		ADD $192, RSP, RSP
+  value.go:410		0x1002677b4		d65f03c0		RET
+  value.go:460		0x1002677b8		b00107a0		ADRP 34557952(PC), R0
+  value.go:460		0x1002677bc		911a5000		ADD $1684, R0, R0
+  value.go:460		0x1002677c0		b24003e1		ORR $1, ZR, R1
+  value.go:460		0x1002677c4		97f874e3		CALL sync/atomic.AddUint32(SB)
+  value.go:460		0x1002677c8		d00087e0		ADRP 17817600(PC), R0
+  value.go:460		0x1002677cc		91160000		ADD $1408, R0, R0
+  value.go:460		0x1002677d0		97f86dd4		CALL runtime.raceread(SB)
+  value.go:460		0x1002677d4		d00087fb		ADRP 17817600(PC), R27
+  value.go:460		0x1002677d8		f942c362		MOVD 1408(R27), R2
+  value.go:460		0x1002677dc		f90043e2		MOVD R2, 128(RSP)
+  value.go:460		0x1002677e0		d00087fb		ADRP 17817600(PC), R27
+  value.go:460		0x1002677e4		f942c763		MOVD 1416(R27), R3
+  value.go:460		0x1002677e8		f90057e3		MOVD R3, 168(RSP)
+  value.go:460		0x1002677ec		97f86e21		CALL runtime.racefuncexit(SB)
+  value.go:460		0x1002677f0		aa1f03e0		MOVD ZR, R0
+  value.go:460		0x1002677f4		aa1f03e1		MOVD ZR, R1
+  value.go:460		0x1002677f8		f94043e2		MOVD 128(RSP), R2
+  value.go:460		0x1002677fc		f94057e3		MOVD 168(RSP), R3
+  value.go:460		0x100267800		a97ffbfd		LDP -8(RSP), (R29, R30)
+  value.go:460		0x100267804		910303ff		ADD $192, RSP, RSP
+  value.go:460		0x100267808		d65f03c0		RET
+  value.go:442		0x10026780c		aa0403e1		MOVD R4, R1
+  value.go:442		0x100267810		97f86b18		CALL runtime.panicSliceB(SB)
+  value.go:442		0x100267814		aa0403e1		MOVD R4, R1
+  value.go:442		0x100267818		97f86b06		CALL runtime.panicSliceAlen(SB)
+  value.go:422		0x10026781c		97f86afd		CALL runtime.panicIndex(SB)
+  value.go:407		0x100267820		97f86afc		CALL runtime.panicIndex(SB)
+  value.go:401		0x100267824		aa0203e1		MOVD R2, R1
+  value.go:401		0x100267828		97f86afa		CALL runtime.panicIndex(SB)
+  value.go:401		0x10026782c		d503201f		NOOP
+  value.go:400		0x100267830		f90007e0		MOVD R0, 8(RSP)
+  value.go:400		0x100267834		aa1e03e3		MOVD R30, R3
+  value.go:400		0x100267838		97f86146		CALL runtime.morestack_noctxt.abi0(SB)
+  value.go:400		0x10026783c		f94007e0		MOVD 8(RSP), R0
+  value.go:400		0x100267840		17fffd10		JMP github.com/luoyjx/mini-loop/go/internal/jsonvalue.(*reader).string(SB)
+  value.go:400		0x100267844		00000000		?
+  value.go:400		0x100267848		00000000		?
+  value.go:400		0x10026784c		00000000		?

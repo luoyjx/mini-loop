@@ -11183,3 +11183,30 @@ previous native watcher failures and complete G0–G7 acceptance remain open.
 README map/boundaries reviewed, visible baseline updated; graph unchanged.
 [Raw receipts](docs/audits/go-decision-post-spans-2026-10-11.json) and
 [built-in infographic](docs/audits/go-decision-post-spans-infographic-2026-10-11.png).
+
+## Owned native decision readonly-stage stacks — 2026-10-11
+
+Go baseline `21a91e6`; runtime/test/fixture unchanged. Optional native-sample mode
+compiles then directly launches the exact race+atomic binary in the package cwd,
+verifies owned PID/executable and samples5s at readonly-start. Default modes remain
+serial; invalid native mode, unrelated binary and repeated completed mode are
+rejected before dispatch/attach/receipt mutation. Two setup failures are preserved:
+wrapper saved-output/executed-path mismatch and direct-launch wrong fixture cwd.
+
+Successful PID72601 sample resolves JSON string-loop → sync/atomic → TSAN
+chains; reader disassembly verifies emitted atomic coverage operations. Native
+collapsed counts atomic-fetch-add1446/read387/atomic-store263 are not CPU shares.
+Sample command8.237s includes symbol processing. Full-run pprof84.54% external
+CPU remains unresolved; it cannot be wholly attributed from a5s window.
+Original512KiB/shared30s/readonly/replay/backend-once test still fails at34.04s.
+No ordinary performance or timeout-closure claim. Next measure a safe string-span
+reader with byte/surrogate/control/invalid-byte/ownership proofs.
+
+All1158 Go source/fixture/module hashes unchanged. Python2239/28skipped/74warnings/
+24subtests (99.02s), refusal checks and diff check pass. Full Go/Source/coverage/
+non-Darwin gates not refreshed; canonical architecture reviewed, graph unchanged.
+Native reload/default diagnostics/broader IDNA/full G0–G7 remain incomplete.
+[Receipts](docs/audits/go-decision-native-stacks-2026-10-11.json),
+[full native sample](docs/audits/go-decision-native-stacks-2026-10-11.sample.txt),
+[disassembly](docs/audits/go-decision-native-stacks-2026-10-11.reader.disasm.txt)
+and [built-in infographic](docs/audits/go-decision-native-stacks-infographic-2026-10-11.png).

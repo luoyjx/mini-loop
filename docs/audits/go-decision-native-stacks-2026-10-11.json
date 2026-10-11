@@ -1,0 +1,214 @@
+{
+  "baseline": "21a91e642c483092c58f5201b6864fbdbc5bfa7c",
+  "attempts": [
+    {
+      "name": "wrapper-output-path",
+      "receipt_path": "/tmp/mini-loop-decision-native-stacks-2026-10-11.json",
+      "baseline": "21a91e642c483092c58f5201b6864fbdbc5bfa7c",
+      "source_sha256": "976e42d6e418da299ce1468ad104ff935064689f8e5e840f489b40b1f3cdaf1f",
+      "overlay_sha256": "f1b9a4206f1fd0cdb6cf86f11734bc53f7912053fc0d31eb0a55bc1ccdf98222",
+      "fixture_sha256": "cc254eaa2b358aeab34ad5d058489144c9bd298e8976ae26fc1b426aa0465769",
+      "run": {
+        "name": "race-coverage",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-coverpkg=./...",
+          "-coverprofile=/tmp/mini-loop-decision-native-stacks-2026-10-11.cover",
+          "-cpuprofile=/tmp/mini-loop-decision-native-stacks-2026-10-11.cpu",
+          "-o=/tmp/mini-loop-decision-native-stacks-2026-10-11.test",
+          "-overlay=/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-decision-overlay-6zui8n41/overlay.json",
+          "-v",
+          "-count=1",
+          "-timeout=90s",
+          "-run=^TestDecisionNativeSQLiteReopenMatchesSource/maximum$",
+          "./sqlitestate"
+        ],
+        "exit_code": 1,
+        "seconds": 39.778,
+        "log": "/tmp/mini-loop-decision-native-stacks-2026-10-11-race-coverage.log",
+        "raw_log": "# github.com/luoyjx/mini-loop/go/sqlitestate.test\nld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-3327308324/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626\n=== RUN   TestDecisionNativeSQLiteReopenMatchesSource\n=== RUN   TestDecisionNativeSQLiteReopenMatchesSource/maximum\n    decision_restart_test.go:59: decision-stage context-created elapsed=10.708µs remaining=29.999984416s context=<nil>\n    decision_restart_test.go:59: decision-stage payload-decoded elapsed=452.518833ms remaining=29.547476208s context=<nil>\n    decision_restart_test.go:59: decision-stage first-turn-start elapsed=463.698666ms remaining=29.536296375s context=<nil>\n    decision_restart_test.go:100: decision-model-call 1 elapsed=498.801ms\n    decision_restart_test.go:100: decision-model-call 2 elapsed=6.645848791s\n    decision_restart_test.go:59: decision-stage first-turn-end elapsed=6.650086208s remaining=23.349908833s context=<nil>\n    decision_restart_test.go:59: decision-stage action-read-and-digest-end elapsed=6.903078958s remaining=23.096915875s context=<nil>\n    decision_restart_test.go:59: decision-stage database-reopen-start elapsed=6.910773291s remaining=23.089221541s context=<nil>\n    decision_restart_test.go:59: decision-stage restore-start elapsed=6.911783416s remaining=23.088211708s context=<nil>\n    decision_restart_test.go:59: decision-stage restore-end elapsed=7.606425875s remaining=22.393569125s context=<nil>\n    decision_restart_test.go:59: decision-stage replay-turn-start elapsed=7.608556541s remaining=22.391438541s context=<nil>\n    decision_restart_test.go:100: decision-model-call 3 elapsed=11.178215166s\n    decision_restart_test.go:100: decision-model-call 4 elapsed=19.045260166s\n    decision_restart_test.go:59: decision-stage replay-turn-end elapsed=19.049991541s remaining=10.9500035s context=<nil>\n    decision_restart_test.go:59: decision-stage readonly-turn-start elapsed=19.050062083s remaining=10.949932958s context=<nil>\n    decision_restart_test.go:100: decision-model-call 5 elapsed=26.288004583s\n    decision_restart_test.go:206: context deadline exceeded\n--- FAIL: TestDecisionNativeSQLiteReopenMatchesSource (34.12s)\n    --- FAIL: TestDecisionNativeSQLiteReopenMatchesSource/maximum (34.12s)\nFAIL\ncoverage: 13.6% of statements in ./...\nFAIL\tgithub.com/luoyjx/mini-loop/go/sqlitestate\t35.226s\nFAIL\n",
+        "native_sample": {
+          "not_captured": "owned binary did not remain live after readonly stage"
+        },
+        "working_directory_observed_from_runner": "/Users/yanjixiong/github/mini-loop/go"
+      }
+    },
+    {
+      "name": "direct-root-cwd",
+      "receipt_path": "/tmp/mini-loop-decision-native-direct-2026-10-11.json",
+      "baseline": "21a91e642c483092c58f5201b6864fbdbc5bfa7c",
+      "source_sha256": "976e42d6e418da299ce1468ad104ff935064689f8e5e840f489b40b1f3cdaf1f",
+      "overlay_sha256": "f1b9a4206f1fd0cdb6cf86f11734bc53f7912053fc0d31eb0a55bc1ccdf98222",
+      "fixture_sha256": "cc254eaa2b358aeab34ad5d058489144c9bd298e8976ae26fc1b426aa0465769",
+      "run": {
+        "name": "race-coverage",
+        "command": [
+          "/tmp/mini-loop-decision-native-direct-2026-10-11.test",
+          "-test.v",
+          "-test.count=1",
+          "-test.timeout=90s",
+          "-test.run=^TestDecisionNativeSQLiteReopenMatchesSource/maximum$",
+          "-test.coverprofile=/tmp/mini-loop-decision-native-direct-2026-10-11.cover",
+          "-test.cpuprofile=/tmp/mini-loop-decision-native-direct-2026-10-11.cpu"
+        ],
+        "exit_code": 1,
+        "seconds": 1.748,
+        "log": "/tmp/mini-loop-decision-native-direct-2026-10-11-race-coverage.log",
+        "raw_log": "=== RUN   TestDecisionNativeSQLiteReopenMatchesSource\n    decision_restart_test.go:29: open ../testdata/python-decision-replay.json: no such file or directory\n--- FAIL: TestDecisionNativeSQLiteReopenMatchesSource (0.00s)\nFAIL\ncoverage: 0.5% of statements in ./...\n",
+        "compilation": {
+          "command": [
+            "go",
+            "test",
+            "-c",
+            "-race",
+            "-coverpkg=./...",
+            "-overlay=/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-decision-overlay-3_aokggn/overlay.json",
+            "-o=/tmp/mini-loop-decision-native-direct-2026-10-11.test",
+            "./sqlitestate"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "# github.com/luoyjx/mini-loop/go/sqlitestate.test\nld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-576157163/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626\n"
+        },
+        "native_sample": {
+          "not_captured": "owned binary did not remain live after readonly stage"
+        },
+        "working_directory_observed_from_runner": "/Users/yanjixiong/github/mini-loop/go"
+      }
+    },
+    {
+      "name": "direct-package-cwd",
+      "receipt_path": "/tmp/mini-loop-decision-native-package-2026-10-11.json",
+      "baseline": "21a91e642c483092c58f5201b6864fbdbc5bfa7c",
+      "source_sha256": "976e42d6e418da299ce1468ad104ff935064689f8e5e840f489b40b1f3cdaf1f",
+      "overlay_sha256": "f1b9a4206f1fd0cdb6cf86f11734bc53f7912053fc0d31eb0a55bc1ccdf98222",
+      "fixture_sha256": "cc254eaa2b358aeab34ad5d058489144c9bd298e8976ae26fc1b426aa0465769",
+      "run": {
+        "name": "race-coverage",
+        "command": [
+          "/tmp/mini-loop-decision-native-package-2026-10-11.test",
+          "-test.v",
+          "-test.count=1",
+          "-test.timeout=90s",
+          "-test.run=^TestDecisionNativeSQLiteReopenMatchesSource/maximum$",
+          "-test.coverprofile=/tmp/mini-loop-decision-native-package-2026-10-11.cover",
+          "-test.cpuprofile=/tmp/mini-loop-decision-native-package-2026-10-11.cpu"
+        ],
+        "exit_code": 1,
+        "seconds": 34.741,
+        "log": "/tmp/mini-loop-decision-native-package-2026-10-11-race-coverage.log",
+        "raw_log": "=== RUN   TestDecisionNativeSQLiteReopenMatchesSource\n=== RUN   TestDecisionNativeSQLiteReopenMatchesSource/maximum\n    decision_restart_test.go:59: decision-stage context-created elapsed=10.709µs remaining=29.999985334s context=<nil>\n    decision_restart_test.go:59: decision-stage payload-decoded elapsed=458.185709ms remaining=29.541810167s context=<nil>\n    decision_restart_test.go:59: decision-stage first-turn-start elapsed=468.277334ms remaining=29.531718667s context=<nil>\n    decision_restart_test.go:100: decision-model-call 1 elapsed=502.738917ms\n    decision_restart_test.go:100: decision-model-call 2 elapsed=6.558622s\n    decision_restart_test.go:59: decision-stage first-turn-end elapsed=6.562856417s remaining=23.437139625s context=<nil>\n    decision_restart_test.go:59: decision-stage action-read-and-digest-end elapsed=6.805914542s remaining=23.194081459s context=<nil>\n    decision_restart_test.go:59: decision-stage database-reopen-start elapsed=6.811527459s remaining=23.1884685s context=<nil>\n    decision_restart_test.go:59: decision-stage restore-start elapsed=6.812655084s remaining=23.187340917s context=<nil>\n    decision_restart_test.go:59: decision-stage restore-end elapsed=7.502447625s remaining=22.49754825s context=<nil>\n    decision_restart_test.go:59: decision-stage replay-turn-start elapsed=7.504586875s remaining=22.495409167s context=<nil>\n    decision_restart_test.go:100: decision-model-call 3 elapsed=11.175732167s\n    decision_restart_test.go:100: decision-model-call 4 elapsed=18.902695125s\n    decision_restart_test.go:59: decision-stage replay-turn-end elapsed=18.906557875s remaining=11.093438042s context=<nil>\n    decision_restart_test.go:59: decision-stage readonly-turn-start elapsed=18.906603334s remaining=11.093392709s context=<nil>\n    decision_restart_test.go:100: decision-model-call 5 elapsed=26.377438167s\n    decision_restart_test.go:206: context deadline exceeded\n--- FAIL: TestDecisionNativeSQLiteReopenMatchesSource (34.04s)\n    --- FAIL: TestDecisionNativeSQLiteReopenMatchesSource/maximum (34.04s)\nFAIL\ncoverage: 13.6% of statements in ./...\n",
+        "compilation": {
+          "command": [
+            "go",
+            "test",
+            "-c",
+            "-race",
+            "-coverpkg=./...",
+            "-overlay=/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-decision-overlay-hu8bu21r/overlay.json",
+            "-o=/tmp/mini-loop-decision-native-package-2026-10-11.test",
+            "./sqlitestate"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "# github.com/luoyjx/mini-loop/go/sqlitestate.test\nld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-3992229983/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626\n"
+        },
+        "native_sample": {
+          "pid": 72601,
+          "parent_pid": 72549,
+          "binary": "/tmp/mini-loop-decision-native-package-2026-10-11.test",
+          "identity_table": "72601 72549 /tmp/mini-loop-decision-native-package-2026-10-11.test\n",
+          "command": [
+            "/usr/bin/sample",
+            "72601",
+            "5",
+            "1",
+            "-mayDie",
+            "-fullPaths",
+            "-file",
+            "/tmp/mini-loop-decision-native-package-2026-10-11-native.sample"
+          ],
+          "exit_code": 0,
+          "seconds": 8.237,
+          "stdout": "",
+          "stderr": "Sampling process 72601 for 5 seconds with 1 millisecond of run time between samples\nSampling completed, processing symbols...\nSample analysis of process 72601 written to file /tmp/mini-loop-decision-native-package-2026-10-11-native.sample\n",
+          "path": "/tmp/mini-loop-decision-native-package-2026-10-11-native.sample",
+          "repository_artifact": "docs/audits/go-decision-native-stacks-2026-10-11.sample.txt"
+        },
+        "working_directory_observed_from_runner": "/Users/yanjixiong/github/mini-loop/go/sqlitestate"
+      }
+    }
+  ],
+  "review": {
+    "result": "Owned direct test PID72601 sampled successfully during readonly start; original maximum case still fails at34.04s.",
+    "capture": "5s requested,1ms interval; sample command8.237s including symbol processing, not test slowdown estimate.",
+    "evidence": [
+      "Sample verifies path,PID72601,parent72549 and source JSON loops -> sync/atomic -> named ThreadSanitizer symbols.",
+      "reader.string disassembly contains emitted atomic coverage operations; source function has no manual atomic operation.",
+      "Top-of-stack collapsed counts include __tsan_go_atomic32_fetch_add1446, __tsan_read387, __tsan_go_atomic32_store263. These are counts, not CPU percentages; all-thread idle samples are also present."
+    ],
+    "profile": {
+      "wall_seconds": 34.14,
+      "cpu_sample_seconds": 31.76,
+      "external_seconds": 26.85,
+      "external_percent": 84.54,
+      "limit": "Full-run pprof ExternalCode fraction is unresolved; cannot equate it to the five-second native window or attribute all of it to TSAN/SQLite/JSON."
+    },
+    "failed_setups": [
+      "Wrapper go test -o names saved binary but actual executable is a temporary path; no matched PID/sample.",
+      "First direct run used go root rather than package cwd; original fixture open failed before the test."
+    ],
+    "next_action": "Measure and optimize the exact JSON reader string byte loop using safe spans; prove escaped controls/surrogates/invalid raw bytes/ownership and original shared budget.",
+    "boundaries": [
+      "Production,tests,fixtures and the original30s deadline remain unchanged.",
+      "Diagnostic native process discovery is not a filesystem observer fallback.",
+      "No full Go/vet/race, Source export, aggregate coverage, non-Darwin or rendered-map acceptance refresh.",
+      "Migration G0-G7, default diagnostics, broader IDNA, native watcher reliability remain incomplete; no dependency or push."
+    ]
+  },
+  "artifacts": {
+    "docs/audits/go-decision-native-stacks-2026-10-11.sample.txt": "392c62da8f8164a17c6a835343c75f268d720d9b8d79b8a61411592768a9d192",
+    "docs/audits/go-decision-native-stacks-2026-10-11.reader.disasm.txt": "edbc2f8f3c41ce0055e2b860aa4ee0ff7906e1f15b3afad59edc8daaba030aa4"
+  },
+  "profile_top": "File: mini-loop-decision-native-package-2026-10-11.test\nType: cpu\nTime: Oct 11, 2026 at 4:11pm (CST)\nDuration: 34.14s, Total samples = 31.76s (93.03%)\nShowing nodes accounting for 30.70s, 96.66% of 31.76s total\nDropped 221 nodes (cum <= 0.16s)\nShowing top 35 nodes out of 96\n      flat  flat%   sum%        cum   cum%\n    26.85s 84.54% 84.54%     26.85s 84.54%  runtime._ExternalCode\n     0.70s  2.20% 86.74%      0.70s  2.20%  racecall\n     0.57s  1.79% 88.54%      0.57s  1.79%  runtime.pthread_cond_signal\n     0.41s  1.29% 89.83%      0.41s  1.29%  racecalladdr\n     0.34s  1.07% 90.90%      0.34s  1.07%  runtime.madvise\n     0.28s  0.88% 91.78%      0.30s  0.94%  encoding/json.stateInString\n     0.27s  0.85% 92.63%      0.27s  0.85%  runtime.usleep\n     0.26s  0.82% 93.45%      0.26s  0.82%  racecallatomic\n     0.21s  0.66% 94.11%      0.60s  1.89%  github.com/luoyjx/mini-loop/go/internal/jsonvalue.(*reader).string\n     0.17s  0.54% 94.65%      0.37s  1.16%  sync/atomic.AddInt32\n     0.15s  0.47% 95.12%      0.27s  0.85%  encoding/json.appendCompact\n     0.14s  0.44% 95.56%      0.37s  1.16%  github.com/luoyjx/mini-loop/go/internal/jsonvalue.textRune\n     0.13s  0.41% 95.97%      0.45s  1.42%  encoding/json.checkValid\n     0.08s  0.25% 96.22%      0.57s  1.79%  github.com/luoyjx/mini-loop/go/protocol.formatPythonJSONBytes\n     0.07s  0.22% 96.44%      0.16s   0.5%  github.com/luoyjx/mini-loop/go/internal/jsonvalue.appendRune\n     0.03s 0.094% 96.54%      0.63s  1.98%  github.com/luoyjx/mini-loop/go/internal/jsonvalue.appendLegacyStringText\n     0.03s 0.094% 96.63%      0.17s  0.54%  strings.(*Builder).WriteRune\n     0.01s 0.031% 96.66%      0.58s  1.83%  runtime.newstack\n         0     0% 96.66%      0.32s  1.01%  encoding/json.(*encodeState).marshal\n         0     0% 96.66%      0.32s  1.01%  encoding/json.(*encodeState).reflectValue\n         0     0% 96.66%      0.32s  1.01%  encoding/json.Marshal\n         0     0% 96.66%      0.45s  1.42%  encoding/json.Unmarshal\n         0     0% 96.66%      0.32s  1.01%  encoding/json.condAddrEncoder.encode\n         0     0% 96.66%      0.32s  1.01%  encoding/json.marshalerEncoder\n         0     0% 96.66%      0.30s  0.94%  encoding/json.structEncoder.encode\n         0     0% 96.66%      2.49s  7.84%  github.com/luoyjx/mini-loop/go/agent.(*ManagedSession).RunWithContext\n         0     0% 96.66%      2.48s  7.81%  github.com/luoyjx/mini-loop/go/agent.(*ManagedSession).runActiveOperation\n         0     0% 96.66%      2.49s  7.84%  github.com/luoyjx/mini-loop/go/agent.(*ManagedSession).runOperation\n         0     0% 96.66%      2.49s  7.84%  github.com/luoyjx/mini-loop/go/agent.(*ManagedSession).runWithContext (inline)\n         0     0% 96.66%      2.48s  7.81%  github.com/luoyjx/mini-loop/go/agent.(*Session).RunWithContext\n         0     0% 96.66%      0.28s  0.88%  github.com/luoyjx/mini-loop/go/agent.(*Session).compact\n         0     0% 96.66%      1.69s  5.32%  github.com/luoyjx/mini-loop/go/agent.(*Session).completeModel\n         0     0% 96.66%      1.69s  5.32%  github.com/luoyjx/mini-loop/go/agent.(*Session).completeModelWithHistory (inline)\n         0     0% 96.66%      1.69s  5.32%  github.com/luoyjx/mini-loop/go/agent.(*Session).completeProjectedModel\n         0     0% 96.66%      0.32s  1.01%  github.com/luoyjx/mini-loop/go/agent.(*Session).dispatchBatch\n",
+  "source_freeze": {
+    "files": 1158,
+    "path": "/tmp/mini-loop-decision-native-stacks-2026-10-11-freeze.json",
+    "sha256": "6cf2a025c7cd0b480f8a1faeabfa85c34a7b8abf0facbf626db560b8b005e001",
+    "all_unchanged_after_terminal_jobs": true
+  },
+  "preflights": {
+    "unsupported_mode": "Traceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-sqlite-decision-budget-2026-10-11.py\", line 142, in <module>\n    main()\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-sqlite-decision-budget-2026-10-11.py\", line 51, in main\n    assert sys.platform == \"darwin\" and modes == [\"race-coverage\"], \"native sampling requires macOS and one race-coverage mode\"\n                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: native sampling requires macOS and one race-coverage mode\n",
+    "unrelated_binary_and_duplicate_mode": "Unrelated direct binary rejected before process lookup/sample.\nTraceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-sqlite-decision-budget-2026-10-11.py\", line 143, in <module>\n    main()\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-sqlite-decision-budget-2026-10-11.py\", line 95, in main\n    assert not set(modes).intersection(run[\"name\"] for run in prior[\"runs\"]), \"choose fresh output prefix to repeat a mode\"\nAssertionError: choose fresh output prefix to repeat a mode\n"
+  },
+  "overlay_source": "package sqlitestate\n\nimport (\n\t\"context\"\n\t\"crypto/sha256\"\n\t\"encoding/hex\"\n\t\"encoding/json\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"reflect\"\n\t\"strings\"\n\t\"testing\"\n\t\"time\"\n\n\t\"github.com/luoyjx/mini-loop/go/agent\"\n\t\"github.com/luoyjx/mini-loop/go/decisions\"\n\t\"github.com/luoyjx/mini-loop/go/protocol\"\n)\n\ntype restartDecisionProvider func(context.Context, decisions.Request) (decisions.Result, error)\n\nfunc (provider restartDecisionProvider) Evaluate(ctx context.Context, request decisions.Request) (decisions.Result, error) {\n\treturn provider(ctx, request)\n}\n\nfunc TestDecisionNativeSQLiteReopenMatchesSource(t *testing.T) {\n\tdata, err := os.ReadFile(\"../testdata/python-decision-replay.json\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\t// Raw JSON is confined to the Source fixture boundary.\n\tvar corpus struct {\n\t\tRequest, Baseline json.RawMessage\n\t\tCases             []struct {\n\t\t\tBacking         string\n\t\t\tMaximum         bool\n\t\t\tBytes, Calls    int\n\t\t\tCanonicalSHA256 string `json:\"canonical_sha256\"`\n\t\t\tReplayExact     bool   `json:\"replay_exact\"`\n\t\t}\n\t}\n\tif err := json.Unmarshal(data, &corpus); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tfor _, row := range corpus.Cases {\n\t\tif row.Backing != \"sqlite-reopen\" {\n\t\t\tcontinue\n\t\t}\n\t\tname := \"baseline\"\n\t\tif row.Maximum {\n\t\t\tname = \"maximum\"\n\t\t}\n\t\tt.Run(name, func(t *testing.T) {\n\t\t\tctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)\n\t\t\tdefer cancel()\n\t\t\tstarted := time.Now()\n\t\t\tmark := func(stage string) {\n\t\t\t\tdeadline, _ := ctx.Deadline()\n\t\t\t\tt.Logf(\"decision-stage %s elapsed=%s remaining=%s context=%v\", stage, time.Since(started), time.Until(deadline), ctx.Err())\n\t\t\t}\n\t\t\tmark(\"context-created\")\n\t\t\trequest, err := decisions.DecodeRequest(corpus.Request)\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tvalue, err := decisions.DecodeValue(corpus.Baseline)\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tbase, err := value.MarshalJSON()\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tif row.Maximum {\n\t\t\t\tvalue = value.MapStrings(func(text string) string {\n\t\t\t\t\tif text == \"test-model\" {\n\t\t\t\t\t\treturn text + strings.Repeat(\"m\", decisions.MaxResponseBytes-len(base))\n\t\t\t\t\t}\n\t\t\t\t\treturn text\n\t\t\t\t})\n\t\t\t}\n\t\t\traw, err := value.MarshalJSON()\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tresult, err := decisions.DecodeResult(request, raw)\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tcalls, modelCalls := 0, 0\n\t\t\tbackend := restartDecisionProvider(func(_ context.Context, got decisions.Request) (decisions.Result, error) {\n\t\t\t\tif !reflect.DeepEqual(got, request) {\n\t\t\t\t\tt.Error(\"decision request changed\")\n\t\t\t\t}\n\t\t\t\tcalls++\n\t\t\t\treturn result, nil\n\t\t\t})\n\t\t\tprovider := restartProvider(func(_ context.Context, req protocol.ModelRequest) (protocol.ModelReply, error) {\n\t\t\t\tmodelCalls++\n\t\t\t\tt.Logf(\"decision-model-call %d elapsed=%s\", modelCalls, time.Since(started))\n\t\t\t\treply := protocol.ModelReply{ID: \"reply\", Type: protocol.ReplyMessage, Role: protocol.RoleAssistant, Model: req.Model, StopReason: protocol.StopEndTurn}\n\t\t\t\tif modelCalls%2 == 1 {\n\t\t\t\t\treply.StopReason = protocol.StopToolUse\n\t\t\t\t\treply.Content = []protocol.Block{protocol.NewToolUse(\"same-decision\", protocol.DecisionToolInput(request))}\n\t\t\t\t} else {\n\t\t\t\t\treply.Content = []protocol.Block{protocol.NewTextBlock(\"done\")}\n\t\t\t\t}\n\t\t\t\treturn reply, nil\n\t\t\t})\n\t\t\tmark(\"payload-decoded\")\n\t\t\troot := t.TempDir()\n\t\t\tpath := filepath.Join(root, \"state.db\")\n\t\t\tstore := openStore(t, path)\n\t\t\tnewManager := func() *agent.SessionManager {\n\t\t\t\tmanager, err := agent.NewSessionManager(agent.ManagerConfig{\n\t\t\t\t\tWorkspaceRoot: root,\n\t\t\t\t\tDefaults:      agent.SessionDefaults{PermissionMode: agent.ModeAuto, MaxRounds: 2},\n\t\t\t\t\tServices: agent.ManagerServices{\n\t\t\t\t\t\tStateStore: store, Provider: provider, DecisionTools: true, DecisionProvider: backend,\n\t\t\t\t\t\t// Keep the archival payload intact; compaction has separate restart proof.\n\t\t\t\t\t\tCompactor: agent.InMemoryCompactor{TokenThreshold: 10000000, MaxMessages: 1000},\n\t\t\t\t\t},\n\t\t\t\t})\n\t\t\t\tif err != nil {\n\t\t\t\t\tt.Fatal(err)\n\t\t\t\t}\n\t\t\t\tt.Cleanup(func() { stopRestartManager(t, manager) })\n\t\t\t\treturn manager\n\t\t\t}\n\t\t\tmanager := newManager()\n\t\t\tsession, err := manager.Create(ctx, agent.CreateSessionRequest{Owner: \"tenant\"})\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\trun, err := agent.DefaultRunContext()\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmark(\"first-turn-start\")\n\t\t\tif _, err := session.RunWithContext(ctx, \"decide\", run); err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmark(\"first-turn-end\")\n\t\t\tcall := agent.ToolCall{ID: \"same-decision\", Input: protocol.DecisionToolInput(request)}\n\t\t\tid, err := agent.ToolActionID(session.ID(), run, call)\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tfirst, found, err := store.ReadAction(ctx, id)\n\t\t\tif err != nil || !found || first.Status != agent.ActionCompleted || first.Result == nil || len(*first.Result) != row.Bytes {\n\t\t\t\tt.Fatal(\"native result retention\", found, err)\n\t\t\t}\n\t\t\tdecoded, err := decisions.DecodeValue([]byte(*first.Result))\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tcanonical, err := decoded.MarshalJSON()\n\t\t\tif err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tdigest := sha256.Sum256(canonical)\n\t\t\tif hex.EncodeToString(digest[:]) != row.CanonicalSHA256 {\n\t\t\t\tt.Fatal(\"Source semantic result digest differs\")\n\t\t\t}\n\t\t\tmark(\"action-read-and-digest-end\")\n\t\t\thistory := session.Messages()\n\t\t\tstopRestartManager(t, manager)\n\t\t\tif err := store.Close(); err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmark(\"database-reopen-start\")\n\t\t\tstore = openStore(t, path)\n\t\t\tmanager = newManager()\n\t\t\tmark(\"restore-start\")\n\t\t\tsession = restoreRestartSession(t, manager)\n\t\t\tmark(\"restore-end\")\n\t\t\tif !sameRestartMessages(session.Messages(), history) {\n\t\t\t\tt.Fatal(\"reopen changed archived decision transcript\")\n\t\t\t}\n\t\t\tif session.Info().PermissionMode != agent.ModeInteractive {\n\t\t\t\tt.Fatal(\"restore retained historical auto authority\")\n\t\t\t}\n\t\t\t// The current operator explicitly admits auto mode; restoration grants none.\n\t\t\tif _, err := session.ChangePermissionMode(agent.ModeAuto); err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmark(\"replay-turn-start\")\n\t\t\tif _, err := session.RunWithContext(ctx, \"retry same identity\", run); err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmessages := session.Messages()\n\t\t\tblocks, _ := messages[len(messages)-2].Content.Blocks()\n\t\t\tif len(blocks) != 1 {\n\t\t\t\tt.Fatal(\"replayed result shape\", blocks)\n\t\t\t}\n\t\t\treplayed, ok := blocks[0].ToolResult()\n\t\t\tif !ok || replayed.IsError || replayed.Content != *first.Result || !row.ReplayExact || calls != row.Calls {\n\t\t\t\tt.Fatal(\"native reopen changed bytes or repeated backend\", calls)\n\t\t\t}\n\t\t\tmark(\"replay-turn-end\")\n\t\t\tif _, err := session.ChangePermissionMode(agent.ModeReadonly); err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmark(\"readonly-turn-start\")\n\t\t\tif _, err := session.RunWithContext(ctx, \"retry while readonly\", run); err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmessages = session.Messages()\n\t\t\tblocks, _ = messages[len(messages)-2].Content.Blocks()\n\t\t\tif len(blocks) != 1 {\n\t\t\t\tt.Fatal(\"denied result shape\", blocks)\n\t\t\t}\n\t\t\tdenied, ok := blocks[0].ToolResult()\n\t\t\tif !ok || !strings.Contains(denied.Content, \"Permission denied: this session is read-only\") || denied.Content == *first.Result || calls != row.Calls {\n\t\t\t\tt.Fatal(\"stored replay bypassed current permission\", calls)\n\t\t\t}\n\t\t\tmark(\"readonly-turn-end\")\n\t\t\tretained, found, err := store.ReadAction(ctx, id)\n\t\t\tif err != nil || !found || !reflect.DeepEqual(retained, first) {\n\t\t\t\tt.Fatal(\"retry or denial changed settled action\", found, err)\n\t\t\t}\n\t\t\tif err := protocol.ValidateTranscript(session.Messages()); err != nil {\n\t\t\t\tt.Fatal(err)\n\t\t\t}\n\t\t\tmark(\"final-health\")\n\t\t\tif status := session.PersistenceStatus(); status.Error != nil || !status.LeaseConfirmed || status.RestorePending {\n\t\t\t\tt.Fatal(\"native persistence degraded\", status)\n\t\t\t}\n\t\t})\n\t}\n}\n",
+  "original_context": "30 seconds shared across unchanged preparation, first turn, restart, replay and readonly",
+  "script_sha256": "3f306a4f38414068c9b149d01aa02abb9371e51ea2aeaf34d0d12df076f0409b",
+  "validation": {
+    "python_full": {
+      "command": ".venv/bin/python -m pytest -q",
+      "exit_code": 0,
+      "passed": 2239,
+      "skipped": 28,
+      "warnings": 74,
+      "subtests": 24,
+      "seconds": 99.02,
+      "log": "/tmp/mini-loop-decision-native-stacks-python-2026-10-11.log"
+    },
+    "diff_check": "passed",
+    "architecture": "Canonical map/boundaries reviewed; diagnostic-only, no topology/default/authority changes; graph JSON/HTML unchanged; no rendered acceptance."
+  },
+  "infographic": {
+    "tool": "built-in imagegen",
+    "image": "docs/audits/go-decision-native-stacks-infographic-2026-10-11.png",
+    "prompt": "docs/audits/go-decision-native-stacks-infographic-2026-10-11.prompt.txt",
+    "inspection": "Checked5s/30s/512KiB/34.04s failure and attribution limits. Edited initial invented Uint64/pseudocode to actual sampled function and Uint32/TSAN symbols; final image preserves runtime-unchanged and failure boundaries."
+  },
+  "artifact_normalization": {
+    "disassembly": "Only trailing spaces/tabs removed per line to satisfy diff check; full original /tmp output retained. No addresses/instructions/source lines changed.",
+    "raw_path": "/tmp/mini-loop-decision-native-package-2026-10-11-reader.disasm",
+    "raw_sha256": "c4b8a90fe2d56e55f3b710e84575151af22776f1d028dfb7311e76938cc77fbd"
+  }
+}
