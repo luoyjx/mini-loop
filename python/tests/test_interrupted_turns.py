@@ -44,13 +44,17 @@ def _session(tmp_path, *, responder=None, transport=None, thinking=True):
 
 
 @pytest.fixture
-def slow_stream(monkeypatch):
+def slow_stream(monkeypatch, request):
     """Stretch the generation so there is a middle to interrupt."""
     import mini_loop.fake_llm as fake
 
     real = fake._FakeStream.__aiter__
 
+    startup_delay = getattr(request.node, "callspec", None)
+    startup_delay = startup_delay.params.get("startup_delay", 0) if startup_delay else 0
+
     async def slow(self):
+        await asyncio.sleep(startup_delay)
         async for event in real(self):
             await asyncio.sleep(0.05)
             yield event
@@ -58,14 +62,35 @@ def slow_stream(monkeypatch):
     monkeypatch.setattr(fake._FakeStream, "__aiter__", slow)
 
 
-async def _cancel_during_generation(session, delay=0.12):
+async def _cancel_during_generation(session, *, expected_delta=""):
+    # A captured delta proves both that the stream context has entered and that
+    # the user-visible event has reached the session. Hold that event boundary
+    # until cancellation so a fast stream cannot finish before the assertion.
+    ready = asyncio.Event()
+    original = session._capture_event
+
+    async def capture(event):
+        result = await original(event)
+        if result.get("type") == "assistant_delta" and expected_delta in result["text"]:
+            ready.set()
+            await asyncio.Future()
+        return result
+
+    session._capture_event = capture
     task = asyncio.create_task(session.run("write a long answer"))
     session._running = task
-    await asyncio.sleep(delay)
-    stopped = await session.cancel(reason="stop")
-    with pytest.raises(asyncio.CancelledError):
-        await task
-    return stopped
+    try:
+        await asyncio.wait_for(ready.wait(), timeout=10)
+        assert not task.done(), "generation completed before the interruption"
+        stopped = await session.cancel(reason="stop")
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        return stopped
+    finally:
+        session._capture_event = original
+        if not task.done():
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
 
 
 def _roles(agent):
@@ -78,7 +103,8 @@ def _last_text(agent):
 
 # --- the composition that already worked ----------------------------------
 
-def test_a_cancelled_stream_releases_its_connection(tmp_path, slow_stream, monkeypatch):
+@pytest.mark.parametrize("startup_delay", [0, 0.2])
+def test_a_cancelled_stream_releases_its_connection(tmp_path, slow_stream, monkeypatch, startup_delay):
     import mini_loop.fake_llm as fake
 
     exits = {"n": 0}
@@ -106,9 +132,10 @@ def test_a_cancelled_session_is_reusable(tmp_path, slow_stream):
     )
 
     async def scenario():
+        available_permits = session.agent.semaphore._value
         await _cancel_during_generation(session)
         assert session.status == "idle"
-        assert session.agent.semaphore._value == session.agent.semaphore._value
+        assert session.agent.semaphore._value == available_permits
         return await asyncio.wait_for(session.run("hello again"), timeout=10)
 
     assert asyncio.run(scenario())
@@ -126,7 +153,8 @@ def test_an_interrupted_turn_says_so(tmp_path, slow_stream):
     assert "[Turn interrupted" in _last_text(session.agent)
 
 
-def test_the_text_the_user_saw_is_kept(tmp_path, slow_stream):
+@pytest.mark.parametrize("startup_delay", [0, 0.2])
+def test_the_text_the_user_saw_is_kept(tmp_path, slow_stream, startup_delay):
     """The console rendered it; the transcript has to know it exists."""
     session = _session(
         tmp_path,
@@ -136,7 +164,7 @@ def test_the_text_the_user_saw_is_kept(tmp_path, slow_stream):
         # before any answer text exists and the test would pass vacuously.
         thinking=False,
     )
-    asyncio.run(_cancel_during_generation(session))
+    asyncio.run(_cancel_during_generation(session, expected_delta="PARTIAL-ANSWER"))
     assistant = [m for m in session.agent.messages if m["role"] == "assistant"]
     assert assistant, "the streamed partial was discarded"
     assert "PARTIAL-ANSWER" in str(assistant[-1])
@@ -214,7 +242,7 @@ def test_thinking_is_shown_but_never_recorded_as_an_answer(tmp_path, slow_stream
         return result
 
     session._capture_event = spy
-    asyncio.run(_cancel_during_generation(session))
+    asyncio.run(_cancel_during_generation(session, expected_delta="REASONING-ONLY"))
 
     assert any("REASONING-ONLY" in chunk for chunk in deltas), (
         "the thinking never streamed, so nothing was proven"

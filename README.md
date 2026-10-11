@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `72b6bcf` plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `d060ac2` plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -2894,6 +2894,12 @@ Go separately, then run `.venv/bin/python python/tools/go_port_performance.py
 --go-binary /absolute/path/to/miniloop --output /tmp/go-port-performance.json`.
 The report retains raw samples, build identity and host metadata; default access
 logging is retained, and sampled RSS is not peak memory.
+
+Interruption tests cancel after a real captured `assistant_delta`, holding the
+event boundary until cancellation. Partial-answer and thinking checks wait for
+their specific text; delayed-start cases exercise startup slower than the former
+120ms timer. Cancellation readiness has a ten-second failure bound. This changes
+test coordination, not production transport or interruption behavior.
 
 The default test suite is offline and deterministic. Runnable documentation
 examples select the fake provider inside their test fixture, including examples
