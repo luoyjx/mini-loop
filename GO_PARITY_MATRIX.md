@@ -11285,3 +11285,26 @@ unchanged, no rendered acceptance/push. Native reliability/default diagnostics/
 broader IDNA/full G0–G7 remain incomplete.
 [Collector](docs/audits/go-reload-required-callbacks-2026-10-11.py),
 [full evidence and classification](docs/audits/go-reload-required-callbacks-2026-10-11.json).
+
+## Same-subscription queue and post-result native control — 2026-10-11
+
+Runtime `4454186` unchanged. Diagnostic100ms timer uses the same C serial stream
+queue; distinct control is written only after original result, with its own3s
+cleanup window. Original readiness/operation assertions and deadlines remain;
+timer/extended cleanup alter scheduling, so no temporal acceptance claim.
+
+One targeted race+atomic cohort exits1: hidden fails readiness before operation,
+backup/text/transient operations pass. Hidden has300 first-tick-to-result marks,
+max gap110.977ms, then its control C event arrives0.569941s later. All four controls
+have one C item; no late business-path item in their control windows. This excludes
+a sustained whole-queue block in this cohort, not readiness loss/daemon cause/
+concurrent control reliability. Earlier operation absences remain unresolved.
+
+Full command/log/overlays/executed collector/hashes retained; parser distinguishes
+late business from control and prefix refusal prevents completed-cohort dispatch.
+Python2239/28skipped/74warnings/24subtests (138.69s) and diff check pass. Audit-only
+changes do not refresh full Go/vet/race/coverage/Source/non-Darwin acceptance.
+Canonical map reviewed, baseline updated, graph unchanged; no rendered acceptance
+or push. Native reliability/default diagnostics/broader IDNA/full G0–G7 remain open.
+[Collector](docs/audits/go-reload-required-queue-control-2026-10-11.py),
+[exact evidence](docs/audits/go-reload-required-queue-control-2026-10-11.json).

@@ -19397,3 +19397,43 @@ unchanged, so architecture JSON/HTML unchanged; no rendered acceptance or push.
 Built-in imagegen infographic inspected against this cohort; no full-success or
 kernel-cause claim. [Infographic](docs/audits/go-reload-required-callbacks-infographic-2026-10-11.png),
 [exact prompt](docs/audits/go-reload-required-callbacks-infographic-2026-10-11.prompt.txt).
+
+## Same-subscription native queue and post-result control — 2026-10-11
+
+Baseline `4454186`; production/test/fixture bytes unchanged. The preceding cohort
+had operation absences before C entry but could not observe queue liveness. This
+one-shot overlay adds a100ms dispatch timer on the very same stream serial queue,
+with its private key context freed by the cancel handler; cancellation/release
+belongs to original Close. It then logs the original result boundary before writing
+an independent ignored control in cleanup and collecting a separate3s window.
+Original readiness/operation assertion,3s operation deadline and Close remain;
+cleanup extension and timer do change scheduling, so this is not unchanged-runtime
+temporal acceptance. The control cannot rescue or alter the original result.
+
+Targeted race+atomic exits1 (59.202s command;50.311s package). Hidden fails readiness
+at original30s before its operation; the other three operations pass, each with
+one C operation event. Hidden's first-tick-to-result interval contains300 queue
+marks with maximum observed wall-clock gap110.977ms. Its post-result control C
+item arrives0.569941s after control start, while the missing readiness probe never
+appears in this retained log. Each of four subscriptions has exactly one later
+control C item (delays0.133196–2.318816s), and no late business-path C item in that
+control window. These observations rule out a sustained whole-queue block in this
+cohort, but do not explain the missing readiness event, identify daemon/kernel
+cause, prove Go registry/fence state or establish concurrent business/control
+reliability. Earlier operation failures remain open and are not attributed to or
+fixed by the timer. Next useful probe must address subscription readiness event
+identity/admission and earlier delivery, rather than repeat these queue controls.
+
+Receipt keeps command/full log/C+test overlays/executed collector, source hashes
+and separate readiness/operation/control classification. Parser preflight separates
+late business from control, excluded setup, keys and event-ID ordering. Completed-
+prefix refusal preserves receipt without dispatch. No cohort rerun after adding
+classification. Python full2239 passed/28 skipped/74 warnings/24 subtests (138.69s),
+preflights/hashes/diff check pass. Full Go/vet/race/coverage/Source not refreshed:
+audit-only helper, exports/default types/Python modules/scanners/targets/guards
+unchanged. Default diagnostics/broader IDNA/non-Darwin/full G0–G7 remain incomplete.
+Canonical map and boundaries reviewed; baseline updated, topology/defaults/authority
+unchanged, architecture JSON/HTML unchanged, no rendered acceptance or push.
+
+[Collector](docs/audits/go-reload-required-queue-control-2026-10-11.py),
+[full retained evidence](docs/audits/go-reload-required-queue-control-2026-10-11.json).
