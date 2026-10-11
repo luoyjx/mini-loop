@@ -19637,3 +19637,8 @@ architecture JSON/HTML remains unchanged. AGENTS.md records the user-requested
 base-image editing workflow for every iteration, including base updates when
 architecture parts are added or removed. The iteration annotation locates the
 AST-associated test change; it does not describe a runtime change.
+
+Built-in imagegen edited the inspected base diagram to add the magenta AST test
+annotation and a side explanation. [Iteration image](docs/audits/go-ast-replacement-infographic-2026-10-11.png),
+[exact edit prompt](docs/audits/go-ast-replacement-infographic-2026-10-11.prompt.txt),
+[base generation/correction prompts](docs/mini-loop-layered-architecture.prompt.txt).
