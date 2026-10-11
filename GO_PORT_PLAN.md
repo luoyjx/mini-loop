@@ -35,6 +35,20 @@ escaped-secret interactions, final public error/provider/default inventory,
 non-Darwin and original G0–G7 acceptance remain open. Prior temporal watcher/
 background failures remain unexplained; no budget, skip or runtime fix claimed.
 
+Source contract commit `59443bc`, implementation `072daa8`. The frozen cohort
+passes Source239, focused checks, ordinary/vet/race+atomic, both type audits,
+Python2240 passed/28 skipped/92 warnings/24 subtests and19 scans. Application
+statement coverage is89.24%, all Go89.18%, Provider86.67%; native C, child-process
+internals, Python, branches and non-Darwin remain excluded. See the
+[full receipt](docs/audits/go-usage-array-ranges-2026-10-11.json) and
+[coverage receipt](docs/audits/go-coverage-usage-array-ranges-2026-10-11.json).
+The [iteration image](docs/audits/go-usage-array-ranges-infographic-2026-10-11.png)
+edits the five-layer base: Provider construction is highlighted, with SQLite
+and audit projections outlined as evidence consumers. No components were added
+or removed, so the base remains current. The exact prompt is saved beside it.
+Interactive HTML was regenerated with9 checks/zero errors/warnings; browser
+visual review remains blocked by its URL policy, without an indirect workaround.
+
 ## 2026-10-11 native whole usage observation and stage faults
 
 Baseline local main `7095efb`; implementation `2fbf1f2`. `DecodeSDKUsage` now explicitly selects SDK loose
@@ -7046,7 +7060,7 @@ Record its parity evidence and remaining gaps before checking it off.
 ## Current status
 
 Reviewed **2026-10-11** against local main baseline `110b1a9`; latest runtime
-implementation in this iteration separates inert model-array SDK construction
+implementation `072daa8` separates inert model-array SDK construction
 from counted decoding. Current1640 frozen inputs pass full Source239 files,
 required focused native checks, full ordinary Go/vet/race+atomic, syntax audit453
 files/1440 named types, public closure50 packages/1191 exported types/zero findings,

@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-11",
+  "mode": "atomic",
+  "cohort": "Frozen inert model-array range construction, baseline110b1a9; full race exit0",
+  "profile_sha256": "21e50b53998a20c83a502771d23bb616cce30ceaa436dbfc376ad5e8ad54ed78",
+  "raw_rows": 1247919,
+  "unique_blocks": 25997,
+  "method": "Deduplicate identical source spans; require equal statement counts; union coverage with maximum atomic hits.",
+  "all": {
+    "covered": 33199,
+    "statements": 37226,
+    "percent": 89.18229194648902
+  },
+  "app": {
+    "covered": 33078,
+    "statements": 37068,
+    "percent": 89.23599870508255
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "frozen_inputs": 1640,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-usage-array-ranges-2026-10-11/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 515.167
+  },
+  "retained_profile": "/tmp/mini-loop-usage-array-ranges-2026-10-11.cover",
+  "scope": "Darwin Go statements. Native C, CLI child-process internals, Python, branch and Linux coverage excluded.",
+  "limitations": [
+    "Does not establish broader real count/meter or lexical/repr domain parity or full migration acceptance.",
+    "Prior temporal background/native observer failures remain unexplained; current passing cohort is not a cause finding."
+  ],
+  "post_gate_documentation_only_updates": [
+    "README review/result baseline and exact implementation SHA",
+    "GO_PORT_PLAN status",
+    "GO_PARITY_MATRIX acceptance index",
+    "Architecture scope card metadata and regenerated HTML; topology unchanged"
+  ],
+  "implementation_commit": "072daa8",
+  "source_contract_commit": "59443bc"
+}

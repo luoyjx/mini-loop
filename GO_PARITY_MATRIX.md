@@ -35,7 +35,7 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed **2026-10-11** against local main baseline `110b1a9`; current private
+Reviewed **2026-10-11** against local main baseline `110b1a9`; implementation `072daa8`; private
 model-array construction separates observations from counted decoding.
 Current1640 frozen inputs pass ordinary/vet/race+atomic,
 Source239-file comparison, focused tests, both type audits, Python and scans.
