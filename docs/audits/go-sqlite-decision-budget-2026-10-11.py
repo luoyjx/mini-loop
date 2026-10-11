@@ -25,6 +25,8 @@ def main():
     modes = args.modes
     prefix = Path(args.output_prefix)
     assert len(modes) == len(set(modes)), "each mode runs once"
+    baseline = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    fixture_sha256 = hashlib.sha256((ROOT / "go/testdata/python-decision-replay.json").read_bytes()).hexdigest()
     original = SOURCE.read_text()
     candidate = original
     anchor = "\t\t\tdefer cancel()\n"
@@ -60,6 +62,8 @@ def main():
     previous = Path(str(prefix) + ".json")
     if previous.exists():
         prior = json.loads(previous.read_text())
+        assert prior["baseline"] in {baseline, baseline[:7]}, "choose fresh output prefix for a different revision"
+        assert prior.get("fixture_sha256") == fixture_sha256, "choose fresh output prefix for a different or unrecorded fixture"
         assert prior["source_sha256"] == hashlib.sha256(original.encode()).hexdigest()
         assert prior["overlay_sha256"] == hashlib.sha256(candidate.encode()).hexdigest()
         assert not set(modes).intersection(run["name"] for run in prior["runs"]), "choose fresh output prefix to repeat a mode"
@@ -85,7 +89,8 @@ def main():
                              "seconds": round(time.monotonic() - began, 3), "log": str(log),
                              "raw_log": log.read_text()})
             print(name, result.returncode, flush=True)
-    report = {"baseline": "14e3b02", "source_sha256": hashlib.sha256(original.encode()).hexdigest(),
+    report = {"baseline": baseline, "fixture_sha256": fixture_sha256,
+              "source_sha256": hashlib.sha256(original.encode()).hexdigest(),
               "overlay_sha256": hashlib.sha256(candidate.encode()).hexdigest(), "overlay_source": candidate,
               "original_context": "30 seconds shared across unchanged preparation, first turn, restart, replay and readonly",
               "instrumentation": "stage/model logs only; exact original fixture, assertions and contexts retained",

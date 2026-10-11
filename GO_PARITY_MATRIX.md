@@ -11160,3 +11160,26 @@ refresh, dependency or non-Darwin gate. Canonical architecture reviewed; baselin
 boundary updated, graph unchanged. General IDNA/default diagnostics/native reliability
 and complete G0–G7 remain open. [Built-in infographic](docs/audits/go-json-text-spans-infographic-2026-10-11.png)
 shows modified writers, measured byte contracts and unresolved acceptance.
+
+## Post-span maximum SQLite shared-budget profile — 2026-10-11
+
+Runtime `18920b3` remains unchanged. One race+atomic+CPU-profile execution of the
+original maximum512KiB/30s shared-context fixture fails in readonly RunWithContext
+at33.69s. First turn6.624s, restore7.559s and replay18.930s finish; fifth model
+callback starts26.068s. Exact replay/readonly/backend-once checks and Source
+fixture are unchanged. This is not an ordinary/full gate or timeout closure.
+
+CPU samples31.54s over33.85s include27.17s/86.14% unresolved
+runtime._ExternalCode. No attribution to SQLite/CGO/race/JSON or statistical
+comparison with prior runs. Next evidence is a native stack from the exact owned
+test process; small visible Go samples do not identify the dominant cause.
+
+The overlay diagnostic records actual Git baseline and decision fixture SHA256.
+Three preflight checks reject historical revision, fixture mismatch and repeated
+mode without dispatch or receipt mutation. All1158 Go source/fixture/module hashes
+remain unchanged. Python full2239/28skipped/74warnings/24subtests (101.49s) and
+diff check pass. Full Go/Source/coverage/non-Darwin gates are not refreshed;
+previous native watcher failures and complete G0–G7 acceptance remain open.
+README map/boundaries reviewed, visible baseline updated; graph unchanged.
+[Raw receipts](docs/audits/go-decision-post-spans-2026-10-11.json) and
+[built-in infographic](docs/audits/go-decision-post-spans-infographic-2026-10-11.png).

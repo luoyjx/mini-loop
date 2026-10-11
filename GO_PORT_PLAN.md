@@ -19172,3 +19172,44 @@ and G0–G7 remain open; no push. [Exact gates/bench/byte evidence](docs/audits/
 and [built-in imagegen graphic](docs/audits/go-json-text-spans-infographic-2026-10-11.png)
 retain timings, tradeoffs and open checks. Next measure remaining serializers/
 validation work in the unchanged decision lifecycle before optimizing further.
+
+## Post-span maximum decision profile and receipt provenance — 2026-10-11
+
+Runtime baseline `18920b3`; no production/test/fixture bytes changed. The prior
+turn optimized UTF-8/ASCII archive text while the combined deadline remained open.
+One new race+atomic+CPU-profile overlay execution retains the original 512KiB
+maximum, shared30s context, restart/exact replay/readonly/backend-once assertions.
+No retry-to-green, polling path, deadline increase or fixture relaxation.
+
+Cumulative stage times: payload0.483s, first-turn-end6.624s, restore-end7.559s,
+replay-end18.930s, readonly-start18.930s, model-call5 at26.068s; the maximum
+subtest fails at33.69s inside readonly RunWithContext. The database close/reopen
+and replay have completed before this refusal-stage timeout. This run does not
+prove a SQLite cause, nor close end-to-end performance. CPU sample31.54s over
+33.85s wall duration has27.17s/86.14% unresolved runtime._ExternalCode. Aggregate
+samples cannot attribute individual wall-time stages or identify CGO/race/JSON
+as its owner. Remaining visible Go cumulative entries include request projection,
+protocol Python JSON formatting and legacy text; their small sampled fractions
+are not a reason to declare one the dominant bottleneck. No timing trend is
+claimed from different prior runs/host load/instrumentation.
+
+The reusable diagnostic script now records actual Git HEAD instead of the old
+hardcoded14e3b02 label, plus the actual decision fixture SHA256. Existing-prefix
+reuse rejects different revisions, mismatched/unrecorded fixture hashes and a
+completed mode before dispatching Go. Three preflight checks prove these refusals
+and byte preservation of existing receipts. All1158 tracked Go source/fixture/
+module hashes are unchanged after the terminal native job. The Python full suite
+passes2239/28skipped/74warnings/24subtests in101.49s; diff check passes.
+
+This diagnostic-only iteration does not rerun full Go/vet/race, full Source export,
+aggregate coverage or non-Darwin acceptance. Previous native reload and Source
+observer failures remain open. README canonical map/boundaries reviewed and
+visible baseline updated; topology/ownership/defaults/persistence/authority are
+unchanged, so interactive JSON/HTML remain unchanged. No rendered-map acceptance.
+No dependency/push. Next: obtain symbolized native stacks of the exact owned
+test process before choosing another optimization. Broader IDNA/default
+diagnostics/native reliability and full G0–G7 remain incomplete.
+
+[Raw stage/profile receipts](docs/audits/go-decision-post-spans-2026-10-11.json)
+and [built-in infographic](docs/audits/go-decision-post-spans-infographic-2026-10-11.png)
+retain the failed gate and attribution limits.
