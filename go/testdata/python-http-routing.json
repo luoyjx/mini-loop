@@ -1,0 +1,3377 @@
+{
+  "cases": [
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/healthz",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/healthz?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/healthz/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/healthz/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/healthz/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/mode",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/mode?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/mode/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/mode/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/mode/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/preview",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/personal-skills/preview?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/preview/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/preview/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/preview/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/fixture-id/commit",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/personal-skills/fixture-id/commit?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/fixture-id/commit/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/fixture-id/commit/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/personal-skills/fixture-id/commit/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/steer",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/steer?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/steer/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/steer/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/steer/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/fork",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/fork?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/fork/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/fork/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/fork/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cancel",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/cancel?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cancel/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cancel/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cancel/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/workflows?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/workflows/fixture-id?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id/cancel",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/workflows/fixture-id/cancel?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id/cancel/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id/cancel/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/workflows/fixture-id/cancel/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/cron?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "DELETE"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/cron/fixture-id?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/self-audit",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/self-audit?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/self-audit/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/self-audit/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/self-audit/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/skills",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/skills?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/skills/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/skills/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/skills/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/memory?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/tasks",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/tasks?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/tasks/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/tasks/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/tasks/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/goal",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/goal?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/goal/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/goal/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/goal/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/team",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/team?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/team/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/team/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/team/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory/fixture-id",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/memory/fixture-id?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory/fixture-id/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory/fixture-id/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/memory/fixture-id/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/benchmark",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/benchmark?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/benchmark/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/benchmark/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/benchmark/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/propose-improvement",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/propose-improvement?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/propose-improvement/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/propose-improvement/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/propose-improvement/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/improvements",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/improvements?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/improvements/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/improvements/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/improvements/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/self-audit/suggestions",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/self-audit/suggestions?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/self-audit/suggestions/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/self-audit/suggestions/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/self-audit/suggestions/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/self-audit/bench-task-drafts",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/self-audit/bench-task-drafts?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/self-audit/bench-task-drafts/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/self-audit/bench-task-drafts/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/self-audit/bench-task-drafts/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id/arm",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/cron/fixture-id/arm?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id/arm/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id/arm/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/cron/fixture-id/arm/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/transcript",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/transcript?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/transcript/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/transcript/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/transcript/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/approvals?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals/fixture-id",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/approvals/fixture-id?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals/fixture-id/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals/fixture-id/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/approvals/fixture-id/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/messages?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "POST"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages/stream",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/messages/stream?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages/stream/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages/stream/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/messages/stream/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/events",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/events?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/events/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/events/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/events/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/trajectories",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/sessions/fixture-id/trajectories?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/trajectories/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/trajectories/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/sessions/fixture-id/trajectories/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/trajectories",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/trajectories?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/trajectories/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/export",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/trajectories/fixture-id/export?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/export/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/export/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/export/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/view",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/trajectories/fixture-id/view?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/view/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/view/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/view/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/trajectories/fixture-id?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/trajectories/fixture-id/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [
+        "GET"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unsupported-method",
+      "oversized_body": false,
+      "path": "/ui",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 405
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "location": "http://fixture/ui?probe=keep",
+      "method": "TRACE",
+      "name": "trailing-slash",
+      "oversized_body": false,
+      "path": "/ui/?probe=keep",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 307
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "missing-token-slash",
+      "oversized_body": false,
+      "path": "/ui/",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "query-token-slash",
+      "oversized_body": false,
+      "path": "/ui/?access_token=fixture-token",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Not Found"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unknown-path",
+      "oversized_body": false,
+      "path": "/fixture-missing",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 404
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "unknown-missing-token",
+      "oversized_body": false,
+      "path": "/fixture-missing",
+      "security_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "request body too large"
+      },
+      "location": null,
+      "method": "TRACE",
+      "name": "oversized-before-redirect",
+      "oversized_body": true,
+      "path": "/sessions/",
+      "security_headers": {},
+      "status": 413
+    }
+  ],
+  "fastapi_version": "0.136.3",
+  "routes": [
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/healthz"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ],
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/mode"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/personal-skills/preview"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/personal-skills/{draft_id}/commit"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ],
+        [
+          "DELETE"
+        ]
+      ],
+      "path": "/sessions/{session_id}"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/steer"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/fork"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/cancel"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ],
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/workflows"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/workflows/{run_id}"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/workflows/{run_id}/cancel"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ],
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/cron"
+    },
+    {
+      "ordered_methods": [
+        [
+          "DELETE"
+        ]
+      ],
+      "path": "/sessions/{session_id}/cron/{job_id}"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/self-audit"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/skills"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/memory"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/tasks"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/goal"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/team"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/memory/{name}"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/benchmark"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/propose-improvement"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/improvements"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/self-audit/suggestions"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/self-audit/bench-task-drafts"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/cron/{job_id}/arm"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/transcript"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/approvals"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/approvals/{approval_id}"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/messages"
+    },
+    {
+      "ordered_methods": [
+        [
+          "POST"
+        ]
+      ],
+      "path": "/sessions/{session_id}/messages/stream"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/events"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/sessions/{session_id}/trajectories"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/trajectories"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/trajectories/{trajectory_id}/export"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/trajectories/{trajectory_id}/view"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/trajectories/{trajectory_id}"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/"
+    },
+    {
+      "ordered_methods": [
+        [
+          "GET"
+        ]
+      ],
+      "path": "/ui"
+    }
+  ],
+  "starlette_version": "1.2.1"
+}
