@@ -126,22 +126,7 @@ func sdkWholeUsageText(value jsonvalue.Value) (string, error) {
 			parts[i] = parts[i][1 : len(parts[i])-1]
 			continue
 		}
-		encoded, err := item.MarshalJSON()
-		if err != nil {
-			return "", err
-		}
-		usage, err := DecodeSDKUsage(encoded, false)
-		if err != nil {
-			return "", err
-		}
-		encoded, err = json.Marshal(usage)
-		if err != nil {
-			return "", err
-		}
-		normalized, err := jsonvalue.Decode(string(encoded))
-		if err != nil {
-			return "", err
-		}
+		normalized := sdkUsageReprConstruct(item, sdkUsageReprRoot, true)
 		parts[i] = sdkUsageModelRepr("Usage", sdkUsageFields, normalized)
 	}
 	return "[" + strings.Join(parts, ", ") + "]", nil

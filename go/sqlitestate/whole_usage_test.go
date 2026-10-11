@@ -39,7 +39,7 @@ func TestWholeUsageSourceSnapshotsSurviveSQLiteReopen(t *testing.T) {
 			rows = append(rows, row{c.Name, stage.Event, stage.Usage})
 		}
 	}
-	if len(rows) != 43 {
+	if len(rows) != 67 {
 		t.Fatal("Source snapshot inventory changed")
 	}
 	out, err := json.Marshal(struct{ Cases []row }{rows})
@@ -50,5 +50,5 @@ func TestWholeUsageSourceSnapshotsSurviveSQLiteReopen(t *testing.T) {
 	if err := os.WriteFile(path, out, 0600); err != nil {
 		t.Fatal(err)
 	}
-	assertSDKUsageEventReopen(t, path, 43)
+	assertSDKUsageEventReopen(t, path, 67)
 }

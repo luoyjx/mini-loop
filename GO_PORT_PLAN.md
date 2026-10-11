@@ -1,5 +1,40 @@
 # Go port plan
 
+## 2026-10-11 inert usage model-array range construction
+
+Baseline local main `110b1a9`.12 new profiles produce24 actual SDK direct/SSE
+cases for required, optional and nested model-array counters: int64 overflow,
+negative80-digit integers, wide integer text and finite1e100 floats. Source
+construction accepts these whole-array observations with no meter anchor.
+Wide integer text normalizes in eligible optional/nested models; huge floats
+remain floats because SDK float-to-integer validation has a signed64-bit limit.
+
+Required native checks exposed22 differences in those24 cases; the two required
+text profiles already matched. Array repr incorrectly called the counted usage
+decoder, causing premature direct refusal or SSE message_start refusal, plus
+optional wide-text repr differences. `sdkUsageReprConstruct` now explicitly
+selects the four named SDK models for temporary default/field normalization.
+It does not call the metering decoder or store open JSON. Whole observations
+continue storing their closed source kind and final text projection only.
+Integer text conversion uses temporary standard-library big.Int; no dependency
+was introduced. Native counted ingress and actual meter ranges are unchanged.
+
+Current inventory:62 direct/SSE cases,36 successful stage snapshots,31 completed
+direct replies,5 completed object streams and26 delta-assignment errors after
+start snapshots.67 projected snapshots/final values pass actual mask/clone/
+archive/SQLite reopen;62 actual HTTP/ManagedSession cases pass. Original191
+metadata/214 stages,34 scalar and76 integer-text inventories still pass the
+focused gate. A new Python test initially overcounted old array-nested-models
+via a prefix filter; corrected to the explicit12 new names, retaining its failure.
+
+The existing Provider/SDK projection path contains this private representation
+change; no component, owner, authority, feature default or public entry point
+was added/removed. README boundary/review baseline and imagegen base highlights
+are maintained. Wider real count/meter domains, lexical/richer model repr and
+escaped-secret interactions, final public error/provider/default inventory,
+non-Darwin and original G0–G7 acceptance remain open. Prior temporal watcher/
+background failures remain unexplained; no budget, skip or runtime fix claimed.
+
 ## 2026-10-11 native whole usage observation and stage faults
 
 Baseline local main `7095efb`; implementation `2fbf1f2`. `DecodeSDKUsage` now explicitly selects SDK loose
@@ -7010,21 +7045,21 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `7095efb`; latest runtime
-implementation is `2fbf1f2`, named whole-usage projections and delta fault timing.
-Current1639 frozen inputs pass full Source239 files, required focused native
-checks, full ordinary Go/vet/race+atomic, syntax audit452 files/1439 named types,
-public closure50 packages/1191 exported types/zero findings, Python2240 passed/
-28 skipped/86 warnings/24 subtests (142.34s pytest;143.027s command) and19 scans.
-[Current receipt](docs/audits/go-whole-usage-native-2026-10-11.json).
+Reviewed **2026-10-11** against local main baseline `110b1a9`; latest runtime
+implementation in this iteration separates inert model-array SDK construction
+from counted decoding. Current1640 frozen inputs pass full Source239 files,
+required focused native checks, full ordinary Go/vet/race+atomic, syntax audit453
+files/1440 named types, public closure50 packages/1191 exported types/zero findings,
+Python2240 passed/28 skipped/92 warnings/24 subtests (90.15s pytest;
+90.753s command) and19 scans. [Current receipt](docs/audits/go-usage-array-ranges-2026-10-11.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
 cases/214 stages, now pass required native assertions, final PromptTokens and
 actual masked event/clone/archive/SQLite reopening checks. The original34 and76
 usage inventories continue to pass. Full G4 field/default/consumer/public-entry
-inventory and wider count/meter ranges remain unproven. The38 whole-usage cases/
-24 stages now have required native projected values/stage/fault-message parity,
+inventory and wider count/meter ranges remain unproven. The62 whole-usage cases/
+36 stages now have required native projected values/stage/fault-message parity,
 managed HTTP outcomes and archival/reopen evidence. Earlier implementation and diagnostic checkpoints below retain
 their historical baselines and must not override this current index.
 
@@ -7047,10 +7082,10 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app**89.22% (33012/37000)**,
-all Go**89.17% (33133/37158)**, Provider**86.45% (1518/1756)**. The profile hash
-and1639 frozen inputs are retained; coverage excludes native C, CLI child
-internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-whole-usage-native-2026-10-11.json).
+Current full passing-run statement coverage: app**89.24% (33078/37068)**,
+all Go**89.18% (33199/37226)**, Provider**86.67% (1522/1756)**. The profile hash
+and1640 frozen inputs are retained; coverage excludes native C, CLI child
+internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-usage-array-ranges-2026-10-11.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7069,7 +7104,7 @@ work-package acceptance.
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes239 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; current ordinary/vet/race+atomic pass;191 metadata-shape cases/214 stages and38 whole-usage cases/24 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes239 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; current ordinary/vet/race+atomic pass;191 metadata-shape cases/214 stages and62 whole-usage cases/36 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 

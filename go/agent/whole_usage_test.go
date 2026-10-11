@@ -40,7 +40,7 @@ func TestWholeUsageSourceSnapshotsMaskCloneArchiveAndAuthority(t *testing.T) {
 			rows = append(rows, row{c.Name, stage.Event, stage.Usage})
 		}
 	}
-	if len(rows) != 43 {
+	if len(rows) != 67 {
 		t.Fatal("Source snapshot inventory changed")
 	}
 	out, err := json.Marshal(struct{ Cases []row }{rows})
@@ -51,7 +51,7 @@ func TestWholeUsageSourceSnapshotsMaskCloneArchiveAndAuthority(t *testing.T) {
 	if err := os.WriteFile(path, out, 0600); err != nil {
 		t.Fatal(err)
 	}
-	assertSDKUsageMaskArchive(t, path, 43)
+	assertSDKUsageMaskArchive(t, path, 67)
 	for _, raw := range []string{"null", "13", "[{}]"} {
 		usage, err := protocol.DecodeSDKUsage([]byte(raw), false)
 		if err != nil {
