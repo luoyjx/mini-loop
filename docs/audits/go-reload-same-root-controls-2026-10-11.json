@@ -1,0 +1,3011 @@
+{
+  "schema_version": 1,
+  "baseline": "c36903b1a56fcbb42af2798aa4fe7fe1bf4a11e5",
+  "date": "2026-10-11",
+  "purpose": "same-root simultaneous Source/Go native delivery before and immediately after a full Go test workload",
+  "runtime_changed": false,
+  "dependencies_added": false,
+  "fixture_changed": false,
+  "operation_deadline_seconds": 3,
+  "probe_deadline_seconds": 5,
+  "production_go_language": "GoSource",
+  "diagnostic_go_language": "PythonSource (same filename as Source, an explicit existing SDK choice)",
+  "source": {
+    "watchfiles": "1.2.0",
+    "uvicorn": "0.49.0",
+    "constructor": "actual Uvicorn WatchFilesReload; native RustNotify, recursive roots, default filter, reload_delay=0, rust_timeout=100",
+    "fixture": "go/testdata/python-watchfiles.json",
+    "fixture_sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0"
+  },
+  "scripts": {
+    "docs/audits/go-reload-same-root-probe-2026-10-11.go": "f1a3d616110caeba475973d8ee2fd68ecedced62c739e6fd00b358c1c55bf70c",
+    "docs/audits/go-reload-same-root-control-2026-10-11.py": "9f2b73ee9012b9b3b65ba331da82d34d8c2c20b1a8a64074a56b9bbc7de1dc6d"
+  },
+  "native_runtime_source_sha256": {
+    "go/reload/native_events_darwin.c": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e",
+    "go/reload/native_events_darwin.go": "c3824702d6b4bb2e6a1e1ffb3d267183fcbe98a848d39b01c6d8f0cfa3c3c144",
+    "go/reload/native_events.go": "6adf808d42b6f0393c3e62406b278f75d1b2cdc803a663b004b574508c002a7c"
+  },
+  "results": {
+    "before": {
+      "summary": {
+        "case_count": 16,
+        "both_match": [
+          "hidden-parent-source",
+          "symlink-target-write",
+          "removed-source",
+          "same-mtime-write",
+          "lower-mtime-write",
+          "identical-write",
+          "same-mtime-touch",
+          "rename-out",
+          "rename-in",
+          "rename-source",
+          "ignored-hidden",
+          "ignored-backup",
+          "ignored-text",
+          "source-directory",
+          "transient-source"
+        ],
+        "common_operation_failures": [
+          "added-source"
+        ],
+        "common_readiness_failures": [],
+        "asymmetric_outcomes": [],
+        "go_processes_exited_cleanly": 16
+      },
+      "observations": {
+        "watchfiles_version": "1.2.0",
+        "uvicorn_version": "0.49.0",
+        "cases": [
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.181083
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 190.97991846501827
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 3377.221042
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 3401.574458926916
+            },
+            "operation_epoch_ns": 1791692733781417000,
+            "source_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "operation deadline exceeded",
+              "elapsed_ms": 3006.411124020815
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 3002.131083
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": false,
+              "source": false
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 240.53525
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000103404a60,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000103404950,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000102f2a3f0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-g44zqwqi\": true,\n        },\n    },\n))"
+            ],
+            "name": "added-source",
+            "recipe": {
+              "changed": [
+                "new.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "added-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": "new.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 101.269333
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 131.8175010383129
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 2046.088666
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 2075.460707768798
+            },
+            "operation_epoch_ns": 1791692739553400000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                ".git/a.py"
+              ],
+              "error": "",
+              "elapsed_ms": 280.324250459671
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                ".git/a.py"
+              ],
+              "error": "",
+              "elapsed_ms": 231.484667
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 16.699375
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x00000001032073f0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000103207eb0,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x00000001034064d0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-h46hbv8v\": true,\n        },\n    },\n))"
+            ],
+            "name": "hidden-parent-source",
+            "recipe": {
+              "changed": [
+                ".git/a.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "hidden-parent-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": ".git/a.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.146167
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 353.7009581923485
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 310.875041
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 327.7910854667425
+            },
+            "operation_epoch_ns": 1791692740755200000,
+            "source_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 2732.200041413307
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 2682.665125
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 51.513791
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000103304370,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000103304d70,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000103305b60,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-52dp55xc\": true,\n        },\n    },\n))"
+            ],
+            "name": "symlink-target-write",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "symlink-target-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "write",
+              "path": "linked.py",
+              "symlink_target": "notes.txt"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 101.220375
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 122.5736252963543
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1789.885708
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1847.0730409026146
+            },
+            "operation_epoch_ns": 1791692745809526000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 807.6168764382601
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 783.099208
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 14.298667
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x00000001035044d0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x00000001035046b0,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x00000001033052b0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-7visy3p2\": true,\n        },\n    },\n))"
+            ],
+            "name": "removed-source",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "name": "removed-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "remove",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.113542
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 280.494874343276
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 2088.386209
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 2138.7447081506252
+            },
+            "operation_epoch_ns": 1791692749093492000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 449.6953748166561
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 450.808333
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0.362167
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000124e34d80,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x00000001015048b0,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000114e06bc0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-a7tf4b8b\": true,\n        },\n    },\n))"
+            ],
+            "name": "same-mtime-write",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "same-mtime-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "write",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.163833
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 126.41158327460289
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 571.098166
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 605.0817929208279
+            },
+            "operation_epoch_ns": 1791692750342049000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 341.92641638219357
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 282.563166
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 7.296125
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000134efaba0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000134efe3a0,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000124e46720,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-eek66y1u\": true,\n        },\n    },\n))"
+            ],
+            "name": "lower-mtime-write",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 99,
+              "name": "lower-mtime-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "write",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.146375
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 131.4888335764408
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 426.652792
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 450.62162540853024
+            },
+            "operation_epoch_ns": 1791692751331753000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 285.4652088135481
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 243.143708
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0.276417
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000114e09df0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000114e082e0,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000124e46720,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-upfjhiy2\": true,\n        },\n    },\n))"
+            ],
+            "name": "identical-write",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "identical-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "unchanged-write",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.190416
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 125.28145872056484
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 399.576625
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 459.7932919859886
+            },
+            "operation_epoch_ns": 1791692752261838000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 231.34370893239975
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 210.749958
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 26.376584
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000114f059b0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000114f05980,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000102f2a3f0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-gooy476n\": true,\n        },\n    },\n))"
+            ],
+            "name": "same-mtime-touch",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "same-mtime-touch",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "touch",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.067375
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 126.65237486362457
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 211.24075
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 290.39075039327145
+            },
+            "operation_epoch_ns": 1791692752971830000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 174.8486664146185
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 120.179833
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 25.041125
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000134faa690,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000134fb39e0,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000134e15220,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-cy7vnxpl\": true,\n        },\n    },\n))"
+            ],
+            "name": "rename-out",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "destination": "notes.txt",
+              "initial": true,
+              "name": "rename-out",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "rename",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.160375
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 135.07141545414925
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 447.680042
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 515.4065005481243
+            },
+            "operation_epoch_ns": 1791692753868825000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "target.py"
+              ],
+              "error": "",
+              "elapsed_ms": 116.40383489429951
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "target.py"
+              ],
+              "error": "",
+              "elapsed_ms": 77.691709
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 38.296917
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000114f05a30,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000114f05a00,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000134ffca70,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-ygwy93ar\": true,\n        },\n    },\n))"
+            ],
+            "name": "rename-in",
+            "recipe": {
+              "changed": [
+                "target.py"
+              ],
+              "closed": true,
+              "destination": "target.py",
+              "initial": true,
+              "name": "rename-in",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "rename",
+              "path": "notes.txt"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 100.336917
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 130.301957949996
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 256.058833
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 281.3412491232157
+            },
+            "operation_epoch_ns": 1791692754482651000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py",
+                "target.py"
+              ],
+              "error": "",
+              "elapsed_ms": 113.66983316838741
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py",
+                "target.py"
+              ],
+              "error": "",
+              "elapsed_ms": 92.082958
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 9.306084
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000134eba7d0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000134e0be20,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000124e47470,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-ae13uj0q\": true,\n        },\n    },\n))"
+            ],
+            "name": "rename-source",
+            "recipe": {
+              "changed": [
+                "source.py",
+                "target.py"
+              ],
+              "closed": true,
+              "destination": "target.py",
+              "initial": true,
+              "name": "rename-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "rename",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 100.211208
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 265.4256261885166
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 874.890292
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 891.7733337730169
+            },
+            "operation_epoch_ns": 1791692755809574000,
+            "source_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 981.6695414483547
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 972.254125
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 71.604625
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000134eba7d0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000134e0be20,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000124e47470,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-n8jld_c6\": true,\n        },\n    },\n))"
+            ],
+            "name": "ignored-hidden",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "ignored-hidden",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": ".hidden.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.146209
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 205.6870013475418
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1486.21725
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1508.6396653205156
+            },
+            "operation_epoch_ns": 1791692758619373000,
+            "source_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 567.8697098046541
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 545.422209
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 25.15275
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000114e05ac0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000114e05a90,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000124e47890,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-k7wn3cdh\": true,\n        },\n    },\n))"
+            ],
+            "name": "ignored-backup",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "ignored-backup",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": "~backup.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 100.667917
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 125.30104257166386
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 370.772292
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 405.20237386226654
+            },
+            "operation_epoch_ns": 1791692759785138000,
+            "source_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 218.62787380814552
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 180.9995
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0.381375
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000114e077c0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000114e06e70,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000124e469f0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-ar463v7w\": true,\n        },\n    },\n))"
+            ],
+            "name": "ignored-text",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "ignored-text",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": "notes.txt"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.148417
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 135.01883298158646
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 435.588584
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 507.9900398850441
+            },
+            "operation_epoch_ns": 1791692760697019000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "package.py"
+              ],
+              "error": "",
+              "elapsed_ms": 328.32341454923153
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "package.py"
+              ],
+              "error": "",
+              "elapsed_ms": 277.372958
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1.421666
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000134eba7d0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000134e0be20,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000124e47470,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-t7qkl6mq\": true,\n        },\n    },\n))"
+            ],
+            "name": "source-directory",
+            "recipe": {
+              "changed": [
+                "package.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "name": "source-directory",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "mkdir",
+              "path": "package.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.181833
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 135.48054173588753
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 215.844375
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 266.1124989390373
+            },
+            "operation_epoch_ns": 1791692761471532000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "flash.py"
+              ],
+              "error": "",
+              "elapsed_ms": 172.51879163086414
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "flash.py"
+              ],
+              "error": "",
+              "elapsed_ms": 146.035458
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 9.497834
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000134f53b70,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000134f5d970,\n            metadata: DynMetadata(\n                0x0000000102c98fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000114f10c50,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-lxeqo393\": true,\n        },\n    },\n))"
+            ],
+            "name": "transient-source",
+            "recipe": {
+              "changed": [
+                "flash.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "name": "transient-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "transient",
+              "path": "flash.py"
+            }
+          }
+        ],
+        "scope": "same root, same Python filename, one shared operation; 3s operation / 5s probe deadlines"
+      },
+      "log_sha256": "4558afd664ba53602619cfb75644f5921f4b358fcae459dbcd6146b93477deff"
+    },
+    "after": {
+      "summary": {
+        "case_count": 16,
+        "both_match": [
+          "added-source",
+          "hidden-parent-source",
+          "same-mtime-write",
+          "ignored-hidden",
+          "ignored-backup",
+          "ignored-text",
+          "source-directory",
+          "transient-source"
+        ],
+        "common_operation_failures": [
+          "symlink-target-write",
+          "removed-source",
+          "identical-write",
+          "same-mtime-touch",
+          "rename-in",
+          "rename-source"
+        ],
+        "common_readiness_failures": [
+          "lower-mtime-write",
+          "rename-out"
+        ],
+        "asymmetric_outcomes": [],
+        "go_processes_exited_cleanly": 16
+      },
+      "observations": {
+        "watchfiles_version": "1.2.0",
+        "uvicorn_version": "0.49.0",
+        "cases": [
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.842667
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 132.5372513383627
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1229.331125
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1293.3438327163458
+            },
+            "operation_epoch_ns": 1791693090206041000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "new.py"
+              ],
+              "error": "",
+              "elapsed_ms": 290.36612436175346
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "new.py"
+              ],
+              "error": "",
+              "elapsed_ms": 259.268667
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 11.863167
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000125eb4690,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000115ec2f40,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000125ed7cb0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-gj2rjfm9\": true,\n        },\n    },\n))"
+            ],
+            "name": "added-source",
+            "recipe": {
+              "changed": [
+                "new.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "added-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": "new.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.096709
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 120.93695811927319
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 355.908792
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 395.60020714998245
+            },
+            "operation_epoch_ns": 1791693091063637000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                ".git/a.py"
+              ],
+              "error": "",
+              "elapsed_ms": 509.0213753283024
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                ".git/a.py"
+              ],
+              "error": "",
+              "elapsed_ms": 493.022917
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0.290875
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000115f6d590,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000115f86f30,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x00000001168303c0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-tmtmnovl\": true,\n        },\n    },\n))"
+            ],
+            "name": "hidden-parent-source",
+            "recipe": {
+              "changed": [
+                ".git/a.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "hidden-parent-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": ".git/a.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 100.798458
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 136.5550011396408
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1305.345834
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "linked.py",
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1376.869834959507
+            },
+            "operation_epoch_ns": 1791693093134666000,
+            "source_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "operation deadline exceeded",
+              "elapsed_ms": 3008.7580401450396
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 3001.857875
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": false,
+              "source": false
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0.6715
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000115f763b0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000115f51210,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000105e33ab0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-d7evdqjr\": true,\n        },\n    },\n))"
+            ],
+            "name": "symlink-target-write",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "symlink-target-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "write",
+              "path": "linked.py",
+              "symlink_target": "notes.txt"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 101.96825
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 126.20975077152252
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 3609.024167
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 3644.645793363452
+            },
+            "operation_epoch_ns": 1791693100099158000,
+            "source_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "operation deadline exceeded",
+              "elapsed_ms": 3007.934710010886
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 3001.180375
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": false,
+              "source": false
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 31.491375
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000125eb4690,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000125e3f9e0,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000105e45d80,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-s96jj0qr\": true,\n        },\n    },\n))"
+            ],
+            "name": "removed-source",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "name": "removed-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "remove",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.084042
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 184.0034183114767
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 390.993209
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 447.95270822942257
+            },
+            "operation_epoch_ns": 1791693103832138000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 2003.7350431084633
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1967.250625
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 104.535916
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000125eb4690,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000125e3f9e0,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000116832260,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-5_y3_dly\": true,\n        },\n    },\n))"
+            ],
+            "name": "same-mtime-write",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "same-mtime-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "write",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.071625
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 311.0309988260269
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 5002.1665
+            },
+            "source_probe": {
+              "stage": "error",
+              "paths": null,
+              "error": "TimeoutError('Source readiness probe')"
+            },
+            "control_error": "RuntimeError('paired readiness failed')",
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 37.854041
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x00000001072044f0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x00000001072044c0,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000107105300,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-1eoo258a\": true,\n        },\n    },\n))"
+            ],
+            "name": "lower-mtime-write",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 99,
+              "name": "lower-mtime-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "write",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.1445
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 122.21866846084595
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 2643.724583
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 2679.703624919057
+            },
+            "operation_epoch_ns": 1791693114750029000,
+            "source_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "operation deadline exceeded",
+              "elapsed_ms": 3004.1690822690725
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 3002.226791
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": false,
+              "source": false
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 187.009709
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000107204330,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000107204eb0,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000104a05310,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-51_jpm2u\": true,\n        },\n    },\n))"
+            ],
+            "name": "identical-write",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "identical-write",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "unchanged-write",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.089167
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 119.81924995779991
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 2188.813458
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py",
+                "source.py"
+              ],
+              "error": "",
+              "elapsed_ms": 2259.118042886257
+            },
+            "operation_epoch_ns": 1791693120726794000,
+            "source_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "operation deadline exceeded",
+              "elapsed_ms": 3009.9436659365892
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 3000.418583
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": false,
+              "source": false
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 138.9505
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x000000010471b620,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x000000010470f310,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x00000001168305d0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-81b_0u2c\": true,\n        },\n    },\n))"
+            ],
+            "name": "same-mtime-touch",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "initial": true,
+              "mtime": 100,
+              "name": "same-mtime-touch",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "touch",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 100.98275
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 136.27895899116993
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 5002.086417
+            },
+            "source_probe": {
+              "stage": "error",
+              "paths": null,
+              "error": "TimeoutError('Source readiness probe')"
+            },
+            "control_error": "RuntimeError('paired readiness failed')",
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 172.51575
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x00000001071040e0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000107105350,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000107104400,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-6ea2kavu\": true,\n        },\n    },\n))"
+            ],
+            "name": "rename-out",
+            "recipe": {
+              "changed": [
+                "source.py"
+              ],
+              "closed": true,
+              "destination": "notes.txt",
+              "initial": true,
+              "name": "rename-out",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "rename",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 100.761666
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 151.36279352009296
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 614.549291
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 630.8066658675671
+            },
+            "operation_epoch_ns": 1791693130548986000,
+            "source_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "operation deadline exceeded",
+              "elapsed_ms": 3006.945749744773
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 3002.151416
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": false,
+              "source": false
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 267.834958
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x00000001071040e0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000107105250,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000104905660,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-ivf4cq_1\": true,\n        },\n    },\n))"
+            ],
+            "name": "rename-in",
+            "recipe": {
+              "changed": [
+                "target.py"
+              ],
+              "closed": true,
+              "destination": "target.py",
+              "initial": true,
+              "name": "rename-in",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "rename",
+              "path": "notes.txt"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 101.578125
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 288.1610840559006
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 2759.472583
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 2820.903582498431
+            },
+            "operation_epoch_ns": 1791693137132905000,
+            "source_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "operation deadline exceeded",
+              "elapsed_ms": 3008.1602074205875
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": null,
+              "error": "context deadline exceeded",
+              "elapsed_ms": 3000.680167
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": false,
+              "source": false
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 18.536708
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000104a04500,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000104a044d0,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000104904ad0,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-alydkolb\": true,\n        },\n    },\n))"
+            ],
+            "name": "rename-source",
+            "recipe": {
+              "changed": [
+                "source.py",
+                "target.py"
+              ],
+              "closed": true,
+              "destination": "target.py",
+              "initial": true,
+              "name": "rename-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "rename",
+              "path": "source.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 101.438542
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 294.51945796608925
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 3343.410334
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 3397.302834317088
+            },
+            "operation_epoch_ns": 1791693143993999000,
+            "source_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 834.2053331434727
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 806.453167
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 35.242792
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000107204ec0,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000107204e90,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000104a05620,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-8swez9m3\": true,\n        },\n    },\n))"
+            ],
+            "name": "ignored-hidden",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "ignored-hidden",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": ".hidden.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 100.420583
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 130.0042923539877
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1554.861167
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1590.743375942111
+            },
+            "operation_epoch_ns": 1791693146761638000,
+            "source_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 1765.8423315733671
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 1747.095417
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 172.345458
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000104a04f70,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000104a04f40,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000107204410,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-0z8w_qi6\": true,\n        },\n    },\n))"
+            ],
+            "name": "ignored-backup",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "ignored-backup",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": "~backup.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.093459
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 137.0057500898838
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1966.194084
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1982.944916933775
+            },
+            "operation_epoch_ns": 1791693150877380000,
+            "source_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 2333.197459578514
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [],
+              "error": "",
+              "elapsed_ms": 2327.839166
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0.325584
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000115f87c50,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000115f59dc0,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000115f85a80,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-x1zhoq9w\": true,\n        },\n    },\n))"
+            ],
+            "name": "ignored-text",
+            "recipe": {
+              "changed": [],
+              "closed": true,
+              "initial": false,
+              "mtime": 100,
+              "name": "ignored-text",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "add",
+              "path": "notes.txt"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.145375
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 127.55662389099598
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 1365.88525
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 1388.7422494590282
+            },
+            "operation_epoch_ns": 1791693155206823000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "package.py"
+              ],
+              "error": "",
+              "elapsed_ms": 170.13237439095974
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "package.py"
+              ],
+              "error": "",
+              "elapsed_ms": 147.802917
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0.250625
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000116811720,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000116814120,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000116832810,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-w6v5bs67\": true,\n        },\n    },\n))"
+            ],
+            "name": "source-directory",
+            "recipe": {
+              "changed": [
+                "package.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "name": "source-directory",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "mkdir",
+              "path": "package.py"
+            }
+          },
+          {
+            "go_construct": {
+              "stage": "constructed",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 0
+            },
+            "go_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 102.088625
+            },
+            "source_drain": {
+              "stage": "drain",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 218.6291664838791
+            },
+            "go_probe": {
+              "stage": "probe",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 251.415625
+            },
+            "source_probe": {
+              "stage": "probe",
+              "paths": [
+                "pair_ready.py"
+              ],
+              "error": "",
+              "elapsed_ms": 274.8896237462759
+            },
+            "operation_epoch_ns": 1791693155915178000,
+            "source_next": {
+              "stage": "next",
+              "paths": [
+                "flash.py"
+              ],
+              "error": "",
+              "elapsed_ms": 171.1315419524908
+            },
+            "go_next": {
+              "stage": "next",
+              "paths": [
+                "flash.py"
+              ],
+              "error": "",
+              "elapsed_ms": 167.282292
+            },
+            "same_result": true,
+            "matches_fixture": {
+              "go": true,
+              "source": true
+            },
+            "source_closed": true,
+            "go_close": {
+              "stage": "close",
+              "paths": null,
+              "error": "",
+              "elapsed_ms": 150.539292
+            },
+            "go_exit_code": 0,
+            "go_stderr": "",
+            "source_backend": [
+              "RustNotify(Recommended(\n    FsEventWatcher {\n        paths: 0x0000000125eb4690,\n        since_when: 18446744073709551615,\n        latency: 0.0,\n        flags: 18,\n        event_handler: Pointer {\n            addr: 0x0000000125e3f9e0,\n            metadata: DynMetadata(\n                0x0000000105bf0fe0,\n            ),\n        },\n        runloop: Some(\n            (\n                0x0000000116832810,\n                JoinHandle { .. },\n            ),\n        ),\n        recursive_info: {\n            \"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-paired-iri955cr\": true,\n        },\n    },\n))"
+            ],
+            "name": "transient-source",
+            "recipe": {
+              "changed": [
+                "flash.py"
+              ],
+              "closed": true,
+              "initial": false,
+              "name": "transient-source",
+              "native_arguments": {
+                "backend": "FsEventWatcher",
+                "force_polling": false,
+                "fsevents": {
+                  "flags": 18,
+                  "latency_seconds": 0.0,
+                  "since_now": true
+                },
+                "ignore_permission_denied": true,
+                "poll_delay_ms": 300,
+                "recursive": true
+              },
+              "operation": "transient",
+              "path": "flash.py"
+            }
+          }
+        ],
+        "scope": "same root, same Python filename, one shared operation; 3s operation / 5s probe deadlines"
+      },
+      "log_sha256": "938b17166e1b6fd6871a9fa8029040cc6d25e5a11d761be8917ee2b7585df582"
+    }
+  },
+  "preload": {
+    "command": "go test -p=1 -count=1 -timeout=300s ./...",
+    "exit_code": 1,
+    "sha256": "1452dcd5fab3ccb8eaac50bb2c1daf6e2bfdb850b91c7f93b9bb3a0d05f39484",
+    "failures": [
+      "TestCapturedAuthorityHTTPWireMatchesSDK (0.01s)",
+      "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)",
+      "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)",
+      "TestNativeEventsActualSourceRecipes (109.11s)",
+      "TestNativeEventsActualSourceRecipes/added-source (9.58s)",
+      "TestNativeEventsActualSourceRecipes/hidden-parent-source (6.94s)",
+      "TestNativeEventsActualSourceRecipes/symlink-target-write (9.49s)",
+      "TestNativeEventsActualSourceRecipes/rename-source (12.67s)",
+      "TestNativeEventsActualSourceRecipes/ignored-hidden (7.89s)",
+      "TestNativeEventsActualSourceRecipes/source-directory (5.65s)",
+      "TestNativeEventsActualSourceRecipes/transient-source (8.99s)"
+    ],
+    "failure_evidence": "--- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK (0.01s)\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/provider\t0.924s\n--- FAIL: TestNativeEventsActualSourceRecipes (109.11s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/added-source (9.58s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +167ms subscription constructed; drain before post-subscription probe\n            +269ms pre-probe next: paths=[] error=context deadline exceeded\n            +6.424s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source2580084962/001\" flags=164096\n            +6.424s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source2580084962/001/reload_observer_ready.go\" flags=102656\n            +6.475s readiness probe observed; drain remaining setup events\n            +6.576s post-probe next: paths=[] error=context deadline exceeded\n            +6.576s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source2580084962/001/new.go\n            +9.577s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/hidden-parent-source (6.94s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +81ms subscription constructed; drain before post-subscription probe\n            +183ms pre-probe next: paths=[] error=context deadline exceeded\n            +3.782s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1679472305/001\" flags=164096\n            +3.783s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1679472305/001/.git\" flags=164096\n            +3.783s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1679472305/001/reload_observer_ready.go\" flags=102656\n            +3.834s readiness probe observed; drain remaining setup events\n            +3.936s post-probe next: paths=[] error=context deadline exceeded\n            +3.936s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1679472305/001/.git/a.go\n            +6.939s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/symlink-target-write (9.49s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +465ms subscription constructed; drain before post-subscription probe\n            +567ms pre-probe next: paths=[] error=context deadline exceeded\n            +6.324s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write251752471/001\" flags=164096\n            +6.324s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write251752471/001/linked.go\" flags=295168\n            +6.324s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write251752471/001/notes.txt\" flags=103680\n            +6.324s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write251752471/001/reload_observer_ready.go\" flags=102656\n            +6.374s readiness probe observed; drain remaining setup events\n            +6.476s post-probe next: paths=[] error=context deadline exceeded\n            +6.476s operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write251752471/001/linked.go\n            +9.479s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/rename-source (12.67s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +510ms subscription constructed; drain before post-subscription probe\n            +612ms pre-probe next: paths=[] error=context deadline exceeded\n            +9.51s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source2991148510/001\" flags=164096\n            +9.51s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source2991148510/001/source.go\" flags=103680\n            +9.51s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source2991148510/001/reload_observer_ready.go\" flags=102656\n            +9.562s readiness probe observed; drain remaining setup events\n            +9.664s post-probe next: paths=[] error=context deadline exceeded\n            +9.664s operation=rename path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-source2991148510/001/source.go\n            +12.667s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-hidden (7.89s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +307ms subscription constructed; drain before post-subscription probe\n            +409ms pre-probe next: paths=[] error=context deadline exceeded\n            +4.731s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-hidden2132717075/001\" flags=164096\n            +4.731s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-hidden2132717075/001/reload_observer_ready.go\" flags=102656\n            +4.783s readiness probe observed; drain remaining setup events\n            +4.885s post-probe next: paths=[] error=context deadline exceeded\n            +4.885s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-hidden2132717075/001/.hidden.go\n            +7.889s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/source-directory (5.65s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +163ms subscription constructed; drain before post-subscription probe\n            +265ms pre-probe next: paths=[] error=context deadline exceeded\n            +2.491s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessource-directory2064950011/001\" flags=164096\n            +2.491s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessource-directory2064950011/001/reload_observer_ready.go\" flags=102656\n            +2.542s readiness probe observed; drain remaining setup events\n            +2.644s post-probe next: paths=[] error=context deadline exceeded\n            +2.644s operation=mkdir path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessource-directory2064950011/001/package.go\n            +5.646s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/transient-source (8.99s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +422ms subscription constructed; drain before post-subscription probe\n            +524ms pre-probe next: paths=[] error=context deadline exceeded\n            +5.828s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipestransient-source2933504436/001\" flags=164096\n            +5.828s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipestransient-source2933504436/001/reload_observer_ready.go\" flags=102656\n            +5.88s readiness probe observed; drain remaining setup events\n            +5.982s post-probe next: paths=[] error=context deadline exceeded\n            +5.982s operation=transient path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipestransient-source2933504436/001/flash.go\n            +8.984s operation next: paths=[] error=context deadline exceeded\n            \nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/reload\t153.246s"
+  },
+  "validation": {
+    "go_build_probe": 0,
+    "go_vet_probe": 0,
+    "go_vet_module": 0,
+    "before_control_exit": 0,
+    "after_control_exit": 0,
+    "git_diff_check": 0
+  },
+  "daemon_observation": {
+    "early_cpu_percent": 99.4,
+    "during_preload_cpu_percent": 96.6,
+    "after_preload": "61339  97.8  28-01:52:43 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd\n",
+    "causal_claim": false
+  },
+  "findings": [
+    "Before: 15/16 common fixture matches; added-source times out for both",
+    "After: 8/16 common fixture matches; 6 common operation deadlines and 2 common readiness deadlines",
+    "No asymmetric path/deadline-category outcome in either paired cohort",
+    "Shared operation failures occur after both subscriptions acknowledge the same readiness file"
+  ],
+  "limitations": [
+    "Concurrent paired subscriptions are an intervention; not an uninstrumented acceptance gate",
+    "Go diagnostic selects PythonSource to observe identical .py paths; does not exercise CLI GoSource filename adaptation",
+    "The full-suite preload may affect shared filesystem/daemon state but causality is unproven; no randomized/reversed/isolated workload comparison",
+    "Readiness probe deadlines are 5s, operation deadlines 3s; outer JSON/process coordination waits use 8s; not identical to every original caller arming budget",
+    "Source filtered/delivered paths and Go batches are observed; this experiment does not trace raw Source/Go C callbacks",
+    "Known IDNA failures, full native reliability, default diagnostics and complete G0-G7 remain open",
+    "Go starts a fresh process for each case, while Source reuses one Python process per 16-case cohort; registration history is not fully matched"
+  ],
+  "cleanup": "Both control processes exited 0 after all 16 cases; all 32 Go probes exited 0 and Close acknowledgments returned without error. Source workers joined in both scripts; successful operations record source_closed, while two readiness-failure rows rely on the finally cleanup execution path. No independent Source native __exit__ counter is claimed.",
+  "not_refreshed": [
+    "full race",
+    "full Source export",
+    "Python full regression",
+    "coverage",
+    "type audits",
+    "non-Darwin"
+  ],
+  "merged": false,
+  "pushed": false,
+  "reproduction": {
+    "build_from_go": "go build -o /tmp/mini-loop-paired-reload-probe /Users/yanjixiong/github/mini-loop/docs/audits/go-reload-same-root-probe-2026-10-11.go",
+    "control_from_repo": "PYTHONPATH=python .venv/bin/python docs/audits/go-reload-same-root-control-2026-10-11.py /tmp/mini-loop-paired-reload-probe OUTPUT_JSON",
+    "ordering": "control before; full Go preload; control after; observer jobs do not overlap except the deliberately paired SDK subscriptions",
+    "vet_probe_from_go": "go vet /Users/yanjixiong/github/mini-loop/docs/audits/go-reload-same-root-probe-2026-10-11.go"
+  },
+  "infographic": {
+    "mode": "built-in image_gen generation",
+    "path": "docs/audits/go-reload-same-root-infographic-2026-10-11.png",
+    "sha256": "4431f42ca77323cead47b170a5ba3a61f3e44e6a4dfa1d22dcccca4a4f6bb798",
+    "prompt": "docs/audits/go-reload-same-root-infographic-prompt-2026-10-11.json",
+    "verification": "Viewed generated PNG: before 15/16, after 8/16, common operation failures 1/6 and readiness 0/2; zero asymmetric outcomes; roots/language/intervention and unresolved cause/acceptance correctly stated. Numeric cards, no proportional chart."
+  },
+  "probe_commit": "5d066609fe9a0f006ece7a9fada1f6cc738be6a2"
+}

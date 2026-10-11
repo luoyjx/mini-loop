@@ -10678,3 +10678,46 @@ Full race fails the same two wire assertions and nine native reload recipes;
 no data race is reported. Full Source export fails before freshness comparison
 at native Source observer readiness. Those failures remain required evidence;
 no retry-until-green, main merge, push, coverage refresh or full goal completion.
+
+## Paired native Source/Go observations on one root — 2026-10-11
+
+Baseline `c36903b`; runtime remains `f230942` plus the existing authority branch.
+Probe commit `5d06660`: a standalone typed Go probe and Python driver observe one owned temporary root,
+the same `.py` paths and one shared filesystem operation. Go explicitly selects
+the existing PythonSource SDK filter; actual Source uses Uvicorn 0.49.0 /
+WatchFiles 1.2.0 with FsEventWatcher, recursion/default filter, reload_delay=0 and
+rust_timeout=100. Both subscribers acknowledge the same post-subscription probe,
+then retain the 3-second operation and 5-second readiness deadlines.
+
+Before the full-Go workload: 15/16 common fixture matches, one common operation
+timeout (`added-source`), zero asymmetric results. The subsequent unchanged full
+ordinary Go gate fails two dotted-I wire assertions and seven native reload
+recipes. Immediately afterward: 8/16 common fixture matches, six common operation
+timeouts and two common readiness failures (`lower-mtime-write`, `rename-out`),
+zero asymmetric results. All operation-error classifications are verified as
+Source operation deadline / Go context deadline rather than arbitrary exceptions.
+Thus this cohort reproduces missing delivery simultaneously in actual Source and
+Go; failures cannot be assigned exclusively to Go admission/batching from these
+observations. This does not establish a kernel/daemon fault or resolve reliability.
+
+Paired subscriptions are a diagnostic intervention. Go uses a new process per
+case, Source one process per cohort; process-local registration history is not
+matched. Go's PythonSource selection removes filename differences, and does not
+exercise CLI GoSource adaptation. Shared preload causality is unproved: there is
+no randomized/reversed/isolated workload control. Source and Go callback boundaries
+are not instrumented. High fseventsd CPU remains an observation without causality.
+No production runtime, fixture, deadline, default or dependency is changed.
+
+Both 16-case control jobs exit 0; all 32 Go probes exit cleanly after Close and
+Source workers join through the driver. Two readiness-failure rows use finally
+cleanup without a separate native Source __exit__ counter. Probe build, probe vet,
+full module vet and git diff --check pass. Full Go's failures are retained. No new
+full race/Source export/Python regression/type/coverage/non-Darwin acceptance is
+claimed. README canonical map reviewed: topology/ownership/flow/defaults unchanged;
+only visible review baseline advances. Architecture graph remains unchanged.
+No merge/push; default diagnostics, IDNA and complete G0–G7 remain open.
+
+[Paired observations and hashes](docs/audits/go-reload-same-root-controls-2026-10-11.json)
+include executable reproduction sources. Next: distinguish shared volume/event-stream
+delivery from process-local registration under an isolated, matched workload before
+proposing a listener change or altering a required gate.
