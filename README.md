@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `e2b6e7d` plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `c43399c` plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -2632,6 +2632,19 @@ raw writes; foreign workspace stores are detached. ObservationRawConfig snapshot
 persist/minimum-byte settings; defaults are true/4096 only within an explicitly
 injected runtime. Shared component/store lifetime and default Manager composition
 remain caller-owned/pending. A typed stage-error event contains no plugin text.
+
+### Completed provider reply metadata
+
+Go `protocol.ModelReply` preserves the SDK `container` and `stop_details`
+through direct HTTP, SSE accumulation, immutable value copies and public JSON.
+Named container/refusal fields retain nullable text/timestamp observations and
+finite unknown extensions. Provider ingress selects SDK datetime normalization;
+archive decoding preserves the stored observation. SSE retains the initial
+container and replaces stop details only for a non-null delta, matching the
+44 captured SDK 0.107.1 observations. Metadata supplies no execution authority.
+The existing Agent event projection still reports content, stop reason, served
+model and usage. This reply data-shape change leaves the canonical architecture
+flow and defaults unchanged; wider provider/custom-transport acceptance remains open.
 
 ### Named usage observations and metering
 

@@ -177,14 +177,15 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		Message json.RawMessage `json:"message"`
 		Block   json.RawMessage `json:"content_block"`
 		Delta   struct {
-			Type         string               `json:"type"`
-			Text         *string              `json:"text"`
-			Thinking     *string              `json:"thinking"`
-			Signature    *string              `json:"signature"`
-			Citation     json.RawMessage      `json:"citation"`
-			PartialJSON  *string              `json:"partial_json"`
-			StopReason   *protocol.StopReason `json:"stop_reason"`
-			StopSequence *string              `json:"stop_sequence"`
+			Type         string                       `json:"type"`
+			Text         *string                      `json:"text"`
+			Thinking     *string                      `json:"thinking"`
+			Signature    *string                      `json:"signature"`
+			Citation     json.RawMessage              `json:"citation"`
+			PartialJSON  *string                      `json:"partial_json"`
+			StopReason   *protocol.StopReason         `json:"stop_reason"`
+			StopSequence *string                      `json:"stop_sequence"`
+			StopDetails  protocol.StopDetailsMetadata `json:"stop_details"`
 		} `json:"delta"`
 		Usage struct {
 			Input    *protocol.UsageCount      `json:"input_tokens"`
@@ -208,17 +209,21 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			return badStream("duplicate message_start")
 		}
 		var start struct {
-			ID      *string              `json:"id"`
-			Type    *protocol.ReplyKind  `json:"type"`
-			Role    *protocol.Role       `json:"role"`
-			Model   *string              `json:"model"`
-			Content *[]json.RawMessage   `json:"content"`
-			Usage   *protocol.TokenUsage `json:"usage"`
+			ID          *string                      `json:"id"`
+			Type        *protocol.ReplyKind          `json:"type"`
+			Role        *protocol.Role               `json:"role"`
+			Model       *string                      `json:"model"`
+			Content     *[]json.RawMessage           `json:"content"`
+			Usage       *protocol.TokenUsage         `json:"usage"`
+			Container   protocol.ContainerMetadata   `json:"container"`
+			StopDetails protocol.StopDetailsMetadata `json:"stop_details"`
 		}
 		if json.Unmarshal(wire.Message, &start) != nil || start.ID == nil || start.Type == nil || start.Role == nil || start.Model == nil || start.Content == nil || start.Usage == nil {
 			return badStream("missing message_start fields")
 		}
 		s.reply = protocol.ModelReply{ID: *start.ID, Type: *start.Type, Role: *start.Role, Model: *start.Model, Content: []protocol.Block{}, Usage: start.Usage.WithSDKStreamCounts()}
+		s.reply.Container = start.Container.WithSDKDatetime()
+		s.reply.StopDetails = start.StopDetails
 		if err := s.reply.Usage.Validate(); err != nil {
 			return badStream("invalid initial usage")
 		}
@@ -249,6 +254,10 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		}
 		s.reply.StopReason = *wire.Delta.StopReason
 		s.reply.StopSequence = wire.Delta.StopSequence
+		// The SDK retains start.container and only replaces non-null stop_details.
+		if wire.Delta.StopDetails.Kind() != protocol.ReplyMetadataNull {
+			s.reply.StopDetails = wire.Delta.StopDetails
+		}
 		deltaUsage := protocol.TokenUsage{OutputTokens: *wire.Usage.Output, CacheReadInputTokens: wire.Usage.Read, CacheCreationInputTokens: wire.Usage.Creation, ServerToolUse: wire.Usage.Server}
 		if wire.Usage.Input != nil {
 			deltaUsage.InputTokens = *wire.Usage.Input

@@ -37,14 +37,16 @@ type ServiceTier string
 // ModelReply is the completed provider response. An empty Content slice is
 // valid for a refusal; request transcript messages retain their own rules.
 type ModelReply struct {
-	ID           string     `json:"id"`
-	Type         ReplyKind  `json:"type"`
-	Role         Role       `json:"role"`
-	Model        string     `json:"model"`
-	Content      []Block    `json:"content"`
-	StopReason   StopReason `json:"stop_reason"`
-	StopSequence *string    `json:"stop_sequence"`
-	Usage        TokenUsage `json:"usage"`
+	ID           string              `json:"id"`
+	Type         ReplyKind           `json:"type"`
+	Role         Role                `json:"role"`
+	Model        string              `json:"model"`
+	Content      []Block             `json:"content"`
+	StopReason   StopReason          `json:"stop_reason"`
+	StopSequence *string             `json:"stop_sequence"`
+	Usage        TokenUsage          `json:"usage"`
+	Container    ContainerMetadata   `json:"container"`
+	StopDetails  StopDetailsMetadata `json:"stop_details"`
 }
 
 func (reply ModelReply) Validate() error {
@@ -53,6 +55,12 @@ func (reply ModelReply) Validate() error {
 	}
 	if err := reply.Usage.Validate(); err != nil {
 		return fmt.Errorf("usage: %w", err)
+	}
+	if err := reply.Container.Validate(); err != nil {
+		return fmt.Errorf("container: %w", err)
+	}
+	if err := reply.StopDetails.Validate(); err != nil {
+		return fmt.Errorf("stop_details: %w", err)
 	}
 	for i, block := range reply.Content {
 		if err := block.Validate(); err != nil {
@@ -82,14 +90,16 @@ func (reply ModelReply) MarshalJSON() ([]byte, error) {
 
 func (reply *ModelReply) UnmarshalJSON(data []byte) error {
 	var wire struct {
-		ID           *string     `json:"id"`
-		Type         *ReplyKind  `json:"type"`
-		Role         *Role       `json:"role"`
-		Model        *string     `json:"model"`
-		Content      *[]Block    `json:"content"`
-		StopReason   *StopReason `json:"stop_reason"`
-		StopSequence *string     `json:"stop_sequence"`
-		Usage        *TokenUsage `json:"usage"`
+		ID           *string             `json:"id"`
+		Type         *ReplyKind          `json:"type"`
+		Role         *Role               `json:"role"`
+		Model        *string             `json:"model"`
+		Content      *[]Block            `json:"content"`
+		StopReason   *StopReason         `json:"stop_reason"`
+		StopSequence *string             `json:"stop_sequence"`
+		Usage        *TokenUsage         `json:"usage"`
+		Container    ContainerMetadata   `json:"container"`
+		StopDetails  StopDetailsMetadata `json:"stop_details"`
 	}
 	if err := decodeStrict(data, &wire); err != nil {
 		return err
@@ -101,6 +111,7 @@ func (reply *ModelReply) UnmarshalJSON(data []byte) error {
 		ID: *wire.ID, Type: *wire.Type, Role: *wire.Role, Model: *wire.Model,
 		Content: *wire.Content, StopReason: *wire.StopReason,
 		StopSequence: wire.StopSequence, Usage: *wire.Usage,
+		Container: wire.Container, StopDetails: wire.StopDetails,
 	}
 	if err := next.Validate(); err != nil {
 		return err

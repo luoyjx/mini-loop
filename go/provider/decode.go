@@ -9,9 +9,8 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-// Local ingress DTOs preserve named usage and discard unconsumed message metadata.
-// Normalize every
-// consumed field into a closed domain variant. Raw bytes never reach a session.
+// Local ingress DTOs normalize completed message fields into named domain
+// variants. Raw bytes never reach a session.
 func decodeReply(data []byte) (protocol.ModelReply, error) {
 	if !json.Valid(data) && utf8.Valid(data) {
 		return decodeLegacySDKReply(data)
@@ -20,14 +19,16 @@ func decodeReply(data []byte) (protocol.ModelReply, error) {
 		return protocol.ModelReply{}, errors.New("invalid UTF-8 response")
 	}
 	var wire struct {
-		ID           *string              `json:"id"`
-		Type         *protocol.ReplyKind  `json:"type"`
-		Role         *protocol.Role       `json:"role"`
-		Model        *string              `json:"model"`
-		Content      *[]json.RawMessage   `json:"content"`
-		StopReason   *protocol.StopReason `json:"stop_reason"`
-		StopSequence *string              `json:"stop_sequence"`
-		Usage        *protocol.TokenUsage `json:"usage"`
+		ID           *string                      `json:"id"`
+		Type         *protocol.ReplyKind          `json:"type"`
+		Role         *protocol.Role               `json:"role"`
+		Model        *string                      `json:"model"`
+		Content      *[]json.RawMessage           `json:"content"`
+		StopReason   *protocol.StopReason         `json:"stop_reason"`
+		StopSequence *string                      `json:"stop_sequence"`
+		Usage        *protocol.TokenUsage         `json:"usage"`
+		Container    protocol.ContainerMetadata   `json:"container"`
+		StopDetails  protocol.StopDetailsMetadata `json:"stop_details"`
 	}
 	if err := json.Unmarshal(data, &wire); err != nil {
 		return protocol.ModelReply{}, errors.New("malformed JSON")
@@ -36,6 +37,8 @@ func decodeReply(data []byte) (protocol.ModelReply, error) {
 		return protocol.ModelReply{}, errors.New("missing completed-message fields")
 	}
 	reply := protocol.ModelReply{ID: *wire.ID, Type: *wire.Type, Role: *wire.Role, Model: *wire.Model, Content: []protocol.Block{}, StopReason: *wire.StopReason, StopSequence: wire.StopSequence, Usage: wire.Usage.WithSDKDirectCounts()}
+	reply.Container = wire.Container.WithSDKDatetime()
+	reply.StopDetails = wire.StopDetails
 	for i, raw := range *wire.Content {
 		block, err := decodeBlock(raw)
 		if err != nil {
