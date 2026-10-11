@@ -6851,51 +6851,43 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** at local main `56f543d`; latest Go runtime implementation is
-`014e913`. Production code is unchanged from the full JSON read-span gates; the
-AST integrity test now replaces the executable path instead of writing the recently
-executed inode. The prior full-tree measurements remain pinned to their original
-snapshot; this test change does not refresh coverage. The new full ordinary Go
-gate passes after the test-only change; the prior race+atomic gate still has four
-native recipe operation failures and has not been rerun. This is not whole-port
-acceptance.
-Vet and syntax/public type audits pass (450 production files/1434 named types;
-50 packages/1189 exported types, zero findings). A new Linux amd64/CGO1 compiler
-public-type audit also passes50 packages/1189 exported types with zero findings,
-in a pinned existing Go1.23.3 image through the compatibility layer. Local Linux
-CGO0 inventories fail on SQLite types, and local Linux arm64/CGO1 fails on Darwin
-compiler headers; neither is a type pass. Linux amd64 compatibility-layer full gates are now terminal on the same isolated
-readonly commit snapshot: ordinary and race each fail8 packages, vet passes.
-CLI readonly-HOME cache error is explicit; other platform/phase/signal differences
-need matched Source/native evidence. A separate Linux arm64/writable-HOME cohort
-is terminal without changing assertions or deadlines: public types/vet pass;
-ordinary/race each fail7 packages. Full acceptance remains open.
-[Full Linux evidence](docs/audits/go-linux-full-gates-2026-10-11.json).
-[Profile evidence](docs/audits/go-linux-public-types-2026-10-11.json). SQLite maximum512KiB decision
-restart now passes its original shared30s budget in the focused race+atomic check
-and both full Go runs. This is not full migration acceptance.
+Reviewed **2026-10-11** at local main `3dc65c8`; latest Go runtime implementation
+is `93a7474`, exact SDK usage text-integer normalization. The same frozen inputs
+pass full ordinary Go, vet and race+atomic; full Source `--check` passes237 files.
+Native syntax/public type audits pass450 production files/1434 named types and
+50 packages/1189 exported types with zero findings. This is the current Darwin
+profile, not full port or non-Darwin acceptance. Earlier native temporal failures
+remain retained and unexplained; no watcher runtime was changed in this iteration.
+[Current full gates](docs/audits/go-usage-text-2026-10-11.json).
+
+Linux amd64 and native arm64 full gate receipts remain pinned to their prior
+snapshots and failed test gates. Their readonly-HOME, platform shell/path and
+native enumeration differences are retained. The subsequent AST test-only fix
+has focused Linux evidence; the latest usage runtime has not received Linux full
+gates. Same-Linux-filesystem Source glob capture remains open while Docker is
+unavailable. [Linux evidence](docs/audits/go-linux-full-gates-2026-10-11.json).
+SQLite maximum512KiB decision restart passes its original shared30s focused budget
+and full native gates; this does not prove power-loss or external-effect fencing.
 
 Owned provider literal-target transport now passes all224 request-object,40 plain
 HTTP wire and24 proxy/TLS wire assertions, with16 SNI and8 CONNECT authority/key
 checks. The earlier12/14 ASCII wire state is superseded by this required inventory;
 broader IDNA remains an explicit unapproved dependency/implementation item.
-Current exporter registers236 fixture keys, all present on disk. Presence is not
-freshness: latest full Source --check fails its native observer arming handshake
-before global comparison. Four later selected required Source captures match
-fixtures but do not replace that full gate.
+Current exporter registers237 fixture keys and the full Source comparison now
+passes. The new76 usage-text direct/SSE cases, original34 usage cases, every
+captured stream stage and final PromptTokens match; wider integer/metering ranges,
+wrong metadata field shapes and final provider/public-entry scope remain open.
 
-Latest full failed-run statement coverage is app**89.21%** (32690/36645), all Go
-**89.15%** (32811/36803), Provider**86.67%** (1515/1748), on the unchanged current
-Go tree. Profile SHA verified; not a passing acceptance baseline. Latest Python
-full regression is2239 passed/28 skipped/74 warnings/24 subtests (96.47s), from
-the same unchanged Python tree. Latest diagnostic adds same-subscription queue/
-post-result control evidence: hidden readiness failure despite300 queue marks and
-a later control C event; three other operations pass. Earlier full native failures
-are not superseded. Neither diagnostics nor scope receipts identify kernel cause.
+Current full passing-run statement coverage is app**89.21%** (32697/36653), all Go
+**89.15%** (32818/36811), Provider**86.67%** (1515/1748). The profile hash and1649
+frozen Go/Python inputs are verified. Python full regression passes2239 tests,
+28 skipped,75 warnings and24 subtests in231.65s (pytest log elapsed); command
+elapsed is232.334s. Latest ordinary/race pass is one cohort, not a root-cause
+finding for the retained native reliability history.
 
-[Reconciled index receipt](docs/audits/go-current-acceptance-index-2026-10-11.json),
-[full runtime gates](docs/audits/go-json-read-spans-2026-10-11.json),
-[coverage](docs/audits/go-coverage-json-read-spans-2026-10-11.json),
+[Current full gates](docs/audits/go-usage-text-2026-10-11.json),
+[current coverage](docs/audits/go-coverage-usage-text-2026-10-11.json),
+[prior reconciled index](docs/audits/go-current-acceptance-index-2026-10-11.json),
 [literal targets](docs/audits/go-provider-literal-target-2026-10-11.json).
 Default syntax backend/IDNA decisions, native reliability, final P0/P1/G0–G7
 scope reconciliation, non-Darwin and rendered architecture acceptance remain open.
@@ -19594,7 +19586,7 @@ Go tree unchanged from retained baseline; logs/tree/diff check verified. Docs/
 evidence only: full Python/scans/guards not rerun. README map/boundaries reviewed,
 baseline updated, runtime topology/authority/defaults unchanged, architecture
 JSON/HTML unchanged; no rendered acceptance/push. Darwin native reliability,
-Source freshness, default syntax/IDNA and complete P0/P1/G0–G7 remain open.
+Default syntax/IDNA and complete P0/P1/G0–G7 remain open.
 [Full retained Linux gates](docs/audits/go-linux-full-gates-2026-10-11.json).
 
 Built-in imagegen infographic inspected; it presents the completed amd64 cohort
@@ -19683,3 +19675,39 @@ Built-in imagegen edited the existing layered base image; the purple file box
 locates this iteration's validation work and the side text retains Linux limits.
 [Iteration image](docs/audits/go-glob-enumeration-infographic-2026-10-11.png),
 [exact edit prompt](docs/audits/go-glob-enumeration-infographic-2026-10-11.prompt.txt).
+
+## Exact SDK usage integer text and refreshed full gates — 2026-10-11
+
+Runtime93a7474 replaces floating-point text normalization with exact integer
+parsing after validating an optional all-zero decimal tail and underscore
+placement between integer digits. It repairs precision loss, malformed decimal
+acceptance and tiny nonzero fractions acquiring numeric metering authority.
+The named closed UsageCount union, SDK full-validation/fallback order, clone,
+mask and stored observation boundaries are unchanged. Native ranges are not
+expanded; this does not prove arbitrary-size integer or whole Meter fidelity.
+
+SDK0.107.1/Pydantic2.13.4 Source capture adds38 profiles/76 direct-SSE cases,
+including root/cache/thinking/server-tool fields. Initial60 cases reproduced17
+pre-fix failures. The new76 and original34 now assert exact event kinds/values,
+every captured stream stage and final PromptTokens. Full Source export comparison
+passes237 files, replacing the earlier uncompleted freshness gate as current
+evidence while retaining its history.
+
+Serial frozen-input gates: focused0/2.145s; full ordinary0/233.116s; vet0/1.271s;
+full race+atomic0/603.836s; Python0/232.334s command elapsed,2239 passed/28 skipped/
+75 warnings/24 subtests in231.65s pytest elapsed; scanning guards0/37.801s,all19
+anchored. Native syntax audit450 files/1434 types/zero findings and public closure
+50 packages/1189 exported types/zero findings both pass. All1649 frozen Go/Python
+inputs match after gates. [Exact commands/full logs/input hashes](docs/audits/go-usage-text-2026-10-11.json).
+No invariants/full guard mutation rerun: Python package behavior and mutation
+anchors unchanged. Runtime topology/authority/defaults unchanged; README boundary
+and review baseline updated, canonical graph/interactive JSON/HTML unchanged.
+
+Passing full statement coverage: app32697/36653=89.21%; all32818/36811=89.15%;
+provider1515/1748=86.67%. Identical locations are merged with maximum hits and
+statement-count agreement; raw profile SHA/path/limits are retained in the
+[coverage receipt](docs/audits/go-coverage-usage-text-2026-10-11.json).
+This one passing cohort does not identify the cause of retained watcher failures.
+Linux gates, larger numeric/aggregate ranges, malformed metadata shapes, default
+syntax/IDNA decisions and final P0/P1/G0–G7 scope remain open. No push/paid-provider/
+non-Darwin/rendered-architecture acceptance is claimed.

@@ -1,5 +1,24 @@
 # Go provider 范围审计
 
+## Usage text 精确整数转换 — 2026-10-11
+
+SDK0.107.1/Pydantic2.13.4 的新增38组 direct/SSE 输入共76场景，覆盖整数
+文本、全零/非零小数尾部、浮点精度以外但仍在 native int 范围内的整数、
+下划线位置、Unicode 数字/空白，以及根、cache、thinking、server-tool
+计数字段。首批60场景在修复前复现17个失败子项；Go 的浮点转换会丢失
+整数精度、将微小非零尾部舍入为整数，并接受缺少整数或小数部分的格式。
+
+`UsageCount.sdkInteger` 现在先检查精确文本语法，再用整数解析；只接受
+全零小数尾部，整数中的下划线必须位于 ASCII 数字之间。非法文本保留
+原始观察值，不获取计量 authority。原34场景和新增76场景验证事件值与
+类型、所有捕获的 SSE start/delta 阶段以及最终 PromptTokens；具名闭合
+类型、SDK阶段 fallback、克隆/脱敏和恢复边界保持不变。
+
+全量 Source 导出 `--check` 已通过237文件。完整门禁与覆盖率以本轮
+交付记录为准；这不是任意大整数支持或完整 Meter/Provider 验收。Native
+计数/累计范围、范围以外的计量结果、更多错误 metadata 字段形状、其他
+provider/公开入口/default/caller 范围与最终 G4/G7 仍待核对。
+
 ## 摘要
 
 当前复核基线：`3cd31be`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage

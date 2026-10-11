@@ -1,0 +1,31 @@
+{
+  "mode": "mode: atomic",
+  "gate_exit_code": 0,
+  "aggregation": "Merge identical source locations using maximum hit count; assert statement counts agree.",
+  "raw_blocks": 1233087,
+  "unique_source_locations": 25688,
+  "profile_bytes": 85965773,
+  "profile_sha256": "ad97ed8ed6e648e958b84a9da5868eed22a6af1597633db3fe96f13d6aaad7ce",
+  "profile_path": "/tmp/mini-loop-usage-text-2026-10-11.cover",
+  "limitations": [
+    "Darwin arm64 Go1.23.3 CGO1 statement coverage.",
+    "Excludes native C, CLI subprocess internals, Python, branch and non-Darwin coverage.",
+    "Single full race+atomic passing gate, not full port acceptance or reliability cause proof."
+  ],
+  "all_go": {
+    "covered_statements": 32818,
+    "total_statements": 36811,
+    "percent": 89.15269892151802
+  },
+  "application_excluding_tools": {
+    "covered_statements": 32697,
+    "total_statements": 36653,
+    "percent": 89.20688620303932
+  },
+  "provider": {
+    "covered_statements": 1515,
+    "total_statements": 1748,
+    "percent": 86.67048054919908
+  },
+  "implementation_commit": "93a7474d7e2b1954b6f738c6f04c22c51438fd51"
+}
