@@ -19711,3 +19711,9 @@ This one passing cohort does not identify the cause of retained watcher failures
 Linux gates, larger numeric/aggregate ranges, malformed metadata shapes, default
 syntax/IDNA decisions and final P0/P1/G0–G7 scope remain open. No push/paid-provider/
 non-Darwin/rendered-architecture acceptance is claimed.
+
+Built-in imagegen edited the inspected layered base image to highlight the
+provider-associated UsageCount normalization; the side text explains this
+iteration's changes and leaves the exact full gate results in the receipt.
+[Iteration image](docs/audits/go-usage-text-infographic-2026-10-11.png),
+[exact edit prompt](docs/audits/go-usage-text-infographic-2026-10-11.prompt.txt).
