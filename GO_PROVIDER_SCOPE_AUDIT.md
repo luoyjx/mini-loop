@@ -495,3 +495,20 @@ vet、两项类型审计、19 项扫描守卫通过。IDNA 固定依赖批准尚
 依赖。分支未合入 main，未 push；默认诊断及完整 G0–G7 仍开放。
 
 [完整证据](docs/audits/go-provider-authority-native-2026-10-11.json)。
+
+## Container expiry 双路径规范化 — 2026-10-11
+
+实际 SDK metadata 库存由 44 项扩展到 196 项：新增 38 个有限 expiry profile，
+每项分别使用有效文本 ID 与无效数字 ID，再走 direct/SSE。原始 native 仅
+150/196 匹配，修复后 196/196 匹配。Pydantic 整体 container 校验与 SDK
+宽松构造的微秒舍入、负数时间戳、Unicode 日期/数字、格式接受范围不同，
+本轮按实际 Source 路径选择。归档读取保持已有观察值，未新增依赖或执行权限。
+完整 provider 接受范围、两个 IDNA wire 失败与 reload 时序仍开放；全量
+门禁、固定版本、Source/native 日志哈希详见
+[日期审计](docs/audits/go-provider-expiry-native-2026-10-11.json)。
+
+日期实现提交 `f230942`。最终 Python 2236 passed / 28 skipped / 74 warnings，
+24 subtests；vet、两项类型审计和 19 项扫描守卫通过。完整普通 Go 失败于
+2 个 dotted-I wire 与 CGO 编译期间 native observer；race 失败于同样 2 个 wire
+与 9 个 reload recipe，未报告数据竞争。全量 Source 导出在 native observer
+就绪处失败。没有合入 main 或 push；覆盖率未刷新。

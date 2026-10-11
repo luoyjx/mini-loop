@@ -6852,10 +6852,13 @@ Record its parity evidence and remaining gaps before checking it off.
 ## Current status
 
 Reviewed 2026-10-11: local main remains `9c39e32`; `fix/go-provider-authority`
-contains `3cd31be` and `b5b7ef8` (expanded Unicode wire follow-up). All 32 request-object
+contains `3cd31be` and `b5b7ef8` (expanded Unicode wire follow-up).
+`f230942` expands actual SDK metadata to 196 observations, all matching
+after native two-path normalization (150 before). Full gates are retained in the
+[expiry audit](docs/audits/go-provider-expiry-native-2026-10-11.json). All 32 request-object
 assertions match. Expanded real HTTP wire inventory matches 12/14, with two required
-dotted-I failures (also present before normalization). Full ordinary Go also fails
-five reload cases. The branch is not merged while stable Provider failures remain.
+dotted-I failures (also present before normalization). Latest expiry-slice full
+ordinary Go also fails the native-observer-during-CGO-build reload case. The branch is not merged while stable Provider failures remain.
 IDNA dependency approval is pending; no dependency added. Final gate receipts and
 historical results are retained in [authority evidence](docs/audits/go-provider-authority-native-2026-10-11.json).
 Coverage was not refreshed: latest measured `f2cdbca` application 89.34%, all Go
@@ -6893,8 +6896,9 @@ no runtime fix or root-cause claim has been made.
 2. Provider final inventory: completed reply `container` and `stop_details` now
    use named closed variants at `3916f71`; 44 actual direct/stream captures match
    defaults, date normalization, finite observations, delta updates, cloning and
-   public JSON. Arbitrary coercion/date inputs and remaining custom transport
-   behavior still require final inventory reconciliation.
+   public JSON. A further 196-observation expiry inventory now exercises validation and loose
+   construction with 38 finite date/numeric profiles, all matched. Arbitrary date
+   scope and remaining custom transport behavior still require final reconciliation.
    Native citation normalization, ordered SSE, forwarding,
    immutable cloning/masking and text rewrites have Source and native evidence.
    Citation-bearing HTTP/SQLite/recording recovery is verified for direct and stream
@@ -18599,3 +18603,49 @@ The built-in imagegen graphic was edited and visually checked for 32/32 request
 matches, 12/14 wire matches and two open required failures. Full G0–G7 remains open.
 
 See [native authority evidence](docs/audits/go-provider-authority-native-2026-10-11.json).
+
+## Captured SDK container expiry validation paths — 2026-10-11
+
+Runtime baseline `1a48a13`; native expiry implementation `f230942`. Actual
+Anthropic 0.107.1, Pydantic 2.13.4 / core 2.46.4 and Unicode 14.0.0 captures expand
+completed reply metadata from 44 to 196 direct/SSE observations. 38 finite expiry
+profiles each run with a valid text ID and an invalid numeric ID, exercising
+whole-container validation and SDK loose construction. Source/native differences
+are established against the same inventory: 150/196 matches before, 196/196 after.
+All 46 original failed assertions are preserved in the baseline audit.
+
+Optional Container validation tries Pydantic date/timestamp parsing first. If
+container fields fail validation, SDK construction falls back to Python datetime
+parsing. Native ingress now selects those paths explicitly. Captures cover
+positive/negative fractional epochs, watershed/millisecond units, microsecond
+rounding/carry, date-only/lowercase/comma forms, Unicode digits, Python numeric
+strings and overflow saturation, offset minute carry, invalid calendars and
+finite list/object fallback values. Pinned upstream speedate 0.17.0 source and
+installed SDK parser hashes are retained in the audit. A negative float with a
+valid ID produces `1969-12-31T23:59:59.123457Z`; invalid ID selects the Source
+fallback `1969-12-31T23:59:59.876544Z`. This is observed Source behavior, not a
+claim that both parsers implement one mathematical timestamp interpretation.
+
+Named immutable metadata, clone and public JSON round trips preserve these
+observations; archive reads do not re-normalize stored expiry. No dependency,
+broad dynamic domain payload, execution authority or feature default is added.
+Existing finite metadata admission remains. This inventory establishes these
+captured profiles, not arbitrary datetime/provider equivalence. Default syntax
+backend, IDNA wire failures and native reload timing remain open; G0–G7 acceptance
+and main merge remain unproven. Coverage is not refreshed.
+
+README canonical map reviewed: topology/ownership/flow/persistence/defaults are
+unchanged. Visible baseline and reply-metadata boundary updated; interactive map
+unchanged. Exact current gates are retained in
+[expiry evidence](docs/audits/go-provider-expiry-native-2026-10-11.json).
+Built-in imagegen shows 44→196 captures, 150/196→196/196 matches and open goal items.
+
+Implementation commit: `f230942`. Final full Python regression: 2236 passed,
+28 skipped, 74 warnings, 24 subtests (89.24s). Vet, both type audits (449 production
+files / 1430 package-level types; 50 packages / 1189 exported types; zero findings),
+19 scanner guards and focused Source/native date gates pass. Full ordinary Go
+fails only two dotted-I wire assertions and the native observer during CGO build.
+Full race fails the same two wire assertions and nine native reload recipes;
+no data race is reported. Full Source export fails before freshness comparison
+at native Source observer readiness. Those failures remain required evidence;
+no retry-until-green, main merge, push, coverage refresh or full goal completion.
