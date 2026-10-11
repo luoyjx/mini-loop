@@ -33,7 +33,7 @@ func TestEndpointRequestsMatchActualSDK(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 40 {
+	if len(fixture.Cases) != 224 {
 		t.Fatal("endpoint fixture inventory changed")
 	}
 	for _, row := range fixture.Cases {

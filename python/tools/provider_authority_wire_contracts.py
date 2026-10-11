@@ -33,6 +33,9 @@ WIRE_URLS = (
     ('uppercase-armenian-host', 'http://fixture.ԱԲ/tenant'),
     ('uppercase-cyrillic-host', 'http://fixture.Я/tenant'),
     ('empty-fragment', 'http://fixture.invalid/tenant#'),
+    ('literal-backslash-path', 'http://fixture.invalid/ascii-\\-tail'),
+    ('literal-caret-path', 'http://fixture.invalid/ascii-^-tail'),
+    ('literal-pipe-path', 'http://fixture.invalid/ascii-|-tail'),
 )
 
 

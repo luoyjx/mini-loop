@@ -12,7 +12,8 @@ PATHS = (
     '/a/./tenant', '/a/../tenant', '/a/../../tenant', '/tenant/.', '/tenant/..',
     '/a//../tenant', '/a/..//tenant', '/tenant%2F/', '/tenant/%2e%2E/child',
     '/tenant%2f//', '/tenant path/', '/café/中文', '/v1/',
-)
+) + tuple("/ascii-" + chr(code) + "-tail" for code in range(0x20, 0x7f)
+          if chr(code) not in "%?#")
 
 
 def provider_endpoint_contracts() -> dict:

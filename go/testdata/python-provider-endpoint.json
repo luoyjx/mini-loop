@@ -519,6 +519,2398 @@
       ],
       "mode": "stream",
       "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii- -tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%20-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%20-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii- -tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%20-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%20-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-!-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-!-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-!-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-!-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-!-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-!-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\"-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%22-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%22-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\"-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%22-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%22-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-$-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-$-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-$-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-$-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-$-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-$-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-&-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-&-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-&-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-&-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-&-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-&-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-'-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-'-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-'-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-'-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-'-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-'-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-(-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-(-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-(-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-(-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-(-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-(-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-)-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-)-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-)-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-)-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-)-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-)-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-*-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-*-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-*-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-*-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-*-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-*-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-+-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-+-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-+-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-+-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-+-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-+-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-,-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-,-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-,-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-,-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-,-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-,-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii---tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii---tail/v1/messages",
+          "url": "https://fixture.invalid/ascii---tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii---tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii---tail/v1/messages",
+          "url": "https://fixture.invalid/ascii---tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-.-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-.-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-.-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-.-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-.-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-.-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-/-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-/-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-/-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-/-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-/-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-/-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-0-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-0-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-0-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-0-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-0-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-0-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-1-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-1-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-1-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-1-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-1-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-1-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-2-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-2-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-2-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-2-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-2-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-2-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-3-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-3-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-3-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-3-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-3-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-3-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-4-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-4-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-4-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-4-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-4-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-4-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-5-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-5-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-5-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-5-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-5-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-5-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-6-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-6-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-6-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-6-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-6-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-6-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-7-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-7-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-7-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-7-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-7-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-7-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-8-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-8-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-8-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-8-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-8-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-8-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-9-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-9-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-9-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-9-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-9-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-9-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-:-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-:-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-:-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-:-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-:-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-:-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-;-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-;-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-;-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-;-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-;-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-;-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-<-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%3C-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%3C-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-<-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%3C-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%3C-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-=-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-=-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-=-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-=-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-=-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-=-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii->-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%3E-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%3E-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii->-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%3E-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%3E-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-@-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-@-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-@-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-@-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-@-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-@-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-A-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-A-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-A-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-A-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-A-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-A-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-B-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-B-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-B-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-B-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-B-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-B-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-C-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-C-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-C-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-C-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-C-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-C-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-D-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-D-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-D-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-D-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-D-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-D-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-E-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-E-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-E-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-E-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-E-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-E-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-F-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-F-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-F-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-F-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-F-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-F-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-G-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-G-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-G-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-G-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-G-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-G-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-H-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-H-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-H-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-H-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-H-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-H-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-I-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-I-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-I-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-I-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-I-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-I-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-J-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-J-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-J-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-J-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-J-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-J-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-K-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-K-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-K-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-K-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-K-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-K-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-L-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-L-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-L-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-L-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-L-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-L-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-M-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-M-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-M-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-M-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-M-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-M-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-N-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-N-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-N-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-N-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-N-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-N-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-O-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-O-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-O-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-O-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-O-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-O-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-P-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-P-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-P-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-P-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-P-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-P-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-Q-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-Q-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-Q-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-Q-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-Q-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-Q-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-R-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-R-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-R-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-R-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-R-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-R-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-S-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-S-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-S-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-S-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-S-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-S-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-T-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-T-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-T-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-T-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-T-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-T-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-U-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-U-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-U-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-U-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-U-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-U-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-V-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-V-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-V-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-V-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-V-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-V-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-W-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-W-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-W-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-W-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-W-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-W-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-X-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-X-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-X-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-X-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-X-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-X-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-Y-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-Y-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-Y-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-Y-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-Y-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-Y-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-Z-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-Z-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-Z-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-Z-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-Z-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-Z-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-[-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-[-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-[-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-[-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-[-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-[-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\\-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-\\-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-\\-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\\-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-\\-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-\\-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-]-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-]-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-]-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-]-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-]-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-]-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-^-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-^-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-^-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-^-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-^-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-^-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-_-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-_-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-_-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-_-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-_-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-_-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-`-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%60-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%60-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-`-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%60-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%60-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-a-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-a-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-a-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-a-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-a-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-a-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-b-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-b-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-b-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-b-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-b-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-b-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-c-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-c-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-c-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-c-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-c-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-c-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-d-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-d-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-d-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-d-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-d-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-d-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-e-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-e-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-e-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-e-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-e-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-e-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-f-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-f-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-f-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-f-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-f-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-f-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-g-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-g-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-g-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-g-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-g-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-g-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-h-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-h-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-h-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-h-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-h-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-h-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-i-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-i-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-i-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-i-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-i-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-i-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-j-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-j-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-j-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-j-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-j-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-j-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-k-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-k-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-k-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-k-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-k-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-k-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-l-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-l-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-l-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-l-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-l-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-l-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-m-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-m-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-m-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-m-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-m-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-m-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-n-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-n-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-n-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-n-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-n-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-n-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-o-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-o-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-o-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-o-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-o-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-o-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-p-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-p-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-p-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-p-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-p-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-p-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-q-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-q-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-q-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-q-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-q-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-q-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-r-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-r-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-r-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-r-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-r-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-r-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-s-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-s-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-s-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-s-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-s-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-s-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-t-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-t-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-t-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-t-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-t-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-t-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-u-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-u-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-u-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-u-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-u-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-u-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-v-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-v-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-v-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-v-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-v-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-v-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-w-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-w-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-w-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-w-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-w-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-w-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-x-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-x-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-x-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-x-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-x-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-x-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-y-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-y-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-y-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-y-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-y-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-y-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-z-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-z-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-z-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-z-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-z-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-z-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-{-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%7B-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%7B-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-{-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%7B-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%7B-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-|-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-|-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-|-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-|-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-|-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-|-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-}-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%7D-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%7D-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-}-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-%7D-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-%7D-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-~-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-~-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-~-tail/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-~-tail",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/ascii-~-tail/v1/messages",
+          "url": "https://fixture.invalid/ascii-~-tail/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
     }
   ],
   "httpx_version": "0.28.1",

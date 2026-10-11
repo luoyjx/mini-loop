@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `d060ac2` plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `49dda91` plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -2674,9 +2674,13 @@ Direct and streaming providers construct the outbound messages path from the
 validated base URL's escaped path. Literal dot segments follow captured HTTPX
 normalization; existing percent escapes and repeated slashes remain intact. The
 SDK adds a slash only when absent before appending `v1/messages`. The configured
-endpoint used in audit identity is retained. All 40 actual SDK requests across
-20 path profiles are required native assertions, including Unicode, spaces,
-encoded slashes/dots, repeated trailing slashes and literal parent/current segments.
+endpoint used in audit identity is retained. The original 40 SDK requests across
+20 path profiles remain required, including Unicode, spaces, encoded slashes/dots,
+repeated trailing slashes and literal parent/current segments. The expanded inventory
+adds 92 printable ASCII path characters (excluding percent/query/fragment delimiters),
+for 224 required direct/SSE requests. Native matches 218/224; six assertions fail
+for literal backslash, caret and pipe. HTTPX preserves those characters; Go net/url
+escapes them. This is a retained discrepancy, not a completed path acceptance gate.
 Construction performs no HTTP request. Existing credential admission and redirect
 refusal remain in place. Query/userinfo/fragment restrictions retain their current
 native admission rules; general hostname/port normalization and custom transport
@@ -2688,7 +2692,7 @@ preserves dotted-I expansion and contextual sigma across label separators rather
 than applying Go rune casing. Numeric ports lose leading zeros and default
 HTTP/HTTPS ports are omitted. IPv6 spelling/brackets and configured audit identity
 remain intact. All 32 captured ASCII/IPv6 direct/SSE requests remain required.
-Thirty-four actual loopback HTTP requests also compare Host, target, method,
+Forty actual loopback HTTP requests compare Host, target, method,
 API-key and TCP dial authority against SDK captures. Only TCP destination is
 redirected; HTTP encoding/parsing and provider/SDK behavior are real. The expanded
 inventory includes dotted-I, repeated/mixed dotted-I, uppercase Unicode/sharp-s,
@@ -2697,7 +2701,12 @@ matches 12/34; the native casing change matches 34/34, including the original tw
 required dotted-I failures. No dependency is added. Unicode request-object/custom
 transport spelling still differs from Source's ASCII IDNA view. General IDNA
 validation/normalization, broader admission and TLS/SNI equivalence remain open;
-this wire inventory does not establish them. The broader IDNA dependency proposal
+this wire inventory does not establish them. Six additional literal backslash/caret/pipe
+path requests fail real-wire target comparisons, leaving 34/40 matches. A Go URL
+representation probe shows origin-opaque keeps the target but loses full URL spelling
+and proxy absolute-form, while absolute-opaque changes the direct request target.
+No opaque workaround is adopted; a faithful transport boundary remains required.
+The broader IDNA dependency proposal
 remains pending and is not needed for this casing change.
 
 A subsequent 68-observation URL scope audit captures the actual Python provider

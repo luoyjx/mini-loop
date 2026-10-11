@@ -8,7 +8,7 @@ def test_actual_endpoint_request_paths_match_frozen_contract():
     fixture = provider_endpoint_contracts()
     root = Path(__file__).resolve().parents[2]
     assert fixture == json.loads((root / 'go/testdata/python-provider-endpoint.json').read_text())
-    assert len(fixture['cases']) == 40
+    assert len(fixture['cases']) == 224
     for row in fixture['cases']:
         assert len(row['calls']) == 1
         assert row['calls'][0]['method'] == 'POST'
