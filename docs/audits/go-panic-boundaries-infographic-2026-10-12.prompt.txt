@@ -1,0 +1,13 @@
+Use case: infographic-diagram, precise edit of supplied five-layer mini-loop architecture base.
+Preserve its existing canvas, dark navy blueprint style, five layers L1-L5, every runtime component, and all control/data-flow arrows. No component is added or removed.
+Title: "mini-loop · 回调 panic 边界修复"
+Subtitle: "从类型盘点发现问题 · 4 处恢复边界仅记录类型"
+Highlight the L3 ToolGate box and L4 Cron box with amber outlines. Add a subtle amber outline to the L5 trajectory / trace / audit box to show new audit evidence. All other boxes remain in the base style.
+Right column heading: "本轮修改与证据"
+1 "完整声明盘点" / "50 个包 · 21,820 条声明" / "139 条开放类型记录，不等于缺陷数"
+2 "发现 4 处载荷格式化" / "计划审阅 + cron 解析、执行、持久化"
+3 "恢复时只记录类型" / "不调用 panic 载荷的格式化方法，不输出其值"
+4 "反例前红后绿" / "4 个入口：格式化调用从 1 次降为 0" / "拒绝审批、发生记录与清理语义保留"
+5 "剩余验收" / "RawMessage 调用链、其他构建配置与完整迁移仍待验收"
+Footer: "无新依赖 · 无新增组件 · 原权限与默认行为保留"
+Do not write that all full gates have passed. Preserve Session Agent ↔ Model Provider; Session Agent → ToolGate across top tool-call arrow; ToolGate → L4 through permission gate; L4 result → Session Agent. Do not create a Provider→ToolGate edge. Preserve optional orchestration boundary, L1→L2→L3 and persistence relationships. Keep Chinese crisp and readable. This is an iteration edit of the supplied base, not a replacement diagram.

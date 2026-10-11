@@ -2,7 +2,7 @@
 
 ## Native callback panic boundaries — 2026-10-12
 
-Baseline `fc89e97`: compiler body inventory found139 open declarations in21,820
+Implementation `46697bc`, baseline `fc89e97`: compiler body inventory found139 open declarations in21,820
 examined declarations. Four recover sinks formatted panic payloads with `%v`;
 actual callback tests reproduce formatting and disclosure before the fix.
 Plan review and cron resolver/runner/persistence now use type-only diagnostics.
@@ -87,7 +87,7 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `fc89e97`: four callback panic recovery paths now use type-only
+Reviewed baseline `fc89e97`, implementation `46697bc`: four callback panic recovery paths now use type-only
 diagnostics, supported by actual red/green formatter probes. No authority/default
 change. Full-body inventory is review evidence, not a blanket exception list.
 Frozen 1649 inputs pass14 gates: Source239 files, focused panic probes, four type

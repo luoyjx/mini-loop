@@ -2,7 +2,7 @@
 
 ## 2026-10-12 native callback panic diagnostics from declaration review
 
-Baseline local main `fc89e97`. A one-off compiler inventory now resolves complete
+Implementation `46697bc`. Baseline local main `fc89e97`. A one-off compiler inventory now resolves complete
 function bodies, methods and local declarations, including inferred payloads.
 It observed50 packages/21,820 declarations with139 open declarations:104 raw JSON,
 21 recover values,7 JSON tokens,4 SQL Scanner method/parameter declarations and3
@@ -7272,7 +7272,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against baseline `fc89e97`: compiler declaration review
+Reviewed **2026-10-12** against baseline `fc89e97`, implementation `46697bc`: compiler declaration review
 identified four callback panic value-format sinks; type-only recovery now passes
 actual before/after adversarial probes. Permission and scheduling rules unchanged.
 Frozen 1649 inputs pass14 gates: Source239 files, focused panic probes, four type
