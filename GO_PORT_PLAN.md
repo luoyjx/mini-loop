@@ -1,5 +1,33 @@
 # Go port plan
 
+## 2026-10-11 native team SQLite restart and resumed writes
+
+Baseline local main `bf75663`. The previous team restoration comparison used an
+injected Go state adapter while Python captured a real SQLite reopening. Extend
+that actual Source contract with one explicit resumed turn and a second database
+reopening, then exercise the native Go SQLite store through the same lifecycle.
+No production runtime, dependency, default or authority changes are needed.
+
+The new SQL integration asserts restored count/owner/workspace, own-team lead
+identity, permission/status/run count, full history, retained old-team mailbox,
+empty new inbox, exact next model request and reply, no recursive spawn tool and
+no model call during restoration. The second reopening verifies resumed writes.
+The existing agent adapter test remains the private role/runner/roster proof;
+public SQL assertions do not expose or directly inspect those private fields.
+This matches Source behavior; full original teammate identity is not restored.
+
+Frozen1644 inputs pass Source239, focused team restart tests, all three type audits, full ordinary Go/vet/race+atomic, Python and19 scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 105.85s (0:01:45). Application coverage 89.25% (33084/37068); all Go 89.16% (33240/37283); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-team-sqlite-restart-2026-10-11.json); [coverage](docs/audits/go-coverage-team-sqlite-restart-2026-10-11.json).
+The [iteration image](docs/audits/go-team-sqlite-restart-infographic-2026-10-11.png)
+edits the base with L2 restoration, L4 Teams and L5 SQLite highlighted, plus
+boundary prose. Exact imagegen prompt is saved alongside. Components/topology
+are unchanged, so the base remains unchanged. Interactive HTML regenerated
+from JSON:9 checks pass, zero errors/warnings. PNG inspected directly; browser
+HTML visual review remains blocked by the existing URL policy. No workaround.
+Broader migration/platform/default/performance acceptance and earlier unexplained
+temporal failures remain open. No Python runtime modules/guards changed;
+verify_invariants and mutation sweep were not rerun. Source scans pass.
+
 ## 2026-10-11 compiler-resolved private type roots
 
 Baseline local main `2c76207`. The exported compiler closure previously traversed
@@ -7156,14 +7184,10 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `2c76207`; implementation `e782d81` adds
-compiler-resolved private type roots to the existing operator typeaudit tool.
-Current1643 frozen inputs pass Source239, focused tool tests, full ordinary
-Go/vet/race+atomic, syntax455 files/1441 named types, public50 packages/1191
-exported types and private50 packages/261 roots including generated CGO types,
-all zero findings. Python2240 passed/28 skipped/96 warnings/24 subtests
-(94.70s pytest;95.336s command) and19 scans pass.
-[Current receipt](docs/audits/go-private-type-closure-2026-10-11.json).
+Reviewed **2026-10-11** against local main baseline `bf75663`; native team SQLite
+two-reopen and resumed-turn evidence now matches actual Source. No production
+runtime/default changes. Frozen1644 inputs pass Source239, focused team restart tests, all three type audits, full ordinary Go/vet/race+atomic, Python and19 scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 105.85s (0:01:45). Application coverage 89.25% (33084/37068); all Go 89.16% (33240/37283); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-team-sqlite-restart-2026-10-11.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7194,10 +7218,10 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app**89.25% (33082/37068)**,
-all Go**89.15% (33238/37283)**, Provider**86.67% (1522/1756)**. The profile hash
-and1643 frozen inputs are retained; coverage excludes native C, CLI child
-internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-private-type-closure-2026-10-11.json).
+Current full passing-run statement coverage: app**89.25% (33084/37068)**,
+all Go**89.16% (33240/37283)**, Provider**86.67% (1522/1756)**. The profile hash
+and1644 frozen inputs are retained; coverage excludes native C, CLI child
+internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-team-sqlite-restart-2026-10-11.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
