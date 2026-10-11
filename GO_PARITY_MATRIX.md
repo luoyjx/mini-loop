@@ -10811,3 +10811,49 @@ imagegen [graphic](docs/audits/go-reload-paired-boundaries-infographic-2026-10-1
 shows the two measured boundaries and preserves the uncertainty. Next: test stream
 liveness with an independent owned control root during a failed shared operation,
 or isolate host event delivery before proposing listener changes.
+
+## Native Python hostname casing before IDNA — 2026-10-11
+
+Implementation commit: `2c71009`.
+
+Baseline `dce2202`. Installed HTTPX 0.28.1 applies whole-host lower() before
+idna.encode; Source uses Python Unicode 14.0.0 and idna 3.18. The existing Go
+internal/pytext.Lower already supplies the generated full mappings and contextual
+final sigma. Native requests now use it for non-IPv6 hostnames before the existing
+standard HTTP IDNA encoder. No dependency, Python runtime call or new domain type.
+IPv6 spelling/zones, port normalization, configured audit identity, credentials,
+redirect refusal and existing endpoint admission remain intact.
+
+Real direct/SSE HTTP/TCP captures expand from 14 to 34 assertions (17 authority
+profiles). The same expanded inventory matches 12/34 before, 34/34 after: 22 failed
+assertions are fixed, including the original two required dotted-I failures.
+Repeated/mixed dotted-I, uppercase Unicode/sharp-s, Greek final/medial/across-dot/
+combining sigma, Armenian and Cyrillic exercise the Source full/contextual mapping.
+For example fixture.ΟΣ lowers to fixture.ος, but ΟΣ.invalid lowers to οσ.invalid:
+Python sigma context crosses the ignorable dot into the following cased label.
+The test also pins Source Unicode version to the native table version. Original
+32 ASCII/IPv6 request-object assertions stay required and pass.
+
+Focused actual Source capture, canonical export bytes, all Provider/pytext tests,
+Unicode table --check, module vet, both type audits and 19 scanner guards pass.
+Type audits: 449 production files / 1430 package-level types; 50 packages / 1189
+exported types; zero findings. Full Python: 2236 passed, 28 skipped, 74 warnings,
+24 subtests (163.85s). Full ordinary Go passes Provider and fails CLI reload,
+callback entry readiness and four native recipes. Full race passes Provider but
+fails CLI reload, CGO observer readiness, callback entry readiness and five recipes;
+no data-race report appears. Full Source export exits before freshness because
+native Source observer did not arm. Focused 34-case wire export is byte-fresh;
+this does not replace the full gate. Coverage/non-Darwin acceptance not refreshed.
+
+README canonical Mermaid/boundary and architecture specification reflect the
+casing order and updated wire evidence in this slice. Generated HTML passes 9/9
+showcase checks, zero errors/warnings; rendered review remains policy-blocked.
+Unicode request-object/custom-transport ASCII IDNA representation, general IDNA
+validation/normalization/admission and TLS/SNI remain open. Broader dependency
+proposal approval is still pending; this casing fix needs none. Default diagnostics,
+native reload and complete G0–G7 acceptance are not declared complete.
+
+[Before/after evidence and exact gates](docs/audits/go-provider-host-casing-2026-10-11.json)
+retain all 22 baseline failed assertions and final logs. The built-in imagegen
+[graphic](docs/audits/go-provider-host-casing-infographic-2026-10-11.png) explicitly
+shows a pure-Go table lookup, combining-dot expansion and remaining full gates.

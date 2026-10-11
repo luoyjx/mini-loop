@@ -1,0 +1,23 @@
+{
+  "generator": "built-in image_gen",
+  "initial_prompt": "Create a polished Chinese engineering progress infographic, landscape 1536x1024, light background navy typography teal verified amber open. Title Provider 主机名：按 Python 语义转小写. Main left-to-right pipeline: 原始主机名 → pytext.Lower (Unicode 14.0.0) → 现有 Go HTTP 编码 → 真实 Host / TCP dial 比对. Show a dominant result 12 / 34 → 34 / 34 and label 同一扩展用例集：22 个差异消除. Small inventory card 14 → 34 个 direct / SSE wire 用例. Two precise examples: İ → i̇ (展开); fixture.ΟΣ → fixture.ος (末尾 sigma); ΟΣ.invalid → οσ.invalid (跨点号上下文). These Greek examples are exact Python whole-host lower behavior. Supporting strip 复用已有 Unicode 表 · 新增依赖 0 · 新增模糊领域类型 0. Retained boundaries box 配置审计标识、IPv6、端口规则、凭证与重定向守卫保留. Footer 当前验证：Provider / pytext 通过；Python 2236 通过；类型审计 0 发现；架构 9/9. Amber status 原生 Reload 与完整 IDNA / TLS 等价仍未验收；race 与 Source 全量导出尚在验证. Do not claim whole project tests pass. Do not invent dates, commit hashes or other metadata. Clean technical layout, careful Greek glyphs and readable Chinese.",
+  "correction_prompt": "Edit this infographic and preserve its layout, correct counts and Greek sigma examples. Make four precise corrections: 1) In the pytext.Lower panel replace the Python logo with a Go/table icon and add exact text '纯 Go 表驱动，无 Python 运行时调用'; this is an existing Go implementation of Python Unicode14 casing. 2) In the dotted-I example show original 'U+0130 (İ)' and Python result 'i + U+0307', so the combining-dot expansion cannot be mistaken for plain i. 3) Replace the real Host/TCP dial panel's broad '确保端到端一致' wording with '本次 34 个用例一致'. 4) Replace the lower right pending verification text with final truthful status: 'Go 全量 / race：原生 Reload 仍失败；无数据竞争报告' and 'Source 全量导出：监听器未就绪；本次 34 个 wire 导出新鲜'. Keep the separate status that complete IDNA / TLS equivalence and native Reload remain unaccepted. Keep 12/34→34/34,22 differencesfixed,14→34inventory,Python2236pass,typeaudit0findings,architecture9/9,newdependencies0,newambiguousdomaintypes0. Preserve architecture validation as automated, do not claim rendered architecture visual review. No invented dates or hashes.",
+  "final_correction_prompt": "Make a precise final correction to the current infographic, preserving all other layout, counts, symbols and validation statuses. The third Greek example lost sigma: replace ONLY its Python-result cell with the explicit unambiguous text 'U+03BF + U+03C3 + .invalid' (two Greek code points followed by .invalid), optionally on two lines, original cell remains 'ΟΣ.invalid', explanation '跨点号上下文'. This is the representation of οσ.invalid, never ο.invalid. Keep the final-sigma second row unchanged. Add one small readable line in the lower-right status box '完整 IDNA / TLS 等价仍开放'. Do not remove the existing Go ordinary/race nativeReload failures and Source listener not ready /34wirefresh statuses. Keep dotted-I i+U+0307 and pureGo table no Python runtime wording. No other edits or invented metadata.",
+  "selected_image": "go-provider-host-casing-infographic-2026-10-11.png",
+  "verified_counts": {
+    "original_wire_inventory": 14,
+    "expanded_wire_inventory": 34,
+    "before_matches": 12,
+    "after_matches": 34,
+    "differences_fixed": 22,
+    "python_passed": 2236,
+    "new_dependencies": 0,
+    "new_ambiguous_domain_types": 0
+  },
+  "examples": {
+    "dotted_i": "U+0130 -> U+0069 U+0307",
+    "final_sigma": "fixture.ΟΣ -> fixture.ος",
+    "across_dot_sigma": "ΟΣ.invalid -> U+03BF U+03C3 .invalid"
+  },
+  "limits": "Pure Go table lookup; full native reload / Source export / general IDNA and TLS equivalence remain open."
+}

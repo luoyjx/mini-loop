@@ -512,3 +512,19 @@ vet、两项类型审计、19 项扫描守卫通过。IDNA 固定依赖批准尚
 2 个 dotted-I wire 与 CGO 编译期间 native observer；race 失败于同样 2 个 wire
 与 9 个 reload recipe，未报告数据竞争。全量 Source 导出在 native observer
 就绪处失败。没有合入 main 或 push；覆盖率未刷新。
+
+## 2026-10-11 Source hostname lowercase order
+
+Implementation commit: `2c71009`.
+
+Actual HTTPX lowercases the entire hostname before IDNA. Reusing native
+pytext.Lower (Python Unicode 14.0.0 tables) fixes full expansion/contextual casing
+without a dependency or Python runtime. Real HTTP Host/dial captures expand
+14→34: the same inventory matches 12/34 before and 34/34 after, fixing 22 assertions
+including the original dotted-I pair. Greek sigma context across dots is retained.
+Configured audit identity, IPv6, ports, credentials and redirect guards are unchanged.
+This proves these 34 wire observations, not complete IDNA admission/normalization,
+custom-transport URL representation or TLS/SNI parity. Provider passes ordinary/race;
+full Go still has native reload failures and full Source export fails at listener
+readiness. Python full regression passes 2236; vet/type/scanner gates pass. See
+[casing evidence](docs/audits/go-provider-host-casing-2026-10-11.json).
