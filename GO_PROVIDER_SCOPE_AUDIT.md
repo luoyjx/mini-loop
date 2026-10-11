@@ -541,3 +541,15 @@ these assertions and native reload readiness/callback-entry checks. Source check
 234 exports, 233 match; lower-mtime-write WatchFiles observation drifts and the
 original fixture stays unchanged. Broader IDNA/default diagnostics/G0–G7 remain
 open. See [audit](docs/audits/go-provider-path-ascii-2026-10-11.json).
+
+## 2026-10-11 Actual proxy/TLS/CONNECT target evidence
+
+24 required real transport samples add HTTP proxy, HTTPS direct and HTTPS
+CONNECT with ordinary/backslash/caret/pipe paths in direct/SSE. Native matches
+six controls; eighteen targets fail. SNI (16), CONNECT authority/key absence (8),
+application key, identity and replies agree. Explicit trusted single-host CA and
+HTTP/1.1; environment proxy/authentication/HTTP2/general TLS remain outside scope.
+The HTTP proxy serves the controlled response; HTTPS CONNECT relays opaque TCP.
+Production is unchanged. Python passes 2239; Go full fails target and native reload
+checks. Source compares 235 snapshots, 234 match; WatchFiles removed-source drifts
+and the original fixture remains. See [audit](docs/audits/go-provider-proxy-tls-2026-10-11.json).

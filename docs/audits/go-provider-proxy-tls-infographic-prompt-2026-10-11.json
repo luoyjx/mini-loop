@@ -1,0 +1,16 @@
+{
+  "prompt": "Create a precise Chinese engineering progress infographic, landscape 1536x1024, ivory background, navy text, teal verified boxes and amber/red incomplete boxes. Title 'Go 移植 · 代理与 TLS 真实 wire 契约'. Subtitle '契约提交 d8992df · 运行时代码未修改'. Three columns show actual wire routes and exact target examples for a pipe path: column1 'HTTP 代理' with 'POST http://fixture.invalid/ascii-|-tail/v1/messages HTTP/1.1'; column2 'HTTPS 直连' with 'TLS → POST /ascii-|-tail/v1/messages HTTP/1.1'; column3 'HTTPS CONNECT' with 'CONNECT fixture.invalid:443 HTTP/1.1' then 'TLS → POST /ascii-|-tail/v1/messages HTTP/1.1'. Each column annotated '4 个路径 × direct / SSE = 8 个样本'. Main results '24 个真实传输样本'; 'Go：6 个普通路径匹配 / 18 个特殊路径目标失败'. Clarify '反斜杠、^、|：Source 保留；Go 仍转义'. Green cards 'SNI：16 / 16 一致'; 'CONNECT authority：8 / 8 一致'; 'CONNECT 无 API key，业务请求有 API key'; '证书链与 fixture.invalid 主机名校验启用'. Verification strip 'Python：2239 通过 / 28 跳过'; 'go vet 与扫描 19/19 通过'; '架构生成检查 9/9，视觉审查仍受限'. Amber footer 'Go 全量失败：路径断言、CLI reload、原生监听'; 'Source：234 / 235 一致，WatchFiles removed-source 漂移'. Scope footnote '显式代理、单一测试主机、HTTP/1.1；环境代理发现、代理认证、HTTP/2 与完整 TLS/IDNA 仍未验收；本轮未重测 race 与覆盖率'. Exact figures and text, no invented dates, no claims of a production fix, no mascots. Prioritize legibility and clear route diagrams.",
+  "correction": "Edit this infographic precisely while preserving all numbers, title, commit and gate statuses. The raw pipe request lines are Source observations; replace each 'Go 客户端' in the three route diagrams with 'Source SDK 客户端'. Replace every '实际发送的请求行 (wire)' header with 'Source 实测请求行 (wire)' (TLS variants can keep TLS annotation). In column1 HTTP proxy, the owned proxy serves the controlled HTTP response; remove the proxy-to-origin arrow and target-server box entirely, relayout only column1 diagram as 'Source SDK 客户端 → 自有 HTTP 代理（返回受控响应）'. Remove invented example ports '127.0.0.1:8080' from all proxy boxes; simply '自有 HTTP 代理'. Columns2 and3 may retain an owned TLS origin, label it '自有 TLS origin / 验证 fixture.invalid'. Replace '相对路径' with '路径形式 origin-form'. Keep CONNECT authority fixture.invalid:443 and all Source raw pipe example request lines, and retain red statement that Go still escapes special paths. Do not claim HTTP forward-to-origin happened or that Go sent the Source raw targets.",
+  "selected_image": "exec-1ac5f83b-93a8-4c6f-9e17-29e14990533c.png",
+  "verified": {
+    "samples": 24,
+    "ordinary_matches": 6,
+    "target_failures": 18,
+    "sni_matches": 16,
+    "connect_matches": 8,
+    "python_passed": 2239,
+    "skipped": 28,
+    "source_total": 235,
+    "source_matches": 234
+  }
+}

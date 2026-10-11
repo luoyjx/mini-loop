@@ -10995,3 +10995,55 @@ required failure logs, all independent gate terminal results, Source wire rows,
 URL representation results and the complete WatchFiles drift snapshots.
 [Built-in imagegen graphic](docs/audits/go-provider-path-ascii-infographic-2026-10-11.png)
 shows that this is an expanded acceptance inventory, not a runtime fix.
+
+## Actual HTTP proxy, TLS and CONNECT target contracts — 2026-10-11
+
+Contract commit: `d8992df`; baseline `e4133c2`. Production runtime is unchanged.
+Actual SDK/provider requests cover three routes, four paths (ordinary, backslash,
+caret, pipe) and direct/SSE: 24 required observations. HTTP forward proxy receives
+absolute-form and serves the controlled response itself; it does not forward to a
+second HTTP origin. HTTPS direct uses origin-form after TLS. HTTPS proxy first
+sends CONNECT fixture.invalid:443, then relays opaque TCP to the owned TLS origin
+and sends origin-form. HTTP codecs, TLS handshake, SDK parsing and reply behavior
+are real. Explicit trusted test CA and fixture.invalid hostname verification remain
+enabled. ALPN offers HTTP/1.1 only. Direct TLS redirects only TCP destination;
+proxy routes dial the actual owned proxy. Its ephemeral port is asserted against
+the listener and represented by the stable owned-proxy role in captured data.
+
+Native six ordinary controls match; all eighteen special-path application targets
+fail. All sixteen SNI observations and eight CONNECT authority/credential-absence
+observations match; API-key is present on each application request. Identity, method,
+HTTP version, dial authority/role and parsed replies remain asserted. This confirms
+routing must select absolute-form for HTTP forward proxy and origin-form for both
+HTTPS application routes, separately from CONNECT. It does not implement a fix.
+Original six object and six plain-wire failures remain required too.
+
+The capture harness initially hit TCP reset/TLS-shutdown errors. Corrected teardown
+aborts only owned remaining sockets after SDK reply validation and client closure,
+then joins handlers. Only close errors and post-complete-response tunnel resets are
+tolerated; handshake/response-read errors still fail. An initial native attempt
+lacked the not-yet-generated fixture and is invalid parity evidence. Raw initial
+errors and final gates are retained separately. All 24 final Source handlers/sockets
+join. The checked-in CA/key are deliberate public test fixtures, not production
+credentials or new dependencies. No production observer deadline is changed.
+
+Source focused: 1 passed (0.88s). Python full: 2239 passed, 28 skipped, 75 warnings,
+24 subtests (99.86s). Full ordinary Go fails 30 provider assertions across the
+three inventories, CLI invalid-source compilation observation, CGO observer
+readiness, rename-in event delivery and rename-source readiness. Some other packages
+are cached; no general reliability inference. Vet, 19 scanner guards and diff check
+pass. Full Source --check follows terminal Go native gates: 235 snapshots compared,
+234 match; sole WatchFiles drift is removed-source changed [source.py] -> null.
+Exact expected/actual bytes and manifest are retained; original fixture is unchanged.
+Architecture status cards and README baseline/map explanations are synchronized;
+generated HTML deliver passes 9/9, zero errors/warnings; rendered review remains
+policy-blocked. Full race, coverage, type/invariant audits and non-Darwin are not
+rerun because production modules/types are unchanged.
+
+Scope excludes environment proxy discovery, proxy authentication, HTTP/2, arbitrary
+certificates and general TLS/IDNA host equivalence. Broader IDNA, default diagnostics,
+native reliability and complete G0–G7 remain open. Next: design the owned target
+transport while preserving these route, SNI, CONNECT and credential boundaries.
+[Proxy/TLS audit](docs/audits/go-provider-proxy-tls-2026-10-11.json) retains all raw
+terminal gate logs and Source observations. [Built-in imagegen graphic](docs/audits/go-provider-proxy-tls-infographic-2026-10-11.png)
+shows Source wire examples, native failures and the scope limits.
