@@ -993,6 +993,61 @@
     "mode": "interactive",
     "name": "lead",
     "new_inbox_count": 0,
+    "next_turn": {
+      "history": [
+        {
+          "content": "hello",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "done",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": "after restart",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "done",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "model_calls": 1,
+      "old_inbox_count": 1,
+      "recursive_spawn": false,
+      "request_messages": [
+        {
+          "content": "hello",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "done",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": "after restart",
+          "role": "user"
+        }
+      ],
+      "result": "done",
+      "run_count": 2,
+      "status": "idle"
+    },
     "old_inbox_count": 1,
     "old_roster_present": false,
     "own_team": true,
@@ -1003,6 +1058,46 @@
     "run_count": 1,
     "runner_present": false,
     "same_workspace": true,
+    "second_restart": {
+      "history": [
+        {
+          "content": "hello",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "done",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": "after restart",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "done",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "mode": "interactive",
+      "name": "lead",
+      "new_inbox_count": 0,
+      "old_inbox_count": 1,
+      "own_team": true,
+      "owner": "alice",
+      "restored_count": 2,
+      "run_count": 2,
+      "same_workspace": true,
+      "status": "running"
+    },
     "status": "running",
     "tasks_present": false
   }

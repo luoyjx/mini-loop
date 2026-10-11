@@ -9327,6 +9327,7 @@ def _team_lifecycle_contracts() -> dict:
 async def _team_restart_contract() -> dict:
     """Real source SQLite close/reopen after an owned initial teammate turn."""
     import asyncio
+    import copy
     from mini_loop.config import Settings
     from mini_loop.fake_llm import FakeAsyncAnthropic, text
     from mini_loop.manager import SessionManager
@@ -9337,7 +9338,11 @@ async def _team_restart_contract() -> dict:
         settings = Settings(workspace_root=root / "ws", trajectory_enabled=False,
                             team_idle_poll=3600, team_idle_timeout=7200)
         store = SQLiteStateStore(root / "state.db")
-        client = FakeAsyncAnthropic(lambda _: ([text("done")], "end_turn"), thinking=False)
+        requests = []
+        def reply(request):
+            requests.append(copy.deepcopy(request))
+            return [text("done")], "end_turn"
+        client = FakeAsyncAnthropic(reply, thinking=False)
         manager = SessionManager(settings, client, state_store=store, injectors=[])
         try:
             lead = manager.create(owner="alice")
@@ -9355,7 +9360,7 @@ async def _team_restart_contract() -> dict:
             restored = fresh.restore_sessions()
             child = fresh.get(child_id)
             state = child.agent.state
-            return dict(
+            result = dict(
                 restored_count=len(restored), owner=child.owner,
                 same_workspace=child.workspace == workspace,
                 own_team=state["team_id"] == child_id, name=state["agent_name"],
@@ -9367,11 +9372,39 @@ async def _team_restart_contract() -> dict:
                 old_inbox_count=len(fresh.bus.peek(parent_id + "/bob")),
                 new_inbox_count=len(fresh.peek_team_inbox(child_id, "lead")),
                 status=child.status, run_count=child.run_count,
-                history=child.agent.messages,
+                history=copy.deepcopy(child.agent.messages),
+            )
+            before_calls = len(requests)
+            final = await child.run("after restart")
+            result["next_turn"] = dict(
+                result=final, model_calls=len(requests) - before_calls,
+                request_messages=requests[-1]["messages"],
+                recursive_spawn=any(tool["name"] == "spawn_teammate" for tool in requests[-1].get("tools", [])),
+                history=copy.deepcopy(child.agent.messages), status=child.status,
+                run_count=child.run_count, old_inbox_count=len(fresh.bus.peek(parent_id + "/bob")),
             )
         finally:
             await fresh.stop()
             reopened.close()
+        last_store = SQLiteStateStore(root / "state.db")
+        last = SessionManager(settings, client, state_store=last_store, injectors=[])
+        try:
+            restored = last.restore_sessions()
+            child = last.get(child_id)
+            result["second_restart"] = dict(
+                restored_count=len(restored), owner=child.owner,
+                same_workspace=child.workspace == workspace,
+                own_team=child.agent.state["team_id"] == child_id,
+                name=child.agent.state["agent_name"],
+                mode=child.permission_mode, status=child.status,
+                run_count=child.run_count, history=copy.deepcopy(child.agent.messages),
+                old_inbox_count=len(last.bus.peek(parent_id + "/bob")),
+                new_inbox_count=len(last.peek_team_inbox(child_id, "lead")),
+            )
+            return result
+        finally:
+            await last.stop()
+            last_store.close()
 
 
 def _workflow_model_contracts() -> dict:
