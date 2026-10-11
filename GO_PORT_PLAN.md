@@ -6851,12 +6851,18 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** at local main `92aba47`; latest Go implementation is
+Reviewed **2026-10-11** at local main `70003ca`; latest Go implementation is
 `014e913`. Live Git tree identity confirms current `go/` exactly matches the tree
 used by the full JSON read-span gates. Those full gates remain failed: ordinary
 Go fails CLI/native reload; race+atomic fails four native recipe operation waits.
 Vet and syntax/public type audits pass (450 production files/1434 named types;
-50 packages/1189 exported types, zero findings). SQLite maximum512KiB decision
+50 packages/1189 exported types, zero findings). A new Linux amd64/CGO1 compiler
+public-type audit also passes50 packages/1189 exported types with zero findings,
+in a pinned existing Go1.23.3 image through the compatibility layer. Local Linux
+CGO0 inventories fail on SQLite types, and local Linux arm64/CGO1 fails on Darwin
+compiler headers; neither is a type pass. Linux full ordinary/vet/race has been
+dispatched against an isolated readonly commit snapshot; results are pending.
+[Profile evidence](docs/audits/go-linux-public-types-2026-10-11.json). SQLite maximum512KiB decision
 restart now passes its original shared30s budget in the focused race+atomic check
 and both full Go runs. This is not full migration acceptance.
 
@@ -19493,3 +19499,41 @@ Built-in imagegen infographic inspected: exact coverage, failed full gates and
 retained/not-rerun labels remain explicit.
 [Infographic](docs/audits/go-current-acceptance-index-infographic-2026-10-11.png),
 [exact prompt](docs/audits/go-current-acceptance-index-infographic-2026-10-11.prompt.txt).
+
+## Linux CGO compiler-resolved public type closure — 2026-10-11
+
+Baseline70003ca, Go tree unchanged from014e913. Native host auditor built with
+Go1.23.3; three local cross-profile inventories all exit2 before any type findings:
+Linux arm64/amd64 CGO0 lack sqlite3.Error/ErrNotADB/ErrCorrupt, and Linux arm64 CGO1
+uses Darwin compiler headers lacking setresgid/setresuid. Do not label these type
+passes or suppress the approved native SQLite dependency to obtain a green audit.
+
+Existing OrbStack server has pinned golang1.23.3-bookworm image
+sha256:2b602ca28639bc2d3c0f7839a4a62391d78de5d359cf93d29a9699800cb40139,
+Linux amd64 through the arm64-host compatibility layer. No image pull/dependency
+addition. Readonly repository/module-cache mounts, CGO1, offline proxy/sumdb and
+local toolchain retain the approved SQLite v1.14.52. Its compiler-resolved public
+closure audit exits0:50 main-module packages,1189 exported types,zero findings.
+Imported aliases, instantiated fields and reachable private types are traversed;
+foreign structs/named capabilities are opaque, unexported roots and runtime flow
+remain open. This does not prove native performance, Linux runtime/Source acceptance
+or the other build profiles. Commands/full output/source+binary hashes retained.
+
+A separate owned readonly committed Go/Python snapshot now runs serial full Linux
+ordinary/vet/race. Dispatch metadata records archive hash and unchanged Go tree;
+no Source recapture/coverage measurement, fixture edits, timeout widening, or
+retry-to-green. Python3.11.3 lacks tarfile.extractall filter; first preparation
+failed before dispatch, retained as harness error. Corrected extraction verifies
+confined regular files/directories before extraction, then dispatches once.
+Actual handle/logs, not dispatch intent, determine whether this cohort is terminal.
+
+Documentation/receipt change only; source hashes, tree identity and diff check
+verified. Full Python/scanners/guards not rerun. Canonical map/boundaries reviewed,
+visible baseline updated; topology/authority/defaults unchanged, graph JSON/HTML
+unchanged, no rendered acceptance or push. Darwin native failures/default syntax/
+IDNA/global Source/final P0/P1/G0–G7 remain open.
+[Audit receipt](docs/audits/go-linux-public-types-2026-10-11.json).
+
+Early Linux ordinary output already fails background SDK timeout-array with
+message-phase5 versus4; full cohort is still running, so this is partial failure
+evidence, not a terminal full gate or a causal finding. Preserve its owned handle.

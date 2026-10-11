@@ -1,0 +1,147 @@
+{
+  "baseline": "70003cac8b36c53b40e44c70842889e4d262a465",
+  "go_tree": "50ec060065ae74e321bdb86d42c713d594948cb4",
+  "unchanged_runtime_tree": true,
+  "local_cross_profile_attempts": {
+    "baseline": "70003cac8b36c53b40e44c70842889e4d262a465",
+    "binary_sha256": "6bab94d93081a4398fff9073324555d1bba69c27cb734af3772423b8e604c052",
+    "profiles": [
+      {
+        "name": "linux-arm64-nocgo",
+        "profile": {
+          "GOOS": "linux",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "0"
+        },
+        "command": [
+          "/tmp/mini-loop-typeaudit-profiles-2026-10-11",
+          "-public",
+          "-root",
+          "/Users/yanjixiong/github/mini-loop/go"
+        ],
+        "exit_code": 2,
+        "seconds": 6.508,
+        "log": "/tmp/mini-loop-public-types-linux-2026-10-11-linux-arm64-nocgo.log",
+        "raw_log": "compiler package inventory: exit status 1: # github.com/luoyjx/mini-loop/go/sqlitestate\nsqlitestate/store.go:98:28: undefined: sqlite3.Error\nsqlitestate/store.go:99:70: undefined: sqlite3.ErrNotADB\nsqlitestate/store.go:99:113: undefined: sqlite3.ErrCorrupt\n\n"
+      },
+      {
+        "name": "linux-amd64-nocgo",
+        "profile": {
+          "GOOS": "linux",
+          "GOARCH": "amd64",
+          "CGO_ENABLED": "0"
+        },
+        "command": [
+          "/tmp/mini-loop-typeaudit-profiles-2026-10-11",
+          "-public",
+          "-root",
+          "/Users/yanjixiong/github/mini-loop/go"
+        ],
+        "exit_code": 2,
+        "seconds": 3.434,
+        "log": "/tmp/mini-loop-public-types-linux-2026-10-11-linux-amd64-nocgo.log",
+        "raw_log": "compiler package inventory: exit status 1: # github.com/luoyjx/mini-loop/go/sqlitestate\nsqlitestate/store.go:98:28: undefined: sqlite3.Error\nsqlitestate/store.go:99:70: undefined: sqlite3.ErrNotADB\nsqlitestate/store.go:99:113: undefined: sqlite3.ErrCorrupt\n\n"
+      },
+      {
+        "name": "linux-arm64-cgo",
+        "profile": {
+          "GOOS": "linux",
+          "GOARCH": "arm64",
+          "CGO_ENABLED": "1"
+        },
+        "command": [
+          "/tmp/mini-loop-typeaudit-profiles-2026-10-11",
+          "-public",
+          "-root",
+          "/Users/yanjixiong/github/mini-loop/go"
+        ],
+        "exit_code": 2,
+        "seconds": 3.016,
+        "log": "/tmp/mini-loop-public-types-linux-2026-10-11-linux-arm64-cgo.log",
+        "raw_log": "compiler package inventory: exit status 1: # runtime/cgo\nlinux_syscall.c:67:13: error: call to undeclared function 'setresgid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\nlinux_syscall.c:67:13: note: did you mean 'setregid'?\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h:593:6: note: 'setregid' declared here\nlinux_syscall.c:73:13: error: call to undeclared function 'setresuid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\nlinux_syscall.c:73:13: note: did you mean 'setreuid'?\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h:595:6: note: 'setreuid' declared here\n\n"
+      }
+    ]
+  },
+  "linux_cgo_public_audit": {
+    "baseline": "70003cac8b36c53b40e44c70842889e4d262a465",
+    "command": [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "mini-loop-linux-cgo-public-20261011",
+      "--platform",
+      "linux/amd64",
+      "--pull",
+      "never",
+      "--read-only",
+      "--network",
+      "none",
+      "--tmpfs",
+      "/tmp:rw,exec,size=2g",
+      "--mount",
+      "type=bind,src=/Users/yanjixiong/github/mini-loop,dst=/workspace,readonly",
+      "--mount",
+      "type=bind,src=/Users/yanjixiong/goworkspaces/pkg/mod,dst=/gomod,readonly",
+      "-e",
+      "CGO_ENABLED=1",
+      "-e",
+      "GOMODCACHE=/gomod",
+      "-e",
+      "GOCACHE=/tmp/go-cache",
+      "-e",
+      "GOPATH=/tmp/gopath",
+      "-e",
+      "GOPROXY=off",
+      "-e",
+      "GOSUMDB=off",
+      "-e",
+      "GOTOOLCHAIN=local",
+      "-w",
+      "/workspace/go",
+      "sha256:2b602ca28639bc2d3c0f7839a4a62391d78de5d359cf93d29a9699800cb40139",
+      "go",
+      "run",
+      "./tools/typeaudit",
+      "-public",
+      "-root",
+      "."
+    ],
+    "exit_code": 0,
+    "seconds": 91.447,
+    "log": "/tmp/mini-loop-linux-cgo-public-2026-10-11.log",
+    "raw_log": "Go public type audit: 50 packages, 1189 exported types, 0 findings\n",
+    "scope": "Linux amd64/CGO1 compiler export audit in existing pinned image through compatibility layer; not native arm64 performance or Linux runtime/Source acceptance."
+  },
+  "audit_source_sha256": {
+    "go/tools/typeaudit/main.go": "23fda877ab45c53d57ecd51c7b76bfdc06a2a32a59057f9b5d793068ad5e02eb",
+    "go/tools/typeaudit/public.go": "baa1a3a95ffcfebabc5cfb6a2d0ccd80e9611da9d38a2a984d508d64d0e958a7",
+    "go/go.mod": "4e0ece38783c3da88142f2c4086d46e479660d2152baf97243151ed72a2f8d89",
+    "go/go.sum": "9eb975c181ebee792e06f732fc13ef81acad0779d94731f75133ad2bba52c5ca"
+  },
+  "toolchain": "Go1.23.3, existing image sha256:2b602ca28639bc2d3c0f7839a4a62391d78de5d359cf93d29a9699800cb40139 linux/amd64 through OrbStack compatibility layer",
+  "limits": [
+    "compiler export/public type closure only",
+    "foreign structs/named capabilities opaque; unexported roots and runtime data-flow remain open",
+    "Linux arm64/CGO1 not verified; local compiler uses Darwin headers",
+    "CGO0 profiles fail SQLite compiler inventory; not a successful audit",
+    "no Source recapture, full-runtime acceptance, coverage refresh or native performance claim"
+  ],
+  "full_linux_gates_dispatch": "/tmp/mini-loop-linux-native-gates-2026-10-11/dispatch.json",
+  "full_linux_gates_status_at_receipt": "dispatched; must inspect actual Docker handle/logs for terminal state",
+  "linux_environment_confirmed": "go version go1.23.3 linux/amd64\nlinux\namd64\n1\ngcc\n",
+  "full_linux_gates_observation": {
+    "phase": "ordinary still running; vet/race queued serially",
+    "container": "mini-loop-linux-native-gates-20261011",
+    "log": "/tmp/mini-loop-linux-native-gates-2026-10-11/out/ordinary.log",
+    "observed_failure": "TestBackgroundSDKOptionsMatchSourceManagedAdmissionAndTasks/timeout-array: Source message phase changed 5 4",
+    "terminal_result": "not yet observed"
+  },
+  "validation": {
+    "go_source_tree": "unchanged from014e913, Linux audit and ongoing gate snapshot",
+    "source_hashes": "audit source/mod/sum SHA verified",
+    "diff_check": "passed",
+    "full_python_scanners_guards": "not rerun: docs/evidence only",
+    "architecture": "canonical map/boundaries reviewed; baseline updated; topology/authority/defaults unchanged; JSON/HTML unchanged; no rendered acceptance"
+  }
+}
