@@ -33,7 +33,7 @@ func TestWholeUsageActualHTTPManagedModelEnd(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 62 {
+	if len(fixture.Cases) != 86 {
 		t.Fatal("Source inventory changed")
 	}
 	for _, row := range fixture.Cases {

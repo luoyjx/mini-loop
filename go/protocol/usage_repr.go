@@ -135,7 +135,9 @@ func sdkUsageReprInteger(value jsonvalue.Value) (jsonvalue.Value, bool) {
 			}
 		}
 		raw = strings.ReplaceAll(raw, "_", "")
-		if len(strings.TrimLeft(raw, "+-")) > 4300 {
+		// SDK validation limits significant decimal digits, not zero padding.
+		// Long padded text can construct a small inert integer observation.
+		if len(strings.TrimLeft(strings.TrimLeft(raw, "+-"), "0")) > 4300 {
 			return value, false
 		}
 		if integer, ok := new(big.Int).SetString(raw, 10); ok {

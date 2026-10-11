@@ -1,5 +1,34 @@
 # Go port plan
 
+## 2026-10-11 SDK integer-text zero padding
+
+Main baseline `338792a`. Actual SDK0.107.1/Pydantic2.13.4 HTTP captures accept
+5000 leading zeros in optional/nested model-array integer text. Positive,
+negative, zero, decimal-zero-tail and separated padded text normalize to small
+integers;4301 significant decimal digits remain text. Twelve new profiles yield
+24 direct/SSE cases. Existing Go rejected normalization by total digit length,
+exposing20 required parity failures; four oversized-significant-digit controls
+already matched. The private constructor now excludes zero padding from its
+4300-digit limit. No counted model, meter limit, stored open type, dependency,
+component, authority, owner, default or public entry point changed.
+
+Required focused checks cover86 actual SDK cases,48 successful snapshots and38
+delta faults after start,91 mask/clone/archive/SQLite projections, and86 managed
+HTTP outcomes. The earlier191 metadata/214 stages,34 scalar and76 integer-text
+inventories remain in the same required gate. One scratch capture initially
+lacked the Python module import path, and one test command ran outside go/;
+neither started their intended workload. An early inventory check ran before
+successful capture and failed62-versus86. Raw failures are retained. The corrected
+capture and focused checks pass; no skips, budgets or temporal behavior changed.
+The first frozen full Source check rejected only fixture key ordering: the
+scratch capture omitted exporter's sort_keys=True. Canonicalizing the same
+captured content produces the exporter's exact SHA256. Its failed log, gates and
+input hashes are retained; a separately frozen corrected cohort passes Source239.
+
+Wider real count/meter domains, lexical/richer repr and escaped-secret behavior,
+full provider/default/public-error reconciliation, non-Darwin/temporal reliability
+and original P0/P1/G0–G7 acceptance remain open.
+
 ## 2026-10-11 inert usage model-array range construction
 
 Baseline local main `110b1a9`.12 new profiles produce24 actual SDK direct/SSE
@@ -7059,21 +7088,21 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `110b1a9`; latest runtime
-implementation `072daa8` separates inert model-array SDK construction
+Reviewed **2026-10-11** against local main baseline `338792a`; latest runtime
+implementation in this iteration separates SDK padded integer-text normalization
 from counted decoding. Current1640 frozen inputs pass full Source239 files,
 required focused native checks, full ordinary Go/vet/race+atomic, syntax audit453
 files/1440 named types, public closure50 packages/1191 exported types/zero findings,
-Python2240 passed/28 skipped/92 warnings/24 subtests (90.15s pytest;
-90.753s command) and19 scans. [Current receipt](docs/audits/go-usage-array-ranges-2026-10-11.json).
+Python2240 passed/28 skipped/96 warnings/24 subtests (129.76s pytest;
+130.381s command) and19 scans. [Current receipt](docs/audits/go-usage-leading-zero-text-2026-10-11.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
 cases/214 stages, now pass required native assertions, final PromptTokens and
 actual masked event/clone/archive/SQLite reopening checks. The original34 and76
 usage inventories continue to pass. Full G4 field/default/consumer/public-entry
-inventory and wider count/meter ranges remain unproven. The62 whole-usage cases/
-36 stages now have required native projected values/stage/fault-message parity,
+inventory and wider count/meter ranges remain unproven. The86 whole-usage cases/
+48 stages now have required native projected values/stage/fault-message parity,
 managed HTTP outcomes and archival/reopen evidence. Earlier implementation and diagnostic checkpoints below retain
 their historical baselines and must not override this current index.
 
@@ -7096,10 +7125,10 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app**89.24% (33078/37068)**,
-all Go**89.18% (33199/37226)**, Provider**86.67% (1522/1756)**. The profile hash
+Current full passing-run statement coverage: app**89.25% (33084/37068)**,
+all Go**89.20% (33205/37226)**, Provider**86.67% (1522/1756)**. The profile hash
 and1640 frozen inputs are retained; coverage excludes native C, CLI child
-internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-usage-array-ranges-2026-10-11.json).
+internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-usage-leading-zero-text-2026-10-11.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7118,7 +7147,7 @@ work-package acceptance.
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes239 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; current ordinary/vet/race+atomic pass;191 metadata-shape cases/214 stages and62 whole-usage cases/36 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes239 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; current ordinary/vet/race+atomic pass;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
