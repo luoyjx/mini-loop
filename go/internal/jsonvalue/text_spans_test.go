@@ -56,6 +56,10 @@ func TestLargeTextBytesMatchCPython(t *testing.T) {
 				if len(actual) != want.Bytes || hex.EncodeToString(digest[:]) != want.SHA256 {
 					t.Fatal("Source bytes differ", method.name, len(actual), want)
 				}
+				decoded, err := Decode(string(actual))
+				if err != nil || !decoded.PythonEqual(value) {
+					t.Fatal("Source-hashed text/key bytes decode differently", method.name, err)
+				}
 			}
 		})
 	}
