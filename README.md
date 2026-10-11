@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `49dda91` plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `e4133c2` plus verified proxy/TLS/CONNECT path contracts (runtime unchanged), plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -2708,6 +2708,20 @@ and proxy absolute-form, while absolute-opaque changes the direct request target
 No opaque workaround is adopted; a faithful transport boundary remains required.
 The broader IDNA dependency proposal
 remains pending and is not needed for this casing change.
+
+An additional 24 actual transport captures cover HTTP forward proxy, HTTPS direct
+and HTTPS CONNECT, each with ordinary/backslash/caret/pipe paths in direct/SSE.
+The owned TLS origin verifies the pinned test certificate and fixture.invalid
+hostname; CONNECT relays opaque TCP bytes. Go matches six ordinary controls but
+fails all 18 special-path targets. All 16 TLS SNI observations and eight CONNECT
+authorities agree; API-key is absent from CONNECT and present in application
+requests. Proxy requests use absolute-form; both HTTPS application routes use
+origin-form. This confirms the transport route must choose the target form. The
+explicit proxy/certificate, single hostname and HTTP/1.1 scope do not establish
+environment proxy discovery, proxy authentication, HTTP/2 or general TLS/IDNA
+equivalence. Source handlers/sockets join after SDK reply validation; remaining
+owned sockets are aborted for tunnel shutdown. This is test teardown, not a
+production transport change. The 24 cases remain required failing assertions.
 
 A subsequent 68-observation URL scope audit captures the actual Python provider
 factory and both SDK request modes with injected HTTP boundaries. It distinguishes

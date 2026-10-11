@@ -1,0 +1,890 @@
+{
+  "cases": [
+    {
+      "base_url": "http://fixture.invalid/tenant",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ordinary",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "http://fixture.invalid/tenant",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ordinary",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "http://fixture.invalid/ascii-\\-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/ascii-\\-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "backslash",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/ascii-\\-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "http://fixture.invalid/ascii-\\-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/ascii-\\-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "backslash",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/ascii-\\-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "http://fixture.invalid/ascii-^-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/ascii-^-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "caret",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/ascii-^-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "http://fixture.invalid/ascii-^-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/ascii-^-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "caret",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/ascii-^-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "http://fixture.invalid/ascii-|-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/ascii-|-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "pipe",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/ascii-|-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "http://fixture.invalid/ascii-|-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid/ascii-|-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "pipe",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "http://fixture.invalid/ascii-|-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "http-proxy",
+      "snis": [],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ordinary",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ordinary",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\\-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-\\-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "backslash",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-\\-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\\-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-\\-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "backslash",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-\\-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-^-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-^-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "caret",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-^-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-^-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-^-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "caret",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-^-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-|-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-|-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "pipe",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-|-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-|-tail",
+      "connects": [],
+      "dials": [
+        {
+          "host": "fixture.invalid",
+          "port": 443
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-|-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "pipe",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-|-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-direct",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ordinary",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ordinary",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\\-tail",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-\\-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "backslash",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-\\-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-\\-tail",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-\\-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "backslash",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-\\-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-^-tail",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-^-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "caret",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-^-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-^-tail",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-^-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "caret",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-^-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-|-tail",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-|-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "pipe",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-|-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    },
+    {
+      "base_url": "https://fixture.invalid/ascii-|-tail",
+      "connects": [
+        {
+          "api_key": null,
+          "host": "fixture.invalid:443",
+          "method": "CONNECT",
+          "target": "fixture.invalid:443",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "dials": [
+        {
+          "host": "127.0.0.1",
+          "port": "owned-proxy"
+        }
+      ],
+      "handlers_joined": true,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/ascii-|-tail",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "pipe",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.invalid",
+          "method": "POST",
+          "target": "/ascii-|-tail/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "route": "https-proxy",
+      "snis": [
+        "fixture.invalid"
+      ],
+      "text": "ok",
+      "writers_closed": true
+    }
+  ],
+  "httpcore_version": "1.0.9",
+  "httpx_version": "0.28.1",
+  "message": {
+    "content": [
+      {
+        "text": "ok",
+        "type": "text"
+      }
+    ],
+    "id": "fixture",
+    "model": "fixture-model",
+    "role": "assistant",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "type": "message",
+    "usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    }
+  },
+  "sdk_version": "0.107.1",
+  "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 1}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+}
