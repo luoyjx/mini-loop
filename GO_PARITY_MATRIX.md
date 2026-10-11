@@ -2,9 +2,10 @@
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed **2026-10-11** at local main `dc39414`; latest Go implementation
-`014e913`. Live Git tree comparison verifies the same Go tree as the latest full
-native gates, which remain failed. This index uses pinned receipts rather than
+Reviewed **2026-10-11** at local main `46feacd`; latest Go runtime implementation
+`014e913`. Production code is unchanged; the AST integrity test now uses same-path
+replacement. Prior full-tree measurements retain their original snapshot identity.
+Full native acceptance remains open. This index uses pinned receipts rather than
 promoting old passes or selected diagnostics to current full acceptance.
 [Reconciled evidence](docs/audits/go-current-acceptance-index-2026-10-11.json).
 Full P0/P1/G0–G7 completion remains unproven; see
@@ -19,7 +20,7 @@ Full P0/P1/G0–G7 completion remains unproven; see
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Full ordinary/race+atomic gates](docs/audits/go-json-read-spans-2026-10-11.json), raw C and same-subscription queue/control receipts | Full ordinary fails CLI/native reload; full race+atomic fails four operation waits. Later diagnostics do not repair/supersede failures. Readiness/delivery reliability and temporal G3/G7 remain open |
+| Development reload | [Full ordinary/race+atomic gates](docs/audits/go-json-read-spans-2026-10-11.json), raw C and same-subscription queue/control receipts | New full ordinary Go passes after AST test-only replacement; prior full race+atomic still fails four operation waits and has not been rerun. Later diagnostics do not repair/supersede race failures. Readiness/delivery reliability and temporal G3/G7 remain open |
 | Package-level type declarations | Syntax and active-profile public closure audits; [current runtime evidence](docs/audits/go-json-read-spans-2026-10-11.json) | On unchanged014e913 Go tree:450 production files/1434 named types;50 packages/1189 exported types;zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |

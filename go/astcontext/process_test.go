@@ -339,14 +339,13 @@ func TestDigestRecheckedBySameAdapterBeforeEveryProbe(t *testing.T) {
 	if err := os.Remove(marker); err != nil {
 		t.Fatal(err)
 	}
-	file, err := os.OpenFile(p.Binary, os.O_APPEND|os.O_WRONLY, 0)
-	if err != nil {
+	// Replace the path instead of writing the recently executed inode, which
+	// Linux can still hold busy. The same adapter must recheck the new bytes.
+	replacement := p.Binary + ".replacement"
+	if err := os.WriteFile(replacement, append(data, []byte("changed")...), 0700); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := file.Write([]byte("changed")); err != nil {
-		t.Fatal(err)
-	}
-	if err := file.Close(); err != nil {
+	if err := os.Rename(replacement, p.Binary); err != nil {
 		t.Fatal(err)
 	}
 	probe, err = a.Probe(context.Background(), workspace)

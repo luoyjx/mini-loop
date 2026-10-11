@@ -6851,10 +6851,14 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** at local main `dc39414`; latest Go implementation is
-`014e913`. Live Git tree identity confirms current `go/` exactly matches the tree
-used by the full JSON read-span gates. Those full gates remain failed: ordinary
-Go fails CLI/native reload; race+atomic fails four native recipe operation waits.
+Reviewed **2026-10-11** at local main `46feacd`; latest Go runtime implementation is
+`014e913`. Production code is unchanged from the full JSON read-span gates; the
+AST integrity test now replaces the executable path instead of writing the recently
+executed inode. The prior full-tree measurements remain pinned to their original
+snapshot; this test change does not refresh coverage. The new full ordinary Go
+gate passes after the test-only change; the prior race+atomic gate still has four
+native recipe operation failures and has not been rerun. This is not whole-port
+acceptance.
 Vet and syntax/public type audits pass (450 production files/1434 named types;
 50 packages/1189 exported types, zero findings). A new Linux amd64/CGO1 compiler
 public-type audit also passes50 packages/1189 exported types with zero findings,
@@ -6883,7 +6887,7 @@ fixtures but do not replace that full gate.
 Latest full failed-run statement coverage is app**89.21%** (32690/36645), all Go
 **89.15%** (32811/36803), Provider**86.67%** (1515/1748), on the unchanged current
 Go tree. Profile SHA verified; not a passing acceptance baseline. Latest Python
-full regression is2239 passed/28 skipped/74 warnings/24 subtests (138.69s), from
+full regression is2239 passed/28 skipped/74 warnings/24 subtests (96.47s), from
 the same unchanged Python tree. Latest diagnostic adds same-subscription queue/
 post-result control evidence: hidden readiness failure despite300 queue marks and
 a later control C event; three other operations pass. Earlier full native failures
@@ -19598,3 +19602,38 @@ and the dispatch of its independent arm64 follow-up. The terminal arm64 results
 are recorded above and in the receipt, not presented as a passing acceptance.
 [Infographic](docs/audits/go-linux-full-gates-infographic-2026-10-11.png),
 [exact prompt](docs/audits/go-linux-full-gates-infographic-2026-10-11.prompt.txt).
+
+## AST digest recheck test replacement and layered architecture base — 2026-10-11
+
+At baseline46feacd, native Linux full ordinary/race both encountered ETXTBSY
+while the integrity test opened its recently executed ELF inode for writing.
+The failure preceded the second digest probe. The test now writes changed bytes
+to a sibling executable and renames it over the same path. The same Adapter must
+still report the exact SHA-256 mismatch message, and its execution marker must
+remain absent. Runtime integrity logic, dependencies, deadlines and assertions
+are unchanged. This is not an atomic executable security pin.
+
+Linux arm64 AST package ordinary/race passed on a private committed readonly
+snapshot, and the Darwin single-test race passed. Their original temporary files
+were lost during an environment switch; observed terminal outputs and their
+provenance are retained explicitly. Interrupted Darwin full commands have no
+terminal outcome and are not counted as passes. No matching processes remained
+before the disclosed continuation of the incomplete gates.
+
+The completed continuation passes full ordinary Go (`-p=1 -count=1 -timeout=300s`)
+in169.756s and `go vet ./...` in1.1s. Full Python passes2239 tests,28 skipped,
+74 warnings and24 subtests in96.47s. No full race/coverage/Source refresh is claimed;
+prior failed full race/native temporal evidence remains unresolved. Test-only
+changes do not trigger Python invariants/scans/guard-mutation or default-tool
+export checks. [Commands, full logs and scope](docs/audits/go-ast-replacement-2026-10-11.json).
+
+The new [layered base image](docs/mini-loop-layered-architecture.png) derives five
+conceptual layers from the canonical README Mermaid. Its side text preserves
+optional activation, authority recovery and pending acceptance boundaries. It
+summarizes groups rather than every runtime edge; the detailed Mermaid remains
+canonical. The first image's ambiguous provider/tool arrows were corrected and
+the result inspected. No runtime component was added or removed, so interactive
+architecture JSON/HTML remains unchanged. AGENTS.md records the user-requested
+base-image editing workflow for every iteration, including base updates when
+architecture parts are added or removed. The iteration annotation locates the
+AST-associated test change; it does not describe a runtime change.
