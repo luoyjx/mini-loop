@@ -1,5 +1,13 @@
 # Python to Go parity matrix
 
+## Memory header values and original identity — 2026-10-12
+
+Implementation `561928e`, baseline `1aaa99d`: name/description follow Python str, non-text types normalize
+to project, and consolidation compares original identity before conversion or
+deletion. All 109 Source cases match; 54 pre-fix differences and 24 caught origin
+mutations are retained. All 14 final gates pass; [receipt](docs/audits/go-memory-header-values-2026-10-12.json).
+Body conversion/failure stages and full original migration acceptance remain open.
+
 ## Memory reply JSON boundary — 2026-10-12
 
 Implementation `27f7c4e`, baseline `e9c330a`: immutable closed JSON values replace transient RawMessage
@@ -97,16 +105,14 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `e9c330a`: memory reply JSON now uses closed immutable values
-and named storage inputs;26 extraction and17 consolidation Source cases match.
-Initial9 parity differences and a later type-normalization failure are retained.
-Memory scalar coercion and destructive consolidation failure ordering remain open.
-Frozen 1649 inputs pass all14 gates: Source239 files, focused memory tests, four type
-audits, full ordinary Go/vet/race+atomic, Python,19 scans and selected mutation guards
-(memory18, consolidation1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 89.71s (0:01:29). Application coverage 89.27% (33095/37072); all Go 89.15%
-(33266/37316); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-reply-json-2026-10-12.json). Original migration acceptance remains open.
+Reviewed baseline `1aaa99d`: memory header projection and original identity,
+with 59 extraction and 50 consolidation Source cases and 24 caught origin mutations.
+Frozen 1649 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
+(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 97.27s (0:01:37). Application coverage 89.28% (33117/37094); all Go 89.15%
+(33288/37338); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-header-values-2026-10-12.json). Body stages and original acceptance remain open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -149,15 +155,15 @@ passed in 89.71s (0:01:29). Application coverage 89.27% (33095/37072); all Go 89
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 89.71s (0:01:29)**. Ordinary Go/vet/race+atomic, four type
-audits,239-file Source check,19 scans and selected memory/consolidation guards pass.
-[Current receipt](docs/audits/go-memory-reply-json-2026-10-12.json). Full Python mutation sweep and package invariants
+Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 97.27s (0:01:37)**. Ordinary Go/vet/race+atomic, four type
+audits, 239-file Source check, 19 scans and selected memory/consolidation guards pass.
+[Current receipt](docs/audits/go-memory-header-values-2026-10-12.json). Full Python mutation sweep and package invariants
 not rerun; no Python runtime module changed. Default diagnostics and broader IDNA
 approval remain outstanding.
 
-Current full passing-run statement coverage: application **89.27% (33095/37072)**;
-all Go **89.15% (33266/37316)**; Provider **86.67% (1522/1756)**.
-[Exact receipt](docs/audits/go-coverage-memory-reply-json-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
+Current full passing-run statement coverage: application **89.28% (33117/37094)**;
+all Go **89.15% (33288/37338)**; Provider **86.67% (1522/1756)**.
+[Exact receipt](docs/audits/go-coverage-memory-header-values-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
 Python, branches and other platforms excluded. Full port acceptance remains open.
 
 

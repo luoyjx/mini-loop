@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-12",
+  "baseline": "1aaa99d",
+  "cohort": "Memory header projections and original identity; final frozen full gates",
+  "mode": "atomic",
+  "profile_sha256": "056f2d3fbf0b21fe2995c42c6c7f49d1c8b07965e2ff87c88e150a968efa7933",
+  "raw_rows": 1251567,
+  "unique_blocks": 26073,
+  "method": "Deduplicate identical source spans, require equal statement counts, and union maximum atomic hits.",
+  "all": {
+    "covered": 33288,
+    "statements": 37338,
+    "percent": 89.15314157158926
+  },
+  "app": {
+    "covered": 33117,
+    "statements": 37094,
+    "percent": 89.27858952930393
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "frozen_inputs": 1649,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-memory-header-values-2026-10-12/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 464.637
+  },
+  "retained_profile": "/tmp/mini-loop-memory-header-values-2026-10-12.cover",
+  "scope": "Darwin Go statements; excludes native C, CLI subprocess internals, Python, branches and other platforms.",
+  "limitations": [
+    "Prior temporal failures remain unexplained.",
+    "Full original migration acceptance remains open."
+  ],
+  "implementation_commit": "561928e"
+}
