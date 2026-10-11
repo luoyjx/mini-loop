@@ -1,0 +1,21 @@
+Use case: infographic-diagram
+Asset type: mini-loop Go migration iteration architecture infographic
+Primary request: Edit the supplied overall layered architecture base image to mark this iteration's Provider usage metadata Source-contract audit. Preserve all five layers, boxes, components and existing flow arrows. The base topology has not changed.
+Input images: Image 1 is the edit target and fixed architecture base.
+Style: preserve the original dark navy Chinese architecture diagram and crisp cyan typography.
+Change only the Model Provider box in L3: add a bright magenta outline and a small badge "本轮核对". Keep Session Agent ↔ Model Provider, Session Agent → ToolGate, ToolGate → L4 and L4 result → Session Agent arrows exactly intact.
+Replace the right-side boundary prose panel with concise iteration notes, in this exact order and text:
+Title: "本轮：usage metadata"
+"Source 已固定"
+"anthropic 0.107.1 · Pydantic 2.13.4"
+"156 个实际 SDK direct / SSE 样本"
+"当前 Go 差异"
+"76 个提前拒绝"
+"24 个字段形状或 SSE 转换不同"
+"56 个一致"
+"下一步实现"
+"具名闭合 metadata 观察值"
+"保留错误形状与逐阶段转换"
+"观察值不获得计量权限"
+"这是差异证据，尚未完成 parity"
+Keep the main title "mini-loop 整体分层架构". Add subtitle "本轮固定差异与验收样本 · runtime 未修改". Preserve original lower-layer labels and truthful optional/default status. Do not add/remove architecture components; do not imply the 100 differing cases pass. No isolated result-card layout; this must remain the same whole architecture base with the current component highlighted.
