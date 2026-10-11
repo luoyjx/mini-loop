@@ -4,6 +4,8 @@ import (
 	"net"
 	"net/url"
 	"strings"
+
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 )
 
 // Base has already passed New's endpoint admission. Work on its escaped path:
@@ -42,17 +44,10 @@ func providerRequestURL(base *url.URL) string {
 func providerRequestAuthority(base *url.URL) string {
 	host := base.Hostname()
 	ipv6 := strings.Contains(host, ":")
-	ascii := true
-	for i := 0; i < len(host); i++ {
-		if host[i] >= 0x80 {
-			ascii = false
-			break
-		}
-	}
-	// Unicode lowercase mapping is contextual in Python (and can expand a
-	// character). Preserve it for transport IDNA instead of Go's rune mapping.
-	if !ipv6 && ascii {
-		host = strings.ToLower(host)
+	// HTTPX lowercases the whole hostname before IDNA, including expansion
+	// and contextual final sigma. Use the captured Python Unicode tables.
+	if !ipv6 {
+		host = pytext.Lower(host)
 	}
 	port := strings.TrimLeft(base.Port(), "0")
 	if base.Port() != "" && port == "" {

@@ -325,6 +325,546 @@
       "text": "ok"
     },
     {
+      "base_url": "http://İİ.invalid/tenant",
+      "dials": [
+        {
+          "host": "xn--ii-rubb.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://İİ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "double-dotted-i-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--ii-rubb.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://İİ.invalid/tenant",
+      "dials": [
+        {
+          "host": "xn--ii-rubb.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://İİ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "double-dotted-i-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--ii-rubb.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://FİXTURE.INVALID/tenant",
+      "dials": [
+        {
+          "host": "xn--fixture-7he.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://FİXTURE.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "mixed-dotted-i-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--fixture-7he.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://FİXTURE.INVALID/tenant",
+      "dials": [
+        {
+          "host": "xn--fixture-7he.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://FİXTURE.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "mixed-dotted-i-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--fixture-7he.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://BÜCHER.INVALID/tenant",
+      "dials": [
+        {
+          "host": "xn--bcher-kva.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://BÜCHER.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-unicode-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--bcher-kva.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://BÜCHER.INVALID/tenant",
+      "dials": [
+        {
+          "host": "xn--bcher-kva.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://BÜCHER.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-unicode-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--bcher-kva.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://FAẞ.INVALID/tenant",
+      "dials": [
+        {
+          "host": "xn--fa-hia.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://FAẞ.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-sharp-s-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--fa-hia.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://FAẞ.INVALID/tenant",
+      "dials": [
+        {
+          "host": "xn--fa-hia.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://FAẞ.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-sharp-s-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--fa-hia.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.ΟΣ/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--0xag",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.ΟΣ/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "greek-final-sigma-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--0xag",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.ΟΣ/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--0xag",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.ΟΣ/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "greek-final-sigma-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--0xag",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.ΟΣΑ/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--mxa1am",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.ΟΣΑ/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "greek-medial-sigma-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--mxa1am",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.ΟΣΑ/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--mxa1am",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.ΟΣΑ/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "greek-medial-sigma-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--mxa1am",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://ΟΣ.invalid/tenant",
+      "dials": [
+        {
+          "host": "xn--0xai.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://ΟΣ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "greek-across-dot-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--0xai.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://ΟΣ.invalid/tenant",
+      "dials": [
+        {
+          "host": "xn--0xai.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://ΟΣ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "greek-across-dot-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--0xai.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.AΣ́/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--a-xbb29c",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.AΣ́/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "greek-combining-sigma-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--a-xbb29c",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.AΣ́/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--a-xbb29c",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.AΣ́/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "greek-combining-sigma-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--a-xbb29c",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.ԱԲ/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--y9ac",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.ԱԲ/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-armenian-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--y9ac",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.ԱԲ/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--y9ac",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.ԱԲ/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-armenian-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--y9ac",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.Я/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--41a",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.Я/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-cyrillic-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--41a",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.Я/tenant",
+      "dials": [
+        {
+          "host": "fixture.xn--41a",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.Я/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-cyrillic-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "fixture.xn--41a",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
       "base_url": "http://fixture.invalid/tenant#",
       "dials": [
         {
@@ -381,6 +921,7 @@
   ],
   "httpcore_version": "1.0.9",
   "httpx_version": "0.28.1",
+  "idna_version": "3.18",
   "message": {
     "content": [
       {
@@ -400,5 +941,6 @@
     }
   },
   "sdk_version": "0.107.1",
-  "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 1}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+  "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 1}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+  "unicode_version": "14.0.0"
 }

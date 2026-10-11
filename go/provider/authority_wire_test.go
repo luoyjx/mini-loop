@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
@@ -24,9 +25,10 @@ func TestCapturedAuthorityHTTPWireMatchesSDK(t *testing.T) {
 		APIKey                        string `json:"api_key"`
 	}
 	var fixture struct {
-		Message json.RawMessage
-		SSE     string
-		Cases   []struct {
+		UnicodeVersion string `json:"unicode_version"`
+		Message        json.RawMessage
+		SSE            string
+		Cases          []struct {
 			Name, Mode string
 			BaseURL    string `json:"base_url"`
 			Identity   Description
@@ -41,8 +43,11 @@ func TestCapturedAuthorityHTTPWireMatchesSDK(t *testing.T) {
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 14 {
+	if len(fixture.Cases) != 34 {
 		t.Fatal("Source wire inventory changed")
+	}
+	if fixture.UnicodeVersion != pytext.PythonUnicodeVersion {
+		t.Fatal("Source host casing and native Unicode tables differ")
 	}
 	for _, row := range fixture.Cases {
 		t.Run(row.Name+"/"+row.Mode, func(t *testing.T) {

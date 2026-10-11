@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `f9f6248` (runtime unchanged; paired C-entry and Source binding-return failures reviewed) plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `dce2202` plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -682,7 +682,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw-path concatenation / literal dot normalization / ASCII authority and default ports<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw-path concatenation / literal dot normalization / Python Unicode hostname casing and default ports<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -2682,23 +2682,23 @@ refusal remain in place. Query/userinfo/fragment restrictions retain their curre
 native admission rules; general hostname/port normalization and custom transport
 acceptance remain outside this path capture.
 
-Accepted ASCII hostname spelling is normalized for outbound requests, numeric
-port spelling loses leading zeros and default HTTP/HTTPS ports are omitted.
-IPv6 literals retain their spelling and brackets; configured audit identity
-remains original. All 32 captured ASCII/IPv6 direct/SSE requests are required
-assertions. Fourteen actual loopback HTTP requests also compare Host, target,
-method, API-key and TCP dial authority against SDK captures, including Unicode
-IDNA and empty fragments. Only the TCP destination is redirected to an owned
-listener; HTTP encoding/parsing and provider/SDK behavior are real. Captured
-Unicode and sharp-s hosts reach matching punycode on the native standard HTTP
-wire, while Unicode request-object/custom-transport spelling remains different. Expanded
-dotted-I host captures expose two stable native wire failures: 12 of 14 wire
-assertions currently match. The standard native IDNA path does not match Source
-for this input, even at the pre-normalization baseline. ASCII normalization
-leaves Unicode spelling intact. These failures remain required assertions;
-they are not skipped or accepted as parity.
-IDNA request-boundary dependency approval and broader admission reconciliation
-remain open; these fourteen wire cases do not prove full IDNA equivalence.
+Accepted hostname spelling uses the existing Python Unicode 14.0.0 casing tables
+before native transport IDNA, matching HTTPX's whole-host `lower()` order. This
+preserves dotted-I expansion and contextual sigma across label separators rather
+than applying Go rune casing. Numeric ports lose leading zeros and default
+HTTP/HTTPS ports are omitted. IPv6 spelling/brackets and configured audit identity
+remain intact. All 32 captured ASCII/IPv6 direct/SSE requests remain required.
+Thirty-four actual loopback HTTP requests also compare Host, target, method,
+API-key and TCP dial authority against SDK captures. Only TCP destination is
+redirected; HTTP encoding/parsing and provider/SDK behavior are real. The expanded
+inventory includes dotted-I, repeated/mixed dotted-I, uppercase Unicode/sharp-s,
+final/medial/across-dot/combining sigma, Armenian and Cyrillic hosts. Baseline
+matches 12/34; the native casing change matches 34/34, including the original two
+required dotted-I failures. No dependency is added. Unicode request-object/custom
+transport spelling still differs from Source's ASCII IDNA view. General IDNA
+validation/normalization, broader admission and TLS/SNI equivalence remain open;
+this wire inventory does not establish them. The broader IDNA dependency proposal
+remains pending and is not needed for this casing change.
 
 A subsequent 68-observation URL scope audit captures the actual Python provider
 factory and both SDK request modes with injected HTTP boundaries. It distinguishes

@@ -4,11 +4,13 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import unicodedata
 from unittest.mock import patch
 
 import anthropic
 import httpx
 import httpcore
+import idna
 from httpcore._backends.anyio import AnyIOBackend
 from mini_loop.providers import AnthropicCompatibleProvider
 from tools.provider_endpoint_contracts import provider_endpoint_contracts
@@ -20,6 +22,16 @@ WIRE_URLS = (
     ('unicode-host', 'http://bücher.invalid/tenant'),
     ('sharp-s-host', 'http://faß.invalid/tenant'),
     ('dotted-i-host', 'http://İ.invalid/tenant'),
+    ('double-dotted-i-host', 'http://İİ.invalid/tenant'),
+    ('mixed-dotted-i-host', 'http://FİXTURE.INVALID/tenant'),
+    ('uppercase-unicode-host', 'http://BÜCHER.INVALID/tenant'),
+    ('uppercase-sharp-s-host', 'http://FAẞ.INVALID/tenant'),
+    ('greek-final-sigma-host', 'http://fixture.ΟΣ/tenant'),
+    ('greek-medial-sigma-host', 'http://fixture.ΟΣΑ/tenant'),
+    ('greek-across-dot-host', 'http://ΟΣ.invalid/tenant'),
+    ('greek-combining-sigma-host', 'http://fixture.AΣ́/tenant'),
+    ('uppercase-armenian-host', 'http://fixture.ԱԲ/tenant'),
+    ('uppercase-cyrillic-host', 'http://fixture.Я/tenant'),
     ('empty-fragment', 'http://fixture.invalid/tenant#'),
 )
 
@@ -88,6 +100,7 @@ def provider_authority_wire_contracts() -> dict:
                 rows.append(dict(name=name, base_url=base_url, mode=mode, identity=provider.describe(),
                                  dials=dials, requests=requests, text=reply.content[0].text))
         return dict(sdk_version=payload['sdk_version'], httpx_version=payload['httpx_version'],
+                    idna_version=idna.__version__, unicode_version=unicodedata.unidata_version,
                     httpcore_version=httpcore.__version__, message=payload['message'], sse=payload['sse'], cases=rows)
 
     return asyncio.run(capture())
