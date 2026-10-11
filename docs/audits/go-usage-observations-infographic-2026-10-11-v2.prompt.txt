@@ -1,0 +1,33 @@
+Use case: infographic-diagram
+Asset type: mini-loop Go migration iteration architecture infographic
+Primary request: Edit the supplied fixed overall layered architecture base to highlight this iteration's implemented named usage metadata observations and SDK construction-stage parity. Preserve all five layers, every architecture box and all existing flow arrows. No topology component was added or removed.
+Input images: Image 1 is the edit target, the fixed architecture base.
+Style: preserve the original dark navy architecture diagram, cyan labels and clear Chinese typography.
+Add a vivid magenta outline around the L3 Model Provider box and a small badge "本轮修改".
+Keep the Session Agent ↔ Model Provider arrow, Session Agent → ToolGate arrow, ToolGate → L4 arrow and L4 results → Session Agent arrow exactly intact.
+Keep title "mini-loop 整体分层架构". Set subtitle "本轮：具名 usage metadata 与 SDK 回退对齐".
+Replace the right-side boundary prose with these exact concise notes:
+Title: "本轮改动"
+"具名闭合观察值"
+"保留错误形状、大整数、有限浮点数"
+"metadata 不获得计量权限"
+"对齐 SDK 构造阶段"
+"嵌套模型整体校验与回退"
+"数组顶层对象补默认，不转换计数"
+"SSE 逐阶段保留观察种类"
+"验收证据"
+"191 个 direct / SSE 样本匹配"
+"214 个 SDK 中间快照匹配"
+"遮罩、克隆、归档、SQLite 重开通过"
+"完整门禁另见本轮审计记录"
+"整体迁移仍待完整验收"
+Keep the original L1-L5 component labels, entry ownership, ToolGate permissions, optional L4 orchestration and SQLite/evidence L5 labels. Do not add or remove components. Do not imply Linux, defaults, all numerical ranges or overall Go migration acceptance is complete. This is a whole architecture diagram with the current component highlighted, not isolated result cards.
+
+Arrow-only correction prompt:
+Use case: precise-object-edit
+Asset type: correction of an iteration architecture infographic
+Input image 1: current iteration diagram to edit.
+Input image 2: canonical architecture base, reference for flow arrows.
+Primary request: Remove exactly one erroneous extra cyan horizontal right-pointing arrow between the "Model Provider" box and the "ToolGate" box in L3, at their vertical center. Fill that small gap with the existing dark navy background. The original base has no arrow in that gap.
+Keep the long top L3 "工具调用" arrow from Session Agent to ToolGate, the bidirectional Session Agent ↔ Model Provider arrow on the left side of Provider, ToolGate downward arrow to L4, L4 result arrow up to Session Agent, and optional orchestration dashed arrow exactly as in the base.
+Keep all five layers, component boxes, magenta highlight, main title, current subtitle, the right prose panel and exact191 /214 numbers unchanged. No new arrows, labels or objects. Only erase the extra short horizontal Provider → ToolGate arrow; make no other changes.
