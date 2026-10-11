@@ -112,11 +112,32 @@ func main() {
 	root := flag.String("root", ".", "production Go source root (all platform files)")
 	public := flag.Bool("public", false, "compiler-resolved exported type closure (active build profile)")
 	private := flag.Bool("private", false, "compiler-resolved private type roots (active build profile)")
+	variables := flag.Bool("variables", false, "compiler-resolved package variable closure (active build profile)")
 	flag.Parse()
-	if *public && *private {
-		fmt.Fprintln(os.Stderr, "select only one of -public or -private")
+	if (*public && *private) || (*public && *variables) || (*private && *variables) {
+		fmt.Fprintln(os.Stderr, "select only one of -public, -private or -variables")
 		os.Exit(2)
 	}
+	if *variables {
+		result, err := auditVariables(*root)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(2)
+		}
+		for _, finding := range result.findings {
+			fmt.Fprintf(os.Stderr, "%s: open payload in package variable %s\n", finding.position, finding.name)
+		}
+		fmt.Printf("Go variable audit: %d packages, %d package variables, %d findings\n", result.packages, result.variables, len(result.findings))
+		if result.packages == 0 {
+			fmt.Fprintln(os.Stderr, "no main-module packages found")
+			os.Exit(2)
+		}
+		if len(result.findings) != 0 {
+			os.Exit(1)
+		}
+		return
+	}
+
 	if *private {
 		result, err := auditPrivate(*root)
 		if err != nil {

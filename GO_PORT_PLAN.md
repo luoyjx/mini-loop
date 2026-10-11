@@ -1,5 +1,47 @@
 # Go port plan
 
+## 2026-10-12 compiler-resolved package variable roots
+
+Baseline local main `d273a8e`. G0 named-type gates could miss package variables
+whose inferred type retained open payloads without introducing a named type.
+Add `typeaudit -variables` for exported and private package variables, including
+inferred declarations, imported erased aliases/RawMessage, generic instances,
+anonymous structs, channels and stored function signatures. No new dependency.
+
+Private-type and variable modes share one compiler-selected source resolver,
+including active CGO declarations. Compiler inventory/type failures fail closed;
+package initializers and function bodies are never executed. The existing opaque
+external struct/nonempty-capability boundary is retained. Constants, blank
+identifiers, test files, locals and inactive definitions are outside this mode.
+
+Focused fixtures prove11 variable findings that public/private named-root modes
+miss, with closed generics, shadowed any and platform controls. They also prove
+initializers are not run, pair-return inference, declaration locations and invalid
+inventory refusal. Three conflicting CLI mode pairs return2 before inventory.
+Current host scan:50 packages/172 variables, zero findings.
+Frozen 1647 inputs pass all 12 gates: Source 239 files, focused typeaudit tests,
+syntax/public/private/variable audits, full ordinary Go/vet/race+atomic, Python and 19
+scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 91.64s
+(0:01:31). Application coverage 89.23% (33077/37068); all Go 89.11% (33248/37312);
+Provider 86.45% (1518/1756).
+Application spans and statement counts match the previous cohort:10 previously covered statements are unhit and3 previously unhit statements are hit, net -7. Runtime source is unchanged; the profile comparison records paths but does not establish a timing cause.
+[Full receipt](docs/audits/go-package-variable-closure-2026-10-12.json); [coverage](docs/audits/go-coverage-package-variable-closure-2026-10-12.json). Current architecture map/specification describes
+the operator mode; runtime topology/defaults/authority are unchanged.
+
+Remaining G0: function-local types/variables, named methods/top-level functions,
+bodies/runtime data flow, foreign internals and inactive/other build profiles.
+Broader provider/default/platform/performance and original P0/P1/G0-G7 acceptance
+remain open. No causal fix for prior temporal failures is claimed.
+
+The [iteration image](docs/audits/go-package-variable-closure-infographic-2026-10-12.png)
+edits the existing five-layer base and highlights L5 audit with scope prose.
+Exact built-in imagegen prompt is saved alongside. No components are added or
+removed; the base remains unchanged. README canonical operator label and JSON
+scope note are updated; generated HTML passes9 checks, zero errors/warnings.
+PNG directly inspected; browser HTML visual review remains blocked by the prior
+URL policy. No indirect workaround. No Python runtime module or guarded behavior
+changes: package invariants/mutation sweep not rerun; required scans pass.
+
 ## 2026-10-11 native team SQLite restart and resumed writes
 
 Source commit `ce544f6`; native test commit `c19d7f2`.
@@ -7185,10 +7227,14 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `bf75663`, native test `c19d7f2`; team SQLite
-two-reopen and resumed-turn evidence now matches actual Source. No production
-runtime/default changes. Frozen1644 inputs pass Source239, focused team restart tests, all three type audits, full ordinary Go/vet/race+atomic, Python and19 scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 105.85s (0:01:45). Application coverage 89.25% (33084/37068); all Go 89.16% (33240/37283); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-team-sqlite-restart-2026-10-11.json).
+Reviewed **2026-10-12** against local main baseline `d273a8e`: package-variable
+compiler closure complements named-root syntax/public/private checks.
+Frozen 1647 inputs pass all 12 gates: Source 239 files, focused typeaudit tests,
+syntax/public/private/variable audits, full ordinary Go/vet/race+atomic, Python and 19
+scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 91.64s
+(0:01:31). Application coverage 89.23% (33077/37068); all Go 89.11% (33248/37312);
+Provider 86.45% (1518/1756).
+[Current receipt](docs/audits/go-package-variable-closure-2026-10-12.json). Runtime topology/defaults/authority unchanged.
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7219,10 +7265,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app**89.25% (33084/37068)**,
-all Go**89.16% (33240/37283)**, Provider**86.67% (1522/1756)**. The profile hash
-and1644 frozen inputs are retained; coverage excludes native C, CLI child
-internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-team-sqlite-restart-2026-10-11.json).
+Current full passing-run statement coverage: app **89.23% (33077/37068)**,
+all Go **89.11% (33248/37312)**, Provider **86.45% (1518/1756)**.
+The profile hash and 1647 frozen inputs are retained; coverage excludes
+native C, CLI subprocess internals, Python, branches and non-Darwin.
+[Current coverage](docs/audits/go-coverage-package-variable-closure-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7234,7 +7281,7 @@ work-package acceptance.
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax and active-profile public/private-root compiler audits pass; package variables/local types, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; local types/variables, functions/methods/bodies, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |
