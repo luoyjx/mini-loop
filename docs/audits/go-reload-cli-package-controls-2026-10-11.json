@@ -1,0 +1,221 @@
+{
+  "baseline": "5e4dd67",
+  "runtime_baseline": "ea35cd3",
+  "branch": "fix/go-reload-acceptance",
+  "scope": "Diagnostics only: no runtime/test/fixture/default/dependency changes.",
+  "cli_prefix": {
+    "command": [
+      "go",
+      "test",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "github.com/luoyjx/mini-loop/go/cmd/miniloop"
+    ],
+    "exit": 0,
+    "duration_seconds": 78.219
+  },
+  "whole_reload_after_cli": {
+    "command": [
+      "go",
+      "test",
+      "-count=1",
+      "-timeout=180s",
+      "./reload"
+    ],
+    "exit": 1,
+    "duration_seconds": 113.823,
+    "failing_profiles": [
+      "hidden-parent-source",
+      "same-mtime-write"
+    ]
+  },
+  "later_controls": {
+    "go_polling": {
+      "command": "go test -count=1 -timeout=120s -run ^TestPollingEventsActualSourceRecipes$ ./reload",
+      "result": "pass",
+      "duration_seconds": 11.855,
+      "fixture_cases": 20
+    },
+    "source": {
+      "implementation": "python/tools/watchfiles_contracts.py::_native_case",
+      "fixture": "go/testdata/python-watchfiles.json",
+      "canonical_temporary_roots": true,
+      "selected_names": [
+        "hidden-parent-source",
+        "same-mtime-write"
+      ],
+      "observations": [
+        {
+          "profile": "native_events",
+          "name": "hidden-parent-source",
+          "changed": [
+            ".git/a.py"
+          ],
+          "expected": [
+            ".git/a.py"
+          ],
+          "match": true,
+          "native_arguments": {
+            "force_polling": false,
+            "poll_delay_ms": 300,
+            "recursive": true,
+            "ignore_permission_denied": true,
+            "backend": "FsEventWatcher",
+            "fsevents": {
+              "flags": 18,
+              "latency_seconds": 0.0,
+              "since_now": true
+            }
+          },
+          "closed": true
+        },
+        {
+          "profile": "native_events",
+          "name": "same-mtime-write",
+          "changed": [
+            "source.py"
+          ],
+          "expected": [
+            "source.py"
+          ],
+          "match": true,
+          "native_arguments": {
+            "force_polling": false,
+            "poll_delay_ms": 300,
+            "recursive": true,
+            "ignore_permission_denied": true,
+            "backend": "FsEventWatcher",
+            "fsevents": {
+              "flags": 18,
+              "latency_seconds": 0.0,
+              "since_now": true
+            }
+          },
+          "closed": true
+        },
+        {
+          "profile": "polling_events",
+          "name": "hidden-parent-source",
+          "changed": [
+            ".git/a.py"
+          ],
+          "expected": [
+            ".git/a.py"
+          ],
+          "match": true,
+          "native_arguments": {
+            "force_polling": true,
+            "poll_delay_ms": 300,
+            "recursive": true,
+            "ignore_permission_denied": true,
+            "backend": "PollWatcher",
+            "follow_symlinks": true,
+            "compare_contents": false,
+            "source_mtime_seconds": null
+          },
+          "closed": true
+        },
+        {
+          "profile": "polling_events",
+          "name": "same-mtime-write",
+          "changed": null,
+          "expected": null,
+          "match": true,
+          "native_arguments": {
+            "force_polling": true,
+            "poll_delay_ms": 300,
+            "recursive": true,
+            "ignore_permission_denied": true,
+            "backend": "PollWatcher",
+            "follow_symlinks": true,
+            "compare_contents": false,
+            "source_mtime_seconds": 100
+          },
+          "closed": true
+        }
+      ],
+      "matched": 4
+    },
+    "go_native": {
+      "command": "go test -count=1 -timeout=60s -run ^TestNativeEventsActualSourceRecipes/(hidden-parent-source|same-mtime-write)$ ./reload",
+      "result": "pass",
+      "duration_seconds": 2.749,
+      "selected_recipe_cases": 2
+    }
+  },
+  "service_observations": {
+    "command": "ps -p 61339 -o pid,pcpu,time,rss,etime,comm",
+    "snapshots": [
+      "  PID  %CPU      TIME    RSS     ELAPSED COMM\n61339 195.4 1509:00.28 3040176 27-21:38:32 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd\n",
+      "  PID  %CPU      TIME    RSS     ELAPSED COMM\n61339 154.1 1509:37.09 3153664 27-21:38:54 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd\n",
+      "  PID  %CPU      TIME    RSS     ELAPSED COMM\n61339  99.4 1511:15.67 3032432 27-21:40:18 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd\n"
+    ],
+    "interpretation": "The live fseventsd process reports approximately one to two CPU cores during these snapshots. This does not identify event backlog, a service defect or causality.",
+    "disk_snapshot": "Filesystem      Size    Used   Avail Capacity iused ifree %iused  Mounted on\n/dev/disk3s5   460Gi   362Gi    54Gi    88%    4.6M  564M    1%   /System/Volumes/Data\n"
+  },
+  "conclusion": [
+    "A CLI-only preceding package followed by a whole reload command is sufficient to reproduce two operation timeouts in this observation; the previous 28-package prefix is unnecessary for this run.",
+    "Later Source native, Source polling, Go polling and selected Go native controls pass against their own backend fixtures. No persistent semantic mismatch is established for the two selected profiles.",
+    "The failure remains dependent on run context; a causal CLI trigger or global service-pressure explanation has not been proven."
+  ],
+  "limits": [
+    "One CLI/whole-reload observation; changing host state confounds comparisons.",
+    "Later controls do not immediately replay the identical CLI and full package-local prefix.",
+    "Polling same-mtime-write expects no event, unlike native; success is checked against each backend fixture, not used as equivalent native behavior.",
+    "No full Go gate/race/vet, full Source export, Python regression or coverage refresh in this diagnostic slice.",
+    "Main merge remains intact; no subsequent merge/push, global service restart, flushing timer or changed deadlines.",
+    "Native reliability and full G3/G7 acceptance remain open."
+  ],
+  "reproduction": [
+    "From go/, run the recorded CLI command, then the recorded whole reload command.",
+    "For later native Go controls, select the two named recipe subtests; for polling use the existing complete polling recipe test.",
+    "For Source controls, call _native_case on each selected recipe in native_events and polling_events, removing changed/native_arguments/closed from input and passing force_polling for the polling profile. Canonicalize temporary roots."
+  ],
+  "logs": {
+    "cli": {
+      "path": "/tmp/mini-loop-cli-full-reload-native.log",
+      "sha256": "173b11c1518eb56fb482cd1035853a95d131cfe15b6486b80793fda36179c1a1"
+    },
+    "reload": {
+      "path": "/tmp/mini-loop-cli-full-reload-native-recipes.log",
+      "sha256": "751de27f2d17dcfb5ae8b58c26343f1e4478c04d57efdb1589bcff6b4f0b7fa6"
+    },
+    "native_raw": {
+      "path": "/tmp/mini-loop-cli-full-reload-native.json",
+      "sha256": "c4ad8a95ace406159e27e2b0fb5c763910a13ea0430654375b22c2ecf2c58731"
+    },
+    "driver": {
+      "path": "/tmp/mini-loop-cli-full-reload-control.py",
+      "sha256": "124c12c0e12c57a1d42e2b6325f06fcae538306871d9e16d70ed208c776c9b71"
+    },
+    "source_script": {
+      "path": "/tmp/mini-loop-cli-source-backend-control.py",
+      "sha256": "9018d8c909dbf0660856e0ae3695550185c705f8eb09e1fe7f9a614e63ab4fb9"
+    },
+    "source_log": {
+      "path": "/tmp/mini-loop-cli-source-backend-control.log",
+      "sha256": "78dd45aada7357d97ed8986115a957e176befb54074ff080b3251232854defcc"
+    },
+    "source_raw": {
+      "path": "/tmp/mini-loop-cli-source-backend-control.json",
+      "sha256": "720485f07ff804b3e8d93a16be1fc5ec10e4f4b6fdbcfe03415068066669b946"
+    },
+    "go_polling": {
+      "path": "/tmp/mini-loop-cli-full-reload-polling-control.log",
+      "sha256": "1a9ca046d2a79c2d86cb32cd57f5526f1412a9e5df5acce4461307b6d253fd29"
+    },
+    "go_native_selected": {
+      "path": "/tmp/mini-loop-cli-native-direct-control.log",
+      "sha256": "630356f5f3b6fc2557fce414b473901ddc889f0955d75c02815c28b7f538f546"
+    },
+    "fixture": {
+      "path": "go/testdata/python-watchfiles.json",
+      "sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0"
+    },
+    "capture": {
+      "path": "python/tools/watchfiles_contracts.py",
+      "sha256": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a"
+    }
+  }
+}

@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 at `5d1c99b`; latest production implementation `ea35cd3`, recipe setup test `e5064d8`. Named background option policies and actual SDK/managed consumers are delivered, including nonfinite final error text. Last complete Source export passed with 228 files at the encoding slice. This section is the current delivery index;
+Reviewed 2026-10-11 at merged `5e4dd67`; latest production implementation `ea35cd3`, recipe setup test `e5064d8`. Named background option policies and actual SDK/managed consumers are delivered, including nonfinite final error text. Last complete Source export passed with 228 files at the encoding slice. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6906,6 +6906,9 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    a root-cause finding. Targeted passes do not supersede full-run failures.
    Preserve the 3-second operation deadline and native selection; see
    [prefix controls](docs/audits/go-reload-package-prefix-controls-2026-10-11.json).
+   A CLI-only prefix also reproduces two timeouts; later selected native/Source
+   controls pass. Live fseventsd CPU pressure is observed without a causal claim;
+   see [smaller context](docs/audits/go-reload-cli-package-controls-2026-10-11.json).
 
 5. Provider/default acceptance: the 48 standalone background option profiles,
    actual SDK direct/SSE/forwarding observations and 48 managed consumer profiles
@@ -18331,3 +18334,25 @@ Runtime, tests, fixtures and deadlines remain unchanged. No merge/push or
 coverage refresh. G3/G7 and complete port acceptance remain open. Next isolate
 which preceding workload retains the failure and compare Source under that
 reduced context before changing the backend or its acceptance test.
+
+## 2026-10-11 CLI-only preceding reload context
+
+Baseline: merged `5e4dd67`, unchanged runtime `ea35cd3`. Running only the CLI
+package first passes (78.219s); running whole reload next fails two native
+profiles, hidden-parent-source and same-mtime-write (113.823s). Thus the full
+28-package prefix is unnecessary for this observed reproduction. Later controls
+pass: all 20 Go polling recipes (11.855s), both selected Go native cases (2.749s),
+and both selected Source native and polling profiles (four captures). Polling
+same-mtime-write correctly expects no event; it does not replace native behavior.
+
+Three live fseventsd snapshots report roughly one to two CPU cores, while results
+vary between runs. This is a host-state observation, not a proven causal trigger
+or service defect. The later controls do not replay the complete immediate
+prefix, so complete temporal parity is not established.
+
+[Commands, outcomes, raw service snapshots and evidence hashes](docs/audits/go-reload-cli-package-controls-2026-10-11.json).
+No runtime, test, fixture, deadline or feature-default changes; no full release
+gates or coverage refresh. Main merge stays intact; this evidence is on the
+follow-up branch. Native reliability and G3/G7 remain open. Next compare a
+matched reduced CLI/compiler workload and its idle control while recording host
+service state, rather than inferring a backend defect from a contextual timeout.
