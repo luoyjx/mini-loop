@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `a1881a9` plus protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `cf1ebea`, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -2650,6 +2650,15 @@ Source UI templates retain their external library references and the existing
 CSP. HTTP template/schema parity is verified; browser rendering of the external
 libraries is not claimed. Custom ASGI mounts/root paths are outside this default
 route capture. Refresh/check with `.venv/bin/python python/tools/export_go_api_docs.py --check`.
+
+Business-route method/slash parity remains incomplete. The actual Source routing
+fixture captures 160 requests across all 40 explicit business paths. At `cf1ebea`,
+39 authenticated trailing-slash requests return native 404 instead of Source 307,
+and four shared paths advertise a method union instead of the first registered
+Source route's `Allow`. Missing/query-only credentials and the oversized-body
+case are refused before routing in both runtimes. The explicit
+`TestActualSourceRoutingAudit` produces diagnostic observations; it is not a
+passing parity assertion or an implemented routing repair.
 
 ### Completed provider reply metadata
 

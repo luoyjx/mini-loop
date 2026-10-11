@@ -1,0 +1,1024 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "production_baseline": "cf1ebea",
+  "worktree_base": "e56a49a",
+  "scope": "Source contract and diagnostic prerequisite; native routing repair is not implemented",
+  "source": {
+    "fastapi": "0.136.3",
+    "starlette": "1.2.1",
+    "routing_sha256": "ff6348e8f18ddcd896a68b72afbbd4328be99f1d2e897128fbb44091c845ce7c",
+    "fixture_sha256": "e1ac71a3d1880c78e88aa700a60b1f5f113a5d3bc7e47d11eb78b9ecccb9070b",
+    "business_paths": 40,
+    "cases": 160,
+    "fresh_export_files": 231
+  },
+  "mechanisms": {
+    "method": "Router.app retains the first PARTIAL route; Route.handle advertises that route methods, not all methods registered at the path",
+    "slash": "Router.app tries the stripped trailing-slash path when no full/partial match exists, preserving URL/query; admission middleware has already run"
+  },
+  "observations": {
+    "total": 160,
+    "same": 117,
+    "different": 43,
+    "by_profile": {
+      "unsupported-method": {
+        "cases": 40,
+        "same": 36
+      },
+      "trailing-slash": {
+        "cases": 39,
+        "same": 0
+      },
+      "missing-token-slash": {
+        "cases": 39,
+        "same": 39
+      },
+      "query-token-slash": {
+        "cases": 39,
+        "same": 39
+      },
+      "unknown-path": {
+        "cases": 1,
+        "same": 1
+      },
+      "unknown-missing-token": {
+        "cases": 1,
+        "same": 1
+      },
+      "oversized-before-redirect": {
+        "cases": 1,
+        "same": 1
+      }
+    },
+    "differences": [
+      {
+        "name": "trailing-slash",
+        "path": "/healthz/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/healthz?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "unsupported-method",
+        "path": "/sessions",
+        "fields": {
+          "allowed_methods": {
+            "source": [
+              "POST"
+            ],
+            "native": [
+              "GET",
+              "POST"
+            ]
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/mode/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/mode?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/personal-skills/preview/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/personal-skills/preview?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/personal-skills/fixture-id/commit/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/personal-skills/fixture-id/commit?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "unsupported-method",
+        "path": "/sessions/fixture-id",
+        "fields": {
+          "allowed_methods": {
+            "source": [
+              "GET"
+            ],
+            "native": [
+              "DELETE",
+              "GET"
+            ]
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/steer/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/steer?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/fork/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/fork?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/cancel/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/cancel?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "unsupported-method",
+        "path": "/sessions/fixture-id/workflows",
+        "fields": {
+          "allowed_methods": {
+            "source": [
+              "GET"
+            ],
+            "native": [
+              "GET",
+              "POST"
+            ]
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/workflows/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/workflows?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/workflows/fixture-id/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/workflows/fixture-id?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/workflows/fixture-id/cancel/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/workflows/fixture-id/cancel?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "unsupported-method",
+        "path": "/sessions/fixture-id/cron",
+        "fields": {
+          "allowed_methods": {
+            "source": [
+              "GET"
+            ],
+            "native": [
+              "GET",
+              "POST"
+            ]
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/cron/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/cron?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/cron/fixture-id/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/cron/fixture-id?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/self-audit/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/self-audit?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/skills/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/skills?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/memory/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/memory?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/tasks/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/tasks?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/goal/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/goal?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/team/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/team?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/memory/fixture-id/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/memory/fixture-id?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/benchmark/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/benchmark?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/propose-improvement/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/propose-improvement?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/improvements/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/improvements?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/self-audit/suggestions/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/self-audit/suggestions?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/self-audit/bench-task-drafts/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/self-audit/bench-task-drafts?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/cron/fixture-id/arm/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/cron/fixture-id/arm?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/transcript/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/transcript?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/approvals/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/approvals?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/approvals/fixture-id/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/approvals/fixture-id?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/messages/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/messages?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/messages/stream/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/messages/stream?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/events/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/events?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/sessions/fixture-id/trajectories/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/sessions/fixture-id/trajectories?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/trajectories/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/trajectories?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/trajectories/fixture-id/export/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/trajectories/fixture-id/export?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/trajectories/fixture-id/view/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/trajectories/fixture-id/view?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/trajectories/fixture-id/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/trajectories/fixture-id?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      },
+      {
+        "name": "trailing-slash",
+        "path": "/ui/?probe=keep",
+        "fields": {
+          "status": {
+            "source": 307,
+            "native": 404
+          },
+          "location": {
+            "source": "http://fixture/ui?probe=keep",
+            "native": null
+          },
+          "body_json": {
+            "source": null,
+            "native": {
+              "detail": "Not Found"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "gates": [
+    {
+      "command": "MINILOOP_ROUTING_AUDIT_OUTPUT=/tmp/mini-loop-routing-native.json MINILOOP_ROUTING_AUDIT_BASELINE=e56a49a go test -count=1 ./httpapi -run ^TestActualSourceRoutingAudit$",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-audit.log",
+      "log_sha256": "d5bf78a50fdaa603d720ec8f67fd4fb785fe94944059c86065d23cd1ef9a94f9",
+      "last_lines": [
+        "ok  \tgithub.com/luoyjx/mini-loop/go/httpapi\t0.964s"
+      ]
+    },
+    {
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "cwd": "go",
+      "exit_code": 1,
+      "log_path": "/tmp/mini-loop-routing-go.log",
+      "log_sha256": "fb1fede03388e547561ee1d15a2f09fb64a4cbfdcdb9fc5fa4bbbc1c71ebaaeb",
+      "last_lines": [
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workflows\t1.466s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workspace\t0.822s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/worktrees\t3.529s",
+        "FAIL"
+      ]
+    },
+    {
+      "command": "go vet ./...",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "last_lines": []
+    },
+    {
+      "command": ".venv/bin/python python/tools/export_go_contracts.py --check",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-export.log",
+      "log_sha256": "ddac6f9b78db9efb3e04cf2fb3762e7ffede47bd38462350a7466eedad959aa0",
+      "last_lines": [
+        "  return self.__pydantic_serializer__.to_python(",
+        "/Users/yanjixiong/github/mini-loop/.venv/lib/python3.11/site-packages/pathspec/pattern.py:132: FutureWarning: Possible nested set at position 10",
+        "  regex = re.compile(raw_regex)",
+        "Python→Go contracts current: 231 files"
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_scans.py",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-scans.log",
+      "log_sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "last_lines": [
+        "  pins       test_write_sites.py::test_every_write_site_is_classified",
+        "  pins       test_write_sites.py::test_the_classification_has_no_dead_entries",
+        "",
+        "all 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied."
+      ]
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-python.log",
+      "log_sha256": "7bf22e88b29b3f88b98e111be73f29b70c14fc96b7d6bd1f7c386d8cac4cee82",
+      "last_lines": [
+        "    return self.__pydantic_serializer__.to_python(",
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "2233 passed, 28 skipped, 54 warnings, 24 subtests passed in 90.88s (0:01:30)"
+      ]
+    }
+  ],
+  "ordinary_go_failure": {
+    "package": "reload",
+    "cases": [
+      "TestNativeEventsActualSourceRecipes/lower-mtime-write",
+      "TestNativeEventsActualSourceRecipes/rename-out"
+    ],
+    "diagnostic_lines": [
+      "--- FAIL: TestNativeEventsActualSourceRecipes (46.31s)",
+      "    --- FAIL: TestNativeEventsActualSourceRecipes/lower-mtime-write (6.92s)",
+      "        native_events_recipes_test.go:197: context deadline exceeded",
+      "        native_events_recipes_test.go:141: native recipe timeline:",
+      "            +362ms subscription constructed; drain before post-subscription probe",
+      "            +464ms pre-probe next: paths=[] error=context deadline exceeded",
+      "            +3.767s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write1222794486/001\" flags=164096",
+      "            +3.767s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write1222794486/001/source.go\" flags=103680",
+      "            +3.767s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write1222794486/001/reload_observer_ready.go\" flags=102656",
+      "            +3.818s readiness probe observed; drain remaining setup events",
+      "            +3.92s post-probe next: paths=[] error=context deadline exceeded",
+      "            +3.92s operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write1222794486/001/source.go",
+      "            +6.922s operation next: paths=[] error=context deadline exceeded",
+      "            ",
+      "    --- FAIL: TestNativeEventsActualSourceRecipes/rename-out (5.21s)",
+      "        native_events_recipes_test.go:197: context deadline exceeded",
+      "        native_events_recipes_test.go:141: native recipe timeline:",
+      "            +113ms subscription constructed; drain before post-subscription probe",
+      "            +213ms pre-probe next: paths=[] error=context deadline exceeded",
+      "            +2.058s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3845229418/001\" flags=164096",
+      "            +2.058s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3845229418/001/source.go\" flags=103680",
+      "            +2.058s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3845229418/001/reload_observer_ready.go\" flags=102656",
+      "            +2.109s readiness probe observed; drain remaining setup events",
+      "            +2.21s post-probe next: paths=[] error=context deadline exceeded",
+      "            +2.21s operation=rename path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3845229418/001/source.go",
+      "            +5.169s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3845229418/001/source.go\" flags=105728",
+      "            +5.169s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3845229418/001/notes.txt\" flags=67584",
+      "            +5.211s operation next: paths=[] error=context deadline exceeded",
+      "            ",
+      "FAIL",
+      "FAIL\tgithub.com/luoyjx/mini-loop/go/reload\t89.711s",
+      "ok  \tgithub.com/luoyjx/mini-loop/go/runmeta\t0.282s"
+    ],
+    "interpretation": "Failure set differs from previous ordinary run. Existing native timing issue remains open; no observer production code, selection or deadlines changed"
+  },
+  "next_implementation": [
+    "Preserve Source registration precedence for unsupported-method Allow on the four shared business paths",
+    "Resolve registered trailing-slash business paths without executing handlers; emit Source 307 with host/scheme/query preserved",
+    "Keep body cap and one authentication admission before routing; query token remains stream-only",
+    "Convert the 160-request capture into a required native parity assertion and rerun ordinary/race/vet and Source/Python gates"
+  ],
+  "limits": [
+    "TRACE captures routing without executing business handlers; this is not a new valid-method or handler-effect proof",
+    "Default single trailing slash is captured; encoded paths, repeated slashes, mounts/root paths and generic ServeMux path cleaning remain unaudited",
+    "The diagnostic Go test emits observations and skips unless explicitly requested; its successful exit is not a parity pass",
+    "No Go production or architecture topology changes; full race and coverage not refreshed for this diagnostic-only slice",
+    "Default diagnostics dependency decision and original G0-G7 completion audit remain open"
+  ]
+}
