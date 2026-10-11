@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 at merged `5e4dd67`; latest production implementation `ea35cd3`, recipe setup test `e5064d8`. Named background option policies and actual SDK/managed consumers are delivered, including nonfinite final error text. Last complete Source export passed with 228 files at the encoding slice. This section is the current delivery index;
+Reviewed 2026-10-11 at merged `5e4dd67`; latest production implementation `ea35cd3`, recipe setup test `e5064d8`. Named background option policies and actual SDK/managed consumers are delivered, including nonfinite final error text. Last complete Source export passed with 229 files at reply-metadata Source prerequisite `e1e82f0`. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6877,7 +6877,11 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
    outstanding explicit dependency decision. SQLite driver approval does not approve it.
 
-2. Provider final inventory: native citation normalization, ordered SSE, forwarding,
+2. Provider final inventory: completed replies still drop SDK `container` and
+   `stop_details`; 44 actual direct/stream captures now define defaults, date
+   normalization, permissive finite observations and exact delta updates. Implement
+   named closed metadata variants before accepting this public return path.
+   Native citation normalization, ordered SSE, forwarding,
    immutable cloning/masking and text rewrites have Source and native evidence.
    Citation-bearing HTTP/SQLite/recording recovery is verified for direct and stream
    profiles with an explicit registry. Reconcile remaining provider content, request
@@ -18356,3 +18360,19 @@ gates or coverage refresh. Main merge stays intact; this evidence is on the
 follow-up branch. Native reliability and G3/G7 remain open. Next compare a
 matched reduced CLI/compiler workload and its idle control while recording host
 service state, rather than inferring a backend defect from a contextual timeout.
+
+## 2026-10-11 completed reply metadata Source prerequisite
+
+At `e2b6e7d`, SDK Message has ten top-level fields; native ModelReply models eight
+and direct/SSE ingress drops container and stop_details. New fixed SDK 0.107.1
+captures exercise 22 profiles through actual create/stream APIs (44 observations).
+They retain permissive finite values, timestamp normalization and the exact
+streaming rule: container delta is ignored; non-null refusal delta replaces,
+while null preserves the start value. Native implementation remains pending.
+
+Focused Source regression passes; 19 scanning guards pass; full Source export
+--check passes with 229 current files. Runtime, topology and defaults are unchanged,
+so the reviewed README baseline advances without architecture regeneration. No
+Go runtime tests, full Python regression or coverage refresh in this Source-only
+slice. Next implement named metadata variants, wire ingress, clone and public
+JSON parity for all 44 captures; full G4/G7 acceptance remains open.

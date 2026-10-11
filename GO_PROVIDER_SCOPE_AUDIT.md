@@ -2,10 +2,14 @@
 
 ## 摘要
 
-代码基线：`477a209`；Source usage 捕获提交：`ab1833a`。审计时间：2026-10-10，Anthropic SDK 0.107.1。
-Launcher 自动发现已经实现，不能继续列为待实现项。当前确认的运行时缺口是
-**SDK usage 元数据和事件形状**：Python 会保留 SDK 完整 usage，Go 只建模其中五个字段。
-本报告与七个真实 SDK 离线捕获确定下一项实现任务，不代表 G4/G7 已验收。
+当前复核基线：`e2b6e7d`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
+元数据与实际计量消费者、十二个 SDK content discriminator 已有实现和组合证据。
+初始 usage 缺口已补齐，不能继续作为待实现项；下文早期章节保留各自历史基线。
+
+本轮确认的公开回复缺口是 **`container` 与 `stop_details`**：Python provider/transport
+返回完整 SDK Message，Go 的 ModelReply 与 direct/SSE ingress 当前丢弃这两个顶层字段。
+新增 44 个真实 SDK 离线捕获固定其 null 缺省、日期规范化、有限非标准字段值与流式
+累加规则。它们是下一项 Go 具名结构实现的契约，尚不是原生实现或 G4/G7 验收。
 
 ## 实际请求生成路径
 
@@ -13,8 +17,8 @@ Launcher 自动发现已经实现，不能继续列为待实现项。当前确�
 
 | 位置 | 传递参数 | 对应 Go 边界 |
 | --- | --- | --- |
-| `transport.py:66`，DirectTransport.send | `**kwargs` | `provider.Client.Complete` |
-| `transport.py:140`，StreamingTransport.send | `**kwargs` | `provider.StreamingClient.CompleteStream` |
+| `transport.py:66`，DirectTransport.send | `messages.create(**kwargs)` | `provider.Client.Complete` |
+| `transport.py:140`，StreamingTransport.send | `messages.stream(**kwargs)` | `provider.StreamingClient.CompleteStream` |
 | `memory.py:653`，extract_memories 的无 Agent fallback | `model/max_tokens/messages` | memory 模型接口与具名 ModelRequest |
 
 `Agent._create` 构造 `model/messages/max_tokens`，按需加入 `system/tools`。
@@ -29,6 +33,8 @@ SDK 流式入口另外加入 `stream: true`，对应 Go streaming wire 选择。
 当成默认 Python 运行路径的缺失功能。
 
 ## 已确认的 usage 缺口
+
+**历史检查（`477a209`）：** 本节描述最初缺口，后续实现已补齐，见顶部当前摘要。
 
 Python `agent._usage_payload` 调用 SDK Usage.model_dump；`Agent._create` 将结果写入
 `model_end.usage`。因此下列数据是仓库的可观察输出，不是被忽略的 SDK 私有元数据。
@@ -389,3 +395,27 @@ live executable input and emits no registered secret. No new dependency/type,
 execution route or tool catalogue change. Non-text background_run consumers and
 complete default/provider/G7 acceptance remain open. Prior coverage is pinned to
 the Bash display worktree; no coverage refresh is claimed for this slice.
+
+## Completed reply metadata Source contracts — 2026-10-11
+
+当前 Python `DirectTransport.send` 返回 SDK Message，`StreamingTransport.send`
+返回 SDK 的 get_final_message；`Agent._create` 也原样返回 reply。现有 Go
+`protocol.ModelReply`、`provider.decodeReply` 和 SSE accumulator 未保留 container
+或 stop_details。这些字段未进入当前 Agent 事件，不应为实现它们擅自改变事件形状。
+
+`python-provider-reply-metadata.json` 的 44 个捕获来自固定 SDK 0.107.1 的真实
+messages.create / messages.stream API，HTTP 仅由 MockTransport 提供。源码摘要固定
+Message、Container、RefusalStopDetails 与 accumulate_event。已确认：
+
+- 顶层缺省补 null；缺失的 container.id / expires_at 与 refusal.type 也补 null。
+- epoch 转为日期，fractional 秒输出六位微秒；无时区与显式偏移保留各自形状。
+- 非标准但有限的 scalar、字段类型、future discriminator 与扩展由 SDK 保留。
+- SSE start 保留 container；delta.container 不更新最终 snapshot。
+- delta.stop_details 的非 null 值更新 snapshot，null 保留已有值。
+
+下一实现任务：为结构化 container/refusal 与 SDK 有限观察值建立具名闭合变体；
+实现日期规范化、direct/SSE 更新、克隆与公开 JSON 返回，再对照全部 44 例。
+不能将字段都塞入开放 domain payload，也不能只覆盖结构正确的 metadata。
+当前没有新增运行时依赖或原生行为；G4/G7 仍开放。
+
+[本轮 Source 捕获与验证记录](docs/audits/go-provider-reply-metadata-source-2026-10-11.json)。

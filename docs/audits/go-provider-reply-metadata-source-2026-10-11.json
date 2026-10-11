@@ -1,0 +1,94 @@
+{
+  "baseline": "e2b6e7d",
+  "source_contract_commit": "e1e82f0",
+  "sdk_version": "0.107.1",
+  "scope": "Source prerequisite for completed reply metadata; no native runtime or dependency change.",
+  "sdk_reply_fields": [
+    "id",
+    "container",
+    "content",
+    "model",
+    "role",
+    "stop_details",
+    "stop_reason",
+    "stop_sequence",
+    "type",
+    "usage"
+  ],
+  "native_reply_fields": [
+    "id",
+    "type",
+    "role",
+    "model",
+    "content",
+    "stop_reason",
+    "stop_sequence",
+    "usage"
+  ],
+  "confirmed_missing_fields": [
+    "container",
+    "stop_details"
+  ],
+  "profiles": 22,
+  "observations": 44,
+  "capture_transport": "Actual AsyncAnthropic messages.create/messages.stream with MockTransport HTTP responses; no fleet/network claim.",
+  "sdk_source_sha256": {
+    "Container": "c902d1e042638fea6652254cbcd935cc7095b5f38478ade5eab570f341adc9c6",
+    "Message": "1ddfb619101c3e15e9e789493531a4b8fc1fa604dd18f0a5697af9fa4507ff5b",
+    "RefusalStopDetails": "b41e792ca040ecfbf2ebdb849e75ef8fcc7c463f8702f3c76a747361f6bb4bc0",
+    "accumulate_event": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098"
+  },
+  "rules": [
+    "Missing top-level optional metadata and required nested metadata fields are defaulted to null by SDK construction.",
+    "Container expiry normalizes integer epoch, fractional precision and timezone representation.",
+    "SDK retains finite scalar observations, malformed known fields and extensions.",
+    "Stream container is retained from message_start; delta.container is ignored.",
+    "Non-null delta.stop_details replaces the start snapshot value; null retains it."
+  ],
+  "gates": {
+    "focused_source_pytest": "passed: 1 test, 4 serializer warnings from permissive SDK observations",
+    "verify_scans": "passed: 19 anchored guards",
+    "export_go_contracts --check": "passed: 229 current files",
+    "git diff --check": "passed"
+  },
+  "limits": [
+    "Native named metadata variants, direct/SSE ingress, clone and public JSON parity remain to implement.",
+    "Default Agent event shapes do not consume these fields and are not expanded by this Source prerequisite.",
+    "No full native/Python runtime gates, coverage refresh, merge or push in this slice.",
+    "44 finite examples do not prove all possible datetime/coercion inputs or final G4/G7 acceptance."
+  ],
+  "evidence": {
+    "source_test": {
+      "path": "/tmp/mini-loop-reply-metadata-source-tests.log",
+      "sha256": "5d27303b1186443f86d5160a18da52a2af55b94fe44fd9dee711ab4ffebebe58"
+    },
+    "scan_verifier": {
+      "path": "/tmp/mini-loop-reply-metadata-scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+    },
+    "export_check": {
+      "path": "/tmp/mini-loop-reply-metadata-export-check.log",
+      "sha256": "ef1fc9b617b7c58ba76bf6d19c70e64ef5c4d79174331c3096a746b893ef66b0"
+    },
+    "fixture": {
+      "path": "go/testdata/python-provider-reply-metadata.json",
+      "sha256": "c0ac21be83ddc49535b4aea790ec66d15c5f73b75eac0138f0cf28a408e93bbc"
+    },
+    "capture": {
+      "path": "python/tools/provider_reply_metadata_contracts.py",
+      "sha256": "bedf9ffad48eb110b5f9707d87e6e18f5d8617b8c194892c79421db273ab6441"
+    },
+    "native_reply": {
+      "path": "go/protocol/reply.go",
+      "sha256": "9e07c219aa3485f9cf1daac161822a18a789fe118872901b90402bb6beef7712"
+    },
+    "native_direct": {
+      "path": "go/provider/decode.go",
+      "sha256": "d2706378709a45ce14ac98f3342260cdc5000af4404573a7df972ab7acf06c0e"
+    },
+    "native_stream": {
+      "path": "go/provider/stream_decode.go",
+      "sha256": "1b5eb26399c39f855f9905174116495512958a669798185d58135bf5abf74904"
+    }
+  }
+}
