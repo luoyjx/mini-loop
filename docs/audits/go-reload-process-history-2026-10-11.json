@@ -1,0 +1,4762 @@
+{
+  "watchfiles_version": "1.2.0",
+  "uvicorn_version": "0.49.0",
+  "design": "16 recipes, alternating fresh/reused order by recipe; both sides matched",
+  "deadlines": {
+    "operation_seconds": 3,
+    "probe_seconds": 5,
+    "rust_timeout_ms": 100
+  },
+  "source_timeout": "timer sets should_exit; timed-out subscription closes before next case",
+  "cases": [
+    {
+      "name": "added-source",
+      "profile": "fresh",
+      "ordinal": 0,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-muyuidyp",
+      "recipe": {
+        "changed": [
+          "new.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "added-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "new.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38133,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 639.890875
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38134,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.1800432801246643
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38133,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 101.214417
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38134,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 221.14470787346363
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38133,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "elapsed_ms": 5008.923042
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38134,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 5074.708417057991
+        }
+      },
+      "outcome": "readiness-failure",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38133,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 5.452
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38134,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 0.1299586147069931
+        }
+      }
+    },
+    {
+      "name": "added-source",
+      "profile": "reused",
+      "ordinal": 0,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-oomik8z1",
+      "recipe": {
+        "changed": [
+          "new.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "added-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "new.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 398.186625
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 3.060918301343918
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 101.407375
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 123.65433387458324
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "elapsed_ms": 5002.269542
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 5030.862875282764
+        }
+      },
+      "outcome": "readiness-failure",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.26975
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 0.41754357516765594
+        }
+      }
+    },
+    {
+      "name": "hidden-parent-source",
+      "profile": "reused",
+      "ordinal": 1,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-fjxsyie0",
+      "recipe": {
+        "changed": [
+          ".git/a.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "hidden-parent-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".git/a.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 2,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 295.139542
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 6.354916840791702
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 2,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.485875
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 2,
+          "closed": 1,
+          "elapsed_ms": 146.37033268809319
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 2,
+          "closed": 1,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "elapsed_ms": 5002.400917
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "opened": 2,
+          "closed": 2,
+          "elapsed_ms": 5038.576582446694
+        }
+      },
+      "outcome": "readiness-failure",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 2,
+          "closed": 2,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.800583
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 2,
+          "closed": 2,
+          "elapsed_ms": 0.15416741371154785
+        }
+      }
+    },
+    {
+      "name": "hidden-parent-source",
+      "profile": "fresh",
+      "ordinal": 1,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-2kac2wtd",
+      "recipe": {
+        "changed": [
+          ".git/a.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "hidden-parent-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".git/a.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38952,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 253.855292
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38953,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.24849921464920044
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38952,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.103791
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38953,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 128.80120798945427
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38952,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "elapsed_ms": 5008.065416
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38953,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 5031.020333990455
+        }
+      },
+      "outcome": "readiness-failure",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38952,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 5.186959
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38953,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 2.398168668150902
+        }
+      }
+    },
+    {
+      "name": "symlink-target-write",
+      "profile": "fresh",
+      "ordinal": 2,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-suqd0mi6",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "symlink-target-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "linked.py",
+        "symlink_target": "notes.txt"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39415,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 410.299583
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39416,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.8471664041280746
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39415,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.076958
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39416,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 142.29841530323029
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39415,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "elapsed_ms": 5002.176792
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39416,
+          "paths": null,
+          "error": "context deadline exceeded",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 5019.030250608921
+        }
+      },
+      "outcome": "readiness-failure",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39415,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 113.12225
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39416,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 0.10858289897441864
+        }
+      }
+    },
+    {
+      "name": "symlink-target-write",
+      "profile": "reused",
+      "ordinal": 2,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-k09p5tcw",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "symlink-target-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "linked.py",
+        "symlink_target": "notes.txt"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 3,
+          "closed": 2,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 19.089417
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 2,
+          "closed": 2,
+          "elapsed_ms": 1.5051253139972687
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 3,
+          "closed": 2,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.02825
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 3,
+          "closed": 2,
+          "elapsed_ms": 133.7946243584156
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 3,
+          "closed": 2,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 921.5955
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 3,
+          "closed": 2,
+          "elapsed_ms": 989.0280421823263
+        }
+      },
+      "operation_epoch_ns": 1791694133778967000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 3,
+          "closed": 2,
+          "paths": [],
+          "error": "",
+          "elapsed_ms": 572.878459
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [],
+          "error": "",
+          "opened": 3,
+          "closed": 2,
+          "elapsed_ms": 624.7520409524441
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 3,
+          "closed": 3,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.131458
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 3,
+          "closed": 3,
+          "elapsed_ms": 17.94254034757614
+        }
+      }
+    },
+    {
+      "name": "removed-source",
+      "profile": "reused",
+      "ordinal": 3,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-iibxrofm",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "name": "removed-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "remove",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 4,
+          "closed": 3,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 20.342917
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 3,
+          "closed": 3,
+          "elapsed_ms": 0.1987908035516739
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 4,
+          "closed": 3,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 101.540666
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 4,
+          "closed": 3,
+          "elapsed_ms": 133.14158469438553
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 4,
+          "closed": 3,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 254.4305
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 4,
+          "closed": 3,
+          "elapsed_ms": 266.6948325932026
+        }
+      },
+      "operation_epoch_ns": 1791694134844029000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 4,
+          "closed": 3,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 106.159625
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 4,
+          "closed": 3,
+          "elapsed_ms": 111.01474985480309
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 4,
+          "closed": 4,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.124042
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 4,
+          "closed": 4,
+          "elapsed_ms": 17.658459022641182
+        }
+      }
+    },
+    {
+      "name": "removed-source",
+      "profile": "fresh",
+      "ordinal": 3,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-1pvffp40",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "name": "removed-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "remove",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39903,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 20.021417
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39904,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.17679110169410706
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39903,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 100.121083
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39904,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 128.67829017341137
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39903,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 196.260875
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39904,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 235.17479188740253
+        }
+      },
+      "operation_epoch_ns": 1791694135454339000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39903,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 984.854292
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39904,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 1033.5476659238338
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39903,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.158292
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39904,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 0.5477499216794968
+        }
+      }
+    },
+    {
+      "name": "same-mtime-write",
+      "profile": "fresh",
+      "ordinal": 4,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-r8thyael",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "same-mtime-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39905,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 16.254375
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39906,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.2660006284713745
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39905,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.048291
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39906,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 183.05087462067604
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39905,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 488.817208
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39906,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 509.85183380544186
+        }
+      },
+      "operation_epoch_ns": 1791694137295575000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39905,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 589.387
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39906,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 631.2531661242247
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39905,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 12.303416
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39906,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 12.601291760802269
+        }
+      }
+    },
+    {
+      "name": "same-mtime-write",
+      "profile": "reused",
+      "ordinal": 4,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-2ksqxxk4",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "same-mtime-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 5,
+          "closed": 4,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 17.058583
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 4,
+          "closed": 4,
+          "elapsed_ms": 1.0160431265830994
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 5,
+          "closed": 4,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 101.843291
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 5,
+          "closed": 4,
+          "elapsed_ms": 126.74145773053169
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 5,
+          "closed": 4,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 478.2485
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 5,
+          "closed": 4,
+          "elapsed_ms": 517.0248746871948
+        }
+      },
+      "operation_epoch_ns": 1791694138628120000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 5,
+          "closed": 4,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 106.529083
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 5,
+          "closed": 4,
+          "elapsed_ms": 114.94475044310093
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 5,
+          "closed": 5,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.850875
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 5,
+          "closed": 5,
+          "elapsed_ms": 114.25491608679295
+        }
+      }
+    },
+    {
+      "name": "lower-mtime-write",
+      "profile": "reused",
+      "ordinal": 5,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-koqi8ca2",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 99,
+        "name": "lower-mtime-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 6,
+          "closed": 5,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 171.5
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 5,
+          "closed": 5,
+          "elapsed_ms": 0.475248321890831
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 6,
+          "closed": 5,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.128666
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 6,
+          "closed": 5,
+          "elapsed_ms": 139.45241458714008
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 6,
+          "closed": 5,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 386.407125
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 6,
+          "closed": 5,
+          "elapsed_ms": 449.6814999729395
+        }
+      },
+      "operation_epoch_ns": 1791694139628195000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 6,
+          "closed": 5,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 250.705333
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 6,
+          "closed": 5,
+          "elapsed_ms": 283.9633338153362
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 6,
+          "closed": 6,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.1365
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 6,
+          "closed": 6,
+          "elapsed_ms": 6.981542333960533
+        }
+      }
+    },
+    {
+      "name": "lower-mtime-write",
+      "profile": "fresh",
+      "ordinal": 5,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-ltv8pabh",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 99,
+        "name": "lower-mtime-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39907,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 17.827667
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39908,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.19633211195468903
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39907,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 154.112541
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39908,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 125.04370883107185
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39907,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 749.226042
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39908,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 783.4812086075544
+        }
+      },
+      "operation_epoch_ns": 1791694140965280000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39907,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 1813.064208
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39908,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 1842.7571672946215
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39907,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 18.962917
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39908,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 19.526124000549316
+        }
+      }
+    },
+    {
+      "name": "identical-write",
+      "profile": "fresh",
+      "ordinal": 6,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-53vp4241",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "identical-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "unchanged-write",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39912,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 29.877375
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39913,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.17462484538555145
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39912,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.049166
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39913,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 160.48341616988182
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39912,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 422.844334
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39913,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 456.3528746366501
+        }
+      },
+      "operation_epoch_ns": 1791694143584049000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39912,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 1436.418375
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39913,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 1469.7605837136507
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39912,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 14.827625
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39913,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 15.850748866796494
+        }
+      }
+    },
+    {
+      "name": "identical-write",
+      "profile": "reused",
+      "ordinal": 6,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-2e7c6jjf",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "identical-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "unchanged-write",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 7,
+          "closed": 6,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 19.171958
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 6,
+          "closed": 6,
+          "elapsed_ms": 0.38237497210502625
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 7,
+          "closed": 6,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.093416
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 7,
+          "closed": 6,
+          "elapsed_ms": 120.67175097763538
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 7,
+          "closed": 6,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 305.335334
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 7,
+          "closed": 6,
+          "elapsed_ms": 341.5531665086746
+        }
+      },
+      "operation_epoch_ns": 1791694145604792000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 7,
+          "closed": 6,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 118.642625
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 7,
+          "closed": 6,
+          "elapsed_ms": 173.03729057312012
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 7,
+          "closed": 7,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.254041
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 7,
+          "closed": 7,
+          "elapsed_ms": 17.3801239579916
+        }
+      }
+    },
+    {
+      "name": "same-mtime-touch",
+      "profile": "reused",
+      "ordinal": 7,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-ftolorwu",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "same-mtime-touch",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "touch",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 8,
+          "closed": 7,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 15.658458
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 7,
+          "closed": 7,
+          "elapsed_ms": 0.44012442231178284
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 8,
+          "closed": 7,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.094667
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 8,
+          "closed": 7,
+          "elapsed_ms": 134.24899987876415
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 8,
+          "closed": 7,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 252.306417
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 8,
+          "closed": 7,
+          "elapsed_ms": 280.9147499501705
+        }
+      },
+      "operation_epoch_ns": 1791694146236121000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 8,
+          "closed": 7,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 143.61125
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 8,
+          "closed": 7,
+          "elapsed_ms": 163.82004134356976
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 8,
+          "closed": 8,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.748792
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 8,
+          "closed": 8,
+          "elapsed_ms": 2.1010003983974457
+        }
+      }
+    },
+    {
+      "name": "same-mtime-touch",
+      "profile": "fresh",
+      "ordinal": 7,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-8j0y_26o",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "same-mtime-touch",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "touch",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39917,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 47.612333
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39918,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.16683340072631836
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39917,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.066541
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39918,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 197.8653334081173
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39917,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 253.253666
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39918,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 285.5013348162174
+        }
+      },
+      "operation_epoch_ns": 1791694147005881000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39917,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 140.380291
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39918,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 163.04004192352295
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39917,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.420583
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39918,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 1.3037510216236115
+        }
+      }
+    },
+    {
+      "name": "rename-out",
+      "profile": "fresh",
+      "ordinal": 8,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-kksv3skh",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "destination": "notes.txt",
+        "initial": true,
+        "name": "rename-out",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39919,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 99.427375
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39920,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.27079135179519653
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39919,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.12375
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39920,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 132.07704201340675
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39919,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 1118.004
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39920,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 1140.219708904624
+        }
+      },
+      "operation_epoch_ns": 1791694148602984000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39919,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 1413.631125
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39920,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 1476.0066252201796
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39919,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.434042
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39920,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 85.03974974155426
+        }
+      }
+    },
+    {
+      "name": "rename-out",
+      "profile": "reused",
+      "ordinal": 8,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-v1i2u80v",
+      "recipe": {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "destination": "notes.txt",
+        "initial": true,
+        "name": "rename-out",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 9,
+          "closed": 8,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 34.300875
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 8,
+          "closed": 8,
+          "elapsed_ms": 0.5666650831699371
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 9,
+          "closed": 8,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.068291
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 9,
+          "closed": 8,
+          "elapsed_ms": 136.1742503941059
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 9,
+          "closed": 8,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 1322.0045
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 9,
+          "closed": 8,
+          "elapsed_ms": 1350.4662923514843
+        }
+      },
+      "operation_epoch_ns": 1791694151736326000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 9,
+          "closed": 8,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "elapsed_ms": 1346.666
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "source.py"
+          ],
+          "error": "",
+          "opened": 9,
+          "closed": 8,
+          "elapsed_ms": 1376.5734992921352
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 9,
+          "closed": 9,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 186.682458
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 9,
+          "closed": 9,
+          "elapsed_ms": 187.29616701602936
+        }
+      }
+    },
+    {
+      "name": "rename-in",
+      "profile": "reused",
+      "ordinal": 9,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-hfj9hydj",
+      "recipe": {
+        "changed": [
+          "target.py"
+        ],
+        "closed": true,
+        "destination": "target.py",
+        "initial": true,
+        "name": "rename-in",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "notes.txt"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 10,
+          "closed": 9,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 16.70125
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 9,
+          "closed": 9,
+          "elapsed_ms": 0.47774985432624817
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 10,
+          "closed": 9,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.116875
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 10,
+          "closed": 9,
+          "elapsed_ms": 131.88333250582218
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 10,
+          "closed": 9,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 885.793459
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 10,
+          "closed": 9,
+          "elapsed_ms": 925.1828752458096
+        }
+      },
+      "operation_epoch_ns": 1791694154386102000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 10,
+          "closed": 9,
+          "paths": [
+            "target.py"
+          ],
+          "error": "",
+          "elapsed_ms": 1030.01275
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "target.py"
+          ],
+          "error": "",
+          "opened": 10,
+          "closed": 9,
+          "elapsed_ms": 1056.0911260545254
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 10,
+          "closed": 10,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.167583
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 10,
+          "closed": 10,
+          "elapsed_ms": 0.5066245794296265
+        }
+      }
+    },
+    {
+      "name": "rename-in",
+      "profile": "fresh",
+      "ordinal": 9,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-015weght",
+      "recipe": {
+        "changed": [
+          "target.py"
+        ],
+        "closed": true,
+        "destination": "target.py",
+        "initial": true,
+        "name": "rename-in",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "notes.txt"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39943,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 153.143041
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39944,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.13395771384239197
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39943,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 100.880791
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39944,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 133.9377500116825
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39943,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 884.576792
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39944,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 899.5370417833328
+        }
+      },
+      "operation_epoch_ns": 1791694156644033000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39943,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "target.py"
+          ],
+          "error": "",
+          "elapsed_ms": 1100.183833
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39944,
+          "paths": [
+            "target.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 1143.1650836020708
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39943,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.212333
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39944,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 18.121084198355675
+        }
+      }
+    },
+    {
+      "name": "rename-source",
+      "profile": "fresh",
+      "ordinal": 10,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-cl17tq8k",
+      "recipe": {
+        "changed": [
+          "source.py",
+          "target.py"
+        ],
+        "closed": true,
+        "destination": "target.py",
+        "initial": true,
+        "name": "rename-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 39947,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 97.306167
+        },
+        "source": {
+          "stage": "start",
+          "pid": 39948,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.18004141747951508
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 39947,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.075208
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 39948,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 127.18025036156178
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 39947,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 667.702083
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 39948,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 738.4992074221373
+        }
+      },
+      "operation_epoch_ns": 1791694158832775000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 39947,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "source.py",
+            "target.py"
+          ],
+          "error": "",
+          "elapsed_ms": 604.684083
+        },
+        "source": {
+          "stage": "next",
+          "pid": 39948,
+          "paths": [
+            "source.py",
+            "target.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 636.5689150989056
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 39947,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 98.508042
+        },
+        "source": {
+          "stage": "close",
+          "pid": 39948,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 98.72116707265377
+        }
+      }
+    },
+    {
+      "name": "rename-source",
+      "profile": "reused",
+      "ordinal": 10,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-tq30z4ya",
+      "recipe": {
+        "changed": [
+          "source.py",
+          "target.py"
+        ],
+        "closed": true,
+        "destination": "target.py",
+        "initial": true,
+        "name": "rename-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "source.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 11,
+          "closed": 10,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 17.343208
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 10,
+          "closed": 10,
+          "elapsed_ms": 0.35233236849308014
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 11,
+          "closed": 10,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.0315
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 11,
+          "closed": 10,
+          "elapsed_ms": 309.8807502537966
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 11,
+          "closed": 10,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 577.662084
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 11,
+          "closed": 10,
+          "elapsed_ms": 627.7854163199663
+        }
+      },
+      "operation_epoch_ns": 1791694160552076000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 11,
+          "closed": 10,
+          "paths": [
+            "source.py",
+            "target.py"
+          ],
+          "error": "",
+          "elapsed_ms": 1196.891958
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "source.py",
+            "target.py"
+          ],
+          "error": "",
+          "opened": 11,
+          "closed": 10,
+          "elapsed_ms": 1257.251501083374
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 11,
+          "closed": 11,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.212167
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 11,
+          "closed": 11,
+          "elapsed_ms": 273.74254167079926
+        }
+      }
+    },
+    {
+      "name": "ignored-hidden",
+      "profile": "reused",
+      "ordinal": 11,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-29he5bs9",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-hidden",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".hidden.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 12,
+          "closed": 11,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 113.581542
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 11,
+          "closed": 11,
+          "elapsed_ms": 0.2366676926612854
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 12,
+          "closed": 11,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.03125
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 12,
+          "closed": 11,
+          "elapsed_ms": 127.95491702854633
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 12,
+          "closed": 11,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 768.441666
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 12,
+          "closed": 11,
+          "elapsed_ms": 806.619917973876
+        }
+      },
+      "operation_epoch_ns": 1791694163135617000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 12,
+          "closed": 11,
+          "paths": [],
+          "error": "",
+          "elapsed_ms": 1052.057
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [],
+          "error": "",
+          "opened": 12,
+          "closed": 11,
+          "elapsed_ms": 1085.7512075453997
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 12,
+          "closed": 12,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.300833
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 12,
+          "closed": 12,
+          "elapsed_ms": 0.6104595959186554
+        }
+      }
+    },
+    {
+      "name": "ignored-hidden",
+      "profile": "fresh",
+      "ordinal": 11,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-8wsfyw26",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-hidden",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".hidden.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 40104,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 215.163084
+        },
+        "source": {
+          "stage": "start",
+          "pid": 40105,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.1472923904657364
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 40104,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.145208
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 40105,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 256.88741728663445
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 40104,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 1584.862208
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 40105,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 1604.88854162395
+        }
+      },
+      "operation_epoch_ns": 1791694166321005000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 40104,
+          "opened": 1,
+          "closed": 0,
+          "paths": [],
+          "error": "",
+          "elapsed_ms": 2715.613083
+        },
+        "source": {
+          "stage": "next",
+          "pid": 40105,
+          "paths": [],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 2754.862457513809
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 40104,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.248083
+        },
+        "source": {
+          "stage": "close",
+          "pid": 40105,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 0.845249742269516
+        }
+      }
+    },
+    {
+      "name": "ignored-backup",
+      "profile": "fresh",
+      "ordinal": 12,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-4lpybv1d",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-backup",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "~backup.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 40106,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 17.730458
+        },
+        "source": {
+          "stage": "start",
+          "pid": 40107,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.21133385598659515
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 40106,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.041791
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 40107,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 128.2024998217821
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 40106,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 653.168459
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 40107,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 688.6365413665771
+        }
+      },
+      "operation_epoch_ns": 1791694170015893000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 40106,
+          "opened": 1,
+          "closed": 0,
+          "paths": [],
+          "error": "",
+          "elapsed_ms": 654.969292
+        },
+        "source": {
+          "stage": "next",
+          "pid": 40107,
+          "paths": [],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 686.4430420100689
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 40106,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.427625
+        },
+        "source": {
+          "stage": "close",
+          "pid": 40107,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 99.90662336349487
+        }
+      }
+    },
+    {
+      "name": "ignored-backup",
+      "profile": "reused",
+      "ordinal": 12,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-e_mcnx6b",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-backup",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "~backup.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 13,
+          "closed": 12,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 19.316042
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 12,
+          "closed": 12,
+          "elapsed_ms": 0.8005835115909576
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 13,
+          "closed": 12,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.502542
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 13,
+          "closed": 12,
+          "elapsed_ms": 282.58466720581055
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 13,
+          "closed": 12,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 781.058583
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 13,
+          "closed": 12,
+          "elapsed_ms": 848.9197511225939
+        }
+      },
+      "operation_epoch_ns": 1791694172009199000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 13,
+          "closed": 12,
+          "paths": [],
+          "error": "",
+          "elapsed_ms": 2682.613667
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [],
+          "error": "",
+          "opened": 13,
+          "closed": 12,
+          "elapsed_ms": 2727.818625047803
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 13,
+          "closed": 13,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.356958
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 13,
+          "closed": 13,
+          "elapsed_ms": 1.149998977780342
+        }
+      }
+    },
+    {
+      "name": "ignored-text",
+      "profile": "reused",
+      "ordinal": 13,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-s7nuikg_",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-text",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "notes.txt"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 14,
+          "closed": 13,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 478.18325
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 13,
+          "closed": 13,
+          "elapsed_ms": 0.1980401575565338
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 14,
+          "closed": 13,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.027791
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 14,
+          "closed": 13,
+          "elapsed_ms": 301.88299901783466
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 14,
+          "closed": 13,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 205.969708
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 14,
+          "closed": 13,
+          "elapsed_ms": 280.066791921854
+        }
+      },
+      "operation_epoch_ns": 1791694175802787000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 14,
+          "closed": 13,
+          "paths": [],
+          "error": "",
+          "elapsed_ms": 514.73675
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [],
+          "error": "",
+          "opened": 14,
+          "closed": 13,
+          "elapsed_ms": 569.2302919924259
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 14,
+          "closed": 14,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.095
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 14,
+          "closed": 14,
+          "elapsed_ms": 31.955290585756302
+        }
+      }
+    },
+    {
+      "name": "ignored-text",
+      "profile": "fresh",
+      "ordinal": 13,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-pw_b38lk",
+      "recipe": {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-text",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "notes.txt"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 40160,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 17.984792
+        },
+        "source": {
+          "stage": "start",
+          "pid": 40161,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.18579326570034027
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 40160,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.060708
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 40161,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 243.08845773339272
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 40160,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 289.7025
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 40161,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 341.80766716599464
+        }
+      },
+      "operation_epoch_ns": 1791694177096386000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 40160,
+          "opened": 1,
+          "closed": 0,
+          "paths": [],
+          "error": "",
+          "elapsed_ms": 99.526208
+        },
+        "source": {
+          "stage": "next",
+          "pid": 40161,
+          "paths": [],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 120.30570767819881
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 40160,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.169833
+        },
+        "source": {
+          "stage": "close",
+          "pid": 40161,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 0.5189590156078339
+        }
+      }
+    },
+    {
+      "name": "source-directory",
+      "profile": "fresh",
+      "ordinal": 14,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-6eqg6zbt",
+      "recipe": {
+        "changed": [
+          "package.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "name": "source-directory",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "mkdir",
+        "path": "package.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 40168,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 92.766041
+        },
+        "source": {
+          "stage": "start",
+          "pid": 40169,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.14137476682662964
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 40168,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 102.028958
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 40169,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 369.6096669882536
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 40168,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 737.887042
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 40169,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 790.7936256378889
+        }
+      },
+      "operation_epoch_ns": 1791694178501388000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 40168,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "package.py"
+          ],
+          "error": "",
+          "elapsed_ms": 417.625583
+        },
+        "source": {
+          "stage": "next",
+          "pid": 40169,
+          "paths": [
+            "package.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 440.87620824575424
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 40168,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 185.3505
+        },
+        "source": {
+          "stage": "close",
+          "pid": 40169,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 185.9672088176012
+        }
+      }
+    },
+    {
+      "name": "source-directory",
+      "profile": "reused",
+      "ordinal": 14,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-2lol_lqe",
+      "recipe": {
+        "changed": [
+          "package.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "name": "source-directory",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "mkdir",
+        "path": "package.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 15,
+          "closed": 14,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 18.986875
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 14,
+          "closed": 14,
+          "elapsed_ms": 1.7949584871530533
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 15,
+          "closed": 14,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 101.033292
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 15,
+          "closed": 14,
+          "elapsed_ms": 136.05162501335144
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 15,
+          "closed": 14,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 181.136292
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 15,
+          "closed": 14,
+          "elapsed_ms": 230.8887094259262
+        }
+      },
+      "operation_epoch_ns": 1791694179618464000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 15,
+          "closed": 14,
+          "paths": [
+            "package.py"
+          ],
+          "error": "",
+          "elapsed_ms": 112.559708
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "package.py"
+          ],
+          "error": "",
+          "opened": 15,
+          "closed": 14,
+          "elapsed_ms": 171.14341631531715
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 15,
+          "closed": 15,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.234459
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 15,
+          "closed": 15,
+          "elapsed_ms": 11.652959510684013
+        }
+      }
+    },
+    {
+      "name": "transient-source",
+      "profile": "reused",
+      "ordinal": 15,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-k3nvo891",
+      "recipe": {
+        "changed": [
+          "flash.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "name": "transient-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "transient",
+        "path": "flash.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 38131,
+          "opened": 16,
+          "closed": 15,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 20.142167
+        },
+        "source": {
+          "stage": "start",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 15,
+          "closed": 15,
+          "elapsed_ms": 0.3572516143321991
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 38131,
+          "opened": 16,
+          "closed": 15,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 100.466083
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 16,
+          "closed": 15,
+          "elapsed_ms": 127.1856240928173
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 38131,
+          "opened": 16,
+          "closed": 15,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 231.920041
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 16,
+          "closed": 15,
+          "elapsed_ms": 283.1874582916498
+        }
+      },
+      "operation_epoch_ns": 1791694180252058000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 38131,
+          "opened": 16,
+          "closed": 15,
+          "paths": [
+            "flash.py"
+          ],
+          "error": "",
+          "elapsed_ms": 127.237
+        },
+        "source": {
+          "stage": "next",
+          "pid": 38132,
+          "paths": [
+            "flash.py"
+          ],
+          "error": "",
+          "opened": 16,
+          "closed": 15,
+          "elapsed_ms": 166.44479148089886
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 38131,
+          "opened": 16,
+          "closed": 16,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.084625
+        },
+        "source": {
+          "stage": "close",
+          "pid": 38132,
+          "paths": null,
+          "error": "",
+          "opened": 16,
+          "closed": 16,
+          "elapsed_ms": 105.94037547707558
+        }
+      }
+    },
+    {
+      "name": "transient-source",
+      "profile": "fresh",
+      "ordinal": 15,
+      "root": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/mini-loop-history-cdo7f2ef",
+      "recipe": {
+        "changed": [
+          "flash.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "name": "transient-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "transient",
+        "path": "flash.py"
+      },
+      "start": {
+        "go": {
+          "stage": "start",
+          "pid": 40174,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 446.609208
+        },
+        "source": {
+          "stage": "start",
+          "pid": 40175,
+          "paths": null,
+          "error": "",
+          "opened": 0,
+          "closed": 0,
+          "elapsed_ms": 0.16508251428604126
+        }
+      },
+      "drain": {
+        "go": {
+          "stage": "drain",
+          "pid": 40174,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 100.807417
+        },
+        "source": {
+          "stage": "drain",
+          "pid": 40175,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 276.1019580066204
+        }
+      },
+      "probe": {
+        "go": {
+          "stage": "probe",
+          "pid": 40174,
+          "opened": 1,
+          "closed": 0,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 3365.2995
+        },
+        "source": {
+          "stage": "probe",
+          "pid": 40175,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 3385.272042825818
+        }
+      },
+      "operation_epoch_ns": 1791694184645406000,
+      "next": {
+        "go": {
+          "stage": "next",
+          "pid": 40174,
+          "opened": 1,
+          "closed": 0,
+          "paths": [
+            "flash.py"
+          ],
+          "error": "",
+          "elapsed_ms": 2707.453042
+        },
+        "source": {
+          "stage": "next",
+          "pid": 40175,
+          "paths": [
+            "flash.py"
+          ],
+          "error": "",
+          "opened": 1,
+          "closed": 0,
+          "elapsed_ms": 2747.8960007429123
+        }
+      },
+      "matches_fixture": {
+        "go": true,
+        "source": true
+      },
+      "outcome": "operation-observed",
+      "close": {
+        "go": {
+          "stage": "close",
+          "pid": 40174,
+          "opened": 1,
+          "closed": 1,
+          "paths": null,
+          "error": "",
+          "elapsed_ms": 0.261333
+        },
+        "source": {
+          "stage": "close",
+          "pid": 40175,
+          "paths": null,
+          "error": "",
+          "opened": 1,
+          "closed": 1,
+          "elapsed_ms": 0.8833333849906921
+        }
+      }
+    }
+  ],
+  "exits": [
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 38133,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000208,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 38134,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.003917142748832703,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 38952,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000416,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 38953,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.003334134817123413,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39415,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.00025,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39416,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.0029578804969787598,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39903,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000125,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39904,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.0024158507585525513,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39905,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000417,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39906,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.0014584511518478394,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39907,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000667,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39908,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.004082918167114258,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39912,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.001459,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39913,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.006459653377532959,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39917,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.001417,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39918,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.003207474946975708,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39919,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.002416,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39920,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.009125098586082458,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39943,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.001417,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39944,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.005709007382392883,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 39947,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000166,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 39948,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.0017080456018447876,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 40104,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000542,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 40105,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.00325031578540802,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 40106,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.002167,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 40107,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.00708363950252533,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 40160,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000209,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 40161,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.001041218638420105,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 40168,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000291,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 40169,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.0059176236391067505,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 40174,
+        "opened": 1,
+        "closed": 1,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.000791,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 40175,
+        "paths": null,
+        "error": "",
+        "opened": 1,
+        "closed": 1,
+        "elapsed_ms": 0.0026673078536987305,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "go": {
+        "stage": "exit",
+        "pid": 38131,
+        "opened": 16,
+        "closed": 16,
+        "paths": null,
+        "error": "",
+        "elapsed_ms": 0.015709,
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "source": {
+        "stage": "exit",
+        "pid": 38132,
+        "paths": null,
+        "error": "",
+        "opened": 16,
+        "closed": 16,
+        "elapsed_ms": 0.035917386412620544,
+        "exit_code": 0,
+        "stderr": ""
+      }
+    }
+  ],
+  "baseline": {
+    "commit": "2e8e18d",
+    "runtime_changed": false,
+    "dependencies_changed": false,
+    "os": "Darwin 24.5.0 arm64",
+    "go": "go1.23.3"
+  },
+  "summary": {
+    "profiles": {
+      "fresh": {
+        "both_fixture_matches": 13,
+        "common_readiness_timeouts": 3
+      },
+      "reused": {
+        "both_fixture_matches": 14,
+        "common_readiness_timeouts": 2
+      }
+    },
+    "common_readiness_timeouts": 5,
+    "asymmetric_outcomes": 0,
+    "operation_timeouts_after_shared_readiness": 0,
+    "joined_subprocesses": 34,
+    "native_subscriptions_opened": 64,
+    "native_subscriptions_closed": 64,
+    "paired_cases": 32,
+    "executed_shared_operations": 27
+  },
+  "limitations": [
+    "Single host and cohort; interleaving balances order but does not establish causality or remove shared volume/time effects.",
+    "Source timer sets should_exit on deadline; Go context cancels Next. Timed-out subscriptions are closed before reuse. This is a diagnostic, not a replacement acceptance harness.",
+    "Source RustNotify __exit__ and Go Close acknowledgements are measured; kernel resource counts and raw callback delivery are not independently traced.",
+    "Go PythonSource makes filenames comparable to actual Source; CLI GoSource adaptation is outside this probe.",
+    "No listener/default/deadline/fixture or dependency is changed; original required failures remain."
+  ],
+  "sha256": {
+    "docs/audits/go-reload-history-probe-2026-10-11.go": "72f0b857b4ab0d5e0eabaf18f8ed6f4052be65a6fb9184eeb08abd15d6cb98d1",
+    "docs/audits/go-reload-history-control-2026-10-11.py": "62e6cc09ec558a5684e7385c40bbc083a059c16f26b1bb29506c4ccf4c83fb12",
+    "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+    "go/reload/native_events_darwin.c": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e",
+    "go/reload/native_events_darwin.go": "c3824702d6b4bb2e6a1e1ffb3d267183fcbe98a848d39b01c6d8f0cfa3c3c144",
+    "go/reload/event_reader.go": "6006f1d1dbebd166e81d0a71b2c6b3ce6e5e32bfec8a4260ae154a062461a0fc",
+    "raw_control_output": "4c206d6ec92c1471bc71773b64c0dbccd3f8be76bde51d45f8e3f71a7147cac3",
+    "probe_binary": "08b6eec23dde992616567cdfc8ee6ee70a1e0994f02f95656d35fe1b9a5707c5",
+    "full_go_log": "f8fc1e0b3da767f94f29e26f2193b37199637e86512430d473dddc45be4d2a57",
+    "full_vet_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full_python_log": "905a71f0d95835ae9eef323cf5acfe88e64da9d821db7d571f726bda2467a64c",
+    "diagnostic_log": "f5b7dfd194ab0dd9d87603e8300f11912aa591781087dd00af5183718f272b93",
+    "infographic": "13ad7f4682b6ff051f2a0a0360eb52694bbfc9e959338c5236daac64eae031af"
+  },
+  "validation": {
+    "diagnostic_exit_code": 0,
+    "probe_build_exit_code": 0,
+    "probe_vet_exit_code": 0,
+    "python_py_compile_exit_code": 0,
+    "diff_check_exit_code": 0,
+    "full_go": {
+      "status": "failed",
+      "command": "cd go && go test ./...",
+      "log": "ok  \tgithub.com/luoyjx/mini-loop/go/agent\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/astcontext\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/audit\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/background\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/benchmark\t(cached)\n?   \tgithub.com/luoyjx/mini-loop/go/internal/fnmatch\t[no test files]\n?   \tgithub.com/luoyjx/mini-loop/go/runtimeconfig\t[no test files]\nok  \tgithub.com/luoyjx/mini-loop/go/cmd/miniloop\t35.632s\nok  \tgithub.com/luoyjx/mini-loop/go/cmd/miniloop-audit\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/cmd/traceview\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/config\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/cron\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/decisions\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/diagnostics\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/dotenv\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/durable\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/efficiency\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/httpapi\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/improvement\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/internal/commandenv\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/internal/jsonsyntax\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/internal/jsonvalue\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/internal/pytext\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/launcher\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/mcp\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/memory\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/problems\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/protocol\t(cached)\n--- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK (0.03s)\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/provider\t1.490s\n--- FAIL: TestNativeEventsActualSourceRecipes (41.63s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/transient-source (4.64s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +91ms subscription constructed; drain before post-subscription probe\n            +192ms pre-probe next: paths=[] error=context deadline exceeded\n            +1.477s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipestransient-source2508176949/001\" flags=164096\n            +1.477s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipestransient-source2508176949/001/reload_observer_ready.go\" flags=102656\n            +1.529s readiness probe observed; drain remaining setup events\n            +1.632s post-probe next: paths=[] error=context deadline exceeded\n            +1.632s operation=transient path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipestransient-source2508176949/001/flash.go\n            +4.634s operation next: paths=[] error=context deadline exceeded\n            \n--- FAIL: TestNativeSupervisorRetainsSocketAcrossRecoveryAndJoinsChildren (38.69s)\n    supervisor_test.go:127: reload lifecycle: {Kind:child_started Path: Paths:[] PID:42625 Forced:false Error:<nil>}\n    supervisor_test.go:127: reload lifecycle: {Kind:source_changed Path:/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeSupervisorRetainsSocketAcrossRecoveryAndJoinsChildren2005715738/001/main.go Paths:[/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeSupervisorRetainsSocketAcrossRecoveryAndJoinsChildren2005715738/001/main.go] PID:0 Forced:false Error:<nil>}\n    supervisor_test.go:127: reload lifecycle: {Kind:child_stopped Path: Paths:[] PID:42625 Forced:false Error:<nil>}\n    supervisor_test.go:127: reload lifecycle: {Kind:child_started Path: Paths:[] PID:42752 Forced:false Error:<nil>}\n    supervisor_test.go:202: timeout waiting for source_changed\n    supervisor_test.go:127: reload lifecycle: {Kind:child_stopped Path: Paths:[] PID:42752 Forced:false Error:<nil>}\nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/reload\t129.568s\nok  \tgithub.com/luoyjx/mini-loop/go/runmeta\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/sandbox\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/secrets\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/selfaudit\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/selfimprove\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/sessionquery\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/shell\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/skills\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/spill\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/sqlitestate\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/tasks\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/teams\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/tools/typeaudit\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/traceview\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/trajectory\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/userresources\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/verifiedloop\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/workflows\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/workspace\t(cached)\nok  \tgithub.com/luoyjx/mini-loop/go/worktrees\t(cached)\nFAIL\n",
+      "shell_note": "The shell subsequently ran go vet; its terminal exit 0 records vet, not a passing test gate."
+    },
+    "full_python": {
+      "status": "passed",
+      "command": ".venv/bin/python -m pytest -q",
+      "exit_code": 0,
+      "summary": "2236 passed, 28 skipped, 74 warnings, 24 subtests passed in 99.47s (0:01:39)"
+    },
+    "full_vet": {
+      "status": "passed",
+      "command": "cd go && go vet ./...",
+      "exit_code": 0
+    },
+    "full_race": "not rerun; no runtime Go package changed",
+    "source_export": "not rerun; no contract export or default-tool type changed",
+    "coverage": "not refreshed",
+    "architecture": "README canonical map reviewed; no topology/flow/authority/persistence/default changes; baseline only"
+  },
+  "diagnostic_probe_commit": "24687ff"
+}

@@ -1,0 +1,17 @@
+{
+  "generator": "built-in image_gen",
+  "initial_prompt": "Generate a clear polished Chinese engineering infographic, landscape 1536x1024, white background navy text teal successes amber unresolved. Title: Go 原生 Reload：进程历史对照. Subtitle: 同根目录 · 同一次操作 · Source / Go 配对. Two balanced cards: 每例新进程：13 / 16 共同匹配，3 例共同就绪超时; 持续进程：14 / 16 共同匹配，2 例共同就绪超时. Below the cards show three exact metrics: 32 次共享操作; 0 个 Source / Go 不对称结果; 34 个子进程正常退出. Cleanup strip: 64 次原生订阅创建 / 64 次关闭. Explain in short Chinese: 两种进程方式均可共同超时；进程复用并非失败的必要条件. Boundary footer: 单机交错对照，尚未证明根因；运行时、依赖、默认值未改；IDNA 与原生 Reload 验收仍未完成. Small baseline label: 运行时基线 2e8e18d. Avoid claiming reload is fixed, don't say all acceptance tests pass, don't show coverage percentage. Clear restrained engineering style with minimal icons and large readable Chinese text.",
+  "correction_prompt": "Edit this infographic preserving all layout, visual style and other text. Correct the middle left metric ONLY: replace '32 次共享操作' with '32 个配对用例' and add a readable subordinate line '27 次实际共享操作'. Five cases failed readiness before file mutation, so do not claim 32 file operations. All remaining counts are unchanged and must stay exact: fresh13/16 and3 commonreadinessfail, reused14/16 and2 commonreadinessfail,0Source/Goasymmetry,34childexits,64nativeopens/64closes,baseline2e8e18d. Keep Chinese title and unresolved IDNA/nativeReload boundary footnote. This correction should remain polished and clear.",
+  "selected_image": "go-reload-process-history-infographic-2026-10-11.png",
+  "verified_counts": {
+    "paired_cases": 32,
+    "executed_shared_operations": 27,
+    "fresh_both_matches": 13,
+    "reused_both_matches": 14,
+    "common_readiness_timeouts": 5,
+    "asymmetric_outcomes": 0,
+    "exited_children": 34,
+    "opened_subscriptions": 64,
+    "closed_subscriptions": 64
+  }
+}

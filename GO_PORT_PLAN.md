@@ -18697,3 +18697,47 @@ No merge/push; default diagnostics, IDNA and complete G0–G7 remain open.
 include executable reproduction sources. Next: distinguish shared volume/event-stream
 delivery from process-local registration under an isolated, matched workload before
 proposing a listener change or altering a required gate.
+
+## Matched native observer process histories — 2026-10-11
+
+Diagnostic probe commit: `24687ff`.
+
+Baseline `2e8e18d` is now on local main after the user-requested fast-forward;
+no push. This slice changes diagnostic probes only. Both actual Uvicorn 0.49.0 /
+WatchFiles 1.2.0 FsEventWatcher and Go PythonSource subscribe to the same owned
+root, acknowledge one shared readiness file, and consume one operation. The
+16 original recipes each run with both sides in fresh processes and both sides
+in reused processes. Profile order alternates by recipe, giving 32 paired cases.
+Five cases fail readiness before mutation: actual shared operations total 27.
+
+Fresh profile: 13/16 both match, three common readiness timeouts (added-source,
+hidden-parent-source, symlink-target-write). Reused profile: 14/16 both match,
+two common readiness timeouts (added-source, hidden-parent-source). There are
+zero asymmetric Source/Go outcomes and zero operation timeouts after shared
+readiness. All 34 child processes exit 0. Source RustNotify __exit__ counters and
+Go Close acknowledgements balance 64 opened / 64 closed native subscriptions;
+the two reused processes each reach 16/16. PID observations verify process reuse.
+
+Thus process reuse is not necessary for the observed common readiness failures.
+This single interleaved cohort does not establish workload, kernel/daemon or
+registration causality. It has no isolated volume/daemon control or raw callback
+trace. Source's diagnostic timer sets should_exit at 3-second operation / 5-second
+probe deadlines, while Go cancels Next; failed subscriptions close before reuse.
+This diagnostic is not an acceptance replacement or a claim about default CLI
+GoSource. No runtime, fixture, deadline, dependency or default is changed.
+
+Probe build/vet, Python syntax compilation, actual 32-case diagnostic and module
+vet pass. Full Python: 2236 passed, 28 skipped, 74 warnings, 24 subtests (99.47s).
+Full Go ordinary still fails two required dotted-I wire cases, transient-source
+and the native supervisor recovery case. Its shell runs vet afterward; shell
+exit 0 belongs to vet, not the failed Go test gate. No new race, full Source
+export, coverage or non-Darwin acceptance is claimed. IDNA, default diagnostics,
+native reload reliability and complete G0–G7 remain open. README canonical map
+reviewed, visible baseline advanced; architecture graph unchanged.
+
+[Raw observations, hashes and full Go failures](docs/audits/go-reload-process-history-2026-10-11.json)
+retain cleanup and process evidence. Next: trace delivery at native callback
+boundaries with the same acknowledged root/operation before proposing changes to
+listener ownership, batching or required assertions. The built-in imagegen
+[graphic](docs/audits/go-reload-process-history-infographic-2026-10-11.png) is corrected
+to distinguish 32 paired cases from 27 executed shared operations.
