@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "worktree_base": "f41b34c",
+  "implementation_commit": "4b685743283325d32d9a8be1cc056bc2b3b4c408",
+  "source": {
+    "fastapi": "0.136.3",
+    "starlette": "1.2.1",
+    "httpx": "0.28.1",
+    "business_paths": 40,
+    "cases": 168,
+    "fixture_sha256": "6e511cf42107445508f26c32e61038a5a5c55b1b288d86c314828554a115d680",
+    "full_freshness_files": 231,
+    "literal_path_capture": "Actual ASGI middleware/router, with transport-only path/raw_path preservation for literal dot segments that httpx otherwise normalizes; no business handlers are stubbed"
+  },
+  "native": {
+    "before": {
+      "cases": 168,
+      "matched": 118,
+      "differences": 50,
+      "original_corpus_differences": 43,
+      "new_edge_differences": 7,
+      "red_log_sha256": "3013333e3834e8b5f75ae82f515c69f977c0d927b1e814ac4cf03145191d43af"
+    },
+    "after": {
+      "cases": 168,
+      "matched": 168,
+      "differences": 0,
+      "diagnostic_label": "f41b34c"
+    },
+    "required_gate": "TestRoutingMatchesActualSource runs normally; optional diagnostic output does not replace it",
+    "design": "Private named routeVerb, routeMethod, routeSegmentKind, routeSegment and registeredRoute; frozen ordered declarations; full decoded path matching; named request path values",
+    "admission": "Shared body cap and one authentication admission precede routing; query credentials remain stream-only; matched handlers retain existing service/gate ownership",
+    "methods": "Accept all registered verbs; first Source route determines unsupported-method Allow",
+    "redirects": "Known paths only; 307, empty body, same host/scheme/query; all trailing slash bytes are stripped as in Source",
+    "path_edges": "No ServeMux dot/empty-segment cleaning or escaped-slash single-parameter matching"
+  },
+  "gates": [
+    {
+      "command": "go test -count=1 ./httpapi",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-httpapi.log",
+      "sha256": "28d6661025f92a343213397b25aa3c1eac41e49e9eb9a969ebd428b2cd3cf793",
+      "last_lines": [
+        "ok  \tgithub.com/luoyjx/mini-loop/go/httpapi\t6.884s"
+      ]
+    },
+    {
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "cwd": "go",
+      "exit_code": 1,
+      "log_path": "/tmp/mini-loop-routing-fix-go.log",
+      "sha256": "b82e2e50862afd4c6f93e52113742d4d98e06eeb6083c379d065afca88b1b340",
+      "last_lines": [
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workflows\t1.450s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workspace\t0.866s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/worktrees\t3.777s",
+        "FAIL"
+      ]
+    },
+    {
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-race.log",
+      "sha256": "78932a3aece23741a54d078940a19f935a3dcc73a3b651b9be3340b194043f6e",
+      "last_lines": [
+        "ok  \tgithub.com/luoyjx/mini-loop/go/verifiedloop\t1.366s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workflows\t3.540s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workspace\t3.900s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/worktrees\t5.227s"
+      ]
+    },
+    {
+      "command": "go vet ./...",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "last_lines": []
+    },
+    {
+      "command": "go run ./tools/typeaudit -root .",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-types.log",
+      "sha256": "e11fa214221863eb47f041cd106be5422ac8a1041faa365f9859cc55c3accccd",
+      "last_lines": [
+        "Go type audit: 448 production files, 1430 package-level types, 0 findings"
+      ]
+    },
+    {
+      "command": "go run ./tools/typeaudit -public -root .",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-public-types.log",
+      "sha256": "e72b55d7b2a15d2bef0eb94d7419ff0a5873d5158399cf9d5623d580f5bcd0af",
+      "last_lines": [
+        "Go public type audit: 50 packages, 1189 exported types, 0 findings"
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/export_go_contracts.py --check",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-export.log",
+      "sha256": "ddac6f9b78db9efb3e04cf2fb3762e7ffede47bd38462350a7466eedad959aa0",
+      "last_lines": [
+        "  return self.__pydantic_serializer__.to_python(",
+        "/Users/yanjixiong/github/mini-loop/.venv/lib/python3.11/site-packages/pathspec/pattern.py:132: FutureWarning: Possible nested set at position 10",
+        "  regex = re.compile(raw_regex)",
+        "Python→Go contracts current: 231 files"
+      ]
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-python.log",
+      "sha256": "8f182946c7f68e32bc8fbbf0b8bf38fe11264a78577013c28bd54113941ccac0",
+      "last_lines": [
+        "    return self.__pydantic_serializer__.to_python(",
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "2233 passed, 28 skipped, 54 warnings, 24 subtests passed in 87.86s (0:01:27)"
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_scans.py",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "last_lines": [
+        "  pins       test_write_sites.py::test_every_write_site_is_classified",
+        "  pins       test_write_sites.py::test_the_classification_has_no_dead_entries",
+        "",
+        "all 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied."
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_guards.py -k request-",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-routing-fix-guards.log",
+      "sha256": "10d39750c615dd1e97451cdcb7197ec0d14c8d7edff0ba512623cfac9bf60b0e",
+      "last_lines": [
+        "  caught    request-content-length-unchecked  (r150: an oversized body is refused from its Content-Length before it is buffered: reading a multi-gigabyte body to parse it OOMs the shared server, every tenant on it with it)",
+        "  caught    request-streamed-bytes-uncounted  (r150: the streamed body is counted too, so a chunked request or a lying Content-Length cannot slip a large body past the header check)",
+        "",
+        "all 2 guards are load-bearing (passing baseline, failed test call)."
+      ]
+    }
+  ],
+  "ordinary_go_failure": {
+    "package": "reload",
+    "cases": [
+      "added-source",
+      "rename-out",
+      "rename-in",
+      "ignored-backup",
+      "ignored-text"
+    ],
+    "raw_trace": "--- FAIL: TestNativeEventsActualSourceRecipes (60.77s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/added-source (4.73s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +624ms subscription constructed; drain before post-subscription probe\n            +726ms pre-probe next: paths=[] error=context deadline exceeded\n            +1.573s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source1911088728/001\" flags=164096\n            +1.573s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source1911088728/001/reload_observer_ready.go\" flags=102656\n            +1.624s readiness probe observed; drain remaining setup events\n            +1.726s post-probe next: paths=[] error=context deadline exceeded\n            +1.726s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source1911088728/001/new.go\n            +4.728s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/rename-out (5.56s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +189ms subscription constructed; drain before post-subscription probe\n            +289ms pre-probe next: paths=[] error=context deadline exceeded\n            +2.401s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out4036158359/001\" flags=164096\n            +2.402s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out4036158359/001/source.go\" flags=103680\n            +2.402s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out4036158359/001/reload_observer_ready.go\" flags=102656\n            +2.454s readiness probe observed; drain remaining setup events\n            +2.555s post-probe next: paths=[] error=context deadline exceeded\n            +2.555s operation=rename path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out4036158359/001/source.go\n            +5.558s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/rename-in (9.01s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +308ms subscription constructed; drain before post-subscription probe\n            +408ms pre-probe next: paths=[] error=context deadline exceeded\n            +5.789s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in490324758/001\" flags=164096\n            +5.79s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in490324758/001/notes.txt\" flags=103680\n            +5.855s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in490324758/001/reload_observer_ready.go\" flags=102656\n            +5.907s readiness probe observed; drain remaining setup events\n            +6.008s post-probe next: paths=[] error=context deadline exceeded\n            +6.008s operation=rename path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-in490324758/001/notes.txt\n            +9.01s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-backup (4.83s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +29ms subscription constructed; drain before post-subscription probe\n            +132ms pre-probe next: paths=[] error=context deadline exceeded\n            +1.669s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup2748318488/001\" flags=164096\n            +1.669s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup2748318488/001/reload_observer_ready.go\" flags=102656\n            +1.721s readiness probe observed; drain remaining setup events\n            +1.822s post-probe next: paths=[] error=context deadline exceeded\n            +1.822s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup2748318488/001/~backup.go\n            +4.824s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-text (5.09s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +185ms subscription constructed; drain before post-subscription probe\n            +287ms pre-probe next: paths=[] error=context deadline exceeded\n            +1.936s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text4251391905/001\" flags=164096\n            +1.936s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text4251391905/001/reload_observer_ready.go\" flags=102656\n            +1.988s readiness probe observed; drain remaining setup events\n            +2.089s post-probe next: paths=[] error=context deadline exceeded\n            +2.089s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text4251391905/001/notes.txt\n            +5.091s operation next: paths=[] error=context deadline exceeded\n            \nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/reload\t105.610s",
+    "interpretation": "Five native operation timeouts. Full race reload passes at 42.265 seconds; ordinary/race disagreement remains unexplained. No observer code, selection or deadlines changed."
+  },
+  "types": {
+    "production_files": 448,
+    "package_types": 1430,
+    "packages": 50,
+    "exported_types": 1189,
+    "findings": 0
+  },
+  "architecture": {
+    "receipt": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "084b1a2d7845a46d1011c6613094a8bf80446598b00a94e00d312af3c18ce7d5",
+        "bytes": 135215
+      },
+      "artifact": {
+        "sha256": "d71c31dbb240729ec9af374f6bf16c32b2609de0cde30c44197cef9126c05716",
+        "bytes": 785416
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "visual_review": "Skipped: prior browser local-file security rejection; no proxy/alternate browser/rendering workaround attempted",
+    "initial_environment_failure": "node was absent from PATH (exit 127); bundled Node validation/delivery subsequently passed 9/9 with zero errors/warnings"
+  },
+  "infographic": {
+    "path": "docs/audits/go-routing-change-infographic-2026-10-11.html",
+    "sha256": "4ffc8c0ae6d9164f18dd2ba4c38f896a033807c6087ef17913b4dfaac988f08a",
+    "verification": "Markup/IDs and JavaScript syntax checked; simulated DOM validates default/before/after values and primary interaction; no rendered visual-review pass claimed"
+  },
+  "limits": [
+    "No coverage refresh",
+    "Custom ASGI mounts, forwarded-host deployments, general malformed URL/Unicode inputs and final public-entry scope remain unaudited",
+    "Python package invariants not rerun: only contract tools/tests changed; request-size guard verification is the explicit two-mutation scope, not a whole guard sweep",
+    "Default diagnostics dependency decision and original G0-G7 final acceptance remain open"
+  ]
+}

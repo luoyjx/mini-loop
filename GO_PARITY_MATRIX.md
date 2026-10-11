@@ -2,23 +2,22 @@
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed baseline: local main `e56a49a`; latest production `cf1ebea`, recipe setup
-tests `e5064d8`. Protected API documentation is delivered alongside completed reply
-metadata and background observations. The entries below retain historical baselines;
-use [the current plan](GO_PORT_PLAN.md#current-status) for today's implementation
-queue. Complete migration acceptance remains open.
+Reviewed baseline: local main `f41b34c`; latest production `4b68574`. Owned named
+ordered routing now passes all 168 actual Source requests. Earlier entries retain
+their original baselines; use [the current plan](GO_PORT_PLAN.md#current-status)
+for the implementation queue. Complete migration acceptance remains open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
 | Source recipe freshness | Full export --check with new business-routing prerequisite: 231 current files | Passed; prior WatchFiles readiness failures remain recorded and unexplained |
-| Default business routing | 160 actual requests on all 40 explicit paths; [native observations](docs/audits/go-http-routing-source-native-2026-10-11.json) | Open implementation gap: 39 trailing-slash redirects and four unsupported-method Allow headers differ; 117 requests match. The diagnostic is not a parity gate |
+| Default business routing | All 168 actual Source requests on 40 explicit paths; [native evidence](docs/audits/go-http-routing-native-2026-10-11.json) | Delivered at 4b68574: first-route Allow, known slash redirects and decoded-path semantics match. Required parity assertion replaces diagnostic-only acceptance; broader URL/mount/forwarded-host scope remains |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Latest diagnostic-only gates and failure traces](docs/audits/go-http-routing-source-native-2026-10-11.json), plus historical ordinary/race/Source controls | Current full ordinary Go fails lower-mtime-write and rename-out; previous cf1ebea race and current Source export pass. Failure sets vary; root cause and temporal G3/G7 acceptance remain open |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` and `-public`; [current gates](docs/audits/go-api-documentation-native-2026-10-11.json) | At cf1ebea: syntax 447 production files / 1425 types; active-profile compiler closure 50 packages / 1189 exported types; both zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
+| Development reload | [Current ordinary/race/Source gates](docs/audits/go-http-routing-native-2026-10-11.json), plus historical prefix controls | Ordinary Go fails five native scenarios; full race and Source export pass. No observer code/selection/deadline changed. Root cause and temporal G3/G7 acceptance remain open |
+| Package-level type declarations | Syntax and active-profile public closure audits; [current evidence](docs/audits/go-http-routing-native-2026-10-11.json) | At 4b68574: 448 production files/1430 package types; 50 packages/1189 exported types; zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
 | Completed reply metadata | `go/testdata/python-provider-reply-metadata.json`: 44 actual SDK 0.107.1 direct/stream captures | Implemented at 3916f71: named finite observations, defaults, normalized timestamps, SDK delta retention, cloning and public JSON match all 44 captures; arbitrary coercion/custom transport and final acceptance remain |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
@@ -10520,3 +10519,15 @@ subtests, with 19 scan guards and vet passing. Native routing repair and normal 
 are the next implementation slice. This prerequisite changes no production Go
 behavior and does not accept generic encoded/repeated-slash or mount semantics.
 See [evidence](docs/audits/go-http-routing-source-native-2026-10-11.json).
+
+## Owned named Source routing — 2026-10-11
+
+`4b68574` fixes all 43 prior business method/slash differences and seven additional
+path-edge differences. All 168 actual Source requests pass a normal required
+native TCP test. Body/auth admission and handler/service ownership remain intact.
+Full Source freshness is 231 files; full race, vet, type audits, Python 2233 tests
+(28 skipped/24 subtests), 19 scanners and two request-size mutation guards pass.
+Ordinary Go retains five native reload timeouts. Architecture generation passes
+nine checks; rendered review is blocked by browser policy. Broader URL/mount scope,
+coverage refresh, default diagnostics selection and full G3/G7 acceptance remain
+open. See [evidence](docs/audits/go-http-routing-native-2026-10-11.json).

@@ -6851,17 +6851,16 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 at local main `e56a49a`; latest production implementation
-`cf1ebea`, recipe setup test `e5064d8`. Protected documentation matches 36 Source
-requests and four embedded resources. A new default business-routing capture
-contains 160 requests across all 40 paths: native matches 117 and differs on 39
-trailing-slash redirects and four unsupported-method Allow headers. The routing
-repair is not implemented. Full Source export is current with 231 files. The
-current diagnostic-only ordinary Go run fails reload lower-mtime-write and
-rename-out; vet, 19 scan guards and Python regression (2233 passed, 28 skipped,
-24 subtests) pass. Prior cf1ebea full race/type/request-size
-guard evidence remains at its original baseline; it does not resolve observer
-timing reliability. This section is the current delivery index;
+Reviewed 2026-10-11 after local main `f41b34c`; latest production implementation
+`4b68574`. Owned named ordered routing now matches all 168 actual Source requests
+across 40 business paths, including eight decoded-path boundary cases. The old
+160-request corpus's 43 differences and seven additional edge differences are
+fixed. Full Source export is current with 231 files. Full race Go, vet, type audits
+(448 files/1430 types, 50 packages/1189 exported types, zero findings), Python
+regression (2233 passed, 28 skipped, 24 subtests), 19 scan guards and two request-size
+guards pass. Ordinary full Go retains five native reload operation timeouts;
+race and Source success do not resolve timing reliability. This section is the
+current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6873,11 +6872,11 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax and active-profile compiler-resolved exported payload audits pass; foreign internals, unexported roots, inactive profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
-| G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; repair 43 captured business method/slash differences; audit other public-entry parity |
+| G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Full export verified 231 Source recipe files; 160 default business-routing captures and explicit native observations expose 43 differences; existing native tests and documented adaptations remain | Routing repair, public-entry/default/type audit, broader performance scope and final release gates remain; goal remains incomplete |
+| G7 | Full export verified 231 Source recipes; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -6933,15 +6932,14 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    documented timer/scheduler/post-spawn cleanup adaptations still require G7
    reconciliation.
 
-6. Default business method/slash routing: actual Starlette 1.2.1 selects the first
-   registered partial route for 405 Allow and redirects recognized trailing-slash
-   paths with 307. Native currently returns a method union on four shared paths
-   and 404 on all 39 captured trailing-slash paths. Preserve shared body/auth
-   admission and query credentials restriction during repair. This is now a
-   confirmed implementation item, not only an unverified G3 audit row. See
-   [routing prerequisite](docs/audits/go-http-routing-source-native-2026-10-11.json).
-
 ### Resolved items that must not remain on the implementation queue
+
+- Default business method/slash routing is delivered at `4b68574`: ordered named
+  declarations preserve Source first-route Allow, known slash redirects and fully
+  decoded path matching. All 168 requests are normal required assertions, including
+  the original 43 differences and seven additional edge differences. The diagnostic
+  prerequisite stays retained; generic URL/mount/forwarded-host scope is still a
+  separate public-entry audit. See [native routing evidence](docs/audits/go-http-routing-native-2026-10-11.json).
 
 - Launcher credential discovery is delivered at `4e92d28` and empty auth alignment
   at `477a209`: captured selectors, active pointers, environment federation,
@@ -18466,3 +18464,33 @@ diagnostic-only slice. README architecture ownership remains unchanged and its
 review baseline advances to the current production implementation.
 
 See [routing evidence and reproduction command](docs/audits/go-http-routing-source-native-2026-10-11.json).
+
+## Owned named Source routing — 2026-10-11
+
+`4b68574` replaces ServeMux routing with private named segments, finite verbs and
+immutable ordered method/handler declarations. Matching uses the full decoded
+path and sets named request parameters only for the selected handler. Unsupported
+methods advertise the first Source route's Allow; recognized slash variants use
+307 with host/scheme/query retained. Shared body cap and one authentication
+admission remain before every route decision. Refusals/redirects execute no business
+handler. No new dependency or authority is introduced.
+
+The original 160 requests' 43 differences are fixed. Eight added path-edge
+requests expose seven further pre-fix differences; all 168 now pass a required
+native TCP gate, rather than an opt-in diagnostic. Literal dot paths are preserved
+at Source ASGI transport ingress because httpx otherwise normalizes them. Full
+Source export has 231 fresh fixtures. Full Go race, vet, type audits, Python
+regression (2233 passed, 28 skipped, 54 warnings, 24 subtests), 19 scanner guards
+and two request-size mutation guards pass. Ordinary Go still fails five native
+reload scenarios: added-source, rename-out, rename-in, ignored-backup and
+ignored-text. No observer production code, backend selection or deadline changed.
+
+README canonical map/boundary and architecture source are updated in the same
+implementation commit; regenerated HTML passes nine checks with zero errors or
+warnings. Local browser visual review remains blocked by the earlier security
+policy. This round's information graphic has markup/JS and before/after interaction
+checks; no rendered visual review is claimed. Coverage is not refreshed. Generic
+malformed URL/Unicode/mount/forwarded-host behavior, diagnostics dependency approval
+and the complete G0–G7 audit remain open.
+
+See [native routing evidence](docs/audits/go-http-routing-native-2026-10-11.json).

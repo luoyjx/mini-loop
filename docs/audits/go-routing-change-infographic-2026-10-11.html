@@ -1,0 +1,72 @@
+<div id="ml-routing-changes">
+  <h2>Go 路由修复 · 本轮改动</h2>
+  <div class="viz-controls" aria-label="对照版本">
+    <button type="button" class="btn" data-phase="before" aria-pressed="false">修复前</button>
+    <button type="button" class="btn" data-phase="after" aria-pressed="true">修复后</button>
+  </div>
+  <div class="viz-row"><strong id="ml-route-count" class="tabular-nums">168 / 168 请求匹配</strong><span>40 个业务路径</span></div>
+  <div class="route-bar" role="img" aria-label="168 个实际 Source 请求全部匹配">
+    <div class="route-same" style="width:100%"></div><div class="route-diff" style="width:0%"></div>
+  </div>
+  <div class="viz-row text-small"><span id="ml-route-same">匹配 168</span><span id="ml-route-diff">差异 0</span></div>
+  <table class="table table-sm">
+    <thead><tr><th>改动</th><th>原生响应</th><th>Python 契约</th></tr></thead>
+    <tbody>
+      <tr><td>方法顺序<br><code>TRACE /sessions</code></td><td id="ml-route-method">Allow: POST</td><td>Allow: POST</td></tr>
+      <tr><td>尾斜杠<br><code>/sessions/?probe=keep</code></td><td id="ml-route-slash">307 · 保留查询参数</td><td>307 · 保留查询参数</td></tr>
+      <tr><td>编码斜杠<br><code>/sessions/fixture%2Fid</code></td><td id="ml-route-encoded">404 · 完整解码后匹配</td><td>404 · 完整解码后匹配</td></tr>
+    </tbody>
+  </table>
+  <div class="route-flow" aria-label="请求处理顺序">
+    <span>10 MB 请求限制</span><span aria-hidden="true">→</span><span>认证一次</span><span aria-hidden="true">→</span><span>具名路由匹配</span><span aria-hidden="true">→</span><span>执行 / 405 / 307 / 404</span>
+  </div>
+  <div class="viz-row text-small"><span>无序方法 map → 有序具名声明</span><span>新增 8 个路径边界案例</span><span>诊断 → 必过断言</span></div>
+  <hr>
+  <h3>本轮验证</h3>
+  <div id="ml-route-gates" class="viz-row text-small">路由 168/168 · Go race / vet / 类型审计通过 · Source 231 份通过 · Python 2233 项通过 · 扫描 19 项 / 请求体 guard 2 项通过 · 普通 Go：reload 5 个场景超时</div>
+  <div class="text-small">完整迁移验收仍在进行；reload 时序问题、默认诊断依赖决策待完成；覆盖率本轮未刷新。</div>
+  <div id="ml-route-detail" class="sr-only" aria-live="polite"></div>
+</div>
+<style>
+  #ml-routing-changes .route-bar{display:flex;height:20px;margin:12px 0 6px;background:var(--muted);overflow:hidden}
+  #ml-routing-changes .route-same{background:var(--viz-series-1)}
+  #ml-routing-changes .route-diff{background:var(--viz-series-2)}
+  #ml-routing-changes strong{font-weight:500}
+  #ml-routing-changes.changed .route-same,#ml-routing-changes.changed .route-diff{transition:width 180ms ease}
+  @media(prefers-reduced-motion:reduce){#ml-routing-changes.changed .route-same,#ml-routing-changes.changed .route-diff{transition:none}}
+  #ml-routing-changes .route-flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:16px 0;color:var(--foreground)}
+  #ml-routing-changes td,#ml-routing-changes code{overflow-wrap:anywhere}
+</style>
+<script>
+  (() => {
+    const root = document.getElementById('ml-routing-changes');
+    let phase = window.openai?.widgetState?.privateContent?.phase === 'before' ? 'before' : 'after';
+    const data = {
+      before: {same:118,diff:50,method:'Allow: GET, POST',slash:'404 · 未重定向',encoded:'405 · 把编码斜杠当参数'},
+      after: {same:168,diff:0,method:'Allow: POST',slash:'307 · 保留查询参数',encoded:'404 · 完整解码后匹配'}
+    };
+    function render() {
+      const row = data[phase];
+      root.querySelector('#ml-route-count').textContent = `${row.same} / 168 请求匹配`;
+      root.querySelector('#ml-route-same').textContent = `匹配 ${row.same}`;
+      root.querySelector('#ml-route-diff').textContent = `差异 ${row.diff}`;
+      root.querySelector('.route-same').style.width = `${row.same / 168 * 100}%`;
+      root.querySelector('.route-diff').style.width = `${row.diff / 168 * 100}%`;
+      root.querySelector('.route-bar').setAttribute('aria-label',`168 个请求中 ${row.same} 个匹配，${row.diff} 个差异`);
+      for (const key of ['method','slash','encoded']) root.querySelector(`#ml-route-${key}`).textContent = row[key];
+      root.querySelectorAll('[data-phase]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.phase === phase)));
+      root.querySelector('#ml-route-detail').textContent = `${phase === 'before' ? '修复前' : '修复后'}：${row.same} 个匹配，${row.diff} 个差异`;
+    }
+    root.querySelectorAll('[data-phase]').forEach(button => button.addEventListener('click',() => {
+      root.classList.add('changed');
+      phase = button.dataset.phase;
+      render();
+      window.openai?.setWidgetState?.({modelContent:{routingView:phase},privateContent:{phase}}).catch(() => {});
+    }));
+    window.addEventListener('openai:set_globals',event => {
+      const saved = event.detail?.globals?.widgetState?.privateContent?.phase;
+      if (saved === 'before' || saved === 'after') {phase = saved; render();}
+    });
+    render();
+  })();
+</script>
