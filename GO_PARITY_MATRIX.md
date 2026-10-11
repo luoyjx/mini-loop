@@ -11210,3 +11210,32 @@ Native reload/default diagnostics/broader IDNA/full G0–G7 remain incomplete.
 [full native sample](docs/audits/go-decision-native-stacks-2026-10-11.sample.txt),
 [disassembly](docs/audits/go-decision-native-stacks-2026-10-11.reader.disasm.txt)
 and [built-in infographic](docs/audits/go-decision-native-stacks-infographic-2026-10-11.png).
+
+## Native immutable JSON string read spans — 2026-10-11
+
+Implementation `014e913`, prior baseline `05d74cf`. Reader copies safe byte spans; unescaped
+short strings.Clone preserves detached input ownership. Existing Unicode escapes/
+surrogatepass/raw native bytes/duplicate-key replacement/limits/wire refusals stay
+unchanged.14 Source recipes retain56 byte hash checks and56 decode projections;
+directed grammar/control/raw-byte tests and1MiB backing-allocation checks pass.
+No erased domain type/dependency/default/schema/authority change.
+
+Instrumented3-iteration samples: ASCII105.65→1.69ms,escaped108.89→3.37ms,
+Unicode99.28→1.54ms; not normal-runtime/statistical/service throughput. Original
+512KiB/shared30s decision focused race+atomic passes baseline3.76/maximum22.18s
+with exact replay/readonly/backend-once checks. Full SQLite passes ordinary and
+race+atomic46.670s. Full ordinary fails CLI/native reload; full race+atomic fails
+ignored-hidden/ignored-backup/ignored-text/transient-source native recipes. No
+DATA RACE report; variability is not attributed to the reader optimization.
+
+Vet/type audits (450 files1434 types;50 packages1189 public types,zero findings),
+Python2239/28skipped/74warnings/24subtests (93.93s),19 scans,4 selected nonfinite
+mutations and diff check pass.1159 Go file hashes frozen. Source export not
+triggered/refreshing; previous native observer failure remains open. No Python
+module change/non-Darwin/rendered acceptance. Canonical architecture reviewed,
+visible baseline/boundary updated, graph unchanged. Failed full-run coverage
+app89.2073%/all89.1531%/Provider86.6705%,not passing migration acceptance.
+[Coverage](docs/audits/go-coverage-json-read-spans-2026-10-11.json),
+[full evidence](docs/audits/go-json-read-spans-2026-10-11.json),
+[built-in infographic](docs/audits/go-json-read-spans-infographic-2026-10-11.png).
+Native reliability/default diagnostics/broader IDNA/full G0–G7 remain incomplete.

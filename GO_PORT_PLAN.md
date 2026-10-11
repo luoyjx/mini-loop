@@ -19259,3 +19259,54 @@ and visible baseline updated; graph JSON/HTML unchanged, no push.
 [native sample](docs/audits/go-decision-native-stacks-2026-10-11.sample.txt),
 [reader disassembly](docs/audits/go-decision-native-stacks-2026-10-11.reader.disasm.txt)
 and [built-in infographic](docs/audits/go-decision-native-stacks-infographic-2026-10-11.png).
+
+## Native JSON string read spans — 2026-10-11
+
+Implementation `014e913`, prior baseline `05d74cf`. The immutable reader copies ordinary
+byte spans up to quote/backslash/C0 delimiters. Unescaped fields use strings.Clone
+to retain original detached-memory ownership. Escapes/Unicode surrogate pairing/
+surrogatepass/malformed native bytes, duplicate-key first-position replacement,
+container/integer limits and final strict wire policy stay unchanged. No new
+dependency/type erasure/public API/default/persistence/authority.
+
+Fourteen real CPython text/key recipes keep56 required encoding hash checks;
+56 added decode projections match their Source-hashed input. Twelve direct text/
+key profiles,8 malformed forms,32 raw C0 controls and short key/value allocation
+checks against a1MiB archive cover the reader boundaries. Malformed native bytes
+retain their existing Go observation behavior, not broader CPython byte admission.
+
+Three-iteration race+atomic microbenchmarks: ASCII512KiB105.65→1.69ms/
+32→1 allocations; escaped108.89→3.37ms/31→18; Unicode99.28→1.54ms/31→1.
+B/op3062602→524288,3070752→3043072,2997056→458752 respectively. Input setup is
+outside benchmark subtests; body unchanged before/after. Local instrumented
+samples, not statistical/normal-runtime/service throughput claims.
+
+Original decision fixture/shared30s/512KiB/restart/exact replay/readonly/backend-once
+checks pass the focused race+atomic gate: baseline3.76s,maximum22.18s. Full SQLite
+passes ordinary14.732s and race+atomic46.670s. These package/focused modes are
+separate from earlier CPU-profile/native-sample runs; no universal timing closure.
+Full ordinary Go fails CLI model reload readiness and native readiness/concurrent
+close/callback/recipes. Full race+atomic fails4 native recipes: ignored-hidden,
+ignored-backup,ignored-text,transient-source (reload109.002s). No DATA RACE report.
+Do not attribute those variable native outcomes to this parser change.
+
+Vet passes; type audits450 files/1434 types and50 packages/1189 exported types
+have zero findings. Python full2239 passed/28 skipped/74 warnings/24 subtests
+(93.93s),19 scanner guards,4 selected nonfinite baseline-pass/mutant-fail checks
+and diff check pass. Source --check not rerun: exporter/default tool types/fixtures
+unchanged; prior Source native observer failure stays open. Python invariants not
+triggered(no Python package-module change).1159 Go source/fixture/module hashes
+remain frozen across all native gates; full native gates precede Python validation.
+
+Current full failed-run statement coverage merges1232799 blocks into25682 unique
+locations (same statement counts/max hits): app32690/36645=89.2073%,
+all32811/36803=89.1531%,Provider1515/1748=86.6705%. Darwin arm64 Go1.23.3 CGO1;
+not native C/subprocess/Python/branch/non-Darwin coverage or passing acceptance.
+[Coverage receipt](docs/audits/go-coverage-json-read-spans-2026-10-11.json).
+README canonical map/boundaries reviewed and visible baseline/boundary updated;
+algorithm preserves topology/ownership/control flow/authority/defaults, so graph
+JSON/HTML unchanged. No rendered acceptance or push. Native reliability/default
+diagnostics/broader IDNA/full G0–G7 remain open.
+
+[Raw gates/bench/contracts](docs/audits/go-json-read-spans-2026-10-11.json) and
+[built-in infographic](docs/audits/go-json-read-spans-infographic-2026-10-11.png).

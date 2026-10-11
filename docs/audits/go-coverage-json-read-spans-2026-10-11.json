@@ -1,0 +1,35 @@
+{
+  "mode": "mode: atomic",
+  "gate_exit_code": 1,
+  "gate_status": "Full race+atomic test run failed native reload recipes; SQLite passes; not a passing acceptance baseline.",
+  "command": "go test -race -p=1 -count=1 -timeout=300s -covermode=atomic -coverpkg=./... -coverprofile=/tmp/mini-loop-json-read-spans-2026-10-11.cover ./...",
+  "aggregation": "Merge identical source locations using maximum hit count; assert statement counts agree.",
+  "raw_blocks": 1232799,
+  "unique_source_locations": 25682,
+  "profile_path": "/tmp/mini-loop-json-read-spans-2026-10-11.cover",
+  "profile_bytes": 85944847,
+  "profile_sha256": "662ecc111554026bab2e89e80c1457406ac47db6d6901cf002807f95daeaccb7",
+  "all_go": {
+    "covered_statements": 32811,
+    "total_statements": 36803,
+    "percent": 89.15305817460533
+  },
+  "application_excluding_tools": {
+    "covered_statements": 32690,
+    "total_statements": 36645,
+    "percent": 89.207258834766
+  },
+  "provider": {
+    "covered_statements": 1515,
+    "total_statements": 1748,
+    "percent": 86.67048054919908
+  },
+  "limitations": [
+    "Darwin arm64 Go1.23.3 CGO enabled.",
+    "Go statement coverage only; native C and CLI subprocess internals excluded.",
+    "All package commands finished; native reload failed4 recipes; not passing acceptance.",
+    "No Python/branch/non-Darwin coverage."
+  ],
+  "implementation_commit": "014e9139a7e886983fd1f41e5700de614e4f4c57",
+  "measured_snapshot": "Runtime/test/fixture SHA256 freeze predates full jobs and matches this implementation commit; no edits during full native gates."
+}
