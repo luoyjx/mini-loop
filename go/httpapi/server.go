@@ -55,7 +55,7 @@ type Server struct {
 	build              string
 	now                func() time.Time
 	started            time.Time
-	mux                *http.ServeMux
+	registered         []registeredRoute
 	mu                 sync.Mutex
 	cache              map[cacheKey]MessageResponse
 	running            map[agent.SessionID]bool
@@ -81,7 +81,7 @@ func New(config Config) (*Server, error) {
 	if config.Build == "" {
 		config.Build = "development"
 	}
-	s := &Server{manager: config.Manager, auth: config.Auth, rateLimit: config.RateLimitPerMinute, ping: config.PingInterval, fake: config.FakeLLM, features: config.Features, build: config.Build, now: config.Now, started: config.Now(), mux: http.NewServeMux(), cache: make(map[cacheKey]MessageResponse), running: make(map[agent.SessionID]bool), windows: make(map[agent.OwnerID]rateWindow)}
+	s := &Server{manager: config.Manager, auth: config.Auth, rateLimit: config.RateLimitPerMinute, ping: config.PingInterval, fake: config.FakeLLM, features: config.Features, build: config.Build, now: config.Now, started: config.Now(), cache: make(map[cacheKey]MessageResponse), running: make(map[agent.SessionID]bool), windows: make(map[agent.OwnerID]rateWindow)}
 	s.routes()
 	s.benchmarkSkillsDir = config.BenchmarkSkillsDir
 	if s.benchmarkSkillsDir == "" {
@@ -137,7 +137,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if s.serveDocumentation(w, r) {
 		return
 	}
-	s.mux.ServeHTTP(w, r)
+	s.serveRoutes(w, r)
 }
 
 func publicPath(path string) bool {

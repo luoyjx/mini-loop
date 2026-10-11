@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `cf1ebea`, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `f41b34c` plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -676,7 +676,7 @@ flowchart LR
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
         GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>owned ordered path / method / slash selection<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
@@ -2651,14 +2651,22 @@ CSP. HTTP template/schema parity is verified; browser rendering of the external
 libraries is not claimed. Custom ASGI mounts/root paths are outside this default
 route capture. Refresh/check with `.venv/bin/python python/tools/export_go_api_docs.py --check`.
 
-Business-route method/slash parity remains incomplete. The actual Source routing
-fixture captures 160 requests across all 40 explicit business paths. At `cf1ebea`,
-39 authenticated trailing-slash requests return native 404 instead of Source 307,
-and four shared paths advertise a method union instead of the first registered
-Source route's `Allow`. Missing/query-only credentials and the oversized-body
-case are refused before routing in both runtimes. The explicit
-`TestActualSourceRoutingAudit` produces diagnostic observations; it is not a
-passing parity assertion or an implemented routing repair.
+Business routes use private named route segments, finite verbs and ordered
+method/handler declarations. Source's first registered route determines 405 Allow;
+recognized trailing-slash paths redirect with 307 and preserve host, scheme and
+query. Routing reads the fully decoded path without ServeMux dot/empty-segment
+cleaning or escaped-slash parameter matching. A matched handler receives named
+path values; refusals and redirects invoke no business handler. The shared body
+cap and one authentication admission precede every routing decision, including
+public-path slash variants. Query credentials remain stream-only.
+
+All 168 actual Source routing requests are required native TCP assertions. They
+include the original 160 requests and eight dot, empty-segment, encoded-slash and
+repeated-slash boundary cases. Python transport capture preserves literal dot
+paths at ASGI ingress because httpx otherwise normalizes them before delivery.
+Optional diagnostic output remains available to compare historical baselines;
+its exit alone is not a parity claim. Custom mounts, forwarded-host deployments
+and the full public-entry scope audit remain open.
 
 ### Completed provider reply metadata
 

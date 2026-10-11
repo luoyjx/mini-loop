@@ -10,7 +10,7 @@ def test_actual_routing_contracts_preserve_registration_and_admission_order():
     root = Path(__file__).resolve().parents[2]
     assert fixture == json.loads((root / 'go/testdata/python-http-routing.json').read_text())
     assert len(fixture['routes']) == 40
-    assert len(fixture['cases']) == 160
+    assert len(fixture['cases']) == 168
     methods = {route['path']: route['ordered_methods'] for route in fixture['routes']}
     matched = {re.sub(r'\{[^}]+\}', 'fixture-id', pattern): pattern for pattern in methods}
     assert methods['/sessions'] == [['POST'], ['GET']]
@@ -27,4 +27,8 @@ def test_actual_routing_contracts_preserve_registration_and_admission_order():
         else:
             assert case['status'] == {'missing-token-slash': 401, 'query-token-slash': 401,
                                       'unknown-path': 404, 'unknown-missing-token': 401,
-                                      'oversized-before-redirect': 413}[case['name']]
+                                      'oversized-before-redirect': 413,
+                                      'dot-current': 405, 'dot-parent': 405,
+                                      'nested-parent': 404, 'repeated-trailing': 307,
+                                      'encoded-slash': 404, 'encoded-dot': 405,
+                                      'empty-segment': 404, 'unknown-slash': 404}[case['name']]

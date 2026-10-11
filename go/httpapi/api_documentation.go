@@ -30,19 +30,8 @@ var documentationRoutes = [...]documentationResource{
 // is protected exactly like other data routes; query credentials do not apply.
 func (s *Server) serveDocumentation(w http.ResponseWriter, r *http.Request) bool {
 	for _, resource := range documentationRoutes {
-		if r.URL.Path == resource.path+"/" {
-			target := *r.URL
-			target.Path, target.RawPath = strings.TrimSuffix(target.Path, "/"), ""
-			target.Host = r.Host
-			if target.Scheme == "" {
-				target.Scheme = "http"
-				if r.TLS != nil {
-					target.Scheme = "https"
-				}
-			}
-			w.Header().Set("Location", target.String())
-			w.Header().Set("Content-Length", "0")
-			w.WriteHeader(http.StatusTemporaryRedirect)
+		if r.URL.Path != resource.path && strings.TrimRight(r.URL.Path, "/") == resource.path {
+			redirectRoute(w, r, resource.path)
 			return true
 		}
 		if r.URL.Path != resource.path {

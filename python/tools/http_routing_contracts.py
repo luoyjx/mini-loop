@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+from urllib.parse import unquote
 
 import fastapi
 import httpx
@@ -21,8 +22,18 @@ async def _http_routing_contracts() -> dict:
             continue
         inventory.setdefault(route.path, []).append(sorted(route.methods))
     cases = []
-    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url='http://fixture') as client:
-        async def observe(name, path, *, credential='Bearer fixture-token', body=b''):
+    exact_path = None
+
+    async def preserve_path(scope, receive, send):
+        if exact_path is not None:
+            raw = exact_path.split('?', 1)[0]
+            scope = dict(scope, path=unquote(raw), raw_path=raw.encode())
+        await app(scope, receive, send)
+
+    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=preserve_path), base_url='http://fixture') as client:
+        async def observe(name, path, *, credential='Bearer fixture-token', body=b'', exact=False):
+            nonlocal exact_path
+            exact_path = path if exact else None
             headers = {'Authorization': credential} if credential else {}
             response = await client.request('TRACE', path, headers=headers, content=body)
             cases.append(dict(name=name, method='TRACE', path=path,
@@ -44,6 +55,19 @@ async def _http_routing_contracts() -> dict:
         await observe('unknown-path', '/fixture-missing')
         await observe('unknown-missing-token', '/fixture-missing', credential='')
         await observe('oversized-before-redirect', '/sessions/', credential='', body=b'x' * (10 * 1024 * 1024 + 1))
+        for name, path in (
+            ('dot-current', '/sessions/.'),
+            ('dot-parent', '/sessions/..'),
+            ('nested-parent', '/sessions/fixture-id/../cron'),
+            ('repeated-trailing', '/sessions///?probe=keep'),
+            ('encoded-slash', '/sessions/fixture%2Fid'),
+            ('encoded-dot', '/sessions/%2E%2E'),
+            ('empty-segment', '/sessions//fixture-id'),
+            ('unknown-slash', '/fixture-missing/?probe=keep'),
+        ):
+            # httpx normalizes literal dot segments. Preserve the requested ASGI
+            # path at the transport boundary; all middleware/router code is real.
+            await observe(name, path, exact=True)
     return dict(fastapi_version=fastapi.__version__, starlette_version=starlette.__version__,
                 routes=[dict(path=path, ordered_methods=methods) for path, methods in inventory.items()],
                 cases=cases)

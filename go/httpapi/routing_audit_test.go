@@ -14,8 +14,12 @@ import (
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
-// Explicit diagnostic capture, not a passing parity gate. Retain differences so
-// the next implementation slice can turn the complete corpus into assertions.
+// The complete routing corpus is a required parity gate. Diagnostic output is
+// also available explicitly, so historical differences remain reproducible.
+func TestRoutingMatchesActualSource(t *testing.T) {
+	captureRouting(t, "", "", true)
+}
+
 func TestActualSourceRoutingAudit(t *testing.T) {
 	output := os.Getenv("MINILOOP_ROUTING_AUDIT_OUTPUT")
 	if output == "" {
@@ -25,12 +29,19 @@ func TestActualSourceRoutingAudit(t *testing.T) {
 	if baseline == "" {
 		t.Fatal("routing audit requires an explicit production baseline")
 	}
+	captureRouting(t, output, baseline, false)
+}
+
+func captureRouting(t *testing.T, output, baseline string, required bool) {
+	t.Helper()
+
 	type result struct {
-		Status   int               `json:"status"`
-		Allowed  []string          `json:"allowed_methods"`
-		Location *string           `json:"location"`
-		Body     jsonvalue.Value   `json:"body_json"`
-		Security map[string]string `json:"security_headers"`
+		DecodeError string            `json:"decode_error,omitempty"`
+		Status      int               `json:"status"`
+		Allowed     []string          `json:"allowed_methods"`
+		Location    *string           `json:"location"`
+		Body        jsonvalue.Value   `json:"body_json"`
+		Security    map[string]string `json:"security_headers"`
 	}
 	var fixture struct {
 		Cases []struct {
@@ -46,7 +57,7 @@ func TestActualSourceRoutingAudit(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 160 {
+	if len(fixture.Cases) != 168 {
 		t.Fatal("routing fixture inventory changed")
 	}
 	auth, err := NewTokenAuth([]TokenBinding{{Token: "fixture-token", Principal: "owner"}})
@@ -89,7 +100,7 @@ func TestActualSourceRoutingAudit(t *testing.T) {
 		if len(data) != 0 {
 			actual.Body, err = jsonvalue.Decode(string(data))
 			if err != nil {
-				t.Fatal("unexpected non-JSON routing reply", err)
+				actual.DecodeError = err.Error()
 			}
 		}
 		if value := response.Header.Get("Location"); value != "" {
@@ -105,10 +116,16 @@ func TestActualSourceRoutingAudit(t *testing.T) {
 		for key := range row.Security {
 			actual.Security[key] = response.Header.Get(key)
 		}
-		same := actual.Status == row.Status && reflect.DeepEqual(actual.Allowed, row.Allowed) &&
+		same := actual.DecodeError == "" && actual.Status == row.Status && reflect.DeepEqual(actual.Allowed, row.Allowed) &&
 			reflect.DeepEqual(actual.Location, row.Location) && actual.Body.PythonEqual(row.Body) &&
 			reflect.DeepEqual(actual.Security, row.Security)
 		rows = append(rows, observation{row.Name, row.Path, row.result, actual, same})
+		if required && !same {
+			t.Errorf("%s %s: Source=%+v native=%+v", row.Name, row.Path, row.result, actual)
+		}
+	}
+	if output == "" {
+		return
 	}
 	report := struct {
 		Baseline string        `json:"production_baseline"`
