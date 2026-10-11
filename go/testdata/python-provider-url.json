@@ -1,0 +1,1573 @@
+{
+  "cases": [
+    {
+      "base_url": null,
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "default",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": null,
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "default",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "empty",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://api.anthropic.com/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://api.anthropic.com",
+        "name": "anthropic",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "empty",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://FIXTURE.INVALID/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://FIXTURE.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-host",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://FIXTURE.INVALID/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://FIXTURE.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-host",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "HTTPS://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "HTTPS://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-scheme",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "HTTPS://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "HTTPS://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-scheme",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:443/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:443/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "https-default-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:443/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:443/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "https-default-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.invalid:80/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid:80/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "http-default-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://fixture.invalid:80/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://fixture.invalid:80/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "http-default-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:8443/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid:8443/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:8443/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "https-other-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:8443/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid:8443/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:8443/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "https-other-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:00443/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:00443/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "zero-padded-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:00443/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:00443/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "zero-padded-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "empty-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "empty-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://[::1]:8080/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://[::1]:8080/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://[::1]:8080/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ipv6",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://[::1]:8080/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://[::1]:8080/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://[::1]:8080/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ipv6",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://[0:0:0:0:0:0:0:1]/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://[0:0:0:0:0:0:0:1]/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://[0:0:0:0:0:0:0:1]/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ipv6-expanded",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://[0:0:0:0:0:0:0:1]/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://[0:0:0:0:0:0:0:1]/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://[0:0:0:0:0:0:0:1]/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ipv6-expanded",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://[::1]:80/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://[::1]/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://[::1]:80/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ipv6-default-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "http://[::1]:80/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "http://[::1]/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://[::1]:80/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ipv6-default-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "unicode-host",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "unicode-host",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://xn--bcher-kva.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://xn--bcher-kva.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "punycode-host",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://xn--bcher-kva.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://xn--bcher-kva.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "punycode-host",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid./tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid./tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid./tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "trailing-host-dot",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid./tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid./tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid./tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "trailing-host-dot",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant?q=fixture",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant?q=fixture/v1/messages",
+          "url": "https://fixture.invalid/tenant?q=fixture/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant?q=fixture",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "query",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant?q=fixture",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant?q=fixture/v1/messages",
+          "url": "https://fixture.invalid/tenant?q=fixture/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant?q=fixture",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "query",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant?",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant?/v1/messages",
+          "url": "https://fixture.invalid/tenant?/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant?",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "empty-query",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant?",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant?/v1/messages",
+          "url": "https://fixture.invalid/tenant?/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant?",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "empty-query",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant#fixture",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages#fixture"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant#fixture",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "fragment",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant#fixture",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages#fixture"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant#fixture",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "fragment",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant#",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages#"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant#",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "empty-fragment",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant#",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages#"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant#",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "empty-fragment",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": "Basic Zml4dHVyZS11c2VyOmZpeHR1cmUtcGFzcw==",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture-user:fixture-pass@fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "userinfo",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": "Basic Zml4dHVyZS11c2VyOmZpeHR1cmUtcGFzcw==",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture-user:fixture-pass@fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "userinfo",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture-user@fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": "Basic Zml4dHVyZS11c2VyOg==",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture-user@fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture-user@fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "username",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture-user@fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": "Basic Zml4dHVyZS11c2VyOg==",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture-user@fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture-user@fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "username",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "relative-path",
+      "stage": "request"
+    },
+    {
+      "base_url": "/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "relative-path",
+      "stage": "request"
+    },
+    {
+      "base_url": "fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/fixture.invalid/tenant/v1/messages",
+          "url": "/fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "bare-host",
+      "stage": "request"
+    },
+    {
+      "base_url": "fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/fixture.invalid/tenant/v1/messages",
+          "url": "/fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "bare-host",
+      "stage": "request"
+    },
+    {
+      "base_url": "//fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "//fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "scheme-relative",
+      "stage": "request"
+    },
+    {
+      "base_url": "//fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "//fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "scheme-relative",
+      "stage": "request"
+    },
+    {
+      "base_url": "ftp://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "ftp://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "ftp://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ftp",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "ftp://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "ftp://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "ftp://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ftp",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https:///tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https:///tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "missing-host",
+      "stage": "request"
+    },
+    {
+      "base_url": "https:///tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https:///tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "missing-host",
+      "stage": "request"
+    },
+    {
+      "base_url": "https://fixture.invalid:wrong/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid port: 'wrong'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:wrong/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "invalid-port",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://fixture.invalid:wrong/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid port: 'wrong'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:wrong/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "invalid-port",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://fixture.invalid:99999/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid:99999/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:99999/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "oversized-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid:99999/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid:99999/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid:99999/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "oversized-port",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/%zz",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/%zz/v1/messages",
+          "url": "https://fixture.invalid/%zz/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/%zz",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "invalid-escape",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/%zz",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/%zz/v1/messages",
+          "url": "https://fixture.invalid/%zz/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/%zz",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "invalid-escape",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://[::1/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid port: ':1'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://[::1/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "unmatched-ipv6",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://[::1/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid port: ':1'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://[::1/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "unmatched-ipv6",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://fixture host.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture%20host.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture host.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "host-space",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture host.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture%20host.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture host.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "host-space",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": " https://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/%20https://fixture.invalid/tenant/v1/messages",
+          "url": "/%20https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": " https://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "leading-space",
+      "stage": "request"
+    },
+    {
+      "base_url": " https://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/%20https://fixture.invalid/tenant/v1/messages",
+          "url": "/%20https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": {
+        "text": "Connection error.",
+        "type": "APIConnectionError"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": " https://fixture.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "leading-space",
+      "stage": "request"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant ",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant%20/v1/messages",
+          "url": "https://fixture.invalid/tenant%20/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant ",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "trailing-space",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant ",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant%20/v1/messages",
+          "url": "https://fixture.invalid/tenant%20/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant ",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "trailing-space",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant\n",
+      "calls": [],
+      "error": {
+        "text": "Invalid non-printable ASCII character in URL, '\\n' at position 30.",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant\n",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "newline",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant\n",
+      "calls": [],
+      "error": {
+        "text": "Invalid non-printable ASCII character in URL, '\\n' at position 30.",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://fixture.invalid/tenant\n",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "newline",
+      "stage": "constructor"
+    }
+  ],
+  "httpx_version": "0.28.1",
+  "message": {
+    "content": [
+      {
+        "text": "ok",
+        "type": "text"
+      }
+    ],
+    "id": "fixture",
+    "model": "fixture-model",
+    "role": "assistant",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "type": "message",
+    "usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    }
+  },
+  "sdk_version": "0.107.1",
+  "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 1}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+}
