@@ -164,6 +164,11 @@ func textRune(raw string) (rune, int) {
 	return utf8.DecodeRuneInString(raw)
 }
 func surrogateText(text string) bool {
+	// Valid scalar UTF-8 cannot contain surrogatepass code points. The standard
+	// validator scans large ordinary strings without per-rune boundary calls.
+	if utf8.ValidString(text) {
+		return false
+	}
 	for len(text) > 0 {
 		r, n := textRune(text)
 		if r >= 0xd800 && r <= 0xdfff {
@@ -180,6 +185,11 @@ func appendRune(out []byte, r rune) []byte {
 	return utf8.AppendRune(out, r)
 }
 func appendText(out []byte, text string) []byte {
+	// For scalar ASCII except DEL, ensure_ascii=True and UTF-8 quoting agree.
+	// Preserve the historical Unicode/surrogatepass and DEL escaping below.
+	if utf8.ValidString(text) && utf8.RuneCountInString(text) == len(text) && !strings.ContainsRune(text, 127) {
+		return appendTextUTF8(out, text)
+	}
 	out = append(out, '"')
 	for len(text) > 0 {
 		r, n := textRune(text)

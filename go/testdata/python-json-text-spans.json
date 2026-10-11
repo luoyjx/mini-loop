@@ -1,0 +1,285 @@
+{
+  "cases": [
+    {
+      "name": "empty",
+      "object_key": false,
+      "projections": {
+        "archive": {
+          "bytes": 2,
+          "sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+        },
+        "spaced": {
+          "bytes": 2,
+          "sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+        },
+        "utf8": {
+          "bytes": 2,
+          "sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+        }
+      },
+      "repeat": 1,
+      "seed": ""
+    },
+    {
+      "name": "empty",
+      "object_key": true,
+      "projections": {
+        "archive": {
+          "bytes": 7,
+          "sha256": "86cfeee6df382a203f626305afbca44d228cac67acd151ccf2db29530c548fea"
+        },
+        "spaced": {
+          "bytes": 8,
+          "sha256": "2cb69644d1877e6dfa38adcfddfc21208f12a43753394381a54587438db2e666"
+        },
+        "utf8": {
+          "bytes": 7,
+          "sha256": "86cfeee6df382a203f626305afbca44d228cac67acd151ccf2db29530c548fea"
+        }
+      },
+      "repeat": 1,
+      "seed": ""
+    },
+    {
+      "name": "ascii-large",
+      "object_key": false,
+      "projections": {
+        "archive": {
+          "bytes": 524290,
+          "sha256": "8cb47c7a7ce82f579e6a5b825a1bbf88a6676b0adb4e60bc087dbfefd22dac7c"
+        },
+        "spaced": {
+          "bytes": 524290,
+          "sha256": "8cb47c7a7ce82f579e6a5b825a1bbf88a6676b0adb4e60bc087dbfefd22dac7c"
+        },
+        "utf8": {
+          "bytes": 524290,
+          "sha256": "8cb47c7a7ce82f579e6a5b825a1bbf88a6676b0adb4e60bc087dbfefd22dac7c"
+        }
+      },
+      "repeat": 524288,
+      "seed": "m"
+    },
+    {
+      "name": "ascii-large",
+      "object_key": true,
+      "projections": {
+        "archive": {
+          "bytes": 1048583,
+          "sha256": "29a41471c300b6e2f67d21a2f31b502a4aff7b32708493ef809fe42be1a44935"
+        },
+        "spaced": {
+          "bytes": 1048584,
+          "sha256": "4b70de345a6ec3b9eb2deadcd800b05ef1aa993af77fd93e086f5401933d9477"
+        },
+        "utf8": {
+          "bytes": 1048583,
+          "sha256": "29a41471c300b6e2f67d21a2f31b502a4aff7b32708493ef809fe42be1a44935"
+        }
+      },
+      "repeat": 524288,
+      "seed": "m"
+    },
+    {
+      "name": "escaped-large",
+      "object_key": false,
+      "projections": {
+        "archive": {
+          "bytes": 525058,
+          "sha256": "877063beba5e0b9bca6e5f0780eeecd007c1e09ba4cbb945889a55e8d7512580"
+        },
+        "spaced": {
+          "bytes": 525058,
+          "sha256": "877063beba5e0b9bca6e5f0780eeecd007c1e09ba4cbb945889a55e8d7512580"
+        },
+        "utf8": {
+          "bytes": 525058,
+          "sha256": "877063beba5e0b9bca6e5f0780eeecd007c1e09ba4cbb945889a55e8d7512580"
+        }
+      },
+      "repeat": 128,
+      "seed": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm\"\\\n"
+    },
+    {
+      "name": "escaped-large",
+      "object_key": true,
+      "projections": {
+        "archive": {
+          "bytes": 1050119,
+          "sha256": "c08f55d2da4596ac925cf7fb6dd777b28f60a45bee27a68b3d2249f0d25b3bbc"
+        },
+        "spaced": {
+          "bytes": 1050120,
+          "sha256": "13affb8cb3a7c54d494be2dc595df8fda5b73e1bc4cbd5624c6c57a79327be59"
+        },
+        "utf8": {
+          "bytes": 1050119,
+          "sha256": "c08f55d2da4596ac925cf7fb6dd777b28f60a45bee27a68b3d2249f0d25b3bbc"
+        }
+      },
+      "repeat": 128,
+      "seed": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm\"\\\n"
+    },
+    {
+      "name": "unicode-large",
+      "object_key": false,
+      "projections": {
+        "archive": {
+          "bytes": 884738,
+          "sha256": "674a4d76c73c087e929b5321fbd22515b80a5b8de3b8cda33074969ceabd6083"
+        },
+        "spaced": {
+          "bytes": 425986,
+          "sha256": "2b2d0c08ebf7b2dc6de593f3c8ce647f27f7eb8ed45c62814959c1a3c71ec35a"
+        },
+        "utf8": {
+          "bytes": 425986,
+          "sha256": "2b2d0c08ebf7b2dc6de593f3c8ce647f27f7eb8ed45c62814959c1a3c71ec35a"
+        }
+      },
+      "repeat": 32768,
+      "seed": "中😀 <>&"
+    },
+    {
+      "name": "unicode-large",
+      "object_key": true,
+      "projections": {
+        "archive": {
+          "bytes": 1769479,
+          "sha256": "45cfb09ead094a47facc55dd15b8b431ff09c87cdd351537a0a9e2be4d83ae6c"
+        },
+        "spaced": {
+          "bytes": 851976,
+          "sha256": "162bca005f28eb40dcb1fb0ac25ab847178d53ec442fdb8c38887cbe750256d9"
+        },
+        "utf8": {
+          "bytes": 851975,
+          "sha256": "6fdf586d651594f78202a9aeb73c89acc5e1abedcee1cc7c2af740548bacf9c1"
+        }
+      },
+      "repeat": 32768,
+      "seed": "中😀 <>&"
+    },
+    {
+      "name": "controls",
+      "object_key": false,
+      "projections": {
+        "archive": {
+          "bytes": 2834,
+          "sha256": "e358c187b267f078d88356673c6cbc74ce3e4199b33c942f51d0df95cc675b42"
+        },
+        "spaced": {
+          "bytes": 2834,
+          "sha256": "e358c187b267f078d88356673c6cbc74ce3e4199b33c942f51d0df95cc675b42"
+        },
+        "utf8": {
+          "bytes": 2834,
+          "sha256": "e358c187b267f078d88356673c6cbc74ce3e4199b33c942f51d0df95cc675b42"
+        }
+      },
+      "repeat": 16,
+      "seed": "\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000b\f\r\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f\"\\/"
+    },
+    {
+      "name": "controls",
+      "object_key": true,
+      "projections": {
+        "archive": {
+          "bytes": 5671,
+          "sha256": "2988e7c9ab033df024d0c477d6c5a940566dbb64aec2330d6004560d1b21087c"
+        },
+        "spaced": {
+          "bytes": 5672,
+          "sha256": "9f80e39b9708145f68bf3e52a4ca4ab826346e40f45e05e53d2d7f2c63293d1d"
+        },
+        "utf8": {
+          "bytes": 5671,
+          "sha256": "2988e7c9ab033df024d0c477d6c5a940566dbb64aec2330d6004560d1b21087c"
+        }
+      },
+      "repeat": 16,
+      "seed": "\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000b\f\r\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f\"\\/"
+    },
+    {
+      "name": "del-ascii",
+      "object_key": false,
+      "projections": {
+        "archive": {
+          "bytes": 1026,
+          "sha256": "c62b9c382c910c9febc3421ffe4f4e825afba2d9066e0a9af441817c72fb7097"
+        },
+        "spaced": {
+          "bytes": 386,
+          "sha256": "844fdf0934f1eb5508d1dc0e659941f9a7f144b1231a40af72fef1198ff7b159"
+        },
+        "utf8": {
+          "bytes": 386,
+          "sha256": "844fdf0934f1eb5508d1dc0e659941f9a7f144b1231a40af72fef1198ff7b159"
+        }
+      },
+      "repeat": 128,
+      "seed": "ab"
+    },
+    {
+      "name": "del-ascii",
+      "object_key": true,
+      "projections": {
+        "archive": {
+          "bytes": 2055,
+          "sha256": "970a8e1d9391eb7c94a6fe64224dab0f352952b8b1df6c76ed62ab5aa4855e8e"
+        },
+        "spaced": {
+          "bytes": 776,
+          "sha256": "a91882602ea96567ea53145fbc1748ba52b73baf83a76c85cb863ae67c15c6c0"
+        },
+        "utf8": {
+          "bytes": 775,
+          "sha256": "a4867fe3df20c9b01657bb75dade233b29bc5e35949798aff6c337327f79fe46"
+        }
+      },
+      "repeat": 128,
+      "seed": "ab"
+    },
+    {
+      "name": "scalar-edges",
+      "object_key": false,
+      "projections": {
+        "archive": {
+          "bytes": 62,
+          "sha256": "d12e557fb036ee5fef8fe4b1b79146ef9f8e9884fb7a9bb22a8d9beec99d83a4"
+        },
+        "spaced": {
+          "bytes": 23,
+          "sha256": "e3c36d1440d1b442c47a4b5f5117f0094da2ea721515cf4f5da15d20af71afee"
+        },
+        "utf8": {
+          "bytes": 23,
+          "sha256": "e3c36d1440d1b442c47a4b5f5117f0094da2ea721515cf4f5da15d20af71afee"
+        }
+      },
+      "repeat": 1,
+      "seed": "é߿ࠀ￿𐀀􏿿"
+    },
+    {
+      "name": "scalar-edges",
+      "object_key": true,
+      "projections": {
+        "archive": {
+          "bytes": 127,
+          "sha256": "37b71a1bfaf3e9f1b50a0f1dd0c4e27e7b4ed87b7321baa153b48f5f77cf0c6c"
+        },
+        "spaced": {
+          "bytes": 50,
+          "sha256": "90940927ea8bfadb1d188caba3adaceadb0da157ec1db5c14785f1059eefea53"
+        },
+        "utf8": {
+          "bytes": 49,
+          "sha256": "a94458a0ccfce3c5c49a3b7b16d5ed8e0e9b4d179219d1b65d32f5b127edd118"
+        }
+      },
+      "repeat": 1,
+      "seed": "é߿ࠀ￿𐀀􏿿"
+    }
+  ],
+  "source": "CPython json.dumps; UTF-8 encoding; allow_nan=False"
+}

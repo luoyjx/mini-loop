@@ -6518,6 +6518,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_url_contracts import provider_url_contracts
     from tools.provider_authority_wire_contracts import provider_authority_wire_contracts
     from tools.provider_transport_wire_contracts import provider_transport_wire_contracts
+    from tools.json_text_span_contracts import json_text_span_contracts
     from tools.provider_web_search_contracts import provider_web_search_contracts
     from tools.provider_web_fetch_contracts import provider_web_fetch_contracts
     from tools.provider_code_execution_contracts import provider_code_execution_contracts
@@ -6903,6 +6904,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-url.json": _json_bytes(provider_url_contracts()),
         "python-provider-authority-wire.json": _json_bytes(provider_authority_wire_contracts()),
         "python-provider-transport-wire.json": _json_bytes(provider_transport_wire_contracts()),
+        "python-json-text-spans.json": _json_bytes(json_text_span_contracts()),
         "python-provider-web-search.json": _json_bytes(provider_web_search_contracts()),
         "python-provider-web-fetch.json": _json_bytes(provider_web_fetch_contracts()),
         "python-provider-code-execution.json": _json_bytes(provider_code_execution_contracts()),

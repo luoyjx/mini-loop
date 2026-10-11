@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `14e3b02` plus four-mode maximum SQLite decision shared-budget diagnosis (runtime unchanged), with owned literal-path transport and route-specific wire targets, plus verified proxy/TLS/CONNECT path contracts, plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `b5c273e` plus scalar UTF-8 and ASCII archival JSON text span writes, plus four-mode maximum SQLite decision shared-budget diagnosis, with owned literal-path transport and route-specific wire targets, plus verified proxy/TLS/CONNECT path contracts, plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -848,6 +848,17 @@ global message ordinals across epochs and retaining old history. Event ordinals
 remain distinct from live sequences; known historical events decode as untrusted
 metadata. DecodeStoredMessage reads large known histories without widening the
 network frame cap; tool input/caller boundaries and stored-event limits remain.
+The shared closed JSON value encoder copies valid UTF-8 text spans between
+quote/backslash/control escapes. Valid scalar UTF-8 cannot contain surrogatepass
+code points; malformed bytes still use the original rune projection. ASCII archive
+text except DEL reuses this byte-equivalent path; Unicode, DEL and legacy surrogate
+escaping retain their original ASCII archive projection. Fourteen compact CPython
+text/object-key recipes compare length and SHA-256 for strict/legacy UTF-8, spaced
+UTF-8 and ASCII archive bytes, including large text, all C0 controls and scalar edges.
+Named variants, insertion order, nonfinite refusal, final UTF-8 policy and byte
+budgets retain their boundaries. This changes encoder work, not stored schemas or
+restoration/permission rules; the shared-budget restart failure remains open.
+
 Native action/approval SQL now completes `agent.StateStore` conformance. Upserts
 preserve original identity and creation fields; explicit transactional recovery
 marks started actions unknown without proving foreign effects stopped. Approval
