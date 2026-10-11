@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-11",
+  "mode": "atomic",
+  "cohort": "Frozen SDK zero-padded integer text normalization, baseline338792a; full race exit0",
+  "profile_sha256": "e2b12b037f03ed764909fc6dac25e5f46f1d4e1d82b553bd82b81edb4c8352a6",
+  "raw_rows": 1247919,
+  "unique_blocks": 25997,
+  "method": "Deduplicate identical source spans; require equal statement counts; union coverage with maximum atomic hits.",
+  "all": {
+    "covered": 33205,
+    "statements": 37226,
+    "percent": 89.198409713641
+  },
+  "app": {
+    "covered": 33084,
+    "statements": 37068,
+    "percent": 89.25218517319522
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "frozen_inputs": 1640,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-usage-leading-zero-text-2026-10-11/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 444.365
+  },
+  "retained_profile": "/tmp/mini-loop-usage-leading-zero-text-2026-10-11.cover",
+  "scope": "Darwin Go statements. Native C, CLI child-process internals, Python, branch and Linux coverage excluded.",
+  "limitations": [
+    "Does not establish broader real count/meter or lexical/repr domain parity or full migration acceptance.",
+    "Prior temporal background/native observer failures remain unexplained; current passing cohort is not a cause finding."
+  ],
+  "post_gate_documentation_only_updates": [
+    "README review/result baseline and exact implementation SHA",
+    "GO_PORT_PLAN status",
+    "GO_PARITY_MATRIX acceptance index",
+    "Architecture HTML regenerated from unchanged frozen specification; topology unchanged"
+  ],
+  "implementation_commit": "52bb378",
+  "source_contract_commit": "5fc67ae"
+}

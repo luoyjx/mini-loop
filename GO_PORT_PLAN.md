@@ -29,6 +29,21 @@ Wider real count/meter domains, lexical/richer repr and escaped-secret behavior,
 full provider/default/public-error reconciliation, non-Darwin/temporal reliability
 and original P0/P1/G0–G7 acceptance remain open.
 
+Source commit `5fc67ae`, implementation `52bb378`. The corrected1640-input frozen
+cohort passes full Source239, focused checks, ordinary Go/vet/race+atomic,
+syntax453 files/1440 named types and public50 packages/1191 exported types with
+zero findings, Python2240 passed/28 skipped/96 warnings/24 subtests, and19 scans.
+Application statement coverage89.25% (33084/37068), all Go89.20% (33205/37226),
+Provider86.67% (1522/1756); native C, child internals, Python, branches and Linux
+are excluded. See [full receipt](docs/audits/go-usage-leading-zero-text-2026-10-11.json)
+and [coverage receipt](docs/audits/go-coverage-usage-leading-zero-text-2026-10-11.json).
+The [iteration image](docs/audits/go-usage-leading-zero-text-infographic-2026-10-11.png)
+edits the five-layer base to highlight Provider text construction and outline
+SQLite/audit projection consumers; its exact prompt is saved alongside. No
+component addition/removal requires a base update. Frozen architecture JSON
+generated HTML with9 checks/zero errors/warnings. Browser visual review remains
+blocked by URL policy; no indirect workaround. PNG was inspected directly.
+
 ## 2026-10-11 inert usage model-array range construction
 
 Baseline local main `110b1a9`.12 new profiles produce24 actual SDK direct/SSE
@@ -7089,7 +7104,7 @@ Record its parity evidence and remaining gaps before checking it off.
 ## Current status
 
 Reviewed **2026-10-11** against local main baseline `338792a`; latest runtime
-implementation in this iteration separates SDK padded integer-text normalization
+implementation `52bb378` separates SDK padded integer-text normalization
 from counted decoding. Current1640 frozen inputs pass full Source239 files,
 required focused native checks, full ordinary Go/vet/race+atomic, syntax audit453
 files/1440 named types, public closure50 packages/1191 exported types/zero findings,

@@ -45,7 +45,7 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed **2026-10-11** against local main baseline `338792a`; current private
+Reviewed **2026-10-11** against local main baseline `338792a`; implementation `52bb378`; private
 SDK integer-text construction excludes leading zeros from its significant-digit
 limit, independently of counted decoding.
 Current1640 frozen inputs pass ordinary/vet/race+atomic,
