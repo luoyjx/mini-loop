@@ -2,7 +2,7 @@
 
 ## 2026-10-11 native whole usage observation and stage faults
 
-Baseline local main `7095efb`. `DecodeSDKUsage` now explicitly selects SDK loose
+Baseline local main `7095efb`; implementation `2fbf1f2`. `DecodeSDKUsage` now explicitly selects SDK loose
 construction into named counts or a closed private whole-usage observation.
 Missing/null usage projects to null; scalar/list usage projects through Python
 text, including exact nested SDK Usage/CacheCreation/OutputTokensDetails/
@@ -7010,28 +7010,30 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `35de1b8`; latest Go runtime
-implementation is `1ab8791`, named inert metadata observations and exact SDK
-nested/stage fallback. Current frozen inputs pass full Source238 files, focused
-native checks, full ordinary Go/vet/race+atomic, syntax audit451 files/1437 named
-types, public closure50 packages/1191 exported types/zero findings, Python2239
-passed/28 skipped/74 warnings/24 subtests (92.09s pytest;92.742s command) and19
-scanning anchors. [Current receipt](docs/audits/go-usage-observations-2026-10-11.json).
+Reviewed **2026-10-11** against local main baseline `7095efb`; latest runtime
+implementation is `2fbf1f2`, named whole-usage projections and delta fault timing.
+Current1639 frozen inputs pass full Source239 files, required focused native
+checks, full ordinary Go/vet/race+atomic, syntax audit452 files/1439 named types,
+public closure50 packages/1191 exported types/zero findings, Python2240 passed/
+28 skipped/86 warnings/24 subtests (142.34s pytest;143.027s command) and19 scans.
+[Current receipt](docs/audits/go-whole-usage-native-2026-10-11.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
 cases/214 stages, now pass required native assertions, final PromptTokens and
 actual masked event/clone/archive/SQLite reopening checks. The original34 and76
 usage inventories continue to pass. Full G4 field/default/consumer/public-entry
-inventory and wider count/meter ranges;38 whole-usage cases/24 stages now have native and managed/archival parity
-remain unproven. Earlier implementation and diagnostic checkpoints below retain
+inventory and wider count/meter ranges remain unproven. The38 whole-usage cases/
+24 stages now have required native projected values/stage/fault-message parity,
+managed HTTP outcomes and archival/reopen evidence. Earlier implementation and diagnostic checkpoints below retain
 their historical baselines and must not override this current index.
 
-An initial full ordinary cohort in this iteration failed the old negative guard
+A prior metadata implementation cohort failed the old negative guard
 for `inference_geo:5`. Exact SDK direct/SSE positive evidence justified repairing
 that assertion; malformed/nonfinite/bounded atomic checks remain. The race job
 for that old cohort was stopped with owned process identities and raw logs
-retained. Final full gates use the repaired, separately frozen inputs. Previous
+retained. That prior turn used a repaired, separately frozen passing cohort. Current gates
+also pass without a watcher/background change. Previous
 background5ms timeout and native watcher temporal failures remain unexplained;
 no corresponding runtime fix or root-cause claim. Current green gates are one
 cohort, not closure of those historical reliability items.
@@ -7045,10 +7047,10 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app**89.23% (32878/36848)**,
-all Go**89.17% (32999/37006)**, Provider**86.67% (1515/1748)**. The profile hash
-and1656 frozen inputs are retained; coverage excludes native C, CLI child
-internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-usage-observations-2026-10-11.json).
+Current full passing-run statement coverage: app**89.22% (33012/37000)**,
+all Go**89.17% (33133/37158)**, Provider**86.45% (1518/1756)**. The profile hash
+and1639 frozen inputs are retained; coverage excludes native C, CLI child
+internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-whole-usage-native-2026-10-11.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7067,7 +7069,7 @@ work-package acceptance.
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes238 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; current ordinary/vet/race+atomic pass;191 metadata-shape cases/214 stages now have required native parity, mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes239 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; current ordinary/vet/race+atomic pass;191 metadata-shape cases/214 stages and38 whole-usage cases/24 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
