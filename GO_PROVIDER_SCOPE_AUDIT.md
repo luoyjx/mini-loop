@@ -1,5 +1,40 @@
 # Go provider 范围审计
 
+## Named usage metadata observations — 2026-10-11
+
+实现 `1ab8791`：五个已知 metadata 字段的错误形状进入具名闭合
+`UsageMetadataObservation`，包含 null / integer lexeme / finite float / bool /
+text / array / object；没有计量转换方法。原生计数字段仍使用 `UsageCount`，
+其数值范围未改变。嵌套模型只有全部必填计数可验证时才整体规范化；错误模型
+保留 SDK fallback 的字段种类。数组中的顶层 mapping 补齐模型默认字段，
+其计数不规范化；内层数组不额外递归构造模型。
+
+新增交互与精确旧断言输入后，当前 Source fixture 为191 cases（84 direct /
+107 SSE）及214 个中间快照；它们全部成为必需 native parity 断言，原有34 /
+76 usage cases 继续通过。当前 opt-in 差异测试已被替换，原始156 cases 的
+100 个差异保存在前一审计中。所有191 个 Source final observations 通过
+实际注册 escaped canary 的 event mask、clone / accessor、归档回读与
+SQLite close / reopen 检查，恢复后的 authority 仍为 untrusted。
+
+首次全量发现旧 guard 错误要求拒绝 `inference_geo:5`，精确 SDK direct/SSE
+均证实该值应保留。仅移除这一错误拒绝要求；missing counts / nonfinite /
+oversized frame 的原子失败检查保持，并增加观察值自身的有限值及原子性测试。
+初次 ordinary failure、受控中断 race 的进程身份与日志均保留；修正后的
+不同冻结输入重新执行全部门禁，未修改预算或 skip。
+
+完整 Source238文件、Go ordinary/vet/race+atomic、两种类型审计、Python
+2239 passed /28 skipped /74 warnings /24 subtests、19 scans 与 diff check
+通过。当前 statement coverage：app**89.23% (32878/36848)**、all Go
+**89.17% (32999/37006)**、Provider**86.67% (1515/1748)**。
+[完整证据](docs/audits/go-usage-observations-2026-10-11.json)，
+[覆盖率](docs/audits/go-coverage-usage-observations-2026-10-11.json)。
+
+这证明已捕获的字段/模型/阶段行为，不等于完整 G4/迁移验收。Whole-usage
+missing/non-object 观察、更宽 count/meter 域、完整字段/default/consumer 和
+public-entry inventory 继续待核对。背景5ms/原生观察器历史时序问题仍未解释，
+Linux/default/backend/IDNA 与最终 G0–G7 验收未关闭。架构组件未增删，迭代图
+基于固定基础图高亮 Provider；基础图和 interactive topology 保持不变。
+
 ## Known usage metadata shape Source audit — 2026-10-11
 
 新增 `python-provider-usage-metadata.json`：anthropic0.107.1 / Pydantic2.13.4
