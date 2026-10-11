@@ -2,26 +2,30 @@
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed **2026-10-11** at local main `3dc65c8`; latest Go runtime implementation
-`93a7474` has passing full ordinary/vet/race+atomic and237-file Source comparison.
-[Current evidence](docs/audits/go-usage-text-2026-10-11.json). Prior failed gates
-remain retained; this does not prove their cause or non-Darwin/full acceptance.
+Reviewed **2026-10-11** at local main `68d740e`; latest Go runtime remains
+`93a7474`. Source/test slice `0b65ed6` passes238-file Source comparison, vet,
+Python and scans; full ordinary Go **fails** agent background `timeout-fraction`.
+[Latest receipt](docs/audits/go-usage-metadata-shapes-2026-10-11.json).
+The preceding full ordinary/vet/race+atomic pass remains
+[historical evidence](docs/audits/go-usage-text-2026-10-11.json).
+No runtime or timing root-cause change was made; non-Darwin/full acceptance is open.
 Full P0/P1/G0–G7 completion remains unproven; see
 [the current plan](GO_PORT_PLAN.md#current-status).
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | Full exporter `--check` passes237 files on frozen current inputs | Current Source freshness gate passes; final inventory coverage against public entry points/defaults remains G7 work |
+| Source recipe freshness | Full exporter `--check` passes238 files on frozen current inputs | Current Source freshness gate passes; final inventory coverage against public entry points/defaults remains G7 work |
 | Default business routing | All 168 actual Source requests on 40 explicit paths; [native evidence](docs/audits/go-http-routing-native-2026-10-11.json) | Delivered at 4b68574: first-route Allow, known slash redirects and decoded-path semantics match. Required parity assertion replaces diagnostic-only acceptance; broader URL/mount/forwarded-host scope remains |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Glob truncation inputs | [Same-directory Source/Go pair and Source iterator controls](docs/audits/go-glob-enumeration-control-2026-10-11.json) | Darwin pair/fixture exactly match555 names and49,973 characters; selection depends on pre-sort enumeration. Linux same-filesystem Source capture remains open; relative `*.txt` does not charge absolute root length |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Usage integer text | [76 new direct/SSE cases and current full gates](docs/audits/go-usage-text-2026-10-11.json) | Exact decimal-zero and integer-separator validation repairs rounding/format differences; event kinds/stages and PromptTokens match. Native ranges and broader malformed metadata shapes remain open |
+| Known usage metadata shapes | [156 actual SDK cases and174 stages; native difference receipt](docs/audits/go-usage-metadata-shapes-2026-10-11.json) | Source capture delivered;76 native premature rejections and24 completed shape/coercion differences remain. Diagnostic command success is not parity; named inert observations and model/stage fallback implementation are next G4 work |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Full ordinary/race+atomic gates](docs/audits/go-json-read-spans-2026-10-11.json), raw C and same-subscription queue/control receipts | Latest full ordinary/race+atomic pass; prior failures retained and unexplained. No watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
-| Package-level type declarations | Syntax and active-profile public closure audits; [current runtime evidence](docs/audits/go-json-read-spans-2026-10-11.json) | On current93a7474 tree:450 production files/1434 named types;50 packages/1189 exported types;zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
+| Development reload | [Latest ordinary gates](docs/audits/go-usage-metadata-shapes-2026-10-11.json), [prior race+atomic](docs/audits/go-usage-text-2026-10-11.json), raw C and same-subscription queue/control receipts | Latest ordinary reload package passes; full ordinary fails background timeout-fraction. Prior race+atomic pass retained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
+| Package-level type declarations | Syntax and active-profile public closure audits; [recorded runtime evidence](docs/audits/go-usage-text-2026-10-11.json) | On current93a7474 tree:450 production files/1434 named types;50 packages/1189 exported types;zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
 | Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
@@ -48,13 +52,14 @@ Full P0/P1/G0–G7 completion remains unproven; see
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2239 passed,28 skipped,75 warnings,24 subtests**
-(231.65s pytest elapsed); current full ordinary Go/vet/race+atomic and Source
-237-file comparison pass. [Current full receipt](docs/audits/go-usage-text-2026-10-11.json).
+Latest full Python result: **2239 passed,28 skipped,74 warnings,24 subtests**
+(101.32s pytest elapsed); current full ordinary Go fails background timeout-fraction,
+vet and238-file Source comparison pass. Race+atomic was not refreshed for this
+Source/test diagnostic slice. [Latest receipt](docs/audits/go-usage-metadata-shapes-2026-10-11.json).
 Default full-feature CLI syntax backend and broader IDNA approvals remain
 outstanding. SQLite fixed driver approval covers neither decision.
 
-Current full passing-run statement coverage: application excluding tools
+Prior full passing-run statement coverage (not refreshed this slice): application excluding tools
 **89.21% (32697/36653)**; all Go **89.15% (32818/36811)**;
 Provider**86.67% (1515/1748)**. [Exact receipt](docs/audits/go-coverage-usage-text-2026-10-11.json).
 Darwin Go statements exclude native C, CLI child internals, Python, branch and

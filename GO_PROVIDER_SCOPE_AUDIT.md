@@ -1,5 +1,27 @@
 # Go provider 范围审计
 
+## Known usage metadata shape Source audit — 2026-10-11
+
+新增 `python-provider-usage-metadata.json`：anthropic0.107.1 / Pydantic2.13.4
+真实 SDK MockTransport 的156 cases（69 direct /87 SSE）、174 个中间快照，
+并固定 Usage、CacheCreation、OutputTokensDetails、ServerToolUsage 的源码哈希
+与字段注解。样本覆盖五个已知 metadata 字段的 null/scalar/array/object、
+嵌套必填计数缺失和类型、tier 字面量、server delta 替换，以及包含大整数和
+有限大浮点数的惰性观察值。该样本范围仍不是全部 provider inventory。
+
+当前 `93a7474` runtime 的诊断结果：76 个提前拒绝（32 direct、38 SSE start、
+6 SSE delta）；80 个完成中，24 个最终形状不同，其中20 个 PromptTokens 不同、
+40 个已成功发出的 start/delta 快照不同；其余56 个一致。诊断命令成功只证明
+差异报告已生成，不能作为 parity 验收。完整逐案例结果见
+[本轮证据](docs/audits/go-usage-metadata-shapes-2026-10-11.json)。
+
+SDK 会保留非对象 metadata；invalid tier、非文本 geo、嵌套必填计数缺失/null
+会使 SSE start 的 Usage 验证进入 fallback，required `"13"` 仍为 text。
+嵌套构造失败时，另一个合法整数字符串也可能仍为 text。后续 server delta
+替换成合法对象不会重新改变已累积 input 的种类。下一步按这些实际构造阶段
+实现具名闭合观察值、嵌套验证/回退、SSE eligibility 与安全持久化组合。
+本轮 runtime、默认行为和架构组件均未修改；更宽数值域及最终验收继续开放。
+
 ## Usage text 精确整数转换 — 2026-10-11
 
 SDK0.107.1/Pydantic2.13.4 的新增38组 direct/SSE 输入共76场景，覆盖整数

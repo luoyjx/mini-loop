@@ -1,5 +1,45 @@
 # Go port plan
 
+## 2026-10-11 known usage metadata shape Source contracts
+
+Baseline local main `68d740e`; Source/test slice `0b65ed6`; Go runtime remains
+`93a7474`. The new pinned
+SDK producer captures156 cases (69 direct,87 SSE) and174 start/delta snapshots
+for the five known metadata fields, nested required-count presence/nulls,
+service-tier literals and server-usage delta replacement. Full Source `--check`
+passes238 registered files. This expands required G4 evidence; native metadata
+shape parity remains unimplemented.
+
+The opt-in native diagnostic records76 premature decoder rejections and24
+completed cases with shape/coercion differences;56 cases agree. Of the24,
+20 expose incorrect PromptTokens adoption and40 emitted stages differ. A
+successful diagnostic command means the report was written, not parity passed.
+The Source/native pair and original gate logs are retained in
+[the metadata receipt](docs/audits/go-usage-metadata-shapes-2026-10-11.json).
+
+Next implementation tasks, preserving original G4 scope:
+
+1. Introduce named closed inert metadata observations for non-object nested
+   values and non-text tier/geo values. Preserve arbitrary integer lexemes and
+   finite floats here without assigning native count authority. Keep recognized
+   fields outside the unknown-extension boundary.
+2. Match nested model validation/fallback as a unit: missing required members,
+   explicit null, fractional/structured counts and valid integer strings must
+   retain the captured kinds, including direct fallback construction.
+3. Apply full Usage eligibility at SSE start (valid tier literals, string geo,
+   nested shape and required fields). Preserve the actual accumulated input kind
+   through server delta replacement; do not revalidate the entire accumulated
+   snapshot merely because a later delta becomes valid.
+4. Replace the opt-in difference diagnostic with required156-case assertions
+   covering all174 stages, final usage and PromptTokens. Add immutable masking,
+   archive and SQLite reopen evidence for new observations, then run the full
+   required Source/native gates on frozen inputs.
+
+No runtime/default/dependency/architecture component changed in this slice.
+Earlier passing runtime coverage remains historical evidence; this slice does
+not refresh race/atomic coverage or Linux acceptance. Native range, final
+provider/public-entry, G0–G7 and default/backend decisions remain open.
+
 ## 2026-10-09 native SQLite killed-generation process recovery
 
 Baseline: fd57eb8. Native sqlitestate now has an actual process-kill integration
@@ -6851,44 +6891,49 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** at local main `3dc65c8`; latest Go runtime implementation
-is `93a7474`, exact SDK usage text-integer normalization. The same frozen inputs
-pass full ordinary Go, vet and race+atomic; full Source `--check` passes237 files.
-Native syntax/public type audits pass450 production files/1434 named types and
-50 packages/1189 exported types with zero findings. This is the current Darwin
-profile, not full port or non-Darwin acceptance. Earlier native temporal failures
-remain retained and unexplained; no watcher runtime was changed in this iteration.
-[Current full gates](docs/audits/go-usage-text-2026-10-11.json).
+Reviewed **2026-10-11** at local main `68d740e`; latest Go runtime implementation
+is `93a7474`, exact SDK usage text-integer normalization. The new Source/test
+metadata-shape slice changes no runtime. Full Source `--check` passes238 files,
+Go vet passes, and Python passes2239 tests/28 skipped/74 warnings/24 subtests in
+101.32s. The latest full ordinary Go gate **fails** at
+`agent/TestBackgroundOptionsMatchSourceAcceptedCallAndSettledTask/timeout-fraction`:
+expected5ms timeout, observed completed. No retry or deadline change was made.
+[Latest gates and156-case metadata differences](docs/audits/go-usage-metadata-shapes-2026-10-11.json).
+
+The preceding frozen runtime cohort passed full ordinary/vet/race+atomic and
+237-file Source comparison. Native syntax/public type audits passed450 production
+files/1434 named types and50 packages/1189 exported types with zero findings.
+Those receipts remain historical evidence; current ordinary failure supersedes
+an all-green current gate claim. Earlier native temporal failures remain
+unexplained. No background/watcher runtime was changed by this diagnostic slice.
+[Prior full gates](docs/audits/go-usage-text-2026-10-11.json).
 
 Linux amd64 and native arm64 full gate receipts remain pinned to their prior
 snapshots and failed test gates. Their readonly-HOME, platform shell/path and
 native enumeration differences are retained. The subsequent AST test-only fix
 has focused Linux evidence; the latest usage runtime has not received Linux full
-gates. Same-Linux-filesystem Source glob capture remains open while Docker is
-unavailable. [Linux evidence](docs/audits/go-linux-full-gates-2026-10-11.json).
+gates. Same-Linux-filesystem Source glob capture remains open; Docker was last
+observed unavailable and has not been refreshed in this slice.
+[Linux evidence](docs/audits/go-linux-full-gates-2026-10-11.json).
 SQLite maximum512KiB decision restart passes its original shared30s focused budget
-and full native gates; this does not prove power-loss or external-effect fencing.
+and prior full native gates; this does not prove power-loss or external-effect fencing.
 
-Owned provider literal-target transport now passes all224 request-object,40 plain
+Owned provider literal-target transport passes all224 request-object,40 plain
 HTTP wire and24 proxy/TLS wire assertions, with16 SNI and8 CONNECT authority/key
-checks. The earlier12/14 ASCII wire state is superseded by this required inventory;
-broader IDNA remains an explicit unapproved dependency/implementation item.
-Current exporter registers237 fixture keys and the full Source comparison now
-passes. The new76 usage-text direct/SSE cases, original34 usage cases, every
-captured stream stage and final PromptTokens match; wider integer/metering ranges,
-wrong metadata field shapes and final provider/public-entry scope remain open.
+checks in its recorded cohort. Broader IDNA remains an explicit unapproved
+implementation item. The implemented76 usage-text and original34 usage cases
+retain prior parity evidence. New156 known-metadata shape cases capture76 native
+premature rejections and24 completed shape/coercion differences;56 agree. All174
+Source start/delta snapshots are retained. Named inert metadata observations and
+nested/stage validation fallback are next G4 implementation work. Wider numerical
+ranges and final provider/public-entry inventory remain open.
 
-Current full passing-run statement coverage is app**89.21%** (32697/36653), all Go
-**89.15%** (32818/36811), Provider**86.67%** (1515/1748). The profile hash and1649
-frozen Go/Python inputs are verified. Python full regression passes2239 tests,
-28 skipped,75 warnings and24 subtests in231.65s (pytest log elapsed); command
-elapsed is232.334s. Latest ordinary/race pass is one cohort, not a root-cause
-finding for the retained native reliability history.
+Prior full passing-run statement coverage is app**89.21%** (32697/36653), all Go
+**89.15%** (32818/36811), Provider**86.67%** (1515/1748). Its profile hash and1649
+frozen inputs were verified. Race/atomic coverage was not refreshed for the new
+Source/test diagnostic slice; latest native ordinary failure remains explicit.
+[Prior coverage](docs/audits/go-coverage-usage-text-2026-10-11.json).
 
-[Current full gates](docs/audits/go-usage-text-2026-10-11.json),
-[current coverage](docs/audits/go-coverage-usage-text-2026-10-11.json),
-[prior reconciled index](docs/audits/go-current-acceptance-index-2026-10-11.json),
-[literal targets](docs/audits/go-provider-literal-target-2026-10-11.json).
 Default syntax backend/IDNA decisions, native reliability, final P0/P1/G0–G7
 scope reconciliation, non-Darwin and rendered architecture acceptance remain open.
 This is the current delivery index; later checkpoints retain historical baselines.
@@ -6906,13 +6951,14 @@ remain in [Work packages](#work-packages); Python remains available.
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter registers236 files (present, not globally refreshed); owned literal transport passes224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; full ordinary/race+atomic native reload gates still fail | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes238 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; latest full ordinary fails background timeout-fraction, vet passes, prior race+atomic passes;156 metadata-shape cases expose100 native differences | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
-A previous full ordinary Go reported a background `timeout-fraction`
-settlement discrepancy; subsequent runs have not reproduced it. It requires a Source/native timing-order investigation;
-no runtime fix or root-cause claim has been made.
+The latest full ordinary Go again reports the background `timeout-fraction`
+settlement discrepancy: expected5ms timeout, observed completed. Earlier passing
+runs did not settle the cause. A Source/native timing-order investigation remains
+required; no runtime fix, root-cause claim or retry-to-green has been made.
 
 1. Default Python syntax diagnostics: native filesystem diagnostics supports an
    explicit typed `PythonSyntaxParser`, and Manager/Launcher full-feature composition
