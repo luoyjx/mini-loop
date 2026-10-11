@@ -4,9 +4,10 @@ from tools.provider_whole_usage_contracts import provider_whole_usage_contracts
 def test_actual_sdk_whole_usage_projection_and_stream_failure_phase():
     fixture = provider_whole_usage_contracts()
     rows = {(row["name"], row["mode"]): row for row in fixture["cases"]}
-    assert len(rows) == 28
+    assert len(rows) == 38
     for name in ("absent", "null", "integer", "fraction", "boolean", "text",
-                 "empty-array", "array-model", "nested-array"):
+                 "empty-array", "array-model", "nested-array", "array-text-counts",
+                 "array-nested-models", "array-metadata-list", "array-extensions", "mixed-array"):
         direct, stream = rows[name, "direct"], rows[name, "stream"]
         assert direct["outcome"] == "completed"
         assert direct["consumer"]["observations"] == 0

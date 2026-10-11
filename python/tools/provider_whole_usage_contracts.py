@@ -29,6 +29,11 @@ def provider_whole_usage_contracts() -> dict:
         ("output-only", True, {"output_tokens": 5}),
         ("extension-only", True, {"secret-marker": [13, "secret-marker"]}),
         ("complete", True, {"input_tokens": 13, "output_tokens": 5}),
+        ("array-text-counts", True, [{"input_tokens": "13", "output_tokens": "5", "cache_read_input_tokens": "7"}]),
+        ("array-nested-models", True, [{"cache_creation": {"ephemeral_1h_input_tokens": "7"}, "output_tokens_details": {"thinking_tokens": "3"}, "server_tool_use": {"web_fetch_requests": "2", "web_search_requests": "4"}}]),
+        ("array-metadata-list", True, [{"cache_creation": [{"ephemeral_1h_input_tokens": "7"}]}]),
+        ("array-extensions", True, [{"secret-marker": {"quote": "a'\\b", "flag": True}, "inference_geo": "secret-marker"}]),
+        ("mixed-array", True, [None, 13, "secret-marker", {"input_tokens": 13}, [True, {}]]),
     ]
 
     def observation(response):
