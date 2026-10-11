@@ -528,3 +528,16 @@ custom-transport URL representation or TLS/SNI parity. Provider passes ordinary/
 full Go still has native reload failures and full Source export fails at listener
 readiness. Python full regression passes 2236; vet/type/scanner gates pass. See
 [casing evidence](docs/audits/go-provider-host-casing-2026-10-11.json).
+
+## 2026-10-11 ASCII path spelling and real targets
+
+Request inventory expands 40 -> 224; native matches 218, with six required
+backslash/caret/pipe direct/SSE failures. Actual SDK HTTP wire expands 34 -> 40,
+34 match and six target failures. Source preserves these characters while Go
+escapes them. A three-representation net/url serialization probe retains the URL,
+origin-target and proxy-form tradeoffs; it is not actual Source proxy/TLS evidence.
+No production workaround is implemented. Full Python passes 2238; full Go fails
+these assertions and native reload readiness/callback-entry checks. Source checks
+234 exports, 233 match; lower-mtime-write WatchFiles observation drifts and the
+original fixture stays unchanged. Broader IDNA/default diagnostics/G0–G7 remain
+open. See [audit](docs/audits/go-provider-path-ascii-2026-10-11.json).

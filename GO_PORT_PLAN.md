@@ -18919,3 +18919,55 @@ retains all raw gate logs, the controlled old test source and JUnit result.
 [Built-in imagegen graphic](docs/audits/go-interruption-test-boundary-infographic-2026-10-11.png)
 shows the actual test coordination change and remaining acceptance limits.
 Native reload, broader IDNA, default diagnostics and complete G0–G7 remain open.
+
+## Required ASCII path and HTTP target inventory — 2026-10-11
+
+Contract commit: `0ea2210`; production baseline `49dda91`.
+The actual Anthropic 0.107.1 / HTTPX 0.28.1 SDK path producer now includes every
+printable ASCII character except percent/query/fragment delimiters: 92 added
+profiles plus the original 20, direct and SSE, 224 required request assertions.
+Native matches 218/224; six fail for literal backslash, caret and pipe. The
+actual HTTP wire producer adds the same three paths in both modes: 40 required
+wire assertions, 34 matches and six failures. Source preserves the characters;
+Go net/url escapes %5C, %5E and %7C, changing real request targets. Host, method,
+API-key, dial authority, configured identity and replies remain compared. Only
+TCP destination is redirected; HTTP encoders/parsers and actual provider/SDK are
+retained. Original 40 object and 34 hostname wire observations still pass.
+These are additional required failures, not a diagnostic that excuses differences.
+
+A reproducible standard-library probe compares normal, origin-opaque and
+absolute-opaque URL representations for a pipe path. Normal representation
+escapes both URL and target; origin-opaque preserves the target but changes the
+full URL string and keeps origin-form in WriteProxy; absolute-opaque preserves
+full URL spelling but makes the direct target absolute-form. The three measured
+representations do not jointly satisfy the captured requirements. This is a
+Request.Write/WriteProxy probe, not actual Source proxy/TLS evidence or a proof
+about every possible transport design. No Opaque workaround, dependency, admission
+relaxation, production change or default change is adopted. Next implementation
+needs an owned request-target transport design with proxy/TLS and custom-boundary
+contracts; the path-normalization helper alone cannot settle these assertions.
+
+Python focused producer checks: 2 passed (1.17s); full Python: 2238 passed,
+28 skipped, 74 warnings, 24 subtests (101.37s), exit 0. Initial focused checks failed
+only their old inventory counts; those assertions were updated with the new cases.
+Full ordinary Go fails twelve provider assertions across the two inventories plus
+native CGO-build readiness, callback-entry waiting and added-source readiness.
+CLI passes uncached; some other packages are cached, so no general reload recovery
+claim is made. Repository vet, representation probe build/vet, 19 scanner guards
+and diff check pass. Full Source --check runs after the Go native gate terminates:
+all 234 snapshots are compared, 233 match; the sole drift is WatchFiles
+lower-mtime-write changed [source.py] -> null. Exact expected/actual bytes and
+manifest are retained; the original WatchFiles fixture is not rewritten.
+
+README canonical map reviewed and status explanations updated. Architecture
+cards reflect the retained failures; generated HTML deliver passes 9/9 with zero
+errors/warnings. Rendered review remains policy-blocked. Full race, coverage,
+production type/invariant audits and non-Darwin are not rerun because production
+modules/types are unchanged. Previous native race failures remain open.
+Broader IDNA, default diagnostics and complete G0–G7 acceptance remain open.
+
+[ASCII path audit](docs/audits/go-provider-path-ascii-2026-10-11.json) retains both
+required failure logs, all independent gate terminal results, Source wire rows,
+URL representation results and the complete WatchFiles drift snapshots.
+[Built-in imagegen graphic](docs/audits/go-provider-path-ascii-infographic-2026-10-11.png)
+shows that this is an expanded acceptance inventory, not a runtime fix.

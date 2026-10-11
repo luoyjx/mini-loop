@@ -1,0 +1,17 @@
+{
+  "prompt": "Create a precise Chinese engineering infographic, landscape 1536x1024, cream background, navy typography, teal verified cards, amber/red incomplete cards. Title 'Go 移植 · ASCII 路径验收扩展'. Subtitle '契约提交 0ea2210 · 运行时代码未修改'. Top left: '请求对象：40 → 224 个用例' and explanatory line '20 个原有路径 + 92 个 ASCII 字符，均覆盖 direct / SSE'. Top right: '真实 HTTP wire：34 → 40 个用例'. Large center compare 'Source 保留：反斜杠、^、|' versus 'Go 转义：%5C、%5E、%7C'. Use words '反斜杠' so glyph is not lost. Counts: '请求对象：218 / 224 匹配 · 6 个必需断言失败'; '真实 wire：34 / 40 匹配 · 6 个必需断言失败'. No claim these bugs are fixed. Small decision box '三种 net/url 表示对照：现有转义 / origin-opaque / absolute-opaque；各有 URL 或请求形式差异，未采用绕过方案'. Bottom verification cards 'Python 全量：2238 通过 / 28 跳过'; 'go vet 通过 · 扫描检查 19/19'; '架构生成检查 9/9，视觉审查仍受限'. Amber gates box 'Go 全量失败：路径断言 + 原生 reload'; 'Source 全量：233 / 234 一致，WatchFiles lower-mtime-write 漂移'. Footer '下一步：设计保留请求目标的传输边界，验证代理与 TLS；完整移植仍未验收；本轮未重测 race 与覆盖率'. Clear educational layout, exact numbers, no dates, no mascots, no fabricated completion or performance claims. Make all text readable and concise.",
+  "correction": "Edit this infographic preserving all counts, title, commit, gate boxes and footer. Remove invented GET examples and example.com hosts. Left source example must read exactly 'POST /ascii-|-tail/v1/messages HTTP/1.1' on the first line and 'Host: fixture.invalid' on second. Right Go example must read exactly 'POST /ascii-%7C-tail/v1/messages HTTP/1.1' and 'Host: fixture.invalid'. Replace center text '请求目标 表示方式不同 但语义应一致' with exactly '实际请求目标不一致'. In the three net/url panel, remove the entire invented right-hand examples table and replace with three plain factual lines: '现有：URL 与目标均转义'; 'origin-opaque：目标保留，完整 URL 字符串改变'; 'absolute-opaque：URL 字符串保留，直连目标变绝对 URL'. Do not infer semantic equivalence, claim a fix, or introduce new statistics.",
+  "selected_image": "exec-c7f26e62-eacb-468b-9c0c-8445f363de69.png",
+  "verified": {
+    "object_cases": 224,
+    "object_matches": 218,
+    "object_failures": 6,
+    "wire_cases": 40,
+    "wire_matches": 34,
+    "wire_failures": 6,
+    "python_passed": 2238,
+    "python_skipped": 28,
+    "source_exports_total": 234,
+    "source_exports_matching": 233
+  }
+}
