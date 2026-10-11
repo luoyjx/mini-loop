@@ -19678,3 +19678,8 @@ guard mutations, Source export and coverage are not rerun. The previous ordinary
 Go/vet/Python pass stays pinned to the AST test receipt; full race/Linux gates
 remain unaccepted. README runtime review baseline updated; canonical map and base
 image topology unchanged. No rendered architecture acceptance or push claimed.
+
+Built-in imagegen edited the existing layered base image; the purple file box
+locates this iteration's validation work and the side text retains Linux limits.
+[Iteration image](docs/audits/go-glob-enumeration-infographic-2026-10-11.png),
+[exact edit prompt](docs/audits/go-glob-enumeration-infographic-2026-10-11.prompt.txt).
