@@ -11263,3 +11263,25 @@ broader IDNA/full G0–G7 remain incomplete.
 [Collector](docs/audits/go-reload-required-absence-2026-10-11.py),
 [exact receipts](docs/audits/go-reload-required-absence-2026-10-11.json),
 [built-in infographic](docs/audits/go-reload-required-absence-infographic-2026-10-11.png).
+
+## Required native raw C callback-window evidence — 2026-10-11
+
+Runtime baseline `d375a68` unchanged. One original four-case race+atomic diagnostic
+cohort passes ignored-hidden and fails backup/text/transient at original3s wait.
+All four subscriptions have readiness C events. OP-to-cleanup-entry classification
+observes1 C batch/item for hidden and zero for each failed case. This excludes
+subsequent filename filtering as an explanation for this cohort's absences; kernel
+cause, queue liveness, registry/fence state and temporal acceptance stay unproven.
+Attempted CGO Go overlay markers were not observed; receipt preserves exact executed
+source and full overlays. Reusable collector removes those unproven markers; no
+cohort replay after correction. No producer/fixture/runtime/timeout/default/dependency
+change. Next probe needs same-subscription queue and operation/control evidence.
+
+Original command exits1 (26.277s; package23.044s). Window-parser/refusal preflights,
+production hashes, Python2239/28skipped/74warnings/24subtests (98.47s) and diff check
+pass. Audit-only changes do not refresh full Go/vet/race/coverage/Source gates or
+non-Darwin acceptance. Canonical map reviewed, visible baseline updated, graph
+unchanged, no rendered acceptance/push. Native reliability/default diagnostics/
+broader IDNA/full G0–G7 remain incomplete.
+[Collector](docs/audits/go-reload-required-callbacks-2026-10-11.py),
+[full evidence and classification](docs/audits/go-reload-required-callbacks-2026-10-11.json).

@@ -19352,3 +19352,44 @@ so graph JSON/HTML unchanged and no rendered acceptance.
 [Reproducible collector](docs/audits/go-reload-required-absence-2026-10-11.py),
 [all original/corrected receipts](docs/audits/go-reload-required-absence-2026-10-11.json),
 [built-in infographic](docs/audits/go-reload-required-absence-infographic-2026-10-11.png).
+
+## Required native raw C callback-window capture — 2026-10-11
+
+Baseline `d375a68`; no production/test/fixture bytes edited. One fresh diagnostic
+cohort keeps the four original required subtests, readiness sequence and3s
+operation deadline. Temporary overlays record C callback batch/item entry and
+operation/cleanup wall-clock markers. C event IDs are not timestamps. Classification
+uses subscription key and the OP-to-cleanup-entry interval; readiness and cleanup
+are excluded. Each subscription has two observed readiness C items before its
+operation. Original exact command, full log, all overlay sources, production
+hashes and actually executed collector source are retained in the receipt.
+
+Targeted race+atomic exits1 (26.277s command,23.044s package): ignored-hidden passes
+with one operation C batch/item; ignored-backup, ignored-text and transient-source
+fail at the unchanged operation wait with zero C batches/items. This places these
+three absences before downstream Go filtering; it does not identify kernel cause,
+queued delivery, registry state, callback-queue liveness or reliability statistics.
+No runtime fix is justified by this cohort alone. Empty filtered batches remain
+required and distinct from timeouts; no fixture/deadline/fallback weakening.
+
+The executed diagnostic also attempted CGO Go-file registry/fence overlays, but
+neither marker was observed even during readiness. Those surfaces are unproven;
+the receipt preserves this harness limitation and executed source. The reusable
+collector removes unobserved Go instrumentation, retaining witnessed C/test markers.
+The cohort was not rerun after this correction. Next diagnosis must observe
+same-subscription queue activity and an operation/control pair at this earlier
+boundary before selecting a runtime remedy; avoid another admitted-log-only probe.
+
+Window parser preflight checks readiness/cleanup exclusion, absent readiness,
+and independent event-ID ordering. Repeated-prefix refusal preserves the completed
+receipt without dispatch. Production hashes unchanged. Python full2239 passed/28
+skipped/74 warnings/24 subtests (98.47s), parser/refusal preflights and diff check
+pass. Audit-only helper: full Go/vet/race/coverage and Source export not refreshed;
+exports/default types/Python package modules/scanners/targets/guarded behavior
+unchanged, so associated gates not triggered. Previous full native failures,
+default diagnostics/broader IDNA/non-Darwin/full G0–G7 remain open. README canonical
+map/boundaries reviewed and visible baseline updated; topology/authority/defaults
+unchanged, so architecture JSON/HTML unchanged; no rendered acceptance or push.
+
+[Collector](docs/audits/go-reload-required-callbacks-2026-10-11.py),
+[exact raw callback evidence](docs/audits/go-reload-required-callbacks-2026-10-11.json).
