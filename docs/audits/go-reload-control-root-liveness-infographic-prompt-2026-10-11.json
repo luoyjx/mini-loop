@@ -1,0 +1,26 @@
+{
+  "prompt": "Create a polished Chinese engineering progress infographic, landscape 1536x1024, pale ivory background, navy typography, teal evidence boxes and amber unresolved boxes. Title exactly 'Go 移植 · 原生监听流活性诊断'. Small subtitle '诊断探针 2c17414 · 运行时代码未改动'. Diagram: two peer panels labelled 'Go 原生 FSEvents' and 'Python Source / WatchFiles', each subscription points to TWO folders '业务目录' and '独立控制目录'. Timeline beneath: '0 秒：业务变更' -> '1 秒：控制文件变更' -> '3 秒：收集窗口结束'. Main results large readable: '32 个配对样本', '20 次实际变更', '12 次就绪失败'. Next row '控制事件：6 次两侧收到 / 14 次两侧未收到'; '业务累计路径：18 次两侧匹配 / 2 次两侧不匹配'; '两侧结果不对称：0'. Evidence box '14 次控制事件丢失：Go C 入口与 Source 原生绑定均未出现该事件'. Clear caveat '未取得“业务丢失、控制仍活跃”的样本；尚不能确定修复方案'. Small cleanup strip '34 个子进程退出 0 · 64 次订阅打开 / 64 次关闭'. Validation amber section: 'Python 全量：2235 通过 / 1 失败 / 28 跳过'; '中断生成测试组：8 通过 / 1 失败'; green small '探针构建、语法检查与 go vet 通过'. Footer caveats '完整窗口累计路径不替代首批事件验收；Go 全量/race、本轮覆盖率未重测；完整移植仍未验收'. Minimal editorial style, precise typography, clear hierarchy, no mascots or invented statistics, no all-green acceptance claims, no claims of daemon causality or production fix.",
+  "correction_prompt": "Edit this infographic precisely, preserving all main numbers, layout, and validation failures. Remove the invented bottom-right date '2025-08-20' entirely; no date anywhere. Under '32 个配对样本', replace the incorrect claim that every sample contains mutations with exactly '16 个配方 × 新进程 / 复用进程'. Under '20 次实际变更', replace '去重后的真实文件变更' with exactly '仅就绪成功的 20 个样本执行变更'. Under '0 秒：业务变更', replace '在业务目录中写入测试文件' with exactly '执行配方指定的文件操作'. Keep the independent control mutation at 1 second and full 3-second collection. Do not introduce new facts, dates, examples or claims.",
+  "selected_image": "exec-4955e726-3730-4de0-a9ec-912e562744f3.png",
+  "verified": {
+    "cases": 32,
+    "operations": 20,
+    "readiness_failures": 12,
+    "control_received_both": 6,
+    "control_missing_both": 14,
+    "aggregate_matches_both": 18,
+    "aggregate_mismatches_both": 2,
+    "child_exits_zero": 34,
+    "opened": 64,
+    "closed": 64,
+    "python_full": {
+      "passed": 2235,
+      "failed": 1,
+      "skipped": 28
+    },
+    "python_focused": {
+      "passed": 8,
+      "failed": 1
+    }
+  }
+}

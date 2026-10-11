@@ -18833,3 +18833,47 @@ native reload and complete G0–G7 acceptance are not declared complete.
 retain all 22 baseline failed assertions and final logs. The built-in imagegen
 [graphic](docs/audits/go-provider-host-casing-infographic-2026-10-11.png) explicitly
 shows a pure-Go table lookup, combining-dot expansion and remaining full gates.
+
+## Independent control-root native liveness — 2026-10-11
+
+Diagnostic probe commit: `2c17414`; runtime baseline `72b6bcf`.
+Both native subscriptions watch the same business root and an independent sibling
+control root. The retained C build overlay traces before Go forwarding; the actual
+Source RustNotify binding traces before filtering. After the shared readiness nonce,
+the recipe executes at time zero, a control file is written at one second, and both
+workers collect cumulative paths for the full three-second window. Probe readiness
+remains five seconds, Rust timeout 100ms. Production runtime, fixture, dependency,
+default and acceptance deadlines are unchanged. This adds a root and changes the
+diagnostic collection semantics: cumulative paths do not replace first-batch tests.
+
+32 paired samples: 12 common readiness failures before mutation; 20 operations.
+Cumulative business paths match both sides in 18 cases and mismatch both in two:
+reused same-mtime-write has no source.py; reused symlink-target-write reports
+linked.py where the fixture's first-batch expectation is empty. Six control mutations
+are received by both sides; fourteen are missed by both. In all fourteen, no matching
+control event enters the Go C callback or Source native-change binding return.
+Zero asymmetric business/control outcomes. No failed business observation retains
+a delivered control sentinel, so the hoped-for root-specific versus whole-stream
+liveness distinction is unproven. Logging, a second root, full-window aggregation,
+Source stop/Go cancellation differences and concurrent unrelated Go test workloads
+limit inference; this is not proof of a host/kernel/daemon defect or a listener fix.
+
+All 34 child exits are zero; 64 native opens and closes balance. Overlay build,
+probe vet, repository go vet, syntax compilation, capture assertions and diff check
+pass. Python full gate **fails**: 2235 passed, 1 failed, 28 skipped, 74 warnings,
+24 subtests (171.96s), test_the_text_the_user_saw_is_kept. One focused diagnostic
+run also **fails**: 8 passed, 1 failed (2.16s),
+test_a_cancelled_stream_releases_its_connection. Both raw failures are retained;
+a fixed-delay cancellation helper does not establish readiness, but causality is
+not established here. No retry-to-green, test weakening or production change.
+Full Go ordinary/race, global Source export, coverage and non-Darwin are not rerun;
+previous native reload failures and incomplete global Source freshness remain open.
+README canonical map reviewed; visible diagnostic baseline updated; graph unchanged.
+Full IDNA admission, default diagnostics and complete G0–G7 acceptance remain open.
+
+[Control-root audit](docs/audits/go-reload-control-root-liveness-2026-10-11.json)
+retains raw C/binding logs, subscription keys, control mutation epochs, independent
+terminal gate results, production hashes and the exact overlay source.
+[Built-in imagegen graphic](docs/audits/go-reload-control-root-liveness-infographic-2026-10-11.png)
+shows the failures and inference limit. Next: make the interrupted-stream test's
+observation boundary explicit; isolate native delivery controls before listener changes.
