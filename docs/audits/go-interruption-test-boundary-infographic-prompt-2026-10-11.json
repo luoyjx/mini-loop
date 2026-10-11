@@ -1,0 +1,14 @@
+{
+  "prompt": "Generate a refined Chinese engineering infographic in landscape 1536x1024. Ivory background, navy text, teal verification cards, amber remaining-work box, clean editorial typography. Exact title 'Go 移植 · 修复中断测试的观察边界'. Subtitle '测试提交 a7f873e · 生产运行时未改动'. Left panel '旧测试：固定等待 120ms 后取消' with timeline: stream startup taking 200ms, cancel arrow at120ms before first delta; label '受控延迟对照：部分回答断言失败'. Right panel '新测试：捕获真实 assistant_delta 后取消' timeline '流已进入' -> '指定片段已捕获' -> '保持事件边界' -> '取消并验证'. Avoid implying production changed. Center three cards: '11 个中断用例通过'; '新增 2 个延迟启动用例'; '信号量：取消前后许可数一致'. Large bottom verification strip exact 'Python 全量：2238 通过 · 28 跳过 · 74 警告'. Small separate '24 个 subtests 通过'. Additional boxes '相关 mutation guard：5/5' and '扫描检查：19/19'. Note '旧对照：1 失败 / 1 通过；已保留原始证据'. Amber outstanding box '原生监听、完整 IDNA、默认诊断后端与 G0–G7 验收仍待完成'. Footer '本轮未重测 Go 全量/race 与覆盖率'. No dates, no invented figures, no all-migration-complete claim. Use attractive minimal event arrows and clear whitespace.",
+  "correction": "Edit this infographic while preserving every result count, code hash and layout. In the old-test panel change the timing label '流启动耗时 200ms（受控延迟）' to exactly '首个片段额外延迟 200ms（受控对照）'. Change the hypothetical first assistant_delta label '(t = 200ms)' to exactly '(t ≥ 250ms)' because the fixture additionally waits 50ms per delta, and no first event is actually observed before cancellation. Keep the first-event circle dashed to show hypothetical later arrival. Do not add other claims, dates or numbers.",
+  "selected_image": "exec-4a6542be-1313-4b7b-b1c5-6733c97644cf.png",
+  "verified_counts": {
+    "focused": 11,
+    "python_full": 2238,
+    "skipped": 28,
+    "warnings": 74,
+    "subtests": 24,
+    "guards": 5,
+    "scans": 19
+  }
+}

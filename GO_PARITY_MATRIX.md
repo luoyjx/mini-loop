@@ -10901,3 +10901,45 @@ terminal gate results, production hashes and the exact overlay source.
 [Built-in imagegen graphic](docs/audits/go-reload-control-root-liveness-infographic-2026-10-11.png)
 shows the failures and inference limit. Next: make the interrupted-stream test's
 observation boundary explicit; isolate native delivery controls before listener changes.
+
+## Event-boundary interruption verification — 2026-10-11
+
+Test implementation commit: `a7f873e`; baseline `d060ac2`.
+The Python interrupted-turn helper previously slept 120ms before cancellation,
+which did not establish that a stream had entered or shown a partial response.
+It now wraps the actual session event capture, waits for assistant_delta, and
+holds the captured event boundary until cancellation. Partial-answer and thinking
+claims wait for their specific text. A ten-second readiness failure bound prevents
+an absent event hanging the test; it is not a widened production/observer deadline.
+Cleanup restores the original capture callback and joins any remaining task.
+Two added 200ms startup-delay cases retain the connection-exit and partial-answer
+assertions. The reusable-session test now compares semaphore permits with its
+pre-cancellation value, replacing a self-comparison that could prove nothing.
+Production Python/Go, accepted contracts, dependencies and defaults are unchanged.
+
+A private copy of the old helper with 200ms extra first-delta delay yields one
+real assertion failure (partial answer missing) and one pass (connection exit).
+It therefore demonstrates the partial-text race; it does not reproduce or prove
+the cause of the preceding connection-exit failure. An initial external-file
+attempt lacked PYTHONPATH and failed collection; this invalid evidence is retained
+separately. After correcting only the invocation environment, JUnit confirms an
+actual test-call failure. No runtime fix or general scheduling-cause claim is made.
+
+Focused suite: 11 passed (1.82s). Full Python: 2238 passed, 28 skipped, 74 warnings,
+24 subtests (158.45s), exit 0. Five selected mutation guards all establish passing
+unmodified baselines and failed mutant test calls: interruption-leaves-no-trace,
+crash-restore-forgets-the-interruption, interruption-marker-hides-surviving-background-work,
+thinking-replayed-as-answer and completed-stream-leaves-stale-partial. The complete
+19-module scan gate and diff check pass. These selected guards are not the full
+mutation inventory. README architecture map reviewed and visible baseline updated;
+runtime graph, specification and generated HTML unchanged. Invariants, full Go
+ordinary/race, global Source export, coverage and non-Darwin are not rerun because
+production modules, Go types and exports are unchanged. Earlier native reload
+failures and incomplete global Source freshness remain open; the prior Python
+failures are retained in their original audit, not rewritten as passing.
+
+[Event-boundary audit](docs/audits/go-interruption-test-boundary-2026-10-11.json)
+retains all raw gate logs, the controlled old test source and JUnit result.
+[Built-in imagegen graphic](docs/audits/go-interruption-test-boundary-infographic-2026-10-11.png)
+shows the actual test coordination change and remaining acceptance limits.
+Native reload, broader IDNA, default diagnostics and complete G0–G7 remain open.
