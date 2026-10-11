@@ -47,6 +47,19 @@ def provider_whole_usage_contracts() -> dict:
                            "output_tokens_details": {"thinking_tokens": value},
                            "server_tool_use": {"web_fetch_requests": value, "web_search_requests": value}}]))
 
+    for label, value in [("positive", "0" * 5000 + "13"),
+                         ("negative", "-" + "0" * 5000 + "13"),
+                         ("zero", "0" * 5000),
+                         ("decimal", "0" * 5000 + "13.00"),
+                         ("separated", "0_" * 5000 + "13"),
+                         ("significant-over", "1" + "0" * 4300)]:
+        profiles.append(("array-padded-optional-" + label, True,
+                         [{"cache_read_input_tokens": value, "cache_creation_input_tokens": value}]))
+        profiles.append(("array-padded-nested-" + label, True,
+                         [{"cache_creation": {"ephemeral_1h_input_tokens": value, "ephemeral_5m_input_tokens": value},
+                           "output_tokens_details": {"thinking_tokens": value},
+                           "server_tool_use": {"web_fetch_requests": value, "web_search_requests": value}}]))
+
     def observation(response):
         usage = getattr(response, "usage", None)
         meter = TokenMeter()

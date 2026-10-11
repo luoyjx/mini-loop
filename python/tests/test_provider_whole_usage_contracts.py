@@ -4,7 +4,7 @@ from tools.provider_whole_usage_contracts import provider_whole_usage_contracts
 def test_actual_sdk_whole_usage_projection_and_stream_failure_phase():
     fixture = provider_whole_usage_contracts()
     rows = {(row["name"], row["mode"]): row for row in fixture["cases"]}
-    assert len(rows) == 62
+    assert len(rows) == 86
     for name in ("absent", "null", "integer", "fraction", "boolean", "text",
                  "empty-array", "array-model", "nested-array", "array-text-counts",
                  "array-nested-models", "array-metadata-list", "array-extensions", "mixed-array"):
@@ -48,3 +48,15 @@ def test_actual_sdk_whole_usage_projection_and_stream_failure_phase():
     assert "cache_read_input_tokens=" + str(10**80) in text
     assert "cache_read_input_tokens='" not in text
     assert "cache_read_input_tokens=1e+100" in rows["array-optional-wide-float", "direct"]["event_usage"]["value"]
+
+    for field, token in (("optional", "cache_read_input_tokens"), ("nested", "thinking_tokens")):
+        for label, expected in (("positive", 13), ("negative", -13), ("zero", 0),
+                                ("decimal", 13), ("separated", 13)):
+            direct = rows[f"array-padded-{field}-{label}", "direct"]
+            stream = rows[f"array-padded-{field}-{label}", "stream"]
+            assert token + "=" + str(expected) in direct["event_usage"]["value"]
+            assert direct["consumer"]["observations"] == 0
+            assert stream["phase"] == "message_delta"
+            assert stream["usage_stages"][0]["event_usage"] == direct["event_usage"]
+        retained = rows[f"array-padded-{field}-significant-over", "direct"]
+        assert token + "='" + "1" + "0" * 4300 in retained["event_usage"]["value"]
