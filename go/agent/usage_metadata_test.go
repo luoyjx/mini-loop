@@ -56,7 +56,12 @@ func TestUsageMetadataEventCloneMaskAndArchivalRoundTrip(t *testing.T) {
 // Source final usage is the independent expected shape. Registered escaped
 // canaries exercise the actual event masker, accessors and historical codec.
 func TestSDKUsageMetadataShapesEventMaskCloneAndArchive(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-usage-metadata.json")
+	assertSDKUsageMaskArchive(t, "../testdata/python-provider-usage-metadata.json", 191)
+}
+
+func assertSDKUsageMaskArchive(t *testing.T, path string, expected int) {
+	t.Helper()
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -69,7 +74,7 @@ func TestSDKUsageMetadataShapesEventMaskCloneAndArchive(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 191 {
+	if len(fixture.Cases) != expected {
 		t.Fatal("Source inventory changed")
 	}
 	canonical := func(data []byte) []byte {

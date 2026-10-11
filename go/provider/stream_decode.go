@@ -214,14 +214,18 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			Role        *protocol.Role               `json:"role"`
 			Model       *string                      `json:"model"`
 			Content     *[]json.RawMessage           `json:"content"`
-			Usage       *protocol.TokenUsage         `json:"usage"`
+			Usage       json.RawMessage              `json:"usage"`
 			Container   protocol.ContainerMetadata   `json:"container"`
 			StopDetails protocol.StopDetailsMetadata `json:"stop_details"`
 		}
-		if json.Unmarshal(wire.Message, &start) != nil || start.ID == nil || start.Type == nil || start.Role == nil || start.Model == nil || start.Content == nil || start.Usage == nil {
+		if json.Unmarshal(wire.Message, &start) != nil || start.ID == nil || start.Type == nil || start.Role == nil || start.Model == nil || start.Content == nil {
 			return badStream("missing message_start fields")
 		}
-		s.reply = protocol.ModelReply{ID: *start.ID, Type: *start.Type, Role: *start.Role, Model: *start.Model, Content: []protocol.Block{}, Usage: start.Usage.WithSDKStreamCounts()}
+		usage, err := protocol.DecodeSDKUsage(start.Usage, true)
+		if err != nil {
+			return badStream(c.clean(err.Error(), 500))
+		}
+		s.reply = protocol.ModelReply{ID: *start.ID, Type: *start.Type, Role: *start.Role, Model: *start.Model, Content: []protocol.Block{}, Usage: usage}
 		s.reply.Container = start.Container.WithSDKDatetime()
 		s.reply.StopDetails = start.StopDetails
 		if err := s.reply.Usage.Validate(); err != nil {
@@ -244,6 +248,9 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		return badStream("event before message_start")
 	}
 	if event == "message_delta" {
+		if fault := s.reply.Usage.SDKUsageDeltaFault(); fault != "" {
+			return badStream(fault)
+		}
 		if wire.Delta.StopReason == nil || wire.Usage.Output == nil {
 			return badStream("missing final delta fields")
 		}

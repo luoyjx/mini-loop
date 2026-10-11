@@ -97,20 +97,24 @@ func (reply *ModelReply) UnmarshalJSON(data []byte) error {
 		Content      *[]Block            `json:"content"`
 		StopReason   *StopReason         `json:"stop_reason"`
 		StopSequence *string             `json:"stop_sequence"`
-		Usage        *TokenUsage         `json:"usage"`
+		Usage        json.RawMessage     `json:"usage"`
 		Container    ContainerMetadata   `json:"container"`
 		StopDetails  StopDetailsMetadata `json:"stop_details"`
 	}
 	if err := decodeStrict(data, &wire); err != nil {
 		return err
 	}
-	if wire.ID == nil || wire.Type == nil || wire.Role == nil || wire.Model == nil || wire.Content == nil || wire.StopReason == nil || wire.Usage == nil {
+	if wire.ID == nil || wire.Type == nil || wire.Role == nil || wire.Model == nil || wire.Content == nil || wire.StopReason == nil || len(wire.Usage) == 0 {
 		return errors.New("model reply is missing a required field")
+	}
+	var usage TokenUsage
+	if err := json.Unmarshal(wire.Usage, &usage); err != nil {
+		return err
 	}
 	next := ModelReply{
 		ID: *wire.ID, Type: *wire.Type, Role: *wire.Role, Model: *wire.Model,
 		Content: *wire.Content, StopReason: *wire.StopReason,
-		StopSequence: wire.StopSequence, Usage: *wire.Usage,
+		StopSequence: wire.StopSequence, Usage: usage,
 		Container: wire.Container, StopDetails: wire.StopDetails,
 	}
 	if err := next.Validate(); err != nil {

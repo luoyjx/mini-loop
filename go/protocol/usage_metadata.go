@@ -1,6 +1,7 @@
 package protocol
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
@@ -44,6 +45,7 @@ type TokenUsage struct {
 	extra                    jsonvalue.Value
 	tierObservation          *UsageMetadataObservation
 	geoObservation           *UsageMetadataObservation
+	whole                    *wholeUsageObservation
 }
 
 type usageNulls uint8
@@ -71,7 +73,15 @@ func (u TokenUsage) countPointers() []*UsageCount {
 	}
 	return counts
 }
-func (u TokenUsage) Validate() error { return validateUsageCounts(u.countPointers()...) }
+func (u TokenUsage) Validate() error {
+	if u.whole != nil {
+		if u.InputTokens.Kind() != UsageNull || u.OutputTokens.Kind() != UsageNull || u.CacheReadInputTokens != nil || u.CacheCreationInputTokens != nil {
+			return errors.New("whole usage observation cannot carry counts")
+		}
+		return nil
+	}
+	return validateUsageCounts(u.countPointers()...)
+}
 func validateUsageCounts(counts ...*UsageCount) error {
 	for _, count := range counts {
 		if count != nil {
@@ -83,6 +93,7 @@ func validateUsageCounts(counts ...*UsageCount) error {
 	return nil
 }
 func (u TokenUsage) clone() TokenUsage {
+	u.whole = copyMetadataPointer(u.whole)
 	u.CacheReadInputTokens = copyMetadataPointer(u.CacheReadInputTokens)
 	u.CacheCreationInputTokens = copyMetadataPointer(u.CacheCreationInputTokens)
 	u.ServiceTier = copyMetadataPointer(u.ServiceTier)
@@ -113,6 +124,9 @@ func (u TokenUsage) clone() TokenUsage {
 // WithSDKDefaults materializes the seven nullable SDK fields. Native/fake usage
 // constructors retain their original sparse shape until this explicit selection.
 func (u TokenUsage) WithSDKDefaults() TokenUsage {
+	if u.whole != nil {
+		return u.clone()
+	}
 	u = u.clone()
 	if u.CacheReadInputTokens == nil {
 		u.nulls |= nullCacheRead
@@ -171,6 +185,17 @@ func (u TokenUsage) WithSDKDefaults() TokenUsage {
 	return u
 }
 func (u TokenUsage) MarshalJSON() ([]byte, error) {
+	if u.whole != nil {
+		if err := u.Validate(); err != nil {
+			return nil, err
+		}
+		if u.whole.kind == wholeUsageNull {
+			return []byte("null"), nil
+		}
+		return json.Marshal(struct {
+			Value string `json:"value"`
+		}{u.whole.text})
+	}
 	wire := struct {
 		Input         UsageCount                              `json:"input_tokens"`
 		Output        UsageCount                              `json:"output_tokens"`
@@ -185,6 +210,25 @@ func (u TokenUsage) MarshalJSON() ([]byte, error) {
 	return marshalMetadataObject(wire, u.extra)
 }
 func (u *TokenUsage) UnmarshalJSON(data []byte) error {
+	if len(data) > MaxWireBytes {
+		return errors.New("usage exceeds protocol limit")
+	}
+	projection, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return err
+	}
+	if projection.Kind() == jsonvalue.Null {
+		*u = newWholeUsage(wholeUsageObservation{kind: wholeUsageNull})
+		return nil
+	}
+	if projection.Kind() == jsonvalue.Object && len(projection.Keys()) == 1 {
+		if value, ok := projection.Lookup("value"); ok {
+			if text, ok := value.Text(); ok {
+				*u = newWholeUsage(wholeUsageObservation{kind: wholeUsageArchivedText, text: text})
+				return nil
+			}
+		}
+	}
 	var wire struct {
 		Input         UsageCount                `json:"input_tokens"`
 		Output        UsageCount                `json:"output_tokens"`
@@ -344,6 +388,10 @@ func (v *ServerToolUsage) UnmarshalJSON(data []byte) error {
 func (u TokenUsage) MapStrings(mask func(string) string) TokenUsage {
 	u = u.clone()
 	if mask == nil {
+		return u
+	}
+	if u.whole != nil {
+		u.whole.text = mask(u.whole.text)
 		return u
 	}
 	if u.InferenceGeo != nil {

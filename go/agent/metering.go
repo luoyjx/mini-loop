@@ -42,6 +42,9 @@ func (meter TokenMeter) scale() float64 {
 	return meter.calibration
 }
 func PromptTokens(usage protocol.TokenUsage) (int, bool) {
+	if !usage.HasUsageCounts() {
+		return 0, false
+	}
 	count := usage.InputTokens.Metered()
 	if usage.CacheReadInputTokens != nil {
 		count += usage.CacheReadInputTokens.Metered()

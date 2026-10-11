@@ -1,5 +1,56 @@
 # Go port plan
 
+## 2026-10-11 native whole usage observation and stage faults
+
+Baseline local main `7095efb`. `DecodeSDKUsage` now explicitly selects SDK loose
+construction into named counts or a closed private whole-usage observation.
+Missing/null usage projects to null; scalar/list usage projects through Python
+text, including exact nested SDK Usage/CacheCreation/OutputTokensDetails/
+ServerToolUsage repr and ordinary nested-list repr. Partial object counts acquire
+SDK null defaults without changing strict native counted-object admission.
+Whole observations have no meter authority even if public count slots are
+mutated; validation rejects such mutations. Clones detach their observation
+pointer and masks operate on the emitted projection.
+
+Actual Source inventory expands to38 direct/SSE cases and24 stage snapshots.
+All19 direct profiles complete;5 object SSE profiles complete and14 whole-usage
+SSE profiles retain the start snapshot before the exact delta-assignment fault.
+Required native assertions check stage/outcome/message, projected JSON kind and
+meter results. Actual HTTP clients and ManagedSession verify38 model-end
+outcomes. As in Python `_loop`, handled provider errors produce error events and
+a reply rather than a thrown Run error; the test's initial contrary assertion
+was corrected after Source/code inspection, with failure logs retained.
+
+All43 direct/final or intermediate Source projections pass actual secret
+masking, immutable clone, historical event codecs and SQLite close/reopen.
+Explicit event usage null survives reconstruction separately from absent usage.
+Null and text-envelope replies also survive native ModelReply round-trip.
+Malformed/nonfinite/oversized ingress and counted-object missing-field failures
+remain atomic. No dependency, feature default, metering range, deadline, skip,
+watcher/background runtime or ownership changes.
+
+The canonical Provider label/boundary and interactive specification now describe
+the SDK adapter and projected archives. Archify regeneration passes9/9 checks,
+zero errors/warnings. Browser visual review of local HTML was rejected by the
+browser URL policy (`file://`); no alternate surface/workaround was attempted.
+The builtin imagegen iteration preserves all five base layers/arrow boundaries,
+highlighting Provider and projection evidence. No component added or removed;
+the base remains unchanged. Wider count domains, richer model repr/masking
+interactions, final Provider/public-error/default inventory and G0–G7 remain open.
+
+Validation on1639 frozen inputs: Source239-file comparison, required focused
+checks, syntax types452 files/1439 types and public closure50 packages/1191 types
+all pass. Full Go ordinary/vet/race+atomic, Python2240 passed/28 skipped/86
+warnings/24 subtests, scans19 and diff check pass. Exact commands/times/logs are
+retained in [the receipt](docs/audits/go-whole-usage-native-2026-10-11.json).
+Coverage: app89.22% (33012/37000), all Go89.17% (33133/37158), Provider86.45%
+(1518/1756), from the current complete race profile; scope/hash in
+[the coverage receipt](docs/audits/go-coverage-whole-usage-native-2026-10-11.json).
+Prior native/background temporal failures remain unexplained; no runtime fix or
+retry-to-green claim. No Python package modules or guarded anchors changed;
+Python invariants/full guard mutation sweeps, Linux, paid API and performance
+were not refreshed. Browser HTML visual review remains policy-blocked.
+
 ## 2026-10-11 whole usage Source boundary contracts
 
 Baseline local main `4f75bc9`. Actual Anthropic SDK0.107.1 / Pydantic2.13.4
@@ -6972,7 +7023,7 @@ rejections and24 completed differences. Those original156 cases, expanded to191
 cases/214 stages, now pass required native assertions, final PromptTokens and
 actual masked event/clone/archive/SQLite reopening checks. The original34 and76
 usage inventories continue to pass. Full G4 field/default/consumer/public-entry
-inventory, whole-usage missing/non-object shapes and wider count/meter ranges
+inventory and wider count/meter ranges;38 whole-usage cases/24 stages now have native and managed/archival parity
 remain unproven. Earlier implementation and diagnostic checkpoints below retain
 their historical baselines and must not override this current index.
 

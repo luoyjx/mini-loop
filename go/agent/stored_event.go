@@ -395,14 +395,19 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 			Duration float64                 `json:"duration_ms"`
 			Error    *string                 `json:"error"`
 			Stop     *protocol.StopReason    `json:"stop_reason"`
-			Usage    *protocol.TokenUsage    `json:"usage"`
+			Usage    json.RawMessage         `json:"usage"`
 			Served   *string                 `json:"served_model"`
 			Prompt   *int                    `json:"prompt_tokens"`
 			Catalog  *string                 `json:"tool_catalog_fingerprint"`
 			Meter    *TokenMeterSnapshot     `json:"token_meter"`
 		}](data)
+		var usage *protocol.TokenUsage
+		if err == nil && len(v.Usage) > 0 {
+			usage = &protocol.TokenUsage{}
+			err = json.Unmarshal(v.Usage, usage)
+		}
 		event.modelEnd = ModelEndEvent{SpanID: v.Span, Purpose: v.Purpose, Status: v.Status, DurationMS: v.Duration,
-			Error: v.Error, StopReason: v.Stop, Usage: v.Usage, ServedModel: v.Served, PromptTokens: v.Prompt,
+			Error: v.Error, StopReason: v.Stop, Usage: usage, ServedModel: v.Served, PromptTokens: v.Prompt,
 			ToolCatalogFingerprint: v.Catalog, TokenMeter: v.Meter}
 		return event, err
 	case EventToolUse:
