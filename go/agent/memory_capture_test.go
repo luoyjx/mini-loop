@@ -30,7 +30,7 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 10 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 17 {
 		t.Fatal(err)
 	}
 	for _, row := range fixture.Cases {

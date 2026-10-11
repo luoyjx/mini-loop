@@ -2,9 +2,9 @@ package agent
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
@@ -55,11 +55,10 @@ func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
 	}
 	inputs := make([]memory.Input, 0)
 	for _, raw := range memoryReplyArray(reply) {
-		var fields map[string]json.RawMessage
-		if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		if raw.Kind() != jsonvalue.Object {
 			continue
 		}
-		if _, ok := fields["name"]; !ok {
+		if _, ok := raw.Lookup("name"); !ok {
 			continue
 		}
 		input, err := extractedMemoryInput(raw)
@@ -70,6 +69,7 @@ func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
 		if origin, ok := origins[memoryInputIdentity(input)]; ok {
 			input.Origin = origin
 		}
+		input.Type = storedMemoryType(input.Type)
 		inputs = append(inputs, input)
 	}
 	if len(inputs) == 0 {

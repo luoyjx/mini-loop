@@ -5706,6 +5706,18 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
         dict(name="provider-fault",reply="[]",fault=True),
         dict(name="unicode-tail",reply="[]",tail=True),
         dict(name="greedy-memory-prefix",reply="[]",greedy=True),
+        dict(name="ignored-legacy-values", reply=json.dumps([{**valid,"owner":float("nan"),"origin":float("inf"),"root":float("-inf"),"extra":{"text":"\ud800"}}])),
+        dict(name="ignored-overflow", reply='[{"name":"new","extra":1e400}]'),
+        dict(name="partial-write-nan", reply=json.dumps([valid,float("nan"),dict(name="never")])),
+        dict(name="partial-write-infinity", reply=json.dumps([valid,float("inf"),dict(name="never")])),
+        dict(name="partial-write-negative-infinity", reply=json.dumps([valid,float("-inf"),dict(name="never")])),
+        dict(name="max-five-legacy-tail", reply=json.dumps([{**valid,"name":f"fact-{i}"} for i in range(5)]+[float("nan")])),
+        dict(name="oversized-integer-whole-reply", reply='['+json.dumps(valid)+',{"name":"never","extra":'+'1'*4301+'}]'),
+        dict(name="malformed-whole-reply", reply='['+json.dumps(valid)+',]'),
+        dict(name="paired-surrogate", reply='[{"name":"\\ud83d\\ude00","body":"ok"}]'),
+        *[dict(name=f"partial-write-surrogate-{field}",reply=json.dumps([valid,{**valid,"name":"bad",field:"\ud800"},dict(name="never")]))
+          for field in ("name","description","body")],
+        dict(name="surrogate-unknown-type", reply=json.dumps([{**valid,"type":"\ud800"}])),
     ]
     async def scenario(row):
         root=scratch/row["name"]; root.mkdir(parents=True)
@@ -5758,7 +5770,13 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
              dict(name="malformed",seed=10,mode="malformed"),
              dict(name="provider-fault",seed=10,mode="changed",fault=True),
              dict(name="changed-type",seed=10,mode="type"),
-             dict(name="absent-defaults",seed=10,mode="defaults")]
+             dict(name="absent-defaults",seed=10,mode="defaults"),
+             dict(name="legacy-skipped-items",seed=10,mode="legacy-skip"),
+             dict(name="ignored-legacy-values",seed=10,mode="legacy-extra"),
+             dict(name="ignored-overflow",seed=10,mode="overflow"),
+             dict(name="oversized-integer-whole-reply",seed=10,mode="integer-limit"),
+             *[dict(name=f"partial-write-surrogate-{field}",seed=10,mode="surrogate",field=field)
+               for field in ("name","description","body")]]
     async def scenario(row):
         root=scratch/row["name"];root.mkdir(parents=True)
         raw=MemoryStore(root/"memory");store=ScopedMemory(raw,"owner")
@@ -5773,8 +5791,14 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
         elif mode=="empty":items=[]
         elif mode=="defaults":items=[dict(name="minimal")]
         elif mode=="type":items=[{**indexed["fact-0"],"type":"unknown"}]
+        elif mode=="legacy-skip":items=[float("nan"),float("inf"),float("-inf"),copy.deepcopy(indexed["fact-0"])]
+        elif mode=="legacy-extra":items=[{**indexed["fact-0"],"owner":float("nan"),"origin":float("inf"),"root":float("-inf")}]
+        elif mode in {"overflow","integer-limit"}:items=[copy.deepcopy(indexed["fact-0"])]
+        elif mode=="surrogate":items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],row["field"]:"\ud800"},dict(name="never")]
         else:items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],"body":"changed"},dict(name="new",body="merged",owner="foreign",origin="explicit")]
-        reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=False)
+        reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=mode=="surrogate")
+        if mode=="overflow":reply=reply[:-2]+',"extra":1e400}]'
+        if mode=="integer-limit":reply=reply[:-2]+',"extra":'+'1'*4301+'}]'
         calls,events=[],[]
         async def create(**kwargs):
             calls.append(copy.deepcopy(kwargs))

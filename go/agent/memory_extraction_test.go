@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
@@ -45,7 +46,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 13 {
+	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 26 {
 		t.Fatal(err, len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {
@@ -124,7 +125,11 @@ func TestMemoryExtractionCancellationAndClosedFields(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, text := range []string{`null`, `7`, `{}`, `{"name":null}`, `{"name":"x","body":7}`, `{"name":"x","description":null}`} {
-		if _, err := extractedMemoryInput(json.RawMessage(text)); err == nil {
+		value, err := jsonvalue.Decode(text)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := extractedMemoryInput(value); err == nil {
 			t.Fatal("unrepresentable entry accepted", text)
 		}
 	}

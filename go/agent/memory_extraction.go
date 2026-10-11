@@ -2,11 +2,11 @@ package agent
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"regexp"
 	"strings"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
@@ -55,34 +55,34 @@ func cleanMemoryMessages(messages []protocol.Message) []protocol.Message {
 	return cleaned
 }
 
-// Raw JSON is confined to decoding this model response; only a closed Input
-// reaches storage. Decoding is per item to preserve source incremental writes.
-func extractedMemoryInput(raw json.RawMessage) (memory.Input, error) {
-	var fields map[string]json.RawMessage
-	if err := json.Unmarshal(raw, &fields); err != nil || fields == nil {
+// Only a named Input reaches storage. Field lowering is per item, after the
+// complete reply has parsed, preserving source incremental extraction writes.
+func extractedMemoryInput(fields jsonvalue.Value) (memory.Input, error) {
+	if fields.Kind() != jsonvalue.Object {
 		return memory.Input{}, errors.New("memory entry must be an object")
 	}
-	_, present := fields["name"]
+	_, present := fields.Lookup("name")
 	if !present {
 		return memory.Input{}, errors.New("memory entry requires name")
 	}
 	values := [4]string{"", "project", "", ""}
 	for index, key := range []string{"name", "type", "description", "body"} {
-		encoded, ok := fields[key]
+		value, ok := fields.Lookup(key)
 		if !ok {
 			continue
 		}
-		if string(encoded) == "null" {
+		text, ok := value.Text()
+		if !ok {
 			return memory.Input{}, errors.New("memory fields must be strings")
 		}
-		if err := json.Unmarshal(encoded, &values[index]); err != nil {
-			return memory.Input{}, err
-		}
+		// Preserve text for the storage boundary's UTF-8 check. In consolidation
+		// that failure must occur after owner-scoped deletion and earlier writes.
+		values[index] = text
 	}
 	return memory.Input{Name: values[0], Type: memory.Type(values[1]), Description: values[2], Body: values[3], Origin: memory.AutoExtracted}, nil
 }
 
-func memoryReplyArray(reply protocol.ModelReply) []json.RawMessage {
+func memoryReplyArray(reply protocol.ModelReply) []jsonvalue.Value {
 	var text strings.Builder
 	for _, block := range reply.Content {
 		if value, ok := block.Text(); ok {
@@ -94,10 +94,11 @@ func memoryReplyArray(reply protocol.ModelReply) []json.RawMessage {
 	if first < 0 || last < first {
 		return nil
 	}
-	var items []json.RawMessage
-	if json.Unmarshal([]byte(value[first:last+1]), &items) != nil {
+	decoded, err := jsonvalue.Decode(value[first : last+1])
+	if err != nil {
 		return nil
 	}
+	items, _ := decoded.Array()
 	return items
 }
 
@@ -109,6 +110,17 @@ func memoryExtractionFailure(ctx context.Context, err error) error {
 		return err
 	}
 	return nil
+}
+
+// Normalize only at the storage handoff. Consolidation compares original fields
+// first: an unknown type must not inherit a project record's previous origin.
+func storedMemoryType(kind memory.Type) memory.Type {
+	switch kind {
+	case memory.User, memory.Feedback, memory.Project, memory.Reference:
+		return kind
+	default:
+		return memory.Project
+	}
 }
 
 // extractMemories is the source extraction stage. Its lifecycle caller owns
@@ -153,6 +165,7 @@ func (s *Session) extractMemories(ctx context.Context) (int, error) {
 		if err != nil {
 			return 0, nil
 		}
+		input.Type = storedMemoryType(input.Type)
 		if _, err = s.memory.Write(ctx, input); err != nil {
 			return 0, memoryExtractionFailure(ctx, err)
 		}
