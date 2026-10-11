@@ -1,5 +1,70 @@
 # Go port plan
 
+## 2026-10-12 memory reply JSON boundary
+
+Implementation `27f7c4e`; baseline local main `e9c330a`. Review of the RawMessage inventory found that
+memory extraction and consolidation used finite encoding/json admission, unlike
+Python's complete json.loads parse followed by per-item consumption. Reuse the
+existing immutable jsonvalue.Value variants at this transient boundary; only
+named memory.Input values enter the store. No new dependency or retained raw JSON.
+
+Actual Python captures now cover 26 extraction and 17 consolidation recipes.
+The initial 13 added recipes reproduced nine native differences: ignored legacy
+values, partial extraction before a non-object nonfinite value, the five-item
+limit with a legacy tail, consolidation skipping non-objects, and whole-reply
+4301-digit integer refusal. Four additional extraction captures check unpaired
+surrogate write failures and unknown-type normalization. Three consolidation
+captures further pin deletion and partial-write effects for invalid UTF-8 text.
+An early encoding precheck failed all three and was removed: encoding failure
+now occurs at the existing storage boundary. Existing owner/origin,
+foreign records, requests, side-meter/history and cancellation checks remain.
+
+Parsing precedes every effect. Lowering/writes remain sequential in extraction:
+a later bad entry returns zero with prior writes retained. Opaque model owner,
+origin and root fields remain discarded. Known text that would fail Python UTF-8
+encoding is refused rather than silently replaced; unknown type strings still
+normalize before encoding. This does not close Python scalar/header/body coercion,
+consolidation deletion/partial-write faults, parser depth or all resource limits.
+Full G0/G6 and original P0/P1/G0-G7 acceptance remain open.
+
+Frozen 1649 inputs pass all14 gates: Source239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python,19 scans and selected mutation guards
+(memory18, consolidation1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 89.71s (0:01:29). Application coverage 89.27% (33095/37072); all Go 89.15%
+(33266/37316); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-reply-json-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-reply-json-2026-10-12.json).
+The first frozen run passed Source but failed the new surrogate-unknown-type case:
+native storage validated UTF-8 before normalizing unknown type. The repaired
+handoff normalizes after original consolidation identity comparison. A second
+run was deliberately interrupted during race after identifying premature UTF-8
+validation; three additional Source consolidation captures fail that precheck
+and pass with encoding deferred to the existing store. Failure
+and frozen inputs retained; no retry-to-green claim. Other historical temporal
+failures remain unexplained. No full Python mutation sweep or package-invariant
+refresh (no Python runtime module changed).
+
+The [iteration image](docs/audits/go-memory-reply-json-infographic-2026-10-12.png)
+edits the five-layer base, highlighting L3 reply decoding and L5 owner memory,
+with scope prose. No components added/deleted, base unchanged. Exact prompt saved.
+Canonical map/specification synchronized; HTML delivery passes9 checks with zero
+errors/warnings. PNG inspected; browser HTML visual acceptance remains blocked
+by prior URL policy, without indirect workaround.
+
+### Next memory parity steps
+
+1. Capture header/name Python str conversions and tuple-membership type fallback
+   across every closed JSON kind, including container and nonfinite values.
+2. Capture body len/slicing/string-render order: list/object bodies, truncation
+   and invalid UTF-8 may fail at different stages. Do not equate rendered string
+   length with the original object's length or move a write fault before deletion.
+3. Capture consolidation identity hashing before replacement, then delete/write
+   failures with prior writes and foreign owners. Lower observations into named
+   execution data without retaining raw JSON in store/service domain structs.
+
+These are source-review requirements, not completed parity evidence. Capture and
+red comparison must precede implementation; existing UTF-8 partial-write cases
+are now required regressions.
+
 ## 2026-10-12 native callback panic diagnostics from declaration review
 
 Implementation `46697bc`. Baseline local main `fc89e97`. A one-off compiler inventory now resolves complete
@@ -7272,15 +7337,15 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against baseline `fc89e97`, implementation `46697bc`: compiler declaration review
-identified four callback panic value-format sinks; type-only recovery now passes
-actual before/after adversarial probes. Permission and scheduling rules unchanged.
-Frozen 1649 inputs pass14 gates: Source239 files, focused panic probes, four type
-audits, full ordinary Go/vet/race+atomic, Python,19 scans and20 selected mutation guards
-(cron14/plan6). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in
-98.33s (0:01:38). Application coverage 89.26% (33086/37068); all Go 89.13%
-(33257/37312); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-panic-boundaries-2026-10-12.json).
+Reviewed **2026-10-12** against baseline `e9c330a`: closed memory reply parsing
+matches26 extraction and17 consolidation Source captures. Complete parsing and
+incremental effects retain ownership; broader field/failure semantics stay open.
+Frozen 1649 inputs pass all14 gates: Source239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python,19 scans and selected mutation guards
+(memory18, consolidation1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 89.71s (0:01:29). Application coverage 89.27% (33095/37072); all Go 89.15%
+(33266/37316); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-reply-json-2026-10-12.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7311,11 +7376,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app **89.26% (33086/37068)**,
-all Go **89.13% (33257/37312)**, Provider **86.67% (1522/1756)**.
+Current full passing-run statement coverage: app **89.27% (33095/37072)**,
+all Go **89.15% (33266/37316)**, Provider **86.67% (1522/1756)**.
 The profile hash and 1649 frozen inputs are retained; native C,
 CLI subprocess internals, Python, branches and other platforms are excluded.
-[Current coverage](docs/audits/go-coverage-panic-boundaries-2026-10-12.json).
+[Current coverage](docs/audits/go-coverage-memory-reply-json-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered

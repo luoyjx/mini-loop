@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-12",
+  "baseline": "e9c330a",
+  "cohort": "Closed memory reply parsing and per-item lowering; final frozen full gates",
+  "mode": "atomic",
+  "profile_sha256": "99db795c7e7d8f80e2d6622b0cba6491c30419b89b7b6e2540f6ec28b416770e",
+  "raw_rows": 1250895,
+  "unique_blocks": 26059,
+  "method": "Deduplicate identical source spans; equal statement counts required; maximum atomic hits unions coverage.",
+  "all": {
+    "covered": 33266,
+    "statements": 37316,
+    "percent": 89.14674670382678
+  },
+  "app": {
+    "covered": 33095,
+    "statements": 37072,
+    "percent": 89.2722270176953
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "frozen_inputs": 1649,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-memory-reply-json-2026-10-12/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 597.351
+  },
+  "retained_profile": "/tmp/mini-loop-memory-reply-json-2026-10-12.cover",
+  "scope": "Darwin Go statements; excludes native C, CLI subprocess internals, Python, branches and other platforms.",
+  "limitations": [
+    "Prior temporal failures remain unexplained.",
+    "Whole-port provider/default/platform/performance and original acceptance remain open."
+  ],
+  "implementation_commit": "27f7c4e"
+}

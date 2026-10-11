@@ -1,5 +1,15 @@
 # Python to Go parity matrix
 
+## Memory reply JSON boundary — 2026-10-12
+
+Implementation `27f7c4e`, baseline `e9c330a`: immutable closed JSON values replace transient RawMessage
+on the extraction/consolidation path. All43 actual Source scenarios match,
+including full-parse refusal, legacy values, five-item consumption, UTF-8 partial
+writes and owner/origin isolation. All14 final gates pass; earlier failed and
+interrupted attempts remain explicit in the [receipt](docs/audits/go-memory-reply-json-2026-10-12.json).
+See [current plan](GO_PORT_PLAN.md#2026-10-12-memory-reply-json-boundary) for details
+and remaining scalar/body/consolidation failure stages. Full port acceptance open.
+
 ## Native callback panic boundaries — 2026-10-12
 
 Implementation `46697bc`, baseline `fc89e97`: compiler body inventory found139 open declarations in21,820
@@ -87,16 +97,16 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `fc89e97`, implementation `46697bc`: four callback panic recovery paths now use type-only
-diagnostics, supported by actual red/green formatter probes. No authority/default
-change. Full-body inventory is review evidence, not a blanket exception list.
-Frozen 1649 inputs pass14 gates: Source239 files, focused panic probes, four type
-audits, full ordinary Go/vet/race+atomic, Python,19 scans and20 selected mutation guards
-(cron14/plan6). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in
-98.33s (0:01:38). Application coverage 89.26% (33086/37068); all Go 89.13%
-(33257/37312); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-panic-boundaries-2026-10-12.json); [declaration inventory](docs/audits/go-local-declarations-2026-10-12.json).
-Historical temporal failures and final original migration acceptance remain open.
+Reviewed baseline `e9c330a`: memory reply JSON now uses closed immutable values
+and named storage inputs;26 extraction and17 consolidation Source cases match.
+Initial9 parity differences and a later type-normalization failure are retained.
+Memory scalar coercion and destructive consolidation failure ordering remain open.
+Frozen 1649 inputs pass all14 gates: Source239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python,19 scans and selected mutation guards
+(memory18, consolidation1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 89.71s (0:01:29). Application coverage 89.27% (33095/37072); all Go 89.15%
+(33266/37316); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-reply-json-2026-10-12.json). Original migration acceptance remains open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -139,16 +149,16 @@ Historical temporal failures and final original migration acceptance remain open
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 98.33s (0:01:38)**. Ordinary Go/vet/race+atomic, four type
-audits,239-file Source check,19 scans and20 selected mutation guards pass.
-[Current receipt](docs/audits/go-panic-boundaries-2026-10-12.json). Full Python mutation sweep not rerun; package
-invariants not rerun because no Python runtime module changed. Default diagnostics
-backend and broader IDNA approvals remain outstanding.
+Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 89.71s (0:01:29)**. Ordinary Go/vet/race+atomic, four type
+audits,239-file Source check,19 scans and selected memory/consolidation guards pass.
+[Current receipt](docs/audits/go-memory-reply-json-2026-10-12.json). Full Python mutation sweep and package invariants
+not rerun; no Python runtime module changed. Default diagnostics and broader IDNA
+approval remain outstanding.
 
-Current full passing-run statement coverage: application **89.26% (33086/37068)**;
-all Go **89.13% (33257/37312)**; Provider **86.67% (1522/1756)**.
-[Exact receipt](docs/audits/go-coverage-panic-boundaries-2026-10-12.json). Scope: Darwin Go statements; native C, subprocess
-internals, Python, branches and other platforms excluded. Full port acceptance open.
+Current full passing-run statement coverage: application **89.27% (33095/37072)**;
+all Go **89.15% (33266/37316)**; Provider **86.67% (1522/1756)**.
+[Exact receipt](docs/audits/go-coverage-memory-reply-json-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
+Python, branches and other platforms excluded. Full port acceptance remains open.
 
 
 ## 2026-10-09 native SQLite killed-generation process recovery
