@@ -1,0 +1,15 @@
+Use case: infographic-diagram
+Create a crisp landscape Chinese engineering progress infographic, restrained dark navy background with cyan evidence cards and amber open items, clean typography, generous whitespace. Title exact: “Go 迁移：原生监听回调边界”
+Subtitle: “2026-10-11 · 本轮只增加诊断与证据”
+Main flow diagram: “文件操作” → “C 回调入口” → “Go 准入与过滤” → “事件批次”
+Highlight the C entry stage as observed; the Go registry/fence stage should have an amber question mark.
+Show four cards with exact text:
+“ignored-hidden” “通过 · 操作窗口 1 个 C 事件”
+“ignored-backup” “超时 · 操作窗口 0 个 C 事件”
+“ignored-text” “超时 · 操作窗口 0 个 C 事件”
+“transient-source” “超时 · 操作窗口 0 个 C 事件”
+Small baseline note: “4 个用例均先观测到准备阶段的 C 事件”
+Conclusion: “这次失败发生在回调入口证据之前；不能由后续文件名过滤解释”
+Limits box exact: “未证明内核原因或队列状态；CGO Go 标记未观测到”
+Bottom note: “保留原用例与 3 秒操作超时 · 未修改运行时或依赖 · 全量验收仍未通过”
+No percentages, no green full migration success badge, no kernel causality claims. This is evidence from one diagnostic cohort, not statistical acceptance. Render only the requested labels, do not invent metrics.

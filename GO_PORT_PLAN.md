@@ -19393,3 +19393,7 @@ unchanged, so architecture JSON/HTML unchanged; no rendered acceptance or push.
 
 [Collector](docs/audits/go-reload-required-callbacks-2026-10-11.py),
 [exact raw callback evidence](docs/audits/go-reload-required-callbacks-2026-10-11.json).
+
+Built-in imagegen infographic inspected against this cohort; no full-success or
+kernel-cause claim. [Infographic](docs/audits/go-reload-required-callbacks-infographic-2026-10-11.png),
+[exact prompt](docs/audits/go-reload-required-callbacks-infographic-2026-10-11.prompt.txt).
