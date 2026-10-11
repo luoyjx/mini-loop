@@ -1,0 +1,17 @@
+Use case: infographic-diagram
+Create a clear landscape Chinese engineering test-results infographic on dark navy with cyan recorded facts and amber failures/open scope, large clean typography, no clutter.
+Title exact: “Go 迁移：Linux 全量门禁首次收敛”
+Subtitle: “固定 Go 1.23.3 · amd64 兼容层 · 未修改运行时”
+Three main cards:
+“普通测试” “8 个包失败”
+“vet” “通过”
+“race” “8 个包失败”
+Prominent note: “容器执行结束不等于测试通过”
+Evidence boxes:
+“CLI：只读 HOME 导致构建缓存失败”
+“shell / 路径 / 链接：需要同环境 Source 对照”
+“后台消息阶段、信号与管道清理：原因仍待验证”
+Bottom pipeline: “保留完整失败日志” → “准备同版本原生 arm64 环境” → “已启动独立普通 / vet / race 验证”
+Small scope: “原断言与超时保持；未重试 amd64 批次”
+Footer exact: “未刷新覆盖率或全量 Source；不构成迁移验收通过”
+Avoid claiming native arm64 gates passed, no race bugs globally, stable Source parity, successful runtime fix, or performance improvement. Do not invent counts or use an overall green completion badge. The only green card may be vet.

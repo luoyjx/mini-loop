@@ -19592,3 +19592,9 @@ baseline updated, runtime topology/authority/defaults unchanged, architecture
 JSON/HTML unchanged; no rendered acceptance/push. Darwin native reliability,
 Source freshness, default syntax/IDNA and complete P0/P1/G0–G7 remain open.
 [Full retained Linux gates](docs/audits/go-linux-full-gates-2026-10-11.json).
+
+Built-in imagegen infographic inspected; it presents the completed amd64 cohort
+and the dispatch of its independent arm64 follow-up. The terminal arm64 results
+are recorded above and in the receipt, not presented as a passing acceptance.
+[Infographic](docs/audits/go-linux-full-gates-infographic-2026-10-11.png),
+[exact prompt](docs/audits/go-linux-full-gates-infographic-2026-10-11.prompt.txt).
