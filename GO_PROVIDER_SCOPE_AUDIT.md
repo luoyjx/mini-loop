@@ -2,15 +2,15 @@
 
 ## 摘要
 
-当前复核基线：`4da75a3`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
+当前复核基线：`3cd31be`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
 元数据与实际计量消费者、十二个 SDK content discriminator 已有实现和组合证据。
 初始 usage 缺口已补齐，不能继续作为待实现项；下文早期章节保留各自历史基线。
 
 公开回复的 **`container` 与 `stop_details`** 已在 `3916f71` 补齐：具名闭合变体、
 direct/SSE 入口、不可变克隆与公开 JSON 对照全部 44 个真实 SDK 捕获通过。
-当前 provider 普通/race、vet 和类型审计通过；全量 Go 普通/race 均有 reload
-时序失败，Source 全量导出也在 WatchFiles 就绪处失败。完整验证见本轮 endpoint
-审计；下文各章节保留历史基线，G4/G7 继续开放。
+当前 Provider 扩展 wire 库存 12/14 匹配，2 项 dotted-I 必测失败；全量普通 Go
+也有 reload 时序失败。后续 gate 与历史结果见 authority 审计；分支尚未合入
+main，下文各章节保留历史基线，G4/G7 继续开放。
 
 ## 实际请求生成路径
 
@@ -471,3 +471,27 @@ custom transport 仍需最终核对，不能由这 40 个路径用例推导完�
 协调拒绝规则与现有安全要求；不能为了 SDK 相同而直接移除已有拒绝守卫。
 
 [完整观察与范围说明](docs/audits/go-provider-url-scope-2026-10-11.json)。
+
+## Request authority 与真实 HTTP wire — 2026-10-11
+
+`3cd31be` 规范请求主机/端口；`b5b7ef8` 将小写转换限制为 ASCII，保留 Unicode
+字面量。配置审计标识、IPv6 字面量与现有接受/重定向守卫保持原有语义。
+32 个请求对象断言匹配（原先 22）；wire 扩展为 14 个后，12 个匹配、
+2 个 dotted-I 必测断言失败。原始 `9c39e32` 同一 14 项库存仅 8 个匹配，
+该 Unicode 差异此前已存在。Native Host 为 `xn--bfa.invalid`，实际 Source
+为 `xn--i-9bb.invalid`；限制 ASCII 不能修复标准 transport 的 IDNA 差异。
+原始 12 项 wire 在 `3cd31be` 全通过属于历史结果，不能作为当前全通过证据。
+
+真实 SDK/provider、HTTP 编解码保留，仅将 TCP 目的地改为自有 loopback。
+已有 bücher/ß 匹配证据不代表完整 IDNA 或 TLS/SNI 等价。独立的 68 项
+URL diagnostic 没有 dotted-I：36 项双方完成中 32 项请求观察一致，4 项
+Unicode/空 fragment 表示差异；26 项 Source 可构造输入仍被原生规则拒绝。
+
+完整普通 Go 保留 2 项 Provider 失败和 5 项 reload 时序失败；当前与历史
+race、Source、Python 等门禁详见证据。当前全量 Source 导出在 native observer
+未就绪处失败；历史 234 项通过不能视为当前 freshness。14 项 wire 独立捕获通过。
+最终 Python 回归 2236 passed、28 skipped、54 warnings、24 subtests passed；
+vet、两项类型审计、19 项扫描守卫通过。IDNA 固定依赖批准尚待回复，未新增
+依赖。分支未合入 main，未 push；默认诊断及完整 G0–G7 仍开放。
+
+[完整证据](docs/audits/go-provider-authority-native-2026-10-11.json)。

@@ -6851,18 +6851,15 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 at production `6a6d5ed`; latest runtime implementation
-remains `4da75a3`. A new provider URL scope prerequisite observes 68 actual
-Source/native constructions and requests; its diagnostic is not a parity gate.
-Among 36 completions on both sides, 22 calls match and 14 differ. Another 26
-Source-constructible inputs are refused by existing native endpoint admission.
-Full Source export completes all 233 entries: 232 match, only WatchFiles differs
-at two native observations. Complete freshness is not achieved. Python full
-regression passes (2235 passed, 28 skipped, 24 subtests), provider race, vet and
-19 scanning guards pass. Full ordinary Go fails background timeout-fraction
-settlement and reload rename-source delivery. This prerequisite changes no
-runtime implementation; type audits and full Go race were not rerun this round.
-See [URL scope evidence](docs/audits/go-provider-url-scope-2026-10-11.json).
+Reviewed 2026-10-11: local main remains `9c39e32`; `fix/go-provider-authority`
+contains `3cd31be` and `b5b7ef8` (expanded Unicode wire follow-up). All 32 request-object
+assertions match. Expanded real HTTP wire inventory matches 12/14, with two required
+dotted-I failures (also present before normalization). Full ordinary Go also fails
+five reload cases. The branch is not merged while stable Provider failures remain.
+IDNA dependency approval is pending; no dependency added. Final gate receipts and
+historical results are retained in [authority evidence](docs/audits/go-provider-authority-native-2026-10-11.json).
+Coverage was not refreshed: latest measured `f2cdbca` application 89.34%, all Go
+89.31%. G0–G7 completion and prior native timing discrepancies remain open.
 This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
@@ -6879,7 +6876,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Last successful complete export verified 231 Source recipes; current 233-entry attempt has 232 matches and WatchFiles drift; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Historical original-12-wire export verified 234 Source fixtures; 32 request assertions match, expanded wire 12/14 matches with 2 required failures; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -18558,3 +18555,47 @@ was performed because runtime implementation is unchanged. A built-in imagegen
 PNG summarizes this round; text/counts were visually checked and one correction
 removed inaccurate quantitative bar geometry. This is evidence delivery, not G4/G7
 acceptance. Coverage is not refreshed.
+
+## Captured request authority and real HTTP wire — 2026-10-11
+
+`3cd31be` normalizes outbound hostname/port spelling. `b5b7ef8` restricts
+lowercase mapping to ASCII: Python Unicode lowercase can expand characters,
+whereas Go rune mapping differs. IPv6 spelling and configured audit identity
+remain intact. No dependency was added; admission and redirect guards are unchanged.
+All 32 captured ASCII/IPv6 direct/SSE request assertions match (22 before).
+The original 12 wire assertions matched at `3cd31be`; expanding to 14 reveals
+2 required dotted-I failures. Current wire matches: 12/14; original `9c39e32`
+with the same expanded inventory: 8/14. Native Host is `xn--bfa.invalid`, Source
+is `xn--i-9bb.invalid`. This discrepancy existed before normalization; preserving
+Unicode spelling does not reconcile standard transport IDNA. Assertions remain
+required and failing. Dependency approval for pinned x/net and x/text is pending.
+
+Actual SDK/provider and HTTP encoders/parsers are retained, with only the TCP
+destination redirected to an owned loopback listener. Host, target, method/API key
+and original dial authority are compared. Captured bücher/ß hosts match; this
+inventory does not prove complete IDNA or TLS/SNI parity.
+
+The separate 68-observation diagnostic has 36 both-completed observations:
+32 identical calls and four Unicode-host/empty-fragment representation differences.
+It does not contain dotted-I and is not a parity gate. Existing native admission
+still refuses 26 Source-constructible inputs. Broader acceptance remains open.
+
+Current gates and retained historical runs are recorded in the authority evidence.
+Current full Source export fails before completing freshness: native Source observer
+did not arm. The historical 234-fixture pass remains at the original 12-wire baseline.
+Focused actual Source wire capture passes the expanded 14-case inventory.
+Final Python regression passes 2236 tests, 28 skipped, 54 warnings, 24 subtests
+(105.68 seconds).
+Full ordinary Go fails the two required dotted-I cases and five reload cases:
+hidden-parent-source, removed-source, lower-mtime-write, ignored-backup, ignored-text.
+Full race also fails dotted-I, CLI reload and native reload timing cases; no data race
+report appears in the log. Vet, type audits and 19 scanner guards pass. The branch is held from local main
+`9c39e32` while stable Provider failures remain. No push. Coverage is not refreshed;
+the latest measurement remains the `f2cdbca` snapshot (application 89.34%, all Go
+89.31%). Prior background timing failures are not declared resolved.
+README and architecture specification reflect the failing wire boundary; generated
+architecture passes 9/9 checks. Rendered architecture review remains policy-blocked.
+The built-in imagegen graphic was edited and visually checked for 32/32 request
+matches, 12/14 wire matches and two open required failures. Full G0–G7 remains open.
+
+See [native authority evidence](docs/audits/go-provider-authority-native-2026-10-11.json).

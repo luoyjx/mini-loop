@@ -1,0 +1,3576 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "baseline": "9c39e32",
+  "runtime_change": "Normalize accepted outbound ASCII authority and numeric port spelling; keep configured audit identity and native endpoint admission",
+  "sdk": "0.107.1",
+  "httpx": "0.28.1",
+  "httpcore": "1.0.9",
+  "required_request_cases": {
+    "count": 32,
+    "before_matches": 22,
+    "after_matches": 32,
+    "before_log_sha256": "13bd2d6ea15057d473aa48380d415a04f95cd43c18ea09950e151d1c0f9165ee"
+  },
+  "required_real_http_wire_cases": {
+    "count": 14,
+    "before_matches": 8,
+    "after_matches": 12,
+    "before_log_sha256": "af372fe35e1e0f6f93832cc80344785a4eab3097dabc7c598cfc7cfd1c89d525",
+    "fixture": "go/testdata/python-provider-authority-wire.json",
+    "fixture_sha256": "e00664af8109cdc64f516602fc64ffdbf4f3f4d7c98b769ccc23d4f14e050609",
+    "seam": "Only TCP destination is redirected to owned loopback listener; real SDK/provider, HTTP encoder/parser, HTTP headers and body, direct/SSE replies and original dial authority remain observable",
+    "limitations": [
+      "HTTP only; TLS/SNI acceptance not proved",
+      "bücher and sharp-s hosts match for captured inputs; dotted-I is a required stable failure, including at the original baseline",
+      "Empty fragment is absent from HTTP request target; request-object representation remains different"
+    ],
+    "required_failures": [
+      "dotted-i-host/direct",
+      "dotted-i-host/stream"
+    ],
+    "dotted_i": {
+      "original_baseline": "9c39e32",
+      "present_before_normalization": true,
+      "current_native_host": "xn--bfa.invalid",
+      "source_host": "xn--i-9bb.invalid",
+      "intermediate_all_unicode_lowercase_native_host": "i.invalid",
+      "ascii_only_preserves_spelling_but_does_not_fix_std_transport_idna": true,
+      "original_red_log_sha256": "af372fe35e1e0f6f93832cc80344785a4eab3097dabc7c598cfc7cfd1c89d525",
+      "intermediate_red_log_sha256": "f25f0520eb6aba14f9b063d1292ac972cd67555aac7c3ed015e0071c2c72eb02"
+    },
+    "status": "failed: 2 required dotted-I assertions"
+  },
+  "diagnostic_after": {
+    "go_baseline": "9c39e32+original authority implementation (before expanded dotted-I capture)",
+    "sdk_version": "0.107.1",
+    "httpx_version": "0.28.1",
+    "cases": [
+      {
+        "source": {
+          "name": "default",
+          "base_url": null,
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "default",
+          "base_url": null,
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "default",
+          "base_url": null,
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "default",
+          "base_url": null,
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "empty",
+          "base_url": "",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty",
+          "base_url": "",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "empty",
+          "base_url": "",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty",
+          "base_url": "",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic",
+            "wire": "anthropic",
+            "endpoint": "https://api.anthropic.com",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://api.anthropic.com/v1/messages",
+              "raw_path": "/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "uppercase-host",
+          "base_url": "https://FIXTURE.INVALID/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://FIXTURE.INVALID/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "uppercase-host",
+          "base_url": "https://FIXTURE.INVALID/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://FIXTURE.INVALID/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "uppercase-host",
+          "base_url": "https://FIXTURE.INVALID/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://FIXTURE.INVALID/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "uppercase-host",
+          "base_url": "https://FIXTURE.INVALID/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://FIXTURE.INVALID/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "uppercase-scheme",
+          "base_url": "HTTPS://fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "HTTPS://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "uppercase-scheme",
+          "base_url": "HTTPS://fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "HTTPS://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "uppercase-scheme",
+          "base_url": "HTTPS://fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "HTTPS://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "uppercase-scheme",
+          "base_url": "HTTPS://fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "HTTPS://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "https-default-port",
+          "base_url": "https://fixture.invalid:443/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "https-default-port",
+          "base_url": "https://fixture.invalid:443/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "https-default-port",
+          "base_url": "https://fixture.invalid:443/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "https-default-port",
+          "base_url": "https://fixture.invalid:443/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "http-default-port",
+          "base_url": "http://fixture.invalid:80/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://fixture.invalid:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "http-default-port",
+          "base_url": "http://fixture.invalid:80/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://fixture.invalid:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "http-default-port",
+          "base_url": "http://fixture.invalid:80/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://fixture.invalid:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "http-default-port",
+          "base_url": "http://fixture.invalid:80/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://fixture.invalid:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "https-other-port",
+          "base_url": "https://fixture.invalid:8443/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:8443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:8443/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "https-other-port",
+          "base_url": "https://fixture.invalid:8443/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:8443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:8443/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "https-other-port",
+          "base_url": "https://fixture.invalid:8443/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:8443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:8443/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "https-other-port",
+          "base_url": "https://fixture.invalid:8443/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:8443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:8443/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "zero-padded-port",
+          "base_url": "https://fixture.invalid:00443/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:00443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "zero-padded-port",
+          "base_url": "https://fixture.invalid:00443/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:00443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "zero-padded-port",
+          "base_url": "https://fixture.invalid:00443/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:00443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "zero-padded-port",
+          "base_url": "https://fixture.invalid:00443/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:00443/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "empty-port",
+          "base_url": "https://fixture.invalid:/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty-port",
+          "base_url": "https://fixture.invalid:/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "empty-port",
+          "base_url": "https://fixture.invalid:/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty-port",
+          "base_url": "https://fixture.invalid:/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "ipv6",
+          "base_url": "http://[::1]:8080/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:8080/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]:8080/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ipv6",
+          "base_url": "http://[::1]:8080/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:8080/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]:8080/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "ipv6",
+          "base_url": "http://[::1]:8080/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:8080/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]:8080/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ipv6",
+          "base_url": "http://[::1]:8080/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:8080/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]:8080/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "ipv6-expanded",
+          "base_url": "http://[0:0:0:0:0:0:0:1]/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[0:0:0:0:0:0:0:1]/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[0:0:0:0:0:0:0:1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ipv6-expanded",
+          "base_url": "http://[0:0:0:0:0:0:0:1]/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[0:0:0:0:0:0:0:1]/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[0:0:0:0:0:0:0:1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "ipv6-expanded",
+          "base_url": "http://[0:0:0:0:0:0:0:1]/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[0:0:0:0:0:0:0:1]/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[0:0:0:0:0:0:0:1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ipv6-expanded",
+          "base_url": "http://[0:0:0:0:0:0:0:1]/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[0:0:0:0:0:0:0:1]/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[0:0:0:0:0:0:0:1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "ipv6-default-port",
+          "base_url": "http://[::1]:80/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ipv6-default-port",
+          "base_url": "http://[::1]:80/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "ipv6-default-port",
+          "base_url": "http://[::1]:80/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ipv6-default-port",
+          "base_url": "http://[::1]:80/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "http://[::1]:80/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "http://[::1]/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "unicode-host",
+          "base_url": "https://bücher.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://bücher.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://xn--bcher-kva.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "unicode-host",
+          "base_url": "https://bücher.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://bücher.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://b%C3%BCcher.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": false,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "unicode-host",
+          "base_url": "https://bücher.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://bücher.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://xn--bcher-kva.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "unicode-host",
+          "base_url": "https://bücher.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://bücher.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://b%C3%BCcher.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": false,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "punycode-host",
+          "base_url": "https://xn--bcher-kva.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://xn--bcher-kva.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://xn--bcher-kva.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "punycode-host",
+          "base_url": "https://xn--bcher-kva.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://xn--bcher-kva.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://xn--bcher-kva.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "punycode-host",
+          "base_url": "https://xn--bcher-kva.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://xn--bcher-kva.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://xn--bcher-kva.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "punycode-host",
+          "base_url": "https://xn--bcher-kva.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://xn--bcher-kva.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://xn--bcher-kva.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "trailing-host-dot",
+          "base_url": "https://fixture.invalid./tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid./tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid./tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "trailing-host-dot",
+          "base_url": "https://fixture.invalid./tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid./tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid./tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "trailing-host-dot",
+          "base_url": "https://fixture.invalid./tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid./tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid./tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "trailing-host-dot",
+          "base_url": "https://fixture.invalid./tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid./tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid./tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "query",
+          "base_url": "https://fixture.invalid/tenant?q=fixture",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant?q=fixture",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant?q=fixture/v1/messages",
+              "raw_path": "/tenant?q=fixture/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "query",
+          "base_url": "https://fixture.invalid/tenant?q=fixture",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "query",
+          "base_url": "https://fixture.invalid/tenant?q=fixture",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant?q=fixture",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant?q=fixture/v1/messages",
+              "raw_path": "/tenant?q=fixture/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "query",
+          "base_url": "https://fixture.invalid/tenant?q=fixture",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "empty-query",
+          "base_url": "https://fixture.invalid/tenant?",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant?",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant?/v1/messages",
+              "raw_path": "/tenant?/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty-query",
+          "base_url": "https://fixture.invalid/tenant?",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "empty-query",
+          "base_url": "https://fixture.invalid/tenant?",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant?",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant?/v1/messages",
+              "raw_path": "/tenant?/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty-query",
+          "base_url": "https://fixture.invalid/tenant?",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "fragment",
+          "base_url": "https://fixture.invalid/tenant#fixture",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant#fixture",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages#fixture",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "fragment",
+          "base_url": "https://fixture.invalid/tenant#fixture",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "fragment",
+          "base_url": "https://fixture.invalid/tenant#fixture",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant#fixture",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages#fixture",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "fragment",
+          "base_url": "https://fixture.invalid/tenant#fixture",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "empty-fragment",
+          "base_url": "https://fixture.invalid/tenant#",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant#",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages#",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty-fragment",
+          "base_url": "https://fixture.invalid/tenant#",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant#",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": false,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "empty-fragment",
+          "base_url": "https://fixture.invalid/tenant#",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant#",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages#",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "empty-fragment",
+          "base_url": "https://fixture.invalid/tenant#",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant#",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": false,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "userinfo",
+          "base_url": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture-user:fixture-pass@fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": "Basic Zml4dHVyZS11c2VyOmZpeHR1cmUtcGFzcw=="
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "userinfo",
+          "base_url": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "userinfo",
+          "base_url": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture-user:fixture-pass@fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": "Basic Zml4dHVyZS11c2VyOmZpeHR1cmUtcGFzcw=="
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "userinfo",
+          "base_url": "https://fixture-user:fixture-pass@fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "username",
+          "base_url": "https://fixture-user@fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture-user@fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture-user@fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": "Basic Zml4dHVyZS11c2VyOg=="
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "username",
+          "base_url": "https://fixture-user@fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "username",
+          "base_url": "https://fixture-user@fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture-user@fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture-user@fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": "Basic Zml4dHVyZS11c2VyOg=="
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "username",
+          "base_url": "https://fixture-user@fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "relative-path",
+          "base_url": "/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "relative-path",
+          "base_url": "/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "relative-path",
+          "base_url": "/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "relative-path",
+          "base_url": "/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "bare-host",
+          "base_url": "fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/fixture.invalid/tenant/v1/messages",
+              "raw_path": "/fixture.invalid/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "bare-host",
+          "base_url": "fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "bare-host",
+          "base_url": "fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/fixture.invalid/tenant/v1/messages",
+              "raw_path": "/fixture.invalid/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "bare-host",
+          "base_url": "fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "scheme-relative",
+          "base_url": "//fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "//fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "scheme-relative",
+          "base_url": "//fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "scheme-relative",
+          "base_url": "//fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "//fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "scheme-relative",
+          "base_url": "//fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "ftp",
+          "base_url": "ftp://fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "ftp://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "ftp://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ftp",
+          "base_url": "ftp://fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "ftp",
+          "base_url": "ftp://fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "ftp://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "ftp://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "ftp",
+          "base_url": "ftp://fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "missing-host",
+          "base_url": "https:///tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https:///tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "missing-host",
+          "base_url": "https:///tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "missing-host",
+          "base_url": "https:///tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https:///tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "missing-host",
+          "base_url": "https:///tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "invalid-port",
+          "base_url": "https://fixture.invalid:wrong/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:wrong/tenant",
+            "credential": "<set>"
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "InvalidURL",
+            "text": "Invalid port: 'wrong'"
+          },
+          "calls": []
+        },
+        "native": {
+          "name": "invalid-port",
+          "base_url": "https://fixture.invalid:wrong/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "invalid-port",
+          "base_url": "https://fixture.invalid:wrong/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:wrong/tenant",
+            "credential": "<set>"
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "InvalidURL",
+            "text": "Invalid port: 'wrong'"
+          },
+          "calls": []
+        },
+        "native": {
+          "name": "invalid-port",
+          "base_url": "https://fixture.invalid:wrong/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "oversized-port",
+          "base_url": "https://fixture.invalid:99999/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:99999/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:99999/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "oversized-port",
+          "base_url": "https://fixture.invalid:99999/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:99999/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:99999/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "oversized-port",
+          "base_url": "https://fixture.invalid:99999/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:99999/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:99999/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "oversized-port",
+          "base_url": "https://fixture.invalid:99999/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid:99999/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid:99999/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "invalid-escape",
+          "base_url": "https://fixture.invalid/%zz",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/%zz",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/%zz/v1/messages",
+              "raw_path": "/%zz/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "invalid-escape",
+          "base_url": "https://fixture.invalid/%zz",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "invalid-escape",
+          "base_url": "https://fixture.invalid/%zz",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/%zz",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/%zz/v1/messages",
+              "raw_path": "/%zz/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "invalid-escape",
+          "base_url": "https://fixture.invalid/%zz",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "unmatched-ipv6",
+          "base_url": "https://[::1/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://[::1/tenant",
+            "credential": "<set>"
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "InvalidURL",
+            "text": "Invalid port: ':1'"
+          },
+          "calls": []
+        },
+        "native": {
+          "name": "unmatched-ipv6",
+          "base_url": "https://[::1/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "unmatched-ipv6",
+          "base_url": "https://[::1/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://[::1/tenant",
+            "credential": "<set>"
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "InvalidURL",
+            "text": "Invalid port: ':1'"
+          },
+          "calls": []
+        },
+        "native": {
+          "name": "unmatched-ipv6",
+          "base_url": "https://[::1/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "host-space",
+          "base_url": "https://fixture host.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture host.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture%20host.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "host-space",
+          "base_url": "https://fixture host.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "host-space",
+          "base_url": "https://fixture host.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture host.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture%20host.invalid/tenant/v1/messages",
+              "raw_path": "/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "host-space",
+          "base_url": "https://fixture host.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "leading-space",
+          "base_url": " https://fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": " https://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/%20https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/%20https://fixture.invalid/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "leading-space",
+          "base_url": " https://fixture.invalid/tenant",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "leading-space",
+          "base_url": " https://fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": " https://fixture.invalid/tenant",
+            "credential": "<set>"
+          },
+          "stage": "request",
+          "error": {
+            "type": "APIConnectionError",
+            "text": "Connection error."
+          },
+          "calls": [
+            {
+              "url": "/%20https://fixture.invalid/tenant/v1/messages",
+              "raw_path": "/%20https://fixture.invalid/tenant/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ]
+        },
+        "native": {
+          "name": "leading-space",
+          "base_url": " https://fixture.invalid/tenant",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": false,
+        "same_calls": false,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "trailing-space",
+          "base_url": "https://fixture.invalid/tenant ",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant ",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant%20/v1/messages",
+              "raw_path": "/tenant%20/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "trailing-space",
+          "base_url": "https://fixture.invalid/tenant ",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant ",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant%20/v1/messages",
+              "raw_path": "/tenant%20/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "trailing-space",
+          "base_url": "https://fixture.invalid/tenant ",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant ",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant%20/v1/messages",
+              "raw_path": "/tenant%20/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "native": {
+          "name": "trailing-space",
+          "base_url": "https://fixture.invalid/tenant ",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant ",
+            "credential": "<set>"
+          },
+          "stage": "complete",
+          "error": null,
+          "calls": [
+            {
+              "url": "https://fixture.invalid/tenant%20/v1/messages",
+              "raw_path": "/tenant%20/v1/messages",
+              "method": "POST",
+              "api_key": "fixture-key",
+              "authorization": null
+            }
+          ],
+          "text": "ok"
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": true
+      },
+      {
+        "source": {
+          "name": "newline",
+          "base_url": "https://fixture.invalid/tenant\n",
+          "mode": "direct",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant\n",
+            "credential": "<set>"
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "InvalidURL",
+            "text": "Invalid non-printable ASCII character in URL, '\\n' at position 30."
+          },
+          "calls": []
+        },
+        "native": {
+          "name": "newline",
+          "base_url": "https://fixture.invalid/tenant\n",
+          "mode": "direct",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": false
+      },
+      {
+        "source": {
+          "name": "newline",
+          "base_url": "https://fixture.invalid/tenant\n",
+          "mode": "stream",
+          "identity": {
+            "name": "anthropic-compatible",
+            "wire": "anthropic",
+            "endpoint": "https://fixture.invalid/tenant\n",
+            "credential": "<set>"
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "InvalidURL",
+            "text": "Invalid non-printable ASCII character in URL, '\\n' at position 30."
+          },
+          "calls": []
+        },
+        "native": {
+          "name": "newline",
+          "base_url": "https://fixture.invalid/tenant\n",
+          "mode": "stream",
+          "identity": {
+            "name": "",
+            "wire": "",
+            "endpoint": "",
+            "credential": ""
+          },
+          "stage": "constructor",
+          "error": {
+            "type": "*errors.errorString",
+            "text": "provider endpoint must be an HTTP(S) base URL without credentials, query or fragment"
+          },
+          "calls": []
+        },
+        "same_stage": true,
+        "same_calls": true,
+        "same_identity": false
+      }
+    ]
+  },
+  "remaining_diagnostic": {
+    "both_complete": 36,
+    "identical_calls": 32,
+    "different_calls": 4,
+    "names": [
+      "unicode-host",
+      "empty-fragment"
+    ],
+    "source_constructible_native_refused": 26,
+    "is_parity_gate": false,
+    "contains_dotted_i": false
+  },
+  "boundaries": [
+    "No new dependency or domain type",
+    "No constructor HTTP; Config.BaseURL remains audit identity",
+    "Existing query/userinfo/fragment admission and redirect refusal unchanged",
+    "IPv6 spelling and zones retained; leading numeric port zeroes removed, HTTP 80/HTTPS 443 omitted"
+  ],
+  "pending_decisions": [
+    "IDNA request-object/custom-transport dependency approval: golang.org/x/net v0.43.0 + golang.org/x/text v0.28.0; not added",
+    "Default CPython diagnostics approval remains distinct from SQLite approval"
+  ],
+  "dependency_sources": [
+    "https://raw.githubusercontent.com/golang/net/v0.43.0/go.mod",
+    "https://raw.githubusercontent.com/golang/text/v0.28.0/go.mod"
+  ],
+  "architecture": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "563fe83b4783594d44679f5b0251863c1662d3e229f98d7278c575a8173589a2",
+      "bytes": 136432
+    },
+    "artifact": {
+      "sha256": "3ca751911d6111a4751a82198446f78bede423f95ea002edf2ea7b8ee7a67f4a",
+      "bytes": 786624
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "visual_review": "Architecture browser render skipped due prior security-policy rejection; no alternate workaround",
+  "coverage": {
+    "refreshed": false,
+    "last_measured_baseline": "f2cdbca",
+    "application_statement_percent": 89.34,
+    "all_go_statement_percent": 89.31,
+    "scope": "Darwin arm64 Go statement coverage; excludes native C and subprocess internals; not migration completion"
+  },
+  "goal": "Full G0-G7 migration remains incomplete",
+  "infographic": {
+    "path": "docs/audits/go-provider-authority-infographic-v2-2026-10-11.png",
+    "tool": "built-in image_gen",
+    "sha256": "8008af65ab86ac25b438b457913adaf86c202eaa176149decaa034f564daa920",
+    "verification": "Viewed final PNG: 32/32 request matches; 12/14 wire matches; 2 open required dotted-I failures; 14-to-4 diagnostic differences. Numeric cards, no proportional bars.",
+    "correction_rounds": 1,
+    "prompt": "docs/audits/go-provider-authority-infographic-prompt-2026-10-11.json"
+  },
+  "gates": {
+    "go": {
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "exit_code": 1,
+      "sha256": "661d3169a503f2e9fc99d1a260960d531445eb83e315d40d16f6c706119c91b4",
+      "failures": [
+        "TestCapturedAuthorityHTTPWireMatchesSDK (0.00s)",
+        "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)",
+        "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)",
+        "TestNativeEventsActualSourceRecipes (67.26s)",
+        "TestNativeEventsActualSourceRecipes/hidden-parent-source (3.78s)",
+        "TestNativeEventsActualSourceRecipes/removed-source (3.80s)",
+        "TestNativeEventsActualSourceRecipes/lower-mtime-write (3.82s)",
+        "TestNativeEventsActualSourceRecipes/ignored-backup (3.73s)",
+        "TestNativeEventsActualSourceRecipes/ignored-text (8.91s)"
+      ],
+      "summary": [
+        "FAIL"
+      ],
+      "failure_evidence": "--- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK (0.00s)\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/provider\t0.861s\n--- FAIL: TestNativeEventsActualSourceRecipes (67.26s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/hidden-parent-source (3.78s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +94ms subscription constructed; drain before post-subscription probe\n            +195ms pre-probe next: paths=[] error=context deadline exceeded\n            +616ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1710447743/001\" flags=164096\n            +617ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1710447743/001/.git\" flags=164096\n            +617ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1710447743/001/reload_observer_ready.go\" flags=102656\n            +669ms readiness probe observed; drain remaining setup events\n            +771ms post-probe next: paths=[] error=context deadline exceeded\n            +771ms operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source1710447743/001/.git/a.go\n            +3.774s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/removed-source (3.80s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +161ms subscription constructed; drain before post-subscription probe\n            +263ms pre-probe next: paths=[] error=context deadline exceeded\n            +488ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source3457878281/001\" flags=164096\n            +488ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source3457878281/001/source.go\" flags=103680\n            +641ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source3457878281/001/reload_observer_ready.go\" flags=102656\n            +693ms readiness probe observed; drain remaining setup events\n            +793ms post-probe next: paths=[] error=context deadline exceeded\n            +793ms operation=remove path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source3457878281/001/source.go\n            +3.796s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/lower-mtime-write (3.82s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +111ms subscription constructed; drain before post-subscription probe\n            +213ms pre-probe next: paths=[] error=context deadline exceeded\n            +661ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write4002920666/001\" flags=164096\n            +661ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write4002920666/001/source.go\" flags=103680\n            +661ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write4002920666/001/reload_observer_ready.go\" flags=102656\n            +712ms readiness probe observed; drain remaining setup events\n            +814ms post-probe next: paths=[] error=context deadline exceeded\n            +814ms operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write4002920666/001/source.go\n            +3.814s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-backup (3.73s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +185ms subscription constructed; drain before post-subscription probe\n            +199ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup951253104/001\" flags=164096\n            +251ms pre-probe next: paths=[] error=<nil>\n            +351ms pre-probe next: paths=[] error=context deadline exceeded\n            +569ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup951253104/001/reload_observer_ready.go\" flags=102656\n            +620ms readiness probe observed; drain remaining setup events\n            +722ms post-probe next: paths=[] error=context deadline exceeded\n            +722ms operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup951253104/001/~backup.go\n            +3.709s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup951253104/001/~backup.go\" flags=103680\n            +3.723s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-text (8.91s)\n        native_events_recipes_test.go:197: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +345ms subscription constructed; drain before post-subscription probe\n            +447ms pre-probe next: paths=[] error=context deadline exceeded\n            +5.415s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1667314747/001\" flags=164096\n            +5.751s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1667314747/001/reload_observer_ready.go\" flags=102656\n            +5.801s readiness probe observed; drain remaining setup events\n            +5.902s post-probe next: paths=[] error=context deadline exceeded\n            +5.902s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1667314747/001/notes.txt\n            +8.903s operation next: paths=[] error=context deadline exceeded\n            \nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/reload\t129.915s\n"
+    },
+    "provider": {
+      "command": "go test -count=1 ./provider",
+      "exit_code": 1,
+      "sha256": "dbdfa59db12a9cae19c80b459f83de9e8298ca7b7c563367a938cce2d32d160d",
+      "failures": [
+        "TestCapturedAuthorityHTTPWireMatchesSDK (0.01s)",
+        "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)",
+        "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)"
+      ],
+      "summary": [
+        "FAIL"
+      ]
+    },
+    "vet": {
+      "command": "go vet ./...",
+      "exit_code": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "failures": [],
+      "summary": []
+    },
+    "types": {
+      "command": "go run ./tools/typeaudit",
+      "exit_code": 0,
+      "sha256": "6b3a068a6483ec7760c5d58679b6ca10517b5b0603d2632eef9ee928c4ada01a",
+      "failures": [],
+      "summary": [
+        "Go type audit: 449 production files, 1430 package-level types, 0 findings"
+      ]
+    },
+    "public-types": {
+      "command": "go run ./tools/typeaudit -public",
+      "exit_code": 0,
+      "sha256": "e72b55d7b2a15d2bef0eb94d7419ff0a5873d5158399cf9d5623d580f5bcd0af",
+      "failures": [],
+      "summary": [
+        "Go public type audit: 50 packages, 1189 exported types, 0 findings"
+      ]
+    },
+    "scans": {
+      "command": ".venv/bin/python python/tools/verify_scans.py",
+      "exit_code": 0,
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "baseline": "Current Python scanner targets unchanged after this passing 19-check run"
+    },
+    "race": {
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+      "exit_code": 1,
+      "sha256": "b2db1a63deed3a30a37b46489541691e006886b801171376853ac14502f5fa36",
+      "failures": [
+        "TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv (50.23s)",
+        "TestCapturedAuthorityHTTPWireMatchesSDK (0.01s)",
+        "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)",
+        "TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)",
+        "TestNativeObserverDuringRealCgoBuildInsideWatchedRoot (30.48s)",
+        "TestNativeEventsActualSourceRecipes (83.54s)",
+        "TestNativeEventsActualSourceRecipes/identical-write (3.33s)",
+        "TestNativeEventsActualSourceRecipes/rename-source (3.77s)",
+        "TestNativeEventsActualSourceRecipes/ignored-backup (8.88s)",
+        "TestNativeEventsActualSourceRecipes/ignored-text (4.77s)",
+        "TestNativeEventsActualSourceRecipes/source-directory (7.72s)",
+        "TestNativeEventsActualSourceRecipes/transient-source (4.20s)"
+      ],
+      "failure_evidence": "--- FAIL: TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv (50.23s)\nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/cmd/miniloop\t69.211s\n--- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK (0.01s)\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/direct (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\n    --- FAIL: TestCapturedAuthorityHTTPWireMatchesSDK/dotted-i-host/stream (0.00s)\n        authority_wire_test.go:104: real HTTP wire differs {POST /tenant/v1/messages HTTP/1.1 xn--bfa.invalid fixture-key} {POST /tenant/v1/messages HTTP/1.1 xn--i-9bb.invalid fixture-key}\nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/provider\t2.108s\n--- FAIL: TestNativeObserverDuringRealCgoBuildInsideWatchedRoot (30.48s)\n    build_workspace_darwin_test.go:52: native fixture readiness context deadline exceeded\n--- FAIL: TestNativeEventsActualSourceRecipes (83.54s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/identical-write (3.33s)\n        native_events_recipes_test.go:197: context deadline exceeded\n            +124ms pre-probe next: paths=[] error=context deadline exceeded\n            +325ms post-probe next: paths=[] error=context deadline exceeded\n            +3.326s operation next: paths=[] error=context deadline exceeded\n    --- FAIL: TestNativeEventsActualSourceRecipes/rename-source (3.77s)\n        native_events_recipes_test.go:197: context deadline exceeded\n            +139ms pre-probe next: paths=[] error=context deadline exceeded\n            +759ms post-probe next: paths=[] error=context deadline exceeded\n            +3.763s operation next: paths=[] error=context deadline exceeded\n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-backup (8.88s)\n        native_events_recipes_test.go:197: context deadline exceeded\n            +206ms pre-probe next: paths=[] error=context deadline exceeded\n            +5.87s post-probe next: paths=[] error=context deadline exceeded\n            +8.875s operation next: paths=[] error=context deadline exceeded\n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-text (4.77s)\n        native_events_recipes_test.go:197: context deadline exceeded\n            +146ms pre-probe next: paths=[] error=context deadline exceeded\n            +1.758s post-probe next: paths=[] error=context deadline exceeded\n            +4.763s operation next: paths=[] error=context deadline exceeded\n    --- FAIL: TestNativeEventsActualSourceRecipes/source-directory (7.72s)\n        native_events_recipes_test.go:197: context deadline exceeded\n            +421ms pre-probe next: paths=[] error=context deadline exceeded\n            +4.71s post-probe next: paths=[] error=context deadline exceeded\n            +7.712s operation next: paths=[] error=context deadline exceeded\n    --- FAIL: TestNativeEventsActualSourceRecipes/transient-source (4.20s)\n        native_events_recipes_test.go:197: context deadline exceeded\n            +175ms pre-probe next: paths=[] error=context deadline exceeded\n            +1.195s post-probe next: paths=[] error=context deadline exceeded\n            +4.199s operation next: paths=[] error=context deadline exceeded\nFAIL\nFAIL\tgithub.com/luoyjx/mini-loop/go/reload\t168.521s\nFAIL",
+      "data_race_reported": false
+    },
+    "export": {
+      "command": ".venv/bin/python python/tools/export_go_contracts.py --check",
+      "exit_code": 1,
+      "sha256": "53eb890769c876249d7b4f310ac2508a46800bf56dd7f79dfe77ffaa9b71073f",
+      "summary": "RuntimeError: native Source observer did not arm",
+      "failure_evidence": "  PydanticSerializationUnexpectedValue(Expected `dict[str, any]` - serialized value may not be as expected [field_name='input', input_value=-inf, input_type=float])\n  return self.__pydantic_serializer__.to_python(\n/Users/yanjixiong/github/mini-loop/.venv/lib/python3.11/site-packages/pydantic/main.py:475: UserWarning: Pydantic serializer warnings:\n  PydanticSerializationUnexpectedValue(Expected `dict[str, any]` - serialized value may not be as expected [field_name='input', input_value=[-inf], input_type=list])\n  return self.__pydantic_serializer__.to_python(\nTraceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/export_go_contracts.py\", line 10699, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/export_go_contracts.py\", line 9107, in main\n    snapshot = _snapshot()\n               ^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/export_go_contracts.py\", line 6931, in _snapshot\n    \"python-watchfiles.json\": _json_bytes(watchfiles_contracts(Path(scratch) / \"watchfiles\")),\n                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\", line 387, in watchfiles_contracts\n    native_events=[_native_case(scratch / recipe[\"name\"], recipe)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\", line 387, in <listcomp>\n    native_events=[_native_case(scratch / recipe[\"name\"], recipe)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\", line 168, in _native_case\n    raise RuntimeError(\"native Source observer did not arm\") from (errors[0] if errors else None)\nRuntimeError: native Source observer did not arm",
+      "all_234_freshness_confirmed": false
+    },
+    "source-wire-focused": {
+      "command": ".venv/bin/python -m pytest -q python/tests/test_provider_authority_wire_contracts.py",
+      "exit_code": 0,
+      "inventory": 14,
+      "sha256": "acbadd455418fe405791d2d792bd1c63190d32c09dc2792bcd7909f7c0699441"
+    },
+    "python": {
+      "command": ".venv/bin/python -m pytest -q",
+      "exit_code": 0,
+      "sha256": "2b0cdb63deb288fe7ff51c956a6870abb323c815c24cf2c8e809677731602c23",
+      "summary": "2236 passed, 28 skipped, 54 warnings, 24 subtests passed in 105.68s (0:01:45)"
+    }
+  },
+  "background_timing": "Prior timeout-fraction discrepancy not reproduced in this ordinary/race run; not treated as resolved",
+  "test_note": "Current ordinary and race use identical frozen production/test/fixture source. Source WatchFiles export runs only after native jobs terminate.",
+  "implementation_commit": "b5b7ef87cb445ffc180fdff92331fd051720c307",
+  "historical_original_12_wire_gates": {
+    "baseline": "3cd31be before expanded dotted-I capture and ASCII-only correction",
+    "gates": {
+      "go": {
+        "command": "go test -p=1 -count=1 -timeout=300s ./...",
+        "exit_code": 1,
+        "sha256": "d94977d7765ac3f422544fd77ab5298d0e299eb9232303d498e1b0bbd32021fa"
+      },
+      "race": {
+        "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+        "exit_code": 0,
+        "sha256": "2ff79a9596c396cf133e023c37dac42c36fca7c608978d088b46342aabe5ff7d"
+      },
+      "vet": {
+        "command": "go vet ./...",
+        "exit_code": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "types": {
+        "command": "go run ./tools/typeaudit",
+        "exit_code": 0,
+        "sha256": "6b3a068a6483ec7760c5d58679b6ca10517b5b0603d2632eef9ee928c4ada01a"
+      },
+      "public-types": {
+        "command": "go run ./tools/typeaudit -public",
+        "exit_code": 0,
+        "sha256": "e72b55d7b2a15d2bef0eb94d7419ff0a5873d5158399cf9d5623d580f5bcd0af"
+      },
+      "scans": {
+        "command": ".venv/bin/python python/tools/verify_scans.py",
+        "exit_code": 0,
+        "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+        "baseline": "Current Python scanner targets unchanged after this passing 19-check run"
+      },
+      "export": {
+        "command": ".venv/bin/python python/tools/export_go_contracts.py --check",
+        "exit_code": 0,
+        "sha256": "42e452dd3724420ba6eef6e2adacd10d39f6aee8d009664d946e5d1a9d984895"
+      },
+      "provider": {
+        "command": "go test -count=1 ./provider",
+        "exit_code": 0,
+        "sha256": "b985aa7fff7c2d4cb83ce704cbcef816e8e2e72327b6a285d6455ae406b311ab"
+      },
+      "python": {
+        "command": ".venv/bin/python -m pytest -q",
+        "exit_code": 0,
+        "summary": "2236 passed, 28 skipped, 54 warnings, 24 subtests passed in 167.16s",
+        "sha256": "9c017246b63a0aa35161e288713161b4e164322d6cdcf08e0f94e1c86aaee08b"
+      }
+    },
+    "wire_matches": 12,
+    "wire_count": 12,
+    "ordinary_reload_failures": [
+      "reload/lower-mtime-write",
+      "reload/identical-write",
+      "reload/same-mtime-touch",
+      "reload/rename-in",
+      "reload/rename-source"
+    ]
+  },
+  "delivery": {
+    "branch": "fix/go-provider-authority",
+    "local_main": "9c39e32",
+    "merged": false,
+    "pushed": false,
+    "reason": "2 stable required Provider wire failures remain; pinned IDNA dependency approval pending under AGENTS.md"
+  },
+  "full_source_freshness_historical": 234,
+  "ordinary_go_failures": [
+    "provider/dotted-i-host/direct",
+    "provider/dotted-i-host/stream",
+    "reload/hidden-parent-source",
+    "reload/removed-source",
+    "reload/lower-mtime-write",
+    "reload/ignored-backup",
+    "reload/ignored-text"
+  ],
+  "initial_implementation_commit": "3cd31beaf97b7b39a3257cf77e7ed6ce19e52845",
+  "validation_policy": "All required gates were run. Failing parity and native timing assertions are preserved in commits; no main merge while stable required Provider failures remain.",
+  "skipped_gates": {
+    "coverage": "not refreshed",
+    "python_package_invariants": "no Python package runtime changed",
+    "guard_mutation_sweep": "no guarded runtime invariant changed",
+    "architecture_render": "prior browser security-policy rejection; no workaround",
+    "non_Darwin": "not run",
+    "remote_fetch_push": "not requested"
+  }
+}
