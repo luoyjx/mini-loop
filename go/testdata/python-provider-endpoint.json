@@ -1,0 +1,545 @@
+{
+  "cases": [
+    {
+      "base_url": "https://fixture.invalid",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://fixture.invalid/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://fixture.invalid/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://fixture.invalid/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://fixture.invalid/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid//",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "//v1/messages",
+          "url": "https://fixture.invalid//v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid//",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "//v1/messages",
+          "url": "https://fixture.invalid//v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant//",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant//v1/messages",
+          "url": "https://fixture.invalid/tenant//v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant//",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant//v1/messages",
+          "url": "https://fixture.invalid/tenant//v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant///",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant///v1/messages",
+          "url": "https://fixture.invalid/tenant///v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant///",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant///v1/messages",
+          "url": "https://fixture.invalid/tenant///v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/./tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/a/tenant/v1/messages",
+          "url": "https://fixture.invalid/a/tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/./tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/a/tenant/v1/messages",
+          "url": "https://fixture.invalid/a/tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/../tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/../tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/../../tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/../../tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/.",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/.",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://fixture.invalid/tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/..",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://fixture.invalid/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/..",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/messages",
+          "url": "https://fixture.invalid/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a//../tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/a/tenant/v1/messages",
+          "url": "https://fixture.invalid/a/tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a//../tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/a/tenant/v1/messages",
+          "url": "https://fixture.invalid/a/tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/..//tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "//tenant/v1/messages",
+          "url": "https://fixture.invalid//tenant/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/a/..//tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "//tenant/v1/messages",
+          "url": "https://fixture.invalid//tenant/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant%2F/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant%2F/v1/messages",
+          "url": "https://fixture.invalid/tenant%2F/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant%2F/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant%2F/v1/messages",
+          "url": "https://fixture.invalid/tenant%2F/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/%2e%2E/child",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/%2e%2E/child/v1/messages",
+          "url": "https://fixture.invalid/tenant/%2e%2E/child/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant/%2e%2E/child",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant/%2e%2E/child/v1/messages",
+          "url": "https://fixture.invalid/tenant/%2e%2E/child/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant%2f//",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant%2f//v1/messages",
+          "url": "https://fixture.invalid/tenant%2f//v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant%2f//",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant%2f//v1/messages",
+          "url": "https://fixture.invalid/tenant%2f//v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant path/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant%20path/v1/messages",
+          "url": "https://fixture.invalid/tenant%20path/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/tenant path/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/tenant%20path/v1/messages",
+          "url": "https://fixture.invalid/tenant%20path/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/café/中文",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/caf%C3%A9/%E4%B8%AD%E6%96%87/v1/messages",
+          "url": "https://fixture.invalid/caf%C3%A9/%E4%B8%AD%E6%96%87/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/café/中文",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/caf%C3%A9/%E4%B8%AD%E6%96%87/v1/messages",
+          "url": "https://fixture.invalid/caf%C3%A9/%E4%B8%AD%E6%96%87/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/v1/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/v1/messages",
+          "url": "https://fixture.invalid/v1/v1/messages"
+        }
+      ],
+      "mode": "direct",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://fixture.invalid/v1/",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "method": "POST",
+          "raw_path": "/v1/v1/messages",
+          "url": "https://fixture.invalid/v1/v1/messages"
+        }
+      ],
+      "mode": "stream",
+      "text": "ok"
+    }
+  ],
+  "httpx_version": "0.28.1",
+  "message": {
+    "content": [
+      {
+        "text": "ok",
+        "type": "text"
+      }
+    ],
+    "id": "fixture",
+    "model": "fixture-model",
+    "role": "assistant",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "type": "message",
+    "usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    }
+  },
+  "sdk_version": "0.107.1",
+  "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 1}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+}

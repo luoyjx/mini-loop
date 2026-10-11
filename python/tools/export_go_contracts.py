@@ -6514,6 +6514,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_reply_metadata_contracts import provider_reply_metadata_contracts
     from tools.api_documentation_contracts import api_documentation_contracts
     from tools.http_routing_contracts import http_routing_contracts
+    from tools.provider_endpoint_contracts import provider_endpoint_contracts
     from tools.provider_web_search_contracts import provider_web_search_contracts
     from tools.provider_web_fetch_contracts import provider_web_fetch_contracts
     from tools.provider_code_execution_contracts import provider_code_execution_contracts
@@ -6895,6 +6896,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-reply-metadata.json": _json_bytes(provider_reply_metadata_contracts()),
         "python-api-documentation.json": _json_bytes(api_documentation_contracts()),
         "python-http-routing.json": _json_bytes(http_routing_contracts()),
+        "python-provider-endpoint.json": _json_bytes(provider_endpoint_contracts()),
         "python-provider-web-search.json": _json_bytes(provider_web_search_contracts()),
         "python-provider-web-fetch.json": _json_bytes(provider_web_fetch_contracts()),
         "python-provider-code-execution.json": _json_bytes(provider_code_execution_contracts()),

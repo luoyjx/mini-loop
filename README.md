@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `f41b34c` plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `0b5545a` plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -682,7 +682,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw-path concatenation / literal dot normalization<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -2667,6 +2667,20 @@ paths at ASGI ingress because httpx otherwise normalizes them before delivery.
 Optional diagnostic output remains available to compare historical baselines;
 its exit alone is not a parity claim. Custom mounts, forwarded-host deployments
 and the full public-entry scope audit remain open.
+
+### Provider endpoint paths
+
+Direct and streaming providers construct the outbound messages path from the
+validated base URL's escaped path. Literal dot segments follow captured HTTPX
+normalization; existing percent escapes and repeated slashes remain intact. The
+SDK adds a slash only when absent before appending `v1/messages`. The configured
+endpoint used in audit identity is retained. All 40 actual SDK requests across
+20 path profiles are required native assertions, including Unicode, spaces,
+encoded slashes/dots, repeated trailing slashes and literal parent/current segments.
+Construction performs no HTTP request. Existing credential admission and redirect
+refusal remain in place. Query/userinfo/fragment restrictions retain their current
+native admission rules; general hostname/port normalization and custom transport
+acceptance remain outside this path capture.
 
 ### Completed provider reply metadata
 

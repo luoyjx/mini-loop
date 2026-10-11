@@ -195,7 +195,7 @@ func New(cfg Config) (*Client, error) {
 	if cfg.Credentials != nil {
 		credentials = &credentialCache{provider: cfg.Credentials, now: cfg.Now, advisoryFailure: time.Unix(0, 0)}
 	}
-	return &Client{credentials: credentials, endpoint: cfg.BaseURL, requestURL: strings.TrimRight(u.String(), "/") + "/v1/messages", key: cfg.APIKey,
+	return &Client{credentials: credentials, endpoint: cfg.BaseURL, requestURL: providerRequestURL(u), key: cfg.APIKey,
 		authToken: cfg.AuthToken, headers: append([]Header(nil), cfg.Headers...), compatible: compatible,
 		defaultTimeout: defaultTimeout, http: &client, timeout: cfg.Timeout, requestLimit: cfg.MaxRequestBytes,
 		responseLimit: cfg.MaxResponseBytes, retries: retries, wait: cfg.Waiter, jitter: cfg.Jitter, now: cfg.Now}, nil
