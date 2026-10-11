@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** at local main `46feacd`; latest Go runtime implementation is
+Reviewed **2026-10-11** at local main `56f543d`; latest Go runtime implementation is
 `014e913`. Production code is unchanged from the full JSON read-span gates; the
 AST integrity test now replaces the executable path instead of writing the recently
 executed inode. The prior full-tree measurements remain pinned to their original
@@ -19642,3 +19642,39 @@ Built-in imagegen edited the inspected base diagram to add the magenta AST test
 annotation and a side explanation. [Iteration image](docs/audits/go-ast-replacement-infographic-2026-10-11.png),
 [exact edit prompt](docs/audits/go-ast-replacement-infographic-2026-10-11.prompt.txt),
 [base generation/correction prompts](docs/mini-loop-layered-architecture.prompt.txt).
+
+## Glob truncation enumeration input control — 2026-10-11
+
+At56f543d, retained Linux full gates fail `glob_truncated`. Source `run_glob`
+accounts the strings yielded by `glob.iglob` before sorting/deduplication. For
+the relative `*.txt` recipe, absolute temporary-root length does not contribute
+to that budget. The earlier root-length suspicion is unsupported for this case.
+Native directory enumeration is a relevant input; an ordered result fixture
+alone does not record it as a portable filesystem contract.
+
+A reusable audit executes the unchanged Source AST nodes `OUTPUT_CAP`, `capped`
+and `Toolset.run_glob`, and the real Go `workspace.Files.Glob` on the exact same
+Darwin directory containing800 empty files with the original80-character Unicode
+prefix. Source, Go and the retained Darwin fixture exactly match:555 admitted
+names,49,973 characters, SHA2563960fe6293fc49ed8d16239af7a10eceb4c4d59b4323a611a4bb7f8d142c53bd.
+Two Source-only injected iterator controls each admit555 names but retain different
+sets: ascending0–554 and descending245–799. The Source method still sorts only
+after truncation; identical names and cap do not imply identical selected output.
+These controls establish order dependence, not a Linux failure cause.
+
+Scope is method-isolated Source execution, not Toolset construction or a full
+export refresh. Native Go has no injected iterator and no production edits. Full
+native enumeration indices, selected indices, output hashes, Source/fixture hashes,
+runner and command are retained in the [receipt](docs/audits/go-glob-enumeration-control-2026-10-11.json)
+and [reusable audit](docs/audits/go-glob-enumeration-control-2026-10-11.py).
+Docker daemon was unavailable, so same-Linux-filesystem Source/Go capture remains
+required before modifying that assertion or claiming native parity. Original
+fixtures, budgets and assertions remain intact. The next cross-platform fixture
+decision must account for actual enumerator order rather than assume sorted input.
+
+`verify_scans.py` passes all19 scanning guards; `git diff --check` passes.
+Runtime/Python package/Go code/exports unchanged, so full Go/vet/Python, invariants,
+guard mutations, Source export and coverage are not rerun. The previous ordinary
+Go/vet/Python pass stays pinned to the AST test receipt; full race/Linux gates
+remain unaccepted. README runtime review baseline updated; canonical map and base
+image topology unchanged. No rendered architecture acceptance or push claimed.

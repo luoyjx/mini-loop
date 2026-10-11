@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed **2026-10-11** at local main `46feacd`; latest Go runtime implementation
+Reviewed **2026-10-11** at local main `56f543d`; latest Go runtime implementation
 `014e913`. Production code is unchanged; the AST integrity test now uses same-path
 replacement. Prior full-tree measurements retain their original snapshot identity.
 Full native acceptance remains open. This index uses pinned receipts rather than
@@ -18,6 +18,7 @@ Full P0/P1/G0–G7 completion remains unproven; see
 | Default business routing | All 168 actual Source requests on 40 explicit paths; [native evidence](docs/audits/go-http-routing-native-2026-10-11.json) | Delivered at 4b68574: first-route Allow, known slash redirects and decoded-path semantics match. Required parity assertion replaces diagnostic-only acceptance; broader URL/mount/forwarded-host scope remains |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
+| Glob truncation inputs | [Same-directory Source/Go pair and Source iterator controls](docs/audits/go-glob-enumeration-control-2026-10-11.json) | Darwin pair/fixture exactly match555 names and49,973 characters; selection depends on pre-sort enumeration. Linux same-filesystem Source capture remains open; relative `*.txt` does not charge absolute root length |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | [Full ordinary/race+atomic gates](docs/audits/go-json-read-spans-2026-10-11.json), raw C and same-subscription queue/control receipts | New full ordinary Go passes after AST test-only replacement; prior full race+atomic still fails four operation waits and has not been rerun. Later diagnostics do not repair/supersede race failures. Readiness/delivery reliability and temporal G3/G7 remain open |
@@ -49,15 +50,16 @@ Full P0/P1/G0–G7 completion remains unproven; see
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 Latest full Python result: **2239 passed,28 skipped,74 warnings,24 subtests**
-(138.69s); unchanged current Python tree, retained in the
-[queue/control receipt](docs/audits/go-reload-required-queue-control-2026-10-11.json).
-Latest full Go ordinary and race+atomic runs fail native reload; vet/type audits
-pass. Selected nonfinite mutations cover four checks, not the whole guard inventory.
+(96.47s); unchanged current Python tree, retained in the
+[AST test receipt](docs/audits/go-ast-replacement-2026-10-11.json).
+Latest full Go ordinary and vet pass; previous full race+atomic fails native reload
+and has not been refreshed. Type audits retain their pinned production profile. Selected nonfinite mutations cover four checks, not the whole guard inventory.
 Current export/default-type prerequisites have not obtained a new global Source
 comparison; default full-feature CLI syntax backend and broader IDNA approvals
 remain outstanding. SQLite fixed driver approval covers neither decision.
 
-Latest full failed-run statement coverage on the unchanged current Go tree:
+Latest full failed-run statement coverage on the prior pinned Go snapshot
+(production source unchanged; subsequent test-only replacement does not refresh coverage):
 application excluding tools **89.21% (32690/36645)**; all Go
 **89.15% (32811/36803)**; Provider**86.67% (1515/1748)**.
 [Exact coverage receipt](docs/audits/go-coverage-json-read-spans-2026-10-11.json)
