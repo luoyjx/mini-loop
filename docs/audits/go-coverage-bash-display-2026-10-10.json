@@ -1,0 +1,279 @@
+{
+  "aggregation": "Merge identical source locations using maximum hit count; assert statement counts agree. Zero-statement packages have null percentage.",
+  "all_go": {
+    "covered_statements": 31675,
+    "percent": 89.29578258908435,
+    "total_statements": 35472
+  },
+  "application_excluding_tools": {
+    "covered_statements": 31628,
+    "percent": 89.32444645277903,
+    "total_statements": 35408
+  },
+  "baseline": "9f0e9db plus non-text Bash display alignment",
+  "command": "go test -race -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-bash-display-integrated.cover ./...",
+  "limitations": [
+    "Darwin arm64 build-tag denominator",
+    "CLI child-process internals and native C are not instrumented",
+    "Statement coverage is not migration completion or full feature/default parity"
+  ],
+  "measured_at_utc": "2026-10-10T14:19:10.157017+00:00",
+  "mode": "atomic",
+  "packages": {
+    "agent": {
+      "covered_statements": 9023,
+      "percent": 90.02294722139081,
+      "total_statements": 10023
+    },
+    "astcontext": {
+      "covered_statements": 1508,
+      "percent": 89.12529550827423,
+      "total_statements": 1692
+    },
+    "audit": {
+      "covered_statements": 312,
+      "percent": 97.19626168224299,
+      "total_statements": 321
+    },
+    "background": {
+      "covered_statements": 238,
+      "percent": 90.49429657794677,
+      "total_statements": 263
+    },
+    "benchmark": {
+      "covered_statements": 408,
+      "percent": 91.68539325842697,
+      "total_statements": 445
+    },
+    "cmd/miniloop": {
+      "covered_statements": 73,
+      "percent": 42.19653179190752,
+      "total_statements": 173
+    },
+    "cmd/miniloop-audit": {
+      "covered_statements": 39,
+      "percent": 69.64285714285714,
+      "total_statements": 56
+    },
+    "cmd/traceview": {
+      "covered_statements": 43,
+      "percent": 72.88135593220339,
+      "total_statements": 59
+    },
+    "config": {
+      "covered_statements": 416,
+      "percent": 87.02928870292887,
+      "total_statements": 478
+    },
+    "cron": {
+      "covered_statements": 449,
+      "percent": 92.76859504132231,
+      "total_statements": 484
+    },
+    "decisions": {
+      "covered_statements": 795,
+      "percent": 89.22558922558923,
+      "total_statements": 891
+    },
+    "diagnostics": {
+      "covered_statements": 124,
+      "percent": 84.93150684931507,
+      "total_statements": 146
+    },
+    "dotenv": {
+      "covered_statements": 326,
+      "percent": 90.55555555555556,
+      "total_statements": 360
+    },
+    "durable": {
+      "covered_statements": 92,
+      "percent": 75.40983606557377,
+      "total_statements": 122
+    },
+    "efficiency": {
+      "covered_statements": 1489,
+      "percent": 91.40577041129528,
+      "total_statements": 1629
+    },
+    "httpapi": {
+      "covered_statements": 1618,
+      "percent": 89.59025470653377,
+      "total_statements": 1806
+    },
+    "improvement": {
+      "covered_statements": 159,
+      "percent": 91.37931034482759,
+      "total_statements": 174
+    },
+    "internal/commandenv": {
+      "covered_statements": 0,
+      "percent": 0.0,
+      "total_statements": 28
+    },
+    "internal/fnmatch": {
+      "covered_statements": 82,
+      "percent": 98.79518072289157,
+      "total_statements": 83
+    },
+    "internal/jsonsyntax": {
+      "covered_statements": 105,
+      "percent": 96.3302752293578,
+      "total_statements": 109
+    },
+    "internal/jsonvalue": {
+      "covered_statements": 768,
+      "percent": 95.76059850374065,
+      "total_statements": 802
+    },
+    "internal/pytext": {
+      "covered_statements": 102,
+      "percent": 96.22641509433963,
+      "total_statements": 106
+    },
+    "launcher": {
+      "covered_statements": 234,
+      "percent": 80.96885813148789,
+      "total_statements": 289
+    },
+    "mcp": {
+      "covered_statements": 275,
+      "percent": 88.14102564102564,
+      "total_statements": 312
+    },
+    "memory": {
+      "covered_statements": 319,
+      "percent": 86.68478260869566,
+      "total_statements": 368
+    },
+    "problems": {
+      "covered_statements": 71,
+      "percent": 95.94594594594595,
+      "total_statements": 74
+    },
+    "protocol": {
+      "covered_statements": 3435,
+      "percent": 87.85166240409207,
+      "total_statements": 3910
+    },
+    "provider": {
+      "covered_statements": 1359,
+      "percent": 86.17628408370324,
+      "total_statements": 1577
+    },
+    "reload": {
+      "covered_statements": 635,
+      "percent": 84.44148936170212,
+      "total_statements": 752
+    },
+    "runmeta": {
+      "covered_statements": 12,
+      "percent": 100.0,
+      "total_statements": 12
+    },
+    "runtimeconfig": {
+      "covered_statements": 1,
+      "percent": 100.0,
+      "total_statements": 1
+    },
+    "sandbox": {
+      "covered_statements": 157,
+      "percent": 83.06878306878306,
+      "total_statements": 189
+    },
+    "secrets": {
+      "covered_statements": 163,
+      "percent": 95.32163742690058,
+      "total_statements": 171
+    },
+    "selfaudit": {
+      "covered_statements": 228,
+      "percent": 98.7012987012987,
+      "total_statements": 231
+    },
+    "selfimprove": {
+      "covered_statements": 103,
+      "percent": 88.79310344827586,
+      "total_statements": 116
+    },
+    "sessionquery": {
+      "covered_statements": 175,
+      "percent": 89.74358974358974,
+      "total_statements": 195
+    },
+    "shell": {
+      "covered_statements": 383,
+      "percent": 94.33497536945812,
+      "total_statements": 406
+    },
+    "skills": {
+      "covered_statements": 417,
+      "percent": 94.77272727272727,
+      "total_statements": 440
+    },
+    "spill": {
+      "covered_statements": 52,
+      "percent": 81.25,
+      "total_statements": 64
+    },
+    "sqlitestate": {
+      "covered_statements": 583,
+      "percent": 82.57790368271955,
+      "total_statements": 706
+    },
+    "tasks": {
+      "covered_statements": 270,
+      "percent": 85.98726114649682,
+      "total_statements": 314
+    },
+    "teams": {
+      "covered_statements": 384,
+      "percent": 95.76059850374065,
+      "total_statements": 401
+    },
+    "tools/typeaudit": {
+      "covered_statements": 47,
+      "percent": 73.4375,
+      "total_statements": 64
+    },
+    "traceview": {
+      "covered_statements": 557,
+      "percent": 90.27552674230145,
+      "total_statements": 617
+    },
+    "trajectory": {
+      "covered_statements": 446,
+      "percent": 85.44061302681992,
+      "total_statements": 522
+    },
+    "userresources": {
+      "covered_statements": 798,
+      "percent": 91.5137614678899,
+      "total_statements": 872
+    },
+    "verifiedloop": {
+      "covered_statements": 326,
+      "percent": 95.88235294117646,
+      "total_statements": 340
+    },
+    "workflows": {
+      "covered_statements": 1523,
+      "percent": 92.02416918429003,
+      "total_statements": 1655
+    },
+    "workspace": {
+      "covered_statements": 387,
+      "percent": 88.96551724137932,
+      "total_statements": 435
+    },
+    "worktrees": {
+      "covered_statements": 166,
+      "percent": 87.83068783068784,
+      "total_statements": 189
+    }
+  },
+  "profile_path": "/tmp/mini-loop-bash-display-integrated.cover",
+  "profile_sha256": "3d2e0a3ca57c9299224ffba4322e064521f81e1e0b18789f080fd36eb54f2855",
+  "raw_blocks": 1186287,
+  "source_contract": "fdb47d8",
+  "unique_blocks": 24713
+}

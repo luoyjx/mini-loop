@@ -1,0 +1,75 @@
+{
+  "baseline": "4c807ae",
+  "source_commit": "c3f555a",
+  "fixture": "go/testdata/python-provider-nonfinite-bash.json",
+  "fixture_sha256": "efb5c261a5cd98cff534eb8fc69d13b9baf65a6f0fccc3944f18d212459c1dd9",
+  "profiles": {
+    "unique_direct_and_sse_inputs": 24,
+    "standalone_gate": 36,
+    "managed": 24,
+    "managed_root_before_gate": 6,
+    "managed_object_finite_journal_refusal": 18
+  },
+  "evidence": [
+    "Actual pinned Anthropic 0.107.1 direct and SSE snapshots match",
+    "Actual Source gate and Manager runs compared with native consumers",
+    "Valid first command and invalid second root have no hooks or effects",
+    "Named archive identity, cloning and masking retain observations",
+    "Strict explicit callers and outbound HTTP remain finite",
+    "Native readonly property does not claim a Source readonly profile",
+    "Background decoding retains its existing finite admission"
+  ],
+  "gates": {
+    "targeted_go": "passed",
+    "source_test": "1 passed, 6 expected SDK warnings",
+    "scanner_anchors": "19 passed",
+    "selected_mutations": {
+      "model-batch-input-preparation-lazy": "caught after passing baseline",
+      "journal-nonfinite-fingerprint-accepted": "caught after passing baseline"
+    },
+    "vet": "passed; existing FSEvents deprecation warning",
+    "typeaudit": {
+      "production_files": 439,
+      "named_types": 1407,
+      "findings": 0
+    },
+    "archify": "9/9, zero errors/warnings",
+    "full_ordinary": {
+      "result": "failed only native reload",
+      "recipes": [
+        "identical-write",
+        "same-mtime-touch",
+        "rename-source",
+        "ignored-hidden"
+      ]
+    },
+    "full_race_coverage": {
+      "result": "failed",
+      "failure": "TestDecisionNativeSQLiteReopenMatchesSource/maximum: context deadline exceeded",
+      "data_race_reported": false,
+      "reload": "passed"
+    },
+    "source_export_check": "225 files current",
+    "sqlite_maximum_race_without_coverage": "passed in 13.744s; does not supersede full coverage run failure",
+    "git_diff_check": "passed"
+  },
+  "limits": [
+    "Non-string batch pair keys explicitly unsupported",
+    "Falsy/string-key pair normalization is implemented without a full cross-language profile corpus",
+    "No new SQLite close/reopen proof for these 24 shapes",
+    "Broader background/nonfinite model/MCP profiles remain open",
+    "Global SDK error-class/text fidelity and complete migration acceptance remain open",
+    "Native watcher reliability remains open",
+    "Default diagnostics selection remains open",
+    "No full Python, non-Darwin, performance or fresh browser visual check",
+    "Combined worktree validation; intermediate commits not independently full-suite replayed",
+    "No push or merge"
+  ],
+  "coverage": {
+    "application_percent": 89.17077494045311,
+    "all_go_percent": 89.14293613491844,
+    "report": "go-coverage-nonfinite-bash-2026-10-11.json",
+    "limit": "Measured failing test run; SQLite maximum profile timed out, so not full-suite acceptance"
+  },
+  "runtime_commit": "770f065"
+}

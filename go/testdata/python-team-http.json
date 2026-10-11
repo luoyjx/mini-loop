@@ -1,0 +1,952 @@
+{
+  "cases": [
+    {
+      "exists": false,
+      "messages": null,
+      "recipe": {
+        "name": "default"
+      },
+      "response": {
+        "inbox": [],
+        "name": "lead",
+        "session": "<alice>",
+        "team": "<alice>"
+      },
+      "status": 200
+    },
+    {
+      "exists": false,
+      "messages": null,
+      "recipe": {
+        "name": "foreign",
+        "target": "bob"
+      },
+      "response": {
+        "detail": "No session '<bob>'"
+      },
+      "status": 404
+    },
+    {
+      "exists": false,
+      "messages": null,
+      "recipe": {
+        "name": "unknown",
+        "target": "missing"
+      },
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404
+    },
+    {
+      "exists": false,
+      "messages": null,
+      "recipe": {
+        "name": "no-auth",
+        "token": ""
+      },
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401
+    },
+    {
+      "exists": false,
+      "messages": null,
+      "recipe": {
+        "name": "bad-auth",
+        "token": "bad"
+      },
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401
+    },
+    {
+      "exists": true,
+      "messages": 75,
+      "recipe": {
+        "name": "peek-50",
+        "rows": 75
+      },
+      "response": {
+        "inbox": [
+          {
+            "content": "m025",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m026",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m027",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m028",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m029",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m030",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m031",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m032",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m033",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m034",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m035",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m036",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m037",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m038",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m039",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m040",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m041",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m042",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m043",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m044",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m045",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m046",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m047",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m048",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m049",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m050",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m051",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m052",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m053",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m054",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m055",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m056",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m057",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m058",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m059",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m060",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m061",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m062",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m063",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m064",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m065",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m066",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m067",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m068",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m069",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m070",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m071",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m072",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m073",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m074",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          }
+        ],
+        "name": "lead",
+        "session": "<alice>",
+        "team": "<alice>"
+      },
+      "status": 200
+    },
+    {
+      "exists": true,
+      "messages": 75,
+      "recipe": {
+        "name": "peek-again"
+      },
+      "response": {
+        "inbox": [
+          {
+            "content": "m025",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m026",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m027",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m028",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m029",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m030",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m031",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m032",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m033",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m034",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m035",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m036",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m037",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m038",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m039",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m040",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m041",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m042",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m043",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m044",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m045",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m046",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m047",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m048",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m049",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m050",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m051",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m052",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m053",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m054",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m055",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m056",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m057",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m058",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m059",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m060",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m061",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m062",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m063",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m064",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m065",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m066",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m067",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m068",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m069",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m070",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m071",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m072",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m073",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          },
+          {
+            "content": "m074",
+            "extra": [
+              1,
+              true
+            ],
+            "metadata": {}
+          }
+        ],
+        "name": "lead",
+        "session": "<alice>",
+        "team": "<alice>"
+      },
+      "status": 200
+    },
+    {
+      "exists": true,
+      "messages": null,
+      "recipe": {
+        "name": "nonfinite",
+        "preload": "{\"content\":\"bad\",\"n\":NaN}\n"
+      },
+      "response": "Internal Server Error",
+      "status": 500
+    },
+    {
+      "exists": true,
+      "messages": null,
+      "recipe": {
+        "name": "surrogate",
+        "preload": "{\"content\":\"\\ud800\"}\n"
+      },
+      "response": "Internal Server Error",
+      "status": 500
+    },
+    {
+      "exists": true,
+      "messages": null,
+      "recipe": {
+        "name": "bad-encoding",
+        "preload_hex": "ff"
+      },
+      "response": "Internal Server Error",
+      "status": 500
+    },
+    {
+      "exists": true,
+      "messages": null,
+      "recipe": {
+        "name": "teamless",
+        "teamless": true
+      },
+      "response": {
+        "session": "<alice>",
+        "team": null
+      },
+      "status": 200
+    },
+    {
+      "exists": true,
+      "messages": null,
+      "recipe": {
+        "method": "POST",
+        "name": "wrong-method"
+      },
+      "response": {
+        "detail": "Method Not Allowed"
+      },
+      "status": 405
+    }
+  ]
+}

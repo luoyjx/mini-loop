@@ -1,0 +1,1846 @@
+{
+  "kinds": [
+    "workflow_agent_completed",
+    "workflow_agent_progress",
+    "workflow_agent_started",
+    "workflow_approval_required",
+    "workflow_cancelled",
+    "workflow_checkpointed",
+    "workflow_completed",
+    "workflow_decision_recorded",
+    "workflow_failed",
+    "workflow_node_claimed",
+    "workflow_paused",
+    "workflow_phase_started",
+    "workflow_planned",
+    "workflow_rejected",
+    "workflow_result_enqueued",
+    "workflow_resumed",
+    "workflow_started",
+    "workflow_verdict_recorded"
+  ],
+  "refusals": [
+    {
+      "detail": "unsupported workflow event kind: workflow_unknown",
+      "error": "ValueError",
+      "input": {
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_unknown",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_unknown",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "unknown"
+    },
+    {
+      "detail": "session_id is required",
+      "error": "ValueError",
+      "input": {
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "",
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "empty-session"
+    },
+    {
+      "detail": "run_id is required",
+      "error": "ValueError",
+      "input": {
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "",
+        "session_id": "s",
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": ""
+      },
+      "name": "empty-run"
+    },
+    {
+      "detail": "workflow_name is required",
+      "error": "ValueError",
+      "input": {
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_paused",
+        "workflow_name": "",
+        "workflow_run_id": "run"
+      },
+      "name": "empty-name"
+    },
+    {
+      "detail": "definition_revision is required",
+      "error": "ValueError",
+      "input": {
+        "definition_revision": "",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "empty-revision"
+    },
+    {
+      "detail": "unsupported workflow event payload_version",
+      "error": "ValueError",
+      "input": {
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 2,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "version"
+    },
+    {
+      "detail": "workflow_phase_started requires phase_id",
+      "error": "ValueError",
+      "input": {
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_phase_started",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "phase_id": null,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_phase_started",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "phase"
+    },
+    {
+      "detail": "workflow_agent_progress requires node_id",
+      "error": "ValueError",
+      "input": {
+        "agent_id": "workflow-archive-secret",
+        "attempt_id": "workflow-archive-secret",
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_agent_progress",
+        "node_id": null,
+        "occurred_at": 1.5,
+        "parent_agent_id": "workflow-archive-secret",
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_agent_progress",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "node"
+    },
+    {
+      "detail": "workflow_agent_progress requires attempt_id",
+      "error": "ValueError",
+      "input": {
+        "agent_id": "workflow-archive-secret",
+        "attempt_id": null,
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_agent_progress",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "parent_agent_id": "workflow-archive-secret",
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_agent_progress",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "attempt"
+    },
+    {
+      "detail": "workflow_agent_progress requires agent_id",
+      "error": "ValueError",
+      "input": {
+        "agent_id": null,
+        "attempt_id": "workflow-archive-secret",
+        "definition_revision": "rev",
+        "event_id": "event-23-workflow-archive-secret",
+        "kind": "workflow_agent_progress",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "parent_agent_id": "workflow-archive-secret",
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_agent_progress",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "name": "agent"
+    }
+  ],
+  "rows": [
+    {
+      "name": "workflow_agent_completed",
+      "raw": {
+        "agent_id": "workflow-archive-secret",
+        "attempt_id": "workflow-archive-secret",
+        "definition_revision": "rev",
+        "event_id": "event-1-workflow-archive-secret",
+        "kind": "workflow_agent_completed",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "parent_agent_id": "workflow-archive-secret",
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_agent_completed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "agent_id": "<secret-hidden>",
+        "attempt_id": "<secret-hidden>",
+        "definition_revision": "rev",
+        "event_id": "event-1-<secret-hidden>",
+        "kind": "workflow_agent_completed",
+        "node_id": "<secret-hidden>",
+        "occurred_at": 1.5,
+        "parent_agent_id": "<secret-hidden>",
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 1,
+        "sequence": 1,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_agent_completed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_agent_progress",
+      "raw": {
+        "agent_id": "workflow-archive-secret",
+        "attempt_id": "workflow-archive-secret",
+        "definition_revision": "rev",
+        "event_id": "event-2-workflow-archive-secret",
+        "kind": "workflow_agent_progress",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "parent_agent_id": "workflow-archive-secret",
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_agent_progress",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "agent_id": "<secret-hidden>",
+        "attempt_id": "<secret-hidden>",
+        "definition_revision": "rev",
+        "event_id": "event-2-<secret-hidden>",
+        "kind": "workflow_agent_progress",
+        "node_id": "<secret-hidden>",
+        "occurred_at": 1.5,
+        "parent_agent_id": "<secret-hidden>",
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 2,
+        "sequence": 2,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_agent_progress",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_agent_started",
+      "raw": {
+        "agent_id": "workflow-archive-secret",
+        "attempt_id": "workflow-archive-secret",
+        "definition_revision": "rev",
+        "event_id": "event-3-workflow-archive-secret",
+        "kind": "workflow_agent_started",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "parent_agent_id": "workflow-archive-secret",
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_agent_started",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "agent_id": "<secret-hidden>",
+        "attempt_id": "<secret-hidden>",
+        "definition_revision": "rev",
+        "event_id": "event-3-<secret-hidden>",
+        "kind": "workflow_agent_started",
+        "node_id": "<secret-hidden>",
+        "occurred_at": 1.5,
+        "parent_agent_id": "<secret-hidden>",
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 3,
+        "sequence": 3,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_agent_started",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_approval_required",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-4-workflow-archive-secret",
+        "kind": "workflow_approval_required",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_approval_required",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-4-<secret-hidden>",
+        "kind": "workflow_approval_required",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 4,
+        "sequence": 4,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_approval_required",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_cancelled",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-5-workflow-archive-secret",
+        "kind": "workflow_cancelled",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_cancelled",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-5-<secret-hidden>",
+        "kind": "workflow_cancelled",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 5,
+        "sequence": 5,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_cancelled",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_checkpointed",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-6-workflow-archive-secret",
+        "kind": "workflow_checkpointed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_checkpointed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-6-<secret-hidden>",
+        "kind": "workflow_checkpointed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 6,
+        "sequence": 6,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_checkpointed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_completed",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-7-workflow-archive-secret",
+        "kind": "workflow_completed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_completed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-7-<secret-hidden>",
+        "kind": "workflow_completed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 7,
+        "sequence": 7,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_completed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_decision_recorded",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-8-workflow-archive-secret",
+        "kind": "workflow_decision_recorded",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_decision_recorded",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-8-<secret-hidden>",
+        "kind": "workflow_decision_recorded",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 8,
+        "sequence": 8,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_decision_recorded",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_failed",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-9-workflow-archive-secret",
+        "kind": "workflow_failed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_failed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-9-<secret-hidden>",
+        "kind": "workflow_failed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 9,
+        "sequence": 9,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_failed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_node_claimed",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-10-workflow-archive-secret",
+        "kind": "workflow_node_claimed",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_node_claimed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-10-<secret-hidden>",
+        "kind": "workflow_node_claimed",
+        "node_id": "<secret-hidden>",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 10,
+        "sequence": 10,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_node_claimed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_paused",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-11-workflow-archive-secret",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-11-<secret-hidden>",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 11,
+        "sequence": 11,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_phase_started",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-12-workflow-archive-secret",
+        "kind": "workflow_phase_started",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "phase_id": "workflow-archive-secret",
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_phase_started",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-12-<secret-hidden>",
+        "kind": "workflow_phase_started",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "phase_id": "<secret-hidden>",
+        "run_id": "run",
+        "seq": 12,
+        "sequence": 12,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_phase_started",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_planned",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-13-workflow-archive-secret",
+        "kind": "workflow_planned",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_planned",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-13-<secret-hidden>",
+        "kind": "workflow_planned",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 13,
+        "sequence": 13,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_planned",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_rejected",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-14-workflow-archive-secret",
+        "kind": "workflow_rejected",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_rejected",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-14-<secret-hidden>",
+        "kind": "workflow_rejected",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 14,
+        "sequence": 14,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_rejected",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_result_enqueued",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-15-workflow-archive-secret",
+        "kind": "workflow_result_enqueued",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_result_enqueued",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-15-<secret-hidden>",
+        "kind": "workflow_result_enqueued",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 15,
+        "sequence": 15,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_result_enqueued",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_resumed",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-16-workflow-archive-secret",
+        "kind": "workflow_resumed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_resumed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-16-<secret-hidden>",
+        "kind": "workflow_resumed",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 16,
+        "sequence": 16,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_resumed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_started",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-17-workflow-archive-secret",
+        "kind": "workflow_started",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_started",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-17-<secret-hidden>",
+        "kind": "workflow_started",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 17,
+        "sequence": 17,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_started",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "workflow_verdict_recorded",
+      "raw": {
+        "attempt_id": "workflow-archive-secret",
+        "definition_revision": "rev",
+        "event_id": "event-18-workflow-archive-secret",
+        "kind": "workflow_verdict_recorded",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "workflow-archive-secret"
+          },
+          "future": {
+            "workflow-archive-secret": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "workflow-archive-secret"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_verdict_recorded",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "attempt_id": "<secret-hidden>",
+        "definition_revision": "rev",
+        "event_id": "event-18-<secret-hidden>",
+        "kind": "workflow_verdict_recorded",
+        "node_id": "<secret-hidden>",
+        "occurred_at": 1.5,
+        "payload": {
+          "approved_capabilities": [
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "decision": "rejected",
+          "error": {
+            "detail": "<secret-hidden>"
+          },
+          "future": {
+            "<secret-hidden>": [
+              null,
+              true,
+              1,
+              1.0,
+              123456789012345678901234567890,
+              {
+                "text": "<secret-hidden>"
+              }
+            ]
+          },
+          "mode": "historical",
+          "unknown": "历史数据"
+        },
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 18,
+        "sequence": 18,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_verdict_recorded",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "empty-progress",
+      "raw": {
+        "agent_id": "workflow-archive-secret",
+        "attempt_id": "workflow-archive-secret",
+        "definition_revision": "rev",
+        "event_id": "event-19-workflow-archive-secret",
+        "kind": "workflow_agent_progress",
+        "node_id": "workflow-archive-secret",
+        "occurred_at": 1.5,
+        "parent_agent_id": "workflow-archive-secret",
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_agent_progress",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "agent_id": "<secret-hidden>",
+        "attempt_id": "<secret-hidden>",
+        "definition_revision": "rev",
+        "event_id": "event-19-<secret-hidden>",
+        "kind": "workflow_agent_progress",
+        "node_id": "<secret-hidden>",
+        "occurred_at": 1.5,
+        "parent_agent_id": "<secret-hidden>",
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 19,
+        "sequence": 19,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_agent_progress",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "empty-event-id",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "",
+        "kind": "workflow_paused",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 20,
+        "sequence": 20,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_paused",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "optional-empty-fields",
+      "raw": {
+        "agent_id": "",
+        "attempt_id": "",
+        "definition_revision": "rev",
+        "event_id": "event-21-workflow-archive-secret",
+        "kind": "workflow_resumed",
+        "node_id": "",
+        "occurred_at": 1.5,
+        "parent_agent_id": "",
+        "payload": {},
+        "payload_version": 1,
+        "phase_id": "",
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_resumed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "agent_id": "",
+        "attempt_id": "",
+        "definition_revision": "rev",
+        "event_id": "event-21-<secret-hidden>",
+        "kind": "workflow_resumed",
+        "node_id": "",
+        "occurred_at": 1.5,
+        "parent_agent_id": "",
+        "payload": {},
+        "payload_version": 1,
+        "phase_id": "",
+        "run_id": "run",
+        "seq": 21,
+        "sequence": 21,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_resumed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    },
+    {
+      "name": "optional-null-fields",
+      "raw": {
+        "definition_revision": "rev",
+        "event_id": "event-22-workflow-archive-secret",
+        "kind": "workflow_checkpointed",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "session_id": "s",
+        "type": "workflow_checkpointed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      },
+      "recorded": {
+        "definition_revision": "rev",
+        "event_id": "event-22-<secret-hidden>",
+        "kind": "workflow_checkpointed",
+        "occurred_at": 1.5,
+        "payload": {},
+        "payload_version": 1,
+        "run_id": "run",
+        "seq": 22,
+        "sequence": 22,
+        "session": "s",
+        "session_id": "s",
+        "transcript_epoch": 1,
+        "ts": 0,
+        "type": "workflow_checkpointed",
+        "workflow_name": "wf",
+        "workflow_run_id": "run"
+      }
+    }
+  ],
+  "stored_matches_live": true
+}

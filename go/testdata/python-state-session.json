@@ -1,0 +1,55 @@
+{
+  "confirmed_loss_stopped": true,
+  "count_before_provider": 1,
+  "cursor_after_ephemeral": 0,
+  "failures": [
+    {
+      "name": "append",
+      "reported": true,
+      "stopped": false
+    },
+    {
+      "name": "event",
+      "reported": true,
+      "stopped": false
+    },
+    {
+      "name": "count",
+      "reported": false,
+      "stopped": true
+    }
+  ],
+  "final_status_without_growth": "running",
+  "live_raw": true,
+  "queued": [
+    "queued <secret-hidden>"
+  ],
+  "rewrite": {
+    "current_count": 1,
+    "epoch": 2,
+    "event_epochs": [
+      1,
+      1,
+      1,
+      1,
+      2
+    ],
+    "event_seqs": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "old_count": 2,
+    "physical_cursor": 5
+  },
+  "source_sha256": {
+    "agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "storage.py": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159"
+  },
+  "stored_raw": false,
+  "terminal_state_persisted": true,
+  "unconfirmed_loss_stopped": false
+}

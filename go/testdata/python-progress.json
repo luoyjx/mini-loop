@@ -1,0 +1,929 @@
+{
+  "fake": {
+    "request": {
+      "max_tokens": 8000,
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        }
+      ],
+      "model": "fake-requested",
+      "tools": [
+        {
+          "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+          "input_schema": {
+            "properties": {
+              "approval_prefix": {
+                "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "command": {
+                "type": "string"
+              },
+              "run_in_background": {
+                "description": "Run asynchronously and return a task id immediately.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          },
+          "name": "bash"
+        }
+      ]
+    },
+    "rows": [
+      {
+        "calls": 1,
+        "deltas": [],
+        "method": "direct",
+        "reply": {
+          "content": [
+            {
+              "signature": "sig_fake_00000001",
+              "thinking": "considering the request",
+              "type": "thinking"
+            },
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000001",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 3,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": true
+      },
+      {
+        "calls": 2,
+        "deltas": [],
+        "method": "direct",
+        "reply": {
+          "content": [
+            {
+              "signature": "sig_fake_00000002",
+              "thinking": "considering the request",
+              "type": "thinking"
+            },
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000002",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 3,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": true
+      },
+      {
+        "calls": 3,
+        "deltas": [
+          {
+            "kind": "thinking",
+            "text": "conside"
+          },
+          {
+            "kind": "thinking",
+            "text": "ring th"
+          },
+          {
+            "kind": "thinking",
+            "text": "e reque"
+          },
+          {
+            "kind": "thinking",
+            "text": "st"
+          },
+          {
+            "kind": "text",
+            "text": "Work"
+          },
+          {
+            "kind": "text",
+            "text": "ing "
+          },
+          {
+            "kind": "text",
+            "text": "on i"
+          },
+          {
+            "kind": "text",
+            "text": "t."
+          }
+        ],
+        "method": "stream",
+        "reply": {
+          "content": [
+            {
+              "signature": "sig_fake_00000002",
+              "thinking": "considering the request",
+              "type": "thinking"
+            },
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000003",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 3,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": true
+      },
+      {
+        "calls": 4,
+        "deltas": [],
+        "method": "direct",
+        "reply": {
+          "content": [
+            {
+              "signature": "sig_fake_00000004",
+              "thinking": "considering the request",
+              "type": "thinking"
+            },
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000004",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 3,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": true
+      },
+      {
+        "calls": 5,
+        "deltas": [
+          {
+            "kind": "thinking",
+            "text": "conside"
+          },
+          {
+            "kind": "thinking",
+            "text": "ring th"
+          },
+          {
+            "kind": "thinking",
+            "text": "e reque"
+          },
+          {
+            "kind": "thinking",
+            "text": "st"
+          },
+          {
+            "kind": "text",
+            "text": "Work"
+          },
+          {
+            "kind": "text",
+            "text": "ing "
+          },
+          {
+            "kind": "text",
+            "text": "on i"
+          },
+          {
+            "kind": "text",
+            "text": "t."
+          }
+        ],
+        "method": "stream",
+        "reply": {
+          "content": [
+            {
+              "signature": "sig_fake_00000004",
+              "thinking": "considering the request",
+              "type": "thinking"
+            },
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000005",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 3,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": true
+      },
+      {
+        "calls": 1,
+        "deltas": [],
+        "method": "direct",
+        "reply": {
+          "content": [
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000001",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": false
+      },
+      {
+        "calls": 2,
+        "deltas": [],
+        "method": "direct",
+        "reply": {
+          "content": [
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000002",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": false
+      },
+      {
+        "calls": 3,
+        "deltas": [
+          {
+            "kind": "text",
+            "text": "Work"
+          },
+          {
+            "kind": "text",
+            "text": "ing "
+          },
+          {
+            "kind": "text",
+            "text": "on i"
+          },
+          {
+            "kind": "text",
+            "text": "t."
+          }
+        ],
+        "method": "stream",
+        "reply": {
+          "content": [
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000003",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": false
+      },
+      {
+        "calls": 4,
+        "deltas": [],
+        "method": "direct",
+        "reply": {
+          "content": [
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000004",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": false
+      },
+      {
+        "calls": 5,
+        "deltas": [
+          {
+            "kind": "text",
+            "text": "Work"
+          },
+          {
+            "kind": "text",
+            "text": "ing "
+          },
+          {
+            "kind": "text",
+            "text": "on i"
+          },
+          {
+            "kind": "text",
+            "text": "t."
+          }
+        ],
+        "method": "stream",
+        "reply": {
+          "content": [
+            {
+              "text": "Working on it.",
+              "type": "text"
+            },
+            {
+              "caller": null,
+              "id": "toolu_1",
+              "input": {
+                "command": "echo handled: go"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "id": "msg_fake_000005",
+          "model": "fake-requested",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 232,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        "thinking": false
+      }
+    ]
+  },
+  "progress": [
+    {
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "界abc",
+          "type": "assistant_delta"
+        }
+      ],
+      "failure": null,
+      "name": "defaults",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "界a"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "b"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "c"
+        }
+      ]
+    },
+    {
+      "chars": 4,
+      "duration": 999,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "界abc",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "d",
+          "type": "assistant_delta"
+        }
+      ],
+      "failure": null,
+      "name": "characters",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "界a"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "bc"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "d"
+        }
+      ]
+    },
+    {
+      "chars": 999,
+      "duration": 0.1,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "AB",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "CD",
+          "type": "assistant_delta"
+        }
+      ],
+      "failure": null,
+      "name": "elapsed",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0.09,
+          "text": "A"
+        },
+        {
+          "kind": "text",
+          "seconds": 0.1,
+          "text": "B"
+        },
+        {
+          "kind": "text",
+          "seconds": 0.11,
+          "text": "C"
+        },
+        {
+          "kind": "text",
+          "seconds": 0.3,
+          "text": "D"
+        }
+      ]
+    },
+    {
+      "chars": 0,
+      "duration": 999,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "a",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "b",
+          "type": "assistant_delta"
+        }
+      ],
+      "failure": null,
+      "name": "zero-characters",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": ""
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "a"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "b"
+        }
+      ]
+    },
+    {
+      "chars": 999,
+      "duration": 0,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "a",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "b",
+          "type": "assistant_delta"
+        }
+      ],
+      "failure": null,
+      "name": "zero-duration",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": ""
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "a"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "b"
+        }
+      ]
+    },
+    {
+      "chars": -1,
+      "duration": 999,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "a",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "b",
+          "type": "assistant_delta"
+        }
+      ],
+      "failure": null,
+      "name": "negative-characters",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "a"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "b"
+        }
+      ]
+    },
+    {
+      "chars": 999,
+      "duration": -1,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "a",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "b",
+          "type": "assistant_delta"
+        }
+      ],
+      "failure": null,
+      "name": "negative-duration",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "a"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "b"
+        }
+      ]
+    },
+    {
+      "chars": 3,
+      "duration": 999,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "text": "[REDACTED]A",
+          "type": "assistant_delta"
+        }
+      ],
+      "fail": true,
+      "failure": "script stream dropped",
+      "name": "mixed-interrupted",
+      "partial": "A",
+      "pieces": [
+        {
+          "kind": "thinking",
+          "seconds": 0,
+          "text": "秘密"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "A"
+        },
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "B"
+        }
+      ]
+    },
+    {
+      "chars": 999,
+      "duration": 999,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "<stream-id>",
+          "type": "stream_start"
+        }
+      ],
+      "fail": true,
+      "failure": "script stream dropped",
+      "name": "unshown-interrupted",
+      "partial": "",
+      "pieces": [
+        {
+          "kind": "text",
+          "seconds": 0,
+          "text": "hidden"
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "fake_llm.py": "69bc93ea2d875c668681b3b219705129f4d4bba5d44ce713820fcc9e597414a9",
+    "transport.py": "ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873"
+  }
+}

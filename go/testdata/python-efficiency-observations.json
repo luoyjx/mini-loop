@@ -1,0 +1,1939 @@
+{
+  "descriptors": [
+    {
+      "capabilities": [],
+      "content_types": [
+        "*/*"
+      ],
+      "cost_tier": "fast",
+      "deterministic": true,
+      "id": "passthrough-observation",
+      "lossiness": "lossless",
+      "max_input_bytes": null,
+      "network_access": false,
+      "recoverable": false,
+      "stage": "observation",
+      "timeout_ms": 1000,
+      "version": "1"
+    },
+    {
+      "capabilities": [],
+      "content_types": [
+        "text/*",
+        "application/json"
+      ],
+      "cost_tier": "fast",
+      "deterministic": true,
+      "id": "deterministic-lossless",
+      "lossiness": "recoverable",
+      "max_input_bytes": null,
+      "network_access": false,
+      "recoverable": true,
+      "stage": "observation",
+      "timeout_ms": 1000,
+      "version": "1"
+    }
+  ],
+  "observations": [
+    {
+      "error": null,
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "default",
+      "output": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "empty",
+      "output": {
+        "content": "",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "content_type must be MIME-like"
+      },
+      "input": {
+        "content": "masked text",
+        "content_type": "",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "missing-type",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "content_type must be MIME-like"
+      },
+      "input": {
+        "content": "masked text",
+        "content_type": "text",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "bad-type",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "masked text",
+        "content_type": "/",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "slash-type",
+      "output": {
+        "content": "masked text",
+        "content_type": "/",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": [
+          "first",
+          "second",
+          "first"
+        ]
+      },
+      "name": "dedup-components",
+      "output": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": [
+          "first",
+          "second"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": [
+          "free text",
+          ""
+        ]
+      },
+      "name": "unvalidated-component",
+      "output": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": [
+          "free text",
+          ""
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "raw_ref and raw_digest must be set together"
+      },
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": "raw",
+        "reduced_by": []
+      },
+      "name": "ref-only",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "raw_ref and raw_digest must be set together"
+      },
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": "digest",
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "digest-only",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": "not-a-valid-digest",
+        "raw_ref": "not-a-valid-ref",
+        "reduced_by": []
+      },
+      "name": "paired-opaque",
+      "output": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": "not-a-valid-digest",
+        "raw_ref": "not-a-valid-ref",
+        "reduced_by": []
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [
+          [
+            "exit_code",
+            7
+          ],
+          [
+            "timed_out",
+            false
+          ],
+          [
+            "overflowed",
+            true
+          ],
+          [
+            "duration_ms",
+            3.25
+          ]
+        ],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "metadata",
+      "output": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [
+          [
+            "exit_code",
+            7
+          ],
+          [
+            "timed_out",
+            false
+          ],
+          [
+            "overflowed",
+            true
+          ],
+          [
+            "duration_ms",
+            3.25
+          ]
+        ],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [
+          [
+            "same",
+            null
+          ],
+          [
+            "same",
+            [
+              1,
+              "文"
+            ]
+          ],
+          [
+            "",
+            {
+              "nested": true
+            }
+          ]
+        ],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "metadata-sequence",
+      "output": {
+        "content": "masked text",
+        "content_type": "text/plain",
+        "metadata": [
+          [
+            "same",
+            null
+          ],
+          [
+            "same",
+            [
+              1,
+              "文"
+            ]
+          ],
+          [
+            "",
+            {
+              "nested": true
+            }
+          ]
+        ],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      }
+    }
+  ],
+  "reducers": [
+    {
+      "content": "",
+      "name": "empty",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "single line",
+      "name": "plain",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "single line",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "single line",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "repeat\nrepeat",
+      "name": "duplicate-two",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "repeat\nrepeat",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "repeat\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+      "name": "duplicate-ten",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "building\n[repeated 9 additional times]\n",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "\n\n\n",
+      "name": "blank",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "\n\n\n",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "",
+            "warnings": [
+              "folded_blank_lines:3"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "\r\n\r\r\n\n",
+      "name": "carriage-blank",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "\r\n\r\r\n\n",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "\r",
+            "warnings": [
+              "folded_blank_lines:3"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": " \n \n\t\n\t",
+      "name": "spaces-preserved",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": " \n \n\t\n\t",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": " \n[repeated 1 additional time]\n\t\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:2"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n",
+      "name": "ansi-colour",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "building\n[repeated 9 additional times]\n",
+            "warnings": [
+              "removed_ansi:20",
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "before\u001b]0;title\u0007after",
+      "name": "ansi-osc-bel",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "before\u001b]0;title\u0007after",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "beforeafter",
+            "warnings": [
+              "removed_ansi:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "before\u001b]0;title\u001b\\after",
+      "name": "ansi-osc-st",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "before\u001b]0;title\u001b\\after",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "beforeafter",
+            "warnings": [
+              "removed_ansi:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "a\u001b]first\u001b\\middle\u001b]second\u001b\\z",
+      "name": "ansi-osc-greedy",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "a\u001b]first\u001b\\middle\u001b]second\u001b\\z",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "az",
+            "warnings": [
+              "removed_ansi:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "a\u001b[32\n\u001b]unfinished",
+      "name": "ansi-incomplete",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "a\u001b[32\n\u001b]unfinished",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "a\u001b[32\n\u001b]unfinished",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "a\u001b[?25l\u001b[1;2 H\u001b[0mb",
+      "name": "ansi-controls",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "a\u001b[?25l\u001b[1;2 H\u001b[0mb",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "ab",
+            "warnings": [
+              "removed_ansi:3"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\n\n\nERROR /tmp/app.py:42 failed\n\n\n\nERROR /tmp/app.py:42 failed\n",
+      "name": "mixed",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\u001b[32mbuilding\u001b[0m\n\n\n\nERROR /tmp/app.py:42 failed\n\n\n\nERROR /tmp/app.py:42 failed\n",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "building\n[repeated 9 additional times]\n\nERROR /tmp/app.py:42 failed\n\nERROR /tmp/app.py:42 failed\n",
+            "warnings": [
+              "removed_ansi:20",
+              "folded_duplicate_runs:1",
+              "folded_blank_lines:4"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "ERROR\nERROR",
+      "name": "critical-0",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "ERROR\nERROR",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "ERROR\nERROR",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "error\nerror",
+      "name": "critical-1",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "error\nerror",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "error\nerror",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "fail\nfail",
+      "name": "critical-2",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "fail\nfail",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "fail\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "faile\nfaile",
+      "name": "critical-3",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "faile\nfaile",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "faile\nfaile",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "failed\nfailed",
+      "name": "critical-4",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "failed\nfailed",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "failed\nfailed",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "failure\nfailure",
+      "name": "critical-5",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "failure\nfailure",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "failure\nfailure",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "exception\nexception",
+      "name": "critical-6",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "exception\nexception",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "exception\nexception",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "TRACEBACK\nTRACEBACK",
+      "name": "critical-7",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "TRACEBACK\nTRACEBACK",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "TRACEBACK\nTRACEBACK",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "panic\npanic",
+      "name": "critical-8",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "panic\npanic",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "panic\npanic",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "fatal\nfatal",
+      "name": "critical-9",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "fatal\nfatal",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "fatal\nfatal",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "warn\nwarn",
+      "name": "critical-10",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "warn\nwarn",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "warn\nwarn",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "warning\nwarning",
+      "name": "critical-11",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "warning\nwarning",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "warning\nwarning",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "denied\ndenied",
+      "name": "critical-12",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "denied\ndenied",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "denied\ndenied",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "timeout\ntimeout",
+      "name": "critical-13",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "timeout\ntimeout",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "timeout\ntimeout",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "exit\nexit",
+      "name": "critical-14",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "exit\nexit",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "exit\nexit",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "errors\nerrors",
+      "name": "critical-15",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "errors\nerrors",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "errors\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "preerror\npreerror",
+      "name": "critical-16",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "preerror\npreerror",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "preerror\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "error_suffix\nerror_suffix",
+      "name": "critical-17",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "error_suffix\nerror_suffix",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "error_suffix\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "éerror\néerror",
+      "name": "critical-18",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "éerror\néerror",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "éerror\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "erroré\nerroré",
+      "name": "critical-19",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "erroré\nerroré",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "erroré\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "文error\n文error",
+      "name": "critical-20",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "文error\n文error",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "文error\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "İXİT\nİXİT",
+      "name": "critical-21",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "İXİT\nİXİT",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "İXİT\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "faıled\nfaıled",
+      "name": "critical-22",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "faıled\nfaıled",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "faıled\nfaıled",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "faİled\nfaİled",
+      "name": "critical-23",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "faİled\nfaİled",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "faİled\nfaİled",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "faſe\nfaſe",
+      "name": "critical-24",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "faſe\nfaſe",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "faſe\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "exıt\nexıt",
+      "name": "critical-25",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "exıt\nexıt",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "exıt\nexıt",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "EXIT\nEXIT",
+      "name": "critical-26",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "EXIT\nEXIT",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "EXIT\nEXIT",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "waRnIng\nwaRnIng",
+      "name": "critical-27",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "waRnIng\nwaRnIng",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "waRnIng\nwaRnIng",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "1 item\n1 item",
+      "name": "critical-28",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "1 item\n1 item",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "1 item\n1 item",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "١ item\n١ item",
+      "name": "critical-29",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "١ item\n١ item",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "١ item\n١ item",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "１ item\n１ item",
+      "name": "critical-30",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "１ item\n１ item",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "１ item\n１ item",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "² item\n² item",
+      "name": "critical-31",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "² item\n² item",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "² item\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "𞓰 item\n𞓰 item",
+      "name": "critical-32",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "𞓰 item\n𞓰 item",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "𞓰 item\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "𞓰 item\n𞓰 item",
+      "name": "critical-33",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "𞓰 item\n𞓰 item",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "𞓰 item\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "/path\n/path",
+      "name": "critical-34",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "/path\n/path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "/path\n/path",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "\\path\n\\path",
+      "name": "critical-35",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "\\path\n\\path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "\\path\n\\path",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "C:\\path\nC:\\path",
+      "name": "critical-36",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "C:\\path\nC:\\path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "C:\\path\nC:\\path",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "C:/path\nC:/path",
+      "name": "critical-37",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "C:/path\nC:/path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "C:/path\nC:/path",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "K:/path\nK:/path",
+      "name": "critical-38",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "K:/path\nK:/path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "K:/path\nK:/path",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "before /path\nbefore /path",
+      "name": "critical-39",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "before /path\nbefore /path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "before /path\nbefore /path",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "before\u001c/path\nbefore\u001c/path",
+      "name": "critical-40",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "before\u001c/path\nbefore\u001c/path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "before\u001c/path\nbefore\u001c/path",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "x/path\nx/path",
+      "name": "critical-41",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "x/path\nx/path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "x/path\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.py\nunit.py",
+      "name": "critical-42",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.py\nunit.py",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.py\nunit.py",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.a-b\nunit.a-b",
+      "name": "critical-43",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.a-b\nunit.a-b",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.a-b\nunit.a-b",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.++++\nunit.++++",
+      "name": "critical-44",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.++++\nunit.++++",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.++++\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.+a\nunit.+a",
+      "name": "critical-45",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.+a\nunit.+a",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.+a\nunit.+a",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.K\nunit.K",
+      "name": "critical-46",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.K\nunit.K",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.K\nunit.K",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.ſ\nunit.ſ",
+      "name": "critical-47",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.ſ\nunit.ſ",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.ſ\nunit.ſ",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.İ\nunit.İ",
+      "name": "critical-48",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.İ\nunit.İ",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.İ\nunit.İ",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.ı\nunit.ı",
+      "name": "critical-49",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.ı\nunit.ı",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.ı\nunit.ı",
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.abcdefghijklmnop\nunit.abcdefghijklmnop",
+      "name": "critical-50",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.abcdefghijklmnop\nunit.abcdefghijklmnop",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.abcdefghijklmnop\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.pyé\nunit.pyé",
+      "name": "critical-51",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.pyé\nunit.pyé",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.pyé\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "unit.py文\nunit.py文",
+      "name": "critical-52",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "unit.py文\nunit.py文",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "unit.py文\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "a./path\na./path",
+      "name": "critical-53",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "a./path\na./path",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "a./path\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "content": "README\nREADME",
+      "name": "critical-54",
+      "outputs": [
+        {
+          "component": "passthrough-observation",
+          "output": {
+            "content": "README\nREADME",
+            "warnings": []
+          }
+        },
+        {
+          "component": "deterministic-lossless",
+          "output": {
+            "content": "README\n[repeated 1 additional time]",
+            "warnings": [
+              "folded_duplicate_runs:1"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "reductions": [
+    {
+      "error": null,
+      "input": {
+        "content": "text",
+        "warnings": []
+      },
+      "name": "default",
+      "output": {
+        "content": "text",
+        "warnings": []
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "",
+        "warnings": []
+      },
+      "name": "empty",
+      "output": {
+        "content": "",
+        "warnings": []
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "text",
+        "warnings": [
+          "trimmed:1",
+          "trimmed:1"
+        ]
+      },
+      "name": "warnings",
+      "output": {
+        "content": "text",
+        "warnings": [
+          "trimmed:1",
+          "trimmed:1"
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warnings must contain at most 32 entries"
+      },
+      "input": {
+        "content": "text",
+        "warnings": [
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1",
+          "trimmed:1"
+        ]
+      },
+      "name": "too-many",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warning entries must be at most 256 characters"
+      },
+      "input": {
+        "content": "text",
+        "warnings": [
+          "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+        ]
+      },
+      "name": "too-long",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warnings must contain bounded machine-readable codes"
+      },
+      "input": {
+        "content": "text",
+        "warnings": [
+          "free text"
+        ]
+      },
+      "name": "unsafe",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "content": "text",
+        "warnings": [
+          "folded:123456789012"
+        ]
+      },
+      "name": "suffix",
+      "output": {
+        "content": "text",
+        "warnings": [
+          "folded:123456789012"
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warnings must contain bounded machine-readable codes"
+      },
+      "input": {
+        "content": "text",
+        "warnings": [
+          "folded:1234567890123"
+        ]
+      },
+      "name": "suffix-overflow",
+      "output": null
+    }
+  ]
+}

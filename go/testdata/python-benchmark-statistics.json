@@ -1,0 +1,1303 @@
+{
+  "aggregates": [
+    {
+      "name": "empty",
+      "result": [],
+      "runs": []
+    },
+    {
+      "name": "single",
+      "result": [
+        {
+          "arm": "arm",
+          "duration_ms": 1.0,
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 1,
+          "rounds": 2,
+          "task": "task"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "duration_ms": 1.0,
+            "error": null,
+            "passed": true,
+            "rounds": 2,
+            "task": "task"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "even-tie",
+      "result": [
+        {
+          "arm": "arm",
+          "error": null,
+          "pass_rate": 0.5,
+          "passed": false,
+          "repeats": 2,
+          "rounds": 2.5,
+          "task": "task"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 1,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": false,
+            "rounds": 4,
+            "task": "task"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "majority-first-error",
+      "result": [
+        {
+          "arm": "arm",
+          "error": "first fault",
+          "pass_rate": 0.667,
+          "passed": true,
+          "repeats": 3,
+          "rounds": 7,
+          "task": "task"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 10,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": "first fault",
+            "passed": false,
+            "rounds": 2,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": "later fault",
+            "passed": true,
+            "rounds": 7,
+            "task": "task"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "first-seen-order",
+      "result": [
+        {
+          "arm": "first",
+          "error": null,
+          "pass_rate": 0.667,
+          "passed": true,
+          "repeats": 3,
+          "task": "z"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 1,
+          "task": "界"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 1,
+          "task": "a"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "first",
+            "error": null,
+            "passed": true,
+            "task": "z"
+          },
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "task": "界"
+          }
+        ],
+        [
+          {
+            "arm": "second",
+            "error": null,
+            "passed": true,
+            "task": "z"
+          },
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "task": "a"
+          },
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": false,
+            "task": "z"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "sparse",
+      "result": [
+        {
+          "arm": "arm",
+          "duration_ms": 1.25,
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 3,
+          "rounds": 3,
+          "task": "task"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "duration_ms": -0.0,
+            "error": null,
+            "passed": true,
+            "rounds": null,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "duration_ms": 2.5,
+            "error": null,
+            "passed": true,
+            "rounds": 3,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "task": "task"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "large-integer-even",
+      "result": [
+        {
+          "arm": "arm",
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 2,
+          "rounds": 9.223372036854776e+18,
+          "task": "task"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 9223372036854775807,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 9223372036854775806,
+            "task": "task"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "mixed-exact-order",
+      "result": [
+        {
+          "arm": "arm",
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 3,
+          "rounds": 9007199254740992,
+          "task": "task"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 9007199254740993,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 9007199254740992.0,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 9007199254740992,
+            "task": "task"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "boolean-measurements",
+      "result": [
+        {
+          "arm": "arm",
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 3,
+          "rounds": true,
+          "task": "task",
+          "tool_calls": 0.5
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": true,
+            "task": "task",
+            "tool_calls": false
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": false,
+            "task": "task",
+            "tool_calls": true
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": true,
+            "task": "task"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "beyond-int64",
+      "result": [
+        {
+          "arm": "arm",
+          "error": null,
+          "pass_rate": 1.0,
+          "passed": true,
+          "repeats": 2,
+          "rounds": 1e+40,
+          "task": "task"
+        }
+      ],
+      "runs": [
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 10000000000000000000000000000000000000001,
+            "task": "task"
+          }
+        ],
+        [
+          {
+            "arm": "arm",
+            "error": null,
+            "passed": true,
+            "rounds": 10000000000000000000000000000000000000003,
+            "task": "task"
+          }
+        ]
+      ]
+    }
+  ],
+  "behaviors": [
+    {
+      "messages": [],
+      "name": "empty",
+      "result": {
+        "repeated_reads": 0,
+        "rounds": 0,
+        "tool_calls": 0,
+        "tool_errors": 0
+      }
+    },
+    {
+      "messages": [
+        {
+          "content": "question",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "name": "plain",
+      "result": {
+        "repeated_reads": 0,
+        "rounds": 1,
+        "tool_calls": 0,
+        "tool_errors": 0
+      }
+    },
+    {
+      "messages": [
+        {
+          "content": [
+            {
+              "id": "1",
+              "input": {
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            },
+            {
+              "id": "2",
+              "input": {
+                "limit": null,
+                "offset": null,
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            },
+            {
+              "id": "3",
+              "input": {
+                "offset": 0,
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            },
+            {
+              "id": "4",
+              "input": {
+                "offset": 1,
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            },
+            {
+              "id": "5",
+              "input": {
+                "offset": 1,
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            },
+            {
+              "id": "6",
+              "input": {
+                "limit": 2,
+                "offset": 1,
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            },
+            {
+              "id": "7",
+              "input": {
+                "limit": 3,
+                "offset": 1,
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "windows",
+      "result": {
+        "repeated_reads": 2,
+        "rounds": 1,
+        "tool_calls": 7,
+        "tool_errors": 0
+      }
+    },
+    {
+      "messages": [
+        {
+          "content": [
+            {
+              "content": "Error: failure",
+              "tool_use_id": "0",
+              "type": "tool_result"
+            },
+            {
+              "content": "　Unknown tool x",
+              "tool_use_id": "1",
+              "type": "tool_result"
+            },
+            {
+              "content": "command (exit 2)\n",
+              "tool_use_id": "2",
+              "type": "tool_result"
+            },
+            {
+              "content": "command (exit 1٢)　",
+              "tool_use_id": "3",
+              "type": "tool_result"
+            },
+            {
+              "content": "command (exit 0)",
+              "tool_use_id": "4",
+              "type": "tool_result"
+            },
+            {
+              "content": "command (exit 01)",
+              "tool_use_id": "5",
+              "type": "tool_result"
+            },
+            {
+              "content": "command (exit 2) more",
+              "tool_use_id": "6",
+              "type": "tool_result"
+            },
+            {
+              "content": "no failure",
+              "tool_use_id": "7",
+              "type": "tool_result"
+            },
+            {
+              "content": "command (exit ٢)",
+              "tool_use_id": "8",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "rendered-errors",
+      "result": {
+        "repeated_reads": 0,
+        "rounds": 0,
+        "tool_calls": 0,
+        "tool_errors": 4
+      }
+    },
+    {
+      "messages": [
+        {
+          "content": [
+            {
+              "content": "okay",
+              "is_error": true,
+              "tool_use_id": "1",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "flag-is-not-judge",
+      "result": {
+        "repeated_reads": 0,
+        "rounds": 0,
+        "tool_calls": 0,
+        "tool_errors": 0
+      }
+    },
+    {
+      "messages": [
+        {
+          "content": [
+            {
+              "id": "1",
+              "input": {
+                "path": "log"
+              },
+              "name": "read_file",
+              "type": "tool_use"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "2",
+              "input": {
+                "command": "echo yes"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            },
+            {
+              "content": "Error happened",
+              "tool_use_id": "3",
+              "type": "tool_result"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "roles",
+      "result": {
+        "repeated_reads": 0,
+        "rounds": 1,
+        "tool_calls": 1,
+        "tool_errors": 1
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "baseline": [],
+      "candidate": [],
+      "error": null,
+      "name": "empty",
+      "result": {
+        "baseline_passed": 0,
+        "candidate_passed": 0,
+        "dimension_warnings": [],
+        "dimensions": {},
+        "regressions": [],
+        "tasks": 0,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "b"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "a"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "a"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "b"
+        }
+      ],
+      "error": null,
+      "name": "equal",
+      "result": {
+        "baseline_passed": 2,
+        "candidate_passed": 2,
+        "dimension_warnings": [],
+        "dimensions": {},
+        "regressions": [],
+        "tasks": 2,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "loss"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": false,
+          "task": "win"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "win"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": false,
+          "task": "loss"
+        }
+      ],
+      "error": null,
+      "name": "regression-beats-win",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 1,
+        "dimension_warnings": [],
+        "dimensions": {},
+        "regressions": [
+          "loss"
+        ],
+        "tasks": 2,
+        "verdict": "regression",
+        "wins": [
+          "win"
+        ]
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": false,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "win",
+      "result": {
+        "baseline_passed": 0,
+        "candidate_passed": 1,
+        "dimension_warnings": [],
+        "dimensions": {},
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "improvement",
+        "wins": [
+          "task"
+        ]
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "a"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "b"
+        }
+      ],
+      "error": "arms ran different task sets; nothing is comparable",
+      "name": "different-tasks",
+      "result": null
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "a"
+        }
+      ],
+      "candidate": [],
+      "error": "arms ran different task sets; nothing is comparable",
+      "name": "different-count",
+      "result": null
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": false,
+          "task": "task"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": false,
+          "task": "task"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": false,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "duplicates",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 0,
+        "dimension_warnings": [],
+        "dimensions": {},
+        "regressions": [
+          "task"
+        ],
+        "tasks": 1,
+        "verdict": "regression",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 0,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 5,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "zero-base",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 1,
+        "dimension_warnings": [],
+        "dimensions": {
+          "rounds": {
+            "baseline": 0,
+            "candidate": 5,
+            "delta_pct": null
+          }
+        },
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": -1,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 0,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "nonpositive",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 1,
+        "dimension_warnings": [],
+        "dimensions": {},
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 100,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 125,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "strict-threshold",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 1,
+        "dimension_warnings": [],
+        "dimensions": {
+          "rounds": {
+            "baseline": 100,
+            "candidate": 125,
+            "delta_pct": 25.0
+          }
+        },
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "duration_ms": 100.0,
+          "error": null,
+          "passed": true,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "duration_ms": 125.049,
+          "error": null,
+          "passed": true,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "rounded-threshold",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 1,
+        "dimension_warnings": [],
+        "dimensions": {
+          "duration_ms": {
+            "baseline": 100.0,
+            "candidate": 125.049,
+            "delta_pct": 25.0
+          }
+        },
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "context_tokens_estimate": 100,
+          "duration_ms": 10.0,
+          "error": null,
+          "passed": true,
+          "repeated_reads": 1,
+          "rounds": 2,
+          "task": "task",
+          "tool_calls": 4,
+          "tool_errors": 1
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "context_tokens_estimate": 130,
+          "duration_ms": 15.0,
+          "error": null,
+          "passed": true,
+          "repeated_reads": 0,
+          "rounds": 3,
+          "task": "task",
+          "tool_calls": 5,
+          "tool_errors": 2
+        }
+      ],
+      "error": null,
+      "name": "all-dimensions",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 1,
+        "dimension_warnings": [
+          "duration_ms worsened 50.0%",
+          "context_tokens_estimate worsened 30.0%",
+          "rounds worsened 50.0%",
+          "tool_errors worsened 100.0%"
+        ],
+        "dimensions": {
+          "context_tokens_estimate": {
+            "baseline": 100,
+            "candidate": 130,
+            "delta_pct": 30.0
+          },
+          "duration_ms": {
+            "baseline": 10.0,
+            "candidate": 15.0,
+            "delta_pct": 50.0
+          },
+          "repeated_reads": {
+            "baseline": 1,
+            "candidate": 0,
+            "delta_pct": -100.0
+          },
+          "rounds": {
+            "baseline": 2,
+            "candidate": 3,
+            "delta_pct": 50.0
+          },
+          "tool_calls": {
+            "baseline": 4,
+            "candidate": 5,
+            "delta_pct": 25.0
+          },
+          "tool_errors": {
+            "baseline": 1,
+            "candidate": 2,
+            "delta_pct": 100.0
+          }
+        },
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "duration_ms": -0.0,
+          "error": null,
+          "passed": true,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "duration_ms": 0.0,
+          "error": null,
+          "passed": true,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "signed-zero",
+      "result": {
+        "baseline_passed": 1,
+        "candidate_passed": 1,
+        "dimension_warnings": [],
+        "dimensions": {},
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 1,
+          "task": "task"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 2.0,
+          "task": "task"
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 4.0,
+          "task": "task"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": -1,
+          "task": "task"
+        }
+      ],
+      "error": null,
+      "name": "mixed-sums",
+      "result": {
+        "baseline_passed": 2,
+        "candidate_passed": 2,
+        "dimension_warnings": [],
+        "dimensions": {
+          "rounds": {
+            "baseline": 3.0,
+            "candidate": 3.0,
+            "delta_pct": 0.0
+          }
+        },
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    },
+    {
+      "baseline": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 9223372036854775807,
+          "task": "task"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 1,
+          "task": "task",
+          "tool_errors": true
+        }
+      ],
+      "candidate": [
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 9223372036854775807,
+          "task": "task"
+        },
+        {
+          "arm": "arm",
+          "error": null,
+          "passed": true,
+          "rounds": 2,
+          "task": "task",
+          "tool_errors": false
+        }
+      ],
+      "error": null,
+      "name": "large-sum-and-boolean",
+      "result": {
+        "baseline_passed": 2,
+        "candidate_passed": 2,
+        "dimension_warnings": [],
+        "dimensions": {
+          "rounds": {
+            "baseline": 9223372036854775808,
+            "candidate": 9223372036854775809,
+            "delta_pct": 0.0
+          },
+          "tool_errors": {
+            "baseline": 1,
+            "candidate": 0,
+            "delta_pct": -100.0
+          }
+        },
+        "regressions": [],
+        "tasks": 1,
+        "verdict": "not_worse",
+        "wins": []
+      }
+    }
+  ],
+  "rounding": [
+    {
+      "digits": 1,
+      "result": 2.7,
+      "value": 2.675
+    },
+    {
+      "digits": 3,
+      "result": 2.675,
+      "value": 2.675
+    },
+    {
+      "digits": 1,
+      "result": 1.2,
+      "value": 1.225
+    },
+    {
+      "digits": 3,
+      "result": 1.225,
+      "value": 1.225
+    },
+    {
+      "digits": 1,
+      "result": 0.0,
+      "value": 0.0005
+    },
+    {
+      "digits": 3,
+      "result": 0.001,
+      "value": 0.0005
+    },
+    {
+      "digits": 1,
+      "result": -0.0,
+      "value": -0.0005
+    },
+    {
+      "digits": 3,
+      "result": -0.001,
+      "value": -0.0005
+    },
+    {
+      "digits": 1,
+      "result": 0.0,
+      "value": 0.0015
+    },
+    {
+      "digits": 3,
+      "result": 0.002,
+      "value": 0.0015
+    },
+    {
+      "digits": 1,
+      "result": 25.1,
+      "value": 25.05
+    },
+    {
+      "digits": 3,
+      "result": 25.05,
+      "value": 25.05
+    },
+    {
+      "digits": 1,
+      "result": 25.1,
+      "value": 25.15
+    },
+    {
+      "digits": 3,
+      "result": 25.15,
+      "value": 25.15
+    },
+    {
+      "digits": 1,
+      "result": -25.1,
+      "value": -25.05
+    },
+    {
+      "digits": 3,
+      "result": -25.05,
+      "value": -25.05
+    },
+    {
+      "digits": 1,
+      "result": 1e+16,
+      "value": 1e+16
+    },
+    {
+      "digits": 3,
+      "result": 1e+16,
+      "value": 1e+16
+    },
+    {
+      "digits": 1,
+      "result": 0.0,
+      "value": 1e-300
+    },
+    {
+      "digits": 3,
+      "result": 0.0,
+      "value": 1e-300
+    }
+  ]
+}

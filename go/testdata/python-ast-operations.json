@@ -1,0 +1,676 @@
+{
+  "operations": [
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "digest",
+            "--format",
+            "names",
+            "--json",
+            "--",
+            "<snapshot>/code.py",
+            "<snapshot>/other.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "density": "names",
+        "include_imports": false,
+        "name": "map-names",
+        "operation": "repo_map",
+        "paths": [
+          "code.py",
+          "code.py",
+          "other.py"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[],\"results\":[]},\"output_bytes\":84}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "digest",
+            "--format",
+            "compact",
+            "--json",
+            "--",
+            "<snapshot>/code.py",
+            "<snapshot>/other.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "density": "compact",
+        "include_imports": false,
+        "name": "map-compact",
+        "operation": "repo_map",
+        "paths": [
+          "code.py",
+          "code.py",
+          "other.py"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[],\"results\":[]},\"output_bytes\":84}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "digest",
+            "--format",
+            "default",
+            "--json",
+            "--",
+            "<snapshot>/code.py",
+            "<snapshot>/other.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "density": "default",
+        "include_imports": false,
+        "name": "map-default",
+        "operation": "repo_map",
+        "paths": [
+          "code.py",
+          "code.py",
+          "other.py"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[],\"results\":[]},\"output_bytes\":84}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "digest",
+            "--format",
+            "wide",
+            "--imports",
+            "--json",
+            "--",
+            "<snapshot>/code.py",
+            "<snapshot>/other.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "density": "wide",
+        "include_imports": true,
+        "name": "map-wide",
+        "operation": "repo_map",
+        "paths": [
+          "code.py",
+          "code.py",
+          "other.py"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[],\"results\":[]},\"output_bytes\":84}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "include_imports": false,
+        "name": "outline-full-False",
+        "operation": "file_outline",
+        "paths": [
+          "code.py"
+        ],
+        "view": "full"
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[],\"results\":[]},\"output_bytes\":85}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--imports",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "include_imports": true,
+        "name": "outline-full-True",
+        "operation": "file_outline",
+        "paths": [
+          "code.py"
+        ],
+        "view": "full"
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[],\"results\":[]},\"output_bytes\":85}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--no-private",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "include_imports": false,
+        "name": "outline-public-False",
+        "operation": "file_outline",
+        "paths": [
+          "code.py"
+        ],
+        "view": "public"
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[],\"results\":[]},\"output_bytes\":85}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--no-private",
+            "--imports",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "include_imports": true,
+        "name": "outline-public-True",
+        "operation": "file_outline",
+        "paths": [
+          "code.py"
+        ],
+        "view": "public"
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[],\"results\":[]},\"output_bytes\":85}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--no-private",
+            "--no-fields",
+            "--no-docs",
+            "--no-attrs",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "include_imports": false,
+        "name": "outline-minimal-False",
+        "operation": "file_outline",
+        "paths": [
+          "code.py"
+        ],
+        "view": "minimal"
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[],\"results\":[]},\"output_bytes\":85}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--no-private",
+            "--no-fields",
+            "--no-docs",
+            "--no-attrs",
+            "--imports",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "include_imports": true,
+        "name": "outline-minimal-True",
+        "operation": "file_outline",
+        "paths": [
+          "code.py"
+        ],
+        "view": "minimal"
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[],\"results\":[]},\"output_bytes\":85}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "show",
+            "--json",
+            "--",
+            "<snapshot>/code.py",
+            "-Option",
+            "One"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "name": "show-explicit",
+        "operation": "show_symbol",
+        "path_or_glob": "code.py",
+        "symbols": [
+          "-Option",
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"files\":[],\"results\":[]},\"output_bytes\":82}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "show",
+            "--signature",
+            "--json",
+            "--",
+            "<snapshot>/code.py",
+            "One"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "name": "show-signature",
+        "operation": "show_symbol",
+        "path_or_glob": "cod*.py",
+        "signature_only": true,
+        "symbols": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"files\":[],\"results\":[]},\"output_bytes\":82}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "name": "show-empty-glob",
+        "operation": "show_symbol",
+        "path_or_glob": "none*.py",
+        "symbols": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"message\":\"basename glob matched no workspace files\",\"data\":{\"matches\":[]}}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "name": "show-ambiguous-glob",
+        "operation": "show_symbol",
+        "path_or_glob": "*.py",
+        "symbols": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"ambiguous\",\"operation\":\"show_symbol\",\"warnings\":[],\"message\":\"basename glob matched 2 files; choose one explicit path\",\"data\":{\"matches\":[\"code.py\",\"other.py\"],\"total_match_count\":2,\"truncated\":false}}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "name": "show-directory",
+        "operation": "show_symbol",
+        "path_or_glob": ".",
+        "symbols": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"show_symbol\",\"warnings\":[],\"message\":\"show_symbol requires a regular source file\"}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "grep",
+            "--json",
+            "--expression=-Option",
+            "--expression=One",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "name": "references",
+        "operation": "symbol_references",
+        "paths": [
+          "code.py"
+        ],
+        "patterns": [
+          "-Option",
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[],\"results\":[]},\"output_bytes\":82}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "grep",
+            "--json",
+            "--kind=def,call,def",
+            "--max-count=7",
+            "--expression=One",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "kinds": [
+          "def",
+          "call",
+          "def"
+        ],
+        "max_per_file": 7,
+        "name": "references-options",
+        "operation": "symbol_references",
+        "paths": [
+          "code.py"
+        ],
+        "patterns": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[],\"results\":[]},\"output_bytes\":82}"
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "grep",
+            "--json",
+            "--kind=def,call,ref,import,comment,string",
+            "--max-count=10000",
+            "--expression=One",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "kinds": [
+          "def",
+          "call",
+          "ref",
+          "import",
+          "comment",
+          "string"
+        ],
+        "max_per_file": 10000,
+        "name": "references-all-kinds",
+        "operation": "symbol_references",
+        "paths": [
+          "code.py"
+        ],
+        "patterns": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[],\"results\":[]},\"output_bytes\":82}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "density": "bad",
+        "name": "map-bad-density",
+        "operation": "repo_map",
+        "paths": [
+          "code.py"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"repo_map\",\"warnings\":[],\"message\":\"density must be one of ['compact', 'default', 'names', 'wide']\"}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "name": "outline-bad-view",
+        "operation": "file_outline",
+        "paths": [
+          "code.py"
+        ],
+        "view": "bad"
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"message\":\"view must be one of ['full', 'minimal', 'public']\"}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "name": "outline-empty-paths",
+        "operation": "file_outline",
+        "paths": []
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"message\":\"paths must be a non-empty array of strings\"}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "name": "show-empty-symbols",
+        "operation": "show_symbol",
+        "path_or_glob": "code.py",
+        "symbols": []
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"show_symbol\",\"warnings\":[],\"message\":\"symbols must be a non-empty array of strings\"}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "name": "references-empty-patterns",
+        "operation": "symbol_references",
+        "paths": [
+          "code.py"
+        ],
+        "patterns": []
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"symbol_references\",\"warnings\":[],\"message\":\"patterns must be a non-empty array of strings\"}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "kinds": [
+          "bad"
+        ],
+        "name": "references-bad-kind",
+        "operation": "symbol_references",
+        "paths": [
+          "code.py"
+        ],
+        "patterns": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"symbol_references\",\"warnings\":[],\"message\":\"kinds must be drawn from ['call', 'comment', 'def', 'import', 'ref', 'string']\"}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "kinds": [
+          "def",
+          "def",
+          "def",
+          "def",
+          "def",
+          "def",
+          "def"
+        ],
+        "name": "references-too-many-kinds",
+        "operation": "symbol_references",
+        "paths": [
+          "code.py"
+        ],
+        "patterns": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"symbol_references\",\"warnings\":[],\"message\":\"too many kinds\"}"
+    },
+    {
+      "calls": [],
+      "case": {
+        "max_per_file": 0,
+        "name": "references-bad-cap",
+        "operation": "symbol_references",
+        "paths": [
+          "code.py"
+        ],
+        "patterns": [
+          "One"
+        ]
+      },
+      "cleaned": true,
+      "result_json": "{\"status\":\"error\",\"operation\":\"symbol_references\",\"warnings\":[],\"message\":\"max_per_file must be an integer from 1 to 10000\"}"
+    }
+  ]
+}

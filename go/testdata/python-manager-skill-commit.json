@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "activation": "",
+        "error": "session_not_found",
+        "idempotent": false,
+        "source": "",
+        "status": 404
+      },
+      "name": "foreign",
+      "retained": true
+    },
+    {
+      "expected": {
+        "activation": "",
+        "error": "readonly_session",
+        "idempotent": false,
+        "source": "",
+        "status": 403
+      },
+      "name": "readonly",
+      "retained": true
+    },
+    {
+      "expected": {
+        "activation": "",
+        "error": "draft_digest_mismatch",
+        "idempotent": false,
+        "source": "",
+        "status": 409
+      },
+      "name": "wrong-digest",
+      "retained": true
+    },
+    {
+      "expected": {
+        "activation": "next_session",
+        "error": "",
+        "idempotent": false,
+        "source": "user",
+        "status": 0
+      },
+      "name": "valid",
+      "retained": false
+    },
+    {
+      "expected": {
+        "activation": "",
+        "error": "user_skill_exists",
+        "idempotent": false,
+        "source": "",
+        "status": 409
+      },
+      "name": "conflict",
+      "retained": true
+    },
+    {
+      "expected": {
+        "activation": "next_session",
+        "error": "",
+        "idempotent": true,
+        "source": "user",
+        "status": 0
+      },
+      "name": "idempotent",
+      "retained": false
+    }
+  ]
+}

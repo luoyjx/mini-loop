@@ -1,0 +1,863 @@
+{
+  "authority": {
+    "problems": [
+      "missing: fired at its scheduled time but session 'absent' does not exist; the occurrence was lost"
+    ],
+    "runs": [
+      {
+        "authority": "untrusted",
+        "prompt": "[Scheduled cron invoke] go"
+      }
+    ]
+  },
+  "bounds": {
+    "job_error": "Error: 200 scheduled jobs already exist",
+    "prompt_error": "Error: prompt is 8,001 characters; the limit is 8,000"
+  },
+  "dates": [
+    "2026-10-05T12:30:00",
+    "2026-11-13T00:00:00",
+    "2026-11-06T00:00:00",
+    "2026-10-04T00:00:00",
+    "2026-10-05T02:10:00",
+    "2026-10-05T09:15:00"
+  ],
+  "losses": [
+    {
+      "fire_count": 0,
+      "job_count": 1,
+      "kind": "claim",
+      "marker": "",
+      "problem_total": 1
+    },
+    {
+      "fire_count": 0,
+      "job_count": 1,
+      "kind": "save",
+      "marker": "2026-10-05 12:30",
+      "problem_total": 1
+    },
+    {
+      "fire_count": 0,
+      "job_count": 0,
+      "kind": "one-shot-save",
+      "marker": null,
+      "problem_total": 1
+    }
+  ],
+  "masking": {
+    "live": "secret",
+    "problems": [
+      "aabbccdd: prompt held a registered secret; the stored copy is masked and will fire masked after a restart"
+    ],
+    "restored": "[MASK]",
+    "stored": "[MASK]"
+  },
+  "one_shot": {
+    "disk": [],
+    "fires": [
+      {
+        "disk": [],
+        "job": {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:30",
+          "prompt": "once",
+          "recurring": false,
+          "session_id": "session-a"
+        }
+      }
+    ],
+    "jobs": []
+  },
+  "operations": [
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 0,
+      "fires": [],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "schedule",
+      "problems": [],
+      "text": "Scheduled cron aabbccdd: '* * * * *' -> 中文 run"
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 0,
+      "fires": [],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "list",
+      "problems": [],
+      "text": "aabbccdd: '* * * * *' [recurring, durable] -> 中文 run"
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 1,
+      "fires": [
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:30",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:30",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        }
+      ],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:30",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "tick",
+      "problems": [],
+      "text": ""
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 1,
+      "fires": [
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:30",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:30",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        }
+      ],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:30",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "same-minute",
+      "problems": [],
+      "text": ""
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 1,
+      "fires": [
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:30",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:30",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        },
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:31",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:31",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        }
+      ],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:31",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "next-minute",
+      "problems": [],
+      "text": ""
+    },
+    {
+      "armed": [],
+      "claims": 1,
+      "fires": [],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:31",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "restore",
+      "problems": [],
+      "text": "aabbccdd: '* * * * *' [recurring, durable, DISARMED (restored; needs operator arm)] -> 中文 run"
+    },
+    {
+      "armed": [],
+      "claims": 1,
+      "fires": [],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:31",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "disarmed-tick",
+      "problems": [],
+      "text": ""
+    },
+    {
+      "armed": [],
+      "claims": 1,
+      "fires": [],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:31",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "foreign-arm",
+      "problems": [],
+      "text": "Error: no such job aabbccdd"
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 1,
+      "fires": [],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:31",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "arm",
+      "problems": [],
+      "text": "Armed aabbccdd"
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 1,
+      "fires": [],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:31",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "restored-same-minute",
+      "problems": [],
+      "text": ""
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 1,
+      "fires": [
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:32",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:32",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        }
+      ],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:32",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "restored-next-minute",
+      "problems": [],
+      "text": ""
+    },
+    {
+      "armed": [
+        "aabbccdd"
+      ],
+      "claims": 1,
+      "fires": [
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:32",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:32",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        }
+      ],
+      "jobs": [
+        {
+          "cron": "* * * * *",
+          "durable": true,
+          "id": "aabbccdd",
+          "last_fired": "2026-10-05 12:32",
+          "prompt": "中文 run",
+          "recurring": true,
+          "session_id": "session-a"
+        }
+      ],
+      "name": "foreign-cancel",
+      "problems": [],
+      "text": "No cron aabbccdd"
+    },
+    {
+      "armed": [],
+      "claims": 0,
+      "fires": [
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:32",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:32",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        }
+      ],
+      "jobs": [],
+      "name": "cancel",
+      "problems": [],
+      "text": "Cancelled cron aabbccdd"
+    },
+    {
+      "armed": [],
+      "claims": 0,
+      "fires": [
+        {
+          "disk": [
+            {
+              "cron": "* * * * *",
+              "durable": true,
+              "id": "aabbccdd",
+              "last_fired": "2026-10-05 12:32",
+              "prompt": "中文 run",
+              "recurring": true,
+              "session_id": "session-a"
+            }
+          ],
+          "job": {
+            "cron": "* * * * *",
+            "durable": true,
+            "id": "aabbccdd",
+            "last_fired": "2026-10-05 12:32",
+            "prompt": "中文 run",
+            "recurring": true,
+            "session_id": "session-a"
+          }
+        }
+      ],
+      "jobs": [],
+      "name": "empty",
+      "problems": [],
+      "text": "No scheduled jobs."
+    }
+  ],
+  "pair": {
+    "claims": 1,
+    "left_fires": 1,
+    "left_marker": "2026-10-05 12:31",
+    "problems": [],
+    "right_fires": 1,
+    "right_marker": "2026-10-05 12:31"
+  },
+  "parser": [
+    {
+      "error": null,
+      "expression": "* * * * *",
+      "matches": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "error": null,
+      "expression": "*/15 9-17 * * 1-5",
+      "matches": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "error": null,
+      "expression": "0 0 13 * 5",
+      "matches": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "0 0 */1 * 0",
+      "matches": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "0 0 * * 0",
+      "matches": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "0 0 1,13 * *",
+      "matches": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "+0 0 * * *",
+      "matches": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "١_٠ ٢ * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "0\u001c0 * * *",
+      "matches": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "*/99999999999999999999999 * * * *",
+      "matches": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "error": null,
+      "expression": "1-10/3 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    {
+      "error": "cron must have 5 fields: minute hour day-of-month month day-of-week",
+      "expression": "* * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: step must be greater than zero",
+      "expression": "*/0 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: step requires '*' or a range",
+      "expression": "0/2 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: empty list item",
+      "expression": "1,,2 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: value must be in 0-59",
+      "expression": "60 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "hour: value must be in 0-23",
+      "expression": "* 24 * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "day-of-month: value must be in 1-31",
+      "expression": "* * 0 * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "month: value must be in 1-12",
+      "expression": "* * * 13 *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "day-of-week: value must be in 0-6",
+      "expression": "* * * * 7",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: range start must not exceed range end",
+      "expression": "10-1 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: invalid literal for int() with base 10: ''",
+      "expression": "-1 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: invalid literal for int() with base 10: 'foo'",
+      "expression": "foo * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: invalid literal for int() with base 10: '1.0'",
+      "expression": "1.0 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: invalid literal for int() with base 10: '1/2'",
+      "expression": "*/1/2 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "minute: invalid literal for int() with base 10: '1__0'",
+      "expression": "1__0 * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "error": "cron must have 5 fields: minute hour day-of-month month day-of-week",
+      "expression": "* * * * * *",
+      "matches": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "source_sha256": {
+    "cron.py": "6a6e4edd21eb0608ca376dfa390074a87f6ee6ea6967d247dc8762ccd70bdb50",
+    "durable.py": "0b26ec888f3e623235ef22826ce94c31edce3e5c0cb79540cca5521ddd052be8",
+    "problems.py": "98a2fe6fae858318b0db8b5261c033030c6d7d9f651ab5bb740cc60584874704",
+    "run_context.py": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9"
+  }
+}

@@ -1,0 +1,1647 @@
+{
+  "rows": [
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "off",
+        "observation": [],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": null,
+      "initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": null,
+      "live_drained": null,
+      "mode": "off",
+      "name": "off-normal",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "off",
+        "observation": [],
+        "request": [],
+        "response": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "concise-response",
+              "lossiness": "lossy",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "response_policy",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ]
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": null,
+      "initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": null,
+      "live_drained": null,
+      "mode": "off",
+      "name": "off-concise",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "concise",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "skipped"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "shadow",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "text/*",
+                "application/json"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "deterministic-lossless",
+              "lossiness": "recoverable",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": true,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": null,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": null,
+      "live_drained": null,
+      "mode": "shadow",
+      "name": "shadow-normal",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "concise-response",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "response_policy",
+            "status": "skipped"
+          },
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "skipped"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "shadow",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "text/*",
+                "application/json"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "deterministic-lossless",
+              "lossiness": "recoverable",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": true,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "concise-response",
+              "lossiness": "lossy",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "response_policy",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ]
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": null,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          },
+          {
+            "component_id": "concise-response",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "response_policy",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": null,
+      "live_drained": null,
+      "mode": "shadow",
+      "name": "shadow-concise",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "concise",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "skipped"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "text/*",
+                "application/json"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "deterministic-lossless",
+              "lossiness": "recoverable",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": true,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": true,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": false,
+      "live_drained": null,
+      "mode": "enforce",
+      "name": "enforce-normal",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "concise-response",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "response_policy",
+            "status": "skipped"
+          },
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "skipped"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "text/*",
+                "application/json"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "deterministic-lossless",
+              "lossiness": "recoverable",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": true,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "concise-response",
+              "lossiness": "lossy",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "response_policy",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ]
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": true,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          },
+          {
+            "component_id": "concise-response",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "response_policy",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": false,
+      "live_drained": null,
+      "mode": "enforce",
+      "name": "enforce-concise",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "concise",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": [],
+      "close": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "skipped"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "text/*",
+                "application/json"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "deterministic-lossless",
+              "lossiness": "recoverable",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": true,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": null,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": null,
+      "live_drained": null,
+      "mode": "enforce",
+      "name": "caller-catalog",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": true,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "skipped"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "text/*",
+                "application/json"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "deterministic-lossless",
+              "lossiness": "recoverable",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": true,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": null,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "deterministic-lossless",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "initialize_error": null,
+      "injected": false,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": null,
+      "live_drained": null,
+      "mode": "enforce",
+      "name": "no-persistence",
+      "persist": false,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "manager-efficiency-probe",
+              "lossiness": "lossless",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [
+        {
+          "hook": "initialize",
+          "services_absent": true
+        },
+        {
+          "deadline_absent": true,
+          "hook": "close",
+          "stores_closed": true
+        }
+      ],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": true,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "initialize_error": null,
+      "injected": true,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": false,
+      "live_drained": null,
+      "mode": "off",
+      "name": "injected",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "manager-efficiency-probe",
+              "lossiness": "lossless",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [
+        {
+          "hook": "initialize",
+          "services_absent": true
+        },
+        {
+          "deadline_absent": true,
+          "hook": "close",
+          "stores_closed": true
+        }
+      ],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": true,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "initialize_error": null,
+      "injected": true,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": false,
+      "live_drained": null,
+      "mode": "off",
+      "name": "foreign-template",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": true
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "manager-efficiency-probe",
+              "lossiness": "lossless",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [
+        {
+          "hook": "initialize",
+          "services_absent": true
+        },
+        {
+          "deadline_absent": true,
+          "hook": "close",
+          "stores_closed": true
+        }
+      ],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": false,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "initialize_error": null,
+      "injected": true,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": false,
+      "live_drained": null,
+      "mode": "off",
+      "name": "shared-template",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": true,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": false,
+          "template_store": true,
+          "workspace_matches": true
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": true,
+          "workspace_matches": true
+        }
+      ],
+      "shared": true,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": true,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": true
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "manager-efficiency-probe",
+              "lossiness": "lossless",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [
+        {
+          "hook": "initialize",
+          "services_absent": true
+        },
+        {
+          "deadline_absent": true,
+          "hook": "close",
+          "stores_closed": true
+        }
+      ],
+      "fail_close": false,
+      "fail_initialize": true,
+      "first_closed_after_delete": true,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "component_error:ValueError",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "initialize",
+        "status": "error"
+      },
+      "initialize_error": null,
+      "injected": true,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": false,
+      "live_drained": null,
+      "mode": "off",
+      "name": "failed-initialize",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "component_error:RuntimeError",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "close",
+        "status": "error"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "manager-efficiency-probe",
+              "lossiness": "lossless",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [
+        {
+          "hook": "initialize",
+          "services_absent": true
+        },
+        {
+          "deadline_absent": true,
+          "hook": "close",
+          "stores_closed": true
+        }
+      ],
+      "fail_close": true,
+      "fail_initialize": false,
+      "first_closed_after_delete": true,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "initialize_error": null,
+      "injected": true,
+      "live": false,
+      "live_cancelled": null,
+      "live_closed_after_delete": false,
+      "live_drained": null,
+      "mode": "off",
+      "name": "failed-close",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    },
+    {
+      "all_stores_closed": true,
+      "caller_catalog_preserved": true,
+      "caller_names": null,
+      "close": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "close_error": null,
+      "components": {
+        "default_mode": "enforce",
+        "observation": [
+          {
+            "descriptor": {
+              "capabilities": [],
+              "content_types": [
+                "*/*"
+              ],
+              "cost_tier": "fast",
+              "deterministic": true,
+              "id": "manager-efficiency-probe",
+              "lossiness": "lossless",
+              "max_input_bytes": null,
+              "network_access": false,
+              "recoverable": false,
+              "stage": "observation",
+              "timeout_ms": 1000,
+              "version": "1"
+            },
+            "mode": null
+          }
+        ],
+        "request": [],
+        "response": []
+      },
+      "deleted": true,
+      "events": [
+        {
+          "hook": "initialize",
+          "services_absent": true
+        },
+        {
+          "content": "masked authority",
+          "hook": "reduce"
+        },
+        {
+          "hook": "reduce_cancelled"
+        },
+        {
+          "deadline_absent": true,
+          "hook": "close",
+          "stores_closed": true
+        }
+      ],
+      "fail_close": false,
+      "fail_initialize": false,
+      "first_closed_after_delete": true,
+      "initialize": {
+        "components": [
+          {
+            "component_id": "manager-efficiency-probe",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "initialize_error": null,
+      "injected": true,
+      "live": true,
+      "live_cancelled": true,
+      "live_closed_after_delete": false,
+      "live_drained": true,
+      "mode": "off",
+      "name": "live-consumer-stop",
+      "persist": true,
+      "sessions": [
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        },
+        {
+          "permission": "readonly",
+          "raw_content": null,
+          "raw_store": false,
+          "recovery_tool": false,
+          "template_store": false,
+          "workspace_matches": false
+        },
+        {
+          "permission": "interactive",
+          "raw_content": "masked authority",
+          "raw_store": true,
+          "recovery_tool": true,
+          "template_store": false,
+          "workspace_matches": true
+        }
+      ],
+      "shared": false,
+      "stopped_create": "session manager is stopped",
+      "store_close_errors": [],
+      "stores_shared": false,
+      "style": "normal",
+      "supplied_catalog": false,
+      "template": false
+    }
+  ]
+}

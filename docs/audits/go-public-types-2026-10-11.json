@@ -1,0 +1,85 @@
+{
+  "baseline": "d872343",
+  "implementation_commit": "3fd151a",
+  "scope": "Developer type audit only; no runtime, dependency, fixture or architecture topology change.",
+  "public_audit": {
+    "packages": 50,
+    "exported_types": 1182,
+    "findings": 0,
+    "profile": "active compiler build profile"
+  },
+  "syntax_audit": {
+    "production_files": 444,
+    "package_level_types": 1417,
+    "findings": 0,
+    "profile": "all platform source files"
+  },
+  "regression_cases": [
+    "imported RawMessage and empty interface aliases",
+    "nested map/slice payloads",
+    "instantiated Box[any]",
+    "foreign named empty interface crypto.PublicKey",
+    "reachable private alias",
+    "module interface signature",
+    "closed recursive type",
+    "closed type named any",
+    "opaque external platform capabilities",
+    "compiler inventory failure"
+  ],
+  "gates": {
+    "go test -count=1 ./tools/typeaudit": "pass",
+    "go test -race -count=1 ./tools/typeaudit": "pass",
+    "go vet ./tools/typeaudit": "pass",
+    "go vet ./...": "pass",
+    "go run ./tools/typeaudit -root .": "pass",
+    "go run ./tools/typeaudit -root . -public": "pass",
+    ".venv/bin/python python/tools/verify_scans.py": "pass: 19 anchored scanning guards",
+    "git diff --check": "pass",
+    "go test -p=1 -count=1 -timeout=300s ./...": "failed: reload only; all other tested packages pass"
+  },
+  "full_test_failures": {
+    "test": "TestNativeEventsActualSourceRecipes",
+    "profiles": [
+      "lower-mtime-write",
+      "identical-write",
+      "same-mtime-touch",
+      "rename-source",
+      "ignored-hidden",
+      "ignored-backup"
+    ],
+    "observation": "Native event operation deadline exceeded; preserves existing unresolved full-run reload acceptance gap."
+  },
+  "limits": [
+    "foreign structs and named nonempty capabilities are opaque",
+    "unexported roots and inactive compiler profiles are not compiler traversed",
+    "top-level functions, named struct methods and runtime data flow are outside traversal",
+    "full Go race, coverage and Python regression not refreshed in this tool-only slice",
+    "G0/G7 acceptance remains incomplete"
+  ],
+  "logs": {
+    "public": {
+      "path": "/tmp/mini-loop-public-types-2026-10-11.log",
+      "sha256": "d42d26b24f0bd561e7995cafcc2eec847f7160115d28ec33d1bb1d4466ed2783"
+    },
+    "syntax": {
+      "path": "/tmp/mini-loop-public-types-syntax-2026-10-11.log",
+      "sha256": "640ff25a7f280354513446197acc5d57c8d37eee48925dc167a27457ba2d8e7f"
+    },
+    "focused_race": {
+      "path": "/tmp/mini-loop-public-types-race-2026-10-11.log",
+      "sha256": "8e75c98b0ecc2de52864f78c349ea6290253893f2e11007fc4042e53efa1cf54"
+    },
+    "scans": {
+      "path": "/tmp/mini-loop-public-types-scans-2026-10-11.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+    },
+    "full_test": {
+      "path": "/tmp/mini-loop-typeaudit-full-test.log",
+      "sha256": "de3879fe5fa82f1eb52e02a9235745670e9a5ff38d39ad1f8dc345d45b1316fa"
+    },
+    "full_vet": {
+      "path": "/tmp/mini-loop-typeaudit-full-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

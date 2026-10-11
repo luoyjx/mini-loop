@@ -1,0 +1,80 @@
+{
+  "cases": [
+    {
+      "calls": [],
+      "expected": {
+        "coverage": "",
+        "error": "session_not_found",
+        "status": 404
+      },
+      "name": "foreign"
+    },
+    {
+      "calls": [],
+      "expected": {
+        "coverage": "",
+        "error": "authenticated_owner_required",
+        "status": 403
+      },
+      "name": "anonymous"
+    },
+    {
+      "calls": [],
+      "expected": {
+        "coverage": "",
+        "error": "personal_skills_disabled",
+        "status": 404
+      },
+      "name": "disabled"
+    },
+    {
+      "calls": [],
+      "expected": {
+        "coverage": "",
+        "error": "empty_transcript",
+        "status": 422
+      },
+      "name": "empty"
+    },
+    {
+      "calls": [
+        "personal_skill_preview"
+      ],
+      "expected": {
+        "coverage": "authenticated_turns",
+        "error": "",
+        "status": 0
+      },
+      "name": "valid"
+    },
+    {
+      "calls": [
+        "personal_skill_preview"
+      ],
+      "expected": {
+        "coverage": "authenticated_turns",
+        "error": "",
+        "status": 0
+      },
+      "name": "readonly"
+    },
+    {
+      "calls": [],
+      "expected": {
+        "coverage": "",
+        "error": "session_not_found",
+        "status": 404
+      },
+      "name": "closed"
+    },
+    {
+      "calls": [],
+      "expected": {
+        "coverage": "",
+        "error": "session_lease_lost",
+        "status": 409
+      },
+      "name": "lease-lost"
+    }
+  ]
+}

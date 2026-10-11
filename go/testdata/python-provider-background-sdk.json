@@ -1,0 +1,1862 @@
+{
+  "cases": [
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\"}",
+      "kind": "tool_use",
+      "name": "timeout-missing",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": null}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": null}",
+      "kind": "tool_use",
+      "name": "timeout-null",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": null}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": null}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": null}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": false}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": false}",
+      "kind": "tool_use",
+      "name": "timeout-false",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": false}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": false}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": false}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": true}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": true}",
+      "kind": "tool_use",
+      "name": "timeout-true",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": true}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": true}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": true}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0}",
+      "kind": "tool_use",
+      "name": "timeout-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": 0}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.0}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.0}",
+      "kind": "tool_use",
+      "name": "timeout-float-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": 0.0}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.0}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.0}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.0}",
+      "kind": "tool_use",
+      "name": "timeout-negative-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": -0.0}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.0}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 2}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 2}",
+      "kind": "tool_use",
+      "name": "timeout-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 2}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": 2}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 2}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.005}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.005}",
+      "kind": "tool_use",
+      "name": "timeout-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.005}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": 0.005}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.005}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -1}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -1}",
+      "kind": "tool_use",
+      "name": "timeout-negative",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -1}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": -1}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -1}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.5}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.5}",
+      "kind": "tool_use",
+      "name": "timeout-negative-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.5}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": -0.5}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.5}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"\"}",
+      "kind": "tool_use",
+      "name": "timeout-empty-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": \\\"\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"2\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"2\"}",
+      "kind": "tool_use",
+      "name": "timeout-numeric-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"2\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": \\\"2\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"2\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"bad\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"bad\"}",
+      "kind": "tool_use",
+      "name": "timeout-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"bad\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": \\\"bad\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"bad\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": []}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": []}",
+      "kind": "tool_use",
+      "name": "timeout-empty-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": []}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": []}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": []}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": [1]}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": [1]}",
+      "kind": "tool_use",
+      "name": "timeout-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": [1]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": [1]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": [1]}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {}}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {}}",
+      "kind": "tool_use",
+      "name": "timeout-empty-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": {}}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {}}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {\"keep\": 1}}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {\"keep\": 1}}",
+      "kind": "tool_use",
+      "name": "timeout-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {\"keep\": 1}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": {\\\"keep\\\": 1}}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {\"keep\": 1}}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "forward_requests": 0,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}",
+      "kind": "tool_use",
+      "name": "timeout-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": Infinity}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "forward_requests": 0,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": Infinity}",
+      "kind": "tool_use",
+      "name": "timeout-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": Infinity}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -Infinity}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "forward_requests": 0,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -Infinity}",
+      "kind": "tool_use",
+      "name": "timeout-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": -Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -Infinity}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}",
+      "kind": "tool_use",
+      "name": "timeout-huge-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 0.03; printf options-done\\\", \\\"timeout\\\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 1.1; printf options-done\", \"timeout\": true}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"sleep 1.1; printf options-done\", \"timeout\": true}",
+      "kind": "tool_use",
+      "name": "timeout-true-expired",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 1.1; printf options-done\", \"timeout\": true}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"sleep 1.1; printf options-done\\\", \\\"timeout\\\": true}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"sleep 1.1; printf options-done\", \"timeout\": true}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\"}",
+      "kind": "tool_use",
+      "name": "prefix-missing",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": null, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": null}",
+      "kind": "tool_use",
+      "name": "prefix-null",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": null}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": null}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": null, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": false, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": false}",
+      "kind": "tool_use",
+      "name": "prefix-false",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": false}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": false}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": false, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": true, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": true}",
+      "kind": "tool_use",
+      "name": "prefix-true",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": true}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": true}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": true, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 0, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0}",
+      "kind": "tool_use",
+      "name": "prefix-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": 0}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 0, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 0.0, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0.0}",
+      "kind": "tool_use",
+      "name": "prefix-float-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": 0.0}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 0.0, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -0.0, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -0.0}",
+      "kind": "tool_use",
+      "name": "prefix-negative-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": -0.0}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -0.0, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 2, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 2}",
+      "kind": "tool_use",
+      "name": "prefix-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 2}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": 2}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 2, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 0.005, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0.005}",
+      "kind": "tool_use",
+      "name": "prefix-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 0.005}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": 0.005}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 0.005, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -1, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -1}",
+      "kind": "tool_use",
+      "name": "prefix-negative",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -1}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": -1}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -1, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -0.5, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -0.5}",
+      "kind": "tool_use",
+      "name": "prefix-negative-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -0.5}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": -0.5}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -0.5, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": \"\", \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"\"}",
+      "kind": "tool_use",
+      "name": "prefix-empty-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": \"\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": \\\"\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": \"\", \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": \"2\", \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"2\"}",
+      "kind": "tool_use",
+      "name": "prefix-numeric-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": \"2\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": \\\"2\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": \"2\", \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": \"bad\", \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"bad\"}",
+      "kind": "tool_use",
+      "name": "prefix-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": \"bad\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": \\\"bad\\\"}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": \"bad\", \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": []}",
+      "kind": "tool_use",
+      "name": "prefix-empty-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": []}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": []}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [1], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [1]}",
+      "kind": "tool_use",
+      "name": "prefix-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [1]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": [1]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [1], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": {}, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": {}}",
+      "kind": "tool_use",
+      "name": "prefix-empty-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": {}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": {}}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": {}, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": {\"keep\": 1}, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": {\"keep\": 1}}",
+      "kind": "tool_use",
+      "name": "prefix-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": {\"keep\": 1}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": {\\\"keep\\\": 1}}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": {\"keep\": 1}, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "forward_requests": 0,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": NaN}",
+      "kind": "tool_use",
+      "name": "prefix-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": Infinity, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "forward_requests": 0,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": Infinity}",
+      "kind": "tool_use",
+      "name": "prefix-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": Infinity, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -Infinity, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "forward_requests": 0,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -Infinity}",
+      "kind": "tool_use",
+      "name": "prefix-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": -Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -Infinity, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}",
+      "kind": "tool_use",
+      "name": "prefix-huge-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [\"printf\", \"options-done\"], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"options-done\"]}",
+      "kind": "tool_use",
+      "name": "prefix-valid",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"options-done\"]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": [\\\"printf\\\", \\\"options-done\\\"]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [\"printf\", \"options-done\"], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [\"printf\", 1], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", 1]}",
+      "kind": "tool_use",
+      "name": "prefix-mixed",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", 1]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": [\\\"printf\\\", 1]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [\"printf\", 1], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [\"printf\", \"other\"], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]",
+      "forward_error": null,
+      "forward_requests": 1,
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"other\"]}",
+      "kind": "tool_use",
+      "name": "prefix-mismatch",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"other\"]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"printf options-done\\\", \\\"approval_prefix\\\": [\\\"printf\\\", \\\"other\\\"]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [\"printf\", \"other\"], \"command\": \"printf options-done\"}, \"name\": \"background_run\", \"type\": \"tool_use\"}]"
+    }
+  ],
+  "limits": [
+    "Task waiting uses direct await; no observer watchdog",
+    "Managed transport returns one tool reply then a final reply",
+    "No physical startup timing, PID, lease timing or full-state recovery claim"
+  ],
+  "managed": [
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\"}",
+      "messages": 4,
+      "name": "timeout-missing",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": null}",
+      "messages": 4,
+      "name": "timeout-null",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": null}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": false}",
+      "messages": 4,
+      "name": "timeout-false",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": false}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": true}",
+      "messages": 4,
+      "name": "timeout-true",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": true}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0}",
+      "messages": 4,
+      "name": "timeout-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.0}",
+      "messages": 4,
+      "name": "timeout-float-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.0}",
+      "messages": 4,
+      "name": "timeout-negative-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 2}",
+      "messages": 4,
+      "name": "timeout-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 2}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.005}",
+      "messages": 4,
+      "name": "timeout-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.005}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: Timeout (0.005s)",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -1}",
+      "messages": 4,
+      "name": "timeout-negative",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -1}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: Timeout (-1s)",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.5}",
+      "messages": 4,
+      "name": "timeout-negative-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.5}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: Timeout (-0.5s)",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"\"}",
+      "messages": 4,
+      "name": "timeout-empty-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"2\"}",
+      "messages": 4,
+      "name": "timeout-numeric-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"2\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: '<=' not supported between instances of 'str' and 'int'",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"bad\"}",
+      "messages": 4,
+      "name": "timeout-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"bad\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: '<=' not supported between instances of 'str' and 'int'",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": []}",
+      "messages": 4,
+      "name": "timeout-empty-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": []}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": [1]}",
+      "messages": 4,
+      "name": "timeout-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": [1]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: '<=' not supported between instances of 'list' and 'int'",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {}}",
+      "messages": 4,
+      "name": "timeout-empty-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {\"keep\": 1}}",
+      "messages": 4,
+      "name": "timeout-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {\"keep\": 1}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: '<=' not supported between instances of 'dict' and 'int'",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "action_recorded": false,
+      "background_counter": 0,
+      "background_initialized": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}",
+      "messages": 4,
+      "name": "timeout-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 0,
+      "task": null,
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1,
+      "warnings": []
+    },
+    {
+      "action_recorded": false,
+      "background_counter": 0,
+      "background_initialized": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": Infinity}",
+      "messages": 4,
+      "name": "timeout-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 0,
+      "task": null,
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1,
+      "warnings": []
+    },
+    {
+      "action_recorded": false,
+      "background_counter": 0,
+      "background_initialized": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -Infinity}",
+      "messages": 4,
+      "name": "timeout-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 0,
+      "task": null,
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}",
+      "messages": 4,
+      "name": "timeout-huge-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: int too large to convert to float",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"sleep 1.1; printf options-done\", \"timeout\": true}",
+      "messages": 4,
+      "name": "timeout-true-expired",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"sleep 1.1; printf options-done\", \"timeout\": true}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "Error: Timeout (Trues)",
+        "status": "error"
+      },
+      "tool_output": "Started background task bg_0001: sleep 1.1; printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\"}",
+      "messages": 4,
+      "name": "prefix-missing",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": null}",
+      "messages": 4,
+      "name": "prefix-null",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": null}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": false}",
+      "messages": 4,
+      "name": "prefix-false",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": false}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": true}",
+      "messages": 4,
+      "name": "prefix-true",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": true}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0}",
+      "messages": 4,
+      "name": "prefix-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0.0}",
+      "messages": 4,
+      "name": "prefix-float-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -0.0}",
+      "messages": 4,
+      "name": "prefix-negative-zero",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -0.0}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 2}",
+      "messages": 4,
+      "name": "prefix-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 2}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0.005}",
+      "messages": 4,
+      "name": "prefix-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 0.005}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -1}",
+      "messages": 4,
+      "name": "prefix-negative",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -1}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -0.5}",
+      "messages": 4,
+      "name": "prefix-negative-fraction",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -0.5}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"\"}",
+      "messages": 4,
+      "name": "prefix-empty-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": \"\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"2\"}",
+      "messages": 4,
+      "name": "prefix-numeric-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": \"2\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"bad\"}",
+      "messages": 4,
+      "name": "prefix-text",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": \"bad\"}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": []}",
+      "messages": 4,
+      "name": "prefix-empty-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": []}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [1]}",
+      "messages": 4,
+      "name": "prefix-array",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [1]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": {}}",
+      "messages": 4,
+      "name": "prefix-empty-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": {}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": {\"keep\": 1}}",
+      "messages": 4,
+      "name": "prefix-object",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": {\"keep\": 1}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": false,
+      "background_counter": 0,
+      "background_initialized": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": NaN}",
+      "messages": 4,
+      "name": "prefix-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 0,
+      "task": null,
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1,
+      "warnings": []
+    },
+    {
+      "action_recorded": false,
+      "background_counter": 0,
+      "background_initialized": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": Infinity}",
+      "messages": 4,
+      "name": "prefix-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 0,
+      "task": null,
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1,
+      "warnings": []
+    },
+    {
+      "action_recorded": false,
+      "background_counter": 0,
+      "background_initialized": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -Infinity}",
+      "messages": 4,
+      "name": "prefix-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 0,
+      "task": null,
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}",
+      "messages": 4,
+      "name": "prefix-huge-integer",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"options-done\"]}",
+      "messages": 4,
+      "name": "prefix-valid",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"options-done\"]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", 1]}",
+      "messages": 4,
+      "name": "prefix-mixed",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", 1]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    },
+    {
+      "action_recorded": true,
+      "background_counter": 1,
+      "background_initialized": true,
+      "error": null,
+      "final": "finished",
+      "final_response_json": "{\"id\": \"final\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"text\", \"text\": \"finished\"}], \"stop_reason\": \"end_turn\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"other\"]}",
+      "messages": 4,
+      "name": "prefix-mismatch",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"background_run\", \"input\": {\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"other\"]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "starts_at_settlement": 1,
+      "task": {
+        "result": "options-done",
+        "status": "completed"
+      },
+      "tool_output": "Started background task bg_0001: printf options-done",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "transport_requests": 2,
+      "warnings": []
+    }
+  ],
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "Agent._exec_tool_batch": "081881ec716502bc6934216ff007cc5bfb9b0ba05e54fbf3dc319146e3c29949",
+    "BackgroundManager._exec": "5cc677234beed41376abbf972978f9246ddbd19daf9fb41ae86062cffab4ab68",
+    "BackgroundManager.run": "ecfae7c58a20150d65482726c10485c113da042733fd21d859904db9e5ca9a4f",
+    "capture.inputs": "2b127b492ff052b374a9095ffaab976da4a98f23f221d67bedbc81778cc74116"
+  }
+}

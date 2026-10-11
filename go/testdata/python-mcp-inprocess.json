@@ -1,0 +1,157 @@
+{
+  "after_close": "second",
+  "definitions": [
+    {
+      "description": "value",
+      "input_schema": {
+        "type": "object"
+      },
+      "name": "value"
+    },
+    {
+      "description": "async",
+      "input_schema": {
+        "type": "object"
+      },
+      "name": "async"
+    },
+    {
+      "description": "error",
+      "input_schema": {
+        "type": "object"
+      },
+      "name": "error"
+    },
+    {
+      "description": "first",
+      "input_schema": {
+        "type": "object"
+      },
+      "name": "duplicate"
+    },
+    {
+      "description": "second",
+      "input_schema": {
+        "type": "object"
+      },
+      "name": "duplicate"
+    },
+    {
+      "description": "nil",
+      "input_schema": {
+        "type": "object"
+      },
+      "name": "nil"
+    }
+  ],
+  "name": "raw.name",
+  "rows": [
+    {
+      "output": "None",
+      "recipe": {
+        "arguments": {
+          "value": null
+        },
+        "name": "value"
+      }
+    },
+    {
+      "output": "True",
+      "recipe": {
+        "arguments": {
+          "value": true
+        },
+        "name": "value"
+      }
+    },
+    {
+      "output": "123",
+      "recipe": {
+        "arguments": {
+          "value": 123
+        },
+        "name": "value"
+      }
+    },
+    {
+      "output": "1.5",
+      "recipe": {
+        "arguments": {
+          "value": 1.5
+        },
+        "name": "value"
+      }
+    },
+    {
+      "output": "中文",
+      "recipe": {
+        "arguments": {
+          "value": "中文"
+        },
+        "name": "value"
+      }
+    },
+    {
+      "output": "[True, None, '中文']",
+      "recipe": {
+        "arguments": {
+          "value": [
+            true,
+            null,
+            "中文"
+          ]
+        },
+        "name": "value"
+      }
+    },
+    {
+      "output": "{'a': 1, 'b': False}",
+      "recipe": {
+        "arguments": {
+          "value": {
+            "a": 1,
+            "b": false
+          }
+        },
+        "name": "value"
+      }
+    },
+    {
+      "output": "{'value': '中文'}",
+      "recipe": {
+        "arguments": {
+          "value": "中文"
+        },
+        "name": "async"
+      }
+    },
+    {
+      "output": "Error: bad 中文",
+      "recipe": {
+        "arguments": {},
+        "name": "error"
+      }
+    },
+    {
+      "output": "second",
+      "recipe": {
+        "arguments": {},
+        "name": "duplicate"
+      }
+    },
+    {
+      "output": "Error: unknown MCP tool nil",
+      "recipe": {
+        "arguments": {},
+        "name": "nil"
+      }
+    },
+    {
+      "output": "Error: unknown MCP tool missing",
+      "recipe": {
+        "arguments": {},
+        "name": "missing"
+      }
+    }
+  ]
+}

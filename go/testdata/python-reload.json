@@ -1,0 +1,186 @@
+{
+  "source_sha256": "5cf684b555da6ac208d64906df65141bca03efe7d2d05c325e440b17d4183db0",
+  "steps": [
+    {
+      "mtime": 100,
+      "operation": "write",
+      "path": "a.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 100,
+      "operation": "write",
+      "path": "a.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 101,
+      "operation": "write",
+      "path": "a.py"
+    },
+    {
+      "changed": [
+        "a.py"
+      ],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "changed": [
+        "a.py"
+      ],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 0,
+      "operation": "reconstruct",
+      "path": ""
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 99,
+      "operation": "write",
+      "path": "a.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 200,
+      "operation": "write",
+      "path": "new.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 300,
+      "operation": "write",
+      "path": "notes.txt"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 0,
+      "operation": "remove",
+      "path": "a.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 100,
+      "operation": "write",
+      "path": "a.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 102,
+      "operation": "write",
+      "path": "a.py"
+    },
+    {
+      "changed": [
+        "a.py"
+      ],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 0,
+      "operation": "reconstruct",
+      "path": ""
+    },
+    {
+      "mtime": 0,
+      "operation": "symlink",
+      "path": "link.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 301,
+      "operation": "write",
+      "path": "notes.txt"
+    },
+    {
+      "changed": [
+        "notes.txt"
+      ],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 0,
+      "operation": "reconstruct",
+      "path": ""
+    },
+    {
+      "mtime": 500,
+      "operation": "mkdir",
+      "path": "package.py"
+    },
+    {
+      "changed": [],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    },
+    {
+      "mtime": 501,
+      "operation": "touch",
+      "path": "package.py"
+    },
+    {
+      "changed": [
+        "package.py"
+      ],
+      "mtime": 0,
+      "operation": "scan",
+      "path": ""
+    }
+  ],
+  "uvicorn_version": "0.49.0"
+}

@@ -1,0 +1,34 @@
+{
+  "frames": [
+    {
+      "name": "alice",
+      "shared": true
+    },
+    {
+      "name": "bob",
+      "shared": true
+    },
+    {
+      "name": "anonymous",
+      "shared": true
+    },
+    {
+      "name": "fork",
+      "shared": true
+    },
+    {
+      "name": "restored-alice",
+      "shared": true
+    },
+    {
+      "name": "scheduled-alice",
+      "shared": true
+    },
+    {
+      "name": "scheduled-missing",
+      "shared": true
+    }
+  ],
+  "resources_disabled": true,
+  "restart_discards_drafts": true
+}

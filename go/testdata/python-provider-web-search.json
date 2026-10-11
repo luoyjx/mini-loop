@@ -1,0 +1,825 @@
+{
+  "cases": [
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": [],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": [],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "empty",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": []}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": [],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": [],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "empty",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": []}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            },
+            {
+              "encrypted_content": "encrypted",
+              "page_age": "2 days",
+              "title": "second",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              },
+              {
+                "encrypted_content": "encrypted",
+                "page_age": "2 days",
+                "title": "second",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "results",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\"}, {\"type\": \"web_search_result\", \"title\": \"second\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\", \"page_age\": \"2 days\"}]}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            },
+            {
+              "encrypted_content": "encrypted",
+              "page_age": "2 days",
+              "title": "second",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              },
+              {
+                "encrypted_content": "encrypted",
+                "page_age": "2 days",
+                "title": "second",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "results",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\"}, {\"type\": \"web_search_result\", \"title\": \"second\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\", \"page_age\": \"2 days\"}]}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "unavailable",
+            "type": "web_search_tool_result_error"
+          },
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unavailable",
+              "type": "web_search_tool_result_error"
+            },
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "error",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": {\"type\": \"web_search_tool_result_error\", \"error_code\": \"unavailable\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "unavailable",
+            "type": "web_search_tool_result_error"
+          },
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "unavailable",
+              "type": "web_search_tool_result_error"
+            },
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "error",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": {\"type\": \"web_search_tool_result_error\", \"error_code\": \"unavailable\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "future_code",
+            "future": 7,
+            "type": "web_search_tool_result_error"
+          },
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "future_code",
+              "future": 7,
+              "type": "web_search_tool_result_error"
+            },
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "future-error",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": {\"type\": \"web_search_tool_result_error\", \"error_code\": \"future_code\", \"future\": 7}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": {
+            "error_code": "future_code",
+            "future": 7,
+            "type": "web_search_tool_result_error"
+          },
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": {
+              "error_code": "future_code",
+              "future": 7,
+              "type": "web_search_tool_result_error"
+            },
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "future-error",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": {\"type\": \"web_search_tool_result_error\", \"error_code\": \"future_code\", \"future\": 7}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "type": "direct"
+          },
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "direct-caller",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\"}], \"caller\": {\"type\": \"direct\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "type": "direct"
+          },
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "direct-caller",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\"}], \"caller\": {\"type\": \"direct\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "tool_id": "caller",
+            "type": "code_execution_20260120"
+          },
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "tool_id": "caller",
+              "type": "code_execution_20260120"
+            },
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "server-caller",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\"}], \"caller\": {\"type\": \"code_execution_20260120\", \"tool_id\": \"caller\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": {
+            "tool_id": "caller",
+            "type": "code_execution_20260120"
+          },
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "caller": {
+              "tool_id": "caller",
+              "type": "code_execution_20260120"
+            },
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "server-caller",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\"}], \"caller\": {\"type\": \"code_execution_20260120\", \"tool_id\": \"caller\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "future": {
+                "generation": 8
+              },
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "future": {
+            "root": "metadata"
+          },
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "future": {
+                  "generation": 8
+                },
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "future": {
+              "root": "metadata"
+            },
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "extensions",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\", \"future\": {\"generation\": 8}}], \"future\": {\"root\": \"metadata\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_content": [
+        {
+          "caller": null,
+          "content": [
+            {
+              "encrypted_content": "encrypted",
+              "future": {
+                "generation": 8
+              },
+              "page_age": null,
+              "title": "标题",
+              "type": "web_search_result",
+              "url": "https://fixture.invalid"
+            }
+          ],
+          "future": {
+            "root": "metadata"
+          },
+          "tool_use_id": "server_search",
+          "type": "web_search_tool_result"
+        },
+        {
+          "citations": null,
+          "parsed_output": null,
+          "text": "ready",
+          "type": "text"
+        }
+      ],
+      "message": {
+        "content": [
+          {
+            "content": [
+              {
+                "encrypted_content": "encrypted",
+                "future": {
+                  "generation": 8
+                },
+                "title": "标题",
+                "type": "web_search_result",
+                "url": "https://fixture.invalid"
+              }
+            ],
+            "future": {
+              "root": "metadata"
+            },
+            "tool_use_id": "server_search",
+            "type": "web_search_tool_result"
+          },
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "extensions",
+      "sdk_block_class": "WebSearchToolResultBlock",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"web_search_tool_result\", \"tool_use_id\": \"server_search\", \"content\": [{\"type\": \"web_search_result\", \"title\": \"\\u6807\\u9898\", \"url\": \"https://fixture.invalid\", \"encrypted_content\": \"encrypted\", \"future\": {\"generation\": 8}}], \"future\": {\"root\": \"metadata\"}}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    }
+  ],
+  "content_payload_sha256": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505",
+  "sdk_version": "0.107.1"
+}

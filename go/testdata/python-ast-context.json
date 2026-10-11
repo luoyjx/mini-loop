@@ -1,0 +1,673 @@
+{
+  "configurations": [
+    {
+      "input": {},
+      "name": "defaults",
+      "output": {
+        "binary": "ast-outline",
+        "env_passthrough": [],
+        "expected_sha256": null,
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "max_output_bytes": 2000000,
+        "max_version_exclusive": "1.10.0",
+        "min_version": "1.9.0",
+        "schema_version": 1,
+        "timeout_seconds": 15.0
+      }
+    },
+    {
+      "error": "ast-outline binary must not be empty",
+      "error_class": "ValueError",
+      "input": {
+        "binary": ""
+      },
+      "name": "empty-binary"
+    },
+    {
+      "error": "ast-outline timeout_seconds must be positive",
+      "error_class": "ValueError",
+      "input": {
+        "timeout_seconds": 0
+      },
+      "name": "zero-timeout"
+    },
+    {
+      "error": "ast-outline timeout_seconds must be positive",
+      "error_class": "ValueError",
+      "input": {
+        "timeout_seconds": -1
+      },
+      "name": "negative-timeout"
+    },
+    {
+      "error": "ast-outline max_output_bytes must be positive",
+      "error_class": "ValueError",
+      "input": {
+        "max_output_bytes": 0
+      },
+      "name": "zero-output"
+    },
+    {
+      "error": "ast-outline max_output_bytes must be positive",
+      "error_class": "ValueError",
+      "input": {
+        "max_output_bytes": -1
+      },
+      "name": "negative-output"
+    },
+    {
+      "input": {
+        "env_passthrough": [
+          "LANG",
+          "AST_TEST",
+          "LANG"
+        ]
+      },
+      "name": "deduplicated-env",
+      "output": {
+        "binary": "ast-outline",
+        "env_passthrough": [
+          "LANG",
+          "AST_TEST"
+        ],
+        "expected_sha256": null,
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "max_output_bytes": 2000000,
+        "max_version_exclusive": "1.10.0",
+        "min_version": "1.9.0",
+        "schema_version": 1,
+        "timeout_seconds": 15.0
+      }
+    },
+    {
+      "error": "env_passthrough must contain environment names",
+      "error_class": "ValueError",
+      "input": {
+        "env_passthrough": [
+          ""
+        ]
+      },
+      "name": "empty-env"
+    },
+    {
+      "error": "env_passthrough must contain environment names",
+      "error_class": "ValueError",
+      "input": {
+        "env_passthrough": [
+          "PATH=secret"
+        ]
+      },
+      "name": "invalid-env"
+    },
+    {
+      "error": "env_passthrough must contain environment names",
+      "error_class": "ValueError",
+      "input": {
+        "env_passthrough": [
+          42
+        ]
+      },
+      "name": "numeric-env"
+    },
+    {
+      "input": {
+        "expected_sha256": " ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB\n"
+      },
+      "name": "normalised-digest",
+      "output": {
+        "binary": "ast-outline",
+        "env_passthrough": [],
+        "expected_sha256": "abababababababababababababababababababababababababababababababab",
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "max_output_bytes": 2000000,
+        "max_version_exclusive": "1.10.0",
+        "min_version": "1.9.0",
+        "schema_version": 1,
+        "timeout_seconds": 15.0
+      }
+    },
+    {
+      "error": "expected_sha256 must be 64 lowercase hex characters",
+      "error_class": "ValueError",
+      "input": {
+        "expected_sha256": "ab"
+      },
+      "name": "short-digest"
+    },
+    {
+      "error": "expected_sha256 must be 64 lowercase hex characters",
+      "error_class": "ValueError",
+      "input": {
+        "expected_sha256": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+      },
+      "name": "nonhex-digest"
+    },
+    {
+      "error": "this adapter supports ast-outline JSON schema 1 only",
+      "error_class": "ValueError",
+      "input": {
+        "schema_version": 2
+      },
+      "name": "wrong-schema"
+    },
+    {
+      "error": "invalid semantic version: 'v1.9.0'",
+      "error_class": "ValueError",
+      "input": {
+        "min_version": "v1.9.0"
+      },
+      "name": "bad-version"
+    },
+    {
+      "error": "ast-outline version range is empty",
+      "error_class": "ValueError",
+      "input": {
+        "min_version": "1.10.0"
+      },
+      "name": "empty-range"
+    },
+    {
+      "input": {
+        "max_version_exclusive": "1.10.0-rc1",
+        "min_version": "1.9.0+build"
+      },
+      "name": "suffix-range",
+      "output": {
+        "binary": "ast-outline",
+        "env_passthrough": [],
+        "expected_sha256": null,
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "max_output_bytes": 2000000,
+        "max_version_exclusive": "1.10.0-rc1",
+        "min_version": "1.9.0+build",
+        "schema_version": 1,
+        "timeout_seconds": 15.0
+      }
+    },
+    {
+      "input": {
+        "min_version": "١.٩.٠"
+      },
+      "name": "unicode-version",
+      "output": {
+        "binary": "ast-outline",
+        "env_passthrough": [],
+        "expected_sha256": null,
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "max_output_bytes": 2000000,
+        "max_version_exclusive": "1.10.0",
+        "min_version": "١.٩.٠",
+        "schema_version": 1,
+        "timeout_seconds": 15.0
+      }
+    }
+  ],
+  "probes": [
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "compatible",
+      "output": {
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "schema_version": 1,
+        "status": "applied",
+        "version": "1.9.0"
+      },
+      "stderr": "",
+      "stdout": "ast-outline 1.9.0\nhomepage: https://github.com/ast-outline/ast-outline\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "latest-patch",
+      "output": {
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "schema_version": 1,
+        "status": "applied",
+        "version": "1.9.999"
+      },
+      "stderr": "",
+      "stdout": "ast-outline 1.9.999\nhomepage: https://github.com/ast-outline/ast-outline\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "prerelease",
+      "output": {
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "schema_version": 1,
+        "status": "applied",
+        "version": "1.9.1-rc1+build"
+      },
+      "stderr": "",
+      "stdout": "ast-outline 1.9.1-rc1+build\nhomepage: https://github.com/ast-outline/ast-outline/\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "lower-bound",
+      "output": {
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "message": "expected https://github.com/ast-outline/ast-outline version >= 1.9.0 and < 1.10.0",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": "1.8.9"
+      },
+      "stderr": "",
+      "stdout": "ast-outline 1.8.9\nhomepage: https://github.com/ast-outline/ast-outline\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "upper-bound",
+      "output": {
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "message": "expected https://github.com/ast-outline/ast-outline version >= 1.9.0 and < 1.10.0",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": "1.10.0"
+      },
+      "stderr": "",
+      "stdout": "ast-outline 1.10.0\nhomepage: https://github.com/ast-outline/ast-outline\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "wrong-homepage",
+      "output": {
+        "homepage": "https://example.invalid",
+        "message": "expected https://github.com/ast-outline/ast-outline version >= 1.9.0 and < 1.10.0",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": "1.9.0"
+      },
+      "stderr": "",
+      "stdout": "ast-outline 1.9.0\nhomepage: https://example.invalid\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "missing-homepage",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline --version did not report the expected version and homepage",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": ""
+      },
+      "stderr": "",
+      "stdout": "ast-outline 1.9.0\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "missing-version",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline --version did not report the expected version and homepage",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": ""
+      },
+      "stderr": "",
+      "stdout": "homepage: https://github.com/ast-outline/ast-outline\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "prefixed-version",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline --version did not report the expected version and homepage",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": ""
+      },
+      "stderr": "",
+      "stdout": "prefix ast-outline 1.9.0\nhomepage: https://github.com/ast-outline/ast-outline\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "multiline-search",
+      "output": {
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "schema_version": 1,
+        "status": "applied",
+        "version": "1.9.2"
+      },
+      "stderr": "",
+      "stdout": "banner\nast-outline 1.9.2\nhomepage: https://github.com/ast-outline/ast-outline\nextra\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 0,
+      "name": "unicode-version",
+      "output": {
+        "homepage": "https://github.com/ast-outline/ast-outline",
+        "schema_version": 1,
+        "status": "applied",
+        "version": "١.٩.٠"
+      },
+      "stderr": "",
+      "stdout": "ast-outline ١.٩.٠\nhomepage: https://github.com/ast-outline/ast-outline\n"
+    },
+    {
+      "executed": true,
+      "exit_code": 7,
+      "name": "nonzero-exit",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline --version exited 7: version failure",
+        "schema_version": 1,
+        "status": "error",
+        "version": ""
+      },
+      "stderr": "  version failure\n",
+      "stdout": ""
+    },
+    {
+      "executed": false,
+      "name": "missing",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline executable not found: <scratch>/absent",
+        "schema_version": 1,
+        "status": "missing",
+        "version": ""
+      }
+    },
+    {
+      "executed": false,
+      "name": "workspace-binary",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline executable must live outside the model-visible workspace",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": ""
+      }
+    },
+    {
+      "executed": false,
+      "name": "digest-mismatch",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline executable SHA-256 does not match the pinned digest",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": ""
+      }
+    },
+    {
+      "executed": true,
+      "name": "digest-match",
+      "output": {
+        "homepage": "",
+        "message": "ast-outline --version exited 7: version failure",
+        "schema_version": 1,
+        "status": "error",
+        "version": ""
+      }
+    }
+  ],
+  "projections": [
+    {
+      "json": "{\"status\":\"applied\",\"operation\":\"repo_map\",\"warnings\":[\"warning\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"probe detail\"},\"message\":\"detail\",\"data\":{\"schema_version\":1,\"files\":[]},\"output_bytes\":17}",
+      "minimal": {
+        "operation": "show_symbol",
+        "status": "applied",
+        "warnings": []
+      },
+      "probe": {
+        "homepage": "",
+        "message": "probe detail",
+        "schema_version": 1,
+        "status": "applied",
+        "version": "1.9.0"
+      },
+      "result": {
+        "data": {
+          "files": [],
+          "schema_version": 1
+        },
+        "message": "detail",
+        "operation": "repo_map",
+        "output_bytes": 17,
+        "probe": {
+          "homepage": "",
+          "message": "probe detail",
+          "schema_version": 1,
+          "status": "applied",
+          "version": "1.9.0"
+        },
+        "status": "applied",
+        "warnings": [
+          "warning"
+        ]
+      },
+      "status": "applied"
+    },
+    {
+      "json": "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[\"warning\"],\"probe\":{\"status\":\"no_match\",\"version\":\"1.9.0\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"probe detail\"},\"message\":\"detail\",\"data\":{\"schema_version\":1,\"files\":[]},\"output_bytes\":17}",
+      "minimal": {
+        "operation": "show_symbol",
+        "status": "no_match",
+        "warnings": []
+      },
+      "probe": {
+        "homepage": "",
+        "message": "probe detail",
+        "schema_version": 1,
+        "status": "no_match",
+        "version": "1.9.0"
+      },
+      "result": {
+        "data": {
+          "files": [],
+          "schema_version": 1
+        },
+        "message": "detail",
+        "operation": "repo_map",
+        "output_bytes": 17,
+        "probe": {
+          "homepage": "",
+          "message": "probe detail",
+          "schema_version": 1,
+          "status": "no_match",
+          "version": "1.9.0"
+        },
+        "status": "no_match",
+        "warnings": [
+          "warning"
+        ]
+      },
+      "status": "no_match"
+    },
+    {
+      "json": "{\"status\":\"partial\",\"operation\":\"repo_map\",\"warnings\":[\"warning\"],\"probe\":{\"status\":\"partial\",\"version\":\"1.9.0\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"probe detail\"},\"message\":\"detail\",\"data\":{\"schema_version\":1,\"files\":[]},\"output_bytes\":17}",
+      "minimal": {
+        "operation": "show_symbol",
+        "status": "partial",
+        "warnings": []
+      },
+      "probe": {
+        "homepage": "",
+        "message": "probe detail",
+        "schema_version": 1,
+        "status": "partial",
+        "version": "1.9.0"
+      },
+      "result": {
+        "data": {
+          "files": [],
+          "schema_version": 1
+        },
+        "message": "detail",
+        "operation": "repo_map",
+        "output_bytes": 17,
+        "probe": {
+          "homepage": "",
+          "message": "probe detail",
+          "schema_version": 1,
+          "status": "partial",
+          "version": "1.9.0"
+        },
+        "status": "partial",
+        "warnings": [
+          "warning"
+        ]
+      },
+      "status": "partial"
+    },
+    {
+      "json": "{\"status\":\"ambiguous\",\"operation\":\"repo_map\",\"warnings\":[\"warning\"],\"probe\":{\"status\":\"ambiguous\",\"version\":\"1.9.0\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"probe detail\"},\"message\":\"detail\",\"data\":{\"schema_version\":1,\"files\":[]},\"output_bytes\":17}",
+      "minimal": {
+        "operation": "show_symbol",
+        "status": "ambiguous",
+        "warnings": []
+      },
+      "probe": {
+        "homepage": "",
+        "message": "probe detail",
+        "schema_version": 1,
+        "status": "ambiguous",
+        "version": "1.9.0"
+      },
+      "result": {
+        "data": {
+          "files": [],
+          "schema_version": 1
+        },
+        "message": "detail",
+        "operation": "repo_map",
+        "output_bytes": 17,
+        "probe": {
+          "homepage": "",
+          "message": "probe detail",
+          "schema_version": 1,
+          "status": "ambiguous",
+          "version": "1.9.0"
+        },
+        "status": "ambiguous",
+        "warnings": [
+          "warning"
+        ]
+      },
+      "status": "ambiguous"
+    },
+    {
+      "json": "{\"status\":\"error\",\"operation\":\"repo_map\",\"warnings\":[\"warning\"],\"probe\":{\"status\":\"error\",\"version\":\"1.9.0\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"probe detail\"},\"message\":\"detail\",\"data\":{\"schema_version\":1,\"files\":[]},\"output_bytes\":17}",
+      "minimal": {
+        "operation": "show_symbol",
+        "status": "error",
+        "warnings": []
+      },
+      "probe": {
+        "homepage": "",
+        "message": "probe detail",
+        "schema_version": 1,
+        "status": "error",
+        "version": "1.9.0"
+      },
+      "result": {
+        "data": {
+          "files": [],
+          "schema_version": 1
+        },
+        "message": "detail",
+        "operation": "repo_map",
+        "output_bytes": 17,
+        "probe": {
+          "homepage": "",
+          "message": "probe detail",
+          "schema_version": 1,
+          "status": "error",
+          "version": "1.9.0"
+        },
+        "status": "error",
+        "warnings": [
+          "warning"
+        ]
+      },
+      "status": "error"
+    },
+    {
+      "json": "{\"status\":\"missing\",\"operation\":\"repo_map\",\"warnings\":[\"warning\"],\"probe\":{\"status\":\"missing\",\"version\":\"1.9.0\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"probe detail\"},\"message\":\"detail\",\"data\":{\"schema_version\":1,\"files\":[]},\"output_bytes\":17}",
+      "minimal": {
+        "operation": "show_symbol",
+        "status": "missing",
+        "warnings": []
+      },
+      "probe": {
+        "homepage": "",
+        "message": "probe detail",
+        "schema_version": 1,
+        "status": "missing",
+        "version": "1.9.0"
+      },
+      "result": {
+        "data": {
+          "files": [],
+          "schema_version": 1
+        },
+        "message": "detail",
+        "operation": "repo_map",
+        "output_bytes": 17,
+        "probe": {
+          "homepage": "",
+          "message": "probe detail",
+          "schema_version": 1,
+          "status": "missing",
+          "version": "1.9.0"
+        },
+        "status": "missing",
+        "warnings": [
+          "warning"
+        ]
+      },
+      "status": "missing"
+    },
+    {
+      "json": "{\"status\":\"incompatible\",\"operation\":\"repo_map\",\"warnings\":[\"warning\"],\"probe\":{\"status\":\"incompatible\",\"version\":\"1.9.0\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"probe detail\"},\"message\":\"detail\",\"data\":{\"schema_version\":1,\"files\":[]},\"output_bytes\":17}",
+      "minimal": {
+        "operation": "show_symbol",
+        "status": "incompatible",
+        "warnings": []
+      },
+      "probe": {
+        "homepage": "",
+        "message": "probe detail",
+        "schema_version": 1,
+        "status": "incompatible",
+        "version": "1.9.0"
+      },
+      "result": {
+        "data": {
+          "files": [],
+          "schema_version": 1
+        },
+        "message": "detail",
+        "operation": "repo_map",
+        "output_bytes": 17,
+        "probe": {
+          "homepage": "",
+          "message": "probe detail",
+          "schema_version": 1,
+          "status": "incompatible",
+          "version": "1.9.0"
+        },
+        "status": "incompatible",
+        "warnings": [
+          "warning"
+        ]
+      },
+      "status": "incompatible"
+    },
+    {
+      "error": "unknown ast context status: unknown",
+      "error_class": "ValueError",
+      "status": "unknown"
+    }
+  ]
+}

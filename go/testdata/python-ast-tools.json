@@ -1,0 +1,192 @@
+{
+  "tools": [
+    {
+      "capabilities": [
+        "repo.semantic_outline"
+      ],
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Map supported source files with ast-outline digest; returns JSON status applied, no_match, partial, error, missing, or incompatible.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "density": {
+              "default": "default",
+              "enum": [
+                "names",
+                "compact",
+                "default",
+                "wide"
+              ],
+              "type": "string"
+            },
+            "include_imports": {
+              "default": false,
+              "type": "boolean"
+            },
+            "paths": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "paths"
+          ],
+          "type": "object"
+        },
+        "name": "repo_map"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.semantic_outline"
+      ],
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read structural signatures and line ranges for files or directories without full method bodies.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "include_imports": {
+              "default": false,
+              "type": "boolean"
+            },
+            "paths": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            },
+            "view": {
+              "default": "full",
+              "enum": [
+                "full",
+                "public",
+                "minimal"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "paths"
+          ],
+          "type": "object"
+        },
+        "name": "file_outline"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.symbol"
+      ],
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read exact source or signature for named symbols inside one workspace source file or non-recursive basename glob.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "path_or_glob": {
+              "description": "Workspace source file, or a non-recursive basename glob in a static workspace directory; '**' and intermediate wildcards are rejected.",
+              "maxLength": 2048,
+              "type": "string"
+            },
+            "signature_only": {
+              "default": false,
+              "type": "boolean"
+            },
+            "symbols": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "path_or_glob",
+            "symbols"
+          ],
+          "type": "object"
+        },
+        "name": "show_symbol"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.references"
+      ],
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Find definitions, calls, references, or imports grouped by enclosing scope with ast-outline grep.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "kinds": {
+              "default": [],
+              "items": {
+                "enum": [
+                  "def",
+                  "call",
+                  "ref",
+                  "import",
+                  "comment",
+                  "string"
+                ],
+                "type": "string"
+              },
+              "maxItems": 6,
+              "type": "array"
+            },
+            "max_per_file": {
+              "maximum": 10000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "paths": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            },
+            "patterns": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "patterns",
+            "paths"
+          ],
+          "type": "object"
+        },
+        "name": "symbol_references"
+      }
+    }
+  ]
+}

@@ -1,0 +1,7177 @@
+{
+  "caches": [
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-0-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 84,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "batch-1-rounds-1",
+      "null": false,
+      "positions": [
+        [
+          2,
+          0
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-3-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 190,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "batch-1-rounds-4",
+      "null": false,
+      "positions": [
+        [
+          8,
+          0
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 288,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "batch-12-rounds-1",
+      "null": false,
+      "positions": [
+        [
+          2,
+          11
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-1-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-2-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-3-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 1026,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "text": "result-1-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "text": "result-2-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "text": "result-3-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "batch-12-rounds-4",
+      "null": false,
+      "positions": [
+        [
+          4,
+          11
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          8,
+          11
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            },
+            {
+              "text": "result-0-12",
+              "type": "text"
+            },
+            {
+              "text": "result-0-13",
+              "type": "text"
+            },
+            {
+              "text": "result-0-14",
+              "type": "text"
+            },
+            {
+              "text": "result-0-15",
+              "type": "text"
+            },
+            {
+              "text": "result-0-16",
+              "type": "text"
+            },
+            {
+              "text": "result-0-17",
+              "type": "text"
+            },
+            {
+              "text": "result-0-18",
+              "type": "text"
+            },
+            {
+              "text": "result-0-19",
+              "type": "text"
+            },
+            {
+              "text": "result-0-20",
+              "type": "text"
+            },
+            {
+              "text": "result-0-21",
+              "type": "text"
+            },
+            {
+              "text": "result-0-22",
+              "type": "text"
+            },
+            {
+              "text": "result-0-23",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-0-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 542,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            },
+            {
+              "text": "result-0-12",
+              "type": "text"
+            },
+            {
+              "text": "result-0-13",
+              "type": "text"
+            },
+            {
+              "text": "result-0-14",
+              "type": "text"
+            },
+            {
+              "text": "result-0-15",
+              "type": "text"
+            },
+            {
+              "text": "result-0-16",
+              "type": "text"
+            },
+            {
+              "text": "result-0-17",
+              "type": "text"
+            },
+            {
+              "text": "result-0-18",
+              "type": "text"
+            },
+            {
+              "text": "result-0-19",
+              "type": "text"
+            },
+            {
+              "text": "result-0-20",
+              "type": "text"
+            },
+            {
+              "text": "result-0-21",
+              "type": "text"
+            },
+            {
+              "text": "result-0-22",
+              "type": "text"
+            },
+            {
+              "text": "result-0-23",
+              "type": "text"
+            },
+            {
+              "text": "result-0-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "batch-25-rounds-1",
+      "null": false,
+      "positions": [
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          24
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            },
+            {
+              "text": "result-0-12",
+              "type": "text"
+            },
+            {
+              "text": "result-0-13",
+              "type": "text"
+            },
+            {
+              "text": "result-0-14",
+              "type": "text"
+            },
+            {
+              "text": "result-0-15",
+              "type": "text"
+            },
+            {
+              "text": "result-0-16",
+              "type": "text"
+            },
+            {
+              "text": "result-0-17",
+              "type": "text"
+            },
+            {
+              "text": "result-0-18",
+              "type": "text"
+            },
+            {
+              "text": "result-0-19",
+              "type": "text"
+            },
+            {
+              "text": "result-0-20",
+              "type": "text"
+            },
+            {
+              "text": "result-0-21",
+              "type": "text"
+            },
+            {
+              "text": "result-0-22",
+              "type": "text"
+            },
+            {
+              "text": "result-0-23",
+              "type": "text"
+            },
+            {
+              "text": "result-0-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "text": "result-1-11",
+              "type": "text"
+            },
+            {
+              "text": "result-1-12",
+              "type": "text"
+            },
+            {
+              "text": "result-1-13",
+              "type": "text"
+            },
+            {
+              "text": "result-1-14",
+              "type": "text"
+            },
+            {
+              "text": "result-1-15",
+              "type": "text"
+            },
+            {
+              "text": "result-1-16",
+              "type": "text"
+            },
+            {
+              "text": "result-1-17",
+              "type": "text"
+            },
+            {
+              "text": "result-1-18",
+              "type": "text"
+            },
+            {
+              "text": "result-1-19",
+              "type": "text"
+            },
+            {
+              "text": "result-1-20",
+              "type": "text"
+            },
+            {
+              "text": "result-1-21",
+              "type": "text"
+            },
+            {
+              "text": "result-1-22",
+              "type": "text"
+            },
+            {
+              "text": "result-1-23",
+              "type": "text"
+            },
+            {
+              "text": "result-1-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "text": "result-2-11",
+              "type": "text"
+            },
+            {
+              "text": "result-2-12",
+              "type": "text"
+            },
+            {
+              "text": "result-2-13",
+              "type": "text"
+            },
+            {
+              "text": "result-2-14",
+              "type": "text"
+            },
+            {
+              "text": "result-2-15",
+              "type": "text"
+            },
+            {
+              "text": "result-2-16",
+              "type": "text"
+            },
+            {
+              "text": "result-2-17",
+              "type": "text"
+            },
+            {
+              "text": "result-2-18",
+              "type": "text"
+            },
+            {
+              "text": "result-2-19",
+              "type": "text"
+            },
+            {
+              "text": "result-2-20",
+              "type": "text"
+            },
+            {
+              "text": "result-2-21",
+              "type": "text"
+            },
+            {
+              "text": "result-2-22",
+              "type": "text"
+            },
+            {
+              "text": "result-2-23",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-2-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "text": "result-3-11",
+              "type": "text"
+            },
+            {
+              "text": "result-3-12",
+              "type": "text"
+            },
+            {
+              "text": "result-3-13",
+              "type": "text"
+            },
+            {
+              "text": "result-3-14",
+              "type": "text"
+            },
+            {
+              "text": "result-3-15",
+              "type": "text"
+            },
+            {
+              "text": "result-3-16",
+              "type": "text"
+            },
+            {
+              "text": "result-3-17",
+              "type": "text"
+            },
+            {
+              "text": "result-3-18",
+              "type": "text"
+            },
+            {
+              "text": "result-3-19",
+              "type": "text"
+            },
+            {
+              "text": "result-3-20",
+              "type": "text"
+            },
+            {
+              "text": "result-3-21",
+              "type": "text"
+            },
+            {
+              "text": "result-3-22",
+              "type": "text"
+            },
+            {
+              "text": "result-3-23",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-3-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 2001,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            },
+            {
+              "text": "result-0-12",
+              "type": "text"
+            },
+            {
+              "text": "result-0-13",
+              "type": "text"
+            },
+            {
+              "text": "result-0-14",
+              "type": "text"
+            },
+            {
+              "text": "result-0-15",
+              "type": "text"
+            },
+            {
+              "text": "result-0-16",
+              "type": "text"
+            },
+            {
+              "text": "result-0-17",
+              "type": "text"
+            },
+            {
+              "text": "result-0-18",
+              "type": "text"
+            },
+            {
+              "text": "result-0-19",
+              "type": "text"
+            },
+            {
+              "text": "result-0-20",
+              "type": "text"
+            },
+            {
+              "text": "result-0-21",
+              "type": "text"
+            },
+            {
+              "text": "result-0-22",
+              "type": "text"
+            },
+            {
+              "text": "result-0-23",
+              "type": "text"
+            },
+            {
+              "text": "result-0-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "text": "result-1-11",
+              "type": "text"
+            },
+            {
+              "text": "result-1-12",
+              "type": "text"
+            },
+            {
+              "text": "result-1-13",
+              "type": "text"
+            },
+            {
+              "text": "result-1-14",
+              "type": "text"
+            },
+            {
+              "text": "result-1-15",
+              "type": "text"
+            },
+            {
+              "text": "result-1-16",
+              "type": "text"
+            },
+            {
+              "text": "result-1-17",
+              "type": "text"
+            },
+            {
+              "text": "result-1-18",
+              "type": "text"
+            },
+            {
+              "text": "result-1-19",
+              "type": "text"
+            },
+            {
+              "text": "result-1-20",
+              "type": "text"
+            },
+            {
+              "text": "result-1-21",
+              "type": "text"
+            },
+            {
+              "text": "result-1-22",
+              "type": "text"
+            },
+            {
+              "text": "result-1-23",
+              "type": "text"
+            },
+            {
+              "text": "result-1-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "text": "result-2-11",
+              "type": "text"
+            },
+            {
+              "text": "result-2-12",
+              "type": "text"
+            },
+            {
+              "text": "result-2-13",
+              "type": "text"
+            },
+            {
+              "text": "result-2-14",
+              "type": "text"
+            },
+            {
+              "text": "result-2-15",
+              "type": "text"
+            },
+            {
+              "text": "result-2-16",
+              "type": "text"
+            },
+            {
+              "text": "result-2-17",
+              "type": "text"
+            },
+            {
+              "text": "result-2-18",
+              "type": "text"
+            },
+            {
+              "text": "result-2-19",
+              "type": "text"
+            },
+            {
+              "text": "result-2-20",
+              "type": "text"
+            },
+            {
+              "text": "result-2-21",
+              "type": "text"
+            },
+            {
+              "text": "result-2-22",
+              "type": "text"
+            },
+            {
+              "text": "result-2-23",
+              "type": "text"
+            },
+            {
+              "text": "result-2-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "text": "result-3-11",
+              "type": "text"
+            },
+            {
+              "text": "result-3-12",
+              "type": "text"
+            },
+            {
+              "text": "result-3-13",
+              "type": "text"
+            },
+            {
+              "text": "result-3-14",
+              "type": "text"
+            },
+            {
+              "text": "result-3-15",
+              "type": "text"
+            },
+            {
+              "text": "result-3-16",
+              "type": "text"
+            },
+            {
+              "text": "result-3-17",
+              "type": "text"
+            },
+            {
+              "text": "result-3-18",
+              "type": "text"
+            },
+            {
+              "text": "result-3-19",
+              "type": "text"
+            },
+            {
+              "text": "result-3-20",
+              "type": "text"
+            },
+            {
+              "text": "result-3-21",
+              "type": "text"
+            },
+            {
+              "text": "result-3-22",
+              "type": "text"
+            },
+            {
+              "text": "result-3-23",
+              "type": "text"
+            },
+            {
+              "text": "result-3-24",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "batch-25-rounds-4",
+      "null": false,
+      "positions": [
+        [
+          6,
+          24
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          8,
+          24
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-1-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": "",
+      "fake_tokens": 138,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "empty-system",
+      "null": false,
+      "positions": [
+        [
+          4,
+          1
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "result-1-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": null,
+      "fake_tokens": 138,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "absent-system",
+      "null": false,
+      "positions": [
+        [
+          4,
+          1
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": null,
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "plain",
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 39,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "plain",
+          "role": "user"
+        }
+      ],
+      "name": "plain-only",
+      "null": false,
+      "positions": [],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "ttl": "1h",
+                "type": "ephemeral"
+              },
+              "text": "result-1-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "ttl": "1h",
+                "type": "ephemeral"
+              },
+              "text": "result-2-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "cache_control": {
+                "ttl": "1h",
+                "type": "ephemeral"
+              },
+              "text": "result-3-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "ttl": "1h",
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 445,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "ttl-and-stride",
+      "null": false,
+      "positions": [
+        [
+          4,
+          3
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          8,
+          3
+        ]
+      ],
+      "source_unchanged": true,
+      "stride": 3,
+      "system": "stable",
+      "ttl": "1h"
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "text": "result-1-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "text": "result-2-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "text": "result-3-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "stable",
+          "type": "text"
+        }
+      ],
+      "fake_tokens": 996,
+      "maximum": 1,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "text": "result-1-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "text": "result-2-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "text": "result-3-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "prefix-budget-only",
+      "null": false,
+      "positions": [],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    },
+    {
+      "cached_messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "text": "result-1-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "text": "result-2-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "text": "result-3-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "cached_system": "stable",
+      "fake_tokens": 979,
+      "maximum": 4,
+      "messages": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-0-0",
+              "type": "text"
+            },
+            {
+              "text": "result-0-1",
+              "type": "text"
+            },
+            {
+              "text": "result-0-2",
+              "type": "text"
+            },
+            {
+              "text": "result-0-3",
+              "type": "text"
+            },
+            {
+              "text": "result-0-4",
+              "type": "text"
+            },
+            {
+              "text": "result-0-5",
+              "type": "text"
+            },
+            {
+              "text": "result-0-6",
+              "type": "text"
+            },
+            {
+              "text": "result-0-7",
+              "type": "text"
+            },
+            {
+              "text": "result-0-8",
+              "type": "text"
+            },
+            {
+              "text": "result-0-9",
+              "type": "text"
+            },
+            {
+              "text": "result-0-10",
+              "type": "text"
+            },
+            {
+              "text": "result-0-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-1-0",
+              "type": "text"
+            },
+            {
+              "text": "result-1-1",
+              "type": "text"
+            },
+            {
+              "text": "result-1-2",
+              "type": "text"
+            },
+            {
+              "text": "result-1-3",
+              "type": "text"
+            },
+            {
+              "text": "result-1-4",
+              "type": "text"
+            },
+            {
+              "text": "result-1-5",
+              "type": "text"
+            },
+            {
+              "text": "result-1-6",
+              "type": "text"
+            },
+            {
+              "text": "result-1-7",
+              "type": "text"
+            },
+            {
+              "text": "result-1-8",
+              "type": "text"
+            },
+            {
+              "text": "result-1-9",
+              "type": "text"
+            },
+            {
+              "text": "result-1-10",
+              "type": "text"
+            },
+            {
+              "text": "result-1-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-2-0",
+              "type": "text"
+            },
+            {
+              "text": "result-2-1",
+              "type": "text"
+            },
+            {
+              "text": "result-2-2",
+              "type": "text"
+            },
+            {
+              "text": "result-2-3",
+              "type": "text"
+            },
+            {
+              "text": "result-2-4",
+              "type": "text"
+            },
+            {
+              "text": "result-2-5",
+              "type": "text"
+            },
+            {
+              "text": "result-2-6",
+              "type": "text"
+            },
+            {
+              "text": "result-2-7",
+              "type": "text"
+            },
+            {
+              "text": "result-2-8",
+              "type": "text"
+            },
+            {
+              "text": "result-2-9",
+              "type": "text"
+            },
+            {
+              "text": "result-2-10",
+              "type": "text"
+            },
+            {
+              "text": "result-2-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            },
+            {
+              "text": "work",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "result-3-0",
+              "type": "text"
+            },
+            {
+              "text": "result-3-1",
+              "type": "text"
+            },
+            {
+              "text": "result-3-2",
+              "type": "text"
+            },
+            {
+              "text": "result-3-3",
+              "type": "text"
+            },
+            {
+              "text": "result-3-4",
+              "type": "text"
+            },
+            {
+              "text": "result-3-5",
+              "type": "text"
+            },
+            {
+              "text": "result-3-6",
+              "type": "text"
+            },
+            {
+              "text": "result-3-7",
+              "type": "text"
+            },
+            {
+              "text": "result-3-8",
+              "type": "text"
+            },
+            {
+              "text": "result-3-9",
+              "type": "text"
+            },
+            {
+              "text": "result-3-10",
+              "type": "text"
+            },
+            {
+              "text": "result-3-11",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "null-policy",
+      "null": true,
+      "positions": [],
+      "source_unchanged": true,
+      "stride": 15,
+      "system": "stable",
+      "ttl": null
+    }
+  ],
+  "decisions": [
+    {
+      "name": "before-repeat",
+      "reminder": null,
+      "rounds": 0,
+      "signal": null,
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "repeated-result",
+      "reminder": "<stuck pattern=\"repeat_action_result\">The last 4 tool calls were all `bash` with identical input and identical output. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The last 4 tool calls were all `bash` with identical input and identical output.",
+        "pattern": "repeat_action_result",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "changing-output",
+      "reminder": null,
+      "rounds": 0,
+      "signal": null,
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "98089e6d36f78e97"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "391552c099c101b1"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "cc11310c456c3690"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "a4aab3f1f08004e9"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "2bf175f9655e7bb7"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "d10a4bc9e0c1fa4e"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "92e9e7e5922d26e1"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "266aa5886067fbbc"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "repeated-denial",
+      "reminder": "<stuck pattern=\"repeat_action_error\">The last 3 tool calls were all `bash` with identical input and every one of them denied. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The last 3 tool calls were all `bash` with identical input and every one of them denied.",
+        "pattern": "repeat_action_error",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "repeated-error-varies-output",
+      "reminder": "<stuck pattern=\"repeat_action_error\">The last 3 tool calls were all `bash` with identical input and every one of them failed. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The last 3 tool calls were all `bash` with identical input and every one of them failed.",
+        "pattern": "repeat_action_error",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "98089e6d36f78e97"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "391552c099c101b1"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "cc11310c456c3690"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "mixed-failure-and-denial",
+      "reminder": "<stuck pattern=\"repeat_action_error\">The last 3 tool calls were all `bash` with identical input and every one of them failed. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The last 3 tool calls were all `bash` with identical input and every one of them failed.",
+        "pattern": "repeat_action_error",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "varied-input-failures",
+      "reminder": "<stuck pattern=\"unproductive_tool\">`bash` failed or was denied 5 times in the last 5 tool calls and never once succeeded, however it was called. `bash` is not going to start working. Do not call it again with different arguments. Either reach the goal another way, or tell the user what is blocking you.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "`bash` is not going to start working. Do not call it again with different arguments. Either reach the goal another way, or tell the user what is blocking you.",
+        "detail": "`bash` failed or was denied 5 times in the last 5 tool calls and never once succeeded, however it was called.",
+        "pattern": "unproductive_tool",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "e5828bc9bbb0af48",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "a16f968ab591663d",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d6eb8c4d7da61119",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "856e4e21bb65682e",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d31856f202b6f987",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "same-tool-success-suppresses",
+      "reminder": null,
+      "rounds": 0,
+      "signal": null,
+      "steps": [
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "e5828bc9bbb0af48",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "a16f968ab591663d",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d6eb8c4d7da61119",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "856e4e21bb65682e",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d31856f202b6f987",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "eddb62ea6913c7f8",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "interleaved-workaround",
+      "reminder": "<stuck pattern=\"unproductive_tool\">`bash` failed or was denied 5 times in the last 10 tool calls and never once succeeded, however it was called. `bash` is not going to start working. Do not call it again with different arguments. Either reach the goal another way, or tell the user what is blocking you.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "`bash` is not going to start working. Do not call it again with different arguments. Either reach the goal another way, or tell the user what is blocking you.",
+        "detail": "`bash` failed or was denied 5 times in the last 10 tool calls and never once succeeded, however it was called.",
+        "pattern": "unproductive_tool",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "e5828bc9bbb0af48",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5828bc9bbb0af48",
+          "name": "read_file",
+          "output_hash": "98089e6d36f78e97"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "a16f968ab591663d",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "a16f968ab591663d",
+          "name": "read_file",
+          "output_hash": "391552c099c101b1"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "d6eb8c4d7da61119",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d6eb8c4d7da61119",
+          "name": "read_file",
+          "output_hash": "cc11310c456c3690"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "856e4e21bb65682e",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "856e4e21bb65682e",
+          "name": "read_file",
+          "output_hash": "a4aab3f1f08004e9"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "input_hash": "d31856f202b6f987",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d31856f202b6f987",
+          "name": "read_file",
+          "output_hash": "2bf175f9655e7bb7"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "insertion-order",
+      "reminder": "<stuck pattern=\"unproductive_tool\">`write_file` failed or was denied 5 times in the last 10 tool calls and never once succeeded, however it was called. `write_file` is not going to start working. Do not call it again with different arguments. Either reach the goal another way, or tell the user what is blocking you.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "`write_file` is not going to start working. Do not call it again with different arguments. Either reach the goal another way, or tell the user what is blocking you.",
+        "detail": "`write_file` failed or was denied 5 times in the last 10 tool calls and never once succeeded, however it was called.",
+        "pattern": "unproductive_tool",
+        "tool_name": "write_file"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "e5828bc9bbb0af48",
+          "name": "write_file",
+          "output_hash": "98089e6d36f78e97"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "e5828bc9bbb0af48",
+          "name": "bash",
+          "output_hash": "98089e6d36f78e97"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "a16f968ab591663d",
+          "name": "write_file",
+          "output_hash": "391552c099c101b1"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "a16f968ab591663d",
+          "name": "bash",
+          "output_hash": "391552c099c101b1"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d6eb8c4d7da61119",
+          "name": "write_file",
+          "output_hash": "cc11310c456c3690"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d6eb8c4d7da61119",
+          "name": "bash",
+          "output_hash": "cc11310c456c3690"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "856e4e21bb65682e",
+          "name": "write_file",
+          "output_hash": "a4aab3f1f08004e9"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "856e4e21bb65682e",
+          "name": "bash",
+          "output_hash": "a4aab3f1f08004e9"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d31856f202b6f987",
+          "name": "write_file",
+          "output_hash": "2bf175f9655e7bb7"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d31856f202b6f987",
+          "name": "bash",
+          "output_hash": "2bf175f9655e7bb7"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "alternating",
+      "reminder": "<stuck pattern=\"alternating\">The last 6 tool calls alternated between `read_file` and `glob` with identical inputs and identical outputs each cycle. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The last 6 tool calls alternated between `read_file` and `glob` with identical inputs and identical outputs each cycle.",
+        "pattern": "alternating",
+        "tool_name": "read_file"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "read_file",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "glob",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "read_file",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "glob",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "read_file",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "glob",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "unstable-alternating",
+      "reminder": null,
+      "rounds": 0,
+      "signal": null,
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "read_file",
+          "output_hash": "98089e6d36f78e97"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "glob",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "read_file",
+          "output_hash": "cc11310c456c3690"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "glob",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "read_file",
+          "output_hash": "2bf175f9655e7bb7"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "glob",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "uniform-is-repeat",
+      "reminder": "<stuck pattern=\"repeat_action_result\">The last 4 tool calls were all `bash` with identical input and identical output. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The last 4 tool calls were all `bash` with identical input and identical output.",
+        "pattern": "repeat_action_result",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "monologue",
+      "reminder": "<stuck pattern=\"monologue\">The model produced 3 consecutive turns with no tool call, and a stop hook keeps resuming it. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 3,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The model produced 3 consecutive turns with no tool call, and a stop hook keeps resuming it.",
+        "pattern": "monologue",
+        "tool_name": null
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 5
+      }
+    },
+    {
+      "name": "unproductive-disabled",
+      "reminder": null,
+      "rounds": 0,
+      "signal": null,
+      "steps": [
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "e5828bc9bbb0af48",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "a16f968ab591663d",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d6eb8c4d7da61119",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "856e4e21bb65682e",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "d31856f202b6f987",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "276320ce8dd7baf3",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "ea465e227a5173a0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "input_hash": "16a1dceacd83d10b",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 4,
+        "unproductive_tool": 0
+      }
+    },
+    {
+      "name": "custom-repeat",
+      "reminder": "<stuck pattern=\"repeat_action_result\">The last 2 tool calls were all `bash` with identical input and identical output. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>",
+      "rounds": 0,
+      "signal": {
+        "advice": "Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.",
+        "detail": "The last 2 tool calls were all `bash` with identical input and identical output.",
+        "pattern": "repeat_action_result",
+        "tool_name": "bash"
+      },
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "791156ed4ec920c0",
+          "name": "bash",
+          "output_hash": "106c4202d3d02a3f"
+        }
+      ],
+      "thresholds": {
+        "alternating": 6,
+        "max_nudges": 1,
+        "monologue": 3,
+        "repeat_action_error": 3,
+        "repeat_action_result": 2,
+        "unproductive_tool": 5
+      }
+    }
+  ],
+  "hashes": [
+    {
+      "input": {
+        "command": "printf 你好\n"
+      },
+      "input_hash": "3ad09265f11ced5e",
+      "output": "你好\n",
+      "output_hash": "8d55300d7cc6aac8",
+      "tool": "bash"
+    },
+    {
+      "input": {
+        "limit": null,
+        "offset": 0,
+        "path": "x"
+      },
+      "input_hash": "4359b38c95b45466",
+      "output": "Error: missing",
+      "output_hash": "fbdef683d155494d",
+      "tool": "read_file"
+    },
+    {
+      "input": {
+        "content": "x",
+        "path": "out"
+      },
+      "input_hash": "8398870af99160f7",
+      "output": "Wrote 1 bytes",
+      "output_hash": "14cc646d29cc3fda",
+      "tool": "write_file"
+    },
+    {
+      "input": {
+        "new_text": "b",
+        "old_text": "a",
+        "path": "p"
+      },
+      "input_hash": "d68df2c11af5e0fa",
+      "output": "Edited",
+      "output_hash": "e4f832eb4d483ea1",
+      "tool": "edit_file"
+    },
+    {
+      "input": {
+        "items": [
+          {
+            "activeForm": "Working",
+            "content": "Work",
+            "status": "pending"
+          }
+        ]
+      },
+      "input_hash": "2406076dffdd417b",
+      "output": "todo",
+      "output_hash": "7be5e90677a0beca",
+      "tool": "TodoWrite"
+    },
+    {
+      "input": {},
+      "input_hash": "44136fa355b3678a",
+      "output": "",
+      "output_hash": "12ae32cb1ec02d01",
+      "tool": "compress"
+    }
+  ],
+  "loops": [
+    {
+      "calls": 8,
+      "continuations": [],
+      "denied": false,
+      "events": [
+        {
+          "detail": "The last 4 tool calls were all `bash` with identical input and identical output.",
+          "halted": false,
+          "nudges_used": 0,
+          "pattern": "repeat_action_result",
+          "tool": "bash"
+        },
+        {
+          "detail": "The last 4 tool calls were all `bash` with identical input and identical output.",
+          "halted": true,
+          "nudges_used": 1,
+          "pattern": "repeat_action_result",
+          "tool": "bash"
+        }
+      ],
+      "max_nudges": 1,
+      "monologue": false,
+      "name": "result",
+      "null": false,
+      "output": "[stopped: The last 4 tool calls were all `bash` with identical input and identical output.]\nPartial output before the stop:\nloop commentary",
+      "reminders": [
+        "<stuck pattern=\"repeat_action_result\">The last 4 tool calls were all `bash` with identical input and identical output. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>"
+      ]
+    },
+    {
+      "calls": 6,
+      "continuations": [],
+      "denied": true,
+      "events": [
+        {
+          "detail": "The last 3 tool calls were all `bash` with identical input and every one of them denied.",
+          "halted": false,
+          "nudges_used": 0,
+          "pattern": "repeat_action_error",
+          "tool": "bash"
+        },
+        {
+          "detail": "The last 3 tool calls were all `bash` with identical input and every one of them denied.",
+          "halted": true,
+          "nudges_used": 1,
+          "pattern": "repeat_action_error",
+          "tool": "bash"
+        }
+      ],
+      "max_nudges": 1,
+      "monologue": false,
+      "name": "denied",
+      "null": false,
+      "output": "[stopped: The last 3 tool calls were all `bash` with identical input and every one of them denied.]\nPartial output before the stop:\nloop commentary",
+      "reminders": [
+        "<stuck pattern=\"repeat_action_error\">The last 3 tool calls were all `bash` with identical input and every one of them denied. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>"
+      ]
+    },
+    {
+      "calls": 4,
+      "continuations": [],
+      "denied": false,
+      "events": [
+        {
+          "detail": "The last 4 tool calls were all `bash` with identical input and identical output.",
+          "halted": true,
+          "nudges_used": 0,
+          "pattern": "repeat_action_result",
+          "tool": "bash"
+        }
+      ],
+      "max_nudges": 0,
+      "monologue": false,
+      "name": "halt-immediately",
+      "null": false,
+      "output": "[stopped: The last 4 tool calls were all `bash` with identical input and identical output.]\nPartial output before the stop:\nloop commentary",
+      "reminders": []
+    },
+    {
+      "calls": 6,
+      "continuations": [
+        "<stuck pattern=\"monologue\">The model produced 3 consecutive turns with no tool call, and a stop hook keeps resuming it. Stop repeating this call. Either change your approach, use a different tool, or explain to the user why you cannot proceed.</stuck>\n\nkeep going"
+      ],
+      "denied": false,
+      "events": [
+        {
+          "detail": "The model produced 3 consecutive turns with no tool call, and a stop hook keeps resuming it.",
+          "halted": false,
+          "nudges_used": 0,
+          "pattern": "monologue",
+          "tool": null
+        },
+        {
+          "detail": "The model produced 3 consecutive turns with no tool call, and a stop hook keeps resuming it.",
+          "halted": true,
+          "nudges_used": 1,
+          "pattern": "monologue",
+          "tool": null
+        }
+      ],
+      "max_nudges": 1,
+      "monologue": true,
+      "name": "monologue",
+      "null": false,
+      "output": "[stopped: The model produced 3 consecutive turns with no tool call, and a stop hook keeps resuming it.]\nPartial output before the stop:\nloop commentary",
+      "reminders": []
+    },
+    {
+      "calls": 12,
+      "continuations": [],
+      "denied": false,
+      "events": [],
+      "max_nudges": 1,
+      "monologue": false,
+      "name": "null",
+      "null": true,
+      "output": "[stopped after 12 rounds without finishing]\nPartial output before the stop:\nloop commentary",
+      "reminders": []
+    }
+  ]
+}

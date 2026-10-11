@@ -1,0 +1,111 @@
+{
+  "cases": [
+    {
+      "name": "unauthenticated",
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401
+    },
+    {
+      "name": "query-token-refused",
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401
+    },
+    {
+      "name": "foreign-preview",
+      "response": {
+        "detail": "No session '<session>'"
+      },
+      "status": 404
+    },
+    {
+      "name": "empty-evidence",
+      "response": {
+        "detail": {
+          "code": "empty_transcript",
+          "message": "empty transcript"
+        }
+      },
+      "status": 422
+    },
+    {
+      "name": "preview",
+      "response": {
+        "body": "procedure",
+        "compacted_history_excluded": false,
+        "coverage": "authenticated_turns",
+        "description": "recipe",
+        "digest": "2def44cb26be9d65cffa16272d1716915111987e33e28ff17cb8527899bc38fc",
+        "evidence_indexes": [
+          0
+        ],
+        "name": "recipe",
+        "omitted": 0
+      },
+      "status": 200
+    },
+    {
+      "name": "readonly",
+      "response": {
+        "detail": {
+          "code": "readonly_session",
+          "message": "readonly sessions cannot publish personal skills"
+        }
+      },
+      "status": 403
+    },
+    {
+      "name": "wrong-digest",
+      "response": {
+        "detail": {
+          "code": "draft_digest_mismatch",
+          "message": "draft digest mismatch"
+        }
+      },
+      "status": 409
+    },
+    {
+      "name": "cross-session",
+      "response": {
+        "detail": {
+          "code": "draft_not_found",
+          "message": "draft not found"
+        }
+      },
+      "status": 404
+    },
+    {
+      "name": "foreign-commit",
+      "response": {
+        "detail": "No session '<session>'"
+      },
+      "status": 404
+    },
+    {
+      "name": "commit",
+      "response": {
+        "activation": "next_session",
+        "content_digest": "0487c249731a7d9064b8671a7e745fffe250a700a04c9a1ecc8450cb8185e57e",
+        "digest": "2def44cb26be9d65cffa16272d1716915111987e33e28ff17cb8527899bc38fc",
+        "idempotent": false,
+        "name": "recipe",
+        "source": "user",
+        "warning": null
+      },
+      "status": 200
+    },
+    {
+      "name": "consumed",
+      "response": {
+        "detail": {
+          "code": "draft_not_found",
+          "message": "draft not found"
+        }
+      },
+      "status": 404
+    }
+  ]
+}

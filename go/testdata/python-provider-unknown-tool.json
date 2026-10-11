@@ -1,0 +1,1270 @@
+{
+  "cases": [
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": null,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "keep",
+      "name": "null/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": true,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "true",
+      "input_json": "true",
+      "mode": "keep",
+      "name": "boolean/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": 17,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "17",
+      "input_json": "17",
+      "mode": "keep",
+      "name": "integer/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": 13.75,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "13.75",
+      "input_json": "13.75",
+      "mode": "keep",
+      "name": "float/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": "inert",
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "\"inert\"",
+      "input_json": "\"inert\"",
+      "mode": "keep",
+      "name": "text/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": [
+            "inert"
+          ],
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "[\"inert\"]",
+      "input_json": "[\"inert\"]",
+      "mode": "keep",
+      "name": "array/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": {},
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "empty-object/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": {
+            "command": "rm -rf /",
+            "secret-key": "secret-value"
+          },
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": \"rm -rf /\", \"secret-key\": \"secret-value\"}",
+      "input_json": "{\"command\": \"rm -rf /\", \"secret-key\": \"secret-value\"}",
+      "mode": "keep",
+      "name": "object/interactive",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": null,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "keep",
+      "name": "null/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": true,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "true",
+      "input_json": "true",
+      "mode": "keep",
+      "name": "boolean/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": 17,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "17",
+      "input_json": "17",
+      "mode": "keep",
+      "name": "integer/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": 13.75,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "13.75",
+      "input_json": "13.75",
+      "mode": "keep",
+      "name": "float/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": "inert",
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "\"inert\"",
+      "input_json": "\"inert\"",
+      "mode": "keep",
+      "name": "text/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": [
+            "inert"
+          ],
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "[\"inert\"]",
+      "input_json": "[\"inert\"]",
+      "mode": "keep",
+      "name": "array/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": {},
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "empty-object/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": {
+            "command": "rm -rf /",
+            "secret-key": "secret-value"
+          },
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": \"rm -rf /\", \"secret-key\": \"secret-value\"}",
+      "input_json": "{\"command\": \"rm -rf /\", \"secret-key\": \"secret-value\"}",
+      "mode": "keep",
+      "name": "object/auto",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "auto",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": null,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "keep",
+      "name": "null/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": true,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "true",
+      "input_json": "true",
+      "mode": "keep",
+      "name": "boolean/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": 17,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "17",
+      "input_json": "17",
+      "mode": "keep",
+      "name": "integer/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": 13.75,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "13.75",
+      "input_json": "13.75",
+      "mode": "keep",
+      "name": "float/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": "inert",
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "\"inert\"",
+      "input_json": "\"inert\"",
+      "mode": "keep",
+      "name": "text/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": [
+            "inert"
+          ],
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "[\"inert\"]",
+      "input_json": "[\"inert\"]",
+      "mode": "keep",
+      "name": "array/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": {},
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "empty-object/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": {
+            "command": "rm -rf /",
+            "secret-key": "secret-value"
+          },
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"command\": \"rm -rf /\", \"secret-key\": \"secret-value\"}",
+      "input_json": "{\"command\": \"rm -rf /\", \"secret-key\": \"secret-value\"}",
+      "mode": "keep",
+      "name": "object/readonly",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "readonly",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "",
+            "verb": "call"
+          },
+          "input": {},
+          "name": "",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "",
+          "output": "Unknown tool: ",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "name/",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: "
+        }
+      ],
+      "output": "Unknown tool: ",
+      "permission_mode": "interactive",
+      "tool_name": "",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "bash ",
+            "verb": "call"
+          },
+          "input": {},
+          "name": "bash ",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash ",
+          "output": "Unknown tool: bash ",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "name/bash ",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: bash "
+        }
+      ],
+      "output": "Unknown tool: bash ",
+      "permission_mode": "interactive",
+      "tool_name": "bash ",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "MISSING",
+            "verb": "call"
+          },
+          "input": {},
+          "name": "MISSING",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "MISSING",
+          "output": "Unknown tool: MISSING",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "name/MISSING",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: MISSING"
+        }
+      ],
+      "output": "Unknown tool: MISSING",
+      "permission_mode": "interactive",
+      "tool_name": "MISSING",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "缺失🌟",
+            "verb": "call"
+          },
+          "input": {},
+          "name": "缺失🌟",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "缺失🌟",
+          "output": "Unknown tool: 缺失🌟",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "name/缺失🌟",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: 缺失🌟"
+        }
+      ],
+      "output": "Unknown tool: 缺失🌟",
+      "permission_mode": "interactive",
+      "tool_name": "缺失🌟",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": null,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "{\"rewritten\": true}",
+      "input_json": "null",
+      "mode": "rewrite",
+      "name": "hook/rewrite",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: missing-tool"
+        }
+      ],
+      "output": "Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": null,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "denied": true,
+          "error": false,
+          "name": "missing-tool",
+          "output": "denied by source probe",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "deny",
+      "name": "hook/deny",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": null,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "denied": true,
+          "error": false,
+          "name": "missing-tool",
+          "output": "denied by source guard",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "guard-deny",
+      "name": "hook/guard-deny",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source guard"
+        }
+      ],
+      "output": "denied by source guard",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    },
+    {
+      "events": [
+        {
+          "display": {
+            "object": "missing-tool",
+            "verb": "call"
+          },
+          "input": null,
+          "name": "missing-tool",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "missing-tool",
+          "output": "after:Unknown tool: missing-tool",
+          "type": "tool_result"
+        }
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "after-replace",
+      "name": "hook/after-replace",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "after:Unknown tool: missing-tool"
+        }
+      ],
+      "output": "after:Unknown tool: missing-tool",
+      "permission_mode": "interactive",
+      "tool_name": "missing-tool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "PermissionHook.before_tool": "870e30d5b36b24a9483bb042c0d2492cebd0efc7fcdd67ad93d58040dba1e6d7"
+  }
+}

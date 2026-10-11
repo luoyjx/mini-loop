@@ -7752,3 +7752,747 @@ deferred items -- every function surface has a UI carrier; workflows
 stays out by the consume-existing-APIs principle until it grows an
 HTTP surface. The hourly loop has nothing left to build; recommending
 retirement to the operator.
+
+
+### Go migration — mailbox dot components
+
+The team-key regex admitted `../lead`: `..` matched the allowed alphabet and the
+resulting Path escaped the configured mailbox root. The Python and native Go
+buses now refuse both dot components before filesystem effects. Four Python
+regressions assert send refusal, empty peek/read, no JSONL and no root creation;
+`mailbox-dot-segment-escape` removes this predicate and must fail those tests.
+The Go source corpus retains these refusal outcomes. Ordinary dotted names stay
+valid. Trusted-root symlinks and cross-process delivery remain separate boundaries;
+this lexical fix is not a host filesystem sandbox.
+
+### Go migration — MCP readonly hint and catalogue ownership
+
+The Go MCP registration seam retains the untrusted readonly hint while pinning
+external risk and exclusive execution. Both definition construction and immutable
+catalogue admission allow that mismatch only for the closed normalized MCP
+namespace with external risk. Permission still reasons about risk, so a readonly
+session denies the tool and interactive execution requires external-action approval.
+The registry keeps raw server names for collision ownership; normalization alone
+is not a takeover defense. Same-server replacement publishes a fresh catalogue;
+old admitted bindings retain the old handler. Native tests cover both constructors,
+old/new snapshots, Source collision diagnostics, hook order, real model dispatch
+and terminal journal replay under current external permission. Live connect_mcp
+publication and shared-client lifecycle ownership are not implemented by this seam.
+
+### Go migration — exclusive MCP connection publication
+
+The raw-session connector executes under external permission and is an exclusive
+batch barrier. Factory construction cannot happen after a readonly/interactive
+denial. Prior parallel groups join before an immutable inventory replacement;
+later calls observe the new inventory, matching Source fresh registry lookups in
+_exec_tool_batch. Already built schema snapshots do not mutate. Native tests compare
+five real Source Agent batches, including factory idempotence, same-batch call
+visibility, owner collision refusal and withheld credentials, and exercise parent
+cancellation without connected-state publication. Automatic client close/reference
+counting and fleet/fork/child composition remain open.
+
+### Go migration — managed MCP last-holder cleanup
+
+Managed connections use explicit stable handle identity, not raw server name or
+interface-value comparison. A retained per-session holder is acquired before
+factory/discovery publication, including failure paths; last-holder release occurs
+only after admitted turns and owned teammate work drain. Delete cleanup is tracked
+and asynchronous, and Stop joins it. Shared deletion and shutdown cannot close a
+client still held by another draining session. Reacquisition waits for a previous
+Close operation rather than racing process shutdown. Close errors and panics do
+not abort remaining cleanup; they enter the bounded manager diagnostic ledger.
+Six real Source manager recipes prove shared/factory close counts and unconnected
+fork state. Native tests additionally hold discovery after cancellation, verify
+workspace/client retention until return, failed factories, old raw-name replacement
+retention, alias deduplication, panic isolation and serialized close/reuse. Failure
+retention deliberately repairs Source registered-map ownership gaps; it is not a
+claim of exact leak parity. Launcher and task-child MCP composition remain open.
+
+### Go migration — MCP launcher forwarding
+
+The explicit launcher selector installs the external-risk connector without
+calling an operator factory during inspect or startup. Ordered named servers
+reach manager composition and the existing exclusive gate; model arguments only
+select configured aliases. Source HTTP differential recipes cover disabled,
+enabled-empty and enabled-configured catalogues, same-batch results and shutdown
+close counts. A native real-subprocess test verifies that construction does not
+start the child, explicitly registered credentials are scrubbed and App.Stop
+reaps it after the admitted turn. Null secret behavior remains Source environment
+inheritance; no implicit registration or comprehensive feature activation occurs.
+Task-child MCP scope and the full feature bundle remain open.
+
+### Go migration — in-process MCP adapter
+
+Local handler execution does not lower MCP external risk. Native model/gate tests
+verify same-batch publication in auto mode and no publication/callback invocation
+in readonly mode, even with readOnlyHint. The adapter retains immutable closed
+values, ordered definitions and last-handler dispatch; Source fixture 145 checks
+all twelve outputs and Close reuse. Cancellation propagates instead of becoming
+ordinary Error text. Native panic isolation reports the type without panic details.
+Callbacks must honor cancellation and synchronize shared state; no worker sandbox
+or durable handler recovery is implied. Task-child MCP scope remains open.
+
+### Go migration — isolated task-child MCP publication
+
+Default capability selection excludes empty-capability MCP definitions. An
+explicit custom selection binds the runtime connector to fresh child state and
+preserves existing external permissions/Explore readonly restrictions. Borrowed
+handlers retain their clients; a new child publication cannot replace parent
+handlers or aliases. Managed factory closures keep connections in the enclosing
+parent lifetime. A blocked cancellation test proves no client close or workspace
+reclaim before the child call returns. Four Source task recipes compare default
+exclusion, custom connection, parent borrowing/child replacement and Explore denial.
+Their explicit permissive operator permission seam probes binding without changing
+production defaults. Native child-factory retention strengthens Source cleanup gaps;
+no arbitrary custom-provider cleanup or durable child recovery is claimed.
+
+### Go migration — bounded historical search coverage
+
+The native sessionquery library carries first/current/skipped epoch coverage in
+named results and in every partial-scan answer, including no matches. It scans at
+most 20 recent epochs and stops at 20 matches. Context cancellation and backend read
+faults propagate without presenting an exhaustive empty result. The Reader accepts
+an explicit session identity and historical closed data; it grants no authority.
+Source search positions use full lowercase text but slice the original string;
+actual Unicode and object-order fixtures protect this behavior. Runtime-bound
+owner/session admission and native SQLite are not supplied by this library seam.
+
+### Go migration — session-bound transcript search
+
+The optional search tool has only a typed Query input; scope cannot come from model
+fields. Manager construction privately binds its configured store and each trusted
+session identity. Existing gate guards and read permissions apply before search.
+A restored session reads superseded own history without exposing another owner's
+rows. Default capability filtering excludes the tool, and even explicitly selected
+children receive fresh unbound state rather than the parent's transcript store.
+Missing bare state and manager Null storage remain different textual outcomes.
+Native tests use an injected typed backend; SQLite and arbitrary archival-row parity
+remain open. Read errors are faults through the existing gate, not empty success.
+
+### Go migration — transcript-search startup selection
+
+The standalone search option selects a read tool without granting storage durability
+or accepting the incomplete full feature bundle. Dump/inspection only report the
+boolean selection and process-local backend; refusal precedes workspace effects.
+Actual Source/native model-turn results include the captured current tool-use query
+and superseded own history after a rewrite, excluding foreign session history.
+Caller absence/null stays a wire fact and must not be normalized while generating
+searchable stored text. Native HTTP matches Source Null-store outcomes; durable
+SQLite restart evidence and arbitrary archival profiles remain open.
+
+### Go migration — historical request projection without authority
+
+The native reconstruction library reads historical records through an explicit
+caller-owned reader and returns an inert closed result. Capability/sandbox fields
+never enter live runtime permission types. First-start and physical predecessor
+order remain observable; sorting can associate a request with the wrong catalogue.
+Missing versus explicit-null sequences and early legacy epoch returns are retained.
+Context/read errors propagate; count/ordering faults cannot masquerade as a missing
+request. Named projections detach returned message containers and capability records.
+Actual Source SQLite recipes and rewrite stability are compared through an archive
+reader. The managed adapter now binds the selected session ID, preserves stored
+masking and loads the stamped integer epoch without current-epoch substitution.
+Reads release persistence locks before backend IO, bypass admission and lease claims,
+and preserve unrepaired foreign-lease crash tails. Nil/disabled storage returns the
+missing-start result. In-flight provider reads and old-epoch native round trips are
+tested through an injected typed store; this still does not prove native SQLite.
+
+### Go migration — explicit language diagnostics provider boundary
+
+The optional diagnostics input cannot name a provider, owner, session or root.
+Its provider sees an immutable workspace/target selection after explicit-path
+resolution and refusal. Nil configuration does not register the tool. Current
+execution bindings survive workspace entry; selected task children rebind their
+runtime while the default capability catalogue stays unchanged. Providers share
+only the explicitly configured handle, not parent grants or manager state.
+
+Provider IO runs after releasing the handler lock, with the admitted context;
+read/parallel callbacks can overlap. Cancellation preserves transcript pairing,
+ordinary provider errors are tool failures, and a parallel callback panic retains
+the existing type-only run fault and crash-tail repair. A clean report always
+names its scope. Source report order, severity vocabulary and exact-50 cap caveat
+are retained. Native malformed-input rejection is distinct from Python's dynamic
+keyword acceptance. The default Python syntax backend is still pending; injected
+provider fixtures do not prove the expanded Source AST/file scan recipes or tree-wide
+confinement. The Source tree symlink-file observation remains recorded separately.
+
+### Go migration — diagnostic scan and parser result separation
+
+The native Python diagnostic scanner requires a selected parser and rejects an
+invalid/zero SyntaxResult; a parser error cannot become a clean report or a file
+warning. Scope relies on the parser's declared CPython profile. Actual input hashes
+and parser observations replay 34 Source scan recipes; no native grammar or compiler
+has yet been selected. Three dynamic Source list/keyword payloads retain distinct
+native strict-decoder refusal rather than fabricated scanner behavior.
+
+Source filesystem behavior is explicit: component sorting before 200-entry selection,
+stat-only byte checks, UTF-8 replacement/newline decoding, quoted errno warnings,
+matching .py directories and tree symlink files. Directory symlinks are not walked.
+The oversize branch continues before report stopping, allowing more than 50 warnings;
+tool formatting remains capped. These are not whole-tree work, atomic file-size or
+arbitrary provider confinement guarantees. Cancellation aborts enumeration/read/parser
+phases without returning a successful partial report. Backend/parser selection remains
+separate from model input and execution authority.
+
+### Go migration — diagnostics launcher lifetime
+
+The launcher forwards only an explicitly supplied diagnostics.Provider. Inspection
+reports selection without calling Scope/Diagnose or allocating a workspace. Session
+root/target authority is still established at tool execution, not by launcher options.
+Shutdown drains sessions without closing the caller-owned handle; providers remain
+responsible for context-aware concurrent callbacks. Nil selection keeps the tool absent
+and individual selection cannot bypass the unsupported full-feature bundle guard.
+Actual HTTP/model comparisons cover all six Source fixture turns, including zero
+callbacks for disabled selection and explicit path escape. Default parser/CLI selection
+remains pending.
+
+### Go migration — inert AST configuration and probes
+
+ParseVersion has no execution authority. Captured VersionOutput can
+produce an Applied observation without proving executable identity, workspace
+containment, sidecar environment or source-snapshot safety. Adapter.Probe now independently performs executable placement/digest checks and
+process limits before interpreting output; semantic source snapshots are still
+pending. Private validated Config and
+Probe fields prevent zero/invalid records from becoming successful parsed output;
+status JSON rejects unknown variants. Snapshot environment names/digests detach
+caller storage. Finite positive duration admission strengthens Source's dynamic
+timeout handling; typed environment input refuses non-string names. No AST tool
+or executable default was activated.
+
+### Go migration — AST sidecar process lifetime
+
+Standalone probes reject a canonical executable within the supplied workspace and
+recompute the optional pinned SHA-256 before every exec. This is check-before-exec,
+not an atomic executable-file pin. Selected argv/environment avoid shell parsing or
+ambient variable inheritance; temporary paths stay outside the workspace. Independent
+raw-byte drains bound each stream while maximal-subpart UTF-8 replacement preserves
+Source output text. Buffered 64 KiB read-or-EOF ordering retains Source timeout
+precedence for a partial over-limit block whose producer keeps the pipe open.
+One deadline covers direct-child wait and both drains. Darwin/Linux
+kill the retained launched group even after its direct child exits; fallback platforms
+have direct-child cleanup only. Cancellation returns failure after joining local
+process/drains. Normal Source probes, digest recheck after file mutation, exact byte
+caps, closed-pipe hangs and exited-child pipe holders are exercised by native helpers.
+No source snapshot or model AST tool has been installed.
+
+### Go migration — foreground startup publication before Interrupt
+
+The full race suite failed a real-child stop stress deadline. Code inspection found
+a window where the child can write its ready file before its parent inserts the PID
+into the live-process tracker. Interrupt could observe
+an empty registry and miss an already-running child. Start and PID insertion now
+share the tracker lock with Interrupt; startup error paths release it. Callbacks and
+process waits remain outside the lock. Existing actual child-spawn/stop stress tests
+cover interruption and context cancellation; no new effect permission or background
+ownership was introduced.
+
+### Go migration — AST ignore decisions are not path authority
+
+The internal three-state matcher preserves negative rules and no-match separately.
+Collapsed empty-line indices and directory/file match precedence follow Source
+pathspec 1.1.1; star-group and character-count guards remain in force even though
+Go regular expressions avoid Python backtracking. Null patterns still contribute
+to compiled-pattern budgets. Control decoding drops invalid UTF-8 and applies Python
+line boundaries, while snapshot copy must preserve the original bytes. The matcher
+performs no filesystem access and grants no confinement or permission. Anchored
+no-follow traversal, nested-frame budgets, cancellation and private cleanup remain
+required before semantic AST tools can use it.
+
+### Go migration — anchored AST filesystem operations
+
+Private directory handles survive parent rename and external-symlink replacement.
+No-follow fstatat classifies entries before filtering; openat still refuses a later
+symlink swap. Regular opens use NONBLOCK and fstat before reading special files.
+CLOEXEC prevents retaining these handles in AST children. Components reject slash,
+NUL, dot and dot-dot; each independent scan bounds all entries before filtering.
+Context checks bracket traversal batches, not arbitrary blocking filesystem syscalls.
+This does not freeze concurrently rewritten regular-file content or grant model path
+authority. The integrated private builder below now supplies aggregate budgets,
+ignore frames and cleanup; public path selectors remain open.
+
+### Go migration — private AST snapshot copy and lifetime
+
+withSnapshot owns one fixed-parent temporary directory outside the workspace and
+removes it on every callback exit, including errors/panics. It builds first and
+closes source handles before exposing snapshot paths. Request-local counters bound
+source entries, file count, initial/actual copy bytes, depth and ignore controls/
+matching. Ignored or unsupported files are filtered before source open/byte gates;
+controls retain raw bytes and mode 0400, and nested kept decisions override outer
+ignored frames. All 36 Source recipes replay the real native filesystem algorithm.
+Unsupported metadata backends refuse before any tree traversal, including empty
+roots. External context cancellation is not recast as a copy-timeout observation.
+The kernel assumes canonical trusted selections; public selectors and bounded
+show globs remain pending. A copied regular file may reflect concurrent writes,
+filesystem syscalls may block beyond checks, and private snapshotting grants no
+new model authority or OS confinement.
+
+### Go migration — AST path selection followed by frozen copy
+
+Exact AST selections resolve internal links and enforce canonical containment.
+Glob selections never follow a static directory symlink and never retain symlink
+matches. Their 10,000-entry cap includes hidden/nonmatching/special entries. Rune
+and item limits bound raw model strings; fnmatch uses the existing deterministic
+rune matcher. Canonicalization is non-strict and may suppress metadata failures,
+so actual source reads must still use the no-follow snapshot kernel. A native
+select-then-symlink-swap test proves refusal before the snapshot callback. Source
+iteration deadlines and external context cancellation are separate observations.
+Private selectors do not install tools, approve paths or provide OS confinement.
+
+### Go migration — shared JSON diagnostics preserve wire profiles
+
+The shared jsonsyntax scanner returns only a closed diagnostic code/position.
+Caller-selected depth/integer policies remain fixed, and HTTP still projects the
+same failure shape with its 985/4300 profile. Source byte detection, surrogatepass
+screening, duplicate-key lowering and stricter typed service admission remain in
+the HTTP boundary. Grammar acceptance grants no authority and is not a substitute
+for closed value decoding. Actual AST malformed-output fixtures pin diagnostic
+wording/character offsets; the existing full HTTP corpus pins extraction behavior.
+
+### Go migration — AST output remains inert data
+
+Closed PayloadValue variants preserve unknown CLI members without host interfaces.
+Path rewriting changes values only, preserving object keys and insertion order.
+Error envelopes retain imports; successful outputs strip only direct file import
+members when explicitly disabled. Malformed non-iterable collections preserve typed
+faults rather than clean results. Partial classification precedes show ambiguity and
+empty matches. Probe failure short-circuits captured output; actual executable and
+frozen-source admission are still the future operation caller's responsibility.
+
+### Go migration — semantic AST reads retain snapshot and probe ownership
+
+Native semantic methods execute only after anchored snapshot preparation. The child
+receives private snapshot paths but runs in the canonical original workspace, so
+executable-integrity checks still refuse model-writable binaries before version
+probing and again before the operation. Exact paths and basename globs retain existing
+checks; a selected show target must be a regular file in the private tree. Glob
+ambiguity returns bounded names before any process side effect. Result interpretation
+occurs while the snapshot is alive; removal follows success and faults. No tool
+registry installation or runtime default changes occur in this library slice.
+
+### Go migration — AST input projection owns no path authority
+
+Four named AST input variants preserve optional presence for replay and detach
+caller containers. Unknown/null fields and malformed typed shapes fail at decoding;
+path admission, count/string guards, freezing and executable integrity remain in
+astcontext. Canonical input and masking operate on recording copies, never on the
+execution object. Model schema defaults are descriptive; execution applies them
+explicitly. Default annotation data remain immutable closed JSON variants.
+
+### Go migration — AST tools bind current runtime authority
+
+Four AST definitions are read/parallel only when explicitly configured by the operator.
+The common ToolGate still applies before hooks, guards, permission and result hooks;
+guard refusal starts no version probe. Runtime handler lookup checks bound owner,
+session and canonical current workspace, captures the stateless Adapter under lock
+and releases that lock before subprocess work. Selected child definitions bind to
+new child authority. Operator config is detached by the Manager; raw model arguments
+never select executable/environment/depth/byte budgets or a different workspace.
+
+### Go migration — AST Launcher preserves operator activation
+
+The Launcher no longer refuses MINILOOP_AST_OUTLINE_ENABLED. It constructs only
+from validated operator settings, requiring an absolute executable and SHA-256
+pin. Defaults remain off; inspecting settings never executes a probe. Timeout and
+output cap use Source settings rather than library defaults. No test passthrough
+variables enter production configuration. Exact HTTP replay covers disabled
+catalogues and readonly path/integrity/version/output/timeout failure outcomes.
+The existing per-call integrity check is not an atomic executable pin.
+
+### Go migration — AST decimal conversion failures retain cleanup
+
+AST oversized JSON integers preserve Source ValueError text through a named error
+that unwraps the internal integer-limit cause. Exact positive metric sums can cross
+the 4300-digit output boundary even when each input integer was admitted; warning
+publication then fails with the Source output-conversion message. Public operations
+catch both conversion failures only after callback-scoped snapshot cleanup, returning
+a no-probe error result. Error-envelope and syntax precedence remain Source-shaped.
+Other decoder profiles and maximum capture limits are unchanged.
+
+### Go migration — AST text survives until explicit wire encoding
+
+Source AST JSON output can contain escaped lone surrogate code points. Result.ToJSON
+preserves them as a Python string projection; final byte encoders remain strict.
+Tool-result block JSON checks its named wire text variant so encoding fails before
+provider transport, rather than silently replacing characters. Exact Source Tool.run
+and SDK observations cover text fields, keys, warnings, error hints and valid paired
+Unicode. Runtime readonly tools retain the string; direct/streaming requests refuse
+without HTTP. This establishes the AST/tool-result boundary, not every Unicode field
+or full SSE/recording lifecycle parity. Per-call snapshot cleanup remains unchanged.
+
+### Go migration — Guardian remains a readonly answerer
+
+The explicit native Guardian uses the shared fresh-child constructor with an explore
+catalogue and readonly permission mode. Hostile model writes are rejected with both
+the normal role subset and an operator-widened catalogue; neither layer requires a
+recursive approval. Parent transcript/counters are not inherited. Auditor lineage
+and peer-agent provenance retain no human powers. The broker adapter masks typed
+input before ASCII JSON preview and caps at 2000 characters; unparsed output abstains
+and construction faults remain handled by the existing broker. Ordinary provider
+faults converted into child error text retain Source parsing, including verdict words.
+Cancellation propagates without a decision or human question. Explicit library
+reviewers pin the parent outside its turn; automatic manager selection instead
+captures an immutable current-parent environment per dispatch and clones its approval
+surface. It never reacquires the parent's mutex or stores a shared parent handle.
+Tests cover concurrent owner-isolated full turns, current file reads, human grant
+precedence, immutable/readonly denial before review, and hostile narrow/wide auditors.
+The automatic selection remains default-off. Launcher forwards MINILOOP_GUARDIAN
+independently of other services; the broad feature bundle still refuses activation.
+Eleven real HTTP comparisons prove human/auto routing and actual workspace effects,
+including the Source provider-error-text verdict behavior. Inspection allocates no
+workspace and probes no provider.
+
+### Go migration — timeout conversion preserves Source failure order
+
+Source descriptor integers are unbounded. Saturating them directly into Go
+time.Duration hid Python true-division overflow and executed bodies Source never
+awaits. Invocation now converts the exact ms/1000 ratio and returns a typed safe
+OverflowError when it becomes nonfinite. Finite huge ratios retain scheduling
+saturation without narrowing descriptor metadata. Three stages and initialize
+contain the fault; close lets it escape before hook handling while retaining
+its admission fence and leaving close reports uncached. Twenty-five actual Source
+profiles compare calls, reasons/errors and post-close denial; no plugin diagnostic
+text is introduced into public receipt/lifecycle codes.
+
+### Go migration — SQLite opening retains additive partial effects
+
+Native sqlitestate schema opening uses one pinned connection so connection-local
+foreign-key and synchronous settings cannot be lost through pool rotation. A
+failed open closes native handles without overwriting the database. Future schema
+refusal follows initial CREATE IF NOT EXISTS, matching Source. Upgrade steps and
+version update precede index creation; the v2 missing-epoch Source case remains
+at v7 after the index error. No atomic migration/repair transaction is claimed.
+Current v7 missing binding columns are not silently repaired. Schema opening alone
+establishes neither session durability nor leases/authority/Manager activation.
+
+### Go migration — native metadata, deletion and lease ownership
+
+SQLite upsert never refreshes created_at or transfers/releases the independent
+process lease. Load uses detached current Todo/steering variants, literal UTF-8
+metadata and derived event cursors; unknown shapes fail explicitly. Flat typed
+metadata arrays have no generic archival container cap; a real 1,501-item Source
+recipe verifies that the writer can read its own larger valid records. Conditional
+lease UPDATEs have no read-before-write window. Expiry equality remains held: the
+owner can renew at equality and a foreign process must wait for strict expiry.
+Missing rows cannot be claimed. Immediate deletion retains audit tables and rolls
+back previous message/event deletes if the session delete fails.
+
+The driver can report success for a very short SQL call whose context was already
+cancelled. API admission and pre-commit checks therefore test context explicitly.
+Rollback uses an independent cleanup context so cancellation cannot abandon a
+writer reservation. Tests cover real aborting triggers, cancelled commits, twenty
+competing double-connection claims, reopen and all thirteen Source lease steps. Database leases remain separate from external-effect fencing; record
+operations do not establish tenant authorization or restore human authority.
+
+### Go migration — transactional transcript and event append
+
+Native messages and events read MAX(ordinal) only after BEGIN IMMEDIATE. One
+connection serializes Store operations; independent connections serialize through
+SQLite writer reservation. Trigger refusal rolls back the complete message batch
+or event append. Message ordinals span epochs; historical reads never enforce
+current transcript pairing, so unfinished tool calls remain inspectable. Source
+epoch-zero reads/counts intentionally remain empty. Event payload sequence is
+independent of physical ordinal and retained on untrusted archival decoding.
+
+DecodeStoredMessage separates historical row size from network ingress size.
+Large plain/text/result blocks and accumulated arrays round-trip while network
+JSON still rejects oversize frames. Tool inputs and caller projections retain their
+separate decoding limits. Unknown historical variants and stored-event limits
+remain explicit; neither row reading nor remembered grant events install authority.
+
+### Go migration — audit identity and explicit atomic recovery
+
+Native action upserts preserve original session/message/tool identity, input hash
+and creation time. Approval upserts preserve original identity, prompt, preview,
+kind and creation time, updating only status/resolved time/answer. Nullable approval
+tool-use IDs distinguish SQL NULL from an empty string in the typed record and JSON.
+Detached reads cannot mutate persisted nullable results. Session deletion retains
+action/approval audit rows. Native Store now satisfies the complete StateStore seam.
+
+MarkInflightUnknown reserves the writer before selecting started rows, closes the
+read cursor and updates all selected rows inside one immediate transaction. A real
+aborting trigger proves earlier updates roll back. Optional session scope includes
+an explicitly empty session ID; nil means global. Open never invokes this policy.
+Unknown status proves neither foreign-process death nor external-effect fencing.
+Stored approvals cannot reconstruct remembered grants. Native managed restart and
+configured Launcher activation remain separate validation work.
+
+### Go migration — local audit construction grants no serving bypass
+
+Local `launcher.AuditDeployment` shares private resource composition with the
+server, returns findings and stops owned resources before returning. It never
+returns an App, opens a listener, restores sessions or executes model/tools.
+`NewWithOptions` retains its original configuration/support/bind admission
+before invoking that private builder; `App.Serve` still checks the actual
+listener. A public unauthenticated configuration is therefore reportable by
+local audit while the serving path remains denied before workspace effects.
+Caller-owned stores/diagnostics are not closed. Cleanup uses an independent
+bounded context after cancellation. Component observation is privileged local
+fleet visibility, not owner admission or an atomic fleet transaction.
+
+### Go migration — missing provider auth fails before transport
+
+The native provider now permits credential absence during construction and
+inspection, matching Source's deferred request check. Missing authentication
+returns typed TypeError after request/body and non-streaming token admission,
+before HTTP, progress output or retry waiting. This is a local credential
+failure, distinct from remote HTTP AuthenticationError. Actual launcher model
+turns use existing provider error projection without contacting the endpoint.
+Empty keys leave endpoint/diagnostic text intact during redaction. Supplied
+key/URL/wire bounds and public listener authentication guards remain enforced.
+There is no automatic profile/OAuth/federation lookup in this native seam.
+
+## Native config import environment ordering — 2026-10-09
+
+PrepareEnvironment applies dotenv with override=true before custom-base-URL
+AUTH_TOKEN removal. The cleanup executes only after successful loading, including
+a successful disabled load; a partial dotenv fault retains preceding variables
+and the original token. Eighteen actual Source module import/Settings profiles
+pin this order. Prepared values remain private, diagnostic rendering is opaque,
+and Reveal returns detached maps. No process writes or CLI default activation
+are implied. Pure Load does not reload dotenv or repeat import-stage cleanup.
+
+## Executable dotenv publication and early faults — 2026-10-09
+
+Compiled command mains now prepare and publish environment before settings/auth
+or runtime construction. Source frozen/cwd origin is an explicit deployment
+adaptation; ordinary Python config-module origin remains available in the SDK.
+A dotenv fault publishes preceding values but skips auth cleanup and returns
+before command interpretation. Successful disabled loading still performs the
+custom-base-URL cleanup. Eighteen independent-process probes compare exact Source
+effects and inherited child environment; a real main HTTP→Bash turn verifies the
+same propagation. Signal handlers start after preparation so blocked startup FIFO
+reads can still be terminated. Inspection exposes actual enabled/disabled CLI
+selection without publishing credentials; pure SDK inspection stays false.
+
+### Go development reload inherited-listener authority
+
+The reload parent keeps its TCP socket across native child replacement. Reading
+a private child-role marker after dotenv could recurse into another parent; using
+refreshed HOST instead of the inherited address could bypass open-bind refusal.
+runMain captures the descriptor before dotenv, keeps the role in a typed local
+listener and removes marker values before tool factories capture environment.
+The child rechecks its actual listener with refreshed authentication before any
+manager/workspace allocation. Pure dump builds no module or manager.
+
+Real command tests rebuild an isolated copy of miniloop, repair a failed native
+build, retain the port, refresh dotenv, reset old sessions and join all children.
+A real inherited public socket with loopback HOST and dotenv marker overwrite is
+refused before runtime allocation; Bash environment excludes the private marker.
+The Python mutation suite covers its existing Source targets; these Go ownership
+and authority boundaries are verified by the native process tests, not by those
+Python mutations. No restart resumes durable approvals/goals/cron automatically.
+
+
+## Go event supervisor shutdown boundary — 2026-10-10
+
+Event observation transfers ownership only after listener admission. A backend
+fault is not a source change and must terminate supervision after stopping/joining
+the child, closing its artifact and closing/joining the subscription reader.
+Empty filtered batches must not cause a restart. Real native/polling HTTP recovery
+tests exercise retained socket and workspace leases; a typed faulting subscription
+checks empty-batch inertness, backend-error preservation, forced child stop,
+subscription close, artifact removal and socket release. Rejected Run admission
+leaves a caller subscription open. No Python mutation anchor changed.
+
+
+## Linux inotify subscription ownership — 2026-10-10
+
+The worker owns one CLOEXEC/nonblocking inotify descriptor and its directory map.
+Close joins descriptor release; cancelled construction closes partial registrations.
+A native Linux event mask is distinguished from Darwin flags: IN_MODIFY's low bit
+must not be treated as a FSEvents dropped-event flag. ABI lengths are checked before
+slicing; queue overflow/unmount returns an explicit recovery fault. Owned compiler
+workspace traversal and event exclusions remain scoped to the allocated capability.
+Actual /proc/self/fd checks pin close and in-flight-construction cancellation.
+Real Linux HTTP child recovery verifies retained listener and joined artifact leases.
+Native link loops/access-only opens/root moves retain captured Source behavior.
+Python mutation targets are unchanged; these new boundaries have Go process/kernel
+and fault-record tests. No model-facing path, dependency or CLI default is added.
+
+
+## 2026-10-10 CLI owned event-profile binding
+
+The reload parent captures its prepared environment and host once, before observer
+allocation. Linux uname release permits Source WSL automatic polling; explicit
+WATCHFILES settings select forced polling. Native Linux uses inotify and native
+macOS requires CGO; explicit forced polling remains available without CGO.
+Inspection/dump does not probe the host or construct an observer.
+
+Builder and Observer share one private BuildWorkspace rooted under the captured
+TMPDIR. Compiler-only temporary directories stay inside that allocated capability
+and are excluded from source batches. Child/tool environments retain their prepared
+values and never receive the compiler-only overrides or listener role marker.
+Run owns the subscription after listener admission; CLI defers cover earlier failures.
+Cleanup joins child/artifact and observer before closing the workspace. Native loss
+faults terminate with cleanup; an empty filtered batch causes no rebuild.
+
+
+## 2026-10-10 mutation verification requires a passing baseline
+
+verify_guards previously counted every nonzero pytest exit as a caught mutation.
+A renamed request-size selector and a restore mutation leaving an orphaned elif
+therefore appeared load-bearing without exercising their tests. The runner now
+passes each unmodified selector (cached per invocation), reads pytest's built-in
+JUnit report and accepts only exit 1 with a test-call failure and no framework
+errors. Collection/fixture errors, missing/empty/skipped reports and timeouts
+are INVALID. Fresh copies and PYTHONDONTWRITEBYTECODE prevent a same-size rewrite
+from executing baseline bytecode. No new dependency or runtime guard is added.
+
+The request-size selector now names the existing direct middleware test. Restore
+mutation replaces only its repair assignment, retaining the if/elif syntax.
+Tests preflight all mutant Python syntax and collect all selectors, and execute
+passing, surviving, bad-baseline, syntax-error and missing-selector probes.
+This protects the verification instrument; Python mutation coverage is distinct
+from Go observer, permission or persistence mutation coverage.
+
+
+## Native Darwin callback admission — 2026-10-10
+
+The native callback originally forwarded every raw kernel path/flag into a lexical
+filename filter. Source notify 8 first fences recursive paths against its watched
+roots and ignores HistoryDone/non-change flags. A synthetic sibling callback could
+enter a batch; type-only callbacks could remain unread through cancellation; an
+unrelated loss callback could poison this subscription. NativeEvents privately
+owns canonical roots and applies root/change admission before recording. Three
+observer tests fail under raw forwarding and pass with the fence; subscribed loss
+still fails explicitly, retaining the stronger native recovery boundary.
+
+Within the existing 50ms owner-thread slice, pending runloop sources are serviced
+continuously, matching notify's continuous run method while retaining bounded stop
+checks. No wider roots, model-controlled path/flags, global purge or timer extension.
+Source and native repeated recipes pass in isolated captures, but ordinary full
+runs still expose delayed/absent events; these corrections do not prove their cause.
+See GO_PORT_PLAN's native reliability item and the pinned audit artifact. Python
+mutation tests cover their registered Source guards, not this Go/C boundary.
+
+## Darwin continuous owner shutdown — 2026-10-11
+
+Each Darwin subscription now owns a continuously running CFRunLoop and dedicated
+locked OS thread. Close signals a version-zero source and wakes the loop; the
+source callback stops it on the owner thread. A stop signalled before loop entry
+remains pending. A separate signalling goroutine is joined before any C object
+is freed. The owner exits without UnlockOSThread, retiring its per-thread CF state.
+An unexpected loop exit fails the event reader; the caller still owes Close.
+Stream stop/invalidate/release and stop-source removal/invalidation/release occur
+on the owner. No global FSEvents device purge, wider roots, longer read deadlines
+or relaxed recipe expectations are introduced. This addresses a concrete Source
+lifecycle difference; historical timing failures remain separate evidence.
+
+### Go migration — nonfinite SDK observations do not supply authority
+
+Baseline: `eea850b` plus this implementation. Nonfinite values are accepted only
+in captured SDK input observations: unknown Bash binding parameters and immutable
+server inputs. Named observation/archive codecs retain legacy numbers, while
+standard JSON request/event encoders refuse them. Four direct responses and valid
+next-request transcripts prove rejection before transport. SQLite message and
+named tool-event close/reopen tests preserve the original observations; archived
+events remain untrusted. Known executable fields, explicit caller admission,
+metadata and unsupported block variants retain their existing boundaries.
+Full SDK parity, remaining nonfinite historical consumers and native watcher
+reliability remain open. Managed Bash nonfinite SSE is covered by the following slice.
+
+### Go migration — journal fingerprints remain finite after legacy observation adoption
+
+Baseline: `412e94c` plus this slice. Actual managed Source HTTP captures distinguish
+its journal encoding failure from the journal-free Bash binding failure. NaN and
+Infinity survive the emitted tool-use observation, but journal begin refuses them
+before creating action authority. After hooks do not run; result observers do.
+A targeted Source mutation enabling nonfinite fingerprints is caught after a
+passing baseline. Go memory/stored journal tests prove no handler or action entry;
+four actual HTTP turns cover default memory and real SQLite persistence.
+Detached observation masking must not mark executable decision arguments as a
+recording projection: Launcher LLM/Jev and SQLite decision regressions exposed
+that distinction and were repaired. Projection bytes remain separate from finite
+request JSON. Legacy trajectory/model snapshots and complete restore consumer
+proofs remain open; native watcher reliability is unchanged.
+
+### Go migration — archived nonfinite input is not restored authority
+
+Baseline: `73d3dbc` plus this slice. Historical event validation must use a
+concrete archive codec rather than standard JSON when a known Bash observation
+contains legacy numbers. Manager restore and catch-up still re-decode closed
+variants and retain scope/order checks. Actual database close/reopen tests prove
+owner/history retention, interactive mode and untrusted catch-up context, with
+no new action entry. Subsequent model encoding fails before transport. The two
+captured Source restores use current construction policy as well. No persisted
+input supplies grants or execution authority. Broader trajectory/restore and SDK
+error-text fidelity remain unaccepted.
+
+### Go migration — nonfinite model snapshots retain observation boundaries
+
+Baseline `591a3c9` plus this slice. Trajectory model output and next-request
+messages use named SDK/archive observations, with detached string/key masking.
+Privacy redaction precedes the writer's final UTF-8 policy. Standard request/event
+JSON remains finite. The request optimization ledger uses observation bytes but
+still freezes protocol identities and lowers only eligible text/results; tool
+inputs remain their original immutable variants. Actual four-case Source/native
+JSONL/fresh-reader comparison proves retained NaN/Infinity, cache annotations,
+content-off redaction and no mutation of live inputs. A valid next request fails
+finite encoding before transport. This does not prove broader historical profiles,
+SDK error-text equality, watcher reliability or complete migration acceptance.
+
+## Go migration — prepare every model call before effects — 2026-10-11
+
+Baseline `4c807ae` plus this slice. Known Bash fields use immutable named
+observations and detached masking; finite caller/request encoders remain strict.
+Session dispatch prepares every input before entering the single execution gate.
+An invalid later root therefore prevents earlier effects. Source batch dict-copy
+failures differ from standalone late invocation failures. Actual 36 standalone
+and 24 managed profiles retain that ordering; selected lazy-copy and finite
+journal mutations are caught after passing baselines. Non-string pair keys are
+explicitly unsupported; new SQLite restart profiles and global SDK error text
+equality are not claimed. At that checkpoint, shared background_run decoding remained finite.
+
+## Nonfinite background shell observations — 2026-10-11
+
+Baseline `7992994` plus this slice. backgroundModelArguments reuses named
+BashCommandObservation/BashRejectedArguments for legacy SDK numbers; immutable
+extras retain only unknown parameters. Detached observation/archive encoding
+and finite caller/HTTP/event encoding remain separate. Batch preparation selects
+the actual shell variant and prepares every call before hooks/effects. Standalone
+command split faults create the owned manager without tasks; roots and unknown
+parameters fail before manager creation. Managed finite journal refusal precedes
+that initialization. Actual 27 standalone and 18 managed comparisons, 18 unique
+direct/SSE captures and Python/native SQLite message close/reopen cover these
+boundaries. Native readonly checks are separate from Source permission captures.
+Named timeout/prefix coercion and global SDK error text remain open.
+
+## Darwin serial native callback queue — 2026-10-11
+
+Baseline `a5aed66` plus this slice. The deprecated RunLoop scheduler is replaced
+with FSEventStreamSetDispatchQueue on one owned serial queue per subscription.
+Control start and stop/invalidate serialize with callback delivery. Close drains
+queued callbacks before releasing the stream/queue and retiring the typed Go
+registry; construction failure releases partial ownership. A Go coordinator
+waits for the existing stop signal and joins cleanup; no dedicated locked OS
+thread or extra stop-signalling goroutine is retained.
+
+Apple requires scheduling before start and invalidate before queue detach:
+[queue API](https://developer.apple.com/documentation/coreservices/1444164-fseventstreamsetdispatchqueue),
+[invalidation](https://developer.apple.com/documentation/coreservices/1446990-fseventstreaminvalidate).
+Flags 18, zero latency, since-now, callback admission, 50ms/1600ms batching,
+context deadlines and Source fixture expectations remain intact. A real native
+callback blocked in diagnostic IO verifies that concurrent Close waits for its
+release and registry cleanup. This queue lifecycle change does not independently
+establish the cause of the previous RunLoop/Source timing failures.
+
+## Named background optional execution policies — 2026-10-11
+
+Baseline `b6f49c6`. Background model observations retain timeout/proposal metadata
+separately from strict caller inputs. BackgroundTimeoutPlan lowers into concrete
+shell.BackgroundWait policies; no generic value enters the background service or
+shell. The gate still allocates tasks and returns Started before type/overflow
+faults are consumed after process creation. Honest proposals use existing candidate
+validation; readonly execution cannot initialize a manager. Source fault paths
+leave processes alive; native execution intentionally kills and joins those groups
+before publishing the same task error, preserving its cleanup invariant. Finite
+long deadlines use bounded timer steps, with sub-nanosecond rounding to one ns.
+NaN matches the unguarded immediate-timeout profile; positive infinity has no
+deadline. A Python observer watchdog changes NaN to completion, so exact timer-heap
+interleavings are not claimed. Existing owner contexts, cancellation, secrets,
+sandbox, ledgers, retention and notifications remain the same execution boundaries.
+
+Native tasks use goroutines: process creation can race the caller's return,
+whereas the captured Source hooks do not yield before returning. This slice
+compares allocated call outcomes and settled tasks, not zero process starts at
+return or exact scheduling. Post-spawn faults still require an allocated task.

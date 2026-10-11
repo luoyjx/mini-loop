@@ -1,0 +1,1353 @@
+{
+  "rows": [
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "lossless",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "short"
+        }
+      ],
+      "outputs": [
+        "short"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 386,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "short"
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "recoverable",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "[token-efficiency projection; components=agent-observation-probe; full masked result: read_token_artifact(raw_ref=\"raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"); digest=sha256:9f5d1f99a2a42a47cba3992825bc1d6671642c082b08c7fad527478c80d7382c]\nshort"
+        }
+      ],
+      "outputs": [
+        "[token-efficiency projection; components=agent-observation-probe; full masked result: read_token_artifact(raw_ref=\"raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"); digest=sha256:9f5d1f99a2a42a47cba3992825bc1d6671642c082b08c7fad527478c80d7382c]\nshort"
+      ],
+      "persist": true,
+      "raw": [
+        {
+          "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "ref": "raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 251,
+          "raw_bytes": 1543,
+          "raw_ref": "raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 63,
+          "tokens_before_estimate": 386,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": true,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "[token-efficiency projection; components=agent-observation-probe; full masked result: read_token_artifact(raw_ref=\"raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"); digest=sha256:9f5d1f99a2a42a47cba3992825bc1d6671642c082b08c7fad527478c80d7382c]\nshort"
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "short authoritative output",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "short authoritative output",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "short authoritative output",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "recovery-envelope-inflation",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "short authoritative output"
+        }
+      ],
+      "outputs": [
+        "short authoritative output"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 26,
+          "raw_bytes": 26,
+          "raw_ref": null,
+          "reason": "recovery_envelope_inflation",
+          "stage": "observation",
+          "status": "degraded",
+          "tokens_after_estimate": 7,
+          "tokens_before_estimate": 7,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": true,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "short authoritative output"
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "readonly",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ],
+      "outputs": [
+        "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": true,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "recovery_unavailable",
+          "stage": "observation",
+          "status": "degraded",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 386,
+          "warning_count": 1
+        }
+      ],
+      "recoverable": true,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "no-persistence",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ],
+      "outputs": [
+        "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+      ],
+      "persist": false,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "recovery_unavailable",
+          "stage": "observation",
+          "status": "degraded",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 386,
+          "warning_count": 1
+        }
+      ],
+      "recoverable": true,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": false,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "no-recovery-tool",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ],
+      "outputs": [
+        "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "recovery_unavailable",
+          "stage": "observation",
+          "status": "degraded",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 386,
+          "warning_count": 1
+        }
+      ],
+      "recoverable": true,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "shadow",
+      "name": "shadow",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ],
+      "outputs": [
+        "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "shadow",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "shadow_candidate",
+          "stage": "observation",
+          "status": "shadowed",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 386,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": true,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "off",
+      "name": "off",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ],
+      "outputs": [
+        "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "off",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 1543,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "mode_off",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 386,
+          "tokens_before_estimate": 386,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ]
+    },
+    {
+      "action": "secret",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "source-observation-secret-123456",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "secret-candidate",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "<secret-hidden>"
+        }
+      ],
+      "outputs": [
+        "<secret-hidden>"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 15,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 386,
+          "warning_count": 1
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "<secret-hidden>"
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "replay",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "[token-efficiency projection; components=agent-observation-probe; full masked result: read_token_artifact(raw_ref=\"raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"); digest=sha256:9f5d1f99a2a42a47cba3992825bc1d6671642c082b08c7fad527478c80d7382c]\nshort"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ],
+      "outputs": [
+        "[token-efficiency projection; components=agent-observation-probe; full masked result: read_token_artifact(raw_ref=\"raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"); digest=sha256:9f5d1f99a2a42a47cba3992825bc1d6671642c082b08c7fad527478c80d7382c]\nshort",
+        "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+      ],
+      "persist": true,
+      "raw": [
+        {
+          "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "ref": "raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 251,
+          "raw_bytes": 1543,
+          "raw_ref": "raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 63,
+          "tokens_before_estimate": 386,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": true,
+      "replay": true,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "[token-efficiency projection; components=agent-observation-probe; full masked result: read_token_artifact(raw_ref=\"raw_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"); digest=sha256:9f5d1f99a2a42a47cba3992825bc1d6671642c082b08c7fad527478c80d7382c]\nshort"
+        },
+        {
+          "error": false,
+          "name": "probe",
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "replayed": true
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": true,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [],
+      "mode": "enforce",
+      "name": "denial",
+      "observers": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "short"
+        }
+      ],
+      "outputs": [
+        "short"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 386,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "denied": true,
+          "error": false,
+          "name": "probe",
+          "output": "short"
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": true,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀\n(exit 7)",
+            "content_type": "text/x-command-output",
+            "metadata": [
+              [
+                "exit_code",
+                7
+              ],
+              [
+                "timed_out",
+                false
+              ],
+              [
+                "overflowed",
+                false
+              ],
+              [
+                "duration_ms",
+                12
+              ]
+            ],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀\n(exit 7)",
+          "status": "failed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "command",
+      "observers": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "short"
+        }
+      ],
+      "outputs": [
+        "short"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 1551,
+          "raw_ref": null,
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 388,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "command_result": {
+            "duration_ms": 12,
+            "exit_code": 7,
+            "overflowed": false,
+            "timed_out": false
+          },
+          "error": true,
+          "name": "probe",
+          "output": "short"
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "  {\"rows\": [1, 2, 3], \"padding\": \"long json content\"}",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "  {\"rows\": [1, 2, 3], \"padding\": \"long json content\"}",
+            "content_type": "application/json",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "  {\"rows\": [1, 2, 3], \"padding\": \"long json content\"}",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "json",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "short"
+        }
+      ],
+      "outputs": [
+        "short"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 53,
+          "raw_ref": null,
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 14,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "short"
+        }
+      ]
+    },
+    {
+      "action": "reduce",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "{ invalid long diagnostic result",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "{ invalid long diagnostic result",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "{ invalid long diagnostic result",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "malformed-json",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "short"
+        }
+      ],
+      "outputs": [
+        "short"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 5,
+          "raw_bytes": 32,
+          "raw_ref": null,
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 2,
+          "tokens_before_estimate": 8,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "short"
+        }
+      ]
+    },
+    {
+      "action": "fault",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce",
+        "receipt",
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "component-fault",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ],
+      "outputs": [
+        "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "agent-observation-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": "tool-span",
+          "projected_bytes": 1543,
+          "raw_bytes": 1543,
+          "raw_ref": null,
+          "reason": "component_error:ValueError",
+          "stage": "observation",
+          "status": "error",
+          "tokens_after_estimate": 386,
+          "tokens_before_estimate": 386,
+          "warning_count": 0
+        }
+      ],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "probe",
+          "output": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 "
+        }
+      ]
+    },
+    {
+      "action": "cancel",
+      "artifact": false,
+      "calls": [
+        "handler",
+        "reduce"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": "CancelledError",
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "observation": {
+            "content": "prefix <secret-hidden> detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+            "content_type": "text/plain",
+            "metadata": [],
+            "raw_digest": null,
+            "raw_ref": null,
+            "reduced_by": []
+          },
+          "query": "{\"nested\": {\"n\": 1.0}, \"value\": \"<secret-hidden>\"}"
+        }
+      ],
+      "install": true,
+      "journal": [
+        {
+          "result": null,
+          "status": "started"
+        }
+      ],
+      "mode": "enforce",
+      "name": "cancel",
+      "observers": [],
+      "outputs": [],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [],
+      "recoverable": false,
+      "replay": false,
+      "results": []
+    },
+    {
+      "action": "reduce",
+      "artifact": true,
+      "calls": [
+        "observer",
+        "result"
+      ],
+      "candidate": "short",
+      "command": false,
+      "content": "prefix source-observation-secret-123456 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 detail 中文 😀 ",
+      "denied": false,
+      "error": null,
+      "inputs": [],
+      "install": true,
+      "journal": [
+        {
+          "result": "Error: invalid raw artifact reference",
+          "status": "completed"
+        }
+      ],
+      "mode": "enforce",
+      "name": "raw-artifact-bypass",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Error: invalid raw artifact reference"
+        }
+      ],
+      "outputs": [
+        "Error: invalid raw artifact reference"
+      ],
+      "persist": true,
+      "raw": [],
+      "readonly": false,
+      "receipts": [],
+      "recoverable": false,
+      "replay": false,
+      "results": [
+        {
+          "error": false,
+          "name": "read_token_artifact",
+          "output": "Error: invalid raw artifact reference"
+        }
+      ]
+    }
+  ]
+}

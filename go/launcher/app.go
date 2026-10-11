@@ -1,0 +1,454 @@
+// Package launcher owns process-local composition, listening and shutdown.
+package launcher
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"net"
+	"net/http"
+	"path/filepath"
+	"runtime/debug"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/config"
+	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/diagnostics"
+	"github.com/luoyjx/mini-loop/go/httpapi"
+	"github.com/luoyjx/mini-loop/go/memory"
+	"github.com/luoyjx/mini-loop/go/provider"
+	"github.com/luoyjx/mini-loop/go/runtimeconfig"
+	"github.com/luoyjx/mini-loop/go/shell"
+	"github.com/luoyjx/mini-loop/go/skills"
+	"github.com/luoyjx/mini-loop/go/spill"
+	"github.com/luoyjx/mini-loop/go/trajectory"
+	"github.com/luoyjx/mini-loop/go/userresources"
+	"github.com/luoyjx/mini-loop/go/workflows"
+	"github.com/luoyjx/mini-loop/go/worktrees"
+)
+
+type BuildIdentity struct {
+	GoVersion string `json:"go_version"`
+	Revision  string `json:"revision"`
+	Modified  bool   `json:"modified"`
+}
+
+func CurrentBuild() BuildIdentity {
+	result := BuildIdentity{Revision: "development"}
+	if info, ok := debug.ReadBuildInfo(); ok {
+		result.GoVersion = info.GoVersion
+		for _, entry := range info.Settings {
+			switch entry.Key {
+			case "vcs.revision":
+				result.Revision = entry.Value
+			case "vcs.modified":
+				result.Modified = entry.Value == "true"
+			}
+		}
+	}
+	return result
+}
+
+type ProviderStatus struct {
+	Name       string `json:"name"`
+	Endpoint   string `json:"endpoint"`
+	Credential string `json:"credential"`
+}
+type MemoryBackend string
+
+// StateBackend describes selection, not a durability guarantee about an
+// embedding implementation. The caller owns the injected store's lifetime.
+type StateBackend string
+
+const (
+	ProcessLocalState StateBackend = "process-local"
+	InjectedState     StateBackend = "injected"
+)
+
+const (
+	SharedMemory MemoryBackend = "shared"
+	OwnerMemory  MemoryBackend = "owner-local"
+)
+
+type Report struct {
+	FullFeatures      bool                        `json:"full_features"`
+	TaskTools         bool                        `json:"task_tools"`
+	WorktreeTools     bool                        `json:"worktree_tools"`
+	GuardianEnabled   bool                        `json:"guardian_enabled"`
+	ASTTools          bool                        `json:"ast_tools"`
+	DiagnosticsTools  bool                        `json:"diagnostics_tools"`
+	SessionQueryTools bool                        `json:"session_query_tools"`
+	MCPTools          bool                        `json:"mcp_tools"`
+	WorkflowTools     bool                        `json:"workflow_tools"`
+	TeamTools         bool                        `json:"team_tools"`
+	MemoryBackend     MemoryBackend               `json:"memory_backend"`
+	MemoryTools       bool                        `json:"memory_tools"`
+	MemoryAuto        bool                        `json:"memory_auto"`
+	DecisionBackend   DecisionBackend             `json:"decision_backend"`
+	SelfAuditTools    bool                        `json:"self_audit_tools"`
+	GoalTools         bool                        `json:"goal_tools"`
+	PlanModeTools     bool                        `json:"plan_mode_tools"`
+	CronTools         bool                        `json:"cron_tools"`
+	BackgroundTools   bool                        `json:"background_tools"`
+	Kind              string                      `json:"kind"`
+	Settings          config.Snapshot             `json:"settings"`
+	Server            config.ServerSettings       `json:"server"`
+	Provider          ProviderStatus              `json:"provider"`
+	Authenticated     bool                        `json:"authenticated"`
+	Build             BuildIdentity               `json:"build"`
+	Unsupported       []config.UnsupportedSetting `json:"unsupported"`
+	StateStore        StateBackend                `json:"state_store"`
+	Sandbox           string                      `json:"sandbox"`
+	SandboxReason     *string                     `json:"sandbox_reason,omitempty"`
+	DotEnvDiscovery   bool                        `json:"dotenv_discovery"`
+}
+
+func Inspect(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator) Report {
+	return InspectWithOptions(settings, server, auth, Options{})
+}
+
+// Options selects individual Go services and explicit operator backends. Full
+// settings require DiagnosticsProvider until a default parser is implemented.
+type Options struct {
+	// ProviderTransport is an optional borrowed HTTP boundary for model and token
+	// requests. The caller owns its lifetime; nil uses a private default clone.
+	ProviderTransport http.RoundTripper
+	ProviderNow       func() time.Time
+	// StateStore is caller-owned. Neither constructor nor Serve restores sessions;
+	// the operator invokes App.RestoreSessions explicitly before serving them.
+	StateStore agent.StateStore
+	// Sandbox is explicitly bound by the Launcher shell factory; nil keeps host
+	// execution. Backend lifetime and concurrency safety belong to the caller.
+	Sandbox           shell.Sandbox
+	SessionQueryTools bool
+	MCPTools          bool
+	MCPServers        []agent.ManagedMCPServer
+	WorkflowTools     bool
+	TeamTools         bool
+	MemoryTools       bool
+	MemoryAuto        *bool
+	DecisionTools     bool
+	DecisionProvider  decisions.Provider
+	DecisionLLM       agent.DecisionLLMConfig
+	SelfAuditTools    bool
+	GoalTools         bool
+	PlanModeTools     bool
+	PlanApprover      agent.PlanApprover
+	CronTools         bool
+	BackgroundTools   bool
+
+	// Explicit language provider handle; inspection never invokes it and App
+	// shutdown does not close it. Default parser/CLI selection remains separate.
+	DiagnosticsProvider diagnostics.Provider
+}
+
+func InspectWithOptions(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) Report {
+	options = selectedFeatureOptions(settings, options)
+	endpoint := provider.DefaultEndpoint
+	if settings.BaseURL != nil {
+		endpoint = *settings.BaseURL
+	}
+	endpoint = config.RedactEndpoint(endpoint)
+	name := "anthropic"
+	if settings.BaseURL != nil {
+		name = "anthropic-compatible"
+	}
+	if settings.FakeLLM {
+		name, endpoint = "fake", ""
+	}
+	snapshot := settings.Snapshot()
+	backend := SharedMemory
+	if settings.UserResourcesRoot != nil {
+		backend = OwnerMemory
+	}
+	auto := options.MemoryAuto == nil || *options.MemoryAuto
+	state := ProcessLocalState
+	if options.StateStore != nil {
+		state = InjectedState
+	}
+	full := settings.EnableFeatures && options.DiagnosticsProvider != nil
+	sandbox := shell.InspectSandbox(options.Sandbox)
+	if sandbox.Name == "None" {
+		sandbox.Name = "none"
+	}
+	return Report{FullFeatures: full, TaskTools: full, WorktreeTools: full, GuardianEnabled: settings.GuardianEnabled, ASTTools: settings.ASTOutlineEnabled, DiagnosticsTools: options.DiagnosticsProvider != nil, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: supportedSettings(settings, options).Unsupported(), StateStore: state, Sandbox: sandbox.Name, SandboxReason: sandbox.Reason, DotEnvDiscovery: false}
+}
+
+type boundBashFactory struct {
+	timeout time.Duration
+	sandbox shell.Sandbox
+}
+
+func (f boundBashFactory) SandboxPosture() shell.SandboxPosture {
+	return shell.InspectSandbox(f.sandbox)
+}
+
+func (f boundBashFactory) BashFor(ctx context.Context, binding agent.SessionBinding) (agent.BashExecutor, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	return shell.New(shell.Config{Workspace: binding.Workspace, Timeout: f.timeout, Sandbox: f.sandbox})
+}
+
+type App struct {
+	spill          spill.Store
+	manager        *agent.SessionManager
+	handler        *httpapi.Server
+	transport      *http.Transport
+	shutdown       time.Duration
+	mu             sync.Mutex
+	served         bool
+	authConfigured bool
+}
+
+func New(ctx context.Context, settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator) (*App, error) {
+	return NewWithOptions(ctx, settings, server, auth, Options{})
+}
+
+func NewWithOptions(ctx context.Context, settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) (*App, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if err := settings.Validate(); err != nil {
+		return nil, err
+	}
+	if strings.TrimSpace(server.Host) == "" || server.Port < 0 || server.Port > 65535 {
+		return nil, errors.New("invalid listener host/port")
+	}
+	if err := supportedSettings(settings, options).RequireSupported(); err != nil {
+		return nil, err
+	}
+	options = selectedFeatureOptions(settings, options)
+	if err := httpapi.RefuseOpenBind(server.Host, auth); err != nil {
+		return nil, err
+	}
+	if strings.TrimSpace(settings.Model) == "" {
+		return nil, errors.New("MODEL_ID must not be empty for the Go runtime")
+	}
+	return buildApp(ctx, settings, server, auth, options)
+}
+
+// buildApp composes resources but never opens a listener. Serving callers must
+// complete NewWithOptions admission; the local operator audit owns its lifecycle.
+func buildApp(ctx context.Context, settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) (*App, error) {
+	if server.ShutdownTimeout <= 0 {
+		server.ShutdownTimeout = 10 * time.Second
+	}
+	astConfig, err := configuredAST(settings)
+	if err != nil {
+		return nil, err
+	}
+	decisionTools, decisionProvider, err := configuredDecision(settings, options)
+	if err != nil {
+		return nil, err
+	}
+	var model agent.Provider
+	var transport *http.Transport
+	if settings.FakeLLM {
+		model = agent.NewFakeProvider(agent.FakeProviderConfig{Delay: server.FakeDelay}).ObjectView()
+	} else {
+		var upstream http.RoundTripper = options.ProviderTransport
+		if upstream == nil {
+			transport = &http.Transport{}
+			if base, ok := http.DefaultTransport.(*http.Transport); ok {
+				transport = base.Clone()
+			}
+			upstream = transport
+		}
+		cfg, err := modelConfig(ctx, settings, upstream, options.ProviderNow)
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+		client, err := provider.New(cfg)
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+		model = client
+	}
+	var preservation spill.Store
+	if settings.SpillDir != nil {
+		// Python manager construction treats an unavailable root as best-effort.
+		// Do not keep a typed-nil store in the interface.
+		if local, err := spill.NewLocalStore(*settings.SpillDir); err == nil {
+			preservation = local
+		}
+	}
+	var catalog *skills.Catalog
+	if settings.SkillsDir == config.BuiltinSkills {
+		catalog, err = skills.NewBuiltinCatalog(ctx)
+	} else {
+		catalog, err = skills.NewCatalog(ctx, settings.SkillsDir)
+	}
+	if err != nil {
+		if transport != nil {
+			transport.CloseIdleConnections()
+		}
+		return nil, err
+	}
+	fallback := ""
+	// The source constructs shared storage even with owner-local resources selected.
+	// A broken shared root therefore remains a startup failure in either mode.
+	memoryRoot := filepath.Join(settings.WorkspaceRoot, ".memory")
+	if settings.MemoryRoot != nil {
+		memoryRoot = *settings.MemoryRoot
+	}
+	sharedMemory, err := memory.NewStore(ctx, memoryRoot, nil)
+	if err != nil {
+		if transport != nil {
+			transport.CloseIdleConnections()
+		}
+		return nil, err
+	}
+	var resources *userresources.Resolver
+	if settings.UserResourcesRoot != nil {
+		resources, err = userresources.NewResolver(ctx, *settings.UserResourcesRoot, catalog, nil)
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+	}
+	if settings.FallbackModel != nil {
+		fallback = *settings.FallbackModel
+	}
+	recovery, err := agent.NewDefaultRecovery(agent.RecoveryConfig{FallbackModel: fallback})
+	if err != nil {
+		if transport != nil {
+			transport.CloseIdleConnections()
+		}
+		return nil, err
+	}
+	var trajectories agent.TrajectoryStore
+	if settings.TrajectoryEnabled {
+		root := filepath.Join(settings.WorkspaceRoot, ".trajectories")
+		if settings.TrajectoryRoot != nil {
+			root = *settings.TrajectoryRoot
+		}
+		local, err := trajectory.New(trajectory.Config{Root: root, CaptureContent: settings.TrajectoryCaptureContent})
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+		trajectories = local
+	}
+	build := CurrentBuild()
+	label := build.Revision
+	if build.Modified {
+		label += "-modified"
+	}
+	auditView := agent.SelfAuditOperatorView
+	if auth != nil && auth.Configured() {
+		auditView = agent.SelfAuditOwnerView
+	}
+	efficiencyConfig := runtimeconfig.ManagerEfficiency(settings)
+	var repository *worktrees.Manager
+	if settings.EnableFeatures && settings.RepoRoot != nil {
+		repository, err = worktrees.New(worktrees.Config{Repository: *settings.RepoRoot})
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+	}
+	manager, err := agent.NewSessionManager(agent.ManagerConfig{EnableFeatures: settings.EnableFeatures, Efficiency: &efficiencyConfig, WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
+		TeamIdlePoll: settings.TeamIdlePoll.Duration(), TeamIdleTimeout: settings.TeamIdleTimeout.Duration(),
+		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
+		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
+		Services: agent.ManagerServices{Worktrees: repository, StateStore: options.StateStore, GuardianEnabled: settings.GuardianEnabled, ASTConfig: astConfig, DiagnosticsProvider: options.DiagnosticsProvider, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, MCPServers: options.MCPServers, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, WorkflowCaps: &workflows.DefinitionCaps{MaxConcurrentAgents: settings.WorkflowMaxConcurrentAgents, MaxAgents: settings.WorkflowMaxAgents, MaxRounds: settings.WorkflowMaxRounds, WallTimeSeconds: float64(settings.WorkflowWallTimeSeconds)}, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second, sandbox: options.Sandbox}}})
+	if err != nil {
+		if transport != nil {
+			transport.CloseIdleConnections()
+		}
+		return nil, err
+	}
+	handler, err := httpapi.New(httpapi.Config{Manager: manager, Auth: auth, RateLimitPerMinute: settings.RateLimitPerMinute, FakeLLM: settings.FakeLLM, Features: settings.EnableFeatures, Build: label, BenchmarkSkillsDir: settings.SkillsDir})
+	if err != nil {
+		stopCtx, cancel := context.WithTimeout(context.Background(), server.ShutdownTimeout)
+		defer cancel()
+		manager.Stop(stopCtx)
+		if transport != nil {
+			transport.CloseIdleConnections()
+		}
+		return nil, err
+	}
+	return &App{spill: preservation, manager: manager, handler: handler, transport: transport, shutdown: server.ShutdownTimeout, authConfigured: auth != nil && auth.Configured()}, nil
+}
+func (a *App) Handler() http.Handler { return a.handler }
+func (a *App) Stop(ctx context.Context) error {
+	err := a.manager.Stop(ctx)
+	if a.transport != nil {
+		a.transport.CloseIdleConnections()
+	}
+	return err
+}
+
+// Serve transfers listener ownership. Parent cancellation cancels HTTP request
+// contexts and manager-owned background turns, then joins server/manager shutdown.
+// No WriteTimeout is set: it would cut off long model calls and SSE streams.
+func (a *App) Serve(ctx context.Context, listener net.Listener) error {
+	defer listener.Close()
+	host, _, err := net.SplitHostPort(listener.Addr().String())
+	if err != nil {
+		return errors.New("launcher requires a TCP listener")
+	}
+	if !a.authConfigured {
+		if err := httpapi.RefuseOpenBind(host, httpapi.NullAuth{}); err != nil {
+			return err
+		}
+	}
+	a.mu.Lock()
+	if a.served {
+		a.mu.Unlock()
+		return errors.New("launcher can serve only once")
+	}
+	a.served = true
+	a.mu.Unlock()
+	if err := a.manager.Start(); err != nil {
+		return fmt.Errorf("manager startup: %w", err)
+	}
+	server := &http.Server{Handler: a.handler, ReadHeaderTimeout: 5 * time.Second, IdleTimeout: 60 * time.Second, MaxHeaderBytes: 1 << 20, BaseContext: func(net.Listener) context.Context { return ctx }}
+	finished := make(chan error, 1)
+	go func() { finished <- server.Serve(listener) }()
+	var serveErr error
+	ended := false
+	select {
+	case serveErr = <-finished:
+		ended = true
+	case <-ctx.Done():
+	}
+	stopCtx, cancel := context.WithTimeout(context.Background(), a.shutdown)
+	defer cancel()
+	shutdown := make(chan error, 1)
+	go func() { shutdown <- server.Shutdown(stopCtx) }()
+	managerErr := a.Stop(stopCtx)
+	shutdownErr := <-shutdown
+	if shutdownErr != nil {
+		server.Close()
+	}
+	if !ended {
+		serveErr = <-finished
+	}
+	if errors.Is(serveErr, http.ErrServerClosed) {
+		serveErr = nil
+	}
+	if managerErr != nil {
+		return fmt.Errorf("manager shutdown: %w", managerErr)
+	}
+	if shutdownErr != nil {
+		return fmt.Errorf("HTTP shutdown: %w", shutdownErr)
+	}
+	return serveErr
+}

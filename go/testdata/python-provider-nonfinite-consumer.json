@@ -1,0 +1,111 @@
+{
+  "cases": [
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "kind": "tool_use",
+      "name": "nonfinite-nan",
+      "reopened_events_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"type\": \"assistant\"}]",
+      "reopened_messages_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}]",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"keep\": NaN}}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_consumer": {
+        "events_json": [
+          "{\"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+          "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+        ],
+        "final_input_json": "{\"command\": \"true\", \"keep\": NaN}",
+        "input_json": "{\"command\": \"true\", \"keep\": NaN}",
+        "mode": "keep",
+        "name": "nonfinite-nan",
+        "outcomes": [
+          {
+            "denied": false,
+            "failed": true,
+            "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+          }
+        ],
+        "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+        "trace": [
+          "before",
+          "guard",
+          "after",
+          "result"
+        ]
+      },
+      "transport_requests": 1
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "kind": "tool_use",
+      "name": "nonfinite-infinity",
+      "reopened_events_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"type\": \"assistant\"}]",
+      "reopened_messages_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}], \"role\": \"assistant\"}]",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"keep\": Infinity}}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_consumer": {
+        "events_json": [
+          "{\"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+          "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+        ],
+        "final_input_json": "{\"command\": \"true\", \"keep\": Infinity}",
+        "input_json": "{\"command\": \"true\", \"keep\": Infinity}",
+        "mode": "keep",
+        "name": "nonfinite-infinity",
+        "outcomes": [
+          {
+            "denied": false,
+            "failed": true,
+            "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+          }
+        ],
+        "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+        "trace": [
+          "before",
+          "guard",
+          "after",
+          "result"
+        ]
+      },
+      "transport_requests": 1
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "kind": "server_tool_use",
+      "name": "nonfinite-nan",
+      "reopened_events_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}], \"type\": \"assistant\"}]",
+      "reopened_messages_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}], \"role\": \"assistant\"}]",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": {\"command\": \"true\", \"keep\": NaN}}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "transport_requests": 1
+    },
+    {
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "forward_error": {
+        "class": "ValueError",
+        "message": "Out of range float values are not JSON compliant"
+      },
+      "kind": "server_tool_use",
+      "name": "nonfinite-infinity",
+      "reopened_events_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}], \"type\": \"assistant\"}]",
+      "reopened_messages_json": "[{\"content\": [{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}], \"role\": \"assistant\"}]",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [{\"type\": \"server_tool_use\", \"id\": \"call\", \"name\": \"web_search\", \"input\": {\"command\": \"true\", \"keep\": Infinity}}], \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "transport_requests": 1
+    }
+  ],
+  "httpx_version": "0.28.1",
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "SQLiteStateStore.append_event": "d6339e61df85e9583cebea2875a0ab2e92d1d7122cd534a444a1f6c5b2f5bce1",
+    "SQLiteStateStore.append_messages": "ede70c630a32a97fbfc1e0959a9846982421d630b6d62bbd2450b97166cd3d9d",
+    "_content_payload": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505"
+  }
+}

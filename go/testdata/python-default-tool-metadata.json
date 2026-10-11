@@ -1,0 +1,82 @@
+[
+  {
+    "capabilities": [
+      "process.exec"
+    ],
+    "name": "bash",
+    "parallel_safe": false,
+    "readonly": false,
+    "risk": "exec"
+  },
+  {
+    "capabilities": [
+      "repo.read"
+    ],
+    "name": "read_file",
+    "parallel_safe": true,
+    "readonly": true,
+    "risk": "read"
+  },
+  {
+    "capabilities": [
+      "workspace.write"
+    ],
+    "name": "write_file",
+    "parallel_safe": false,
+    "readonly": false,
+    "risk": "write"
+  },
+  {
+    "capabilities": [
+      "workspace.write"
+    ],
+    "name": "edit_file",
+    "parallel_safe": false,
+    "readonly": false,
+    "risk": "write"
+  },
+  {
+    "capabilities": [
+      "repo.search"
+    ],
+    "name": "glob",
+    "parallel_safe": true,
+    "readonly": true,
+    "risk": "read"
+  },
+  {
+    "capabilities": [],
+    "name": "TodoWrite",
+    "parallel_safe": false,
+    "readonly": false,
+    "risk": "write"
+  },
+  {
+    "capabilities": [],
+    "name": "task",
+    "parallel_safe": false,
+    "readonly": false,
+    "risk": "exec"
+  },
+  {
+    "capabilities": [],
+    "name": "load_skill",
+    "parallel_safe": false,
+    "readonly": true,
+    "risk": "read"
+  },
+  {
+    "capabilities": [],
+    "name": "compress",
+    "parallel_safe": false,
+    "readonly": false,
+    "risk": "write"
+  },
+  {
+    "capabilities": [],
+    "name": "ask_user",
+    "parallel_safe": false,
+    "readonly": true,
+    "risk": "read"
+  }
+]

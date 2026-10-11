@@ -1,0 +1,68 @@
+{
+  "baseline": "5656802 plus check diagnostics",
+  "manifest": {
+    "snapshot_files": 219,
+    "stale": [
+      {
+        "actual_sha256": "00c60c7690aac36bf9e86d647a86b04bfcd5ae6ad58578e5cce36cd563042743",
+        "diff_lines": 11,
+        "expected_sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+        "name": "python-watchfiles.json"
+      }
+    ]
+  },
+  "changed_profiles": [
+    {
+      "collection": "native_events",
+      "name": "symlink-target-write",
+      "expected": {
+        "changed": [],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "symlink-target-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "linked.py",
+        "symlink_target": "notes.txt"
+      },
+      "actual": {
+        "changed": [
+          "linked.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "mtime": 100,
+        "name": "symlink-target-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "linked.py",
+        "symlink_target": "notes.txt"
+      }
+    }
+  ],
+  "scope": "Actual full Python exporter snapshot; failed first observation retained without rerunning or overwriting fixtures",
+  "conclusion": "Same symlink profile differs in actual Source capture. Native timing/capture determinism remains unproven; this does not prove the event was setup or mutation."
+}

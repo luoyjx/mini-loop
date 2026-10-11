@@ -1,0 +1,390 @@
+{
+  "disabled": {
+    "has_manager": false,
+    "input": {
+      "command": "printf disabled",
+      "run_in_background": true
+    },
+    "output": "disabled"
+  },
+  "interruption": {
+    "marked": true,
+    "repaired": false,
+    "text": "partial source\n[Turn interrupted: source bg cancel]\n[1 background task(s) kept running through this interruption and may have already changed files; check_background shows their state.]"
+  },
+  "metadata": [
+    {
+      "capabilities": [],
+      "name": "background_run",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec"
+    },
+    {
+      "capabilities": [],
+      "name": "check_background",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    }
+  ],
+  "modes": [
+    {
+      "enabled": false,
+      "input": {
+        "command": "printf test"
+      },
+      "mode": "exclusive"
+    },
+    {
+      "enabled": false,
+      "input": {
+        "command": "printf test",
+        "run_in_background": false
+      },
+      "mode": "exclusive"
+    },
+    {
+      "enabled": false,
+      "input": {
+        "command": "printf test",
+        "run_in_background": true
+      },
+      "mode": "exclusive"
+    },
+    {
+      "enabled": true,
+      "input": {
+        "command": "printf test"
+      },
+      "mode": "exclusive"
+    },
+    {
+      "enabled": true,
+      "input": {
+        "command": "printf test",
+        "run_in_background": false
+      },
+      "mode": "exclusive"
+    },
+    {
+      "enabled": true,
+      "input": {
+        "command": "printf test",
+        "run_in_background": true
+      },
+      "mode": "parallel"
+    }
+  ],
+  "schemas": [
+    {
+      "description": "Run a slow shell command in the background; returns a bg_id immediately. Results arrive later as a <task_notification>.",
+      "input_schema": {
+        "properties": {
+          "approval_prefix": {
+            "description": "Optional: propose the command prefix the human may remember for the session if this needs approval (see bash).",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "command": {
+            "type": "string"
+          },
+          "timeout": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "command"
+        ],
+        "type": "object"
+      },
+      "name": "background_run"
+    },
+    {
+      "description": "Check background task status (all, or one bg_id).",
+      "input_schema": {
+        "properties": {
+          "bg_id": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "name": "check_background"
+    }
+  ],
+  "source_sha256": {
+    "approvals.py": "abb347fbe988d8b0500dc2d74b384578a9ca2b28fdd7237971a4f769383c13f5",
+    "background.py": "df94f83bd559402b2882c3bfc0c1ec81f988bb4bed388975538119a4c021fc51",
+    "builtins.py": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+    "permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944"
+  },
+  "steps": [
+    {
+      "input": {},
+      "name": "check_background",
+      "output": "No background tasks."
+    },
+    {
+      "input": {
+        "command": "printf hello",
+        "timeout": 2
+      },
+      "name": "background_run",
+      "output": "Started background task bg_0001: printf hello"
+    },
+    {
+      "input": {
+        "bg_id": "bg_0001"
+      },
+      "name": "check_background",
+      "output": "[completed] hello"
+    },
+    {
+      "input": {
+        "approval_prefix": null,
+        "command": ":",
+        "timeout": 0
+      },
+      "name": "background_run",
+      "output": "Started background task bg_0002: :"
+    },
+    {
+      "input": {
+        "bg_id": "bg_0002"
+      },
+      "name": "check_background",
+      "output": "[completed] (no output)"
+    },
+    {
+      "input": {
+        "command": "printf explicit",
+        "run_in_background": true
+      },
+      "name": "bash",
+      "output": "Started background task bg_0003: printf explicit"
+    },
+    {
+      "input": {
+        "bg_id": "bg_0003"
+      },
+      "name": "check_background",
+      "output": "[completed] explicit"
+    },
+    {
+      "input": {
+        "command": "printf ' build'",
+        "run_in_background": false
+      },
+      "name": "bash",
+      "output": "Started background task bg_0004: printf ' build'"
+    },
+    {
+      "input": {
+        "bg_id": "bg_0004"
+      },
+      "name": "check_background",
+      "output": "[completed] build"
+    },
+    {
+      "input": {
+        "command": "printf foreground; exit 3"
+      },
+      "name": "bash",
+      "output": "foreground\n(exit 3)"
+    },
+    {
+      "input": {
+        "command": "sleep 30",
+        "timeout": -1
+      },
+      "name": "background_run",
+      "output": "Started background task bg_0005: sleep 30"
+    },
+    {
+      "input": {
+        "bg_id": "bg_0005"
+      },
+      "name": "check_background",
+      "output": "[error] Error: Timeout (-1s)"
+    },
+    {
+      "input": {
+        "command": "rm  -rf  /"
+      },
+      "name": "background_run",
+      "output": "Error: Dangerous command blocked"
+    },
+    {
+      "input": {
+        "bg_id": "missing"
+      },
+      "name": "check_background",
+      "output": "Unknown: missing"
+    },
+    {
+      "input": {},
+      "name": "check_background",
+      "output": "bg_0001: [completed] printf hello\nbg_0002: [completed] :\nbg_0003: [completed] printf explicit\nbg_0004: [completed] printf ' build'\nbg_0005: [error] sleep 30"
+    }
+  ],
+  "variants": [
+    {
+      "candidate": [
+        "background_run",
+        "printf",
+        "é"
+      ],
+      "canonical": "{\"command\":\"printf é\"}",
+      "input": {
+        "command": "printf é"
+      },
+      "name": "background_run",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "background_run",
+        "printf",
+        "é"
+      ],
+      "canonical": "{\"approval_prefix\":null,\"command\":\"printf é\",\"timeout\":null}",
+      "input": {
+        "approval_prefix": null,
+        "command": "printf é",
+        "timeout": null
+      },
+      "name": "background_run",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "background_run",
+        "printf",
+        "é"
+      ],
+      "canonical": "{\"command\":\"printf é\",\"timeout\":0}",
+      "input": {
+        "command": "printf é",
+        "timeout": 0
+      },
+      "name": "background_run",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "background_run",
+        "printf",
+        "é"
+      ],
+      "canonical": "{\"command\":\"printf é\",\"timeout\":-1}",
+      "input": {
+        "command": "printf é",
+        "timeout": -1
+      },
+      "name": "background_run",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "background_run",
+        "git",
+        "status"
+      ],
+      "canonical": "{\"approval_prefix\":[\"git\",\"status\"],\"command\":\"git status --short\",\"timeout\":12}",
+      "input": {
+        "approval_prefix": [
+          "git",
+          "status"
+        ],
+        "command": "git status --short",
+        "timeout": 12
+      },
+      "name": "background_run",
+      "proposed": [
+        "background_run",
+        "git",
+        "status"
+      ]
+    },
+    {
+      "candidate": [
+        "background_run",
+        "rm",
+        "-rf"
+      ],
+      "canonical": "{\"approval_prefix\":[\"rm\",\"-rf\"],\"command\":\"rm -rf stuff\"}",
+      "input": {
+        "approval_prefix": [
+          "rm",
+          "-rf"
+        ],
+        "command": "rm -rf stuff"
+      },
+      "name": "background_run",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "background_run",
+        "git",
+        "status"
+      ],
+      "canonical": "{\"approval_prefix\":[\"git\",\"pull\"],\"command\":\"git status --short\"}",
+      "input": {
+        "approval_prefix": [
+          "git",
+          "pull"
+        ],
+        "command": "git status --short"
+      },
+      "name": "background_run",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "check_background"
+      ],
+      "canonical": "{}",
+      "input": {},
+      "name": "check_background",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "check_background"
+      ],
+      "canonical": "{\"bg_id\":null}",
+      "input": {
+        "bg_id": null
+      },
+      "name": "check_background",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "check_background"
+      ],
+      "canonical": "{\"bg_id\":\"\"}",
+      "input": {
+        "bg_id": ""
+      },
+      "name": "check_background",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "check_background"
+      ],
+      "canonical": "{\"bg_id\":\"bg_0001\"}",
+      "input": {
+        "bg_id": "bg_0001"
+      },
+      "name": "check_background",
+      "proposed": []
+    }
+  ]
+}

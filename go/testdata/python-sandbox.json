@@ -1,0 +1,1111 @@
+{
+  "cases": [
+    {
+      "after": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: none; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "allow_network": false,
+      "before": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: none; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "extra": [],
+      "name": "plain",
+      "same_instance": true,
+      "target": "<ROOT>/workspace",
+      "unreadable": [],
+      "writable": [
+        "<ROOT>/workspace"
+      ]
+    },
+    {
+      "after": {
+        "allow_network": true,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.ssh",
+          "-D",
+          "NOREAD_1=<ROOT>/home/.netrc",
+          "-D",
+          "WRITE_0=<ROOT>/alternate",
+          "-D",
+          "WRITE_1=<ROOT>/other/.git",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/alternate, <ROOT>/other/.git; no-read: <ROOT>/home/.ssh, <ROOT>/home/.netrc; network allowed)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n' -D NOREAD_0=<ROOT>/home/.ssh -D NOREAD_1=<ROOT>/home/.netrc -D WRITE_0=<ROOT>/alternate -D WRITE_1=<ROOT>/other/.git /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.ssh",
+          "<ROOT>/home/.netrc"
+        ],
+        "writable": [
+          "<ROOT>/alternate",
+          "<ROOT>/other/.git"
+        ]
+      },
+      "allow_network": true,
+      "before": {
+        "allow_network": true,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.ssh",
+          "-D",
+          "NOREAD_1=<ROOT>/home/.netrc",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: <ROOT>/home/.ssh, <ROOT>/home/.netrc; network allowed)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n' -D NOREAD_0=<ROOT>/home/.ssh -D NOREAD_1=<ROOT>/home/.netrc -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.ssh",
+          "<ROOT>/home/.netrc"
+        ],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "extra": [],
+      "name": "protected-network",
+      "same_instance": false,
+      "target": "<ROOT>/alternate",
+      "unreadable": [
+        "<ROOT>/home/.ssh",
+        "<ROOT>/home/.netrc"
+      ],
+      "writable": [
+        "<ROOT>/workspace"
+      ]
+    },
+    {
+      "after": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")) (subpath (param \"WRITE_2\")) (subpath (param \"WRITE_3\")))",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.ssh",
+          "-D",
+          "NOREAD_1=<ROOT>/home/.ssh",
+          "-D",
+          "WRITE_0=<ROOT>/alternate",
+          "-D",
+          "WRITE_1=<ROOT>/extra",
+          "-D",
+          "WRITE_2=<ROOT>/workspace",
+          "-D",
+          "WRITE_3=<ROOT>/other/.git",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/alternate, <ROOT>/extra, <ROOT>/workspace, <ROOT>/other/.git; no-read: <ROOT>/home/.ssh, <ROOT>/home/.ssh; network denied)",
+        "extra": [
+          "<ROOT>/extra",
+          "<ROOT>/workspace"
+        ],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")) (subpath (param \"WRITE_2\")) (subpath (param \"WRITE_3\")))' -D NOREAD_0=<ROOT>/home/.ssh -D NOREAD_1=<ROOT>/home/.ssh -D WRITE_0=<ROOT>/alternate -D WRITE_1=<ROOT>/extra -D WRITE_2=<ROOT>/workspace -D WRITE_3=<ROOT>/other/.git /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.ssh",
+          "<ROOT>/home/.ssh"
+        ],
+        "writable": [
+          "<ROOT>/alternate",
+          "<ROOT>/extra",
+          "<ROOT>/workspace",
+          "<ROOT>/other/.git"
+        ]
+      },
+      "allow_network": false,
+      "before": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")) (subpath (param \"WRITE_2\")) (subpath (param \"WRITE_3\")))",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.ssh",
+          "-D",
+          "NOREAD_1=<ROOT>/home/.ssh",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "-D",
+          "WRITE_1=<ROOT>/workspace",
+          "-D",
+          "WRITE_2=<ROOT>/ordinary",
+          "-D",
+          "WRITE_3=<ROOT>/extra",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace, <ROOT>/workspace, <ROOT>/ordinary, <ROOT>/extra; no-read: <ROOT>/home/.ssh, <ROOT>/home/.ssh; network denied)",
+        "extra": [
+          "<ROOT>/extra",
+          "<ROOT>/workspace"
+        ],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")) (subpath (param \"WRITE_2\")) (subpath (param \"WRITE_3\")))' -D NOREAD_0=<ROOT>/home/.ssh -D NOREAD_1=<ROOT>/home/.ssh -D WRITE_0=<ROOT>/workspace -D WRITE_1=<ROOT>/workspace -D WRITE_2=<ROOT>/ordinary -D WRITE_3=<ROOT>/extra /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.ssh",
+          "<ROOT>/home/.ssh"
+        ],
+        "writable": [
+          "<ROOT>/workspace",
+          "<ROOT>/workspace",
+          "<ROOT>/ordinary",
+          "<ROOT>/extra"
+        ]
+      },
+      "extra": [
+        "<ROOT>/extra",
+        "<ROOT>/workspace"
+      ],
+      "name": "duplicates-extra",
+      "same_instance": false,
+      "target": "<ROOT>/alternate",
+      "unreadable": [
+        "<ROOT>/home/.ssh",
+        "<ROOT>/home/.ssh"
+      ],
+      "writable": [
+        "<ROOT>/workspace",
+        "<ROOT>/workspace",
+        "<ROOT>/ordinary"
+      ]
+    },
+    {
+      "after": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "-D",
+          "WRITE_1=<ROOT>/extra",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace, <ROOT>/extra; no-read: none; network denied)",
+        "extra": [
+          "<ROOT>/extra"
+        ],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))' -D WRITE_0=<ROOT>/workspace -D WRITE_1=<ROOT>/extra /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/workspace",
+          "<ROOT>/extra"
+        ]
+      },
+      "allow_network": false,
+      "before": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "WRITE_0=<ROOT>/extra",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/extra; no-read: none; network denied)",
+        "extra": [
+          "<ROOT>/extra"
+        ],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D WRITE_0=<ROOT>/extra /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/extra"
+        ]
+      },
+      "extra": [
+        "<ROOT>/extra"
+      ],
+      "name": "extra-only",
+      "same_instance": false,
+      "target": "<ROOT>/workspace",
+      "unreadable": [],
+      "writable": []
+    },
+    {
+      "after": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))",
+          "-D",
+          "NOREAD_0=<ROOT>/protected\nnewline",
+          "-D",
+          "WRITE_0=<ROOT>/alternate",
+          "-D",
+          "WRITE_1=<ROOT>/other/.git",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/alternate, <ROOT>/other/.git; no-read: <ROOT>/protected\nnewline; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))' -D 'NOREAD_0=<ROOT>/protected\nnewline' -D WRITE_0=<ROOT>/alternate -D WRITE_1=<ROOT>/other/.git /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/protected\nnewline"
+        ],
+        "writable": [
+          "<ROOT>/alternate",
+          "<ROOT>/other/.git"
+        ]
+      },
+      "allow_network": false,
+      "before": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "NOREAD_0=<ROOT>/protected\nnewline",
+          "-D",
+          "WRITE_0=<ROOT>/quote\" (allow default) ; space",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/quote\" (allow default) ; space; no-read: <ROOT>/protected\nnewline; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D 'NOREAD_0=<ROOT>/protected\nnewline' -D 'WRITE_0=<ROOT>/quote\" (allow default) ; space' /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/protected\nnewline"
+        ],
+        "writable": [
+          "<ROOT>/quote\" (allow default) ; space"
+        ]
+      },
+      "extra": [],
+      "name": "policy-syntax-path",
+      "same_instance": false,
+      "target": "<ROOT>/alternate",
+      "unreadable": [
+        "<ROOT>/protected\nnewline"
+      ],
+      "writable": [
+        "<ROOT>/quote\" (allow default) ; space"
+      ]
+    },
+    {
+      "after": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))",
+          "-D",
+          "WRITE_0=<ROOT>/alternate",
+          "-D",
+          "WRITE_1=<ROOT>/other/.git",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/alternate, <ROOT>/other/.git; no-read: none; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))' -D WRITE_0=<ROOT>/alternate -D WRITE_1=<ROOT>/other/.git /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/alternate",
+          "<ROOT>/other/.git"
+        ]
+      },
+      "allow_network": false,
+      "before": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))",
+          "-D",
+          "WRITE_0=<ROOT>/linked",
+          "-D",
+          "WRITE_1=<ROOT>/repo/.git",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/linked, <ROOT>/repo/.git; no-read: none; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")) (subpath (param \"WRITE_1\")))' -D WRITE_0=<ROOT>/linked -D WRITE_1=<ROOT>/repo/.git /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/linked",
+          "<ROOT>/repo/.git"
+        ]
+      },
+      "extra": [],
+      "name": "linked-worktree",
+      "same_instance": false,
+      "target": "<ROOT>/alternate",
+      "unreadable": [],
+      "writable": [
+        "<ROOT>/linked"
+      ]
+    },
+    {
+      "after": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: none; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "allow_network": false,
+      "before": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: none; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed\n(allow file-read*)\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "extra": [],
+      "name": "symlink-and-missing",
+      "same_instance": true,
+      "target": "<ROOT>/alias",
+      "unreadable": [],
+      "writable": [
+        "<ROOT>/alias/missing/.."
+      ]
+    },
+    {
+      "after": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.aws",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: <ROOT>/home/.aws; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D NOREAD_0=<ROOT>/home/.aws -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.aws"
+        ],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "allow_network": false,
+      "before": {
+        "allow_network": false,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.aws",
+          "-D",
+          "WRITE_0=<ROOT>/home/project",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/home/project; no-read: <ROOT>/home/.aws; network denied)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D NOREAD_0=<ROOT>/home/.aws -D WRITE_0=<ROOT>/home/project /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.aws"
+        ],
+        "writable": [
+          "<ROOT>/home/project"
+        ]
+      },
+      "extra": [],
+      "name": "home-expansion",
+      "same_instance": false,
+      "target": "<ROOT>/workspace",
+      "unreadable": [
+        "~/.aws"
+      ],
+      "writable": [
+        "~/project"
+      ]
+    }
+  ],
+  "command": "printf '%s\\n' 'hello; $(false)'",
+  "credential_roots": [
+    "<ROOT>/home/.ssh",
+    "<ROOT>/home/.aws",
+    "<ROOT>/home/.gnupg",
+    "<ROOT>/home/.kube",
+    "<ROOT>/home/.config/gcloud",
+    "<ROOT>/home/.netrc",
+    "<ROOT>/home/.docker/config.json",
+    "<ROOT>/home/.config/gh"
+  ],
+  "errors": [
+    {
+      "kind": "ValueError",
+      "message": "a sandbox with no writable root cannot run a shell; pass the session workspace",
+      "name": "empty-writable"
+    },
+    {
+      "kind": "UnicodeDecodeError",
+      "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte",
+      "name": "invalid-marker-encoding"
+    }
+  ],
+  "factory_defaults": {
+    "allow_network": false,
+    "argv": [
+      "/usr/bin/sandbox-exec",
+      "-p",
+      "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) (require-not (literal (param \"NOREAD_2\"))) (require-not (subpath (param \"NOREAD_2\"))) (require-not (literal (param \"NOREAD_3\"))) (require-not (subpath (param \"NOREAD_3\"))) (require-not (literal (param \"NOREAD_4\"))) (require-not (subpath (param \"NOREAD_4\"))) (require-not (literal (param \"NOREAD_5\"))) (require-not (subpath (param \"NOREAD_5\"))) (require-not (literal (param \"NOREAD_6\"))) (require-not (subpath (param \"NOREAD_6\"))) (require-not (literal (param \"NOREAD_7\"))) (require-not (subpath (param \"NOREAD_7\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))",
+      "-D",
+      "NOREAD_0=<ROOT>/home/.ssh",
+      "-D",
+      "NOREAD_1=<ROOT>/home/.aws",
+      "-D",
+      "NOREAD_2=<ROOT>/home/.gnupg",
+      "-D",
+      "NOREAD_3=<ROOT>/home/.kube",
+      "-D",
+      "NOREAD_4=<ROOT>/home/.config/gcloud",
+      "-D",
+      "NOREAD_5=<ROOT>/home/.netrc",
+      "-D",
+      "NOREAD_6=<ROOT>/home/.docker/config.json",
+      "-D",
+      "NOREAD_7=<ROOT>/home/.config/gh",
+      "-D",
+      "WRITE_0=<ROOT>/workspace",
+      "/bin/sh",
+      "-c",
+      "printf '%s\\n' 'hello; $(false)'"
+    ],
+    "confined": true,
+    "describe": "seatbelt (write: <ROOT>/workspace; no-read: <ROOT>/home/.ssh, <ROOT>/home/.aws, <ROOT>/home/.gnupg, <ROOT>/home/.kube, <ROOT>/home/.config/gcloud, <ROOT>/home/.netrc, <ROOT>/home/.docker/config.json, <ROOT>/home/.config/gh; network denied)",
+    "extra": [],
+    "kind": "SeatbeltSandbox",
+    "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) (require-not (literal (param \"NOREAD_2\"))) (require-not (subpath (param \"NOREAD_2\"))) (require-not (literal (param \"NOREAD_3\"))) (require-not (subpath (param \"NOREAD_3\"))) (require-not (literal (param \"NOREAD_4\"))) (require-not (subpath (param \"NOREAD_4\"))) (require-not (literal (param \"NOREAD_5\"))) (require-not (subpath (param \"NOREAD_5\"))) (require-not (literal (param \"NOREAD_6\"))) (require-not (subpath (param \"NOREAD_6\"))) (require-not (literal (param \"NOREAD_7\"))) (require-not (subpath (param \"NOREAD_7\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))' -D NOREAD_0=<ROOT>/home/.ssh -D NOREAD_1=<ROOT>/home/.aws -D NOREAD_2=<ROOT>/home/.gnupg -D NOREAD_3=<ROOT>/home/.kube -D NOREAD_4=<ROOT>/home/.config/gcloud -D NOREAD_5=<ROOT>/home/.netrc -D NOREAD_6=<ROOT>/home/.docker/config.json -D NOREAD_7=<ROOT>/home/.config/gh -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+    "reason": null,
+    "unreadable": [
+      "<ROOT>/home/.ssh",
+      "<ROOT>/home/.aws",
+      "<ROOT>/home/.gnupg",
+      "<ROOT>/home/.kube",
+      "<ROOT>/home/.config/gcloud",
+      "<ROOT>/home/.netrc",
+      "<ROOT>/home/.docker/config.json",
+      "<ROOT>/home/.config/gh"
+    ],
+    "writable": [
+      "<ROOT>/workspace"
+    ]
+  },
+  "markers": [
+    {
+      "content": "gitdir: ../repo/.git/worktrees/unit\n",
+      "name": "relative",
+      "writable": [
+        "<ROOT>/workspace",
+        "<ROOT>/repo/.git"
+      ]
+    },
+    {
+      "content": "gitdir: <ROOT>/repo/.git/worktrees/unit\n",
+      "name": "absolute",
+      "writable": [
+        "<ROOT>/workspace",
+        "<ROOT>/repo/.git"
+      ]
+    },
+    {
+      "content": " gitdir: ../repo/.git/worktrees/unit\n",
+      "name": "leading-space",
+      "writable": [
+        "<ROOT>/workspace"
+      ]
+    },
+    {
+      "content": "gitdir: ../repo/metadata/worktrees/unit\n",
+      "name": "wrong-parent",
+      "writable": [
+        "<ROOT>/workspace"
+      ]
+    },
+    {
+      "content": "gitdir: ../wrong/unit\ngitdir: ../repo/.git/worktrees/unit\n",
+      "name": "later-valid-line",
+      "writable": [
+        "<ROOT>/workspace",
+        "<ROOT>/repo/.git"
+      ]
+    },
+    {
+      "content": "ignored gitdir: ../repo/.git/worktrees/unit\n",
+      "name": "unicode-line-break",
+      "writable": [
+        "<ROOT>/workspace",
+        "<ROOT>/repo/.git"
+      ]
+    },
+    {
+      "content": "",
+      "name": "empty",
+      "writable": [
+        "<ROOT>/workspace"
+      ]
+    },
+    {
+      "content": null,
+      "name": "directory",
+      "writable": [
+        "<ROOT>/workspace"
+      ]
+    }
+  ],
+  "null": {
+    "argv": [
+      "/bin/sh",
+      "-c",
+      "printf '%s\\n' 'hello; $(false)'"
+    ],
+    "confined": false,
+    "describe": "none (host execution)",
+    "kind": "NullSandbox",
+    "reason": null
+  },
+  "null_rebind_same": true,
+  "selections": [
+    {
+      "available": true,
+      "binary_exists": true,
+      "error": null,
+      "protect_credentials": true,
+      "require": false,
+      "result": {
+        "allow_network": true,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) (require-not (literal (param \"NOREAD_2\"))) (require-not (subpath (param \"NOREAD_2\"))) (require-not (literal (param \"NOREAD_3\"))) (require-not (subpath (param \"NOREAD_3\"))) (require-not (literal (param \"NOREAD_4\"))) (require-not (subpath (param \"NOREAD_4\"))) (require-not (literal (param \"NOREAD_5\"))) (require-not (subpath (param \"NOREAD_5\"))) (require-not (literal (param \"NOREAD_6\"))) (require-not (subpath (param \"NOREAD_6\"))) (require-not (literal (param \"NOREAD_7\"))) (require-not (subpath (param \"NOREAD_7\"))) (require-not (literal (param \"NOREAD_8\"))) (require-not (subpath (param \"NOREAD_8\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.ssh",
+          "-D",
+          "NOREAD_1=<ROOT>/home/.aws",
+          "-D",
+          "NOREAD_2=<ROOT>/home/.gnupg",
+          "-D",
+          "NOREAD_3=<ROOT>/home/.kube",
+          "-D",
+          "NOREAD_4=<ROOT>/home/.config/gcloud",
+          "-D",
+          "NOREAD_5=<ROOT>/home/.netrc",
+          "-D",
+          "NOREAD_6=<ROOT>/home/.docker/config.json",
+          "-D",
+          "NOREAD_7=<ROOT>/home/.config/gh",
+          "-D",
+          "NOREAD_8=<ROOT>/operator",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: <ROOT>/home/.ssh, <ROOT>/home/.aws, <ROOT>/home/.gnupg, <ROOT>/home/.kube, <ROOT>/home/.config/gcloud, <ROOT>/home/.netrc, <ROOT>/home/.docker/config.json, <ROOT>/home/.config/gh, <ROOT>/operator; network allowed)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) (require-not (literal (param \"NOREAD_2\"))) (require-not (subpath (param \"NOREAD_2\"))) (require-not (literal (param \"NOREAD_3\"))) (require-not (subpath (param \"NOREAD_3\"))) (require-not (literal (param \"NOREAD_4\"))) (require-not (subpath (param \"NOREAD_4\"))) (require-not (literal (param \"NOREAD_5\"))) (require-not (subpath (param \"NOREAD_5\"))) (require-not (literal (param \"NOREAD_6\"))) (require-not (subpath (param \"NOREAD_6\"))) (require-not (literal (param \"NOREAD_7\"))) (require-not (subpath (param \"NOREAD_7\"))) (require-not (literal (param \"NOREAD_8\"))) (require-not (subpath (param \"NOREAD_8\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n' -D NOREAD_0=<ROOT>/home/.ssh -D NOREAD_1=<ROOT>/home/.aws -D NOREAD_2=<ROOT>/home/.gnupg -D NOREAD_3=<ROOT>/home/.kube -D NOREAD_4=<ROOT>/home/.config/gcloud -D NOREAD_5=<ROOT>/home/.netrc -D NOREAD_6=<ROOT>/home/.docker/config.json -D NOREAD_7=<ROOT>/home/.config/gh -D NOREAD_8=<ROOT>/operator -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.ssh",
+          "<ROOT>/home/.aws",
+          "<ROOT>/home/.gnupg",
+          "<ROOT>/home/.kube",
+          "<ROOT>/home/.config/gcloud",
+          "<ROOT>/home/.netrc",
+          "<ROOT>/home/.docker/config.json",
+          "<ROOT>/home/.config/gh",
+          "<ROOT>/operator"
+        ],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "system": "Darwin",
+      "unavailable_reason": null
+    },
+    {
+      "available": true,
+      "binary_exists": true,
+      "error": null,
+      "protect_credentials": true,
+      "require": true,
+      "result": {
+        "allow_network": true,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) (require-not (literal (param \"NOREAD_2\"))) (require-not (subpath (param \"NOREAD_2\"))) (require-not (literal (param \"NOREAD_3\"))) (require-not (subpath (param \"NOREAD_3\"))) (require-not (literal (param \"NOREAD_4\"))) (require-not (subpath (param \"NOREAD_4\"))) (require-not (literal (param \"NOREAD_5\"))) (require-not (subpath (param \"NOREAD_5\"))) (require-not (literal (param \"NOREAD_6\"))) (require-not (subpath (param \"NOREAD_6\"))) (require-not (literal (param \"NOREAD_7\"))) (require-not (subpath (param \"NOREAD_7\"))) (require-not (literal (param \"NOREAD_8\"))) (require-not (subpath (param \"NOREAD_8\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n",
+          "-D",
+          "NOREAD_0=<ROOT>/home/.ssh",
+          "-D",
+          "NOREAD_1=<ROOT>/home/.aws",
+          "-D",
+          "NOREAD_2=<ROOT>/home/.gnupg",
+          "-D",
+          "NOREAD_3=<ROOT>/home/.kube",
+          "-D",
+          "NOREAD_4=<ROOT>/home/.config/gcloud",
+          "-D",
+          "NOREAD_5=<ROOT>/home/.netrc",
+          "-D",
+          "NOREAD_6=<ROOT>/home/.docker/config.json",
+          "-D",
+          "NOREAD_7=<ROOT>/home/.config/gh",
+          "-D",
+          "NOREAD_8=<ROOT>/operator",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: <ROOT>/home/.ssh, <ROOT>/home/.aws, <ROOT>/home/.gnupg, <ROOT>/home/.kube, <ROOT>/home/.config/gcloud, <ROOT>/home/.netrc, <ROOT>/home/.docker/config.json, <ROOT>/home/.config/gh, <ROOT>/operator; network allowed)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) (require-not (literal (param \"NOREAD_1\"))) (require-not (subpath (param \"NOREAD_1\"))) (require-not (literal (param \"NOREAD_2\"))) (require-not (subpath (param \"NOREAD_2\"))) (require-not (literal (param \"NOREAD_3\"))) (require-not (subpath (param \"NOREAD_3\"))) (require-not (literal (param \"NOREAD_4\"))) (require-not (subpath (param \"NOREAD_4\"))) (require-not (literal (param \"NOREAD_5\"))) (require-not (subpath (param \"NOREAD_5\"))) (require-not (literal (param \"NOREAD_6\"))) (require-not (subpath (param \"NOREAD_6\"))) (require-not (literal (param \"NOREAD_7\"))) (require-not (subpath (param \"NOREAD_7\"))) (require-not (literal (param \"NOREAD_8\"))) (require-not (subpath (param \"NOREAD_8\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n' -D NOREAD_0=<ROOT>/home/.ssh -D NOREAD_1=<ROOT>/home/.aws -D NOREAD_2=<ROOT>/home/.gnupg -D NOREAD_3=<ROOT>/home/.kube -D NOREAD_4=<ROOT>/home/.config/gcloud -D NOREAD_5=<ROOT>/home/.netrc -D NOREAD_6=<ROOT>/home/.docker/config.json -D NOREAD_7=<ROOT>/home/.config/gh -D NOREAD_8=<ROOT>/operator -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/home/.ssh",
+          "<ROOT>/home/.aws",
+          "<ROOT>/home/.gnupg",
+          "<ROOT>/home/.kube",
+          "<ROOT>/home/.config/gcloud",
+          "<ROOT>/home/.netrc",
+          "<ROOT>/home/.docker/config.json",
+          "<ROOT>/home/.config/gh",
+          "<ROOT>/operator"
+        ],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "system": "Darwin",
+      "unavailable_reason": null
+    },
+    {
+      "available": true,
+      "binary_exists": true,
+      "error": null,
+      "protect_credentials": false,
+      "require": false,
+      "result": {
+        "allow_network": true,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n",
+          "-D",
+          "NOREAD_0=<ROOT>/operator",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: <ROOT>/operator; network allowed)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n' -D NOREAD_0=<ROOT>/operator -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/operator"
+        ],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "system": "Darwin",
+      "unavailable_reason": null
+    },
+    {
+      "available": true,
+      "binary_exists": true,
+      "error": null,
+      "protect_credentials": false,
+      "require": true,
+      "result": {
+        "allow_network": true,
+        "argv": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n",
+          "-D",
+          "NOREAD_0=<ROOT>/operator",
+          "-D",
+          "WRITE_0=<ROOT>/workspace",
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": true,
+        "describe": "seatbelt (write: <ROOT>/workspace; no-read: <ROOT>/operator; network allowed)",
+        "extra": [],
+        "kind": "SeatbeltSandbox",
+        "preview": "/usr/bin/sandbox-exec -p '(version 1)\n(deny default)\n\n; child processes inherit this policy\n(allow process-exec)\n(allow process-fork)\n(allow signal (target same-sandbox))\n(allow process-info* (target same-sandbox))\n\n; a process that cannot write /dev/null cannot redirect output\n(allow file-write-data\n  (require-all\n    (path \"/dev/null\")\n    (vnode-type CHARACTER-DEVICE)))\n\n; machine facts: without these, tooling that probes the CPU or hostname fails\n(allow sysctl-read)\n(allow mach-lookup)\n(allow ipc-posix-sem)\n(allow user-preference-read)\n\n; interactive tools expect a tty\n(allow pseudo-tty)\n(allow file-read* file-write* file-ioctl (literal \"/dev/ptmx\"))\n\n; reads allowed except the protected roots\n(allow file-read* (require-all (require-not (literal (param \"NOREAD_0\"))) (require-not (subpath (param \"NOREAD_0\"))) ))\n; writes confined to the declared roots\n(allow file-write* (subpath (param \"WRITE_0\")))\n\n(allow network-outbound)\n(allow network-inbound)\n(allow system-socket)\n' -D NOREAD_0=<ROOT>/operator -D WRITE_0=<ROOT>/workspace /bin/sh -c 'printf '\"'\"'%s\\n'\"'\"' '\"'\"'hello; $(false)'\"'\"''",
+        "reason": null,
+        "unreadable": [
+          "<ROOT>/operator"
+        ],
+        "writable": [
+          "<ROOT>/workspace"
+        ]
+      },
+      "system": "Darwin",
+      "unavailable_reason": null
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": null,
+      "protect_credentials": true,
+      "require": false,
+      "result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": false,
+        "describe": "unavailable: /usr/bin/sandbox-exec is missing on this macOS host",
+        "kind": "UnavailableSandbox",
+        "reason": "/usr/bin/sandbox-exec is missing on this macOS host"
+      },
+      "system": "Darwin",
+      "unavailable_reason": "/usr/bin/sandbox-exec is missing on this macOS host"
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": {
+        "kind": "SandboxUnavailable",
+        "message": "/usr/bin/sandbox-exec is missing on this macOS host"
+      },
+      "protect_credentials": true,
+      "require": true,
+      "result": null,
+      "system": "Darwin",
+      "unavailable_reason": "/usr/bin/sandbox-exec is missing on this macOS host"
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": null,
+      "protect_credentials": false,
+      "require": false,
+      "result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": false,
+        "describe": "unavailable: /usr/bin/sandbox-exec is missing on this macOS host",
+        "kind": "UnavailableSandbox",
+        "reason": "/usr/bin/sandbox-exec is missing on this macOS host"
+      },
+      "system": "Darwin",
+      "unavailable_reason": "/usr/bin/sandbox-exec is missing on this macOS host"
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": {
+        "kind": "SandboxUnavailable",
+        "message": "/usr/bin/sandbox-exec is missing on this macOS host"
+      },
+      "protect_credentials": false,
+      "require": true,
+      "result": null,
+      "system": "Darwin",
+      "unavailable_reason": "/usr/bin/sandbox-exec is missing on this macOS host"
+    },
+    {
+      "available": false,
+      "binary_exists": true,
+      "error": null,
+      "protect_credentials": true,
+      "require": false,
+      "result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": false,
+        "describe": "unavailable: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container",
+        "kind": "UnavailableSandbox",
+        "reason": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "system": "Linux",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+    },
+    {
+      "available": false,
+      "binary_exists": true,
+      "error": {
+        "kind": "SandboxUnavailable",
+        "message": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "protect_credentials": true,
+      "require": true,
+      "result": null,
+      "system": "Linux",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+    },
+    {
+      "available": false,
+      "binary_exists": true,
+      "error": null,
+      "protect_credentials": false,
+      "require": false,
+      "result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": false,
+        "describe": "unavailable: Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container",
+        "kind": "UnavailableSandbox",
+        "reason": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "system": "Linux",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+    },
+    {
+      "available": false,
+      "binary_exists": true,
+      "error": {
+        "kind": "SandboxUnavailable",
+        "message": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "protect_credentials": false,
+      "require": true,
+      "result": null,
+      "system": "Linux",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Linux; there is no Linux or Windows backend yet, so confinement needs a container"
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": null,
+      "protect_credentials": true,
+      "require": false,
+      "result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": false,
+        "describe": "unavailable: Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container",
+        "kind": "UnavailableSandbox",
+        "reason": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "system": "Windows",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": {
+        "kind": "SandboxUnavailable",
+        "message": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "protect_credentials": true,
+      "require": true,
+      "result": null,
+      "system": "Windows",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": null,
+      "protect_credentials": false,
+      "require": false,
+      "result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "printf '%s\\n' 'hello; $(false)'"
+        ],
+        "confined": false,
+        "describe": "unavailable: Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container",
+        "kind": "UnavailableSandbox",
+        "reason": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "system": "Windows",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+    },
+    {
+      "available": false,
+      "binary_exists": false,
+      "error": {
+        "kind": "SandboxUnavailable",
+        "message": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+      },
+      "protect_credentials": false,
+      "require": true,
+      "result": null,
+      "system": "Windows",
+      "unavailable_reason": "Seatbelt is macOS-only and this host is Windows; there is no Linux or Windows backend yet, so confinement needs a container"
+    }
+  ],
+  "unavailable": {
+    "argv": [
+      "/bin/sh",
+      "-c",
+      "printf '%s\\n' 'hello; $(false)'"
+    ],
+    "confined": false,
+    "describe": "unavailable: fixture unavailable",
+    "kind": "UnavailableSandbox",
+    "reason": "fixture unavailable"
+  },
+  "unavailable_rebind_same": true
+}

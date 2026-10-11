@@ -1,0 +1,64 @@
+{
+  "rows": [
+    {
+      "foreign_status": 404,
+      "frame_event": "workflow_paused",
+      "frame_id": "2",
+      "frame_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-1\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "name": "nonfinite",
+      "persist_error": null,
+      "raw_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-1\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}}",
+      "recorded_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-1\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "stored_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-1\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "utf8_error": null
+    },
+    {
+      "foreign_status": 404,
+      "frame_event": "workflow_paused",
+      "frame_id": "2",
+      "frame_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-2\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"\\ud800\"}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "name": "surrogate-text",
+      "persist_error": "UnicodeEncodeError",
+      "raw_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-2\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"\\ud800\"}}",
+      "recorded_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-2\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"\\ud800\"}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "stored_wire": null,
+      "utf8_error": "UnicodeEncodeError"
+    },
+    {
+      "foreign_status": 404,
+      "frame_event": "workflow_paused",
+      "frame_id": "2",
+      "frame_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-3\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"\\udfff\": [true, null, 1, 1.0]}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "name": "surrogate-key",
+      "persist_error": "UnicodeEncodeError",
+      "raw_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-3\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"\\udfff\": [true, null, 1, 1.0]}}",
+      "recorded_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-3\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"\\udfff\": [true, null, 1, 1.0]}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "stored_wire": null,
+      "utf8_error": "UnicodeEncodeError"
+    },
+    {
+      "foreign_status": 404,
+      "frame_event": "workflow_paused",
+      "frame_id": "2",
+      "frame_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-4\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"nested\": [{\"text\": \"\\ud800\", \"number\": NaN}, \"<secret-hidden>\"]}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "name": "nested-mixed",
+      "persist_error": "UnicodeEncodeError",
+      "raw_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-4\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"nested\": [{\"text\": \"\\ud800\", \"number\": NaN}, \"legacy-workflow-secret\"]}}",
+      "recorded_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-4\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"nested\": [{\"text\": \"\\ud800\", \"number\": NaN}, \"<secret-hidden>\"]}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "stored_wire": null,
+      "utf8_error": "UnicodeEncodeError"
+    },
+    {
+      "foreign_status": 404,
+      "frame_event": "workflow_paused",
+      "frame_id": "2",
+      "frame_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-5\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"<secret-hidden>\": \"last\", \"value\": \"<secret-hidden>\"}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "name": "masked-key-collision",
+      "persist_error": null,
+      "raw_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-5\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"legacy-workflow-secret\": \"first\", \"<secret-hidden>\": \"last\", \"value\": \"legacy-workflow-secret\"}}",
+      "recorded_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-5\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"<secret-hidden>\": \"last\", \"value\": \"<secret-hidden>\"}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "stored_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event-5\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"<secret-hidden>\": \"last\", \"value\": \"<secret-hidden>\"}, \"seq\": 2, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"sequence\": 2}",
+      "utf8_error": null
+    }
+  ]
+}

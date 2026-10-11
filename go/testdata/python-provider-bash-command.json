@@ -1,0 +1,2057 @@
+{
+  "cases": [
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'NoneType' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": null}",
+      "input_json": "{\"command\": null}",
+      "mode": "keep",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'NoneType' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'NoneType' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "True",
+            "verb": "run"
+          },
+          "input": {
+            "command": true
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'bool' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": true}",
+      "input_json": "{\"command\": true}",
+      "mode": "keep",
+      "name": "boolean",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'bool' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'bool' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "17",
+            "verb": "run"
+          },
+          "input": {
+            "command": 17
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'int' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": 17}",
+      "input_json": "{\"command\": 17}",
+      "mode": "keep",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'int' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'int' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "13.75",
+            "verb": "run"
+          },
+          "input": {
+            "command": 13.75
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'float' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": 13.75}",
+      "input_json": "{\"command\": 13.75}",
+      "mode": "keep",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "[]",
+            "verb": "run"
+          },
+          "input": {
+            "command": []
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": []}",
+      "input_json": "{\"command\": []}",
+      "mode": "keep",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "['alpha',",
+        "'beta']"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "['alpha', 'beta']",
+            "verb": "run"
+          },
+          "input": {
+            "command": [
+              "alpha",
+              "beta"
+            ]
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": [\"alpha\", \"beta\"]}",
+      "input_json": "{\"command\": [\"alpha\", \"beta\"]}",
+      "mode": "keep",
+      "name": "array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "{}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {}
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": {}}",
+      "input_json": "{\"command\": {}}",
+      "mode": "keep",
+      "name": "empty-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "{'secret-key':",
+        "'secret-value'}"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "{'secret-key': 'secret-value'}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {
+              "secret-key": "secret-value"
+            }
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": {\"secret-key\": \"secret-value\"}}",
+      "input_json": "{\"command\": {\"secret-key\": \"secret-value\"}}",
+      "mode": "keep",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'NoneType' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'NoneType' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'NoneType' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "True",
+            "verb": "run"
+          },
+          "input": {
+            "command": true,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'bool' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": true, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": true, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "boolean",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'bool' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'bool' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "17",
+            "verb": "run"
+          },
+          "input": {
+            "command": 17,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'int' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": 17, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": 17, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'int' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'int' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "13.75",
+            "verb": "run"
+          },
+          "input": {
+            "command": 13.75,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'float' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": 13.75, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": 13.75, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "[]",
+            "verb": "run"
+          },
+          "input": {
+            "command": [],
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": [], \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": [], \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "['alpha',",
+        "'beta']"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "['alpha', 'beta']",
+            "verb": "run"
+          },
+          "input": {
+            "command": [
+              "alpha",
+              "beta"
+            ],
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": [\"alpha\", \"beta\"], \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": [\"alpha\", \"beta\"], \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "{}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {},
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": {}, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": {}, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "empty-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": false,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "{'secret-key':",
+        "'secret-value'}"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "{'secret-key': 'secret-value'}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {
+              "secret-key": "secret-value"
+            },
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": {\"secret-key\": \"secret-value\"}, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": {\"secret-key\": \"secret-value\"}, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'NoneType' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": null}",
+      "input_json": "{\"command\": null}",
+      "mode": "keep",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'NoneType' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'NoneType' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "True",
+            "verb": "run"
+          },
+          "input": {
+            "command": true
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'bool' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": true}",
+      "input_json": "{\"command\": true}",
+      "mode": "keep",
+      "name": "boolean",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'bool' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'bool' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "17",
+            "verb": "run"
+          },
+          "input": {
+            "command": 17
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'int' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": 17}",
+      "input_json": "{\"command\": 17}",
+      "mode": "keep",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'int' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'int' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "13.75",
+            "verb": "run"
+          },
+          "input": {
+            "command": 13.75
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'float' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": 13.75}",
+      "input_json": "{\"command\": 13.75}",
+      "mode": "keep",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "[]",
+            "verb": "run"
+          },
+          "input": {
+            "command": []
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": []}",
+      "input_json": "{\"command\": []}",
+      "mode": "keep",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "['alpha',",
+        "'beta']"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "['alpha', 'beta']",
+            "verb": "run"
+          },
+          "input": {
+            "command": [
+              "alpha",
+              "beta"
+            ]
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": [\"alpha\", \"beta\"]}",
+      "input_json": "{\"command\": [\"alpha\", \"beta\"]}",
+      "mode": "keep",
+      "name": "array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "{}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {}
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": {}}",
+      "input_json": "{\"command\": {}}",
+      "mode": "keep",
+      "name": "empty-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "{'secret-key':",
+        "'secret-value'}"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "{'secret-key': 'secret-value'}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {
+              "secret-key": "secret-value"
+            }
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'lower'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": false,
+      "final_input_json": "{\"command\": {\"secret-key\": \"secret-value\"}}",
+      "input_json": "{\"command\": {\"secret-key\": \"secret-value\"}}",
+      "mode": "keep",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'lower'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'lower'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'NoneType' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'NoneType' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'NoneType' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "True",
+            "verb": "run"
+          },
+          "input": {
+            "command": true,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'bool' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": true, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": true, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "boolean",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'bool' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'bool' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "17",
+            "verb": "run"
+          },
+          "input": {
+            "command": 17,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'int' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": 17, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": 17, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'int' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'int' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "13.75",
+            "verb": "run"
+          },
+          "input": {
+            "command": 13.75,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'float' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": 13.75, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": 13.75, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "[]",
+            "verb": "run"
+          },
+          "input": {
+            "command": [],
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": [], \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": [], \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "empty-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "['alpha',",
+        "'beta']"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "['alpha', 'beta']",
+            "verb": "run"
+          },
+          "input": {
+            "command": [
+              "alpha",
+              "beta"
+            ],
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'list' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": [\"alpha\", \"beta\"], \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": [\"alpha\", \"beta\"], \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "{}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {},
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": {}, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": {}, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "empty-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": true,
+      "background_live": 0,
+      "default_candidate": [
+        "bash",
+        "{'secret-key':",
+        "'secret-value'}"
+      ],
+      "events": [
+        {
+          "display": {
+            "object": "{'secret-key': 'secret-value'}",
+            "verb": "run"
+          },
+          "input": {
+            "command": {
+              "secret-key": "secret-value"
+            },
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: 'dict' object has no attribute 'split'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": {\"secret-key\": \"secret-value\"}, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": {\"secret-key\": \"secret-value\"}, \"run_in_background\": \"false\"}",
+      "mode": "keep",
+      "name": "object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null,
+            "extra": 1,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": true,
+          "name": "bash",
+          "output": "Error: _bash() got an unexpected keyword argument 'extra'",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": null, \"run_in_background\": \"false\", \"extra\": 1}",
+      "input_json": "{\"command\": null, \"run_in_background\": \"false\", \"extra\": 1}",
+      "mode": "extra",
+      "name": "null-extra",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'extra'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'extra'",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "error": false,
+          "name": "bash",
+          "output": "command-rewritten",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": \"printf command-rewritten\"}",
+      "input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "mode": "rewrite",
+      "name": "null-rewrite",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "command-rewritten"
+        }
+      ],
+      "output": "command-rewritten",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "denied": true,
+          "error": false,
+          "name": "bash",
+          "output": "denied by source probe",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "mode": "deny",
+      "name": "null-deny",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "background_enabled": true,
+      "background_initialized": false,
+      "background_live": 0,
+      "default_candidate": null,
+      "events": [
+        {
+          "display": {
+            "object": "None",
+            "verb": "run"
+          },
+          "input": {
+            "command": null,
+            "run_in_background": "false"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        },
+        {
+          "denied": true,
+          "error": false,
+          "name": "bash",
+          "output": "denied by source guard",
+          "type": "tool_result"
+        }
+      ],
+      "explicit": true,
+      "final_input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "input_json": "{\"command\": null, \"run_in_background\": \"false\"}",
+      "mode": "guard-deny",
+      "name": "null-guard-deny",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source guard"
+        }
+      ],
+      "output": "denied by source guard",
+      "proposed_candidate": null,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    }
+  ],
+  "labels": [
+    {
+      "display": {
+        "object": "None",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": null}",
+      "masked_input_json": "{\"command\": null}",
+      "name": "null"
+    },
+    {
+      "display": {
+        "object": "True",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": true}",
+      "masked_input_json": "{\"command\": true}",
+      "name": "boolean"
+    },
+    {
+      "display": {
+        "object": "17",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": 17}",
+      "masked_input_json": "{\"command\": 17}",
+      "name": "integer"
+    },
+    {
+      "display": {
+        "object": "13.75",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": 13.75}",
+      "masked_input_json": "{\"command\": 13.75}",
+      "name": "float"
+    },
+    {
+      "display": {
+        "object": "['中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中…",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": [\"\\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \"]}",
+      "masked_input_json": "{\"command\": [\"\\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \"]}",
+      "name": "unicode-array"
+    },
+    {
+      "display": {
+        "object": "['a\\'b\"c', 'line\\nbreak']",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": [\"a'b\\\"c\", \"line\\nbreak\"]}",
+      "masked_input_json": "{\"command\": [\"a'b\\\"c\", \"line\\nbreak\"]}",
+      "name": "quoted-array"
+    },
+    {
+      "display": {
+        "object": "['<secret-hidden>', {'<secret-hidden>': '<secret-hidden>'}]",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": [\"sk-display-value-123\", {\"sk-display-key-123\": \"sk-display-value-123\"}]}",
+      "masked_input_json": "{\"command\": [\"<secret-hidden>\", {\"<secret-hidden>\": \"<secret-hidden>\"}]}",
+      "name": "masked-array"
+    },
+    {
+      "display": {
+        "object": "{'<secret-hidden>': '<secret-hidden>'}",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": {\"sk-display-key-123\": \"sk-display-value-123\"}}",
+      "masked_input_json": "{\"command\": {\"<secret-hidden>\": \"<secret-hidden>\"}}",
+      "name": "masked-object"
+    },
+    {
+      "display": {
+        "object": "{'<secret-hidden>': 'last'}",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": {\"sk-display-key-123\": \"first\", \"sk-display-value-123\": \"last\"}}",
+      "masked_input_json": "{\"command\": {\"<secret-hidden>\": \"last\"}}",
+      "name": "masked-collision"
+    },
+    {
+      "display": {
+        "object": "term",
+        "verb": "search"
+      },
+      "input_json": "{\"command\": \"rg term\"}",
+      "masked_input_json": "{\"command\": \"rg term\"}",
+      "name": "text-search"
+    },
+    {
+      "display": {
+        "object": "cat one | wc -l",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": \"cat one | wc -l\"}",
+      "masked_input_json": "{\"command\": \"cat one | wc -l\"}",
+      "name": "text-opaque"
+    },
+    {
+      "display": {
+        "object": "echo <secret-hidden> 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文🌟 中文…",
+        "verb": "run"
+      },
+      "input_json": "{\"command\": \"echo sk-display-value-123 \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \"}",
+      "masked_input_json": "{\"command\": \"echo <secret-hidden> \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \\u4e2d\\u6587\\ud83c\\udf1f \"}",
+      "name": "masked-text-cap"
+    }
+  ],
+  "permissions": [
+    {
+      "events": [],
+      "input_json": "{\"command\": null}",
+      "mode": "auto",
+      "name": "null",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": null}",
+      "mode": "readonly",
+      "name": "null",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [],
+      "input_json": "{\"command\": true}",
+      "mode": "auto",
+      "name": "boolean",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": true}",
+      "mode": "readonly",
+      "name": "boolean",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [],
+      "input_json": "{\"command\": 17}",
+      "mode": "auto",
+      "name": "integer",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": 17}",
+      "mode": "readonly",
+      "name": "integer",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [],
+      "input_json": "{\"command\": 13.75}",
+      "mode": "auto",
+      "name": "float",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": 13.75}",
+      "mode": "readonly",
+      "name": "float",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [],
+      "input_json": "{\"command\": []}",
+      "mode": "auto",
+      "name": "empty-array",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": []}",
+      "mode": "readonly",
+      "name": "empty-array",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [],
+      "input_json": "{\"command\": [\"alpha\", \"beta\"]}",
+      "mode": "auto",
+      "name": "array",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": [\"alpha\", \"beta\"]}",
+      "mode": "readonly",
+      "name": "array",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [],
+      "input_json": "{\"command\": {}}",
+      "mode": "auto",
+      "name": "empty-object",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": {}}",
+      "mode": "readonly",
+      "name": "empty-object",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [],
+      "input_json": "{\"command\": {\"secret-key\": \"secret-value\"}}",
+      "mode": "auto",
+      "name": "object",
+      "output": null
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": {\"secret-key\": \"secret-value\"}}",
+      "mode": "readonly",
+      "name": "object",
+      "output": "Permission denied: this session is read-only (tool risk: exec)"
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "rm -rf /",
+          "rule": "immutable-deny-list",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": [\"rm -rf /\"]}",
+      "mode": "auto",
+      "name": "blocked-array",
+      "output": "Permission denied: 'rm -rf /' is blocked"
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "rm -rf /",
+          "rule": "immutable-deny-list",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": [\"rm -rf /\"]}",
+      "mode": "readonly",
+      "name": "blocked-array",
+      "output": "Permission denied: 'rm -rf /' is blocked"
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "rm -rf /",
+          "rule": "immutable-deny-list",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": {\"command\": \"rm -rf /\"}}",
+      "mode": "auto",
+      "name": "blocked-object",
+      "output": "Permission denied: 'rm -rf /' is blocked"
+    },
+    {
+      "events": [
+        {
+          "decision": "deny",
+          "reason": "rm -rf /",
+          "rule": "immutable-deny-list",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "input_json": "{\"command\": {\"command\": \"rm -rf /\"}}",
+      "mode": "readonly",
+      "name": "blocked-object",
+      "output": "Permission denied: 'rm -rf /' is blocked"
+    }
+  ],
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "BackgroundManager.run": "ecfae7c58a20150d65482726c10485c113da042733fd21d859904db9e5ca9a4f",
+    "PermissionHook.before_tool": "870e30d5b36b24a9483bb042c0d2492cebd0efc7fcdd67ad93d58040dba1e6d7",
+    "SecretRegistry.mask_payload": "cd395ec7a79c22dc109dc61dd58256e40ce03b23db05c79d4460dc89eb263e4d",
+    "Toolset.run_bash_result": "704dd3b10d71ccae0550d3fb0f16ca9d9d271ae72f992c497f68ff737b8e3d2f",
+    "activity.tool_label": "2292e2b1d5700b8481366e8a2673c1b6828e957590881770e62813a4c34ef53a",
+    "builtins._bash": "46041d52d94328cc68c4abc916f9b160d47b2bc68f27127dfbb10e5d72ede732",
+    "grant_candidate": "89e9deac921548cbf489102f62d0f889eb226d19469c8d81b7b1b648b00b9b92",
+    "looks_dangerous": "024752847820124ea07cc2957b4243c67a7b2b4ef988b0896b8ff4a610cc45d1",
+    "proposed_candidate": "ca63205bc892974f9e28c799edb9b97a0ddfbed74739fb8a2156d9c09115c089",
+    "should_run_background": "53849430b4d9a3f4a237d57f2c9d29667b7c1d88116b41419c765eb7cfd8552f"
+  }
+}

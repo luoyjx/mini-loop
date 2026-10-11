@@ -1,0 +1,1971 @@
+{
+  "cases": [
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-missing",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": null}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-null",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": false}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-false",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": true}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-true",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-zero",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.0}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-float-zero",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.0}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-negative-zero",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 2}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-integer",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: Timeout (0.005s)",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 0.005}",
+      "kills_at_settlement": 1,
+      "live_at_settlement": 0,
+      "name": "timeout-fraction",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: Timeout (0.005s)",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: Timeout (0.005s)",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: Timeout (-1s)",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -1}",
+      "kills_at_settlement": 1,
+      "live_at_settlement": 0,
+      "name": "timeout-negative",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: Timeout (-1s)",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: Timeout (-1s)",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: Timeout (-0.5s)",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -0.5}",
+      "kills_at_settlement": 1,
+      "live_at_settlement": 0,
+      "name": "timeout-negative-fraction",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: Timeout (-0.5s)",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: Timeout (-0.5s)",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-empty-text",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: '<=' not supported between instances of 'str' and 'int'",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"2\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-numeric-text",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: '<=' not supported between instances of 'str' and 'int'",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: '<=' not supported between instances of 'str' and 'int'",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "check": "[error] Error: '<=' not supported between instances of 'str' and 'int'",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": \"bad\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-text",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: '<=' not supported between instances of 'str' and 'int'",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: '<=' not supported between instances of 'str' and 'int'",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": []}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-empty-array",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: '<=' not supported between instances of 'list' and 'int'",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": [1]}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-array",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: '<=' not supported between instances of 'list' and 'int'",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: '<=' not supported between instances of 'list' and 'int'",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {}}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-empty-object",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: '<=' not supported between instances of 'dict' and 'int'",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": {\"keep\": 1}}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-object",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: '<=' not supported between instances of 'dict' and 'int'",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: '<=' not supported between instances of 'dict' and 'int'",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "check": "[error] Error: Timeout (nans)",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": NaN}",
+      "kills_at_settlement": 1,
+      "live_at_settlement": 0,
+      "name": "timeout-nan",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: Timeout (nans)",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: Timeout (nans)",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": Infinity}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-infinity",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: Timeout (-infs)",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": -Infinity}",
+      "kills_at_settlement": 1,
+      "live_at_settlement": 0,
+      "name": "timeout-negative-infinity",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: Timeout (-infs)",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: Timeout (-infs)",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[error] Error: int too large to convert to float",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "0.03;"
+      ],
+      "input_json": "{\"command\": \"sleep 0.03; printf options-done\", \"timeout\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "timeout-huge-integer",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: int too large to convert to float",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 0.03; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 0.03; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: int too large to convert to float",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": [
+        {
+          "class": "RuntimeWarning",
+          "message": "coroutine 'BackgroundManager._exec.<locals>._capture' was never awaited"
+        }
+      ]
+    },
+    {
+      "check": "[error] Error: Timeout (Trues)",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "sleep",
+        "1.1;"
+      ],
+      "input_json": "{\"command\": \"sleep 1.1; printf options-done\", \"timeout\": true}",
+      "kills_at_settlement": 1,
+      "live_at_settlement": 0,
+      "name": "timeout-true-expired",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "Error: Timeout (Trues)",
+          "status": "error"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: sleep 1.1; printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: sleep 1.1; printf options-done",
+      "proposed_candidate": null,
+      "result": "Error: Timeout (Trues)",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "error",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-missing",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": null}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-null",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": false}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-false",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": true}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-true",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-zero",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0.0}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-float-zero",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -0.0}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-negative-zero",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 2}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-integer",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 0.005}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-fraction",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -1}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-negative",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -0.5}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-negative-fraction",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-empty-text",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"2\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-numeric-text",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": \"bad\"}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-text",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": []}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-empty-array",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [1]}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-array",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": {}}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-empty-object",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": {\"keep\": 1}}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-object",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": NaN}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-nan",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": Infinity}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-infinity",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": -Infinity}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-negative-infinity",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-huge-integer",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"options-done\"]}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-valid",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", 1]}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-mixed",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    },
+    {
+      "check": "[completed] options-done",
+      "counter": 1,
+      "default_candidate": [
+        "background_run",
+        "printf",
+        "options-done"
+      ],
+      "input_json": "{\"command\": \"printf options-done\", \"approval_prefix\": [\"printf\", \"other\"]}",
+      "kills_at_settlement": 0,
+      "live_at_settlement": 0,
+      "name": "prefix-mismatch",
+      "notifications": [
+        {
+          "bg_id": "bg_0001",
+          "result": "options-done",
+          "status": "completed"
+        }
+      ],
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Started background task bg_0001: printf options-done"
+        }
+      ],
+      "output": "Started background task bg_0001: printf options-done",
+      "proposed_candidate": null,
+      "result": "options-done",
+      "starts_at_return": 0,
+      "starts_at_settlement": 1,
+      "status": "completed",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ],
+      "warnings": []
+    }
+  ],
+  "limits": [
+    "Standalone actual gate/task execution; no managed journal or SDK transport acceptance claim",
+    "Source type/overflow faults do not kill groups; capture joins harmless commands after settlement",
+    "No wall-clock durations or process identifiers are fixture authority",
+    "NaN is observed without an outer watchdog; other timer heaps can change its Source outcome"
+  ],
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "BackgroundManager._exec": "5cc677234beed41376abbf972978f9246ddbd19daf9fb41ae86062cffab4ab68",
+    "BackgroundManager._settle": "1fbe7fe016fa8c6f54777345bc9262011feeab5399cc24205d23362980de550c",
+    "BackgroundManager.run": "ecfae7c58a20150d65482726c10485c113da042733fd21d859904db9e5ca9a4f",
+    "asyncio.wait_for": "2e3efae791fd8896c9e4b594bde9d03a62a6b1986ad11390d31523fe43a85c37",
+    "capture.background_option_inputs": "2b127b492ff052b374a9095ffaab976da4a98f23f221d67bedbc81778cc74116",
+    "capture.background_options": "55a56b6bc49614e53d8ed44b133788952c70be08b62a6dd3839a6d172cd840d9",
+    "grant_candidate": "89e9deac921548cbf489102f62d0f889eb226d19469c8d81b7b1b648b00b9b92",
+    "proposed_candidate": "ca63205bc892974f9e28c799edb9b97a0ddfbed74739fb8a2156d9c09115c089"
+  },
+  "task_wait": "direct handle await without an observer timer"
+}

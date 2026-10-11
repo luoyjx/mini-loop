@@ -1,0 +1,102 @@
+{
+  "completion_order": [
+    "b",
+    "a",
+    "c",
+    "e",
+    "d"
+  ],
+  "default_tool_limit": 8,
+  "modes": [
+    {
+      "mode": "exclusive",
+      "name": "static-exclusive",
+      "static": false
+    },
+    {
+      "mode": "parallel",
+      "name": "static-parallel",
+      "static": true
+    },
+    {
+      "mode": "exclusive",
+      "name": "override-exclusive",
+      "static": true
+    },
+    {
+      "mode": "parallel",
+      "name": "override-parallel",
+      "static": false
+    },
+    {
+      "mode": "exclusive",
+      "name": "invalid",
+      "static": true
+    },
+    {
+      "mode": "exclusive",
+      "name": "error",
+      "static": true
+    }
+  ],
+  "prompt": "",
+  "prompt_seen": [
+    "start",
+    "start",
+    ""
+  ],
+  "results": [
+    {
+      "content": "a",
+      "tool_use_id": "a",
+      "type": "tool_result"
+    },
+    {
+      "content": "b",
+      "tool_use_id": "b",
+      "type": "tool_result"
+    },
+    {
+      "content": "c",
+      "tool_use_id": "c",
+      "type": "tool_result"
+    },
+    {
+      "content": "d",
+      "tool_use_id": "d",
+      "type": "tool_result"
+    },
+    {
+      "content": "e",
+      "tool_use_id": "e",
+      "type": "tool_result"
+    }
+  ],
+  "step_outputs": [
+    "ac8d8342bbb2362d",
+    "c100f95c1913f9c7",
+    "879923da020d1533",
+    "3fa5834dc920d385",
+    "8c8656c5d114d7f8"
+  ],
+  "todo_turns": [
+    {
+      "counter": 1,
+      "reminders": []
+    },
+    {
+      "counter": 2,
+      "reminders": []
+    },
+    {
+      "counter": 0,
+      "reminders": [
+        "<reminder>Update your todos.</reminder>"
+      ]
+    },
+    {
+      "counter": 1,
+      "reminders": []
+    }
+  ]
+}

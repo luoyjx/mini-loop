@@ -1,0 +1,981 @@
+{
+  "rows": [
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        },
+        {
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "concise",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "cache",
+          "system": "stable"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "side-compaction",
+      "opt_in": false,
+      "purpose": "compaction",
+      "receipts": [],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "cache",
+          "system": "stable"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "side-memory",
+      "opt_in": false,
+      "purpose": "memory_selection",
+      "receipts": [],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "opt-in-required",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 91,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "component_passthrough",
+          "stage": "response_policy",
+          "status": "passthrough",
+          "tokens_after_estimate": 23,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": true,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        },
+        {
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": true,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "opt-in-enabled",
+      "opt_in": true,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": true,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "shadow",
+      "name": "shadow",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "shadow",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "shadow_candidate",
+          "stage": "response_policy",
+          "status": "shadowed",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "off",
+      "name": "off",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "off",
+          "parent_span_id": null,
+          "projected_bytes": 91,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "mode_off",
+          "stage": "response_policy",
+          "status": "passthrough",
+          "tokens_after_estimate": 23,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        },
+        {
+          "max_tokens": 300,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 300,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 300,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": 300,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "existing-tight-cap",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 369,
+          "raw_bytes": 90,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        },
+        {
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": 0,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "zero-uses-default",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "instructions",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "first\n\nsecond"
+        },
+        {
+          "max_tokens": 900,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "first\n\nsecond"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "nil-system",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-response-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 107,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 27,
+          "tokens_before_estimate": 23,
+          "warning_count": 1
+        }
+      ],
+      "require_opt_in": false,
+      "system": null
+    },
+    {
+      "action": "instructions",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "\n\nfirst\n\nsecond"
+        },
+        {
+          "max_tokens": 900,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "\n\nfirst\n\nsecond"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "empty-system",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-response-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 107,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 27,
+          "tokens_before_estimate": 23,
+          "warning_count": 1
+        }
+      ],
+      "require_opt_in": false,
+      "system": ""
+    },
+    {
+      "action": "failure",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "Explain the result",
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable"
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "failure",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "agent-response-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 91,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "component_error:RuntimeError",
+          "stage": "response_policy",
+          "status": "error",
+          "tokens_after_estimate": 23,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "cancel",
+      "calls": [
+        {
+          "phase": "policy"
+        }
+      ],
+      "cap": 1200,
+      "error": "CancelledError",
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "Explain the result"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "Explain the result",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "cancel",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [],
+      "require_opt_in": false,
+      "system": "stable"
+    },
+    {
+      "action": "concise",
+      "calls": [
+        {
+          "phase": "policy"
+        },
+        {
+          "phase": "receipt"
+        },
+        {
+          "phase": "cache",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        },
+        {
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "content": "older",
+              "role": "user"
+            },
+            {
+              "content": "answer",
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "text": "first",
+                  "type": "text"
+                },
+                {
+                  "text": "second",
+                  "type": "text"
+                }
+              ],
+              "role": "user"
+            }
+          ],
+          "phase": "provider",
+          "system": "stable\n\nAnswer concisely. Remove filler, hedging, repetition, and tool-call narration. Preserve negation, code, commands, errors, numbers, units, paths, technical terms, and security or destructive-action warnings exactly enough to act on."
+        }
+      ],
+      "cap": 1200,
+      "error": null,
+      "inputs": [
+        {
+          "applied_by": [],
+          "budget_tokens": 8000,
+          "concise_requested": false,
+          "provider_capabilities": [],
+          "settings": {
+            "instructions": [],
+            "max_output_tokens": 8000,
+            "metadata": [],
+            "verbosity": null
+          },
+          "task": "first\nsecond"
+        }
+      ],
+      "maximum": null,
+      "messages": [
+        {
+          "content": "older",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "first",
+              "type": "text"
+            },
+            {
+              "text": "second",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "text-task",
+      "opt_in": false,
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "require_opt_in": false,
+      "system": "stable"
+    }
+  ]
+}

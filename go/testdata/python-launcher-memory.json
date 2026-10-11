@@ -1,0 +1,84 @@
+{
+  "cases": [
+    {
+      "backend": "shared",
+      "blocked": "",
+      "configured_shared": false,
+      "memory_tools": [],
+      "name": "default-shared",
+      "owner_local": false,
+      "shared_directory": true,
+      "shared_path": "workspaces/.memory",
+      "started": true,
+      "users_directory": false,
+      "users_mode": null
+    },
+    {
+      "backend": "shared",
+      "blocked": "",
+      "configured_shared": true,
+      "memory_tools": [],
+      "name": "configured-shared",
+      "owner_local": false,
+      "shared_directory": true,
+      "shared_path": "memory",
+      "started": true,
+      "users_directory": false,
+      "users_mode": null
+    },
+    {
+      "backend": "owner-local",
+      "blocked": "",
+      "configured_shared": false,
+      "memory_tools": [],
+      "name": "owner-local",
+      "owner_local": true,
+      "shared_directory": true,
+      "shared_path": "workspaces/.memory",
+      "started": true,
+      "users_directory": true,
+      "users_mode": 448
+    },
+    {
+      "backend": "owner-local",
+      "blocked": "",
+      "configured_shared": true,
+      "memory_tools": [],
+      "name": "owner-and-shared",
+      "owner_local": true,
+      "shared_directory": true,
+      "shared_path": "memory",
+      "started": true,
+      "users_directory": true,
+      "users_mode": 448
+    },
+    {
+      "blocked": "memory",
+      "configured_shared": true,
+      "name": "shared-file",
+      "owner_local": false,
+      "shared_directory": false,
+      "started": false,
+      "users_directory": false
+    },
+    {
+      "blocked": "memory",
+      "configured_shared": true,
+      "name": "shared-file-with-owner",
+      "owner_local": true,
+      "shared_directory": false,
+      "started": false,
+      "users_directory": false
+    },
+    {
+      "blocked": "users",
+      "configured_shared": false,
+      "name": "owner-file",
+      "owner_local": true,
+      "shared_directory": true,
+      "started": false,
+      "users_directory": false
+    }
+  ],
+  "source_sha256": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584"
+}

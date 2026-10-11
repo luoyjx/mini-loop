@@ -1,0 +1,1423 @@
+{
+  "cases": [
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "name": "first-pass",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "complete",
+        "summary": "done"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "summaries": [
+        "done"
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 1,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "objective": "repair the workspace\n\nPrevious round's verification failed. Evidence:\n(exit 1)",
+          "round": 2,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 2,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "name": "feedback-repair",
+      "objectives": [
+        "repair the workspace",
+        "repair the workspace\n\nPrevious round's verification failed. Evidence:\n(exit 1)"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:1",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          },
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-2",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 2,
+        "status": "complete",
+        "summary": "fixed"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 1,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        },
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "summaries": [
+        "wrong",
+        "fixed"
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 7,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "objective": "repair the workspace\n\nPrevious round's verification failed. Evidence:\n(exit 7)",
+          "round": 2,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 7,
+          "integrity": "clean",
+          "round": 2,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 2,
+      "name": "prose-cannot-complete",
+      "objectives": [
+        "repair the workspace",
+        "repair the workspace\n\nPrevious round's verification failed. Evidence:\n(exit 7)"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:7",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          },
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:7",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-2",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 2,
+        "status": "unverified",
+        "summary": "[stopped after 2 rounds without verification]\nLast evidence:\n(exit 7)"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 7,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        },
+        {
+          "duration_ms": 0,
+          "exit_code": 7,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "summaries": [
+        "complete",
+        "complete"
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": null,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 1,
+      "name": "nil-exit",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:None",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "unverified",
+        "summary": "[stopped after 1 rounds without verification]\nLast evidence:\n(no output)"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": null,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "suspect",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 1,
+      "name": "timeout",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "suspect",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept"
+            ],
+            "integrity": "suspect",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "unverified",
+        "summary": "[stopped after 1 rounds without verification]\nLast evidence:\ndeadline"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "error": "deadline",
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": true
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 1,
+      "name": "overflow-zero-source",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "complete",
+        "summary": "worker-summary"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": true,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 1,
+      "name": "error-zero-source",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "complete",
+        "summary": "worker-summary"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "error": "harness diagnostic",
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "suspect",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 1,
+      "name": "tampered",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "suspect",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept",
+              "instruments:changed-since-baseline"
+            ],
+            "integrity": "suspect",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "unverified",
+        "summary": "[stopped after 1 rounds without verification]\nLast evidence:\n[integrity] the acceptance instruments changed after the task began; a passing exit code from a changed auditor does not verify. Restore the instruments, or make changing them the explicit objective.\n(no output)"
+      },
+      "probes": [
+        "a",
+        "b"
+      ],
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "probe",
+        "verified_round",
+        "worker",
+        "probe",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "suspect",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "objective": "repair the workspace\n\nPrevious round's verification failed. Evidence:\n[integrity] the acceptance instruments changed after the task began; a passing exit code from a changed auditor does not verify. Restore the instruments, or make changing them the explicit objective.\n(no output)",
+          "round": 2,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 2,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "name": "restored-next-round",
+      "objectives": [
+        "repair the workspace",
+        "repair the workspace\n\nPrevious round's verification failed. Evidence:\n[integrity] the acceptance instruments changed after the task began; a passing exit code from a changed auditor does not verify. Restore the instruments, or make changing them the explicit objective.\n(no output)"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept",
+              "instruments:changed-since-baseline"
+            ],
+            "integrity": "suspect",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          },
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-2",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 2,
+        "status": "complete",
+        "summary": "worker-summary"
+      },
+      "probes": [
+        "a",
+        "b",
+        "a"
+      ],
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        },
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "probe",
+        "verified_round",
+        "worker",
+        "probe",
+        "acceptance",
+        "verified_receipt",
+        "verified_round",
+        "worker",
+        "probe",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "name": "baseline-none",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "complete",
+        "summary": "worker-summary"
+      },
+      "probes": [
+        null,
+        "b"
+      ],
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "probe",
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "suspect",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 1,
+      "name": "current-none",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "suspect",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:accept",
+              "instruments:changed-since-baseline"
+            ],
+            "integrity": "suspect",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "unverified",
+        "summary": "[stopped after 1 rounds without verification]\nLast evidence:\n[integrity] the acceptance instruments changed after the task began; a passing exit code from a changed auditor does not verify. Restore the instruments, or make changing them the explicit objective.\n(no output)"
+      },
+      "probes": [
+        "a",
+        null
+      ],
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "probe",
+        "verified_round",
+        "worker",
+        "probe",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 0,
+      "name": "zero-rounds",
+      "objectives": [],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "clean",
+        "receipts": [],
+        "rounds": 0,
+        "status": "unverified",
+        "summary": "[stopped after 0 rounds without verification]\nLast evidence:\n"
+      },
+      "probes": [
+        "a"
+      ],
+      "results": [],
+      "trace": [
+        "probe",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": -2,
+      "name": "negative-rounds",
+      "objectives": [],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "clean",
+        "receipts": [],
+        "rounds": -2,
+        "status": "unverified",
+        "summary": "[stopped after -2 rounds without verification]\nLast evidence:\n"
+      },
+      "results": [],
+      "trace": [
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "command": "command:界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界",
+      "error": null,
+      "events": [
+        {
+          "objective": "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "name": "unicode-limits",
+      "objectives": [
+        "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "d9b6989b9eb82eb6",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:command:界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "complete",
+        "summary": "worker-summary"
+      },
+      "request": "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱",
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": null,
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 2,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "objective": "repair the workspace\n\nPrevious round's verification failed. Evidence:\n🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱",
+          "round": 2,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 3,
+          "integrity": "clean",
+          "round": 2,
+          "type": "verified_receipt",
+          "verdict": "incomplete"
+        },
+        {
+          "state_revision": 0,
+          "status": "unverified",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "maximum": 2,
+      "name": "feedback-tail",
+      "objectives": [
+        "repair the workspace",
+        "repair the workspace\n\nPrevious round's verification failed. Evidence:\n🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱\n(exit 2)"
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"pending\"]], \"state_revision\": 0}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:2",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          },
+          {
+            "contract_hash": "a4035af260cdd5db",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:3",
+              "command:accept"
+            ],
+            "integrity": "clean",
+            "round_id": "round-2",
+            "verdict": "incomplete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 2,
+        "status": "unverified",
+        "summary": "[stopped after 2 rounds without verification]\nLast evidence:\nlast\n(exit 3)"
+      },
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 2,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "prefix🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱",
+          "timed_out": false
+        },
+        {
+          "duration_ms": 0,
+          "exit_code": 3,
+          "overflowed": false,
+          "stderr": "last",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "command": "",
+      "error": null,
+      "events": [
+        {
+          "objective": "",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        },
+        {
+          "state_revision": 1,
+          "status": "complete",
+          "type": "verified_checkpoint"
+        }
+      ],
+      "name": "empty-request-command",
+      "objectives": [
+        ""
+      ],
+      "outcome": {
+        "checkpoint": "{\"artifacts\": [], \"blockers\": [], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"acceptance\", \"verified\"]], \"state_revision\": 1}",
+        "integrity": "clean",
+        "receipts": [
+          {
+            "contract_hash": "dd630a71c16d25a3",
+            "coverage": [
+              "acceptance"
+            ],
+            "evidence_refs": [
+              "exit:0",
+              "command:"
+            ],
+            "integrity": "clean",
+            "round_id": "round-1",
+            "verdict": "complete",
+            "verifier_ids": [
+              "command"
+            ],
+            "workspace_diff_digest": ""
+          }
+        ],
+        "rounds": 1,
+        "status": "complete",
+        "summary": "worker-summary"
+      },
+      "request": "",
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    },
+    {
+      "error": "worker failed",
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        }
+      ],
+      "failure": "worker",
+      "name": "worker-error",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": null,
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker"
+      ]
+    },
+    {
+      "error": "acceptance failed",
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        }
+      ],
+      "failure": "acceptance",
+      "name": "acceptance-error",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": null,
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance"
+      ]
+    },
+    {
+      "error": "probe failed",
+      "events": [],
+      "failure": "probe",
+      "name": "initial-probe-error",
+      "objectives": [],
+      "outcome": null,
+      "probes": [
+        "a"
+      ],
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "probe"
+      ]
+    },
+    {
+      "error": "verified_round failed",
+      "events": [],
+      "failure": "verified_round",
+      "name": "round-event-error",
+      "objectives": [],
+      "outcome": null,
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round"
+      ]
+    },
+    {
+      "error": "verified_receipt failed",
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        }
+      ],
+      "failure": "verified_receipt",
+      "name": "receipt-event-error",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": null,
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt"
+      ]
+    },
+    {
+      "error": "verified_checkpoint failed",
+      "events": [
+        {
+          "objective": "repair the workspace",
+          "round": 1,
+          "type": "verified_round"
+        },
+        {
+          "exit_code": 0,
+          "integrity": "clean",
+          "round": 1,
+          "type": "verified_receipt",
+          "verdict": "complete"
+        }
+      ],
+      "failure": "verified_checkpoint",
+      "name": "checkpoint-event-error",
+      "objectives": [
+        "repair the workspace"
+      ],
+      "outcome": null,
+      "results": [
+        {
+          "duration_ms": 0,
+          "exit_code": 0,
+          "overflowed": false,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "trace": [
+        "verified_round",
+        "worker",
+        "acceptance",
+        "verified_receipt",
+        "verified_checkpoint"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,553 @@
+{
+  "cases": [
+    {
+      "approvals": [],
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "created_at": 10.0,
+      "duplicate_restore_count": 0,
+      "epoch": 2,
+      "goal_armed": false,
+      "initial": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "done",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "live_steering": [
+        "queued request"
+      ],
+      "live_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "message_count": 2,
+      "mode": "interactive",
+      "name": "clean",
+      "omitted": 2,
+      "owner": "tenant",
+      "physical_cursor": 1,
+      "repaired": [],
+      "restored": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "done",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "run_count": 4,
+      "saved_steering": [
+        "queued request"
+      ],
+      "saved_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "second_messages": 2,
+      "second_steering": [
+        "queued request"
+      ],
+      "second_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "seq_after_restore": 1,
+      "status": "running",
+      "workspace_recreated": true
+    },
+    {
+      "approvals": [],
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "created_at": 10.0,
+      "duplicate_restore_count": 0,
+      "epoch": 2,
+      "goal_armed": false,
+      "initial": [
+        {
+          "content": "interrupted",
+          "role": "user"
+        }
+      ],
+      "live_steering": [
+        "queued request"
+      ],
+      "live_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "message_count": 2,
+      "mode": "interactive",
+      "name": "bare-user",
+      "omitted": 2,
+      "owner": "tenant",
+      "physical_cursor": 1,
+      "repaired": [],
+      "restored": [
+        {
+          "content": "interrupted",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "[Turn interrupted: process stopped mid-generation]",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "run_count": 4,
+      "saved_steering": [],
+      "saved_todos": [],
+      "second_messages": 2,
+      "second_steering": [],
+      "second_todos": [],
+      "seq_after_restore": 1,
+      "status": "running",
+      "workspace_recreated": true
+    },
+    {
+      "approvals": [],
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "created_at": 10.0,
+      "duplicate_restore_count": 0,
+      "epoch": 2,
+      "goal_armed": false,
+      "initial": [
+        {
+          "content": [
+            {
+              "text": "interrupted",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "live_steering": [
+        "queued request"
+      ],
+      "live_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "message_count": 2,
+      "mode": "interactive",
+      "name": "bare-blocks",
+      "omitted": 2,
+      "owner": "tenant",
+      "physical_cursor": 1,
+      "repaired": [],
+      "restored": [
+        {
+          "content": [
+            {
+              "text": "interrupted",
+              "type": "text"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "[Turn interrupted: process stopped mid-generation]",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "run_count": 4,
+      "saved_steering": [],
+      "saved_todos": [],
+      "second_messages": 2,
+      "second_steering": [],
+      "second_todos": [],
+      "seq_after_restore": 1,
+      "status": "running",
+      "workspace_recreated": true
+    },
+    {
+      "approvals": [
+        {
+          "id": "pending",
+          "resolved": true,
+          "status": "expired"
+        }
+      ],
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "created_at": 10.0,
+      "duplicate_restore_count": 0,
+      "epoch": 2,
+      "goal_armed": false,
+      "initial": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "unknown",
+              "input": {
+                "command": "echo effect"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            },
+            {
+              "id": "parked",
+              "input": {
+                "command": "echo pending"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "live_steering": [
+        "queued request"
+      ],
+      "live_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "message_count": 3,
+      "mode": "interactive",
+      "name": "tools",
+      "omitted": 3,
+      "owner": "tenant",
+      "physical_cursor": 1,
+      "repaired": [
+        "unknown",
+        "parked"
+      ],
+      "restored": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "unknown",
+              "input": {
+                "command": "echo effect"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            },
+            {
+              "id": "parked",
+              "input": {
+                "command": "echo pending"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first.",
+              "tool_use_id": "unknown",
+              "type": "tool_result"
+            },
+            {
+              "content": "[not run] This tool was awaiting approval when the process terminated. It was never executed and had no side effect. Ask again if it is still needed.",
+              "tool_use_id": "parked",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "run_count": 4,
+      "saved_steering": [],
+      "saved_todos": [],
+      "second_messages": 3,
+      "second_steering": [],
+      "second_todos": [],
+      "seq_after_restore": 1,
+      "status": "running",
+      "workspace_recreated": true
+    },
+    {
+      "approvals": [],
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "created_at": 10.0,
+      "duplicate_restore_count": 0,
+      "epoch": 2,
+      "goal_armed": false,
+      "initial": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "done",
+              "input": {
+                "command": "echo paired"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "paired",
+              "tool_use_id": "done",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "live_steering": [
+        "queued request"
+      ],
+      "live_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "message_count": 3,
+      "mode": "interactive",
+      "name": "paired",
+      "omitted": 3,
+      "owner": "tenant",
+      "physical_cursor": 1,
+      "repaired": [],
+      "restored": [
+        {
+          "content": "start",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "done",
+              "input": {
+                "command": "echo paired"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "paired",
+              "tool_use_id": "done",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "run_count": 4,
+      "saved_steering": [
+        "queued request"
+      ],
+      "saved_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "second_messages": 3,
+      "second_steering": [
+        "queued request"
+      ],
+      "second_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "seq_after_restore": 1,
+      "status": "running",
+      "workspace_recreated": true
+    },
+    {
+      "approvals": [],
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "created_at": 10.0,
+      "duplicate_restore_count": 0,
+      "epoch": 0,
+      "goal_armed": false,
+      "initial": [],
+      "live_steering": [
+        "queued request"
+      ],
+      "live_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "message_count": 0,
+      "mode": "interactive",
+      "name": "empty",
+      "omitted": 0,
+      "owner": "tenant",
+      "physical_cursor": 1,
+      "repaired": [],
+      "restored": [],
+      "run_count": 4,
+      "saved_steering": [
+        "queued request"
+      ],
+      "saved_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "second_messages": 0,
+      "second_steering": [
+        "queued request"
+      ],
+      "second_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "seq_after_restore": 1,
+      "status": "running",
+      "workspace_recreated": true
+    },
+    {
+      "approvals": [],
+      "bound": true,
+      "busy": false,
+      "confirmed": false,
+      "created_at": 10.0,
+      "duplicate_restore_count": 0,
+      "epoch": 2,
+      "goal_armed": false,
+      "initial": [
+        {
+          "content": "other writer prompt",
+          "role": "user"
+        }
+      ],
+      "live_steering": [
+        "queued request"
+      ],
+      "live_todos": [
+        {
+          "activeForm": "remembering",
+          "content": "remember",
+          "status": "pending"
+        }
+      ],
+      "message_count": 2,
+      "mode": "interactive",
+      "name": "foreign",
+      "omitted": 2,
+      "owner": "tenant",
+      "physical_cursor": 1,
+      "repaired": [],
+      "restored": [
+        {
+          "content": "other writer prompt",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "[Turn interrupted: process stopped mid-generation]",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "run_count": 4,
+      "saved_steering": [],
+      "saved_todos": [],
+      "second_messages": 2,
+      "second_steering": [],
+      "second_todos": [],
+      "seq_after_restore": 1,
+      "status": "running",
+      "workspace_recreated": true
+    }
+  ],
+  "not_run_result": "[not run] This tool was awaiting approval when the process terminated. It was never executed and had no side effect. Ask again if it is still needed.",
+  "source_sha256": {
+    "agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "storage.py": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159"
+  },
+  "unknown_result": "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first."
+}

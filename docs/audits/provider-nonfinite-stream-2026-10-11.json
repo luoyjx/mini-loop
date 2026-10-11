@@ -1,0 +1,79 @@
+{
+  "baseline": "412e94c",
+  "source_fixture": "go/testdata/python-provider-nonfinite-stream.json",
+  "source_fixture_sha256": "7be38891e8dd3abf61380aa5dc0c4952e16eda78929ac692c966c948997ff5ea",
+  "source_cases": 4,
+  "source_boundary": "Actual ASGI /sessions/{id}/messages/stream through AsyncAnthropic 0.107.1 and real session manager; memory and explicit SQLite journals",
+  "observed": [
+    "tool_use SSE retains NaN/Infinity in unknown input.keep",
+    "journal begin refuses finite fingerprint encoding before action creation",
+    "hook order before, guard, result; after is skipped",
+    "tool_result is Error: Out of range float values are not JSON compliant",
+    "next model request fails before transport; one initial transport request",
+    "Source stream ends with done",
+    "SQLite stores actual tool_use event observations"
+  ],
+  "gates": {
+    "source_test": "passed",
+    "source_journal_mutation": "caught, passing baseline and failed test call",
+    "scanner_guards": "19 anchored",
+    "native_targeted": "passed after correcting decision projection regression",
+    "native_full": {
+      "passed": false,
+      "failed_package": "reload",
+      "failed_recipes": [
+        "same-mtime-write",
+        "lower-mtime-write"
+      ],
+      "log_sha256": "d08b2d759ed394eb0db20465672f41103f57983b6c31e4bfff50e7e8c6217982"
+    },
+    "race": {
+      "passed": true,
+      "log_sha256": "a1f2dbabcecf94135b2adc93c807e481329e1104934c1215bc98e1e1952bb529"
+    },
+    "source_export": {
+      "passed": true,
+      "current_files": 223,
+      "sequential_after_go_native_jobs": true,
+      "log_sha256": "6f37b9b03b372aa854bdfca1efd41ec37d41e482fe3fd3bccb8f58197cb6b052"
+    },
+    "vet": "passed",
+    "type_audit": {
+      "production_files": 436,
+      "named_types": 1405,
+      "findings": 0
+    },
+    "architecture": {
+      "passed": 9,
+      "total": 9,
+      "errors": 0,
+      "warnings": 0,
+      "fresh_visual_check": false
+    },
+    "source_tests": {
+      "passed": 2,
+      "warnings": 5
+    },
+    "git_diff_check": "passed",
+    "intermediate_commits_replayed_separately": false
+  },
+  "limitations": [
+    "Full native watcher reliability remains open",
+    "Native legacy trajectory/model snapshot and restore consumers still need separate proofs",
+    "This is not complete G4/G7 or migration acceptance",
+    "No new dependency; no merge or push",
+    "Coverage, full Python suite, performance, non-Darwin and fresh browser visual checks were not refreshed"
+  ],
+  "regression_repaired": {
+    "detail": "Decision recording projections cannot be executed: observation query incorrectly mapped executable decision variants",
+    "proofs": [
+      "Launcher LLM/Jev complete tool turns",
+      "SQLite baseline/maximum decision close/reopen",
+      "fresh full ordinary launcher and SQLite packages passed"
+    ],
+    "temporary_diagnostic_test_restored": true
+  },
+  "source_commit": "d36323d",
+  "runtime_commit": "cc5cb1d",
+  "coverage_refreshed": false
+}

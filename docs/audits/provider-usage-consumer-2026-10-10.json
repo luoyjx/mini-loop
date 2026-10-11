@@ -1,0 +1,735 @@
+{
+  "go_baseline": "bf4c866",
+  "sdk_version": "0.107.1",
+  "pydantic_version": "2.13.4",
+  "cases": [
+    {
+      "name": "input-integer",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_usage": {
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "cache_read_input_tokens": null,
+        "cache_creation_input_tokens": null,
+        "service_tier": null,
+        "cache_creation": null,
+        "inference_geo": null,
+        "output_tokens_details": null,
+        "server_tool_use": null
+      },
+      "expected_prompt_tokens": 13,
+      "native_prompt_tokens": 13,
+      "same_event": true,
+      "same_prompt": true
+    },
+    {
+      "name": "input-integer",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_usage": {
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "cache_read_input_tokens": null,
+        "cache_creation_input_tokens": null,
+        "service_tier": null,
+        "cache_creation": null,
+        "inference_geo": null,
+        "output_tokens_details": null,
+        "server_tool_use": null
+      },
+      "expected_prompt_tokens": 13,
+      "native_prompt_tokens": 13,
+      "same_event": true,
+      "same_prompt": true
+    },
+    {
+      "name": "input-zero",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 0,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_usage": {
+        "input_tokens": 0,
+        "output_tokens": 5,
+        "cache_read_input_tokens": null,
+        "cache_creation_input_tokens": null,
+        "service_tier": null,
+        "cache_creation": null,
+        "inference_geo": null,
+        "output_tokens_details": null,
+        "server_tool_use": null
+      },
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": true,
+      "same_prompt": true
+    },
+    {
+      "name": "input-zero",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 0,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_usage": {
+        "input_tokens": 0,
+        "output_tokens": 5,
+        "cache_read_input_tokens": null,
+        "cache_creation_input_tokens": null,
+        "service_tier": null,
+        "cache_creation": null,
+        "inference_geo": null,
+        "output_tokens_details": null,
+        "server_tool_use": null
+      },
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": true,
+      "same_prompt": true
+    },
+    {
+      "name": "input-negative",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": -3,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": -3,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-negative",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": -3,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": -3,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-float-integral",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13.0,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": 13,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-float-integral",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": 13,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-float-fraction",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13.75,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": 13,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-float-fraction",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13.75,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": 13,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-float-negative",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": -3.75,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": -3,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-float-negative",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": -3.75,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": -3,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-true",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": true,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": 1,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-true",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 1,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": 1,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-false",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": false,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-false",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 0,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-numeric-string",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-numeric-string",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": 13,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-fraction-string",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.75",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-fraction-string",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13.75",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-invalid-string",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "tokens",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-invalid-string",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "tokens",
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-null",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-null",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-array",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": [
+          13
+        ],
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-array",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": [
+          13
+        ],
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-object",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": {
+          "count": 13
+        },
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-object",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": {
+          "count": 13
+        },
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": null,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "required-strings-cache-coerced",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 17,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": "13",
+        "output_tokens": "5",
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": 17,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "required-strings-cache-coerced",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 17,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": 30,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "root-fraction-cache-fraction",
+      "mode": "direct",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 17,
+        "cache_read_input_tokens": 2.75,
+        "inference_geo": null,
+        "input_tokens": 13.75,
+        "output_tokens": 5.25,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "malformed JSON",
+      "expected_prompt_tokens": 32,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "root-fraction-cache-fraction",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 17,
+        "cache_read_input_tokens": 2.75,
+        "inference_geo": null,
+        "input_tokens": 13.75,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": 32,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-strings-delta-numeric",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 21,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: missing message_start fields",
+      "expected_prompt_tokens": 21,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    },
+    {
+      "name": "input-numeric-delta-strings",
+      "mode": "stream",
+      "expected_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 21,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "native_error": "invalid provider stream: malformed event JSON",
+      "expected_prompt_tokens": 21,
+      "native_prompt_tokens": null,
+      "same_event": false,
+      "same_prompt": false
+    }
+  ]
+}

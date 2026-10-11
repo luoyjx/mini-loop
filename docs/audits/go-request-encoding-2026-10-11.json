@@ -1,0 +1,108 @@
+{
+  "runtime_commit": "ea35cd3",
+  "baseline_commit": "98f94be",
+  "source_capture_commit": "9086419",
+  "native_stage_test_commit": "8888e72",
+  "closed_gap": "Exact final reply assertion for all 48 captured managed profiles, including six nonfinite request failures",
+  "named_variants": [
+    "FailureNonfiniteRequest",
+    "ClassValueError",
+    "ProviderErrorDetail"
+  ],
+  "boundaries": [
+    "Direct and streaming serialization precedes credential fetch and HTTP",
+    "Nonretryable protocol recovery evidence retained",
+    "Only final Session provider error uses optional Source projection; generic lifecycle diagnostics unchanged",
+    "User-facing diagnostic truncated to 500 runes"
+  ],
+  "verification": [
+    {
+      "name": "focused",
+      "command": "go test -p=1 -count=1 ./provider ./agent -run 'TestNonfiniteSDKRequest|TestProviderRunError|TestBackgroundSDKOptionsMatchSourceManagedAdmissionAndTasks'",
+      "result": "pass; provider 0.300s, agent 2.084s",
+      "working_directory": "go/"
+    },
+    {
+      "name": "full",
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "result": "fail only reload: identical-write, same-mtime-touch, rename-source, ignored-hidden; SQLite pass",
+      "log": "/tmp/mini-loop-request-encoding-full.log",
+      "sha256": "3e5659f35770054bb73c9886497b8b66382ae933dbab63c6c75c83f02b67a8b2",
+      "working_directory": "go/"
+    },
+    {
+      "name": "race",
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+      "result": "pass; macOS LC_DYSYMTAB linker warnings, no data race reported",
+      "log": "/tmp/mini-loop-request-encoding-race.log",
+      "sha256": "68e6d2a453a2d540cd2e75b166a964210a4d32a1a5614768726d080960a4348a",
+      "working_directory": "go/"
+    },
+    {
+      "name": "vet",
+      "command": "go vet ./...",
+      "result": "pass",
+      "log": "/tmp/mini-loop-request-encoding-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "working_directory": "go/"
+    },
+    {
+      "name": "typeaudit",
+      "command": "go run ./tools/typeaudit -root .",
+      "result": "443 production files; 1414 package-level types; zero findings",
+      "log": "/tmp/mini-loop-request-encoding-typeaudit.log",
+      "sha256": "6dfd032510a3e2d95d7c97625426aa58bc3e23100ac38a2575d4da7057a5badd",
+      "working_directory": "go/"
+    },
+    {
+      "name": "export",
+      "command": ".venv/bin/python python/tools/export_go_contracts.py --check --diagnostics-dir /tmp/mini-loop-request-encoding-export-diagnostics",
+      "result": "228 current files; after native jobs terminal",
+      "log": "/tmp/mini-loop-request-encoding-export.log",
+      "sha256": "091998b4e47973a3fd8cc7796d9624f9fc90c0c7ac147184bab3d5ecfb5d94fa",
+      "working_directory": "repository root"
+    },
+    {
+      "name": "archify",
+      "command": "node /Users/yanjixiong/.codex/skills/archify/bin/archify.mjs deliver architecture docs/mini-loop-system.architecture.json docs/mini-loop-system.architecture.html --quality showcase --json",
+      "result": "pass 9/9, zero errors/warnings after one maxLength note repair",
+      "log": "/tmp/mini-loop-request-encoding-archify.log",
+      "sha256": "f6a795474291dfbee2b368dfefe904f96afa3f0f8b003b6ad1f09a6b87bcce82",
+      "working_directory": "repository root"
+    }
+  ],
+  "architecture_receipt": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "e8771f7f3a5b69999763c58161dab4ca6f23eeafd2d915d806fc7217a4b10493",
+      "bytes": 134317
+    },
+    "artifact": {
+      "sha256": "bb1a67124f3982cd333f8217d974c368d5ab9ac1fb73320dcd1a5d49169af8fa",
+      "bytes": 784489
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "visual_review": "not refreshed; earlier browser denial respected",
+  "correction_rounds": 1,
+  "limits": [
+    "Full ordinary Go gate fails four native reload profiles; race pass does not supersede it",
+    "No Python full suite, coverage, non-Darwin, performance or mutation refresh",
+    "Python runtime and scanners unchanged",
+    "Other SDK error class/text parity remains open",
+    "Native background post-spawn fault cleanup and scheduler adaptations remain",
+    "Full port acceptance incomplete; no merge or push"
+  ]
+}

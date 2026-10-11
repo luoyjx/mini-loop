@@ -1,0 +1,975 @@
+{
+  "normalizations": [
+    {
+      "input": "",
+      "output": "unnamed"
+    },
+    {
+      "input": "___",
+      "output": "unnamed"
+    },
+    {
+      "input": "!!!",
+      "output": "unnamed"
+    },
+    {
+      "input": "-",
+      "output": "-"
+    },
+    {
+      "input": "alpha__beta",
+      "output": "alpha_beta"
+    },
+    {
+      "input": "中a😀-b._c",
+      "output": "a_-b_c"
+    },
+    {
+      "input": "_x_",
+      "output": "x"
+    }
+  ],
+  "outputs": [
+    "{\"arguments\": {\"nested\": {\"x\": [1, true, null]}, \"value\": \"中文\"}, \"original\": \"original name\"}",
+    "Error: MCP tool 'slow' timed out after 0.01s"
+  ],
+  "rows": [
+    {
+      "publications": [
+        {
+          "added": [
+            "mcp__alpha_beta__gamma"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:alpha__beta] d",
+              "name": "mcp__alpha_beta__gamma",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__alpha_beta__gamma": "alpha__beta"
+          },
+          "problems": []
+        },
+        {
+          "added": [
+            "mcp__alpha__beta_gamma"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:alpha__beta] d",
+              "name": "mcp__alpha_beta__gamma",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            },
+            {
+              "description": "[mcp:alpha] d",
+              "name": "mcp__alpha__beta_gamma",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__alpha__beta_gamma": "alpha",
+            "mcp__alpha_beta__gamma": "alpha__beta"
+          },
+          "problems": []
+        }
+      ],
+      "steps": [
+        {
+          "server": "alpha__beta",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "d",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "gamma"
+            }
+          ]
+        },
+        {
+          "server": "alpha",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "d",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "beta__gamma"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "publications": [
+        {
+          "added": [
+            "mcp__my_server__read"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:my.server] first",
+              "name": "mcp__my_server__read",
+              "parallel_safe": false,
+              "readonly": true,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__my_server__read": "my.server"
+          },
+          "problems": []
+        },
+        {
+          "added": [],
+          "definitions": [
+            {
+              "description": "[mcp:my.server] first",
+              "name": "mcp__my_server__read",
+              "parallel_safe": false,
+              "readonly": true,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__my_server__read": "my.server"
+          },
+          "problems": [
+            "mcp__my_server__read: refused, already provided by server 'my.server'"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "server": "my.server",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": true
+              },
+              "description": "first",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ]
+        },
+        {
+          "server": "my_server",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": true
+              },
+              "description": "takeover",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "publications": [
+        {
+          "added": [
+            "mcp__same__echo"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:same] old",
+              "name": "mcp__same__echo",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__same__echo": "same"
+          },
+          "problems": []
+        },
+        {
+          "added": [
+            "mcp__same__echo"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:same] new",
+              "name": "mcp__same__echo",
+              "parallel_safe": false,
+              "readonly": true,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__same__echo": "same"
+          },
+          "problems": []
+        }
+      ],
+      "steps": [
+        {
+          "server": "same",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "old",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "echo"
+            }
+          ]
+        },
+        {
+          "server": "same",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": true
+              },
+              "description": "new",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "echo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "publications": [
+        {
+          "added": [
+            "mcp__unnamed__unnamed",
+            "mcp__unnamed__-",
+            "mcp__unnamed__unnamed"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:!!!] d",
+              "name": "mcp__unnamed__unnamed",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            },
+            {
+              "description": "[mcp:!!!] d",
+              "name": "mcp__unnamed__-",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__unnamed__-": "!!!",
+            "mcp__unnamed__unnamed": "!!!"
+          },
+          "problems": []
+        }
+      ],
+      "steps": [
+        {
+          "server": "!!!",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "d",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "___"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "d",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "-"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "d",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "中文😀"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "publications": [
+        {
+          "added": [
+            "mcp__caps__long",
+            "mcp__caps__exact"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:caps] 😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中 [truncated]",
+              "name": "mcp__caps__long",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            },
+            {
+              "description": "[mcp:caps] xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+              "name": "mcp__caps__exact",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__caps__exact": "caps",
+            "mcp__caps__long": "caps"
+          },
+          "problems": [
+            "mcp__caps__long: description truncated from 4,200 to 4,000 characters"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "server": "caps",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中😀中",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "long"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "exact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "publications": [
+        {
+          "added": [
+            "mcp__values__none",
+            "mcp__values__number",
+            "mcp__values__list",
+            "mcp__values__schema-null",
+            "mcp__values__schema-bool"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:values] None",
+              "name": "mcp__values__none",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            },
+            {
+              "description": "[mcp:values] 7",
+              "name": "mcp__values__number",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            },
+            {
+              "description": "[mcp:values] ['中文', 1, None]",
+              "name": "mcp__values__list",
+              "parallel_safe": false,
+              "readonly": true,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            },
+            {
+              "description": "[mcp:values] d",
+              "name": "mcp__values__schema-null",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": null
+            },
+            {
+              "description": "[mcp:values] d",
+              "name": "mcp__values__schema-bool",
+              "parallel_safe": false,
+              "readonly": false,
+              "risk": "external",
+              "schema": false
+            }
+          ],
+          "owners": {
+            "mcp__values__list": "values",
+            "mcp__values__none": "values",
+            "mcp__values__number": "values",
+            "mcp__values__schema-bool": "values",
+            "mcp__values__schema-null": "values"
+          },
+          "problems": []
+        }
+      ],
+      "steps": [
+        {
+          "server": "values",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": null,
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "none"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": 7,
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "number"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": "false"
+              },
+              "description": [
+                "中文",
+                1,
+                null
+              ],
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "list"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "d",
+              "input_schema": null,
+              "name": "schema-null"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "d",
+              "input_schema": false,
+              "name": "schema-bool"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "publications": [
+        {
+          "added": [
+            "mcp__duplicates__a_b",
+            "mcp__duplicates__a_b"
+          ],
+          "definitions": [
+            {
+              "description": "[mcp:duplicates] last",
+              "name": "mcp__duplicates__a_b",
+              "parallel_safe": false,
+              "readonly": true,
+              "risk": "external",
+              "schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              }
+            }
+          ],
+          "owners": {
+            "mcp__duplicates__a_b": "duplicates"
+          },
+          "problems": []
+        }
+      ],
+      "steps": [
+        {
+          "server": "duplicates",
+          "tools": [
+            {
+              "annotations": {
+                "readOnlyHint": false
+              },
+              "description": "first",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "a.b"
+            },
+            {
+              "annotations": {
+                "readOnlyHint": true
+              },
+              "description": "last",
+              "input_schema": {
+                "$defs": {
+                  "value": {
+                    "enum": [
+                      1,
+                      null
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/$defs/value"
+                },
+                "properties": {},
+                "type": "object"
+              },
+              "name": "a_b"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

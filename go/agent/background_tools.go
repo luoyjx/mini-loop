@@ -1,0 +1,285 @@
+package agent
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
+	"github.com/luoyjx/mini-loop/go/background"
+	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/shell"
+	"os"
+	"path/filepath"
+	"sync"
+	"time"
+)
+
+// backgroundState is owned by one session. No injected/shared manager can borrow
+// another session's task IDs, credential scope or completion queue.
+type backgroundState struct {
+	mu       sync.Mutex
+	executor *shell.Executor
+	manager  *background.Manager
+	scope    background.Scope
+	children []*backgroundState
+}
+
+func (state *backgroundState) get(ctx context.Context, orphanOnly bool) (*background.Manager, error) {
+	if state == nil {
+		return nil, errors.New("background service is not configured")
+	}
+	state.mu.Lock()
+	defer state.mu.Unlock()
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if state.manager != nil {
+		return state.manager, nil
+	}
+	if orphanOnly {
+		entries, err := os.ReadDir(filepath.Join(state.executor.Workspace(), ".background"))
+		if err != nil || len(entries) == 0 {
+			return nil, nil
+		}
+	}
+	var manager *background.Manager
+	var err error
+	if state.scope != "" {
+		manager, err = background.NewScopedWithExecutor(state.executor, state.scope)
+	} else {
+		manager, err = background.NewWithExecutor(state.executor)
+	}
+	if err != nil {
+		return nil, err
+	}
+	state.manager = manager
+	return manager, nil
+}
+
+func (state *backgroundState) child(ctx context.Context, identity string) (*backgroundState, error) {
+	// Initializing the parent first keeps lazy root adoption from mistaking a
+	// subsequently admitted child task for an orphan in the same ledger.
+	if _, err := state.get(ctx, false); err != nil {
+		return nil, err
+	}
+	state.mu.Lock()
+	defer state.mu.Unlock()
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	digest := sha256.Sum256([]byte(identity))
+	child := &backgroundState{executor: state.executor, scope: background.Scope(hex.EncodeToString(digest[:]))}
+	state.children = append(state.children, child)
+	return child, nil
+}
+
+func (state *backgroundState) cancelOwned() []background.Handle {
+	if state == nil {
+		return nil
+	}
+	state.mu.Lock()
+	manager := state.manager
+	children := append([]*backgroundState(nil), state.children...)
+	state.mu.Unlock()
+	var handles []background.Handle
+	if manager != nil {
+		handles = manager.CancelAll()
+	}
+	for _, child := range children {
+		handles = append(handles, child.cancelOwned()...)
+	}
+	return handles
+}
+func (state *backgroundState) rebind(ctx context.Context, executor *shell.Executor) error {
+	state.mu.Lock()
+	defer state.mu.Unlock()
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if state.manager != nil {
+		if err := state.manager.RebindExecutor(ctx, executor); err != nil {
+			return err
+		}
+	}
+	state.executor = executor
+	return nil
+}
+func (s *Session) backgroundLive() int {
+	if s.background == nil {
+		return 0
+	}
+	s.background.mu.Lock()
+	manager := s.background.manager
+	s.background.mu.Unlock()
+	if manager == nil {
+		return 0
+	}
+	return manager.LiveCount()
+}
+
+func (s *Session) backgroundInitialized() bool {
+	if s.background == nil {
+		return false
+	}
+	s.background.mu.Lock()
+	defer s.background.mu.Unlock()
+	return s.background.manager != nil
+}
+
+// CloseBackground joins already-created task ownership. The embedding caller
+// must first quiesce turn admission; this method does not close the session.
+func (s *Session) CloseBackground(ctx context.Context) error {
+	// Request cancellation across the entire owned tree before awaiting any one
+	// handle, so an expired observer never leaves another scope uncancelled.
+	for _, handle := range s.background.cancelOwned() {
+		if err := handle.Wait(ctx); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (s *ManagedSession) CloseBackground(ctx context.Context) error {
+	return s.core.CloseBackground(ctx)
+}
+func (handler *runtimeHandler) executeBackground(ctx context.Context, input protocol.ToolInput) (string, error) {
+	manager, err := handler.background.get(ctx, false)
+	if err != nil {
+		return "", err
+	}
+	if value, ok := input.CheckBackground(); ok {
+		id := background.ID("")
+		if value.ID != nil {
+			id = background.ID(*value.ID)
+		}
+		return manager.Check(id), nil
+	}
+	value, ok := input.BackgroundRun()
+	if !ok {
+		return "", errors.New("unsupported background input")
+	}
+	if command, ok := input.BackgroundCommandObservation(); ok {
+		return "", command.Failure(protocol.BashCommandSplit)
+	}
+	var wait *shell.BackgroundWait
+	if plan, observed := input.BackgroundTimeout(); observed {
+		value.Timeout = nil // The named observation plan owns model timeout execution.
+		var policy shell.BackgroundWait
+		switch plan.Kind {
+		case protocol.BackgroundTimeoutNumeric:
+			policy = shell.NumericBackgroundWait(plan.Seconds, plan.Label)
+		case protocol.BackgroundTimeoutImmediate:
+			policy = shell.ImmediateBackgroundWait(plan.Label)
+		case protocol.BackgroundTimeoutUnbounded:
+			policy = shell.UnboundedBackgroundWait()
+		case protocol.BackgroundTimeoutTextFault:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitTextFault)
+		case protocol.BackgroundTimeoutArrayFault:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitArrayFault)
+		case protocol.BackgroundTimeoutObjectFault:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitObjectFault)
+		case protocol.BackgroundTimeoutIntegerOverflow:
+			policy = shell.FaultBackgroundWait(shell.BackgroundWaitIntegerOverflow)
+		}
+		if plan.Kind != protocol.BackgroundTimeoutDefault {
+			wait = &policy
+		}
+	}
+	var timeout *time.Duration
+	if value.Timeout != nil {
+		const maxSeconds = int64(1<<63-1) / int64(time.Second)
+		seconds := int64(*value.Timeout)
+		if seconds > maxSeconds || seconds < -maxSeconds {
+			return "", errors.New("background timeout is outside the native duration range")
+		}
+		duration := time.Duration(seconds) * time.Second
+		timeout = &duration
+	}
+	started, err := manager.Run(ctx, background.Request{Command: value.Command, Timeout: timeout, Wait: wait})
+	if err != nil {
+		return "", err
+	}
+	return started.Render(), nil
+}
+func (handler *runtimeHandler) executeDetailedTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, *shell.Result, error) {
+	if input.Name() != protocol.ToolBash {
+		out, err := handler.ExecuteTool(ctx, authority, input)
+		return out, nil, err
+	}
+	handler.mu.Lock()
+	defer handler.mu.Unlock()
+	if authority.SessionID != handler.binding.SessionID || authority.OwnerID != handler.binding.OwnerID || authority.Workspace != handler.binding.Workspace {
+		return "", nil, errors.New("background Bash authority does not match bound session")
+	}
+	if err := ctx.Err(); err != nil {
+		return "", nil, err
+	}
+	if handler.session == nil {
+		return "", nil, errors.New("background Bash has no bound session")
+	}
+	value, _ := input.Bash()
+	explicit := value.RunInBackground != nil && *value.RunInBackground
+	if command, ok := input.BashCommandObservation(); ok && handler.background != nil {
+		if !explicit {
+			return "", nil, command.Failure(protocol.BashCommandLower)
+		}
+		if _, err := handler.background.get(ctx, false); err != nil {
+			return "", nil, err
+		}
+		return "", nil, command.Failure(protocol.BashCommandSplit)
+	}
+	if handler.background != nil && background.ShouldRunBackground(value.Command, explicit) {
+		manager, err := handler.background.get(ctx, false)
+		if err != nil {
+			return "", nil, err
+		}
+		started, err := manager.Run(ctx, background.Request{Command: value.Command})
+		if err != nil {
+			return "", nil, err
+		}
+		return started.Render(), nil, nil
+	}
+	return (bashHandler{handler.session.bash}).executeDetailedTool(ctx, authority, input)
+}
+
+type backgroundBashClassifier struct{}
+
+func (backgroundBashClassifier) ClassifyExecution(call ToolCall) (ExecutionMode, error) {
+	value, ok := call.Input.Bash()
+	if ok && value.RunInBackground != nil && *value.RunInBackground {
+		return ExecutionParallel, nil
+	}
+	return ExecutionExclusive, nil
+}
+
+const EventBackgroundResult SessionEventKind = "background_result"
+
+type BackgroundResultEvent struct {
+	Count   int `json:"count"`
+	Dropped int `json:"dropped"`
+}
+
+func (event SessionEvent) BackgroundResult() (BackgroundResultEvent, bool) {
+	return event.backgroundResult, event.kind == EventBackgroundResult
+}
+func (s *Session) injectBackground(ctx context.Context) error {
+	if s.background == nil {
+		return nil
+	}
+	manager, err := s.background.get(ctx, true)
+	if err != nil {
+		return err
+	}
+	if manager == nil {
+		return nil
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	batch := manager.DrainBatch()
+	if len(batch.Notifications) == 0 {
+		return nil
+	}
+	s.events.append(SessionEvent{kind: EventBackgroundResult, backgroundResult: BackgroundResultEvent{len(batch.Notifications), batch.Dropped}})
+	s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(batch.Render())})
+	return nil
+}

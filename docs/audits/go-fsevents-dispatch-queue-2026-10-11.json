@@ -1,0 +1,93 @@
+{
+  "baseline": "a5aed66",
+  "api_sources": [
+    {
+      "url": "https://developer.apple.com/documentation/coreservices/1444164-fseventstreamsetdispatchqueue",
+      "contract": "Schedule on a started queue before FSEventStreamStart; invalidate before detaching its queue"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/coreservices/1446990-fseventstreaminvalidate",
+      "contract": "Invalidate unschedules the stream from its runloop or dispatch queue"
+    }
+  ],
+  "sdk_header": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Headers/FSEvents.h",
+    "sha256": "07df9bbe9a1f42e387f7cbe841a7c4f1e7baf188f3d6e205ce1f28d6c75ae0d4",
+    "sdk_version": "15.1"
+  },
+  "file_sha256": {
+    "go/reload/native_events_darwin.c": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e",
+    "go/reload/native_events_darwin.go": "c3824702d6b4bb2e6a1e1ffb3d267183fcbe98a848d39b01c6d8f0cfa3c3c144",
+    "go/reload/native_events_darwin.h": "97be072cc681e9cd61b8f7641c7c4a95bf858dc685c8d102b3edaa6d1af4372e",
+    "go/reload/native_events_darwin_test.go": "d04e15b0fa71a2bd1eba5d14e582993719579bf847c7cc16453934471a1cdbde",
+    "go/reload/native_events_recipes_test.go": "560cd3409c968d726e7170eb8f2fd0926cde5072f9d655b8d7acd810efb985ed",
+    "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0"
+  },
+  "ownership": [
+    "One serial dispatch queue per stream",
+    "Control start and stop/invalidate serialize with callbacks",
+    "Close joins active callbacks and drains queued work before stream/queue release",
+    "Typed Go registry entry removed before done is published",
+    "No dedicated CFRunLoop/locked thread or extra stop signalling goroutine",
+    "Start failure releases partially created stream and queue"
+  ],
+  "unchanged": [
+    "flags 18",
+    "latency zero",
+    "since-now",
+    "callback root/change/loss admission",
+    "50ms quiet /1600ms maximum batch",
+    "context/recipe deadlines",
+    "Source recipe fixture expectations",
+    "native/polling profile selection"
+  ],
+  "gates": {
+    "targeted_ordinary": "passed: lifecycle, joined active callback and actual 16 recipes",
+    "targeted_race": "passed: same selector",
+    "recipes_fixed_three_rounds": "48 scenarios passed in 21.418s",
+    "vet": "passed; deprecated RunLoop API warning removed",
+    "typeaudit": {
+      "production_files": 439,
+      "named_types": 1407,
+      "findings": 0
+    },
+    "archify": "9/9, zero errors/warnings",
+    "full_ordinary": {
+      "result": "failed only reload",
+      "recipes": [
+        "symlink-target-write",
+        "removed-source",
+        "same-mtime-write",
+        "same-mtime-touch",
+        "rename-out"
+      ]
+    },
+    "full_race": "passed; no data race reported; existing macOS linker warning",
+    "full_source_export_check": "passed after all native jobs terminated: 226 files current",
+    "git_diff_check": "passed"
+  },
+  "limits": [
+    "Not proof of the causal origin of historical missing Go/Source callbacks",
+    "No claim of exhaustive temporal/native reliability",
+    "No non-Darwin/full Python/coverage/performance/fresh browser visual check",
+    "No global FSEvents purge, fallback backend or widened timers/fixtures",
+    "No dependency added",
+    "No merge or push",
+    "Dispatch queue migration did not resolve the full ordinary recipe timeouts"
+  ],
+  "runtime_commit": "0d794bf",
+  "unchanged_fixture_proof": {
+    "go/reload/native_events_recipes_test.go": "560cd3409c968d726e7170eb8f2fd0926cde5072f9d655b8d7acd810efb985ed",
+    "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+    "python/tools/watchfiles_contracts.py": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a"
+  },
+  "full_ordinary_failure_timeline": "--- FAIL: TestNativeEventsActualSourceRecipes (49.92s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/symlink-target-write (3.76s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +220ms subscription constructed; await post-subscription probe\n            +498ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write1137568932/001\" flags=164096\n            +498ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write1137568932/001/linked.go\" flags=295168\n            +498ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write1137568932/001/notes.txt\" flags=103680\n            +498ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write1137568932/001/reload_observer_ready.go\" flags=102656\n            +550ms readiness probe observed; drain remaining setup events\n            +750ms setup next: paths=[] error=context deadline exceeded\n            +750ms operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessymlink-target-write1137568932/001/linked.go\n            +3.754s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/removed-source (6.83s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +323ms subscription constructed; await post-subscription probe\n            +3.567s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source430313281/001\" flags=164096\n            +3.567s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source430313281/001/source.go\" flags=103680\n            +3.568s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source430313281/001/reload_observer_ready.go\" flags=102656\n            +3.619s readiness probe observed; drain remaining setup events\n            +3.821s setup next: paths=[] error=context deadline exceeded\n            +3.821s operation=remove path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source430313281/001/source.go\n            +6.824s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/same-mtime-write (4.78s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +234ms subscription constructed; await post-subscription probe\n            +1.52s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write1361570557/001\" flags=164096\n            +1.52s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write1361570557/001/source.go\" flags=103680\n            +1.52s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write1361570557/001/reload_observer_ready.go\" flags=102656\n            +1.571s readiness probe observed; drain remaining setup events\n            +1.772s setup next: paths=[] error=context deadline exceeded\n            +1.772s operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write1361570557/001/source.go\n            +4.774s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/same-mtime-touch (4.98s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +81ms subscription constructed; await post-subscription probe\n            +1.728s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch3119869096/001\" flags=164096\n            +1.728s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch3119869096/001/source.go\" flags=103680\n            +1.728s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch3119869096/001/reload_observer_ready.go\" flags=102656\n            +1.78s readiness probe observed; drain remaining setup events\n            +1.982s setup next: paths=[] error=context deadline exceeded\n            +1.982s operation=touch path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch3119869096/001/source.go\n            +4.983s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/rename-out (6.12s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +144ms subscription constructed; await post-subscription probe\n            +2.745s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3803084322/001\" flags=164096\n            +2.745s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3803084322/001/source.go\" flags=103680\n            +2.858s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3803084322/001/reload_observer_ready.go\" flags=102656\n            +2.91s readiness probe observed; drain remaining setup events\n            +3.112s setup next: paths=[] error=context deadline exceeded\n            +3.112s operation=rename path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesrename-out3803084322/001/source.go\n            +6.113s operation next: paths=[] error=context deadline exceeded\n            \n",
+  "log_sha256": {
+    "mini-loop-dispatch-queue-full.log": "fcbea18d4fd27a362c8df7e3f32d69d9d737c27a3ff32fc6b854d1b6f65d1bc7",
+    "mini-loop-dispatch-queue-race.log": "785bf1fe6cedad80e6f8909a60498608611db4ab0288681d8029372d304f2ddb",
+    "mini-loop-dispatch-queue-targeted.log": "1df201c0196e72937107b2c99d7cf6664599464a332286f6a97e0b01bae03f90",
+    "mini-loop-dispatch-queue-targeted-race.log": "d5c07d38266b60227e6ba901972111444d1ed7508e87a8cc8436a8417a39883f",
+    "mini-loop-dispatch-queue-recipes-three.log": "a0fd86933ab1a20065d7a179da191bce49739be59c33ad4fa94ce77ce73a914f",
+    "mini-loop-dispatch-queue-export.log": "bd6a83c20a69898593e3fb5eece6510437123d5e8230e499b27a8fdb1035ea27"
+  }
+}

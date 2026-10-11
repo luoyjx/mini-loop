@@ -1,0 +1,235 @@
+{
+  "cases": [
+    {
+      "action": "delete",
+      "after": {
+        "branch": true,
+        "directory": false,
+        "linked": false,
+        "proof": null,
+        "registered": true
+      },
+      "before": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": null,
+        "registered": true
+      },
+      "bound": false,
+      "cleanup_errors": [],
+      "dirty": false,
+      "initial": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": null,
+        "registered": true
+      },
+      "kind": "repo",
+      "name": "clean-delete",
+      "output": null,
+      "owner": "alice",
+      "removed": true,
+      "workspace": "<REPO>/.worktrees/<SESSION>"
+    },
+    {
+      "action": "delete",
+      "after": {
+        "branch": true,
+        "directory": false,
+        "linked": false,
+        "proof": null,
+        "registered": true
+      },
+      "before": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": "proof",
+        "registered": true
+      },
+      "bound": false,
+      "cleanup_errors": [],
+      "dirty": true,
+      "initial": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": null,
+        "registered": true
+      },
+      "kind": "repo",
+      "name": "dirty-delete",
+      "output": "done",
+      "owner": "alice",
+      "removed": true,
+      "workspace": "<REPO>/.worktrees/<SESSION>"
+    },
+    {
+      "action": "preserve",
+      "after": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": "proof",
+        "registered": true
+      },
+      "before": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": "proof",
+        "registered": true
+      },
+      "bound": false,
+      "cleanup_errors": [],
+      "dirty": true,
+      "initial": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": null,
+        "registered": true
+      },
+      "kind": "repo",
+      "name": "dirty-preserve",
+      "output": "done",
+      "owner": "alice",
+      "removed": true,
+      "workspace": "<REPO>/.worktrees/<SESSION>"
+    },
+    {
+      "action": "stop",
+      "after": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": "proof",
+        "registered": true
+      },
+      "before": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": "proof",
+        "registered": true
+      },
+      "bound": false,
+      "cleanup_errors": [],
+      "dirty": true,
+      "initial": {
+        "branch": true,
+        "directory": true,
+        "linked": true,
+        "proof": null,
+        "registered": true
+      },
+      "kind": "repo",
+      "name": "dirty-stop",
+      "output": "done",
+      "owner": "alice",
+      "removed": null,
+      "workspace": "<REPO>/.worktrees/<SESSION>"
+    },
+    {
+      "action": "delete",
+      "after": {
+        "branch": false,
+        "directory": false,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "before": {
+        "branch": false,
+        "directory": true,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "bound": false,
+      "cleanup_errors": [],
+      "dirty": false,
+      "initial": {
+        "branch": false,
+        "directory": true,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "kind": "nonrepo",
+      "name": "nonrepo-fallback",
+      "output": null,
+      "owner": "alice",
+      "removed": true,
+      "workspace": "<REPO>/.worktrees/<SESSION>"
+    },
+    {
+      "action": "delete",
+      "after": {
+        "branch": false,
+        "directory": false,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "before": {
+        "branch": false,
+        "directory": true,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "bound": false,
+      "cleanup_errors": [],
+      "dirty": false,
+      "initial": {
+        "branch": false,
+        "directory": true,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "kind": "unborn",
+      "name": "unborn-fallback",
+      "output": null,
+      "owner": "alice",
+      "removed": true,
+      "workspace": "<REPO>/.worktrees/<SESSION>"
+    },
+    {
+      "action": "delete",
+      "after": {
+        "branch": true,
+        "directory": false,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "before": {
+        "branch": true,
+        "directory": true,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "bound": false,
+      "cleanup_errors": [],
+      "dirty": false,
+      "initial": {
+        "branch": true,
+        "directory": true,
+        "linked": false,
+        "proof": null,
+        "registered": false
+      },
+      "kind": "conflict",
+      "name": "branch-conflict-fallback",
+      "output": null,
+      "owner": "alice",
+      "removed": true,
+      "workspace": "<REPO>/.worktrees/<SESSION>"
+    }
+  ]
+}

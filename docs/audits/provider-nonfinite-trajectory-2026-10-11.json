@@ -1,0 +1,73 @@
+{
+  "baseline": "591a3c9",
+  "source_fixture": "go/testdata/python-provider-nonfinite-trajectory.json",
+  "source_fixture_sha256": "54f4e2516c62a888b0714a1855dbdc90ec494107d8bffd60444118d2fe97375f",
+  "source_cases": 4,
+  "source_boundary": "Real AsyncAnthropic 0.107.1 replies, actual Manager.run, trajectory JSONL writer and newly constructed reader; NaN/Infinity and capture_content on/off",
+  "native_proofs": [
+    "Model output, tool input and both model-start message snapshots exactly match selected Source projections after sorted legacy JSON encoding",
+    "Second model-start messages retain cache_control and unknown nonfinite Bash binding values",
+    "Actual JSONL bytes have no registered secret key/value; content-off redaction matches Source",
+    "Live tool input remains unchanged and unmasked",
+    "Only one initial transport call; next valid request fails before transport",
+    "No trajectory recording error; terminal status error matches Source"
+  ],
+  "regression_repaired": "Initial archive-only implementation missed second model_start because request optimizer projection/digests used finite message JSON; detached observation values now retain original tool variants behind the existing protocol shape guard",
+  "gates": {
+    "native_targeted": "passed: trajectory/agent Nonfinite, Trajectory, Workflow archive, decision recording, request projection/optimization selectors",
+    "source_test": "one test passed, four actual cases",
+    "scanner_guards": "19 anchored",
+    "journal_fingerprint_mutation": "caught with passing baseline and failed test call",
+    "vet": "passed",
+    "type_audit": {
+      "production_files": 437,
+      "named_types": 1405,
+      "findings": 0
+    },
+    "native_full": {
+      "passed": false,
+      "failed_package": "reload",
+      "failed_recipes": [
+        "removed-source",
+        "same-mtime-write",
+        "rename-out"
+      ],
+      "log_sha256": "ac2cbd32904ba5bf7bdf12653619febbf6ab9e2fda538bdbfedcc794d9588049"
+    },
+    "native_race": {
+      "passed": true,
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+      "log_sha256": "561a9cc47eead909c2f4cb1bb8a37f6e84eafaf2a0297cc8c5da12d2865ef3f2"
+    },
+    "source_export": {
+      "passed": true,
+      "current_files": 224,
+      "sequential_after_native_jobs": true,
+      "log_sha256": "e52ecb1306206d01ce0bd28e84436e24d7177b2c29ac9aaead0dcd8b5c526743"
+    },
+    "architecture": {
+      "passed": 9,
+      "total": 9,
+      "errors": 0,
+      "warnings": 0,
+      "fresh_visual_check": false
+    },
+    "git_diff_check": "passed",
+    "intermediate_commits_replayed_separately": false
+  },
+  "limitations": [
+    "Selected Source/native snapshots match; complete transcript/system/tool catalogue bytes and SDK error-class/text equality are not established",
+    "Broader historical scalar input/tool observations and consumers remain open",
+    "Native watcher reliability, default diagnostics and complete migration acceptance remain open",
+    "Coverage, full Python suite, non-Darwin and performance checks were not refreshed",
+    "No dependencies added; no merge or push"
+  ],
+  "coverage_reference": {
+    "runtime": "c8491d2",
+    "application_percent": 89.26,
+    "all_go_percent": 89.23,
+    "refreshed_for_this_slice": false
+  },
+  "source_commit": "5870a1d",
+  "runtime_commit": "935cf83"
+}

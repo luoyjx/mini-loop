@@ -1,0 +1,696 @@
+{
+  "rows": [
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": null,
+      "minimum": 1,
+      "mode": "off",
+      "name": "off-normal",
+      "output": "done",
+      "permission": "auto",
+      "persist": true,
+      "receipts": [],
+      "requests": [
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": null
+        },
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": {
+            "ansi": true,
+            "bytes": 7799,
+            "full_raw": true,
+            "id": "command",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": false,
+      "style": "normal"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": null,
+      "minimum": 1,
+      "mode": "off",
+      "name": "off-concise",
+      "output": "done",
+      "permission": "auto",
+      "persist": true,
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "off",
+          "parent_span_id": null,
+          "projected_bytes": 91,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "mode_off",
+          "stage": "response_policy",
+          "status": "passthrough",
+          "tokens_after_estimate": 23,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        },
+        {
+          "changed": false,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "off",
+          "parent_span_id": null,
+          "projected_bytes": 91,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "mode_off",
+          "stage": "response_policy",
+          "status": "passthrough",
+          "tokens_after_estimate": 23,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": null
+        },
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": {
+            "ansi": true,
+            "bytes": 7799,
+            "full_raw": true,
+            "id": "command",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": false,
+      "style": "concise"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": null,
+      "minimum": 1,
+      "mode": "shadow",
+      "name": "shadow-normal",
+      "output": "done",
+      "permission": "auto",
+      "persist": true,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "deterministic-lossless",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "shadow",
+          "parent_span_id": "<tool>",
+          "projected_bytes": 48,
+          "raw_bytes": 7799,
+          "raw_ref": null,
+          "reason": "shadow_candidate",
+          "stage": "observation",
+          "status": "shadowed",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 1950,
+          "warning_count": 2
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": null
+        },
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": {
+            "ansi": true,
+            "bytes": 7799,
+            "full_raw": true,
+            "id": "command",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": false,
+      "style": "normal"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": null,
+      "minimum": 1,
+      "mode": "shadow",
+      "name": "shadow-concise",
+      "output": "done",
+      "permission": "auto",
+      "persist": true,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "shadow",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "shadow_candidate",
+          "stage": "response_policy",
+          "status": "shadowed",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        },
+        {
+          "changed": true,
+          "component_id": "deterministic-lossless",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "shadow",
+          "parent_span_id": "<tool>",
+          "projected_bytes": 48,
+          "raw_bytes": 7799,
+          "raw_ref": null,
+          "reason": "shadow_candidate",
+          "stage": "observation",
+          "status": "shadowed",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 1950,
+          "warning_count": 2
+        },
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "shadow",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "shadow_candidate",
+          "stage": "response_policy",
+          "status": "shadowed",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": null
+        },
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": false,
+          "result": {
+            "ansi": true,
+            "bytes": 7799,
+            "full_raw": true,
+            "id": "command",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": false,
+      "style": "concise"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": [
+        7.0,
+        20000,
+        40000
+      ],
+      "minimum": 1,
+      "mode": "enforce",
+      "name": "enforce-normal",
+      "output": "done",
+      "permission": "auto",
+      "persist": true,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "deterministic-lossless",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "<tool>",
+          "projected_bytes": 293,
+          "raw_bytes": 7799,
+          "raw_ref": "<raw>",
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 74,
+          "tokens_before_estimate": 1950,
+          "warning_count": 2
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": true,
+          "result": null
+        },
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": true,
+          "result": {
+            "ansi": false,
+            "bytes": 293,
+            "full_raw": false,
+            "id": "command",
+            "marker": true
+          }
+        },
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": true,
+          "result": {
+            "ansi": true,
+            "bytes": 7840,
+            "full_raw": true,
+            "id": "recover",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": true,
+      "style": "normal"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": [
+        7.0,
+        20000,
+        40000
+      ],
+      "minimum": 1,
+      "mode": "enforce",
+      "name": "enforce-concise",
+      "output": "done",
+      "permission": "auto",
+      "persist": true,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        },
+        {
+          "changed": true,
+          "component_id": "deterministic-lossless",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "<tool>",
+          "projected_bytes": 293,
+          "raw_bytes": 7799,
+          "raw_ref": "<raw>",
+          "reason": "reduced",
+          "stage": "observation",
+          "status": "applied",
+          "tokens_after_estimate": 74,
+          "tokens_before_estimate": 1950,
+          "warning_count": 2
+        },
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        },
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": true,
+          "max_tokens": 1200,
+          "recovery_tool": true,
+          "result": null
+        },
+        {
+          "concise_instruction": true,
+          "max_tokens": 1200,
+          "recovery_tool": true,
+          "result": {
+            "ansi": false,
+            "bytes": 293,
+            "full_raw": false,
+            "id": "command",
+            "marker": true
+          }
+        },
+        {
+          "concise_instruction": true,
+          "max_tokens": 1200,
+          "recovery_tool": true,
+          "result": {
+            "ansi": true,
+            "bytes": 7840,
+            "full_raw": true,
+            "id": "recover",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": true,
+      "style": "concise"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": null,
+      "minimum": 1,
+      "mode": "enforce",
+      "name": "readonly",
+      "output": "done",
+      "permission": "readonly",
+      "persist": true,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        },
+        {
+          "changed": false,
+          "component_id": "deterministic-lossless",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "<tool>",
+          "projected_bytes": 62,
+          "raw_bytes": 62,
+          "raw_ref": null,
+          "reason": "component_passthrough",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 16,
+          "tokens_before_estimate": 16,
+          "warning_count": 0
+        },
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": true,
+          "max_tokens": 1200,
+          "recovery_tool": false,
+          "result": null
+        },
+        {
+          "concise_instruction": true,
+          "max_tokens": 1200,
+          "recovery_tool": false,
+          "result": {
+            "ansi": false,
+            "bytes": 62,
+            "full_raw": false,
+            "id": "command",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": false,
+      "style": "concise"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": null,
+      "minimum": 1,
+      "mode": "enforce",
+      "name": "no-persistence",
+      "output": "done",
+      "permission": "auto",
+      "persist": false,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        },
+        {
+          "changed": true,
+          "component_id": "deterministic-lossless",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "<tool>",
+          "projected_bytes": 48,
+          "raw_bytes": 7799,
+          "raw_ref": null,
+          "reason": "recovery_unavailable",
+          "stage": "observation",
+          "status": "degraded",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 1950,
+          "warning_count": 3
+        },
+        {
+          "changed": true,
+          "component_id": "concise-response",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossy",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 370,
+          "raw_bytes": 91,
+          "raw_ref": null,
+          "reason": "policy_applied",
+          "stage": "response_policy",
+          "status": "applied",
+          "tokens_after_estimate": 93,
+          "tokens_before_estimate": 23,
+          "warning_count": 0
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": true,
+          "max_tokens": 1200,
+          "recovery_tool": false,
+          "result": null
+        },
+        {
+          "concise_instruction": true,
+          "max_tokens": 1200,
+          "recovery_tool": false,
+          "result": {
+            "ansi": true,
+            "bytes": 7799,
+            "full_raw": true,
+            "id": "command",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": false,
+      "style": "concise"
+    },
+    {
+      "command": "for i in $(seq 1 300); do printf '\\033[31mNOTICE duplicate\\033[0m\\n'; done",
+      "limits": [
+        7.0,
+        20000,
+        40000
+      ],
+      "minimum": 20000,
+      "mode": "enforce",
+      "name": "below-threshold",
+      "output": "done",
+      "permission": "auto",
+      "persist": true,
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "deterministic-lossless",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "recoverable",
+          "mode": "enforce",
+          "parent_span_id": "<tool>",
+          "projected_bytes": 48,
+          "raw_bytes": 7799,
+          "raw_ref": null,
+          "reason": "recovery_unavailable",
+          "stage": "observation",
+          "status": "degraded",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 1950,
+          "warning_count": 3
+        }
+      ],
+      "requests": [
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": true,
+          "result": null
+        },
+        {
+          "concise_instruction": false,
+          "max_tokens": 4000,
+          "recovery_tool": true,
+          "result": {
+            "ansi": true,
+            "bytes": 7799,
+            "full_raw": true,
+            "id": "command",
+            "marker": false
+          }
+        }
+      ],
+      "store_closed": true,
+      "store_present": true,
+      "style": "normal"
+    }
+  ]
+}

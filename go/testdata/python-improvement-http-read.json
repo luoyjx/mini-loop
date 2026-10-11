@@ -1,0 +1,752 @@
+{
+  "scenarios": [
+    {
+      "cases": [
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "alice",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "bob",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "query-ignored",
+          "path": "/improvements?owner=bob&limit=1&include_global=true",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "body-ignored",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "no-auth",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "bad-auth",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "bad"
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "query-auth",
+          "path": "/improvements?access_token=token-a",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": "GET",
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n{broken\n",
+          "content_type": "application/json",
+          "name": "malformed",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "",
+          "content_type": "application/json",
+          "name": "empty",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "application/json",
+          "fault": "missing",
+          "name": "missing",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "application/json",
+          "fault": "directory",
+          "name": "directory",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "fault": "invalid-utf8",
+          "name": "invalid-utf8",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "null\n[1,\"legacy\"]\nfalse",
+          "content_type": "application/json",
+          "name": "legacy-scalars",
+          "response": {
+            "proposals": [
+              false,
+              [
+                1,
+                "legacy"
+              ],
+              null
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":true}\n{\"owner\":null}\n{}",
+          "content_type": "application/json",
+          "name": "owner-type",
+          "response": {
+            "proposals": [
+              {},
+              {
+                "owner": null
+              },
+              {
+                "owner": true
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"bob\",\"owner\":\"alice\",\"objective\":\"last\"}",
+          "content_type": "application/json",
+          "name": "duplicate-owner",
+          "response": {
+            "proposals": [
+              {
+                "objective": "last",
+                "owner": "alice"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"future\":[NaN,Infinity,1e999]}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "nonfinite",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"bob\",\"future\":NaN}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "foreign-nonfinite",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"future\":\"\\ud800\"}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "surrogate-value",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"\\udfff\":\"legacy\"}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "surrogate-key",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"bob\",\"future\":\"\\ud800\"}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "foreign-surrogate",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"future\":[-0.0,9007199254740993,1e-5,1e15]}",
+          "content_type": "application/json",
+          "name": "finite-and-bigint",
+          "response": {
+            "proposals": [
+              {
+                "future": [
+                  -0.0,
+                  9007199254740993,
+                  1e-05,
+                  1000000000000000.0
+                ],
+                "owner": "alice"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "application/json",
+          "name": "default-cap",
+          "records": 205,
+          "response_digest": "b302e2fe7f132684f134905cf952b9efa09395f87776169fa67ffa648d684d50",
+          "response_rows": 200,
+          "status": 200
+        }
+      ],
+      "mode": "open",
+      "startup_archive_exists": false
+    },
+    {
+      "cases": [
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "alice",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "bob",
+          "response": {
+            "proposals": [
+              {
+                "owner": "bob",
+                "proposal_id": "second"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "query-ignored",
+          "path": "/improvements?owner=bob&limit=1&include_global=true",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "body-ignored",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": "Bearer",
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "no-auth",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "challenge": "Bearer",
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "bad-auth",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "bad"
+        },
+        {
+          "allow": null,
+          "challenge": "Bearer",
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "name": "query-auth",
+          "path": "/improvements?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": "GET",
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n",
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"proposal_id\":\"first\",\"future\":{\"unicode\":\"界🌱\",\"token\":\"archive-secret-123\"}}\n{\"owner\":\"bob\",\"proposal_id\":\"second\"}\n{\"owner\":\"alice\",\"proposal_id\":\"third\"}\n{broken\n",
+          "content_type": "application/json",
+          "name": "malformed",
+          "response": {
+            "proposals": [
+              {
+                "owner": "alice",
+                "proposal_id": "third"
+              },
+              {
+                "future": {
+                  "token": "archive-secret-123",
+                  "unicode": "界🌱"
+                },
+                "owner": "alice",
+                "proposal_id": "first"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "",
+          "content_type": "application/json",
+          "name": "empty",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "application/json",
+          "fault": "missing",
+          "name": "missing",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "application/json",
+          "fault": "directory",
+          "name": "directory",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "fault": "invalid-utf8",
+          "name": "invalid-utf8",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "null\n[1,\"legacy\"]\nfalse",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "legacy-scalars",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":true}\n{\"owner\":null}\n{}",
+          "content_type": "application/json",
+          "name": "owner-type",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"bob\",\"owner\":\"alice\",\"objective\":\"last\"}",
+          "content_type": "application/json",
+          "name": "duplicate-owner",
+          "response": {
+            "proposals": [
+              {
+                "objective": "last",
+                "owner": "alice"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"future\":[NaN,Infinity,1e999]}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "nonfinite",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"bob\",\"future\":NaN}",
+          "content_type": "application/json",
+          "name": "foreign-nonfinite",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"future\":\"\\ud800\"}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "surrogate-value",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"\\udfff\":\"legacy\"}",
+          "content_type": "text/plain; charset=utf-8",
+          "name": "surrogate-key",
+          "response": "Internal Server Error",
+          "status": 500
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"bob\",\"future\":\"\\ud800\"}",
+          "content_type": "application/json",
+          "name": "foreign-surrogate",
+          "response": {
+            "proposals": []
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content": "{\"owner\":\"alice\",\"future\":[-0.0,9007199254740993,1e-5,1e15]}",
+          "content_type": "application/json",
+          "name": "finite-and-bigint",
+          "response": {
+            "proposals": [
+              {
+                "future": [
+                  -0.0,
+                  9007199254740993,
+                  1e-05,
+                  1000000000000000.0
+                ],
+                "owner": "alice"
+              }
+            ]
+          },
+          "status": 200
+        },
+        {
+          "allow": null,
+          "challenge": null,
+          "content_type": "application/json",
+          "name": "default-cap",
+          "records": 205,
+          "response_digest": "b302e2fe7f132684f134905cf952b9efa09395f87776169fa67ffa648d684d50",
+          "response_rows": 200,
+          "status": 200
+        }
+      ],
+      "mode": "authenticated",
+      "startup_archive_exists": false
+    }
+  ]
+}

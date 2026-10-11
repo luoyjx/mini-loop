@@ -1,0 +1,384 @@
+{
+  "cases": [
+    {
+      "budgets": [
+        8000,
+        1500
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 1
+        }
+      ],
+      "name": "normal",
+      "purposes": [
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-12bd179d7d2b3016e57fa8dd9321152147e43b35091827dd41f4469e174989d2-captured.md",
+          "name": "captured",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ]
+    },
+    {
+      "budgets": [
+        8000,
+        8000,
+        1500
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 1
+        }
+      ],
+      "name": "exhaustion",
+      "purposes": [
+        "agent_turn",
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-12bd179d7d2b3016e57fa8dd9321152147e43b35091827dd41f4469e174989d2-captured.md",
+          "name": "captured",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ]
+    },
+    {
+      "budgets": [
+        8000,
+        8000,
+        1500
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 1
+        }
+      ],
+      "name": "resume-halt",
+      "purposes": [
+        "agent_turn",
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-12bd179d7d2b3016e57fa8dd9321152147e43b35091827dd41f4469e174989d2-captured.md",
+          "name": "captured",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ]
+    },
+    {
+      "budgets": [
+        8000,
+        8000
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [],
+      "name": "tool-halt",
+      "purposes": [
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": []
+    },
+    {
+      "budgets": [
+        8000
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [],
+      "name": "provider-error",
+      "purposes": [
+        "agent_turn"
+      ],
+      "records": []
+    },
+    {
+      "budgets": [
+        8000
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [],
+      "name": "readonly",
+      "purposes": [
+        "agent_turn"
+      ],
+      "records": []
+    },
+    {
+      "budgets": [
+        8000
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [],
+      "name": "disabled",
+      "purposes": [
+        "agent_turn"
+      ],
+      "records": []
+    },
+    {
+      "budgets": [
+        8000
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [],
+      "name": "no-pair",
+      "purposes": [
+        "agent_turn"
+      ],
+      "records": []
+    },
+    {
+      "budgets": [
+        8000
+      ],
+      "capture_errors": 0,
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [],
+      "name": "cancel",
+      "purposes": [
+        "agent_turn"
+      ],
+      "records": []
+    },
+    {
+      "budgets": [
+        8000
+      ],
+      "capture_errors": 1,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [],
+      "name": "capture-error",
+      "purposes": [
+        "agent_turn"
+      ],
+      "records": []
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "capture_errors": 0,
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 1,
+          "count": 1
+        }
+      ],
+      "name": "threshold-after-extract",
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-3ce12709360a357f2ce7ec9057544f5c9916a19a9c5c1107e7e78f5758161373-merged.md",
+          "name": "merged",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ]
+    }
+  ]
+}

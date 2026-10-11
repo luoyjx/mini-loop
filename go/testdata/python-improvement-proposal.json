@@ -1,0 +1,629 @@
+{
+  "cases": [
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify",
+        "git diff --stat HEAD~1 HEAD",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "code.py | 1 +",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": true
+        }
+      ],
+      "name": "commit",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "code.py | 1 +",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": " M code.py\n"
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "(no changes)",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": true
+        }
+      ],
+      "name": "no-change",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": ""
+    },
+    {
+      "acceptance_exit": 1,
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify",
+        "git diff --stat HEAD~1 HEAD",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "code.py | 1 +",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": false
+        }
+      ],
+      "name": "unverified-still-commits",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "code.py | 1 +",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 1,
+        "summary": "[stopped after 1 rounds without verification]\nLast evidence:\n(exit 1)",
+        "touches_verifiers": [],
+        "verified": false,
+        "workspace": "<workspace>"
+      },
+      "status": "?? new.py\n"
+    },
+    {
+      "add_exit": 3,
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "(uncommitted: git add/commit failed in the worktree; the proposal is the working-tree change below)\nM code.py",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": true
+        }
+      ],
+      "name": "add-failed-still-attempts-commit",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "(uncommitted: git add/commit failed in the worktree; the proposal is the working-tree change below)\nM code.py",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": " M code.py\n"
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "commit_exit": 1,
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "(uncommitted: git add/commit failed in the worktree; the proposal is the working-tree change below)\n?? new.py",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": true
+        }
+      ],
+      "name": "commit-failed",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "(uncommitted: git add/commit failed in the worktree; the proposal is the working-tree change below)\n?? new.py",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": "?? new.py\n"
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "commit_exit": null,
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "(uncommitted: git add/commit failed in the worktree; the proposal is the working-tree change below)\nM code.py",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": true
+        }
+      ],
+      "name": "nil-commit-exit",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "(uncommitted: git add/commit failed in the worktree; the proposal is the working-tree change below)\nM code.py",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": " M code.py\n"
+    },
+    {
+      "archive": true,
+      "archive_rows": [
+        {
+          "fields": {
+            "branch": "proposal-branch",
+            "diff_stat": "code.py | 1 +",
+            "integrity": "clean",
+            "objective": "improve code",
+            "rounds": 1,
+            "touches_verifiers": [
+              "tools/verify_a.py",
+              ".github/workflows/new.yml",
+              "conftest.py",
+              "conftest.py"
+            ],
+            "verified": true,
+            "workspace": "<workspace>"
+          },
+          "owner": "tenant",
+          "parent_id": "imp_parent"
+        }
+      ],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify",
+        "git diff --stat HEAD~1 HEAD",
+        "git rev-parse --abbrev-ref HEAD",
+        "archive",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "code.py | 1 +",
+          "objective": "improve code",
+          "parent_id": "imp_parent",
+          "proposal_id": "imp_fixture",
+          "touches_verifiers": [
+            "tools/verify_a.py",
+            ".github/workflows/new.yml",
+            "conftest.py",
+            "conftest.py"
+          ],
+          "verified": true
+        }
+      ],
+      "name": "touches-renames-and-order",
+      "owner": "tenant",
+      "parent": "imp_parent",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "code.py | 1 +",
+        "integrity": "clean",
+        "next": "this proposal CHANGES THE ACCEPTANCE INSTRUMENTS (tools/verify_a.py, .github/workflows/new.yml, conftest.py, conftest.py): verify the verifiers first, then review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "parent_id": "imp_parent",
+        "proposal_id": "imp_fixture",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [
+          "tools/verify_a.py",
+          ".github/workflows/new.yml",
+          "conftest.py",
+          "conftest.py"
+        ],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": " M tools/verify_a.py\nR  old -> .github/workflows/new.yml\n?? conftest.py\n?? conftest.py\n"
+    },
+    {
+      "archive": true,
+      "archive_rows": [
+        {
+          "fields": {
+            "branch": "proposal-branch",
+            "diff_stat": "code.py | 1 +",
+            "integrity": "clean",
+            "objective": "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱",
+            "rounds": 1,
+            "touches_verifiers": [
+              "tools/verify_界.py",
+              "conftest.py"
+            ],
+            "verified": true,
+            "workspace": "<workspace>"
+          },
+          "owner": "anonymous",
+          "parent_id": null
+        }
+      ],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify",
+        "git diff --stat HEAD~1 HEAD",
+        "git rev-parse --abbrev-ref HEAD",
+        "archive",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "code.py | 1 +",
+          "objective": "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱",
+          "parent_id": null,
+          "proposal_id": "imp_fixture",
+          "touches_verifiers": [
+            "tools/verify_界.py",
+            "conftest.py"
+          ],
+          "verified": true
+        }
+      ],
+      "name": "unicode-lines",
+      "objective": "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "code.py | 1 +",
+        "integrity": "clean",
+        "next": "this proposal CHANGES THE ACCEPTANCE INSTRUMENTS (tools/verify_界.py, conftest.py): verify the verifiers first, then review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱",
+        "parent_id": null,
+        "proposal_id": "imp_fixture",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [
+          "tools/verify_界.py",
+          "conftest.py"
+        ],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": "?? tools/verify_界.py?? conftest.py\r\nX\n"
+    },
+    {
+      "archive": true,
+      "archive_rows": [
+        {
+          "fields": {
+            "branch": "proposal-branch",
+            "diff_stat": "(no changes)",
+            "integrity": "clean",
+            "objective": "improve code",
+            "rounds": 1,
+            "touches_verifiers": [],
+            "verified": true,
+            "workspace": "<workspace>"
+          },
+          "owner": "anonymous",
+          "parent_id": null
+        }
+      ],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git rev-parse --abbrev-ref HEAD",
+        "archive",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "(no changes)",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": "imp_fixture",
+          "touches_verifiers": [],
+          "verified": true
+        }
+      ],
+      "name": "archive-null-parent",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "parent_id": null,
+        "proposal_id": "imp_fixture",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": ""
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "(no changes)",
+          "objective": "improve code",
+          "parent_id": "imp_parent",
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": true
+        }
+      ],
+      "name": "parent-without-archive",
+      "parent": "imp_parent",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 1,
+        "summary": "worker-summary",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": ""
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "error": null,
+      "events": [
+        {
+          "branch": "proposal-branch",
+          "diff_stat": "(no changes)",
+          "objective": "improve code",
+          "parent_id": null,
+          "proposal_id": null,
+          "touches_verifiers": [],
+          "verified": false
+        }
+      ],
+      "maximum": 0,
+      "name": "zero-rounds",
+      "proposal": {
+        "branch": "proposal-branch",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve code",
+        "rounds": 0,
+        "summary": "[stopped after 0 rounds without verification]\nLast evidence:\n",
+        "touches_verifiers": [],
+        "verified": false,
+        "workspace": "<workspace>"
+      },
+      "status": ""
+    },
+    {
+      "archive_rows": [],
+      "calls": [],
+      "command": " \t",
+      "error": "an improvement needs an acceptance command; without one the auditor has nothing to verify and 'verified' would be a vibe",
+      "events": [],
+      "name": "blank-command",
+      "proposal": null
+    },
+    {
+      "archive_rows": [],
+      "calls": [],
+      "error": "self-improvement runs only in a git checkout (worktree): a proposal must be diffable and revertible, or it is just a mutation",
+      "events": [],
+      "name": "not-git",
+      "proposal": null,
+      "repository": false
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall"
+      ],
+      "error": "git status --porcelain -uall failed",
+      "events": [],
+      "failure": "git status --porcelain -uall",
+      "name": "status-error",
+      "proposal": null
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git add -A",
+        "git commit -m 'self-improvement proposal' --no-verify"
+      ],
+      "error": "git commit -m 'self-improvement proposal' --no-verify failed",
+      "events": [],
+      "failure": "git commit -m 'self-improvement proposal' --no-verify",
+      "name": "commit-error",
+      "proposal": null,
+      "status": " M code.py\n"
+    },
+    {
+      "archive": true,
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git rev-parse --abbrev-ref HEAD",
+        "archive"
+      ],
+      "error": "archive failed",
+      "events": [],
+      "failure": "archive",
+      "name": "archive-error",
+      "proposal": null,
+      "status": ""
+    },
+    {
+      "archive_rows": [],
+      "calls": [
+        "verified_round",
+        "worker",
+        "accept",
+        "verified_receipt",
+        "verified_checkpoint",
+        "git status --porcelain -uall",
+        "git rev-parse --abbrev-ref HEAD",
+        "improvement_proposed"
+      ],
+      "error": "event failed",
+      "events": [],
+      "failure": "event",
+      "name": "event-error",
+      "proposal": null,
+      "status": ""
+    }
+  ]
+}

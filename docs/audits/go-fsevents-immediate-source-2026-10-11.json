@@ -1,0 +1,172 @@
+{
+  "C_instrumentation": "Same before-Go raw callback fprintf as the preceding d3e6eee audit; event ID, flags, path and subscription recorded before forwarding.",
+  "baseline": "d3e6eee",
+  "conclusion": "Immediate actual Source hidden-parent-source observation returned changed=null (its bounded output wait expired). Not every native observation timeout is demonstrated to be Go-only. Other Source comparators matched their pinned fixture. These observations do not determine a root cause or accept Go temporal reliability.",
+  "experimental_hook": "When the operation Next returns error: observer.Close(); run the actual Source helper for recipe.Name in a Python subprocess with a 20-second process bound; capture output; then retain the original Go failure. Source helper keeps its existing 3-second operation result window. No simultaneous experiment subscriptions.",
+  "failure_and_immediate_source_results": "--- FAIL: TestNativeEventsActualSourceRecipes (40.29s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/added-source (10.48s)\n        native_events_recipes_test.go:197: immediate Source comparison after native Close: error=<nil> output=IMMEDIATE_SOURCE_COMPARISON {\"initial\": false, \"mtime\": 100, \"name\": \"added-source\", \"operation\": \"add\", \"path\": \"new.py\", \"changed\": [\"new.py\"], \"native_arguments\": {\"force_polling\": false, \"poll_delay_ms\": 300, \"recursive\": true, \"ignore_permission_denied\": true, \"backend\": \"FsEventWatcher\", \"fsevents\": {\"flags\": 18, \"latency_seconds\": 0.0, \"since_now\": true}}, \"closed\": true, \"seconds\": 6.5510916244238615, \"matches_pinned_fixture\": true, \"fixture_sha256\": \"fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0\"}\n        native_events_recipes_test.go:198: context deadline exceeded\n        native_events_recipes_test.go:142: native recipe timeline:\n            +84ms subscription constructed; await post-subscription probe\n            +474ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3780515445/001\" flags=164096\n            +474ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3780515445/001/reload_observer_ready.go\" flags=102656\n            +525ms readiness probe observed; drain remaining setup events\n            +727ms setup next: paths=[] error=context deadline exceeded\n            +727ms operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3780515445/001/new.go\n            +3.731s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/hidden-parent-source (7.50s)\n        native_events_recipes_test.go:197: immediate Source comparison after native Close: error=<nil> output=IMMEDIATE_SOURCE_COMPARISON {\"initial\": false, \"mtime\": 100, \"name\": \"hidden-parent-source\", \"operation\": \"add\", \"path\": \".git/a.py\", \"changed\": null, \"native_arguments\": {\"force_polling\": false, \"poll_delay_ms\": 300, \"recursive\": true, \"ignore_permission_denied\": true, \"backend\": \"FsEventWatcher\", \"fsevents\": {\"flags\": 18, \"latency_seconds\": 0.0, \"since_now\": true}}, \"closed\": true, \"seconds\": 3.710205376148224, \"matches_pinned_fixture\": false, \"fixture_sha256\": \"fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0\"}\n        native_events_recipes_test.go:198: context deadline exceeded\n        native_events_recipes_test.go:142: native recipe timeline:\n            +64ms subscription constructed; await post-subscription probe\n            +367ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3649814925/001\" flags=164096\n            +367ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3649814925/001/.git\" flags=164096\n            +367ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3649814925/001/reload_observer_ready.go\" flags=102656\n            +419ms readiness probe observed; drain remaining setup events\n            +622ms setup next: paths=[] error=context deadline exceeded\n            +622ms operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3649814925/001/.git/a.go\n            +3.624s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-backup (6.38s)\n        native_events_recipes_test.go:197: immediate Source comparison after native Close: error=<nil> output=IMMEDIATE_SOURCE_COMPARISON {\"initial\": false, \"mtime\": 100, \"name\": \"ignored-backup\", \"operation\": \"add\", \"path\": \"~backup.py\", \"changed\": [], \"native_arguments\": {\"force_polling\": false, \"poll_delay_ms\": 300, \"recursive\": true, \"ignore_permission_denied\": true, \"backend\": \"FsEventWatcher\", \"fsevents\": {\"flags\": 18, \"latency_seconds\": 0.0, \"since_now\": true}}, \"closed\": true, \"seconds\": 2.1603025011718273, \"matches_pinned_fixture\": true, \"fixture_sha256\": \"fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0\"}\n        native_events_recipes_test.go:198: context deadline exceeded\n        native_events_recipes_test.go:142: native recipe timeline:\n            +68ms subscription constructed; await post-subscription probe\n            +781ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3277213650/001\" flags=164096\n            +781ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3277213650/001/reload_observer_ready.go\" flags=102656\n            +833ms readiness probe observed; drain remaining setup events\n            +1.036s setup next: paths=[] error=context deadline exceeded\n            +1.036s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3277213650/001/~backup.go\n            +4.038s operation next: paths=[] error=context deadline exceeded\n            \n",
+  "full_log_path": "/tmp/mini-loop-immediate-source-full.log",
+  "full_log_sha256": "a9b983b923f52832558a23b95fc762a9d2209ffa200d12060b736ecc86ca827b",
+  "go_command": "go test -p=1 -count=1 -timeout=300s ./...",
+  "go_exit_code": 1,
+  "go_failure_scope": "Only reload failed; every other package passed or had no tests",
+  "limitations": [
+    "Sequential same-host comparison is closer to the failure but not identical workload, paths, timestamps or scheduling.",
+    "The Source elapsed seconds includes construction/readiness/drain/operation/cleanup, not operation latency alone.",
+    "Source changed=null proves no result in its operation window, not absence of a raw Source callback.",
+    "Go raw callbacks showed only setup/readiness for each failed stream; no kernel event-loss conclusion follows.",
+    "Temporary stderr output and Python comparator change scheduling.",
+    "Instrumented full ordinary failure is retained; no passing gate substitutes for it."
+  ],
+  "raw_go_callbacks_by_failed_case": {
+    "added-source": [
+      {
+        "event_id": 1887503056,
+        "flags": 164096,
+        "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3780515445/001",
+        "subscription": 35
+      },
+      {
+        "event_id": 1887503065,
+        "flags": 102656,
+        "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesadded-source3780515445/001/reload_observer_ready.go",
+        "subscription": 35
+      }
+    ],
+    "hidden-parent-source": [
+      {
+        "event_id": 1887510132,
+        "flags": 164096,
+        "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3649814925/001",
+        "subscription": 36
+      },
+      {
+        "event_id": 1887510138,
+        "flags": 164096,
+        "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3649814925/001/.git",
+        "subscription": 36
+      },
+      {
+        "event_id": 1887510147,
+        "flags": 102656,
+        "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3649814925/001/reload_observer_ready.go",
+        "subscription": 36
+      }
+    ],
+    "ignored-backup": [
+      {
+        "event_id": 1887551831,
+        "flags": 164096,
+        "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3277213650/001",
+        "subscription": 47
+      },
+      {
+        "event_id": 1887551840,
+        "flags": 102656,
+        "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-backup3277213650/001/reload_observer_ready.go",
+        "subscription": 47
+      }
+    ]
+  },
+  "restoration": "Temporary C and Go-test changes removed after the Go process became terminal. git diff --exit-code -- go python passed; no runtime/test/fixture behavior or dependencies remain changed.",
+  "restored_files_sha256": {
+    "go/reload/native_events_darwin.c": "73e544bdcd054012392a9123ac8230d716b05d41ae65c6a191296dcd47389649",
+    "go/reload/native_events_recipes_test.go": "560cd3409c968d726e7170eb8f2fd0926cde5072f9d655b8d7acd810efb985ed",
+    "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+    "python/tools/watchfiles_contracts.py": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a"
+  },
+  "sdk_header": {
+    "device_discussion_lines": [
+      903,
+      915
+    ],
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/FSEvents.h",
+    "purge_discussion_lines": [
+      1047,
+      1062
+    ],
+    "sha256": "07df9bbe9a1f42e387f7cbe841a7c4f1e7baf188f3d6e205ce1f28d6c75ae0d4",
+    "test_user_uid": 501
+  },
+  "source_results": [
+    {
+      "changed": [
+        "new.py"
+      ],
+      "closed": true,
+      "fixture_sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+      "initial": false,
+      "matches_pinned_fixture": true,
+      "mtime": 100,
+      "name": "added-source",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": "new.py",
+      "seconds": 6.5510916244238615
+    },
+    {
+      "changed": null,
+      "closed": true,
+      "fixture_sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+      "initial": false,
+      "matches_pinned_fixture": false,
+      "mtime": 100,
+      "name": "hidden-parent-source",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": ".git/a.py",
+      "seconds": 3.710205376148224
+    },
+    {
+      "changed": [],
+      "closed": true,
+      "fixture_sha256": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+      "initial": false,
+      "matches_pinned_fixture": true,
+      "mtime": 100,
+      "name": "ignored-backup",
+      "native_arguments": {
+        "backend": "FsEventWatcher",
+        "force_polling": false,
+        "fsevents": {
+          "flags": 18,
+          "latency_seconds": 0.0,
+          "since_now": true
+        },
+        "ignore_permission_denied": true,
+        "poll_delay_ms": 300,
+        "recursive": true
+      },
+      "operation": "add",
+      "path": "~backup.py",
+      "seconds": 2.1603025011718273
+    }
+  ],
+  "source_script": "import hashlib,json,sys,tempfile,time\nfrom pathlib import Path\nrepo=Path.cwd().parent.parent\nassert (repo/'python/tools/watchfiles_contracts.py').exists(), repo\nsys.path.insert(0,str(repo/'python'))\nsys.path.insert(0,str(repo/'python/tools'))\nfrom watchfiles_contracts import _native_case\ncases=json.loads((repo/'go/testdata/python-watchfiles.json').read_text())['native_events']\ncase=next(c for c in cases if c['name']==sys.argv[1])\nrecipe={k:v for k,v in case.items() if k not in ('changed','closed','native_arguments')}\nwith tempfile.TemporaryDirectory(prefix='mini-loop-immediate-source-') as scratch:\n    started=time.monotonic()\n    result=_native_case(Path(scratch).resolve()/case['name'],recipe)\n    result['seconds']=time.monotonic()-started\n    result['matches_pinned_fixture']=result['changed']==case['changed']\n    result['fixture_sha256']=hashlib.sha256((repo/'go/testdata/python-watchfiles.json').read_bytes()).hexdigest()\n    print('IMMEDIATE_SOURCE_COMPARISON '+json.dumps(result),flush=True)\n    out=Path('/tmp/mini-loop-immediate-source-comparisons');out.mkdir(exist_ok=True)\n    (out/(case['name']+'.json')).write_text(json.dumps(result,indent=2)+'\\n')\n",
+  "temporary_instrumented_sha256": {
+    "C": "2135472641c75d0553b1d51a7bbbf7b5f6b7c072fca6de568e4056bf0d635801",
+    "Go_test": "8b42e102e6b0bd6f64275c894ffe22a042f02a2336d9d38e3d4cb18d629f19a3",
+    "Source_script": "a2f92b0fd0adc427fb95397123822586c6384388d866e7aaf2a940fd1b4fd429"
+  }
+}

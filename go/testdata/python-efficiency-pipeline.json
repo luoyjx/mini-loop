@@ -1,0 +1,2800 @@
+{
+  "rows": [
+    {
+      "calls": [],
+      "components": [],
+      "enforced": false,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "empty",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": null
+        }
+      ],
+      "enforced": false,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "default-off",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "off",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "mode_off",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": null
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "default-enforce",
+      "options": {
+        "default_mode": "enforce"
+      },
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "off"
+        }
+      ],
+      "enforced": false,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "override-off",
+      "options": {
+        "default_mode": "enforce"
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "off",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "mode_off",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "shadow"
+        }
+      ],
+      "enforced": false,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "shadow",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "shadow",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "shadow_candidate",
+            "stage": "observation",
+            "status": "shadowed",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "enforce",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "same",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "passthrough",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_passthrough",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "inflate",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "inflate-bytes",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:be9577d1bb60d26be55c383f94ea948a0db04038af742c650ab836f3e9bcf488",
+            "projected_bytes": 185,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "inflation_guard",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 47,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "inflate-tokens",
+      "options": {
+        "counter": "inverse"
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "inflation_guard",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 1000,
+            "tokens_before_estimate": 1,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "inflate",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "inflation-disabled",
+      "options": {
+        "inflation_guard": false
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nextra",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:be9577d1bb60d26be55c383f94ea948a0db04038af742c650ab836f3e9bcf488",
+            "projected_bytes": 185,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 47,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "double",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          },
+          {
+            "changed": false,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 5,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "double_reduction_guard:probe",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 2,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        },
+        {
+          "budget_tokens": 100,
+          "component": "second",
+          "content": "short",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "empty",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "double-disabled",
+      "options": {
+        "prevent_double_reduction": false
+      },
+      "output": {
+        "observation": {
+          "content": "",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe",
+            "second"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          },
+          {
+            "changed": true,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "projected_bytes": 0,
+            "raw_bytes": 5,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 0,
+            "tokens_before_estimate": 2,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": [
+          "upstream"
+        ]
+      },
+      "name": "upstream-owned",
+      "options": {
+        "reduced_by": [
+          "upstream"
+        ]
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "upstream"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "double_reduction_guard:upstream",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "image/png",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "unsupported",
+      "options": {
+        "content_type": "image/png"
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "image/png",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "unsupported_content_type",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "max_input_bytes": 1
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "byte-cap",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "max_input_bytes_exceeded",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "recoverable-no-persist",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "recovery_unavailable",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_unavailable",
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": [
+          "raw_store_unavailable"
+        ]
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "recoverable-no-store",
+      "options": {
+        "persist": true
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "recovery_unavailable",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_unavailable",
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": [
+          "raw_store_unavailable"
+        ]
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "recoverable-store",
+      "options": {
+        "persist": true,
+        "store": "normal"
+      },
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+          "raw_ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "raw_ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n"
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "recoverable-closed",
+      "options": {
+        "persist": true,
+        "store": "closed"
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "recovery_unavailable",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_error",
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": [
+          "raw_store_error"
+        ]
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "recoverable-small",
+      "options": {
+        "persist": true,
+        "store": "small"
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "recovery_unavailable",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_error",
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": [
+          "raw_store_error"
+        ]
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reduced_by": []
+      },
+      "name": "existing-ref",
+      "options": {
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        },
+        {
+          "budget_tokens": 100,
+          "component": "second",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "storage-fallback-second",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "second"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "recovery_unavailable",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_unavailable",
+              "candidate:1"
+            ]
+          },
+          {
+            "changed": true,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_unavailable",
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": [
+          "raw_store_unavailable"
+        ]
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        },
+        {
+          "budget_tokens": 100,
+          "component": "second",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "shorten",
+          "fields": {
+            "lossiness": "recoverable",
+            "recoverable": true
+          },
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "duplicate-storage-warnings",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "recovery_unavailable",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_unavailable",
+              "candidate:1"
+            ]
+          },
+          {
+            "changed": true,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "recoverable",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "recovery_unavailable",
+            "stage": "observation",
+            "status": "degraded",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "raw_store_unavailable",
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": [
+          "raw_store_unavailable",
+          "raw_store_unavailable"
+        ]
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "RuntimeError",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "runtime-error",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:RuntimeError",
+            "stage": "observation",
+            "status": "error",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "ValueError",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "value-error",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:ValueError",
+            "stage": "observation",
+            "status": "error",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "unsafe-error",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "unsafe-error-name",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error",
+            "stage": "observation",
+            "status": "error",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "wrong-result",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "wrong-result",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:TypeError",
+            "stage": "observation",
+            "status": "error",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "invalid-warning",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "invalid-warning",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:ValueError",
+            "stage": "observation",
+            "status": "error",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "timeout",
+          "fields": {
+            "timeout_ms": 1
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "timeout",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:TimeoutError",
+            "stage": "observation",
+            "status": "error",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "cancelled",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": {
+        "kind": "CancelledError",
+        "message": ""
+      },
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "cancelled",
+      "options": {},
+      "output": null,
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        },
+        {
+          "budget_tokens": 100,
+          "component": "second",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "RuntimeError",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "fault-fallback-second",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "second"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:RuntimeError",
+            "stage": "observation",
+            "status": "error",
+            "tokens_after_estimate": 45,
+            "tokens_before_estimate": 45,
+            "warnings": []
+          },
+          {
+            "changed": true,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "broken-counter",
+      "options": {
+        "counter": "broken"
+      },
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "negative-counter",
+      "options": {
+        "counter": "negative"
+      },
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "same",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "large-counter",
+      "options": {
+        "counter": "large"
+      },
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "projected_bytes": 180,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_passthrough",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            "tokens_before_estimate": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        },
+        {
+          "budget_tokens": 100,
+          "component": "second",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "shadow"
+        },
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "shadow-before-enforce",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "second"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "shadow",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "shadow_candidate",
+            "stage": "observation",
+            "status": "shadowed",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          },
+          {
+            "changed": true,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "second",
+          "mode": "off"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "off-after-enforce",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          },
+          {
+            "changed": false,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "lossiness": "lossless",
+            "mode": "off",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 5,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "mode_off",
+            "stage": "observation",
+            "status": "passthrough",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 2,
+            "warnings": []
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "inflate",
+          "fields": {},
+          "id": "probe",
+          "mode": "shadow"
+        }
+      ],
+      "enforced": false,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "shadow-inflation",
+      "options": {},
+      "output": {
+        "observation": {
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "content_type": "text/plain",
+          "metadata": [],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": []
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "shadow",
+            "output_digest": "sha256:be9577d1bb60d26be55c383f94ea948a0db04038af742c650ab836f3e9bcf488",
+            "projected_bytes": 185,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "shadow_candidate",
+            "stage": "observation",
+            "status": "shadowed",
+            "tokens_after_estimate": 47,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    },
+    {
+      "calls": [
+        {
+          "budget_tokens": 100,
+          "component": "probe",
+          "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+          "query": "masked query"
+        }
+      ],
+      "components": [
+        {
+          "action": "shorten",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "enforced": true,
+      "error": null,
+      "input": {
+        "content": "building\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\nbuilding\n",
+        "content_type": "text/plain",
+        "metadata": [
+          [
+            "exit_code",
+            7
+          ],
+          [
+            "timed_out",
+            false
+          ]
+        ],
+        "raw_digest": null,
+        "raw_ref": null,
+        "reduced_by": []
+      },
+      "name": "metadata-preserved",
+      "options": {
+        "metadata": [
+          [
+            "exit_code",
+            7
+          ],
+          [
+            "timed_out",
+            false
+          ]
+        ]
+      },
+      "output": {
+        "observation": {
+          "content": "short",
+          "content_type": "text/plain",
+          "metadata": [
+            [
+              "exit_code",
+              7
+            ],
+            [
+              "timed_out",
+              false
+            ]
+          ],
+          "raw_digest": null,
+          "raw_ref": null,
+          "reduced_by": [
+            "probe"
+          ]
+        },
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:bec7770c429e4efcdd09df091ec274f972dbba432ed82183dbe6161afc4b938f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+            "projected_bytes": 5,
+            "raw_bytes": 180,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "reduced",
+            "stage": "observation",
+            "status": "applied",
+            "tokens_after_estimate": 2,
+            "tokens_before_estimate": 45,
+            "warnings": [
+              "candidate:1"
+            ]
+          }
+        ],
+        "warnings": []
+      },
+      "recovered": null
+    }
+  ]
+}

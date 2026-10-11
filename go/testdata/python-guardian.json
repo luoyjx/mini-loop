@@ -1,0 +1,567 @@
+{
+  "bridges": [
+    {
+      "answer": "ALLOW reviewed",
+      "command": "curl fixture-credential",
+      "name": "masked-allow",
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"curl <secret-hidden>\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "secret": "fixture-credential",
+      "verdict": true
+    },
+    {
+      "answer": "DENY reviewed",
+      "command": "echo \"fixture\\credential\"",
+      "name": "escaped-deny",
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"echo \\\"<secret-hidden>\\\"\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "secret": "fixture\\credential",
+      "verdict": false
+    },
+    {
+      "answer": "DENY reviewed",
+      "command": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+      "name": "bounded-preview",
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "secret": "",
+      "verdict": false
+    },
+    {
+      "answer": "DEFER uncertain",
+      "command": "inspect",
+      "name": "defer",
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"inspect\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "secret": "",
+      "verdict": null
+    }
+  ],
+  "reviews": [
+    {
+      "answer": "ALLOW safe",
+      "file_exists": false,
+      "hostile": false,
+      "name": "allow",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "ALLOW safe"
+      },
+      "wide": false
+    },
+    {
+      "answer": "DENY unsafe",
+      "file_exists": false,
+      "hostile": false,
+      "name": "deny",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": false,
+        "reason": "DENY unsafe"
+      },
+      "wide": false
+    },
+    {
+      "answer": "DEFER uncertain",
+      "file_exists": false,
+      "hostile": false,
+      "name": "defer",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": null,
+      "wide": false
+    },
+    {
+      "answer": "allow safe",
+      "file_exists": false,
+      "hostile": false,
+      "name": "lowercase",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": null,
+      "wide": false
+    },
+    {
+      "answer": "I would ALLOW this",
+      "file_exists": false,
+      "hostile": false,
+      "name": "embedded",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "I would ALLOW this"
+      },
+      "wide": false
+    },
+    {
+      "answer": "DENY or ALLOW",
+      "file_exists": false,
+      "hostile": false,
+      "name": "first-deny",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": false,
+        "reason": "DENY or ALLOW"
+      },
+      "wide": false
+    },
+    {
+      "answer": "ALLOWING",
+      "file_exists": false,
+      "hostile": false,
+      "name": "word-suffix",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": null,
+      "wide": false
+    },
+    {
+      "answer": "_ALLOW_",
+      "file_exists": false,
+      "hostile": false,
+      "name": "underscore",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": null,
+      "wide": false
+    },
+    {
+      "answer": "界ALLOW",
+      "file_exists": false,
+      "hostile": false,
+      "name": "unicode-prefix",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": null,
+      "wide": false
+    },
+    {
+      "answer": "DENYé",
+      "file_exists": false,
+      "hostile": false,
+      "name": "unicode-suffix",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": null,
+      "wide": false
+    },
+    {
+      "answer": "́ALLOW",
+      "file_exists": false,
+      "hostile": false,
+      "name": "combining-prefix",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "́ALLOW"
+      },
+      "wide": false
+    },
+    {
+      "answer": "(ALLOW)",
+      "file_exists": false,
+      "hostile": false,
+      "name": "punctuation",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "(ALLOW)"
+      },
+      "wide": false
+    },
+    {
+      "answer": "Heading\nDENY unsafe",
+      "file_exists": false,
+      "hostile": false,
+      "name": "multiline",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": false,
+        "reason": "Heading"
+      },
+      "wide": false
+    },
+    {
+      "answer": "Heading ALLOW safe",
+      "file_exists": false,
+      "hostile": false,
+      "name": "unicode-line",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "Heading"
+      },
+      "wide": false
+    },
+    {
+      "answer": "ALLOW 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+      "file_exists": false,
+      "hostile": false,
+      "name": "long-reason",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "ALLOW 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"
+      },
+      "wide": false
+    },
+    {
+      "answer": "",
+      "file_exists": false,
+      "hostile": false,
+      "name": "empty",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": null,
+      "wide": false
+    },
+    {
+      "answer": "ALLOW after inspection",
+      "file_exists": false,
+      "hostile": true,
+      "name": "hostile-write",
+      "names": [
+        [
+          "read_file",
+          "glob"
+        ],
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [
+        "Unknown tool: write_file"
+      ],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "ALLOW after inspection"
+      },
+      "wide": false
+    },
+    {
+      "answer": "ALLOW after inspection",
+      "file_exists": false,
+      "hostile": true,
+      "name": "hostile-wide-catalog",
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_messages": 0,
+      "prompt": "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: danger -- approval required\nArguments (already redacted): {\"command\": \"rm fixture\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+      "results": [
+        "Permission denied: this session is read-only (tool risk: write)"
+      ],
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "You are a security reviewer. You may read to inform your judgment but never modify anything.",
+          "type": "text"
+        }
+      ],
+      "verdict": {
+        "allowed": true,
+        "reason": "ALLOW after inspection"
+      },
+      "wide": true
+    }
+  ]
+}

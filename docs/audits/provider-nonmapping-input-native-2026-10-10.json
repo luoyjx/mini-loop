@@ -1,0 +1,893 @@
+{
+  "go_baseline": "f187508 plus finite non-mapping tool input adoption",
+  "sdk_version": "0.107.1",
+  "jiter_version": "0.15.0",
+  "cases": [
+    {
+      "kind": "tool_use",
+      "name": "no-deltas",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "empty-delta",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "empty-twice",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "complete",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "open-object",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "open-object-space",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "complete-member-open-object",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "trailing-comma-eof",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-key",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "missing-colon",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "missing-value",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-string",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-escape",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-unicode",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-array",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1, true]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"values\":[1,true]},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-array-literal",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"values\":[1]},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-nested-object",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"nested\": {\"keep\": 1}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"nested\":{\"keep\":1}},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-true",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-false",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-null",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-negative",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-fraction",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "partial-exponent",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "complete-exponent-eof",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 100.0}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"value\":100.0},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "large-integer-eof",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 9223372036854775808123}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"value\":9223372036854775808123},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "duplicate-partial",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "duplicate-complete",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 2}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":2},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "completed-two-chunks",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": \"unfinished\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":\"unfinished\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "completed-many-chunks",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "empty-first",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "empty-middle",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "empty-last",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "invalid-repaired-later",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "invalid-literal",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "invalid-number",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "invalid-trailing-comma",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "invalid-unicode",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "invalid-control",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "invalid-delimiter",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "trailing-garbage",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "whitespace-only",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "root-array",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": [1, true], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":[1,true],\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "root-null",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": null, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":null,\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "root-string",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": \"hello\", \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":\"hello\",\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "root-integer",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": 17, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":17,\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "root-boolean",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": true, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "native_json": "[{\"type\":\"tool_use\",\"id\":\"tool\",\"name\":\"bash\",\"input\":true,\"caller\":null}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "root-partial-string",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "tool_use",
+      "name": "nonfinite-nan",
+      "sdk_error": false,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "native_delta_count": 1,
+      "same_outcome": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "kind": "tool_use",
+      "name": "nonfinite-infinity",
+      "sdk_error": false,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "native_delta_count": 1,
+      "same_outcome": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "no-deltas",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "empty-delta",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "empty-twice",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "complete",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "open-object",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "open-object-space",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "complete-member-open-object",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "trailing-comma-eof",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-key",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "missing-colon",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "missing-value",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-string",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-escape",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-unicode",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-array",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1, true]}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"values\":[1,true]},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-array-literal",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"values\": [1]}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"values\":[1]},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-nested-object",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"nested\": {\"keep\": 1}}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"nested\":{\"keep\":1}},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-true",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-false",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-null",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-negative",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-fraction",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "partial-exponent",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "complete-exponent-eof",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 100.0}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"value\":100.0},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "large-integer-eof",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"value\": 9223372036854775808123}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"value\":9223372036854775808123},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "duplicate-partial",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "duplicate-complete",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 2}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":2},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "completed-two-chunks",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": \"unfinished\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":\"unfinished\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "completed-many-chunks",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\",\"keep\":1},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "empty-first",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "empty-middle",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "empty-last",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "invalid-repaired-later",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "invalid-literal",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "invalid-number",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "invalid-trailing-comma",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "invalid-unicode",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "invalid-control",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "invalid-delimiter",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "trailing-garbage",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\"}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":{\"command\":\"true\"},\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "whitespace-only",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "root-array",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": [1, true], \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":[1,true],\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "root-null",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": null, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":null,\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "root-string",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": \"hello\", \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":\"hello\",\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "root-integer",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": 17, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":17,\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "root-boolean",
+      "sdk_error": false,
+      "native_delta_count": 0,
+      "same_outcome": true,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": true, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]",
+      "native_json": "[{\"type\":\"server_tool_use\",\"id\":\"tool\",\"name\":\"web_search\",\"input\":true,\"caller\":null}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "root-partial-string",
+      "sdk_error": true,
+      "native_error": "invalid provider stream: malformed partial tool input",
+      "native_failure_event": "content_block_delta",
+      "native_delta_count": 1,
+      "same_outcome": true
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "nonfinite-nan",
+      "sdk_error": false,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "native_delta_count": 1,
+      "same_outcome": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+    },
+    {
+      "kind": "server_tool_use",
+      "name": "nonfinite-infinity",
+      "sdk_error": false,
+      "native_error": "invalid provider stream: archive value cannot be serialized as finite JSON",
+      "native_failure_event": "content_block_stop",
+      "native_delta_count": 1,
+      "same_outcome": false,
+      "sdk_json": "[{\"caller\": null, \"id\": \"tool\", \"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"web_search\", \"type\": \"server_tool_use\"}]"
+    }
+  ]
+}

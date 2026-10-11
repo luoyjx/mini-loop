@@ -1,0 +1,275 @@
+{
+  "baseline_commit": "5d1c99b",
+  "production_runtime": "ea35cd3 unchanged",
+  "acceptance_scope": "Original P0/P1/G0-G7 work packages preserved; refresh current index and close stale background option implementation entries",
+  "verification": [
+    {
+      "command": ".venv/bin/python -m pytest -q",
+      "result": "2230 passed, 28 skipped, 50 warnings, 24 subtests passed in 85.80s",
+      "log": "/tmp/mini-loop-port-acceptance-python-2026-10-11.log",
+      "sha256": "bdfafaba9bfd2cbd343653ecf4f5621769c049b43a5511e5fb371717a626fe60"
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_invariants.py",
+      "result": "77 modules checked; every module declares invariant posture",
+      "log": "/tmp/mini-loop-port-acceptance-invariants-2026-10-11.log",
+      "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_scans.py",
+      "result": "19 scan guards anchored",
+      "log": "/tmp/mini-loop-port-acceptance-scans-2026-10-11.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+    },
+    {
+      "command": "cd go && go test -p=1 -count=1 -timeout=300s ./cmd/miniloop",
+      "result": "pass 22.968s before Source control; pass 23.027s before Go control",
+      "logs": [
+        {
+          "path": "/tmp/mini-loop-load-source-cli-2026-10-11.log",
+          "sha256": "882c805493ffcc469c9b81fadc2ad4880d54d1aa1ba18578679a346e1adef377"
+        },
+        {
+          "path": "/tmp/mini-loop-load-go-cli-2026-10-11.log",
+          "sha256": "f5a2e6450bbc54ef0a0661d0ab400dd77c77fe85a0f8372dfbd66e5a8f864669"
+        }
+      ]
+    },
+    {
+      "command": ".venv/bin/python /tmp/mini-loop-source-cli-load-2026-10-11.py 32",
+      "result": "32 closes; 16/16 Source scenarios match fixture",
+      "log": {
+        "path": "/tmp/mini-loop-source-cli-load-32-2026-10-11.log",
+        "sha256": "e37671cf33de613ab2d0ee5755fd5610f0b7769e77ccc7c6a917a574cef125e8"
+      }
+    },
+    {
+      "command": "cd go && go test -v -p=1 -count=1 -timeout=300s ./reload -run '^TestNativeEventsImmediateConcurrentClose$|^TestNativeEventsActualSourceRecipes$'",
+      "result": "32 concurrent-close cycles and 16/16 native scenarios pass, 6.850s",
+      "log": {
+        "path": "/tmp/mini-loop-go-cli-load-churn-32-2026-10-11.log",
+        "sha256": "ab70339abcb70588cb39d6a5f8b43d39257110fbc2d0d15f8cc79d85b9616bff"
+      }
+    }
+  ],
+  "source_cases": [
+    {
+      "name": "added-source",
+      "changed": [
+        "new.py"
+      ],
+      "expected": [
+        "new.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "hidden-parent-source",
+      "changed": [
+        ".git/a.py"
+      ],
+      "expected": [
+        ".git/a.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "symlink-target-write",
+      "changed": [],
+      "expected": [],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "removed-source",
+      "changed": [
+        "source.py"
+      ],
+      "expected": [
+        "source.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "same-mtime-write",
+      "changed": [
+        "source.py"
+      ],
+      "expected": [
+        "source.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "lower-mtime-write",
+      "changed": [
+        "source.py"
+      ],
+      "expected": [
+        "source.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "identical-write",
+      "changed": [
+        "source.py"
+      ],
+      "expected": [
+        "source.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "same-mtime-touch",
+      "changed": [
+        "source.py"
+      ],
+      "expected": [
+        "source.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "rename-out",
+      "changed": [
+        "source.py"
+      ],
+      "expected": [
+        "source.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "rename-in",
+      "changed": [
+        "target.py"
+      ],
+      "expected": [
+        "target.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "rename-source",
+      "changed": [
+        "source.py",
+        "target.py"
+      ],
+      "expected": [
+        "source.py",
+        "target.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "ignored-hidden",
+      "changed": [],
+      "expected": [],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "ignored-backup",
+      "changed": [],
+      "expected": [],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "ignored-text",
+      "changed": [],
+      "expected": [],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "source-directory",
+      "changed": [
+        "package.py"
+      ],
+      "expected": [
+        "package.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    },
+    {
+      "name": "transient-source",
+      "changed": [
+        "flash.py"
+      ],
+      "expected": [
+        "flash.py"
+      ],
+      "matches_fixture": true,
+      "closed": true
+    }
+  ],
+  "source_native_arguments": {
+    "force_polling": false,
+    "poll_delay_ms": 300,
+    "recursive": true,
+    "ignore_permission_denied": true,
+    "backend": "FsEventWatcher",
+    "fsevents": {
+      "flags": 18,
+      "latency_seconds": 0.0,
+      "since_now": true
+    }
+  },
+  "source_script": "import json,sys,tempfile,time,hashlib\nfrom pathlib import Path\nrepo=Path('/Users/yanjixiong/github/mini-loop')\nsys.path.insert(0,str(repo/'python'));sys.path.insert(0,str(repo/'python/tools'))\nimport watchfiles,uvicorn\nfrom watchfiles.main import RustNotify\nfrom watchfiles_contracts import _native_case\nassert watchfiles.__version__=='1.2.0' and uvicorn.__version__=='0.49.0'\nchurn=int(sys.argv[1]);fixture_path=repo/'go/testdata/python-watchfiles.json';cases=json.loads(fixture_path.read_text())['native_events']\nresult={'churn':churn,'watchfiles_version':watchfiles.__version__,'uvicorn_version':uvicorn.__version__,'fixture_sha256':hashlib.sha256(fixture_path.read_bytes()).hexdigest(),'subscriptions':[],'cases':[]}\nwith tempfile.TemporaryDirectory(prefix='mini-loop-source-churn-') as scratch:\n root=Path(scratch).resolve();warm=root/'warm';warm.mkdir()\n for index in range(churn):\n  start=time.monotonic();observer=RustNotify([str(warm)],False,False,300,True,True)\n  representation=repr(observer);assert 'FsEventWatcher' in representation and 'latency: 0.0' in representation and 'flags: 18' in representation\n  observer.close();closed=False\n  try:observer.watch(1,1,1,None)\n  except RuntimeError:closed=True\n  assert closed\n  result['subscriptions'].append({'index':index,'seconds':time.monotonic()-start,'closed':closed})\n for case in cases:\n  recipe={k:v for k,v in case.items() if k not in ('changed','closed','native_arguments')}\n  start=time.monotonic()\n  try:\n   observed=_native_case(root/case['name'],recipe)\n   sample={'name':case['name'],'changed':observed['changed'],'expected':case['changed'],'matches_fixture':observed['changed']==case['changed'],'closed':observed['closed'],'native_arguments':observed['native_arguments'],'seconds':time.monotonic()-start}\n  except Exception as error:\n   sample={'name':case['name'],'error_class':type(error).__name__,'error':str(error),'seconds':time.monotonic()-start,'matches_fixture':False}\n  result['cases'].append(sample);print(json.dumps(sample),flush=True)\noutput=Path(f'/tmp/mini-loop-source-cli-load-{churn}-2026-10-11.json');output.write_text(json.dumps(result,indent=2)+'\\n')\nprint('COMPLETE',churn,sum(c['matches_fixture'] for c in result['cases']),len(cases),flush=True)\n",
+  "source_script_sha256": "f8f286bd76960b9c9c847c3f52d94c284f76a416d7d91626f7f5974a0c58bed3",
+  "source_output_sha256": "e4e76feef48871cd1f8fd623a45e2622c99c491962310c02f4bdc9314d8696e3",
+  "load_conclusion": "Source and Go both pass all 16 after preceding full cmd/miniloop package workload and 32 closes. This workload prefix alone is insufficient to reproduce the known full ordinary failures. It is not the complete reload package/test history or identical process-local compiler ownership.",
+  "remaining_requirements": [
+    {
+      "id": "G3/G6 default diagnostics",
+      "state": "unimplemented pending explicit dependency decision",
+      "evidence": "PythonSyntaxParser injection seam exists; default MINILOOP_FEATURES still refused; CPython 3.11 approval question issued"
+    },
+    {
+      "id": "G3/G7 native temporal reliability",
+      "state": "open",
+      "evidence": "Pinned full ordinary failures; raw callbacks absent while private queue active; targeted/load controls do not supersede full failures"
+    },
+    {
+      "id": "G0 type closure/data flow",
+      "state": "scope audit open",
+      "evidence": "Last direct type audit 443 production files / 1414 named types / zero findings at ea35cd3"
+    },
+    {
+      "id": "G4 provider/public-entry/default scope",
+      "state": "inventory audit open",
+      "evidence": "Captured background optional SDK/managed final-message scope delivered at ea35cd3; broader required rows not yet reconciled"
+    },
+    {
+      "id": "G5/G6 restart/feature/default scope",
+      "state": "scope reconciliation open",
+      "evidence": "Native SQLite/recovery and explicit feature composition implemented; original required recipe inventory acceptance not complete"
+    },
+    {
+      "id": "G7 performance/release gates",
+      "state": "open",
+      "evidence": "Existing matched fake HTTP proof retained; complete required-scope review and final gates unfinished"
+    }
+  ],
+  "limits": [
+    "No repository production/test/fixture/default/dependency change in this refresh",
+    "CPython approval remains pending; no dependent implementation started",
+    "No full mutation sweep: Python guard anchors/behavior unchanged",
+    "No new full Go/race/vet/type, full Source export, coverage, non-Darwin, broader performance or architecture visual gate",
+    "28 Python skips and 50 warnings retained explicitly; passing suite is not proof of skipped cases",
+    "Full port acceptance remains incomplete; no merge or push"
+  ]
+}

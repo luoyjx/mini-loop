@@ -1,0 +1,2270 @@
+{
+  "cases": [
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "direct": true,
+      "error_class": null,
+      "events": [],
+      "final": {
+        "content": [
+          {
+            "text": "partial",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "max_tokens",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "direct",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "partial"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "success",
+      "steps": [
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "ConnectionError",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "connection",
+      "steps": [
+        {
+          "after": null,
+          "error": "ConnectionError",
+          "message": "dropped",
+          "status": 0
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "TimeoutError",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "timeout",
+      "steps": [
+        {
+          "after": null,
+          "error": "TimeoutError",
+          "message": "dropped",
+          "status": 0
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "Exception",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "rate-prose",
+      "steps": [
+        {
+          "after": null,
+          "error": "Exception",
+          "message": "rate limit exceeded",
+          "status": 0
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "backup"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "Exception",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "attempt": 2,
+          "error": "Exception",
+          "type": "recovery"
+        },
+        {
+          "action": "fallback_model",
+          "model": "backup",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "attempt": 3,
+          "error": "Exception",
+          "type": "recovery"
+        }
+      ],
+      "fallback": "backup",
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": "backup",
+      "name": "overload-fallback",
+      "steps": [
+        {
+          "after": null,
+          "error": "Exception",
+          "message": "overloaded",
+          "status": 529
+        },
+        {
+          "after": null,
+          "error": "Exception",
+          "message": "overloaded",
+          "status": 529
+        },
+        {
+          "after": null,
+          "error": "Exception",
+          "message": "overloaded",
+          "status": 529
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": "ConnectionError",
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "ConnectionError",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "attempt": 2,
+          "error": "ConnectionError",
+          "type": "recovery"
+        },
+        {
+          "action": "failed",
+          "error": "ConnectionError: dropped",
+          "type": "recovery"
+        }
+      ],
+      "final": null,
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "exhausted",
+      "retries": 2,
+      "steps": [
+        {
+          "after": null,
+          "error": "ConnectionError",
+          "message": "dropped",
+          "status": 0
+        }
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": "Exception",
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "Exception",
+          "type": "recovery"
+        },
+        {
+          "action": "failed",
+          "error": "Exception: rate limited",
+          "reason": "total retry wait would exceed 300s; a turn does not wait politely forever",
+          "type": "recovery"
+        }
+      ],
+      "final": null,
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "wait-limit",
+      "steps": [
+        {
+          "after": 300,
+          "error": "Exception",
+          "message": "rate limited",
+          "status": 429
+        }
+      ],
+      "waits": [
+        300.0
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "Exception",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "after-zero",
+      "steps": [
+        {
+          "after": 0,
+          "error": "Exception",
+          "message": "rate limited",
+          "status": 429
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        0.0
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "Exception",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "after-big",
+      "steps": [
+        {
+          "after": 10000,
+          "error": "Exception",
+          "message": "rate limited",
+          "status": 429
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        300.0
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "Exception",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "after-nan",
+      "steps": [
+        {
+          "after": "nan",
+          "error": "Exception",
+          "message": "rate limited",
+          "status": 429
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "retry",
+          "attempt": 1,
+          "error": "Exception",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "after-negative",
+      "steps": [
+        {
+          "after": -1,
+          "error": "Exception",
+          "message": "rate limited",
+          "status": 429
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": "ValueError",
+      "events": [
+        {
+          "action": "failed",
+          "error": "ValueError: bad request",
+          "type": "recovery"
+        }
+      ],
+      "final": null,
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "fatal",
+      "steps": [
+        {
+          "after": null,
+          "error": "ValueError",
+          "message": "bad request",
+          "status": 0
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "claude-opus-4-1-20250805"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "front",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "claude-opus-4-1-20250805"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "continue_truncated",
+          "attempt": 1,
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "front",
+            "type": "text"
+          },
+          {
+            "text": "tail",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model": "claude-opus-4-1-20250805",
+      "model_override": null,
+      "name": "small-headroom",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "front"
+        },
+        {
+          "stop": "end_turn",
+          "text": "tail"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "budget": 2000,
+      "calls": [
+        {
+          "max_tokens": 2000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "claude-opus-4-1-20250805"
+        },
+        {
+          "max_tokens": 8192,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "claude-opus-4-1-20250805"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "escalate_tokens",
+          "capped": true,
+          "max_tokens": 8192,
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "regenerated",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model": "claude-opus-4-1-20250805",
+      "model_override": null,
+      "name": "known-escalation",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "discarded"
+        },
+        {
+          "stop": "end_turn",
+          "text": "regenerated"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 64000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "front",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "escalate_tokens",
+          "capped": false,
+          "max_tokens": 64000,
+          "type": "recovery"
+        },
+        {
+          "action": "unescalate_tokens",
+          "max_tokens": 8000,
+          "reason": "the SDK requires streaming above this budget",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "front",
+            "type": "text"
+          },
+          {
+            "text": "tail",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "unknown-refusal",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "front"
+        },
+        {
+          "after": null,
+          "error": "ValueError",
+          "message": "Streaming is required",
+          "status": 0
+        },
+        {
+          "stop": "end_turn",
+          "text": "tail"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 64000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "escalate_tokens",
+          "capped": false,
+          "max_tokens": 64000,
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "regenerated",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "stream-escalation",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "discarded"
+        },
+        {
+          "stop": "end_turn",
+          "text": "regenerated"
+        }
+      ],
+      "streaming": true,
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "first",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "first",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "second",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "escalate": false,
+      "events": [
+        {
+          "action": "continue_truncated",
+          "attempt": 1,
+          "type": "recovery"
+        },
+        {
+          "action": "continue_truncated",
+          "attempt": 2,
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "first",
+            "type": "text"
+          },
+          {
+            "text": "second",
+            "type": "text"
+          },
+          {
+            "text": "last",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "continue",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "first"
+        },
+        {
+          "stop": "max_tokens",
+          "text": "second"
+        },
+        {
+          "stop": "end_turn",
+          "text": "last"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "chunk",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "chunk",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "chunk",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "chunk",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "chunk",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "chunk",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "escalate": false,
+      "events": [
+        {
+          "action": "continue_truncated",
+          "attempt": 1,
+          "type": "recovery"
+        },
+        {
+          "action": "continue_truncated",
+          "attempt": 2,
+          "type": "recovery"
+        },
+        {
+          "action": "continue_truncated",
+          "attempt": 3,
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "chunk",
+            "type": "text"
+          },
+          {
+            "text": "chunk",
+            "type": "text"
+          },
+          {
+            "text": "chunk",
+            "type": "text"
+          },
+          {
+            "text": "chunk",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "max_tokens",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "continuation-bound",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "chunk"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "escalate": false,
+      "events": [],
+      "final": {
+        "content": [
+          {
+            "text": "call",
+            "type": "text"
+          },
+          {
+            "id": "u",
+            "input": {
+              "command": "pwd"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "max_tokens",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "truncated-tool",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "call",
+          "tool": true
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "front",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": "Continue exactly where the truncated response stopped. Do not repeat completed content.",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "escalate": false,
+      "events": [
+        {
+          "action": "continue_truncated",
+          "attempt": 1,
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "front",
+            "type": "text"
+          },
+          {
+            "text": "call",
+            "type": "text"
+          },
+          {
+            "id": "u",
+            "input": {
+              "command": "pwd"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "max_tokens",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "continued-tool",
+      "steps": [
+        {
+          "stop": "max_tokens",
+          "text": "front"
+        },
+        {
+          "stop": "max_tokens",
+          "text": "call",
+          "tool": true
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old ",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "id": "u",
+                  "input": {
+                    "command": "pwd"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "cwd",
+                  "tool_use_id": "u",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "[Reactive compact: older turns dropped to fit context.]",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "id": "u",
+                  "input": {
+                    "command": "pwd"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "cwd",
+                  "tool_use_id": "u",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": null,
+      "events": [
+        {
+          "action": "reactive_compact",
+          "type": "recovery"
+        }
+      ],
+      "final": {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "id": "message",
+        "model": "served",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 21,
+          "output_tokens": 4,
+          "service_tier": "standard"
+        }
+      },
+      "live": [
+        {
+          "content": "[Reactive compact: older turns dropped to fit context.]",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "u",
+              "input": {
+                "command": "pwd"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "cwd",
+              "tool_use_id": "u",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": "turn",
+          "role": "assistant"
+        },
+        {
+          "content": "turn",
+          "role": "user"
+        },
+        {
+          "content": "turn",
+          "role": "assistant"
+        },
+        {
+          "content": "turn",
+          "role": "user"
+        },
+        {
+          "content": "turn",
+          "role": "assistant"
+        }
+      ],
+      "long": true,
+      "model_override": null,
+      "name": "reactive-paired",
+      "steps": [
+        {
+          "after": null,
+          "error": "ValueError",
+          "message": "prompt is too long",
+          "status": 0
+        },
+        {
+          "stop": "end_turn",
+          "text": "done"
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "write",
+              "role": "user"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": "ValueError",
+      "events": [
+        {
+          "action": "failed",
+          "error": "ValueError: context_length_exceeded",
+          "reason": "context overflow, and compaction could not shrink the surface; retrying the same prompt would fail identically",
+          "type": "recovery"
+        }
+      ],
+      "final": null,
+      "live": [
+        {
+          "content": "write",
+          "role": "user"
+        }
+      ],
+      "model_override": null,
+      "name": "reactive-no-shrink",
+      "steps": [
+        {
+          "after": null,
+          "error": "ValueError",
+          "message": "context_length_exceeded",
+          "status": 0
+        }
+      ],
+      "waits": []
+    },
+    {
+      "calls": [
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old old ",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "id": "u",
+                  "input": {
+                    "command": "pwd"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "cwd",
+                  "tool_use_id": "u",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            }
+          ],
+          "model": "unknown-model"
+        },
+        {
+          "max_tokens": 8000,
+          "messages": [
+            {
+              "content": "[Reactive compact: older turns dropped to fit context.]",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "id": "u",
+                  "input": {
+                    "command": "pwd"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "cwd",
+                  "tool_use_id": "u",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            },
+            {
+              "content": "turn",
+              "role": "user"
+            },
+            {
+              "content": "turn",
+              "role": "assistant"
+            }
+          ],
+          "model": "unknown-model"
+        }
+      ],
+      "error_class": "ValueError",
+      "events": [
+        {
+          "action": "reactive_compact",
+          "type": "recovery"
+        },
+        {
+          "action": "failed",
+          "error": "ValueError: prompt is too long",
+          "type": "recovery"
+        }
+      ],
+      "final": null,
+      "live": [
+        {
+          "content": "[Reactive compact: older turns dropped to fit context.]",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "u",
+              "input": {
+                "command": "pwd"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "cwd",
+              "tool_use_id": "u",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": "turn",
+          "role": "assistant"
+        },
+        {
+          "content": "turn",
+          "role": "user"
+        },
+        {
+          "content": "turn",
+          "role": "assistant"
+        },
+        {
+          "content": "turn",
+          "role": "user"
+        },
+        {
+          "content": "turn",
+          "role": "assistant"
+        }
+      ],
+      "long": true,
+      "model_override": null,
+      "name": "reactive-once",
+      "steps": [
+        {
+          "after": null,
+          "error": "ValueError",
+          "message": "prompt is too long",
+          "status": 0
+        }
+      ],
+      "waits": []
+    }
+  ],
+  "pair_compaction": [
+    {
+      "content": "[Reactive compact: older turns dropped to fit context.]",
+      "role": "user"
+    },
+    {
+      "content": [
+        {
+          "id": "u",
+          "input": {
+            "command": "pwd"
+          },
+          "name": "bash",
+          "type": "tool_use"
+        }
+      ],
+      "role": "assistant"
+    },
+    {
+      "content": [
+        {
+          "content": "cwd",
+          "tool_use_id": "u",
+          "type": "tool_result"
+        }
+      ],
+      "role": "user"
+    },
+    {
+      "content": "turn",
+      "role": "assistant"
+    },
+    {
+      "content": "turn",
+      "role": "user"
+    },
+    {
+      "content": "turn",
+      "role": "assistant"
+    },
+    {
+      "content": "turn",
+      "role": "user"
+    },
+    {
+      "content": "turn",
+      "role": "assistant"
+    }
+  ],
+  "source_sha256": "bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca"
+}

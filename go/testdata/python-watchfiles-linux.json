@@ -1,0 +1,348 @@
+{
+  "platform": "Linux",
+  "uvicorn_version": "0.49.0",
+  "watchfiles_version": "1.2.0",
+  "default_backend": "WatchFilesReload",
+  "source_sha256": "bbe32e626d0bb1930debbd2efd3b525a2301500db3e23d6c21edced80ebb129e",
+  "watch_source_sha256": "520b73b467a13dc31f2c21d86d0da68112654d611511b3de82d18534b43c339b",
+  "native_events": [
+    {
+      "name": "added-source",
+      "operation": "add",
+      "path": "new.py",
+      "initial": false,
+      "mtime": 100,
+      "changed": [
+        "new.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "hidden-parent-source",
+      "operation": "add",
+      "path": ".git/a.py",
+      "initial": false,
+      "mtime": 100,
+      "changed": [
+        ".git/a.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "symlink-target-write",
+      "operation": "write",
+      "path": "linked.py",
+      "symlink_target": "notes.txt",
+      "initial": true,
+      "mtime": 100,
+      "changed": [],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "removed-source",
+      "operation": "remove",
+      "path": "source.py",
+      "initial": true,
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "same-mtime-write",
+      "operation": "write",
+      "path": "source.py",
+      "initial": true,
+      "mtime": 100,
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "lower-mtime-write",
+      "operation": "write",
+      "path": "source.py",
+      "initial": true,
+      "mtime": 99,
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "identical-write",
+      "operation": "unchanged-write",
+      "path": "source.py",
+      "initial": true,
+      "mtime": 100,
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "same-mtime-touch",
+      "operation": "touch",
+      "path": "source.py",
+      "initial": true,
+      "mtime": 100,
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "rename-out",
+      "operation": "rename",
+      "path": "source.py",
+      "destination": "notes.txt",
+      "initial": true,
+      "changed": [
+        "source.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "rename-in",
+      "operation": "rename",
+      "path": "notes.txt",
+      "destination": "target.py",
+      "initial": true,
+      "changed": [
+        "target.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "rename-source",
+      "operation": "rename",
+      "path": "source.py",
+      "destination": "target.py",
+      "initial": true,
+      "changed": [
+        "source.py",
+        "target.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "ignored-hidden",
+      "operation": "add",
+      "path": ".hidden.py",
+      "initial": false,
+      "mtime": 100,
+      "changed": [],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "ignored-backup",
+      "operation": "add",
+      "path": "~backup.py",
+      "initial": false,
+      "mtime": 100,
+      "changed": [],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "ignored-text",
+      "operation": "add",
+      "path": "notes.txt",
+      "initial": false,
+      "mtime": 100,
+      "changed": [],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "source-directory",
+      "operation": "mkdir",
+      "path": "package.py",
+      "initial": false,
+      "changed": [
+        "package.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "transient-source",
+      "operation": "transient",
+      "path": "flash.py",
+      "initial": false,
+      "changed": [
+        "flash.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "directory-symlink-source",
+      "operation": "add",
+      "path": "alias/a.py",
+      "directory_alias": "alias",
+      "directory_target": "target",
+      "initial": false,
+      "mtime": 100,
+      "changed": [
+        "alias/a.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    },
+    {
+      "name": "directory-symlink-reverse",
+      "operation": "add",
+      "path": "zalias/a.py",
+      "directory_alias": "zalias",
+      "directory_target": "atarget",
+      "initial": false,
+      "mtime": 100,
+      "changed": [
+        "zalias/a.py"
+      ],
+      "native_arguments": {
+        "force_polling": false,
+        "poll_delay_ms": 300,
+        "recursive": true,
+        "ignore_permission_denied": true,
+        "backend": "INotifyWatcher"
+      },
+      "closed": true
+    }
+  ],
+  "native_cycle": {
+    "entered": true,
+    "closed": true,
+    "leaf_loop": true,
+    "outcome": "timeout"
+  },
+  "native_noop_open": {
+    "outcome": "timeout",
+    "closed": true
+  },
+  "native_root_move": {
+    "root_move": [
+      "<root>"
+    ],
+    "subsequent_write": [
+      "a.py"
+    ],
+    "closed": true
+  }
+}

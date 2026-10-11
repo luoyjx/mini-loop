@@ -1,0 +1,1591 @@
+{
+  "cases": [
+    {
+      "canonical_json": "NaN",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": NaN, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "NaN",
+      "input_json": "NaN",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "root-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": NaN}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"NaN\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "NaN",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": NaN, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"printf command-rewritten\"}",
+      "input_json": "NaN",
+      "kind": "tool_use",
+      "mode": "rewrite",
+      "name": "root-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "command-rewritten"
+        }
+      ],
+      "output": "command-rewritten",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": NaN}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"NaN\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "NaN",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": NaN, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "NaN",
+      "input_json": "NaN",
+      "kind": "tool_use",
+      "mode": "deny",
+      "name": "root-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": NaN}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"NaN\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "NaN",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": NaN, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "NaN",
+      "input_json": "NaN",
+      "kind": "tool_use",
+      "mode": "guard-deny",
+      "name": "root-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source guard"
+        }
+      ],
+      "output": "denied by source guard",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": NaN}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"NaN\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": NaN, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "[NaN]",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": [NaN], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": [NaN], \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "[NaN]",
+      "input_json": "[NaN]",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "root-array-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": [NaN]}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"[NaN]\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": [NaN], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"nan\", \"verb\": \"run\"}, \"input\": {\"command\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": NaN}",
+      "input_json": "{\"command\": NaN}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"nan\", \"verb\": \"run\"}, \"input\": {\"command\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"printf command-rewritten\"}",
+      "input_json": "{\"command\": NaN}",
+      "kind": "tool_use",
+      "mode": "rewrite",
+      "name": "command-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "command-rewritten"
+        }
+      ],
+      "output": "command-rewritten",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"nan\", \"verb\": \"run\"}, \"input\": {\"command\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": NaN}",
+      "input_json": "{\"command\": NaN}",
+      "kind": "tool_use",
+      "mode": "deny",
+      "name": "command-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"nan\", \"verb\": \"run\"}, \"input\": {\"command\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": NaN}",
+      "input_json": "{\"command\": NaN}",
+      "kind": "tool_use",
+      "mode": "guard-deny",
+      "name": "command-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source guard"
+        }
+      ],
+      "output": "denied by source guard",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":[NaN]}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": [NaN]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"[nan]\", \"verb\": \"run\"}, \"input\": {\"command\": [NaN]}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": [NaN]}",
+      "input_json": "{\"command\": [NaN]}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-array-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": [NaN]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": [NaN]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": [NaN]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":{\"keep\":NaN}}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": {\"keep\": NaN}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": [
+        "bash",
+        "{'keep':",
+        "nan}"
+      ],
+      "events_json": [
+        "{\"display\": {\"object\": \"{'keep': nan}\", \"verb\": \"run\"}, \"input\": {\"command\": {\"keep\": NaN}}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": {\"keep\": NaN}}",
+      "input_json": "{\"command\": {\"keep\": NaN}}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-object-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": {\"keep\": NaN}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": {\\\"keep\\\": NaN}}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": {\"keep\": NaN}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":\"true\",\"run_in_background\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "background-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"run_in_background\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":\"true\",\"run_in_background\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"printf command-rewritten\"}",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "kind": "tool_use",
+      "mode": "rewrite",
+      "name": "background-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "command-rewritten"
+        }
+      ],
+      "output": "command-rewritten",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"run_in_background\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":\"true\",\"run_in_background\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "kind": "tool_use",
+      "mode": "deny",
+      "name": "background-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"run_in_background\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":\"true\",\"run_in_background\":NaN}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "kind": "tool_use",
+      "mode": "guard-deny",
+      "name": "background-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source guard"
+        }
+      ],
+      "output": "denied by source guard",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"run_in_background\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":NaN,\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "prefix-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":NaN,\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"printf command-rewritten\"}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "kind": "tool_use",
+      "mode": "rewrite",
+      "name": "prefix-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "command-rewritten"
+        }
+      ],
+      "output": "command-rewritten",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":NaN,\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "kind": "tool_use",
+      "mode": "deny",
+      "name": "prefix-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":NaN,\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "kind": "tool_use",
+      "mode": "guard-deny",
+      "name": "prefix-nan",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source guard"
+        }
+      ],
+      "output": "denied by source guard",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": NaN}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": NaN, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":[NaN],\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [NaN], \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": [NaN], \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": [NaN]}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": [NaN]}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "prefix-array-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": [NaN]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": [NaN]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [NaN], \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "Infinity",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": Infinity, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": Infinity, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "Infinity",
+      "input_json": "Infinity",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "root-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": Infinity}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"Infinity\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": Infinity, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "[Infinity]",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": [Infinity], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": [Infinity], \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "[Infinity]",
+      "input_json": "[Infinity]",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "root-array-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": [Infinity]}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"[Infinity]\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": [Infinity], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":Infinity}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"inf\", \"verb\": \"run\"}, \"input\": {\"command\": Infinity}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": Infinity}",
+      "input_json": "{\"command\": Infinity}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":[Infinity]}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": [Infinity]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"[inf]\", \"verb\": \"run\"}, \"input\": {\"command\": [Infinity]}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": [Infinity]}",
+      "input_json": "{\"command\": [Infinity]}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-array-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": [Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": [Infinity]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": [Infinity]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":{\"keep\":Infinity}}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": {\"keep\": Infinity}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": [
+        "bash",
+        "{'keep':",
+        "inf}"
+      ],
+      "events_json": [
+        "{\"display\": {\"object\": \"{'keep': inf}\", \"verb\": \"run\"}, \"input\": {\"command\": {\"keep\": Infinity}}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": {\"keep\": Infinity}}",
+      "input_json": "{\"command\": {\"keep\": Infinity}}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-object-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": {\"keep\": Infinity}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": {\\\"keep\\\": Infinity}}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": {\"keep\": Infinity}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":\"true\",\"run_in_background\":Infinity}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"run_in_background\": Infinity}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"run_in_background\": Infinity}",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": Infinity}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "background-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"run_in_background\\\": Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":Infinity,\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": Infinity, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": Infinity, \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": Infinity}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": Infinity}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "prefix-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": Infinity, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":[Infinity],\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [Infinity], \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": [Infinity], \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": [Infinity]}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": [Infinity]}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "prefix-array-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": [Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": [Infinity]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [Infinity], \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "-Infinity",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": -Infinity, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": -Infinity, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "-Infinity",
+      "input_json": "-Infinity",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "root-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": -Infinity}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"-Infinity\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": -Infinity, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "[-Infinity]",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": [-Infinity], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"\", \"verb\": \"run\"}, \"input\": [-Infinity], \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "[-Infinity]",
+      "input_json": "[-Infinity]",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "root-array-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": [-Infinity]}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"[-Infinity]\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": [-Infinity], \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":-Infinity}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": -Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"-inf\", \"verb\": \"run\"}, \"input\": {\"command\": -Infinity}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": -Infinity}",
+      "input_json": "{\"command\": -Infinity}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'float' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'float' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": -Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": -Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":[-Infinity]}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": [-Infinity]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"[-inf]\", \"verb\": \"run\"}, \"input\": {\"command\": [-Infinity]}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": [-Infinity]}",
+      "input_json": "{\"command\": [-Infinity]}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-array-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'list' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'list' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": [-Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": [-Infinity]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": [-Infinity]}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":{\"keep\":-Infinity}}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": {\"keep\": -Infinity}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": [
+        "bash",
+        "{'keep':",
+        "-inf}"
+      ],
+      "events_json": [
+        "{\"display\": {\"object\": \"{'keep': -inf}\", \"verb\": \"run\"}, \"input\": {\"command\": {\"keep\": -Infinity}}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": {\"keep\": -Infinity}}",
+      "input_json": "{\"command\": {\"keep\": -Infinity}}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "command-object-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: 'dict' object has no attribute 'split'"
+        }
+      ],
+      "output": "Error: 'dict' object has no attribute 'split'",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": {\"keep\": -Infinity}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": {\\\"keep\\\": -Infinity}}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": {\"keep\": -Infinity}}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"command\":\"true\",\"run_in_background\":-Infinity}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": -Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"command\": \"true\", \"run_in_background\": -Infinity}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"run_in_background\": -Infinity}",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": -Infinity}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "background-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"run_in_background\\\": -Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"command\": \"true\", \"run_in_background\": -Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":-Infinity,\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -Infinity, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": -Infinity, \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": -Infinity}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": -Infinity}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "prefix-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": -Infinity}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": -Infinity, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "canonical_json": "{\"approval_prefix\":[-Infinity],\"command\":\"true\"}",
+      "content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [-Infinity], \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "default_candidate": null,
+      "events_json": [
+        "{\"display\": {\"object\": \"true\", \"verb\": \"run\"}, \"input\": {\"approval_prefix\": [-Infinity], \"command\": \"true\"}, \"type\": \"tool_use\"}",
+        "{\"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"approval_prefix\": [-Infinity]}",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": [-Infinity]}",
+      "kind": "tool_use",
+      "mode": "keep",
+      "name": "prefix-array-negative-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "(no output)"
+        }
+      ],
+      "output": "(no output)",
+      "proposed_candidate": null,
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": [-Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [], \"stop_reason\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {}}}\n\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"command\\\": \\\"true\\\", \\\"approval_prefix\\\": [-Infinity]}\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "stream_content_json": "[{\"caller\": null, \"id\": \"call\", \"input\": {\"approval_prefix\": [-Infinity], \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}]",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    }
+  ],
+  "managed": [
+    {
+      "action_recorded": false,
+      "error": {
+        "class": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "final": null,
+      "input_json": "NaN",
+      "messages": 2,
+      "name": "root-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"valid\", \"name\": \"bash\", \"input\": {\"command\": \"printf should-not-run\"}}, {\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": NaN}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": null,
+      "tool_output": null,
+      "tool_uses": 0,
+      "trace": [],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": {
+        "class": "TypeError",
+        "message": "cannot convert dictionary update sequence element #0 to a sequence"
+      },
+      "final": null,
+      "input_json": "[NaN]",
+      "messages": 2,
+      "name": "root-array-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": [NaN]}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": null,
+      "tool_output": null,
+      "tool_uses": 0,
+      "trace": [],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": NaN}",
+      "messages": 4,
+      "name": "command-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": NaN}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": [NaN]}",
+      "messages": 4,
+      "name": "command-array-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": [NaN]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": [NaN]}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": {\"keep\": NaN}}",
+      "messages": 4,
+      "name": "command-object-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": {\"keep\": NaN}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": {\"keep\": NaN}}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "messages": 4,
+      "name": "background-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"run_in_background\": NaN}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "messages": 4,
+      "name": "prefix-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": NaN}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"approval_prefix\": NaN}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": [NaN]}",
+      "messages": 4,
+      "name": "prefix-array-nan",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": [NaN]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"approval_prefix\": [NaN]}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": {
+        "class": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "final": null,
+      "input_json": "Infinity",
+      "messages": 2,
+      "name": "root-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": Infinity}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": null,
+      "tool_output": null,
+      "tool_uses": 0,
+      "trace": [],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": {
+        "class": "TypeError",
+        "message": "cannot convert dictionary update sequence element #0 to a sequence"
+      },
+      "final": null,
+      "input_json": "[Infinity]",
+      "messages": 2,
+      "name": "root-array-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": [Infinity]}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": null,
+      "tool_output": null,
+      "tool_uses": 0,
+      "trace": [],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": Infinity}",
+      "messages": 4,
+      "name": "command-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": Infinity}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": [Infinity]}",
+      "messages": 4,
+      "name": "command-array-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": [Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": [Infinity]}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": {\"keep\": Infinity}}",
+      "messages": 4,
+      "name": "command-object-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": {\"keep\": Infinity}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": {\"keep\": Infinity}}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": Infinity}",
+      "messages": 4,
+      "name": "background-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"run_in_background\": Infinity}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": Infinity}",
+      "messages": 4,
+      "name": "prefix-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"approval_prefix\": Infinity}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": [Infinity]}",
+      "messages": 4,
+      "name": "prefix-array-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": [Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"approval_prefix\": [Infinity]}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": {
+        "class": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "final": null,
+      "input_json": "-Infinity",
+      "messages": 2,
+      "name": "root-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": -Infinity}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": null,
+      "tool_output": null,
+      "tool_uses": 0,
+      "trace": [],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": {
+        "class": "TypeError",
+        "message": "cannot convert dictionary update sequence element #0 to a sequence"
+      },
+      "final": null,
+      "input_json": "[-Infinity]",
+      "messages": 2,
+      "name": "root-array-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": [-Infinity]}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": null,
+      "tool_output": null,
+      "tool_uses": 0,
+      "trace": [],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": -Infinity}",
+      "messages": 4,
+      "name": "command-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": -Infinity}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": [-Infinity]}",
+      "messages": 4,
+      "name": "command-array-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": [-Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": [-Infinity]}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": {\"keep\": -Infinity}}",
+      "messages": 4,
+      "name": "command-object-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": {\"keep\": -Infinity}}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": {\"keep\": -Infinity}}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"run_in_background\": -Infinity}",
+      "messages": 4,
+      "name": "background-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"run_in_background\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"run_in_background\": -Infinity}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": -Infinity}",
+      "messages": 4,
+      "name": "prefix-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": -Infinity}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"approval_prefix\": -Infinity}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    },
+    {
+      "action_recorded": false,
+      "error": null,
+      "final": "[Error] ValueError: Out of range float values are not JSON compliant",
+      "input_json": "{\"command\": \"true\", \"approval_prefix\": [-Infinity]}",
+      "messages": 4,
+      "name": "prefix-array-negative-infinity",
+      "response_json": "{\"id\": \"message\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"model\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"true\", \"approval_prefix\": [-Infinity]}}], \"stop_reason\": \"tool_use\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}",
+      "tool_input_json": "{\"command\": \"true\", \"approval_prefix\": [-Infinity]}",
+      "tool_output": "Error: Out of range float values are not JSON compliant",
+      "tool_uses": 1,
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ],
+      "transport_requests": 1
+    }
+  ],
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "Agent._exec_tool_batch": "081881ec716502bc6934216ff007cc5bfb9b0ba05e54fbf3dc319146e3c29949",
+    "grant_candidate": "89e9deac921548cbf489102f62d0f889eb226d19469c8d81b7b1b648b00b9b92",
+    "proposed_candidate": "ca63205bc892974f9e28c799edb9b97a0ddfbed74739fb8a2156d9c09115c089"
+  }
+}

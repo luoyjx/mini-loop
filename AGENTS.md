@@ -11,6 +11,7 @@ overrides them.
   module ownership, request/tool flow, trust, persistence, or default behavior.
 - Read `EXTENDING.md` before changing an injection seam and
   `docs/HARDENING_NOTES.md` before changing a load-bearing guard or invariant.
+- Read `GO_PORT_PLAN.md` and `GO_PARITY_MATRIX.md` before changing the Go port.
 - Use `ast-outline` before full reads of supported source and Markdown files;
   narrow to the relevant symbol whenever possible.
 
@@ -32,10 +33,11 @@ overrides them.
 
 - Run the narrowest relevant tests while iterating and
   `.venv/bin/python -m pytest -q` before merging or pushing implementation work.
-- Run `.venv/bin/python tools/verify_invariants.py` after package-module changes.
-- Run `.venv/bin/python tools/verify_scans.py` after changing source scanners,
-  inventories, or their targets, and `.venv/bin/python tools/verify_guards.py`
+- Run `.venv/bin/python python/tools/verify_invariants.py` after Python package-module changes.
+- Run `.venv/bin/python python/tools/verify_scans.py` after changing source scanners,
+  inventories, or their targets, and `.venv/bin/python python/tools/verify_guards.py`
   after changing guarded behavior or mutation anchors.
+- Run `go test ./...` and `go vet ./...` from `go/` after Go changes.
 - Run `git diff --check` for every change. For architecture-only changes, also
   verify the README outline and regenerate/visually inspect the interactive map
   when the Archify tooling is available.

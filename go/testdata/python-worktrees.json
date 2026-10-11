@@ -1,0 +1,1024 @@
+{
+  "cases": [
+    {
+      "git": true,
+      "name": "names",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: worktree name must match [A-Za-z0-9._-]{1,64}"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": ".",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: worktree name must match [A-Za-z0-9._-]{1,64}"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "..",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: worktree name must match [A-Za-z0-9._-]{1,64}"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "../escape",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: worktree name must match [A-Za-z0-9._-]{1,64}"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "a/b",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: worktree name must match [A-Za-z0-9._-]{1,64}"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "é",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: worktree name must match [A-Za-z0-9._-]{1,64}"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: worktree name must match [A-Za-z0-9._-]{1,64}"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "A._-9"
+            }
+          ],
+          "input": {
+            "name": "A._-9",
+            "op": "create"
+          },
+          "path_exists": true,
+          "value": "Worktree 'A._-9' created at /private<REPO>/.worktrees/A._-9"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "A._-9"
+            },
+            {
+              "task_id": "",
+              "type": "remove",
+              "worktree": "A._-9"
+            }
+          ],
+          "input": {
+            "name": "A._-9",
+            "op": "remove"
+          },
+          "path_exists": false,
+          "value": "Removed worktree A._-9"
+        }
+      ]
+    },
+    {
+      "git": false,
+      "name": "not-repository",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "one",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: /private<REPO> is not a git repository"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "op": "list"
+          },
+          "path_exists": false,
+          "value": [
+            "(not a git repo)"
+          ]
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "missing",
+            "op": "keep"
+          },
+          "path_exists": false,
+          "value": "No worktree missing"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "missing",
+            "op": "remove"
+          },
+          "path_exists": false,
+          "value": "No worktree missing"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "../é/s1",
+            "op": "factory"
+          },
+          "path_exists": false,
+          "value": "/private<REPO>/.worktrees/___s1"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "..",
+            "op": "factory"
+          },
+          "path_exists": true,
+          "value": "/private<REPO>/.worktrees/session"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "",
+            "op": "factory"
+          },
+          "path_exists": true,
+          "value": "/private<REPO>/.worktrees/session"
+        }
+      ]
+    },
+    {
+      "git": true,
+      "name": "lifecycle-binding",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "bad-link",
+            "op": "create",
+            "task_id": "task_missing"
+          },
+          "path_exists": false,
+          "value": "Error: task task_missing not found"
+        },
+        {
+          "binding": "alpha",
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "alpha"
+            }
+          ],
+          "input": {
+            "name": "alpha",
+            "op": "create",
+            "task_id": "task_link"
+          },
+          "path_exists": true,
+          "value": "Worktree 'alpha' created at /private<REPO>/.worktrees/alpha"
+        },
+        {
+          "binding": "alpha",
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "alpha"
+            }
+          ],
+          "input": {
+            "name": "alpha",
+            "op": "create"
+          },
+          "path_exists": true,
+          "value": "Error: worktree alpha already exists"
+        },
+        {
+          "binding": "alpha",
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "alpha"
+            }
+          ],
+          "input": {
+            "name": "alpha",
+            "op": "changes"
+          },
+          "path_exists": true,
+          "value": [
+            0,
+            0
+          ]
+        },
+        {
+          "binding": "alpha",
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "alpha"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "alpha"
+            }
+          ],
+          "input": {
+            "name": "alpha",
+            "op": "keep"
+          },
+          "path_exists": true,
+          "value": "Worktree 'alpha' kept for review (branch: wt/alpha)"
+        },
+        {
+          "binding": "alpha",
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "alpha"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "alpha"
+            }
+          ],
+          "input": {
+            "op": "list"
+          },
+          "path_exists": true,
+          "value": [
+            "/private<REPO> <HEAD> [main]",
+            "/private<REPO>/.worktrees/alpha <HEAD> [wt/alpha]"
+          ]
+        },
+        {
+          "binding": "alpha",
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "alpha"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "alpha"
+            },
+            {
+              "task_id": "",
+              "type": "remove",
+              "worktree": "alpha"
+            }
+          ],
+          "input": {
+            "name": "alpha",
+            "op": "remove"
+          },
+          "path_exists": false,
+          "value": "Removed worktree alpha"
+        },
+        {
+          "binding": "alpha",
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "alpha"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "alpha"
+            },
+            {
+              "task_id": "",
+              "type": "remove",
+              "worktree": "alpha"
+            }
+          ],
+          "input": {
+            "name": "alpha",
+            "op": "remove"
+          },
+          "path_exists": false,
+          "value": "No worktree alpha"
+        }
+      ]
+    },
+    {
+      "git": true,
+      "name": "dirty-and-ahead",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "create"
+          },
+          "path_exists": true,
+          "value": "Worktree 'dirty' created at /private<REPO>/.worktrees/dirty"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "file": "new.txt",
+            "name": "dirty",
+            "op": "write",
+            "text": "untracked\n"
+          },
+          "path_exists": true,
+          "value": null
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "remove"
+          },
+          "path_exists": true,
+          "value": "Refusing: worktree dirty has 1 changed file(s) and 0 commit(s); keep it or pass discard_changes=True"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "keep"
+          },
+          "path_exists": true,
+          "value": "Worktree 'dirty' kept for review (branch: wt/dirty)"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "commit"
+          },
+          "path_exists": true,
+          "value": null
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "changes"
+          },
+          "path_exists": true,
+          "value": [
+            0,
+            1
+          ]
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "remove"
+          },
+          "path_exists": true,
+          "value": "Refusing: worktree dirty has 0 changed file(s) and 1 commit(s); keep it or pass discard_changes=True"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "file": "tracked.txt",
+            "name": "dirty",
+            "op": "write",
+            "text": "modified\n"
+          },
+          "path_exists": true,
+          "value": null
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "changes"
+          },
+          "path_exists": true,
+          "value": [
+            1,
+            1
+          ]
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "name": "dirty",
+            "op": "remove"
+          },
+          "path_exists": true,
+          "value": "Refusing: worktree dirty has 1 changed file(s) and 1 commit(s); keep it or pass discard_changes=True"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "dirty"
+            },
+            {
+              "task_id": "",
+              "type": "remove",
+              "worktree": "dirty"
+            }
+          ],
+          "input": {
+            "discard": true,
+            "name": "dirty",
+            "op": "remove"
+          },
+          "path_exists": false,
+          "value": "Removed worktree dirty"
+        }
+      ]
+    },
+    {
+      "git": false,
+      "name": "unverified-status",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "plain",
+            "op": "mkdir"
+          },
+          "path_exists": true,
+          "value": null
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "plain",
+            "op": "changes"
+          },
+          "path_exists": true,
+          "value": [
+            -1,
+            -1
+          ]
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "plain",
+            "op": "remove"
+          },
+          "path_exists": true,
+          "value": "Refusing: could not verify worktree plain status; keep it or pass discard_changes=True"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "discard": true,
+            "name": "plain",
+            "op": "remove"
+          },
+          "path_exists": true,
+          "value": "Error: fatal: not a git repository (or any of the parent directories): .git"
+        }
+      ]
+    },
+    {
+      "git": true,
+      "name": "factory",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [],
+          "input": {
+            "name": "s1",
+            "op": "factory"
+          },
+          "path_exists": true,
+          "value": "/private<REPO>/.worktrees/s1"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [],
+          "input": {
+            "name": "s1",
+            "op": "factory"
+          },
+          "path_exists": true,
+          "value": "/private<REPO>/.worktrees/s1"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "..",
+            "op": "factory"
+          },
+          "path_exists": true,
+          "value": "/private<REPO>/.worktrees/session"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "../é/s2",
+            "op": "factory"
+          },
+          "path_exists": false,
+          "value": "/private<REPO>/.worktrees/___s2"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "op": "factory"
+          },
+          "path_exists": false,
+          "value": "/private<REPO>/.worktrees/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "op": "list"
+          },
+          "path_exists": true,
+          "value": [
+            "/private<REPO> <HEAD> [main]",
+            "/private<REPO>/.worktrees/___s2 <HEAD> [wt/___s2]",
+            "/private<REPO>/.worktrees/s1 <HEAD> [wt/s1]",
+            "/private<REPO>/.worktrees/session <HEAD> [wt/session]",
+            "/private<REPO>/.worktrees/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <HEAD> [wt/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]"
+          ]
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [],
+          "input": {
+            "name": "collision",
+            "op": "branch"
+          },
+          "path_exists": false,
+          "value": null
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [],
+          "input": {
+            "name": "collision",
+            "op": "factory"
+          },
+          "path_exists": true,
+          "value": "/private<REPO>/.worktrees/collision"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [],
+          "input": {
+            "name": "collision",
+            "op": "remove"
+          },
+          "path_exists": true,
+          "value": "Error: fatal: '/private<REPO>/.worktrees/collision' is not a working tree"
+        }
+      ]
+    },
+    {
+      "base": "trees",
+      "git": true,
+      "name": "custom-location",
+      "prefix": "review/",
+      "steps": [
+        {
+          "binding": "custom",
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "custom"
+            }
+          ],
+          "input": {
+            "name": "custom",
+            "op": "create",
+            "task_id": "task_link"
+          },
+          "path_exists": true,
+          "value": "Worktree 'custom' created at /private<REPO>/trees/custom"
+        },
+        {
+          "binding": "custom",
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "custom"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "custom"
+            }
+          ],
+          "input": {
+            "name": "custom",
+            "op": "keep"
+          },
+          "path_exists": true,
+          "value": "Worktree 'custom' kept for review (branch: review/custom)"
+        },
+        {
+          "binding": "custom",
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "custom"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "custom"
+            }
+          ],
+          "input": {
+            "op": "list"
+          },
+          "path_exists": true,
+          "value": [
+            "/private<REPO> <HEAD> [main]",
+            "/private<REPO>/trees/custom <HEAD> [review/custom]"
+          ]
+        },
+        {
+          "binding": "custom",
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "task_link",
+              "type": "create",
+              "worktree": "custom"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "custom"
+            },
+            {
+              "task_id": "",
+              "type": "remove",
+              "worktree": "custom"
+            }
+          ],
+          "input": {
+            "name": "custom",
+            "op": "remove"
+          },
+          "path_exists": false,
+          "value": "Removed worktree custom"
+        }
+      ]
+    },
+    {
+      "git": true,
+      "name": "unborn",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "empty",
+            "op": "factory"
+          },
+          "path_exists": true,
+          "value": "/private<REPO>/.worktrees/empty"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [],
+          "input": {
+            "name": "fresh",
+            "op": "create"
+          },
+          "path_exists": false,
+          "value": "Error: Preparing worktree (new branch 'wt/fresh')\nfatal: not a valid object name: 'HEAD'"
+        }
+      ],
+      "unborn": true
+    },
+    {
+      "base": "",
+      "git": true,
+      "name": "empty-prefix-base",
+      "prefix": "",
+      "steps": [
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "direct"
+            }
+          ],
+          "input": {
+            "name": "direct",
+            "op": "create"
+          },
+          "path_exists": true,
+          "value": "Worktree 'direct' created at /private<REPO>/direct"
+        },
+        {
+          "binding": null,
+          "branch_exists": true,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "direct"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "direct"
+            }
+          ],
+          "input": {
+            "name": "direct",
+            "op": "keep"
+          },
+          "path_exists": true,
+          "value": "Worktree 'direct' kept for review (branch: direct)"
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "direct"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "direct"
+            }
+          ],
+          "input": {
+            "op": "list"
+          },
+          "path_exists": true,
+          "value": [
+            "/private<REPO> <HEAD> [main]",
+            "/private<REPO>/direct <HEAD> [direct]"
+          ]
+        },
+        {
+          "binding": null,
+          "branch_exists": false,
+          "events": [
+            {
+              "task_id": "",
+              "type": "create",
+              "worktree": "direct"
+            },
+            {
+              "task_id": "",
+              "type": "keep",
+              "worktree": "direct"
+            },
+            {
+              "task_id": "",
+              "type": "remove",
+              "worktree": "direct"
+            }
+          ],
+          "input": {
+            "name": "direct",
+            "op": "remove"
+          },
+          "path_exists": false,
+          "value": "Removed worktree direct"
+        }
+      ]
+    }
+  ],
+  "clock_normalized": true,
+  "git_heads_normalized": true
+}

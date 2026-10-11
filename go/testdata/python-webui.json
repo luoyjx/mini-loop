@@ -1,0 +1,279 @@
+{
+  "assets": {
+    "app.css": {
+      "bytes": 24230,
+      "sha256": "4bd42b8a6309683cc58b1edf096d16dee134dc25753dacc8880bfc2d9285c464"
+    },
+    "app.js": {
+      "bytes": 74890,
+      "sha256": "64d77137ab17c75bbae2002fdf335c713ef59b3c9b047944e857fe76e0715b40"
+    },
+    "console.html": {
+      "bytes": 20353,
+      "sha256": "eee88f77cf761b16d1fd39edae13703b3d4abfbcfd801a714e5a2784442a86a0"
+    },
+    "index.html": {
+      "bytes": 17433,
+      "sha256": "2368a7b53ab2abad7e504ec80a9e69b0e928217e511c9fb6ddfb306946ab2770"
+    }
+  },
+  "cases": [
+    {
+      "allow": "",
+      "body": null,
+      "body_sha256": "eee88f77cf761b16d1fd39edae13703b3d4abfbcfd801a714e5a2784442a86a0",
+      "content_type": "text/html; charset=utf-8",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "token": ""
+    },
+    {
+      "allow": "",
+      "body": null,
+      "body_sha256": "1fa1786fed892a6dd1224dcd0b5e0292e527e755a146123de4f640f871248d9d",
+      "content_type": "text/html; charset=utf-8",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/ui",
+      "status": 200,
+      "token": ""
+    },
+    {
+      "allow": "",
+      "body": null,
+      "body_sha256": "eee88f77cf761b16d1fd39edae13703b3d4abfbcfd801a714e5a2784442a86a0",
+      "content_type": "text/html; charset=utf-8",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "token": "wrong"
+    },
+    {
+      "allow": "",
+      "body": null,
+      "body_sha256": "1fa1786fed892a6dd1224dcd0b5e0292e527e755a146123de4f640f871248d9d",
+      "content_type": "text/html; charset=utf-8",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/ui",
+      "status": 200,
+      "token": "wrong"
+    },
+    {
+      "allow": "",
+      "body": null,
+      "body_sha256": "eee88f77cf761b16d1fd39edae13703b3d4abfbcfd801a714e5a2784442a86a0",
+      "content_type": "text/html; charset=utf-8",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "allow": "",
+      "body": null,
+      "body_sha256": "1fa1786fed892a6dd1224dcd0b5e0292e527e755a146123de4f640f871248d9d",
+      "content_type": "text/html; charset=utf-8",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/ui",
+      "status": 200,
+      "token": "token-b"
+    },
+    {
+      "allow": "GET",
+      "body": "{\"detail\":\"Method Not Allowed\"}",
+      "body_sha256": "83c09ba9a8daedb136f90b17a294caa90ad471a016e430df6e229acb5a81e100",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "POST",
+      "path": "/",
+      "status": 405,
+      "token": ""
+    },
+    {
+      "allow": "GET",
+      "body": "{\"detail\":\"Method Not Allowed\"}",
+      "body_sha256": "83c09ba9a8daedb136f90b17a294caa90ad471a016e430df6e229acb5a81e100",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "POST",
+      "path": "/ui",
+      "status": 405,
+      "token": ""
+    },
+    {
+      "allow": "GET",
+      "body": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "HEAD",
+      "path": "/",
+      "status": 405,
+      "token": ""
+    },
+    {
+      "allow": "GET",
+      "body": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "HEAD",
+      "path": "/ui",
+      "status": 405,
+      "token": ""
+    },
+    {
+      "allow": "",
+      "body": "{\"detail\":\"a bearer token is required\"}",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/sessions",
+      "status": 401,
+      "token": ""
+    },
+    {
+      "allow": "",
+      "body": "{\"detail\":\"a bearer token is required\"}",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/sessions",
+      "status": 401,
+      "token": "wrong"
+    },
+    {
+      "allow": "",
+      "body": "{\"detail\":\"a bearer token is required\"}",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/sessions?access_token=token-a",
+      "status": 401,
+      "token": ""
+    },
+    {
+      "allow": "",
+      "body": "{\"detail\":\"a bearer token is required\"}",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/ui/app.js",
+      "status": 401,
+      "token": ""
+    },
+    {
+      "allow": "",
+      "body": "{\"detail\":\"Not Found\"}",
+      "body_sha256": "37ec4665a8102d115ffd1ac20dae94c98b4dac64b0c1a68228aa2a531caeb35d",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/ui/app.js",
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "allow": "",
+      "body": "{\"detail\":\"Not Found\"}",
+      "body_sha256": "37ec4665a8102d115ffd1ac20dae94c98b4dac64b0c1a68228aa2a531caeb35d",
+      "content_type": "application/json",
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY"
+      },
+      "method": "GET",
+      "path": "/favicon.ico",
+      "status": 404,
+      "token": ""
+    }
+  ],
+  "ui_sha256": "1fa1786fed892a6dd1224dcd0b5e0292e527e755a146123de4f640f871248d9d"
+}

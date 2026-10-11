@@ -1,0 +1,2102 @@
+{
+  "basenames": [
+    "Gemfile",
+    "Rakefile"
+  ],
+  "default_ignores": [
+    ".git/",
+    ".svn/",
+    ".hg/",
+    "node_modules/",
+    "__pycache__/",
+    ".venv/",
+    "venv/",
+    ".tox/",
+    ".mypy_cache/",
+    ".pytest_cache/",
+    ".ruff_cache/",
+    ".eggs/",
+    "*.egg-info/",
+    ".gradle/",
+    ".idea/",
+    ".vs/",
+    ".vscode/",
+    ".cursor/",
+    ".zed/",
+    ".fleet/",
+    "__snapshots__/",
+    ".husky/",
+    ".next/",
+    ".nuxt/",
+    ".svelte-kit/",
+    ".turbo/",
+    ".parcel-cache/",
+    ".vite/",
+    ".terraform/",
+    "*.min.js",
+    "*.min.mjs",
+    "*.min.cjs",
+    "*.min.css",
+    "*.min.html",
+    "*.map"
+  ],
+  "limits": {
+    "_MAX_IGNORE_BYTES": 524288,
+    "_MAX_IGNORE_MATCH_OPS": 10000000,
+    "_MAX_IGNORE_PATTERNS": 4096,
+    "_MAX_IGNORE_PATTERN_CHARS": 4096,
+    "_MAX_SNAPSHOT_BYTES": 67108864,
+    "_MAX_SNAPSHOT_DEPTH": 64,
+    "_MAX_SNAPSHOT_ENTRIES": 50000,
+    "_MAX_SNAPSHOT_FILES": 20000
+  },
+  "snapshots": [
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "code.py"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "code.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "explicit-file",
+        "targets": [
+          "code.py"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "a.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "b.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "b.py",
+        "a.py"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "a.py",
+            "text": "source\n"
+          },
+          {
+            "path": "b.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "deduplicated-order",
+        "targets": [
+          "b.py",
+          "a.py",
+          "b.py"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".hidden.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "Gemfile",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "Rakefile",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.c++",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.cc",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.cjs",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.cpp",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.cppm",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.cs",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.css",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.cxx",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.ex",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.exs",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.gd",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.gemspec",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.go",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.h",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.h++",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.hh",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.hpp",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.htm",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.html",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.hxx",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.inl",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.ipp",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.ixx",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.java",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.js",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.jsx",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.kt",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.kts",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.lua",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.markdown",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.md",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.mdown",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.mdx",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.mjs",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.php",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.php8",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.phps",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.phtml",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.pyi",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.rake",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.rb",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.rs",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.ru",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.sc",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.scala",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.scss",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.sql",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.swift",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.tpp",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.ts",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.tsx",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.vue",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.wlua",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.yaml",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.yml",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "kind": "directory",
+          "path": "empty"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "upper.PY",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "code.c++",
+            "text": "source\n"
+          },
+          {
+            "path": "code.cc",
+            "text": "source\n"
+          },
+          {
+            "path": "code.cjs",
+            "text": "source\n"
+          },
+          {
+            "path": "code.cpp",
+            "text": "source\n"
+          },
+          {
+            "path": "code.cppm",
+            "text": "source\n"
+          },
+          {
+            "path": "code.cs",
+            "text": "source\n"
+          },
+          {
+            "path": "code.css",
+            "text": "source\n"
+          },
+          {
+            "path": "code.cxx",
+            "text": "source\n"
+          },
+          {
+            "path": "code.ex",
+            "text": "source\n"
+          },
+          {
+            "path": "code.exs",
+            "text": "source\n"
+          },
+          {
+            "path": "code.gd",
+            "text": "source\n"
+          },
+          {
+            "path": "code.gemspec",
+            "text": "source\n"
+          },
+          {
+            "path": "code.go",
+            "text": "source\n"
+          },
+          {
+            "path": "code.h",
+            "text": "source\n"
+          },
+          {
+            "path": "code.h++",
+            "text": "source\n"
+          },
+          {
+            "path": "code.hh",
+            "text": "source\n"
+          },
+          {
+            "path": "code.hpp",
+            "text": "source\n"
+          },
+          {
+            "path": "code.htm",
+            "text": "source\n"
+          },
+          {
+            "path": "code.html",
+            "text": "source\n"
+          },
+          {
+            "path": "code.hxx",
+            "text": "source\n"
+          },
+          {
+            "path": "code.inl",
+            "text": "source\n"
+          },
+          {
+            "path": "code.ipp",
+            "text": "source\n"
+          },
+          {
+            "path": "code.ixx",
+            "text": "source\n"
+          },
+          {
+            "path": "code.java",
+            "text": "source\n"
+          },
+          {
+            "path": "code.js",
+            "text": "source\n"
+          },
+          {
+            "path": "code.jsx",
+            "text": "source\n"
+          },
+          {
+            "path": "code.kt",
+            "text": "source\n"
+          },
+          {
+            "path": "code.kts",
+            "text": "source\n"
+          },
+          {
+            "path": "code.lua",
+            "text": "source\n"
+          },
+          {
+            "path": "code.markdown",
+            "text": "source\n"
+          },
+          {
+            "path": "code.md",
+            "text": "source\n"
+          },
+          {
+            "path": "code.mdown",
+            "text": "source\n"
+          },
+          {
+            "path": "code.mdx",
+            "text": "source\n"
+          },
+          {
+            "path": "code.mjs",
+            "text": "source\n"
+          },
+          {
+            "path": "code.php",
+            "text": "source\n"
+          },
+          {
+            "path": "code.php8",
+            "text": "source\n"
+          },
+          {
+            "path": "code.phps",
+            "text": "source\n"
+          },
+          {
+            "path": "code.phtml",
+            "text": "source\n"
+          },
+          {
+            "path": "code.py",
+            "text": "source\n"
+          },
+          {
+            "path": "code.pyi",
+            "text": "source\n"
+          },
+          {
+            "path": "code.rake",
+            "text": "source\n"
+          },
+          {
+            "path": "code.rb",
+            "text": "source\n"
+          },
+          {
+            "path": "code.rs",
+            "text": "source\n"
+          },
+          {
+            "path": "code.ru",
+            "text": "source\n"
+          },
+          {
+            "path": "code.sc",
+            "text": "source\n"
+          },
+          {
+            "path": "code.scala",
+            "text": "source\n"
+          },
+          {
+            "path": "code.scss",
+            "text": "source\n"
+          },
+          {
+            "path": "code.sql",
+            "text": "source\n"
+          },
+          {
+            "path": "code.swift",
+            "text": "source\n"
+          },
+          {
+            "path": "code.tpp",
+            "text": "source\n"
+          },
+          {
+            "path": "code.ts",
+            "text": "source\n"
+          },
+          {
+            "path": "code.tsx",
+            "text": "source\n"
+          },
+          {
+            "path": "code.vue",
+            "text": "source\n"
+          },
+          {
+            "path": "code.wlua",
+            "text": "source\n"
+          },
+          {
+            "path": "code.yaml",
+            "text": "source\n"
+          },
+          {
+            "path": "code.yml",
+            "text": "source\n"
+          },
+          {
+            "path": "Gemfile",
+            "text": "source\n"
+          },
+          {
+            "path": "Rakefile",
+            "text": "source\n"
+          },
+          {
+            "path": "upper.PY",
+            "text": "source\n"
+          },
+          {
+            "path": ".hidden.py",
+            "text": "source\n"
+          },
+          {
+            "path": ".py",
+            "text": "source\n"
+          },
+          {
+            "path": "asset.bin",
+            "text": "source\n"
+          },
+          {
+            "path": "Gemfile.lock",
+            "text": "source\n"
+          },
+          {
+            "directory": true,
+            "path": "empty"
+          }
+        ],
+        "name": "directory-language-inventory",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "asset.bin",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "asset.bin"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "asset.bin",
+            "text": "source\n"
+          }
+        ],
+        "name": "explicit-unsupported",
+        "targets": [
+          "asset.bin"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        ".py"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": ".py",
+            "text": "source\n"
+          }
+        ],
+        "name": "explicit-hidden-basename",
+        "targets": [
+          ".py"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "keep.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "keep.py",
+            "text": "source\n"
+          },
+          {
+            "path": "code.min.js",
+            "text": "source\n"
+          },
+          {
+            "path": "node_modules/vendor.py",
+            "text": "source\n"
+          },
+          {
+            "path": ".git/secret.py",
+            "text": "source\n"
+          },
+          {
+            "path": ".svn/secret.py",
+            "text": "source\n"
+          },
+          {
+            "path": "__pycache__/secret.py",
+            "text": "source\n"
+          },
+          {
+            "path": ".venv/secret.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "default-ignores",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 19,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".gitignore",
+          "sha256": "7bbac306c69308fcf1d1743b91a7a4249a8be09ee6d207ed21f2baa5ad5defe7"
+        },
+        {
+          "bytes": 70,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".ignore",
+          "sha256": "62589505efa07992b7245995bf067e9fec1162c99d84765b82f23e2908fc9110"
+        },
+        {
+          "kind": "directory",
+          "path": "node_modules"
+        },
+        {
+          "kind": "directory",
+          "path": "node_modules/our-fork"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "node_modules/our-fork/kept.ts",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "kind": "directory",
+          "path": "src"
+        },
+        {
+          "bytes": 17,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/.gitignore",
+          "sha256": "d0acd853291677b801b17fbabd923379341a2f6dd3f5bc060d0f4e38b5cca8dd"
+        },
+        {
+          "bytes": 9,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/.ignore",
+          "sha256": "ad57e4d0d11ba88ddd471b143267cbc34cf9e9945724492ada6086b239d2a87f"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/App.vue",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "visible.swift",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "directory": true,
+            "path": ".git"
+          },
+          {
+            "path": ".gitignore",
+            "text": "generated/\n*.swift\n"
+          },
+          {
+            "path": ".ignore",
+            "text": "!visible.swift\n!node_modules/\nnode_modules/*/\n!node_modules/our-fork/\n"
+          },
+          {
+            "path": "visible.swift",
+            "text": "source\n"
+          },
+          {
+            "path": "hidden.swift",
+            "text": "source\n"
+          },
+          {
+            "path": "generated/hidden.py",
+            "text": "source\n"
+          },
+          {
+            "path": "src/.gitignore",
+            "text": "ignored.py\n*.vue\n"
+          },
+          {
+            "path": "src/.ignore",
+            "text": "!App.vue\n"
+          },
+          {
+            "path": "src/ignored.py",
+            "text": "source\n"
+          },
+          {
+            "path": "src/App.vue",
+            "text": "source\n"
+          },
+          {
+            "path": "src/Other.vue",
+            "text": "source\n"
+          },
+          {
+            "path": "node_modules/our-fork/kept.ts",
+            "text": "source\n"
+          },
+          {
+            "path": "node_modules/other/hidden.ts",
+            "text": "source\n"
+          }
+        ],
+        "name": "ignore-frames",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 8,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".gitignore",
+          "sha256": "dd155f7783974e68d748a8987764694b0bfe615c8e238c991673669750446324"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        ".",
+        "code.py"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "code.py\n"
+          },
+          {
+            "path": "code.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "explicit-file-ignore-bypass",
+        "targets": [
+          ".",
+          "code.py"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "kind": "directory",
+          "path": "src"
+        },
+        {
+          "bytes": 26,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/.gitignore",
+          "sha256": "56c26920e8e49f3b3686e47dd970f6cfb6ad6261d1bc580d82bfdcfe30069cbf"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/generated.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "kind": "directory",
+          "path": "src/ignored-dir"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/ignored-dir/kept.ts",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "src/ignored-dir",
+        "src/generated.py",
+        "src"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "directory": true,
+            "path": ".git"
+          },
+          {
+            "path": "src/.gitignore",
+            "text": "generated.py\nignored-dir/\n"
+          },
+          {
+            "path": "src/generated.py",
+            "text": "source\n"
+          },
+          {
+            "path": "src/ignored-dir/kept.ts",
+            "text": "source\n"
+          }
+        ],
+        "name": "explicit-nested-overrides",
+        "targets": [
+          "src/ignored-dir",
+          "src/generated.py",
+          "src"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": "src"
+        },
+        {
+          "kind": "directory",
+          "path": "src/.git"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/code.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "src"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "code.py\n"
+          },
+          {
+            "path": "src/code.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "subtree-without-git-marker",
+        "targets": [
+          "src"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 8,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".gitignore",
+          "sha256": "dd155f7783974e68d748a8987764694b0bfe615c8e238c991673669750446324"
+        },
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "src"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "directory": true,
+            "path": ".git"
+          },
+          {
+            "path": ".gitignore",
+            "text": "code.py\n"
+          },
+          {
+            "path": "src/code.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "subtree-with-git-marker",
+        "targets": [
+          "src"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": "src"
+        },
+        {
+          "kind": "directory",
+          "path": "src/.git"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "src/code.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "src"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "directory": true,
+            "path": ".git"
+          },
+          {
+            "path": ".gitignore",
+            "text": "code.py\n"
+          },
+          {
+            "directory": true,
+            "path": "src/.git"
+          },
+          {
+            "path": "src/code.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "nearest-git-marker",
+        "targets": [
+          "src"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 8,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".gitignore",
+          "sha256": "dd155f7783974e68d748a8987764694b0bfe615c8e238c991673669750446324"
+        },
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "src"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": ".git",
+            "text": "gitdir: elsewhere\n"
+          },
+          {
+            "path": ".gitignore",
+            "text": "code.py\n"
+          },
+          {
+            "path": "src/code.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "git-marker-file",
+        "targets": [
+          "src"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "keep.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        },
+        {
+          "kind": "directory",
+          "path": "nested"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "nested/code.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "keep.py",
+            "text": "source\n"
+          },
+          {
+            "path": "nested/code.py",
+            "text": "source\n"
+          },
+          {
+            "path": "local.py",
+            "symlink": "keep.py"
+          },
+          {
+            "path": "outside.py",
+            "symlink": "<outside>/secret.py"
+          },
+          {
+            "path": "linked",
+            "symlink": "nested"
+          },
+          {
+            "path": "broken.py",
+            "symlink": "absent"
+          }
+        ],
+        "name": "tree-symlinks",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "error": "ast-outline snapshot target may not be a symlink",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": "keep.py",
+            "text": "source\n"
+          },
+          {
+            "path": "linked.py",
+            "symlink": "keep.py"
+          }
+        ],
+        "name": "explicit-symlink",
+        "targets": [
+          "linked.py"
+        ]
+      }
+    },
+    {
+      "error": "[Errno 20] Not a directory: 'linked'",
+      "error_class": "NotADirectoryError",
+      "recipe": {
+        "files": [
+          {
+            "path": "nested/code.py",
+            "text": "source\n"
+          },
+          {
+            "path": "linked",
+            "symlink": "nested"
+          }
+        ],
+        "name": "symlink-parent",
+        "targets": [
+          "linked/code.py"
+        ]
+      }
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "code.py",
+            "text": "source\n"
+          },
+          {
+            "path": "controls",
+            "text": "code.py\n"
+          },
+          {
+            "path": ".gitignore",
+            "symlink": "controls"
+          }
+        ],
+        "name": "ignore-control-symlink",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 12,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".gitignore",
+          "sha256": "a9fb3435ab80266c53e9935eec54d844681f4d3e579bd7f2fac58d110ff3b036"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "keep.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "hex": "6967ff6e6f7265642e70790a",
+            "path": ".gitignore"
+          },
+          {
+            "path": "ignored.py",
+            "text": "source\n"
+          },
+          {
+            "path": "keep.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "ignore-invalid-utf8",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 21,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".gitignore",
+          "sha256": "cfd708812307a3f00a671868bdf0a225e4f723e368e5cf3a01befd1de86f0285"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "keep.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "ignored.pyother.py\n"
+          },
+          {
+            "path": "ignored.py",
+            "text": "source\n"
+          },
+          {
+            "path": "other.py",
+            "text": "source\n"
+          },
+          {
+            "path": "keep.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "ignore-unicode-splitlines",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 11,
+          "kind": "file",
+          "mode": "0o400",
+          "path": ".gitignore",
+          "sha256": "f5c10da83055c0c3e72f3167971d1916e443dc90390e32b42844552cc37b81e0"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "keep.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "generated/\n"
+          },
+          {
+            "path": "keep.py",
+            "text": "source\n"
+          },
+          {
+            "path": "generated/large.py",
+            "size": 67108865
+          }
+        ],
+        "name": "ignored-bytes-before-cap",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "error": "[Errno 2] No such file or directory: 'missing.py'",
+      "error_class": "FileNotFoundError",
+      "recipe": {
+        "files": [],
+        "name": "missing-target",
+        "targets": [
+          "missing.py"
+        ]
+      }
+    },
+    {
+      "error": "at least one snapshot target is required",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [],
+        "name": "no-targets",
+        "targets": []
+      }
+    },
+    {
+      "error": "snapshot target is outside workspace",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [],
+        "name": "outside-target",
+        "targets": [
+          "<outside>/secret.py"
+        ]
+      }
+    },
+    {
+      "cleaned": true,
+      "frozen_sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb",
+      "manifest": [
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "code.py",
+          "sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "code.py"
+      ],
+      "recipe": {
+        "files": [
+          {
+            "path": "code.py",
+            "text": "before\n"
+          }
+        ],
+        "mutate": {
+          "path": "code.py",
+          "text": "after\n"
+        },
+        "name": "freeze-and-cleanup",
+        "targets": [
+          "code.py"
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "error": "ast-outline snapshot exceeds 67108864 bytes",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": "large.py",
+            "size": 67108865
+          }
+        ],
+        "name": "default-byte-cap",
+        "targets": [
+          "large.py"
+        ]
+      }
+    },
+    {
+      "error": "ast-outline snapshot exceeds 1 files",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": "a.py",
+            "text": "source\n"
+          },
+          {
+            "path": "b.py",
+            "text": "source\n"
+          }
+        ],
+        "limits": {
+          "_MAX_SNAPSHOT_FILES": 1
+        },
+        "name": "file-cap",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline snapshot exceeds 1 files",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "# comment\n"
+          },
+          {
+            "path": "code.py",
+            "text": "source\n"
+          }
+        ],
+        "limits": {
+          "_MAX_SNAPSHOT_FILES": 1
+        },
+        "name": "control-files-count",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline snapshot exceeds 1 entries",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": "a.bin",
+            "text": "source\n"
+          },
+          {
+            "path": "b.bin",
+            "text": "source\n"
+          }
+        ],
+        "limits": {
+          "_MAX_SNAPSHOT_ENTRIES": 1
+        },
+        "name": "entry-cap-before-filter",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline snapshot exceeds 1 directory levels",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": "a/b/code.py",
+            "text": "source\n"
+          }
+        ],
+        "limits": {
+          "_MAX_SNAPSHOT_DEPTH": 1
+        },
+        "name": "depth-cap",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline ignore files exceed 3 bytes",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "code.py\n"
+          }
+        ],
+        "limits": {
+          "_MAX_IGNORE_BYTES": 3
+        },
+        "name": "ignore-byte-cap",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline ignore files exceed 1 patterns",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "a\nb\n"
+          }
+        ],
+        "limits": {
+          "_MAX_IGNORE_PATTERNS": 1
+        },
+        "name": "ignore-pattern-cap",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline ignore matching exceeds 1 pattern checks",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": "code.py",
+            "text": "source\n"
+          }
+        ],
+        "limits": {
+          "_MAX_IGNORE_MATCH_OPS": 1
+        },
+        "name": "ignore-match-cap",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline ignore patterns allow at most two variable-star groups",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "*a*a*a*ab\n"
+          },
+          {
+            "path": "code.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "ignore-star-guard",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "error": "ast-outline ignore patterns must be at most 4096 characters",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "path": ".gitignore",
+            "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "name": "ignore-pattern-length",
+        "targets": [
+          "."
+        ]
+      }
+    },
+    {
+      "cleaned": true,
+      "manifest": [
+        {
+          "kind": "directory",
+          "path": ".git"
+        },
+        {
+          "bytes": 7,
+          "kind": "file",
+          "mode": "0o400",
+          "path": "keep.py",
+          "sha256": "b8bb034f9b63bd0254fbc7c157cae746c75853f4643d6cea844dc48ddb57f522"
+        }
+      ],
+      "outside_workspace": true,
+      "paths": [
+        "."
+      ],
+      "recipe": {
+        "files": [
+          {
+            "fifo": true,
+            "path": "pipe.py"
+          },
+          {
+            "path": "keep.py",
+            "text": "source\n"
+          }
+        ],
+        "name": "tree-fifo",
+        "targets": [
+          "."
+        ]
+      },
+      "rewrite": [
+        "<snapshot>",
+        "<workspace>"
+      ]
+    },
+    {
+      "error": "ast-outline snapshot target is not a regular file or directory",
+      "error_class": "ValueError",
+      "recipe": {
+        "files": [
+          {
+            "fifo": true,
+            "path": "pipe.py"
+          }
+        ],
+        "name": "explicit-fifo",
+        "targets": [
+          "pipe.py"
+        ]
+      }
+    }
+  ],
+  "suffixes": [
+    ".c++",
+    ".cc",
+    ".cjs",
+    ".cpp",
+    ".cppm",
+    ".cs",
+    ".css",
+    ".cxx",
+    ".ex",
+    ".exs",
+    ".gd",
+    ".gemspec",
+    ".go",
+    ".h",
+    ".h++",
+    ".hh",
+    ".hpp",
+    ".htm",
+    ".html",
+    ".hxx",
+    ".inl",
+    ".ipp",
+    ".ixx",
+    ".java",
+    ".js",
+    ".jsx",
+    ".kt",
+    ".kts",
+    ".lua",
+    ".markdown",
+    ".md",
+    ".mdown",
+    ".mdx",
+    ".mjs",
+    ".php",
+    ".php8",
+    ".phps",
+    ".phtml",
+    ".py",
+    ".pyi",
+    ".rake",
+    ".rb",
+    ".rs",
+    ".ru",
+    ".sc",
+    ".scala",
+    ".scss",
+    ".sql",
+    ".swift",
+    ".tpp",
+    ".ts",
+    ".tsx",
+    ".vue",
+    ".wlua",
+    ".yaml",
+    ".yml"
+  ]
+}

@@ -1,0 +1,967 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "b04507e2e74dd93d20d37eb0473d980dc2f9bd2bfb5a59ec95f5452969427882"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "create-original-fields",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "b04507e2e74dd93d20d37eb0473d980dc2f9bd2bfb5a59ec95f5452969427882"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "unicode-outer-trim",
+      "raw": "\u001c{\"schema\": \"mini-loop.personal-skill-draft/v1\", \"decision\": \"create\", \"description\": \" Useful recipe \", \"body\": \" Do this.\\r\\nThen that. \", \"evidence_indexes\": [1, 0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "skip",
+        "error": "",
+        "sha256": "dbe3fd31d857e74bf07382eac9f26a8c2f0bfea0d5825579b8745b9cf9e4488b"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "skip",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\"\",\"body\":\"\",\"evidence_indexes\":[]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "../invalid",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "malformed_json",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "malformed",
+      "raw": "{private malformed",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "malformed_json",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "fenced",
+      "raw": "```json\n{}\n```",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "malformed_json",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "trailing",
+      "raw": "{} {}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "root-list",
+      "raw": "[]",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "root-null",
+      "raw": "null",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "root-string",
+      "raw": "\"private\"",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "root-nan",
+      "raw": "NaN",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "missing-field",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "extra-field",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0],\"extra\":\"candidate-private-secret\"}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "candidate-private-secret"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "sensitive_output",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "sensitive-body",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"candidate-private-secret\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "candidate-private-secret"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "sensitive_output",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "sensitive-nested-before-schema",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":{\"nested\":\"candidate-private-secret\"},\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "candidate-private-secret"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "sensitive_output",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "sensitive-nested-key-before-evidence",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[{\"candidate-private-secret\":\"value\"}]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "candidate-private-secret"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "sensitive_output",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 1,
+      "name": "sensitive-fixed-key",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "body"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "sensitive_output",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 1,
+      "name": "sensitive-decision-before-schema",
+      "raw": "{\"schema\":\"wrong\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "create"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "schema-wrong",
+      "raw": "{\"schema\":\"wrong\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "schema-null",
+      "raw": "{\"schema\":null,\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_decision",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "decision-wrong",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"publish\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_decision",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "decision-list",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":[],\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "description-null",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":null,\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "body-object",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":{\"private\":\"value\"},\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-null",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":null}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-object",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":{}}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-empty",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-bool",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[true]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-float",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[0.0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-exponent",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[10.0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-string",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[\"0\"]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-negative",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[-1]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-out-of-range",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[3]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-duplicate",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[0,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "evidence-big-int",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skip",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "skip-description",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\" \",\"body\":\"\",\"evidence_indexes\":[]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skip",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "skip-body",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\"\",\"body\":\"x\",\"evidence_indexes\":[]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skip",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "skip-evidence",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\"\",\"body\":\"\",\"evidence_indexes\":[0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skip",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "skip-big-int",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\"\",\"body\":\"\",\"evidence_indexes\":[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "skip-bool",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\"\",\"body\":\"\",\"evidence_indexes\":[false]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "invalid-skill-name",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "../bad",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "invalid-skill-description-line",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\"two\\nlines\",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "invalid-skill-empty-description",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "invalid-skill-empty-body",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "invalid-skill-nul",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"\\u0000\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "invalid-skill-wrapper",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"<SKİLL>private</SKİLL>\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "description-limit",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\"__REPEAT__\",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 201,
+      "repeat_text": "x",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "body-limit",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"__REPEAT__\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 50001,
+      "repeat_text": "x",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "b3cda776c19ff9853fa233c11de8fec07773d8dbcd1f64e6246624f506851be9"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "body-boundary",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"__REPEAT__\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 50000,
+      "repeat_text": "x",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_skill",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "line-limit",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"__REPEAT__\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 501,
+      "repeat_text": "x\\n",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "b04507e2e74dd93d20d37eb0473d980dc2f9bd2bfb5a59ec95f5452969427882"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "short-registry-not-parser-health",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "tiny"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "76ce976968435ce291b3ec6cb187113ddd7cbb1d7415fb946fc0a2b3952e483f"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "duplicate-last-wins",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0],\"body\":\"final body\"}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "b04507e2e74dd93d20d37eb0473d980dc2f9bd2bfb5a59ec95f5452969427882"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "duplicate-discarded-secret",
+      "raw": "{\"body\":\"candidate-private-secret\",\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": [
+        "candidate-private-secret"
+      ]
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "58981f8e8b9de9d46d95b6f6a8f9302532e641a16d0d382af5b9149bd15002b5"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "negative-zero",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[-0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "nan-description",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":NaN,\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "infinite-body",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":Infinity,\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "nan-evidence",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[NaN]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "negative-inf-evidence",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[-Infinity]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_schema",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "schema-nan",
+      "raw": "{\"schema\":NaN,\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "invalid_evidence",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "overflow-float-evidence",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1e999]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "a942ab035fda50a0f4828e7ee50d7b6edce8e8efd0ed5afdfd80f08e2a36b735"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "quoted-nonfinite",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"NaN Infinity -Infinity are strings\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "",
+        "error": "malformed_json",
+        "sha256": ""
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "integer-digit-limit",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[__REPEAT__]}",
+      "repeat_count": 4301,
+      "repeat_text": "9",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "94947d79e2fe64850f67e991112450dc8181429f87a6f2a85b88407c47f05331"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "paired-surrogates",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful \\ud83c\\udf31 \",\"body\":\" Do this.\\r\\nThen that. \",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    },
+    {
+      "expected": {
+        "decision": "create",
+        "error": "",
+        "sha256": "58897cb2e330e5600e89790f745db04690e1e448cfdd459f568dbf39faf5a80a"
+      },
+      "message_count": 3,
+      "minimum": 8,
+      "name": "escaped-backslash-u",
+      "raw": "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\"literal \\\\ud800\",\"evidence_indexes\":[1,0]}",
+      "repeat_count": 0,
+      "repeat_text": "",
+      "requested_name": "recipe",
+      "values": []
+    }
+  ],
+  "integer_digit_limit": 4300,
+  "source_sha256": "eb7ec349acfc78570bbed02994193df4c9ff950f69ed0e1a9cc46d849950cd19"
+}

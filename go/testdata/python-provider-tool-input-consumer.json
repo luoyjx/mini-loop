@@ -1,0 +1,1240 @@
+{
+  "cases": [
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "no-deltas",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "empty-delta",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "empty-twice",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "complete",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() missing 1 required positional argument: 'command'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "open-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() missing 1 required positional argument: 'command'"
+        }
+      ],
+      "output": "Error: _bash() missing 1 required positional argument: 'command'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() missing 1 required positional argument: 'command'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "keep",
+      "name": "open-object-space",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() missing 1 required positional argument: 'command'"
+        }
+      ],
+      "output": "Error: _bash() missing 1 required positional argument: 'command'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "complete-member-open-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "trailing-comma-eof",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-key",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "missing-colon",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "missing-value",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-string",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-escape",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-unicode",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"values\": [1, true]}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'values'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"values\": [1, true]}",
+      "input_json": "{\"command\": \"true\", \"values\": [1, true]}",
+      "mode": "keep",
+      "name": "partial-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'values'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'values'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"values\": [1]}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'values'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"values\": [1]}",
+      "input_json": "{\"command\": \"true\", \"values\": [1]}",
+      "mode": "keep",
+      "name": "partial-array-literal",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'values'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'values'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"nested\": {\"keep\": 1}}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'nested'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"nested\": {\"keep\": 1}}",
+      "input_json": "{\"command\": \"true\", \"nested\": {\"keep\": 1}}",
+      "mode": "keep",
+      "name": "partial-nested-object",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'nested'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'nested'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-true",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-false",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-negative",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-fraction",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "partial-exponent",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"value\": 100.0}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'value'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"value\": 100.0}",
+      "input_json": "{\"command\": \"true\", \"value\": 100.0}",
+      "mode": "keep",
+      "name": "complete-exponent-eof",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'value'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'value'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"value\": 9223372036854775808123}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'value'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"value\": 9223372036854775808123}",
+      "input_json": "{\"command\": \"true\", \"value\": 9223372036854775808123}",
+      "mode": "keep",
+      "name": "large-integer-eof",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'value'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'value'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "duplicate-partial",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 2}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 2}",
+      "input_json": "{\"command\": \"true\", \"keep\": 2}",
+      "mode": "keep",
+      "name": "duplicate-complete",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": \"unfinished\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": \"unfinished\"}",
+      "input_json": "{\"command\": \"true\", \"keep\": \"unfinished\"}",
+      "mode": "keep",
+      "name": "completed-two-chunks",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "keep",
+      "name": "completed-many-chunks",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "empty-first",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "empty-middle",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "empty-last",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "invalid-delimiter",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:true\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\"}",
+      "input_json": "{\"command\": \"true\"}",
+      "mode": "keep",
+      "name": "trailing-garbage",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:true"
+        }
+      ],
+      "output": "executed:true",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": [1, true], \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "[1, true]",
+      "input_json": "[1, true]",
+      "mode": "keep",
+      "name": "root-array",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not list",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": null, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not NoneType\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "keep",
+      "name": "root-null",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not NoneType"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not NoneType",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": \"hello\", \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not str\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "\"hello\"",
+      "input_json": "\"hello\"",
+      "mode": "keep",
+      "name": "root-string",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not str"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not str",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": 17, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not int\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "17",
+      "input_json": "17",
+      "mode": "keep",
+      "name": "root-integer",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not int"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not int",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": true, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not bool\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "true",
+      "input_json": "true",
+      "mode": "keep",
+      "name": "root-boolean",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not bool"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not bool",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": NaN}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": NaN}",
+      "input_json": "{\"command\": \"true\", \"keep\": NaN}",
+      "mode": "keep",
+      "name": "nonfinite-nan",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": Infinity}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": Infinity}",
+      "input_json": "{\"command\": \"true\", \"keep\": Infinity}",
+      "mode": "keep",
+      "name": "nonfinite-infinity",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"a_extra\": 2, \"command\": \"true\", \"z_extra\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'z_extra'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"z_extra\": 1, \"a_extra\": 2}",
+      "input_json": "{\"command\": \"true\", \"z_extra\": 1, \"a_extra\": 2}",
+      "mode": "keep",
+      "name": "ordered-extra",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'z_extra'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'z_extra'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"\": 1, \"command\": \"true\"}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument ''\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"\": 1}",
+      "input_json": "{\"command\": \"true\", \"\": 1}",
+      "mode": "keep",
+      "name": "empty-extra",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument ''"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument ''",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: _bash() got an unexpected keyword argument 'keep'\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"keep\": 1}",
+      "input_json": "{\"keep\": 1}",
+      "mode": "keep",
+      "name": "extra-and-missing",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: _bash() got an unexpected keyword argument 'keep'"
+        }
+      ],
+      "output": "Error: _bash() got an unexpected keyword argument 'keep'",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:rewritten\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"rewritten\"}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "rewrite",
+      "name": "extra-rewritten",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:rewritten"
+        }
+      ],
+      "output": "executed:rewritten",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:rewritten\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"rewritten\"}",
+      "input_json": "{}",
+      "mode": "rewrite",
+      "name": "missing-rewritten",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:rewritten"
+        }
+      ],
+      "output": "executed:rewritten",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {\"command\": \"true\", \"keep\": 1}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"denied\": true, \"name\": \"bash\", \"output\": \"denied by source probe\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "input_json": "{\"command\": \"true\", \"keep\": 1}",
+      "mode": "deny",
+      "name": "extra-denied-before",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": {}, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"denied\": true, \"name\": \"bash\", \"output\": \"denied by source probe\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{}",
+      "input_json": "{}",
+      "mode": "deny",
+      "name": "missing-denied-before",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": 13.75, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "13.75",
+      "input_json": "13.75",
+      "mode": "keep",
+      "name": "root-float",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float"
+        }
+      ],
+      "output": "Error: mini_loop.registry.Tool.run() argument after ** must be a mapping, not float",
+      "trace": [
+        "before",
+        "guard",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": [\"original\"], \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"name\": \"bash\", \"output\": \"executed:rewritten\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "{\"command\": \"rewritten\"}",
+      "input_json": "[\"original\"]",
+      "mode": "rewrite",
+      "name": "root-rewritten",
+      "outcomes": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "executed:rewritten"
+        }
+      ],
+      "output": "executed:rewritten",
+      "trace": [
+        "before",
+        "guard",
+        "execute",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "events_json": [
+        "{\"input\": null, \"name\": \"bash\", \"type\": \"tool_use\"}",
+        "{\"denied\": true, \"name\": \"bash\", \"output\": \"denied by source probe\", \"type\": \"tool_result\"}"
+      ],
+      "final_input_json": "null",
+      "input_json": "null",
+      "mode": "deny",
+      "name": "root-denied-before",
+      "outcomes": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "denied by source probe"
+        }
+      ],
+      "output": "denied by source probe",
+      "trace": [
+        "before",
+        "result"
+      ]
+    }
+  ],
+  "jiter_version": "0.15.0",
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+    "Tool.run": "1b83461c5fa2a0aabf4daf74fd9eb42a1752b94fc6d59f250b2e7170cb6bb897",
+    "builtins._bash": "46041d52d94328cc68c4abc916f9b160d47b2bc68f27127dfbb10e5d72ede732"
+  }
+}

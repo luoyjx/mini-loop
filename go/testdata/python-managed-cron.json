@@ -1,0 +1,139 @@
+{
+  "authority": {
+    "contexts": [
+      {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "personal_skill.capture_source"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "<message>",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "untrusted",
+        "channel": "internal",
+        "delegated_by": null,
+        "message_id": "<message>",
+        "origin": "api",
+        "parent_message_id": null,
+        "stamped_by": "mini_loop"
+      }
+    ],
+    "default_scheduler": true,
+    "default_tools": [
+      "bash",
+      "read_file",
+      "write_file",
+      "edit_file",
+      "glob",
+      "TodoWrite",
+      "task",
+      "load_skill",
+      "compress",
+      "ask_user"
+    ],
+    "distinct_ids": true,
+    "history_count": 4,
+    "run_count": 2,
+    "scheduled_prompt": "[Scheduled cron <job>] scheduled",
+    "status": "idle"
+  },
+  "ownership": [
+    {
+      "action": "delete",
+      "alice_jobs": 0,
+      "bob_jobs": 1,
+      "bound": false,
+      "child_jobs": 0,
+      "foreign_arm": "Error: no such job <job>",
+      "foreign_cancel": "No cron <job>",
+      "name": "delete",
+      "problems": [],
+      "removed": true,
+      "shared_service": true,
+      "stored_jobs": 1,
+      "workspace_exists": false
+    },
+    {
+      "action": "preserve",
+      "alice_jobs": 0,
+      "bob_jobs": 1,
+      "bound": false,
+      "child_jobs": 0,
+      "foreign_arm": "Error: no such job <job>",
+      "foreign_cancel": "No cron <job>",
+      "name": "preserve",
+      "problems": [],
+      "removed": true,
+      "shared_service": true,
+      "stored_jobs": 1,
+      "workspace_exists": true
+    },
+    {
+      "action": "delete",
+      "alice_jobs": 0,
+      "bob_jobs": 1,
+      "bound": true,
+      "child_jobs": 0,
+      "foreign_arm": "Error: no such job <job>",
+      "foreign_cancel": "No cron <job>",
+      "name": "bound",
+      "problems": [],
+      "removed": true,
+      "shared_service": true,
+      "stored_jobs": 1,
+      "workspace_exists": true
+    },
+    {
+      "action": "fork",
+      "alice_jobs": 0,
+      "bob_jobs": 1,
+      "bound": false,
+      "child_jobs": 0,
+      "foreign_arm": "Error: no such job <job>",
+      "foreign_cancel": "No cron <job>",
+      "name": "fork",
+      "problems": [],
+      "removed": true,
+      "shared_service": true,
+      "stored_jobs": 1,
+      "workspace_exists": false
+    },
+    {
+      "action": "stop",
+      "alice_jobs": 1,
+      "bob_jobs": 1,
+      "bound": false,
+      "child_jobs": 0,
+      "foreign_arm": "Error: no such job <job>",
+      "foreign_cancel": "No cron <job>",
+      "name": "stop",
+      "problems": [],
+      "removed": null,
+      "shared_service": true,
+      "stored_jobs": 2,
+      "workspace_exists": true
+    }
+  ],
+  "source_sha256": {
+    "cron.py": "6a6e4edd21eb0608ca376dfa390074a87f6ee6ea6967d247dc8762ccd70bdb50",
+    "manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "run_context.py": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944"
+  },
+  "stop_live": {
+    "busy": false,
+    "cancelled": true,
+    "run_count": 1,
+    "running_tasks": 0,
+    "status": "idle",
+    "workspace_exists": true
+  }
+}

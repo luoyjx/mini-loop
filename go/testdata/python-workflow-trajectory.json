@@ -1,0 +1,612 @@
+{
+  "rows": [
+    {
+      "append_error": null,
+      "capture": true,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}], \"partial\": false}",
+      "http": [
+        {
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}"
+      ],
+      "name": "nonfinite",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"input\", \"metadata\": {}}",
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"done\", \"error\": null, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "input",
+        "metrics": {
+          "errors": 0,
+          "event_count": 1,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": "UnicodeEncodeError",
+      "capture": true,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [], \"partial\": false}",
+      "http": [
+        {
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"\\ud800\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [],
+      "name": "surrogate-text",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"input\", \"metadata\": {}}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"done\", \"error\": null, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "input",
+        "metrics": {
+          "errors": 0,
+          "event_count": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": "UnicodeEncodeError",
+      "capture": true,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [], \"partial\": false}",
+      "http": [
+        {
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"\\udfff\": \"value\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [],
+      "name": "surrogate-key",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"input\", \"metadata\": {}}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"done\", \"error\": null, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "input",
+        "metrics": {
+          "errors": 0,
+          "event_count": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": null,
+      "capture": true,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": NaN}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}], \"partial\": false}",
+      "http": [
+        {
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": NaN}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": NaN}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}"
+      ],
+      "name": "redacted-float",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"input\", \"metadata\": {}}",
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": NaN}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"done\", \"error\": null, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "input",
+        "metrics": {
+          "errors": 0,
+          "event_count": 1,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": "UnicodeEncodeError",
+      "capture": true,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [], \"partial\": false}",
+      "http": [
+        {
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"\\ud800\", \"kept\": [Infinity, 1, 1.0]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [],
+      "name": "mixed",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"input\", \"metadata\": {}}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"done\", \"error\": null, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "input",
+        "metrics": {
+          "errors": 0,
+          "event_count": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": null,
+      "capture": false,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"[redacted: 5 chars]\", \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}], \"partial\": false}",
+      "http": [
+        {
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}"
+      ],
+      "name": "nonfinite",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"[redacted: 5 chars]\", \"metadata\": {}}",
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"values\": [NaN, Infinity, -Infinity]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "[redacted: 5 chars]",
+        "metrics": {
+          "errors": 0,
+          "event_count": 1,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": null,
+      "capture": false,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"[redacted: 5 chars]\", \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"[redacted: 1 chars]\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}], \"partial\": false}",
+      "http": [
+        {
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"\\ud800\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"[redacted: 1 chars]\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}"
+      ],
+      "name": "surrogate-text",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"[redacted: 5 chars]\", \"metadata\": {}}",
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"[redacted: 1 chars]\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "[redacted: 5 chars]",
+        "metrics": {
+          "errors": 0,
+          "event_count": 1,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": "UnicodeEncodeError",
+      "capture": false,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"[redacted: 5 chars]\", \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [], \"partial\": false}",
+      "http": [
+        {
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"\\udfff\": \"value\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [],
+      "name": "surrogate-key",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"[redacted: 5 chars]\", \"metadata\": {}}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metrics\": {\"event_count\": 0, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "[redacted: 5 chars]",
+        "metrics": {
+          "errors": 0,
+          "event_count": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": null,
+      "capture": false,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"[redacted: 5 chars]\", \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": \"[redacted: float, 1 item(s)]\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}], \"partial\": false}",
+      "http": [
+        {
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": NaN}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": \"[redacted: float, 1 item(s)]\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}"
+      ],
+      "name": "redacted-float",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"[redacted: 5 chars]\", \"metadata\": {}}",
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"error\": \"[redacted: float, 1 item(s)]\"}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "[redacted: 5 chars]",
+        "metrics": {
+          "errors": 0,
+          "event_count": 1,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    },
+    {
+      "append_error": null,
+      "capture": false,
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_cccccccccccccccccccccccc\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 0, \"ended_at\": 0, \"duration_ms\": 0, \"input\": \"[redacted: 5 chars]\", \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metadata\": {}, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}, \"events\": [{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"[redacted: 1 chars]\", \"kept\": [Infinity, 1, 1.0]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}], \"partial\": false}",
+      "http": [
+        {
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "status": 404,
+          "suffix": "/export?format=json",
+          "token": "token-b"
+        }
+      ],
+      "input_wire": "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"\\ud800\", \"kept\": [Infinity, 1, 1.0]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\"}",
+      "iter_events": [
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"[redacted: 1 chars]\", \"kept\": [Infinity, 1, 1.0]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}"
+      ],
+      "name": "mixed",
+      "records": [
+        "{\"record_type\": \"trajectory_start\", \"schema_version\": \"mini-loop.trajectory.v1\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 0, \"input\": \"[redacted: 5 chars]\", \"metadata\": {}}",
+        "{\"type\": \"workflow_paused\", \"kind\": \"workflow_paused\", \"event_id\": \"event\", \"occurred_at\": 1.5, \"session_id\": \"s\", \"run_id\": \"run\", \"workflow_run_id\": \"run\", \"workflow_name\": \"wf\", \"definition_revision\": \"rev\", \"payload_version\": 1, \"payload\": {\"text\": \"[redacted: 1 chars]\", \"kept\": [Infinity, 1, 1.0]}, \"seq\": 1, \"sequence\": 1, \"ts\": 0, \"session\": \"s\", \"transcript_epoch\": 1, \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"record_type\": \"event\"}",
+        "{\"record_type\": \"trajectory_end\", \"trajectory_id\": \"traj_cccccccccccccccccccccccc\", \"trace_id\": \"traj_cccccccccccccccccccccccc\", \"group_id\": \"s\", \"session\": \"s\", \"owner\": \"alice\", \"status\": \"completed\", \"ended_at\": 0, \"duration_ms\": 0, \"output\": \"[redacted: 4 chars]\", \"error\": null, \"metrics\": {\"event_count\": 1, \"model_calls\": 0, \"tool_calls\": 0, \"tool_errors\": 0, \"errors\": 0}}"
+      ],
+      "summary": {
+        "build": null,
+        "duration_ms": 0,
+        "ended_at": 0,
+        "group_id": "s",
+        "id": "traj_cccccccccccccccccccccccc",
+        "input_preview": "[redacted: 5 chars]",
+        "metrics": {
+          "errors": 0,
+          "event_count": 1,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "tool_errors": 0
+        },
+        "model": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 1,
+        "session": "s",
+        "started_at": 0,
+        "status": "completed",
+        "trace_id": "traj_cccccccccccccccccccccccc",
+        "trajectory_id": "traj_cccccccccccccccccccccccc",
+        "workspace": null
+      }
+    }
+  ]
+}

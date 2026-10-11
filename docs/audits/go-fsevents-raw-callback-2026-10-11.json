@@ -1,0 +1,508 @@
+{
+  "baseline": "936c1c7",
+  "experiment": "Temporary fprintf at the C FSEvents callback before goMiniLoopNativeEvent. Removed after the terminal Go test result; restored C source has no diff from HEAD.",
+  "files_sha256": {
+    "go/reload/native_events_darwin.c": "73e544bdcd054012392a9123ac8230d716b05d41ae65c6a191296dcd47389649",
+    "go/reload/native_events_darwin.go": "63134b8a47cb23718c08199220a739a1e0af1f3e95d1249c45bff543bd94c5a1",
+    "go/reload/native_events_darwin.h": "0c018d649aa26f7510c75acd4283a45dbf5bab7a43e12005cd19e923371fc467",
+    "go/reload/native_events_recipes_test.go": "560cd3409c968d726e7170eb8f2fd0926cde5072f9d655b8d7acd810efb985ed",
+    "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+    "python/tools/watchfiles_contracts.py": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a"
+  },
+  "go_full_ordinary": {
+    "command": "go test -p=1 -count=1 -timeout=300s ./...",
+    "exit_code": 1,
+    "failed_cases": [
+      {
+        "interpretation": "Only setup/readiness callbacks were recorded for this failed subscription; no operation callback was recorded before the operation deadline and stream cleanup. This does not establish kernel event loss or distinguish scheduling from FSEvents delivery.",
+        "name": "hidden-parent-source",
+        "raw_callbacks": [
+          {
+            "event_id": 1887178719,
+            "flags": 164096,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3482383648/001",
+            "subscription": 36
+          },
+          {
+            "event_id": 1887178725,
+            "flags": 164096,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3482383648/001/.git",
+            "subscription": 36
+          },
+          {
+            "event_id": 1887178734,
+            "flags": 102656,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3482383648/001/reload_observer_ready.go",
+            "subscription": 36
+          }
+        ]
+      },
+      {
+        "interpretation": "Only setup/readiness callbacks were recorded for this failed subscription; no operation callback was recorded before the operation deadline and stream cleanup. This does not establish kernel event loss or distinguish scheduling from FSEvents delivery.",
+        "name": "same-mtime-write",
+        "raw_callbacks": [
+          {
+            "event_id": 1887186635,
+            "flags": 164096,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write4226041705/001",
+            "subscription": 39
+          },
+          {
+            "event_id": 1887186647,
+            "flags": 103680,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write4226041705/001/source.go",
+            "subscription": 39
+          },
+          {
+            "event_id": 1887186656,
+            "flags": 102656,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write4226041705/001/reload_observer_ready.go",
+            "subscription": 39
+          }
+        ]
+      },
+      {
+        "interpretation": "Only setup/readiness callbacks were recorded for this failed subscription; no operation callback was recorded before the operation deadline and stream cleanup. This does not establish kernel event loss or distinguish scheduling from FSEvents delivery.",
+        "name": "lower-mtime-write",
+        "raw_callbacks": [
+          {
+            "event_id": 1887188777,
+            "flags": 164096,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write3920488104/001",
+            "subscription": 40
+          },
+          {
+            "event_id": 1887188789,
+            "flags": 103680,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write3920488104/001/source.go",
+            "subscription": 40
+          },
+          {
+            "event_id": 1887188798,
+            "flags": 102656,
+            "path": "/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write3920488104/001/reload_observer_ready.go",
+            "subscription": 40
+          }
+        ]
+      }
+    ],
+    "failure": "--- FAIL: TestNativeEventsActualSourceRecipes (39.23s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/hidden-parent-source (5.21s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +133ms subscription constructed; await post-subscription probe\n            +1.954s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3482383648/001\" flags=164096\n            +1.954s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3482383648/001/.git\" flags=164096\n            +1.954s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3482383648/001/reload_observer_ready.go\" flags=102656\n            +2.005s readiness probe observed; drain remaining setup events\n            +2.207s setup next: paths=[] error=context deadline exceeded\n            +2.207s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeshidden-parent-source3482383648/001/.git/a.go\n            +5.208s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/same-mtime-write (4.19s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +145ms subscription constructed; await post-subscription probe\n            +930ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write4226041705/001\" flags=164096\n            +930ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write4226041705/001/source.go\" flags=103680\n            +930ms reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write4226041705/001/reload_observer_ready.go\" flags=102656\n            +982ms readiness probe observed; drain remaining setup events\n            +1.184s setup next: paths=[] error=context deadline exceeded\n            +1.184s operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-write4226041705/001/source.go\n            +4.187s operation next: paths=[] error=context deadline exceeded\n            \n    --- FAIL: TestNativeEventsActualSourceRecipes/lower-mtime-write (4.64s)\n        native_events_recipes_test.go:190: context deadline exceeded\n        native_events_recipes_test.go:141: native recipe timeline:\n            +442ms subscription constructed; await post-subscription probe\n            +1.385s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write3920488104/001\" flags=164096\n            +1.385s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write3920488104/001/source.go\" flags=103680\n            +1.385s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write3920488104/001/reload_observer_ready.go\" flags=102656\n            +1.437s readiness probe observed; drain remaining setup events\n            +1.639s setup next: paths=[] error=context deadline exceeded\n            +1.639s operation=write path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipeslower-mtime-write3920488104/001/source.go\n            +4.64s operation next: paths=[] error=context deadline exceeded\n            \n",
+    "log_path": "/tmp/mini-loop-raw-callback-full.log",
+    "log_sha256": "c29c1e1b0ef0e3e877dd4ea72b84309ac616c4087ce1b5a5d9e399357d53c2c2",
+    "scope": "Only reload failed; all other packages passed or had no tests."
+  },
+  "host": {
+    "machine": "arm64",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "python": "3.11.3",
+    "uvicorn": "0.49.0",
+    "watchfiles": "1.2.0"
+  },
+  "instrumentation": "For each raw event, fprintf(stderr, \"mini-loop raw Darwin callback: subscription=%lu event=%llu flags=%u path=%s\\n\", (unsigned long)(uintptr_t)info, (unsigned long long)ids[i], (unsigned int)flags[i], names[i]); then call goMiniLoopNativeEvent unchanged. Add stdio.h only for the experiment.",
+  "instrumented_c_sha256": "2135472641c75d0553b1d51a7bbbf7b5f6b7c072fca6de568e4056bf0d635801",
+  "limitations": [
+    "Temporary stderr writes can affect scheduling and are not zero-overhead instrumentation.",
+    "Raw records have event IDs, not callback timestamps; failure timelines independently record readiness, operation and deadline.",
+    "Source comparator uses the actual native RustNotify and WatchFilesReload but is not the same full Go package workload or scheduling.",
+    "No fixture widening, longer deadline, fallback backend, runtime change or claim of native temporal acceptance."
+  ],
+  "next_action": "Inspect native registration and stream delivery before the Go callback; do not change lexical admission or batch deduplication on the basis of these failures. A matched Source workload is needed before attributing the failure to Go lifecycle or host delivery.",
+  "source_comparator": {
+    "cases": [
+      {
+        "changed": [
+          "new.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "added-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "new.py",
+        "seconds": 0.5788881666958332
+      },
+      {
+        "changed": [
+          ".git/a.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "hidden-parent-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".git/a.py",
+        "seconds": 0.5839235838502645
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "symlink-target-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "linked.py",
+        "seconds": 0.5825550835579634,
+        "symlink_target": "notes.txt"
+      },
+      {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "name": "removed-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "remove",
+        "path": "source.py",
+        "seconds": 0.5765567496418953
+      },
+      {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "same-mtime-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "source.py",
+        "seconds": 0.5696919579058886
+      },
+      {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "mtime": 99,
+        "name": "lower-mtime-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "write",
+        "path": "source.py",
+        "seconds": 0.5762100424617529
+      },
+      {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "identical-write",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "unchanged-write",
+        "path": "source.py",
+        "seconds": 0.5660802498459816
+      },
+      {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "same-mtime-touch",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "touch",
+        "path": "source.py",
+        "seconds": 0.5641518756747246
+      },
+      {
+        "changed": [
+          "source.py"
+        ],
+        "closed": true,
+        "destination": "notes.txt",
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "name": "rename-out",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "source.py",
+        "seconds": 0.5778487902134657
+      },
+      {
+        "changed": [
+          "target.py"
+        ],
+        "closed": true,
+        "destination": "target.py",
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "name": "rename-in",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "notes.txt",
+        "seconds": 0.5519049596041441
+      },
+      {
+        "changed": [
+          "source.py",
+          "target.py"
+        ],
+        "closed": true,
+        "destination": "target.py",
+        "initial": true,
+        "matches_pinned_fixture": true,
+        "name": "rename-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "rename",
+        "path": "source.py",
+        "seconds": 0.5790631249547005
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "ignored-hidden",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".hidden.py",
+        "seconds": 0.5858583748340607
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "ignored-backup",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "~backup.py",
+        "seconds": 0.5747711677104235
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "matches_pinned_fixture": true,
+        "mtime": 100,
+        "name": "ignored-text",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "notes.txt",
+        "seconds": 0.5742255430668592
+      },
+      {
+        "changed": [
+          "package.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "matches_pinned_fixture": true,
+        "name": "source-directory",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "mkdir",
+        "path": "package.py",
+        "seconds": 0.7053371667861938
+      },
+      {
+        "changed": [
+          "flash.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "matches_pinned_fixture": true,
+        "name": "transient-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "transient",
+        "path": "flash.py",
+        "seconds": 0.5836438331753016
+      }
+    ],
+    "rapid_close_subscriptions": 32
+  },
+  "source_comparator_command": "PYTHONPATH=python .venv/bin/python /tmp/mini-loop-source-lifecycle-pressure.py",
+  "source_comparator_script": "import json,sys,tempfile,time\nfrom pathlib import Path\nsys.path.insert(0,str(Path('python/tools').resolve()))\nfrom watchfiles_contracts import _native_case\nfrom watchfiles._rust_notify import RustNotify\ncases=json.loads(Path('go/testdata/python-watchfiles.json').read_text())['native_events']\nresults=[]\nwith tempfile.TemporaryDirectory(prefix='mini-loop-source-pressure-') as scratch:\n    root=Path(scratch).resolve()\n    warm=root/'rapid-close';warm.mkdir()\n    for iteration in range(32):\n        watcher=RustNotify([str(warm)],False,False,300,True,True)\n        watcher.close()\n    for case in cases:\n        recipe={k:v for k,v in case.items() if k not in ('changed','closed','native_arguments')}\n        started=time.monotonic()\n        result=_native_case(root/case['name'],recipe)\n        result['seconds']=time.monotonic()-started\n        result['matches_pinned_fixture']=result['changed']==case['changed']\n        results.append(result)\n        print(json.dumps({'name':case['name'],'changed':result['changed'],'matches':result['matches_pinned_fixture'],'seconds':result['seconds']}),flush=True)\nPath('/tmp/mini-loop-source-lifecycle-pressure.json').write_text(json.dumps({'rapid_close_subscriptions':32,'cases':results},indent=2)+'\\n')\n"
+}

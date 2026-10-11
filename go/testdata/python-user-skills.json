@@ -1,0 +1,458 @@
+{
+  "cases": [
+    {
+      "body_sha256": "b9f317fbfd6cdfc48e53bbde0db4dbc238cc361809b52d6906626ffbabfe0023",
+      "description": "Useful",
+      "input": {
+        "body": "\r\n  Read this.\rSecond line. \r\n",
+        "description": " Useful ",
+        "name": "note"
+      },
+      "text_sha256": "b53c1216e81d9a3847a7d054cc5636de3257b1fa8f846b32439b5b1177234e99"
+    },
+    {
+      "body_sha256": "6ccaa6415b5ee449e3c5c716f57b4608ebe3b780f5aa6b077bc5d8eee5d961f9",
+      "description": "中文",
+      "input": {
+        "body": "\u001cBody\u001f",
+        "description": "中文",
+        "name": "123"
+      },
+      "text_sha256": "6cadc9fe61623aed3acc1aab04ab7b669238bdb69f307e47a218d868ea1893b8"
+    },
+    {
+      "error": "Skill name must be lowercase kebab-case",
+      "error_code": "invalid_name",
+      "input": {
+        "body": "b",
+        "description": "d",
+        "name": ""
+      }
+    },
+    {
+      "error": "Skill name must be lowercase kebab-case",
+      "error_code": "invalid_name",
+      "input": {
+        "body": "b",
+        "description": "d",
+        "name": "Upper"
+      }
+    },
+    {
+      "error": "Skill name must be lowercase kebab-case",
+      "error_code": "invalid_name",
+      "input": {
+        "body": "b",
+        "description": "d",
+        "name": "a_b"
+      }
+    },
+    {
+      "error": "Skill name must be lowercase kebab-case",
+      "error_code": "invalid_name",
+      "input": {
+        "body": "b",
+        "description": "d",
+        "name": "a--b"
+      }
+    },
+    {
+      "error": "Skill name must be lowercase kebab-case",
+      "error_code": "invalid_name",
+      "input": {
+        "body": "b",
+        "description": "d",
+        "name": "../escape"
+      }
+    },
+    {
+      "body_sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
+      "description": "d",
+      "input": {
+        "body": "b",
+        "description": "d",
+        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "text_sha256": "abf045d954b43531ba814fd7269ddc9fa810b22468ae80117f443a4c1691055c"
+    },
+    {
+      "error": "Skill name must be at most 64 characters",
+      "error_code": "invalid_name",
+      "input": {
+        "body": "b",
+        "description": "d",
+        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "error": "Skill description must be non-empty",
+      "error_code": "invalid_description",
+      "input": {
+        "body": "b",
+        "description": "",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill description must be non-empty",
+      "error_code": "invalid_description",
+      "input": {
+        "body": "b",
+        "description": " ",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill description must be one line",
+      "error_code": "invalid_description",
+      "input": {
+        "body": "b",
+        "description": "a\nb",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill description must be one line",
+      "error_code": "invalid_description",
+      "input": {
+        "body": "b",
+        "description": "a\rb",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill fields must not contain NUL",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "b",
+        "description": "nul\u0000",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill content must not contain a skill wrapper",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "b",
+        "description": "<skill>",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill content must not contain a skill wrapper",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "b",
+        "description": "< / ſkill >",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill description must be non-empty",
+      "error_code": "invalid_description",
+      "input": {
+        "body": "b",
+        "description": "\u001f",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
+      "description": "中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中",
+      "input": {
+        "body": "b",
+        "description": "中",
+        "description_repeat": 200,
+        "name": "note"
+      },
+      "text_sha256": "a4d2dcc65964007bd0e6cd1ccb6011f673fcc3c6800e6a82a2c560c28bd00637"
+    },
+    {
+      "error": "Skill description must be at most 200 characters",
+      "error_code": "invalid_description",
+      "input": {
+        "body": "b",
+        "description": "中",
+        "description_repeat": 201,
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill body must be non-empty",
+      "error_code": "invalid_body",
+      "input": {
+        "body": "",
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill body must be non-empty",
+      "error_code": "invalid_body",
+      "input": {
+        "body": " ",
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill fields must not contain NUL",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "\u0000",
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill content must not contain a skill wrapper",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "<SKILL/>",
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill content must not contain a skill wrapper",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "< /skill>",
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill content must not contain a skill wrapper",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "<sKİll>",
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "error": "Skill content must not contain a skill wrapper",
+      "error_code": "unsafe_content",
+      "input": {
+        "body": "<sKıll>",
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "7eff17d0d84e80a6a007fdf3798196a8c548944fe0b691c56ce1a10e57d70cd2",
+      "description": "d",
+      "input": {
+        "body": "<skillish>",
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "25d0db54006e2196755114f55fe069c7be8154b3259173c3ea493a7044ff891e"
+    },
+    {
+      "body_sha256": "10a43854c4909ceeaaea7d2d15a68db038505d44f226acad8d4dd3f4c526916f",
+      "description": "d",
+      "input": {
+        "body": "front\r\nbody\rback",
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "b6424af162efa3981706ce037d89fce1fdd12120ddac07e154b3a6deae881460"
+    },
+    {
+      "body_sha256": "00c161b0c3c030bb4d8e713a4fa8adf293c7c4642b309f413788badee888b465",
+      "description": "d",
+      "input": {
+        "body": "中",
+        "body_repeat": 50000,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "b61f42047b5a51870f248e4336ce43bc2ebd20d1f8ac69886f8df75371c50f18"
+    },
+    {
+      "error": "Skill body must be at most 50000 characters",
+      "error_code": "invalid_body",
+      "input": {
+        "body": "中",
+        "body_repeat": 50001,
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "70a495ab7f1f0d83ae5f528e01c2259e9fddf673eb045d38e48009889fb367fb",
+      "description": "d",
+      "input": {
+        "body": "x\n",
+        "body_repeat": 500,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "e2904fbf6b1e09706961c952ac23c9a89dbea41266348a838ec32dc33fa4659d"
+    },
+    {
+      "error": "Skill body must be at most 500 lines",
+      "error_code": "invalid_body",
+      "input": {
+        "body": "x\n",
+        "body_repeat": 501,
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "70a495ab7f1f0d83ae5f528e01c2259e9fddf673eb045d38e48009889fb367fb",
+      "description": "d",
+      "input": {
+        "body": "x\r\n",
+        "body_repeat": 500,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "e2904fbf6b1e09706961c952ac23c9a89dbea41266348a838ec32dc33fa4659d"
+    },
+    {
+      "error": "Skill body must be at most 500 lines",
+      "error_code": "invalid_body",
+      "input": {
+        "body": "x\r\n",
+        "body_repeat": 501,
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "65bde4e6e3ed4ee8ada9f1196119aada33a158559da83720de0d773902ecf587",
+      "description": "d",
+      "input": {
+        "body": "x",
+        "body_repeat": 500,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "0b58ee5732e087ac60cf6a69bdd97e174d7f7dc991b373a83c48ef248c04e318"
+    },
+    {
+      "error": "Skill body must be at most 500 lines",
+      "error_code": "invalid_body",
+      "input": {
+        "body": "x",
+        "body_repeat": 501,
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "b634d7e3f5af28f317aa2d9be4d7f43a86a6e15eba10e8d5ab8ed125ca24d312",
+      "description": "d",
+      "input": {
+        "body": "x ",
+        "body_repeat": 500,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "81736efac86deff302518584b8b0ce46496715e65f4eb3dba7c50d167b9a8f37"
+    },
+    {
+      "error": "Skill body must be at most 500 lines",
+      "error_code": "invalid_body",
+      "input": {
+        "body": "x ",
+        "body_repeat": 501,
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "9ef3092c31cdd5ba22aca1fa7922580d5d34269ae86bc3ff447a2a3ddaf603f9",
+      "description": "d",
+      "input": {
+        "body": "x\u001c",
+        "body_repeat": 500,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "06d0ba7c9e052c481c801a91bcea96b61fb8192f8b1137a63e9f44739b44aa11"
+    },
+    {
+      "error": "Skill body must be at most 500 lines",
+      "error_code": "invalid_body",
+      "input": {
+        "body": "x\u001c",
+        "body_repeat": 501,
+        "description": "d",
+        "name": "note"
+      }
+    },
+    {
+      "body_sha256": "4234d714fed1362bbb566c4b8dc0176cda60c2ab886387db4b100d2b9c463c1f",
+      "description": "d",
+      "input": {
+        "body": "x\u001f",
+        "body_repeat": 500,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "9c08578b98f51d24d327a47a2ccaf97ea53f814938aa9131a21fdc6a3c42853b"
+    },
+    {
+      "body_sha256": "6ab56d8f1a93c41d43fde6849cd5afdcae6d4a35c7ee9161148d3d3c753f689c",
+      "description": "d",
+      "input": {
+        "body": "x\u001f",
+        "body_repeat": 501,
+        "description": "d",
+        "name": "note"
+      },
+      "text_sha256": "211ec97625795379740414107e55cf28825efc631199154e57c1b4f8e682f566"
+    }
+  ],
+  "owners": [
+    {
+      "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+      "owner": "alice"
+    },
+    {
+      "key": "u-3bc51062973c458d5a6f2d8d64a023246354ad7e064b1e4e009ec8a0699a3043",
+      "owner": "Alice"
+    },
+    {
+      "key": "u-a06bd73250e9318167df739538a46483e6f455c5880267ab7440ddd5e54b2d64",
+      "owner": "alice "
+    },
+    {
+      "key": "u-36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "owner": " "
+    },
+    {
+      "key": "u-efbf103bcec54b370d5fdbcd97c853944c0e6bf61a446c27f2552c06847c5df6",
+      "owner": "../../escape"
+    },
+    {
+      "key": "u-4a99557e4033c3539de2eb65472017cad5f9557f7a0625a09f1c3f6e2ba69c4c",
+      "owner": "é"
+    },
+    {
+      "key": "u-bf12767b0f2a56b2190075bae8169f656e3ce8d6357d4aff184bc6c7ea48f9f6",
+      "owner": "é"
+    },
+    {
+      "key": "u-2f183a4e64493af3f377f745eda502363cd3e7ef6e4d266d444758de0a85fcc8",
+      "owner": "anonymous"
+    },
+    {
+      "key": "u-53d592ba2f5fdc093976e33ce7a43e68de453acdc733ae2f0ed66745491ba153",
+      "owner": "共享owner"
+    },
+    {
+      "key": "u-6e719a49d61b5e45334193162544e251dd4dcbefa29b67780036eae93e2f3b24",
+      "owner": "nul\u0000owner"
+    }
+  ],
+  "source_sha256": {
+    "skills.py": "33dd1717a5cb5c710a65edebecea00ef038e50dab3817a12080302b49b86c0c3",
+    "user_resources.py": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549"
+  }
+}

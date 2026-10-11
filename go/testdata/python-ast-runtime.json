@@ -1,0 +1,882 @@
+{
+  "http": [
+    {
+      "calls": [],
+      "case": {
+        "enabled": false,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "name": "disabled",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "output": "done",
+      "results": []
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--no-private",
+            "--no-fields",
+            "--no-docs",
+            "--no-attrs",
+            "--imports",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "include_imports": true,
+          "paths": [
+            "code.py"
+          ],
+          "view": "minimal"
+        },
+        "name": "outline",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[],\"results\":[]},\"output_bytes\":85}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "digest",
+            "--format",
+            "wide",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "density": "wide",
+          "paths": [
+            "code.py"
+          ]
+        },
+        "name": "map",
+        "operation": "repo_map"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[],\"results\":[]},\"output_bytes\":84}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "show",
+            "--signature",
+            "--json",
+            "--",
+            "<snapshot>/code.py",
+            "-Option"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "path_or_glob": "cod*.py",
+          "signature_only": true,
+          "symbols": [
+            "-Option"
+          ]
+        },
+        "name": "show",
+        "operation": "show_symbol"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"files\":[],\"results\":[]},\"output_bytes\":82}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "grep",
+            "--json",
+            "--kind=def,call",
+            "--max-count=7",
+            "--expression=-Option",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "kinds": [
+            "def",
+            "call"
+          ],
+          "max_per_file": 7,
+          "paths": [
+            "code.py"
+          ],
+          "patterns": [
+            "-Option"
+          ]
+        },
+        "name": "references",
+        "operation": "symbol_references"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[],\"results\":[]},\"output_bytes\":82}"
+      ]
+    },
+    {
+      "calls": [],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "../outside.py"
+          ]
+        },
+        "name": "escape",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"message\":\"path resolves outside workspace: ../outside.py\"}"
+      ]
+    },
+    {
+      "calls": [],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "wrong-digest",
+        "name": "wrong-digest",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"incompatible\",\"version\":\"\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"ast-outline executable SHA-256 does not match the pinned digest\"},\"message\":\"ast-outline executable SHA-256 does not match the pinned digest\"}"
+      ]
+    },
+    {
+      "calls": [],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "missing",
+        "name": "missing-binary",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"missing\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"missing\",\"version\":\"\",\"homepage\":\"\",\"schema_version\":1,\"message\":\"ast-outline executable not found: <binary>\"},\"message\":\"ast-outline executable not found: <binary>\"}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "version",
+        "name": "incompatible-version",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"incompatible\",\"version\":\"1.10.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1,\"message\":\"expected https://github.com/ast-outline/ast-outline version >= 1.9.0 and < 1.10.0\"},\"message\":\"expected https://github.com/ast-outline/ast-outline version >= 1.9.0 and < 1.10.0\"}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "invalid",
+        "name": "invalid-json",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\",\"output_bytes\":5}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "array",
+        "name": "non-object",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "nonzero",
+        "name": "nonzero",
+        "operation": "file_outline"
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline exited 7: cli failure\",\"output_bytes\":6}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "overflow",
+        "name": "output-cap",
+        "operation": "file_outline",
+        "output_cap": 120
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline output exceeded 120 bytes\",\"output_bytes\":120}"
+      ]
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "case": {
+        "enabled": true,
+        "input": {
+          "paths": [
+            "code.py"
+          ]
+        },
+        "mode": "timeout",
+        "name": "timeout",
+        "operation": "file_outline",
+        "timeout": 1.0
+      },
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "repo_map",
+          "file_outline",
+          "show_symbol",
+          "symbol_references"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline timed out after 1s\"}"
+      ]
+    }
+  ]
+}

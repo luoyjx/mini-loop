@@ -1,0 +1,566 @@
+{
+  "capabilities": [],
+  "parallel_safe": true,
+  "readonly": true,
+  "risk": "read",
+  "rows": [
+    {
+      "epochs": [],
+      "name": "empty",
+      "output": "No matches for 'needle' in the searched transcript.",
+      "query": "needle",
+      "search": {
+        "current_epoch": 1,
+        "epochs_skipped": 0,
+        "first_epoch": 1,
+        "matches": []
+      }
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "old NEEDLE",
+              "role": "user"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"old NEEDLE\"}"
+          ]
+        },
+        {
+          "epoch": 3,
+          "messages": [
+            {
+              "content": [
+                {
+                  "text": "new needle",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"assistant\", \"content\": [{\"type\": \"text\", \"text\": \"new needle\"}]}"
+          ]
+        }
+      ],
+      "name": "epochs",
+      "output": "epoch 1 #0 (user): ...old NEEDLE...\nepoch 3 #0 (assistant): ...[{\"type\": \"text\", \"text\": \"new needle\"}]...",
+      "query": "  NeEdLe  ",
+      "search": {
+        "current_epoch": 3,
+        "epochs_skipped": 0,
+        "first_epoch": 1,
+        "matches": [
+          {
+            "epoch": 1,
+            "index": 0,
+            "role": "user",
+            "snippet": "old NEEDLE"
+          },
+          {
+            "epoch": 3,
+            "index": 0,
+            "role": "assistant",
+            "snippet": "[{\"type\": \"text\", \"text\": \"new needle\"}]"
+          }
+        ]
+      }
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "needle only here",
+              "role": "user"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"needle only here\"}"
+          ]
+        },
+        {
+          "epoch": 25,
+          "messages": [
+            {
+              "content": "recent noise",
+              "role": "user"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"recent noise\"}"
+          ]
+        }
+      ],
+      "name": "omitted-history",
+      "output": "No matches for 'needle' in the searched transcript.\n(searched epochs 6-25 only; 5 earlier epoch(s) were not scanned -- older history exists beyond this search)",
+      "query": "needle",
+      "search": {
+        "current_epoch": 25,
+        "epochs_skipped": 5,
+        "first_epoch": 6,
+        "matches": []
+      }
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "old needle",
+              "role": "user"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"old needle\"}"
+          ]
+        },
+        {
+          "epoch": 6,
+          "messages": [
+            {
+              "content": "retained needle",
+              "role": "assistant"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"assistant\", \"content\": \"retained needle\"}"
+          ]
+        },
+        {
+          "epoch": 25,
+          "messages": [
+            {
+              "content": "noise",
+              "role": "user"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"noise\"}"
+          ]
+        }
+      ],
+      "name": "partial-match",
+      "output": "epoch 6 #0 (assistant): ...retained needle...\n(searched epochs 6-25 only; 5 earlier epoch(s) were not scanned -- older history exists beyond this search)",
+      "query": "needle",
+      "search": {
+        "current_epoch": 25,
+        "epochs_skipped": 5,
+        "first_epoch": 6,
+        "matches": [
+          {
+            "epoch": 6,
+            "index": 0,
+            "role": "assistant",
+            "snippet": "retained needle"
+          }
+        ]
+      }
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "needle 0",
+              "role": "user"
+            },
+            {
+              "content": "needle 1",
+              "role": "user"
+            },
+            {
+              "content": "needle 2",
+              "role": "user"
+            },
+            {
+              "content": "needle 3",
+              "role": "user"
+            },
+            {
+              "content": "needle 4",
+              "role": "user"
+            },
+            {
+              "content": "needle 5",
+              "role": "user"
+            },
+            {
+              "content": "needle 6",
+              "role": "user"
+            },
+            {
+              "content": "needle 7",
+              "role": "user"
+            },
+            {
+              "content": "needle 8",
+              "role": "user"
+            },
+            {
+              "content": "needle 9",
+              "role": "user"
+            },
+            {
+              "content": "needle 10",
+              "role": "user"
+            },
+            {
+              "content": "needle 11",
+              "role": "user"
+            },
+            {
+              "content": "needle 12",
+              "role": "user"
+            },
+            {
+              "content": "needle 13",
+              "role": "user"
+            },
+            {
+              "content": "needle 14",
+              "role": "user"
+            },
+            {
+              "content": "needle 15",
+              "role": "user"
+            },
+            {
+              "content": "needle 16",
+              "role": "user"
+            },
+            {
+              "content": "needle 17",
+              "role": "user"
+            },
+            {
+              "content": "needle 18",
+              "role": "user"
+            },
+            {
+              "content": "needle 19",
+              "role": "user"
+            },
+            {
+              "content": "needle 20",
+              "role": "user"
+            },
+            {
+              "content": "needle 21",
+              "role": "user"
+            },
+            {
+              "content": "needle 22",
+              "role": "user"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"needle 0\"}",
+            "{\"role\": \"user\", \"content\": \"needle 1\"}",
+            "{\"role\": \"user\", \"content\": \"needle 2\"}",
+            "{\"role\": \"user\", \"content\": \"needle 3\"}",
+            "{\"role\": \"user\", \"content\": \"needle 4\"}",
+            "{\"role\": \"user\", \"content\": \"needle 5\"}",
+            "{\"role\": \"user\", \"content\": \"needle 6\"}",
+            "{\"role\": \"user\", \"content\": \"needle 7\"}",
+            "{\"role\": \"user\", \"content\": \"needle 8\"}",
+            "{\"role\": \"user\", \"content\": \"needle 9\"}",
+            "{\"role\": \"user\", \"content\": \"needle 10\"}",
+            "{\"role\": \"user\", \"content\": \"needle 11\"}",
+            "{\"role\": \"user\", \"content\": \"needle 12\"}",
+            "{\"role\": \"user\", \"content\": \"needle 13\"}",
+            "{\"role\": \"user\", \"content\": \"needle 14\"}",
+            "{\"role\": \"user\", \"content\": \"needle 15\"}",
+            "{\"role\": \"user\", \"content\": \"needle 16\"}",
+            "{\"role\": \"user\", \"content\": \"needle 17\"}",
+            "{\"role\": \"user\", \"content\": \"needle 18\"}",
+            "{\"role\": \"user\", \"content\": \"needle 19\"}",
+            "{\"role\": \"user\", \"content\": \"needle 20\"}",
+            "{\"role\": \"user\", \"content\": \"needle 21\"}",
+            "{\"role\": \"user\", \"content\": \"needle 22\"}"
+          ]
+        }
+      ],
+      "name": "match-cap",
+      "output": "epoch 1 #0 (user): ...needle 0...\nepoch 1 #1 (user): ...needle 1...\nepoch 1 #2 (user): ...needle 2...\nepoch 1 #3 (user): ...needle 3...\nepoch 1 #4 (user): ...needle 4...\nepoch 1 #5 (user): ...needle 5...\nepoch 1 #6 (user): ...needle 6...\nepoch 1 #7 (user): ...needle 7...\nepoch 1 #8 (user): ...needle 8...\nepoch 1 #9 (user): ...needle 9...\nepoch 1 #10 (user): ...needle 10...\nepoch 1 #11 (user): ...needle 11...\nepoch 1 #12 (user): ...needle 12...\nepoch 1 #13 (user): ...needle 13...\nepoch 1 #14 (user): ...needle 14...\nepoch 1 #15 (user): ...needle 15...\nepoch 1 #16 (user): ...needle 16...\nepoch 1 #17 (user): ...needle 17...\nepoch 1 #18 (user): ...needle 18...\nepoch 1 #19 (user): ...needle 19...\n... (capped at 20 matches; refine the query)",
+      "query": "needle",
+      "search": {
+        "current_epoch": 1,
+        "epochs_skipped": 0,
+        "first_epoch": 1,
+        "matches": [
+          {
+            "epoch": 1,
+            "index": 0,
+            "role": "user",
+            "snippet": "needle 0"
+          },
+          {
+            "epoch": 1,
+            "index": 1,
+            "role": "user",
+            "snippet": "needle 1"
+          },
+          {
+            "epoch": 1,
+            "index": 2,
+            "role": "user",
+            "snippet": "needle 2"
+          },
+          {
+            "epoch": 1,
+            "index": 3,
+            "role": "user",
+            "snippet": "needle 3"
+          },
+          {
+            "epoch": 1,
+            "index": 4,
+            "role": "user",
+            "snippet": "needle 4"
+          },
+          {
+            "epoch": 1,
+            "index": 5,
+            "role": "user",
+            "snippet": "needle 5"
+          },
+          {
+            "epoch": 1,
+            "index": 6,
+            "role": "user",
+            "snippet": "needle 6"
+          },
+          {
+            "epoch": 1,
+            "index": 7,
+            "role": "user",
+            "snippet": "needle 7"
+          },
+          {
+            "epoch": 1,
+            "index": 8,
+            "role": "user",
+            "snippet": "needle 8"
+          },
+          {
+            "epoch": 1,
+            "index": 9,
+            "role": "user",
+            "snippet": "needle 9"
+          },
+          {
+            "epoch": 1,
+            "index": 10,
+            "role": "user",
+            "snippet": "needle 10"
+          },
+          {
+            "epoch": 1,
+            "index": 11,
+            "role": "user",
+            "snippet": "needle 11"
+          },
+          {
+            "epoch": 1,
+            "index": 12,
+            "role": "user",
+            "snippet": "needle 12"
+          },
+          {
+            "epoch": 1,
+            "index": 13,
+            "role": "user",
+            "snippet": "needle 13"
+          },
+          {
+            "epoch": 1,
+            "index": 14,
+            "role": "user",
+            "snippet": "needle 14"
+          },
+          {
+            "epoch": 1,
+            "index": 15,
+            "role": "user",
+            "snippet": "needle 15"
+          },
+          {
+            "epoch": 1,
+            "index": 16,
+            "role": "user",
+            "snippet": "needle 16"
+          },
+          {
+            "epoch": 1,
+            "index": 17,
+            "role": "user",
+            "snippet": "needle 17"
+          },
+          {
+            "epoch": 1,
+            "index": 18,
+            "role": "user",
+            "snippet": "needle 18"
+          },
+          {
+            "epoch": 1,
+            "index": 19,
+            "role": "user",
+            "snippet": "needle 19"
+          }
+        ]
+      }
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀NEEDLE文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文",
+              "role": "user"
+            },
+            {
+              "content": "İİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİNEEDLE后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后",
+              "role": "assistant"
+            },
+            {
+              "content": null
+            },
+            {
+              "content": {
+                "needle": [
+                  true,
+                  null,
+                  "文"
+                ]
+              },
+              "role": "assistant"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀NEEDLE文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文\"}",
+            "{\"role\": \"assistant\", \"content\": \"İİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİNEEDLE后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后\"}",
+            "{\"content\": null}",
+            "{\"role\": \"assistant\", \"content\": {\"needle\": [true, null, \"文\"]}}"
+          ]
+        }
+      ],
+      "name": "unicode-snippet",
+      "output": "epoch 1 #0 (user): ...😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀NEEDLE文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文...\nepoch 1 #1 (assistant): ...后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后...\nepoch 1 #3 (assistant): ...{\"needle\": [true, null, \"文\"]}...",
+      "query": "needle",
+      "search": {
+        "current_epoch": 1,
+        "epochs_skipped": 0,
+        "first_epoch": 1,
+        "matches": [
+          {
+            "epoch": 1,
+            "index": 0,
+            "role": "user",
+            "snippet": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀NEEDLE文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文"
+          },
+          {
+            "epoch": 1,
+            "index": 1,
+            "role": "assistant",
+            "snippet": "后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后"
+          },
+          {
+            "epoch": 1,
+            "index": 3,
+            "role": "assistant",
+            "snippet": "{\"needle\": [true, null, \"文\"]}"
+          }
+        ]
+      }
+    },
+    {
+      "epochs": [],
+      "name": "quote-no-match",
+      "output": "No matches for 'a\\'\"b\\\\c\\n' in the searched transcript.",
+      "query": "a'\"b\\c\n",
+      "search": {
+        "current_epoch": 1,
+        "epochs_skipped": 0,
+        "first_epoch": 1,
+        "matches": []
+      }
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "not empty",
+              "role": "user"
+            }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"not empty\"}"
+          ]
+        }
+      ],
+      "name": "blank",
+      "output": "Error: an empty query matches everything and answers nothing",
+      "query": " \n\t",
+      "search": {
+        "current_epoch": 1,
+        "epochs_skipped": 0,
+        "first_epoch": 1,
+        "matches": [
+          {
+            "epoch": 1,
+            "index": 0,
+            "role": "user",
+            "snippet": "not empty"
+          }
+        ]
+      }
+    }
+  ],
+  "schema": {
+    "description": "Search the durable transcript of THIS session (the most recent 20 epochs), including history that compaction summarized away. States when older epochs fall outside the scan.",
+    "input_schema": {
+      "properties": {
+        "query": {
+          "description": "Substring to find (case-insensitive).",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    },
+    "name": "transcript_search"
+  },
+  "surfaces": [
+    {
+      "name": "bare",
+      "output": "Error: no durable transcript on this surface"
+    },
+    {
+      "name": "no-store",
+      "output": "Error: no durable transcript on this surface"
+    },
+    {
+      "name": "no-id",
+      "output": "Error: no durable transcript on this surface"
+    },
+    {
+      "name": "null-store",
+      "output": "No matches for 'needle' in the searched transcript."
+    }
+  ]
+}

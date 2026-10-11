@@ -1,0 +1,861 @@
+{
+  "cases": [
+    {
+      "error": null,
+      "name": "visible",
+      "rows": [
+        {
+          "arm": "test",
+          "context_tokens_estimate": 208,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "write-file",
+          "tool_calls": 1,
+          "tool_errors": 0
+        },
+        {
+          "arm": "test",
+          "context_tokens_estimate": 187,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "arithmetic",
+          "tool_calls": 1,
+          "tool_errors": 0
+        },
+        {
+          "arm": "test",
+          "context_tokens_estimate": 243,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "edit-config",
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        {
+          "arm": "test",
+          "context_tokens_estimate": 226,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "page-long-log",
+          "tool_calls": 1,
+          "tool_errors": 0
+        },
+        {
+          "arm": "test",
+          "context_tokens_estimate": 209,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "page-long-log-readonly",
+          "tool_calls": 1,
+          "tool_errors": 1
+        }
+      ],
+      "sessions": [
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "Create a file named greeting.txt containing the word hello.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000001",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: Create a file named greeting.txt containing the word hello."
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "handled: Create a file named greeting.txt containing the word hello.",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000002",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: handled: Create a file named greeting.txt containing the word hello.",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        },
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "What is 5 + 7? Answer with the number.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000003",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: What is 5 + 7? Answer with the number."
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "handled: What is 5 + 7? Answer with the number.",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000004",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: handled: What is 5 + 7? Answer with the number.",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        },
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "Create config.ini with a [net] section containing `retries = 3`.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000005",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: Create config.ini with a [net] section containing `retries ="
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "/bin/sh: -c: line 0: unexpected EOF while looking for matching ``'\n/bin/sh: -c: line 1: syntax error: unexpected end of file\n(exit 2)",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000006",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: /bin/sh: -c: line 0: unexpected EOF while looking for matching ``'\n/bin/sh: -c: line 1: syntax error: unexpected end of file\n(exit 2)",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        },
+        {
+          "files": [
+            "data.log"
+          ],
+          "messages": [
+            {
+              "content": "data.log has 6000 numbered lines and is too large to read in one go. Report the exact token-NNNNN value that appears on line 4321.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000007",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: data.log has 6000 numbered lines and is too large to read in"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "handled: data.log has 6000 numbered lines and is too large to read in",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000008",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: handled: data.log has 6000 numbered lines and is too large to read in",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        },
+        {
+          "files": [
+            "data.log"
+          ],
+          "messages": [
+            {
+              "content": "data.log has 6000 numbered lines and is too large to read in one go. Using the available file tools, report the exact token-NNNNN value that appears on line 4321.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000009",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: data.log has 6000 numbered lines and is too large to read in"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "Unknown tool: bash",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000010",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: Unknown tool: bash",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "read_file",
+            "glob"
+          ]
+        }
+      ]
+    },
+    {
+      "error": null,
+      "name": "heldout",
+      "rows": [
+        {
+          "arm": "test",
+          "context_tokens_estimate": 209,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "append-log",
+          "tool_calls": 1,
+          "tool_errors": 0
+        },
+        {
+          "arm": "test",
+          "context_tokens_estimate": 211,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "word-count",
+          "tool_calls": 1,
+          "tool_errors": 0
+        },
+        {
+          "arm": "test",
+          "context_tokens_estimate": 196,
+          "error": null,
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 2,
+          "task": "nested-file",
+          "tool_calls": 1,
+          "tool_errors": 0
+        }
+      ],
+      "sessions": [
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "Create notes.log containing three lines: alpha, beta, gamma.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000001",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: Create notes.log containing three lines: alpha, beta, gamma."
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "handled: Create notes.log containing three lines: alpha, beta, gamma.",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000002",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: handled: Create notes.log containing three lines: alpha, beta, gamma.",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        },
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "How many words are in 'the quick brown fox jumps'? Answer with the number.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000003",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: How many words are in 'the quick brown fox jumps'? Answer wi"
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "handled: How many words are in the quick brown fox jumps? Answer wi",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000004",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: handled: How many words are in the quick brown fox jumps? Answer wi",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        },
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "Create the file src/app/main.txt containing ok.",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000005",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Working on it.",
+                  "type": "text"
+                },
+                {
+                  "id": "toolu_1",
+                  "input": {
+                    "command": "echo handled: Create the file src/app/main.txt containing ok."
+                  },
+                  "name": "bash",
+                  "type": "tool_use"
+                }
+              ],
+              "role": "assistant"
+            },
+            {
+              "content": [
+                {
+                  "content": "handled: Create the file src/app/main.txt containing ok.",
+                  "tool_use_id": "toolu_1",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000006",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "Done. Tool said: handled: Create the file src/app/main.txt containing ok.",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        }
+      ]
+    },
+    {
+      "error": null,
+      "name": "empty",
+      "rows": [],
+      "sessions": []
+    },
+    {
+      "error": null,
+      "name": "judge-fault",
+      "rows": [
+        {
+          "arm": "test",
+          "context_tokens_estimate": 50,
+          "error": "expect raised ValueError: judge fault",
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 1,
+          "task": "bad-judge",
+          "tool_calls": 0,
+          "tool_errors": 0
+        }
+      ],
+      "sessions": [
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "judge",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "signature": "sig_fake_00000001",
+                  "thinking": "considering the request",
+                  "type": "thinking"
+                },
+                {
+                  "text": "done",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        }
+      ]
+    },
+    {
+      "error": "ValueError: setup fault",
+      "name": "setup-fault",
+      "rows": null,
+      "sessions": [
+        {
+          "files": [],
+          "messages": [],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        }
+      ]
+    },
+    {
+      "error": null,
+      "name": "provider-fault-recovered",
+      "rows": [
+        {
+          "arm": "test",
+          "context_tokens_estimate": 32,
+          "error": null,
+          "passed": true,
+          "repeated_reads": 0,
+          "rounds": 1,
+          "task": "bad-run",
+          "tool_calls": 0,
+          "tool_errors": 0
+        }
+      ],
+      "sessions": [
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "run",
+              "role": "user"
+            },
+            {
+              "content": [
+                {
+                  "text": "[Error] ValueError: run fault",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        }
+      ]
+    },
+    {
+      "error": null,
+      "name": "run-fault",
+      "rows": [
+        {
+          "arm": "test",
+          "context_tokens_estimate": 0,
+          "error": "RuntimeError: run fault",
+          "passed": false,
+          "repeated_reads": 0,
+          "rounds": 0,
+          "task": "bad-run",
+          "tool_calls": 0,
+          "tool_errors": 0
+        }
+      ],
+      "sessions": [
+        {
+          "files": [],
+          "messages": [],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        }
+      ]
+    },
+    {
+      "error": "CancelledError",
+      "name": "cancelled-provider",
+      "rows": null,
+      "sessions": [
+        {
+          "files": [],
+          "messages": [
+            {
+              "content": "cancel",
+              "role": "user"
+            }
+          ],
+          "mode": "interactive",
+          "owner": "anonymous",
+          "tools": [
+            "bash",
+            "read_file",
+            "write_file",
+            "edit_file",
+            "glob",
+            "TodoWrite",
+            "task",
+            "load_skill",
+            "compress",
+            "ask_user"
+          ]
+        }
+      ]
+    }
+  ]
+}

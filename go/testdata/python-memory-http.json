@@ -1,0 +1,665 @@
+{
+  "scenarios": [
+    {
+      "cases": [
+        {
+          "name": "empty",
+          "response": {
+            "memories": [],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "alice",
+          "response": {
+            "memories": [
+              {
+                "description": "alice description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "same-owner",
+          "response": {
+            "memories": [
+              {
+                "description": "alice description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<second>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "second",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "bob",
+          "response": {
+            "memories": [
+              {
+                "description": "bob description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<bob>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "bob",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "foreign",
+          "response": {
+            "detail": "No session '<alice>'"
+          },
+          "status": 404,
+          "suffix": "",
+          "target": "alice",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "alice/%E7%95%8C",
+          "response": {
+            "body": "alice private body",
+            "description": "alice description",
+            "name": "界",
+            "session": "<alice>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "same-owner/%E7%95%8C",
+          "response": {
+            "body": "alice private body",
+            "description": "alice description",
+            "name": "界",
+            "session": "<second>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "second",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "bob/%E7%95%8C",
+          "response": {
+            "body": "bob private body",
+            "description": "bob description",
+            "name": "界",
+            "session": "<bob>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "bob",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "foreign/%E7%95%8C",
+          "response": {
+            "detail": "No session '<alice>'"
+          },
+          "status": 404,
+          "suffix": "/%E7%95%8C",
+          "target": "alice",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "no-auth",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "suffix": "",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "query-auth",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "suffix": "?access_token=token-a",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "missing-session",
+          "response": {
+            "detail": "No session 'missing'"
+          },
+          "status": 404,
+          "suffix": "/%E7%95%8C",
+          "target": "missing",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "missing-name",
+          "response": {
+            "detail": "No memory 'quote\\'\"\\\\界'"
+          },
+          "status": 404,
+          "suffix": "/quote%27%22%5C%E7%95%8C",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "encoded-slash",
+          "response": {
+            "detail": "Not Found"
+          },
+          "status": 404,
+          "suffix": "/a%2Fb",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "updated",
+          "response": {
+            "body": "latest body",
+            "description": "updated",
+            "name": "界",
+            "session": "<second>",
+            "type": "feedback"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "second",
+          "token": "token-a",
+          "update": true
+        }
+      ],
+      "mode": "shared"
+    },
+    {
+      "cases": [
+        {
+          "name": "empty",
+          "response": {
+            "memories": [],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "alice",
+          "response": {
+            "memories": [
+              {
+                "description": "alice description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "same-owner",
+          "response": {
+            "memories": [
+              {
+                "description": "alice description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<second>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "second",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "bob",
+          "response": {
+            "memories": [
+              {
+                "description": "bob description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<bob>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "bob",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "foreign",
+          "response": {
+            "detail": "No session '<alice>'"
+          },
+          "status": 404,
+          "suffix": "",
+          "target": "alice",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "alice/%E7%95%8C",
+          "response": {
+            "body": "alice private body",
+            "description": "alice description",
+            "name": "界",
+            "session": "<alice>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "same-owner/%E7%95%8C",
+          "response": {
+            "body": "alice private body",
+            "description": "alice description",
+            "name": "界",
+            "session": "<second>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "second",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "bob/%E7%95%8C",
+          "response": {
+            "body": "bob private body",
+            "description": "bob description",
+            "name": "界",
+            "session": "<bob>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "bob",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "foreign/%E7%95%8C",
+          "response": {
+            "detail": "No session '<alice>'"
+          },
+          "status": 404,
+          "suffix": "/%E7%95%8C",
+          "target": "alice",
+          "token": "token-b",
+          "update": false
+        },
+        {
+          "name": "no-auth",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "suffix": "",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "query-auth",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "suffix": "?access_token=token-a",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "missing-session",
+          "response": {
+            "detail": "No session 'missing'"
+          },
+          "status": 404,
+          "suffix": "/%E7%95%8C",
+          "target": "missing",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "missing-name",
+          "response": {
+            "detail": "No memory 'quote\\'\"\\\\界'"
+          },
+          "status": 404,
+          "suffix": "/quote%27%22%5C%E7%95%8C",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "encoded-slash",
+          "response": {
+            "detail": "Not Found"
+          },
+          "status": 404,
+          "suffix": "/a%2Fb",
+          "target": "alice",
+          "token": "token-a",
+          "update": false
+        },
+        {
+          "name": "updated",
+          "response": {
+            "body": "latest body",
+            "description": "updated",
+            "name": "界",
+            "session": "<second>",
+            "type": "feedback"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "second",
+          "token": "token-a",
+          "update": true
+        }
+      ],
+      "mode": "local"
+    },
+    {
+      "cases": [
+        {
+          "name": "empty",
+          "response": {
+            "memories": [],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "alice",
+          "response": {
+            "memories": [
+              {
+                "description": "anonymous description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "same-owner",
+          "response": {
+            "memories": [
+              {
+                "description": "anonymous description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<second>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "second",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "bob",
+          "response": {
+            "memories": [
+              {
+                "description": "anonymous description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<bob>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "bob",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "foreign",
+          "response": {
+            "memories": [
+              {
+                "description": "anonymous description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "alice/%E7%95%8C",
+          "response": {
+            "body": "anonymous private body",
+            "description": "anonymous description",
+            "name": "界",
+            "session": "<alice>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "same-owner/%E7%95%8C",
+          "response": {
+            "body": "anonymous private body",
+            "description": "anonymous description",
+            "name": "界",
+            "session": "<second>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "second",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "bob/%E7%95%8C",
+          "response": {
+            "body": "anonymous private body",
+            "description": "anonymous description",
+            "name": "界",
+            "session": "<bob>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "bob",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "foreign/%E7%95%8C",
+          "response": {
+            "body": "anonymous private body",
+            "description": "anonymous description",
+            "name": "界",
+            "session": "<alice>",
+            "type": "project"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "no-auth",
+          "response": {
+            "memories": [
+              {
+                "description": "anonymous description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "query-auth",
+          "response": {
+            "memories": [
+              {
+                "description": "anonymous description",
+                "name": "界",
+                "origin": "imported",
+                "type": "project"
+              }
+            ],
+            "session": "<alice>"
+          },
+          "status": 200,
+          "suffix": "?access_token=token-a",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "missing-session",
+          "response": {
+            "detail": "No session 'missing'"
+          },
+          "status": 404,
+          "suffix": "/%E7%95%8C",
+          "target": "missing",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "missing-name",
+          "response": {
+            "detail": "No memory 'quote\\'\"\\\\界'"
+          },
+          "status": 404,
+          "suffix": "/quote%27%22%5C%E7%95%8C",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "encoded-slash",
+          "response": {
+            "detail": "Not Found"
+          },
+          "status": 404,
+          "suffix": "/a%2Fb",
+          "target": "alice",
+          "token": "",
+          "update": false
+        },
+        {
+          "name": "updated",
+          "response": {
+            "body": "latest body",
+            "description": "updated",
+            "name": "界",
+            "session": "<second>",
+            "type": "feedback"
+          },
+          "status": 200,
+          "suffix": "/%E7%95%8C",
+          "target": "second",
+          "token": "",
+          "update": true
+        }
+      ],
+      "mode": "anonymous"
+    }
+  ]
+}

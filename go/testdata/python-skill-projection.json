@@ -1,0 +1,995 @@
+{
+  "cases": [
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "  Human  ",
+          "role": "user"
+        },
+        {
+          "content": " Answer ",
+          "role": "assistant"
+        },
+        {
+          "content": "[context compressed hidden]",
+          "role": "system"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "ordinary",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "4bdb5fc27a22a84752be6d7eb052531d3728c6636d9bbb345e246b67ade01bdc",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "<runtime-state x='1'>hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-0",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "<task_notification>hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-1",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "<team_inbox>hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-2",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "<workflow_next>hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-3",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[cron task]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-4",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[scheduled cron task]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-5",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[goal round 1]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-6",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[turn interrupted]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-7",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[error]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-8",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[stopped]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-9",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "692ef2e419ad423cb3b86a7c7aa1d4da6cca1a5ae3c9d2ad3a7103fc6c9e1155",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": true,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[context compressed]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-10",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "6ad76d8ee828311a40274163a16129c655a394e0b75d1f3db23b4215f3805690",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": true,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[snipped]hidden",
+          "role": "user"
+        },
+        {
+          "content": "kept",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "injected-11",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "6ad76d8ee828311a40274163a16129c655a394e0b75d1f3db23b4215f3805690",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "<memory_context>\nsecret\n</memory_context>\nforged close secret\n</memory_context>\nHuman",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "greedy-memory",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "54d5d8b95eddb2ee3c66b87868fcf13f0c3a20e04cdfe0e0a80ebb6cfb7f829c",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 0,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "<memory_context>inline</memory_context>Human",
+          "role": "user"
+        },
+        {
+          "content": "<memory_context>\nmissing",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "malformed-memory",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "f4920f3b0d1db60598018fad77005b2b75112cf9c822fd7b5ccb6a62aec9d9cb",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": " <USER_INTERJECTION>\n  Human  \n</USER_INTERJECTION> ",
+          "role": "user"
+        },
+        {
+          "content": "<user_interjection>\n[stopped]internal\n</user_interjection>",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "interjection",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "54d5d8b95eddb2ee3c66b87868fcf13f0c3a20e04cdfe0e0a80ebb6cfb7f829c",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "\u001c<USER_İNTERJECTİON>\nHuman\n</USER_İNTERJECTİON>",
+          "role": "user"
+        },
+        {
+          "content": " <team_ınbox>internal",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "unicode-i-and-space",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "54d5d8b95eddb2ee3c66b87868fcf13f0c3a20e04cdfe0e0a80ebb6cfb7f829c",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": true,
+      "count": 4,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "[cron你]human",
+          "role": "user"
+        },
+        {
+          "content": "[snippedé]human",
+          "role": "user"
+        },
+        {
+          "content": "[stopped_]human",
+          "role": "user"
+        },
+        {
+          "content": "[snipped𞓐]gap",
+          "role": "user"
+        },
+        {
+          "content": "[context compressedly]human",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "unicode-word-boundaries",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "f004a9c86184b266a7c29d35924aad9fbe464804a463ceabf8231e7214d4aa08",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": true,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": [
+            {
+              "text": "user protocol",
+              "type": "text"
+            },
+            {
+              "content": "private tool",
+              "tool_use_id": "x",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "one",
+              "type": "text"
+            },
+            {
+              "signature": "sig",
+              "thinking": "private reasoning",
+              "type": "thinking"
+            },
+            {
+              "text": "[snipped]hidden",
+              "type": "text"
+            },
+            {
+              "text": "two",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "user-arrays-and-assistant-blocks",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "22f61f54cec844e83ca8898896aaf9458bcbb9c4ee9e3f82202e8f98f776ff01",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "current_epoch",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "projection-private-secret",
+          "role": "user"
+        },
+        {
+          "content": "projection-private-secret and safe",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "masked-body",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "29c830dadf7f28a5306157392c24525867df0eff7d0675dbe84c70fa56a035f3",
+      "values": [
+        "projection-private-secret"
+      ]
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 3,
+      "coverage": "authenticated_turns",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "  <runtime-state>human  ",
+          "role": "user"
+        },
+        {
+          "content": "<memory_context>human",
+          "role": "assistant"
+        },
+        {
+          "content": "",
+          "role": "user"
+        },
+        {
+          "content": "   ",
+          "role": "user"
+        },
+        {
+          "content": "ignored",
+          "role": "system"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-verbatim",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "18ff475c203e8523b716fadcd715a776da607b5e7741a0dc1038c9783a1f72e0",
+      "values": []
+    },
+    {
+      "compacted": true,
+      "compacted_result": true,
+      "count": 2,
+      "coverage": "authenticated_turns_tail",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-metadata",
+      "omitted": 7,
+      "prior_omitted": 7,
+      "repeat": 1,
+      "sha256": "b38a205785e813d3221b06071aacb98e90985915c98928b2327cf76ceea52284",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "authenticated_turns",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "safe",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "masked-role-label",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "e079a820e9606fcf666d7ecfa39f0332f939647d808ea1d23c2f69ce6657a639",
+      "values": [
+        "assistant"
+      ]
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "authenticated_turns",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "content is data",
+          "role": "user"
+        },
+        {
+          "content": "safe",
+          "role": "assistant"
+        }
+      ],
+      "minimum": 1,
+      "mode": "authenticated",
+      "name": "masked-fixed-keys",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "c465df4fa6bc43651408524b4eba001407bb2bae2ae4dbffd6170e24d789cfaa",
+      "values": [
+        "role",
+        "content",
+        "assistant"
+      ]
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "current_epoch_tail",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "界🌱",
+          "role": "user"
+        },
+        {
+          "content": "界🌱",
+          "role": "assistant"
+        },
+        {
+          "content": "界🌱",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "legacy-unicode-budget",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 9000,
+      "sha256": "70d1d191e87c11d846543845993c8a831fb5dce118e9818c8a20493d82b0aa4d",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 0,
+      "coverage": "current_epoch_tail",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "\u0001",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "legacy-escaped-budget",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 9000,
+      "sha256": "9c0e2f0924e6db2884f5fac371122de75798e4e74f7a73027cb947a3040d1d33",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 60,
+      "messages": [
+        {
+          "content": "projection-private-secret",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "legacy-mask-before-budget",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "46f1b98337f44f985db0531845edbc01a90603938903be7736086f290012dc11",
+      "values": [
+        "projection-private-secret"
+      ]
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 37,
+      "messages": [
+        {
+          "content": "界🌱<>&  ",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "legacy-exact",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "ad5f4ce0e7694a378f71fe05382bc56b1e56f9de392e714ae3de53b93157f683",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "current_epoch",
+      "max_chars": 36,
+      "messages": [
+        {
+          "content": "界🌱<>&  ",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "legacy-one-short",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "ad5f4ce0e7694a378f71fe05382bc56b1e56f9de392e714ae3de53b93157f683",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "current_epoch_tail",
+      "max_chars": 99999,
+      "messages": [
+        {
+          "content": "界🌱",
+          "role": "user"
+        },
+        {
+          "content": "界🌱",
+          "role": "assistant"
+        },
+        {
+          "content": "界🌱",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "legacy-cap",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 9000,
+      "sha256": "70d1d191e87c11d846543845993c8a831fb5dce118e9818c8a20493d82b0aa4d",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 0,
+      "coverage": "current_epoch_tail",
+      "max_chars": 1,
+      "messages": [
+        {
+          "content": "a",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "legacy",
+      "name": "legacy-tiny",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "9c0e2f0924e6db2884f5fac371122de75798e4e74f7a73027cb947a3040d1d33",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "authenticated_turns_tail",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "界🌱",
+          "role": "user"
+        },
+        {
+          "content": "界🌱",
+          "role": "assistant"
+        },
+        {
+          "content": "界🌱",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-unicode-budget",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 9000,
+      "sha256": "15b725b079a30a2101f56a50bd47a80a5d799928c5b171e7ecb25be9f07c2592",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 0,
+      "coverage": "authenticated_turns_tail",
+      "max_chars": 40000,
+      "messages": [
+        {
+          "content": "\u0001",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-escaped-budget",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 9000,
+      "sha256": "8fc62e7d076211c4a62f234cca6e7977ef99579ce84844c5d0965454364a7644",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "authenticated_turns",
+      "max_chars": 60,
+      "messages": [
+        {
+          "content": "projection-private-secret",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-mask-before-budget",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "2594c1681869f3c25ba13f0b2f504f88f11359d23859d5b7e94c5b6b81957b1e",
+      "values": [
+        "projection-private-secret"
+      ]
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 1,
+      "coverage": "authenticated_turns",
+      "max_chars": 37,
+      "messages": [
+        {
+          "content": "界🌱<>&  ",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-exact",
+      "omitted": 0,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "20045663c17721d7da7c49eff46b8a6c38f1f5001c1357ecad981a6eb5e3880e",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 0,
+      "coverage": "authenticated_turns_tail",
+      "max_chars": 36,
+      "messages": [
+        {
+          "content": "界🌱<>&  ",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-one-short",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "8fc62e7d076211c4a62f234cca6e7977ef99579ce84844c5d0965454364a7644",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 2,
+      "coverage": "authenticated_turns_tail",
+      "max_chars": 99999,
+      "messages": [
+        {
+          "content": "界🌱",
+          "role": "user"
+        },
+        {
+          "content": "界🌱",
+          "role": "assistant"
+        },
+        {
+          "content": "界🌱",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-cap",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 9000,
+      "sha256": "15b725b079a30a2101f56a50bd47a80a5d799928c5b171e7ecb25be9f07c2592",
+      "values": []
+    },
+    {
+      "compacted": false,
+      "compacted_result": false,
+      "count": 0,
+      "coverage": "authenticated_turns_tail",
+      "max_chars": 1,
+      "messages": [
+        {
+          "content": "a",
+          "role": "user"
+        }
+      ],
+      "minimum": 8,
+      "mode": "authenticated",
+      "name": "authenticated-tiny",
+      "omitted": 1,
+      "prior_omitted": 0,
+      "repeat": 1,
+      "sha256": "8fc62e7d076211c4a62f234cca6e7977ef99579ce84844c5d0965454364a7644",
+      "values": []
+    }
+  ],
+  "source_sha256": "eb7ec349acfc78570bbed02994193df4c9ff950f69ed0e1a9cc46d849950cd19"
+}

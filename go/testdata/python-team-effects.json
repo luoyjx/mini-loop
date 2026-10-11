@@ -1,0 +1,695 @@
+{
+  "cases": [
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "unconfigured",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"lead\", \"content\": \"hi\"}",
+          "name": "send_message",
+          "output": "Error: message bus not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "Error: message bus not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"content\": \"hi\"}",
+          "name": "broadcast",
+          "output": "Error: teams not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_teammates",
+          "output": "Error: teams not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"target\": \"bob\"}",
+          "name": "request_shutdown",
+          "output": "Error: teams not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"teammate\": \"bob\", \"task\": \"work\"}",
+          "name": "request_plan",
+          "output": "Error: teams not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"plan\": \"plan\"}",
+          "name": "submit_plan",
+          "output": "Error: teams not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"request_id\": \"missing\", \"approve\": true}",
+          "name": "review_plan",
+          "output": "Error: teams not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_protocols",
+          "output": "Error: teams not available",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": true
+    },
+    {
+      "members": [],
+      "name": "empty",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_teammates",
+          "output": "No teammates.",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_protocols",
+          "output": "No protocol requests.",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"content\": \"hello\"}",
+          "name": "broadcast",
+          "output": "Broadcast to 0 teammate(s)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"target\": \"bob\"}",
+          "name": "request_shutdown",
+          "output": "Error: no teammate bob",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"teammate\": \"bob\", \"task\": \"work\"}",
+          "name": "request_plan",
+          "output": "Error: no teammate bob",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"plan\": \"plan\"}",
+          "name": "submit_plan",
+          "output": "Error: only teammates submit plans to the lead",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"request_id\": \"missing\", \"approve\": true}",
+          "name": "review_plan",
+          "output": "Error: no plan request missing",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "routing",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_teammates",
+          "output": "  - bob\n  - charlie",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"bob\", \"content\": \"hi \\u754c\", \"type\": \"\", \"metadata\": {\"z\": [1, 1.0, null], \"a\": {\"first\": true}}}",
+          "name": "send_message",
+          "output": "Sent  to bob",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"lead\",\n    \"type\": \"\",\n    \"content\": \"hi \\u754c\",\n    \"metadata\": {\n      \"z\": [\n        1,\n        1.0,\n        null\n      ],\n      \"a\": {\n        \"first\": true\n      }\n    }\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{\"to\": \"lead\", \"content\": \"answer\"}",
+          "name": "send_message",
+          "output": "Sent message to lead",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"bob\",\n    \"type\": \"message\",\n    \"content\": \"answer\",\n    \"metadata\": {}\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "recipients",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"foreign/lead\", \"content\": \"no\"}",
+          "name": "send_message",
+          "output": "Error: no teammate named 'foreign/lead' in this team; message not sent. Known recipients: bob, charlie, lead",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"quote'\\n\", \"content\": \"no\"}",
+          "name": "send_message",
+          "output": "Error: no teammate named \"quote'\\n\" in this team; message not sent. Known recipients: bob, charlie, lead",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"\\ud83e\\udee8\", \"content\": \"no\"}",
+          "name": "send_message",
+          "output": "Error: no teammate named '\\U0001fae8' in this team; message not sent. Known recipients: bob, charlie, lead",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "broadcast",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"content\": \"hello\"}",
+          "name": "broadcast",
+          "output": "Broadcast to 2 teammate(s)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"lead\",\n    \"type\": \"broadcast\",\n    \"content\": \"hello\",\n    \"metadata\": {}\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "charlie",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"lead\",\n    \"type\": \"broadcast\",\n    \"content\": \"hello\",\n    \"metadata\": {}\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{\"content\": \"peer broadcast\"}",
+          "name": "broadcast",
+          "output": "Broadcast to 1 teammate(s)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "charlie",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"bob\",\n    \"type\": \"broadcast\",\n    \"content\": \"peer broadcast\",\n    \"metadata\": {}\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie",
+        "d",
+        "e",
+        "f"
+      ],
+      "name": "broadcast-refusal",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"content\": \"\\u754c\"}",
+          "name": "broadcast",
+          "output": "Broadcast to 0 teammate(s); 5 refused (bob: Error: message is 16,001 characters; the limit is 16,000; charlie: Error: message is 16,001 characters; the limit is 16,000; d: Error: message is 16,001 characters; the limit is 16,000)",
+          "repeat": 16001,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"bob\", \"content\": \"\\u754c\"}",
+          "name": "send_message",
+          "output": "Error: message is 16,001 characters; the limit is 16,000",
+          "repeat": 16001,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "lead-only",
+      "steps": [
+        {
+          "actor": "bob",
+          "input_json": "{\"target\": \"charlie\"}",
+          "name": "request_shutdown",
+          "output": "Error: only the lead can request teammate shutdown",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{\"teammate\": \"charlie\", \"task\": \"work\"}",
+          "name": "request_plan",
+          "output": "Error: only the lead can request plans",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{\"request_id\": \"missing\", \"approve\": true}",
+          "name": "review_plan",
+          "output": "Error: only the lead can review plans",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "list_protocols",
+          "output": "No protocol requests.",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "plan",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"teammate\": \"bob\", \"task\": \"work\"}",
+          "name": "request_plan",
+          "output": "Sent plan_request to bob",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"lead\",\n    \"type\": \"plan_request\",\n    \"content\": \"Please submit a plan for: work\",\n    \"metadata\": {}\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{\"plan\": \"Plan \\u754c\"}",
+          "name": "submit_plan",
+          "output": "<request1>",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_protocols",
+          "output": "[\n  {\n    \"request_id\": \"<request1>\",\n    \"type\": \"plan_approval\",\n    \"sender\": \"team/bob\",\n    \"target\": \"team/lead\",\n    \"status\": \"pending\",\n    \"payload\": \"Plan \\u754c\",\n    \"created_at\": 0.0,\n    \"feedback\": \"\"\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"bob\",\n    \"type\": \"plan_approval_request\",\n    \"content\": \"Plan \\u754c\",\n    \"metadata\": {\n      \"request_id\": \"<request1>\"\n    }\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"request_id\": \"<request1>\", \"approve\": false, \"feedback\": \"revise\"}",
+          "name": "review_plan",
+          "output": "Plan <request1> rejected",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"lead\",\n    \"type\": \"plan_approval_response\",\n    \"content\": \"revise\",\n    \"metadata\": {\n      \"request_id\": \"<request1>\",\n      \"approve\": false\n    }\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "list_protocols",
+          "output": "[\n  {\n    \"request_id\": \"<request1>\",\n    \"type\": \"plan_approval\",\n    \"sender\": \"team/bob\",\n    \"target\": \"team/lead\",\n    \"status\": \"rejected\",\n    \"payload\": \"Plan \\u754c\",\n    \"created_at\": 0.0,\n    \"feedback\": \"revise\"\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"request_id\": \"<request1>\", \"approve\": true}",
+          "name": "review_plan",
+          "output": "Error: request <request1> is already rejected",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "shutdown",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"target\": \"bob\"}",
+          "name": "request_shutdown",
+          "output": "<request1>",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"lead\",\n    \"type\": \"shutdown_request\",\n    \"content\": \"Please shut down.\",\n    \"metadata\": {\n      \"request_id\": \"<request1>\"\n    }\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": true,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"bob\",\n    \"type\": \"shutdown_response\",\n    \"content\": \"Shutdown approved.\",\n    \"metadata\": {\n      \"request_id\": \"<request1>\",\n      \"approve\": true\n    }\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_protocols",
+          "output": "[\n  {\n    \"request_id\": \"<request1>\",\n    \"type\": \"shutdown\",\n    \"sender\": \"team/lead\",\n    \"target\": \"team/bob\",\n    \"status\": \"approved\",\n    \"payload\": \"\",\n    \"created_at\": 0.0,\n    \"feedback\": \"Shutdown approved.\"\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "(empty inbox)",
+          "repeat": 1,
+          "shutdown_requested": true,
+          "state_count": 1
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "shutdown-partial-fault",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"target\": \"bob\"}",
+          "name": "request_shutdown",
+          "output": "<request1>",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "action": "inject",
+          "actor": "bob",
+          "row_json": "{\"metadata\": null}"
+        },
+        {
+          "actor": "bob",
+          "error": "AttributeError",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "repeat": 1,
+          "shutdown_requested": true,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"bob\",\n    \"type\": \"shutdown_response\",\n    \"content\": \"Shutdown approved.\",\n    \"metadata\": {\n      \"request_id\": \"<request1>\",\n      \"approve\": true\n    }\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        },
+        {
+          "actor": "lead",
+          "input_json": "{}",
+          "name": "list_protocols",
+          "output": "[\n  {\n    \"request_id\": \"<request1>\",\n    \"type\": \"shutdown\",\n    \"sender\": \"team/lead\",\n    \"target\": \"team/bob\",\n    \"status\": \"approved\",\n    \"payload\": \"\",\n    \"created_at\": 0.0,\n    \"feedback\": \"Shutdown approved.\"\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 1
+        }
+      ],
+      "unconfigured": false
+    },
+    {
+      "members": [
+        "bob",
+        "charlie"
+      ],
+      "name": "metadata-defaults",
+      "steps": [
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"bob\", \"content\": \"absent\"}",
+          "name": "send_message",
+          "output": "Sent message to bob",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"bob\", \"content\": \"null\", \"metadata\": null}",
+          "name": "send_message",
+          "output": "Sent message to bob",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "lead",
+          "input_json": "{\"to\": \"bob\", \"content\": \"empty\", \"metadata\": {}}",
+          "name": "send_message",
+          "output": "Sent message to bob",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        },
+        {
+          "actor": "bob",
+          "input_json": "{}",
+          "name": "read_inbox",
+          "output": "[\n  {\n    \"from\": \"lead\",\n    \"type\": \"message\",\n    \"content\": \"absent\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"lead\",\n    \"type\": \"message\",\n    \"content\": \"null\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"lead\",\n    \"type\": \"message\",\n    \"content\": \"empty\",\n    \"metadata\": {}\n  }\n]",
+          "repeat": 1,
+          "shutdown_requested": false,
+          "state_count": 0
+        }
+      ],
+      "unconfigured": false
+    }
+  ]
+}

@@ -1,0 +1,3739 @@
+{
+  "capabilities": [],
+  "interpreter": {
+    "implementation": "cpython",
+    "version": [
+      3,
+      11,
+      3
+    ]
+  },
+  "limits": {
+    "file_bytes": 1000000,
+    "files": 200,
+    "reported": 50
+  },
+  "parallel_safe": true,
+  "providers": [
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": null
+        }
+      ],
+      "diagnostics": [],
+      "input": {},
+      "name": "clean",
+      "output": "[scope: injected types only]\nNo diagnostics.",
+      "scope": "injected types only"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": "module.py"
+        }
+      ],
+      "diagnostics": [
+        {
+          "line": 1,
+          "message": "type mismatch 0",
+          "path": "module0.py",
+          "severity": "warning"
+        }
+      ],
+      "input": {
+        "path": "nested/../module.py"
+      },
+      "name": "single",
+      "output": "[scope: injected types only]\nmodule0.py:1 [warning] type mismatch 0",
+      "scope": "injected types only"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "line": 1,
+          "message": "type mismatch 0",
+          "path": "module0.py",
+          "severity": "warning"
+        },
+        {
+          "line": 2,
+          "message": "type mismatch 1",
+          "path": "module1.py",
+          "severity": "warning"
+        },
+        {
+          "line": 3,
+          "message": "type mismatch 2",
+          "path": "module2.py",
+          "severity": "warning"
+        },
+        {
+          "line": 4,
+          "message": "type mismatch 3",
+          "path": "module3.py",
+          "severity": "warning"
+        },
+        {
+          "line": 5,
+          "message": "type mismatch 4",
+          "path": "module4.py",
+          "severity": "warning"
+        },
+        {
+          "line": 6,
+          "message": "type mismatch 5",
+          "path": "module5.py",
+          "severity": "warning"
+        },
+        {
+          "line": 7,
+          "message": "type mismatch 6",
+          "path": "module6.py",
+          "severity": "warning"
+        },
+        {
+          "line": 8,
+          "message": "type mismatch 7",
+          "path": "module7.py",
+          "severity": "warning"
+        },
+        {
+          "line": 9,
+          "message": "type mismatch 8",
+          "path": "module8.py",
+          "severity": "warning"
+        },
+        {
+          "line": 10,
+          "message": "type mismatch 9",
+          "path": "module9.py",
+          "severity": "warning"
+        },
+        {
+          "line": 11,
+          "message": "type mismatch 10",
+          "path": "module10.py",
+          "severity": "warning"
+        },
+        {
+          "line": 12,
+          "message": "type mismatch 11",
+          "path": "module11.py",
+          "severity": "warning"
+        },
+        {
+          "line": 13,
+          "message": "type mismatch 12",
+          "path": "module12.py",
+          "severity": "warning"
+        },
+        {
+          "line": 14,
+          "message": "type mismatch 13",
+          "path": "module13.py",
+          "severity": "warning"
+        },
+        {
+          "line": 15,
+          "message": "type mismatch 14",
+          "path": "module14.py",
+          "severity": "warning"
+        },
+        {
+          "line": 16,
+          "message": "type mismatch 15",
+          "path": "module15.py",
+          "severity": "warning"
+        },
+        {
+          "line": 17,
+          "message": "type mismatch 16",
+          "path": "module16.py",
+          "severity": "warning"
+        },
+        {
+          "line": 18,
+          "message": "type mismatch 17",
+          "path": "module17.py",
+          "severity": "warning"
+        },
+        {
+          "line": 19,
+          "message": "type mismatch 18",
+          "path": "module18.py",
+          "severity": "warning"
+        },
+        {
+          "line": 20,
+          "message": "type mismatch 19",
+          "path": "module19.py",
+          "severity": "warning"
+        },
+        {
+          "line": 21,
+          "message": "type mismatch 20",
+          "path": "module20.py",
+          "severity": "warning"
+        },
+        {
+          "line": 22,
+          "message": "type mismatch 21",
+          "path": "module21.py",
+          "severity": "warning"
+        },
+        {
+          "line": 23,
+          "message": "type mismatch 22",
+          "path": "module22.py",
+          "severity": "warning"
+        },
+        {
+          "line": 24,
+          "message": "type mismatch 23",
+          "path": "module23.py",
+          "severity": "warning"
+        },
+        {
+          "line": 25,
+          "message": "type mismatch 24",
+          "path": "module24.py",
+          "severity": "warning"
+        },
+        {
+          "line": 26,
+          "message": "type mismatch 25",
+          "path": "module25.py",
+          "severity": "warning"
+        },
+        {
+          "line": 27,
+          "message": "type mismatch 26",
+          "path": "module26.py",
+          "severity": "warning"
+        },
+        {
+          "line": 28,
+          "message": "type mismatch 27",
+          "path": "module27.py",
+          "severity": "warning"
+        },
+        {
+          "line": 29,
+          "message": "type mismatch 28",
+          "path": "module28.py",
+          "severity": "warning"
+        },
+        {
+          "line": 30,
+          "message": "type mismatch 29",
+          "path": "module29.py",
+          "severity": "warning"
+        },
+        {
+          "line": 31,
+          "message": "type mismatch 30",
+          "path": "module30.py",
+          "severity": "warning"
+        },
+        {
+          "line": 32,
+          "message": "type mismatch 31",
+          "path": "module31.py",
+          "severity": "warning"
+        },
+        {
+          "line": 33,
+          "message": "type mismatch 32",
+          "path": "module32.py",
+          "severity": "warning"
+        },
+        {
+          "line": 34,
+          "message": "type mismatch 33",
+          "path": "module33.py",
+          "severity": "warning"
+        },
+        {
+          "line": 35,
+          "message": "type mismatch 34",
+          "path": "module34.py",
+          "severity": "warning"
+        },
+        {
+          "line": 36,
+          "message": "type mismatch 35",
+          "path": "module35.py",
+          "severity": "warning"
+        },
+        {
+          "line": 37,
+          "message": "type mismatch 36",
+          "path": "module36.py",
+          "severity": "warning"
+        },
+        {
+          "line": 38,
+          "message": "type mismatch 37",
+          "path": "module37.py",
+          "severity": "warning"
+        },
+        {
+          "line": 39,
+          "message": "type mismatch 38",
+          "path": "module38.py",
+          "severity": "warning"
+        },
+        {
+          "line": 40,
+          "message": "type mismatch 39",
+          "path": "module39.py",
+          "severity": "warning"
+        },
+        {
+          "line": 41,
+          "message": "type mismatch 40",
+          "path": "module40.py",
+          "severity": "warning"
+        },
+        {
+          "line": 42,
+          "message": "type mismatch 41",
+          "path": "module41.py",
+          "severity": "warning"
+        },
+        {
+          "line": 43,
+          "message": "type mismatch 42",
+          "path": "module42.py",
+          "severity": "warning"
+        },
+        {
+          "line": 44,
+          "message": "type mismatch 43",
+          "path": "module43.py",
+          "severity": "warning"
+        },
+        {
+          "line": 45,
+          "message": "type mismatch 44",
+          "path": "module44.py",
+          "severity": "warning"
+        },
+        {
+          "line": 46,
+          "message": "type mismatch 45",
+          "path": "module45.py",
+          "severity": "warning"
+        },
+        {
+          "line": 47,
+          "message": "type mismatch 46",
+          "path": "module46.py",
+          "severity": "warning"
+        },
+        {
+          "line": 48,
+          "message": "type mismatch 47",
+          "path": "module47.py",
+          "severity": "warning"
+        },
+        {
+          "line": 49,
+          "message": "type mismatch 48",
+          "path": "module48.py",
+          "severity": "warning"
+        },
+        {
+          "line": 50,
+          "message": "type mismatch 49",
+          "path": "module49.py",
+          "severity": "warning"
+        }
+      ],
+      "input": {},
+      "name": "exact-cap",
+      "output": "[scope: injected types only]\nmodule0.py:1 [warning] type mismatch 0\nmodule1.py:2 [warning] type mismatch 1\nmodule2.py:3 [warning] type mismatch 2\nmodule3.py:4 [warning] type mismatch 3\nmodule4.py:5 [warning] type mismatch 4\nmodule5.py:6 [warning] type mismatch 5\nmodule6.py:7 [warning] type mismatch 6\nmodule7.py:8 [warning] type mismatch 7\nmodule8.py:9 [warning] type mismatch 8\nmodule9.py:10 [warning] type mismatch 9\nmodule10.py:11 [warning] type mismatch 10\nmodule11.py:12 [warning] type mismatch 11\nmodule12.py:13 [warning] type mismatch 12\nmodule13.py:14 [warning] type mismatch 13\nmodule14.py:15 [warning] type mismatch 14\nmodule15.py:16 [warning] type mismatch 15\nmodule16.py:17 [warning] type mismatch 16\nmodule17.py:18 [warning] type mismatch 17\nmodule18.py:19 [warning] type mismatch 18\nmodule19.py:20 [warning] type mismatch 19\nmodule20.py:21 [warning] type mismatch 20\nmodule21.py:22 [warning] type mismatch 21\nmodule22.py:23 [warning] type mismatch 22\nmodule23.py:24 [warning] type mismatch 23\nmodule24.py:25 [warning] type mismatch 24\nmodule25.py:26 [warning] type mismatch 25\nmodule26.py:27 [warning] type mismatch 26\nmodule27.py:28 [warning] type mismatch 27\nmodule28.py:29 [warning] type mismatch 28\nmodule29.py:30 [warning] type mismatch 29\nmodule30.py:31 [warning] type mismatch 30\nmodule31.py:32 [warning] type mismatch 31\nmodule32.py:33 [warning] type mismatch 32\nmodule33.py:34 [warning] type mismatch 33\nmodule34.py:35 [warning] type mismatch 34\nmodule35.py:36 [warning] type mismatch 35\nmodule36.py:37 [warning] type mismatch 36\nmodule37.py:38 [warning] type mismatch 37\nmodule38.py:39 [warning] type mismatch 38\nmodule39.py:40 [warning] type mismatch 39\nmodule40.py:41 [warning] type mismatch 40\nmodule41.py:42 [warning] type mismatch 41\nmodule42.py:43 [warning] type mismatch 42\nmodule43.py:44 [warning] type mismatch 43\nmodule44.py:45 [warning] type mismatch 44\nmodule45.py:46 [warning] type mismatch 45\nmodule46.py:47 [warning] type mismatch 46\nmodule47.py:48 [warning] type mismatch 47\nmodule48.py:49 [warning] type mismatch 48\nmodule49.py:50 [warning] type mismatch 49\n... (reporting capped at 50)",
+      "scope": "injected types only"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "line": 1,
+          "message": "type mismatch 0",
+          "path": "module0.py",
+          "severity": "warning"
+        },
+        {
+          "line": 2,
+          "message": "type mismatch 1",
+          "path": "module1.py",
+          "severity": "warning"
+        },
+        {
+          "line": 3,
+          "message": "type mismatch 2",
+          "path": "module2.py",
+          "severity": "warning"
+        },
+        {
+          "line": 4,
+          "message": "type mismatch 3",
+          "path": "module3.py",
+          "severity": "warning"
+        },
+        {
+          "line": 5,
+          "message": "type mismatch 4",
+          "path": "module4.py",
+          "severity": "warning"
+        },
+        {
+          "line": 6,
+          "message": "type mismatch 5",
+          "path": "module5.py",
+          "severity": "warning"
+        },
+        {
+          "line": 7,
+          "message": "type mismatch 6",
+          "path": "module6.py",
+          "severity": "warning"
+        },
+        {
+          "line": 8,
+          "message": "type mismatch 7",
+          "path": "module7.py",
+          "severity": "warning"
+        },
+        {
+          "line": 9,
+          "message": "type mismatch 8",
+          "path": "module8.py",
+          "severity": "warning"
+        },
+        {
+          "line": 10,
+          "message": "type mismatch 9",
+          "path": "module9.py",
+          "severity": "warning"
+        },
+        {
+          "line": 11,
+          "message": "type mismatch 10",
+          "path": "module10.py",
+          "severity": "warning"
+        },
+        {
+          "line": 12,
+          "message": "type mismatch 11",
+          "path": "module11.py",
+          "severity": "warning"
+        },
+        {
+          "line": 13,
+          "message": "type mismatch 12",
+          "path": "module12.py",
+          "severity": "warning"
+        },
+        {
+          "line": 14,
+          "message": "type mismatch 13",
+          "path": "module13.py",
+          "severity": "warning"
+        },
+        {
+          "line": 15,
+          "message": "type mismatch 14",
+          "path": "module14.py",
+          "severity": "warning"
+        },
+        {
+          "line": 16,
+          "message": "type mismatch 15",
+          "path": "module15.py",
+          "severity": "warning"
+        },
+        {
+          "line": 17,
+          "message": "type mismatch 16",
+          "path": "module16.py",
+          "severity": "warning"
+        },
+        {
+          "line": 18,
+          "message": "type mismatch 17",
+          "path": "module17.py",
+          "severity": "warning"
+        },
+        {
+          "line": 19,
+          "message": "type mismatch 18",
+          "path": "module18.py",
+          "severity": "warning"
+        },
+        {
+          "line": 20,
+          "message": "type mismatch 19",
+          "path": "module19.py",
+          "severity": "warning"
+        },
+        {
+          "line": 21,
+          "message": "type mismatch 20",
+          "path": "module20.py",
+          "severity": "warning"
+        },
+        {
+          "line": 22,
+          "message": "type mismatch 21",
+          "path": "module21.py",
+          "severity": "warning"
+        },
+        {
+          "line": 23,
+          "message": "type mismatch 22",
+          "path": "module22.py",
+          "severity": "warning"
+        },
+        {
+          "line": 24,
+          "message": "type mismatch 23",
+          "path": "module23.py",
+          "severity": "warning"
+        },
+        {
+          "line": 25,
+          "message": "type mismatch 24",
+          "path": "module24.py",
+          "severity": "warning"
+        },
+        {
+          "line": 26,
+          "message": "type mismatch 25",
+          "path": "module25.py",
+          "severity": "warning"
+        },
+        {
+          "line": 27,
+          "message": "type mismatch 26",
+          "path": "module26.py",
+          "severity": "warning"
+        },
+        {
+          "line": 28,
+          "message": "type mismatch 27",
+          "path": "module27.py",
+          "severity": "warning"
+        },
+        {
+          "line": 29,
+          "message": "type mismatch 28",
+          "path": "module28.py",
+          "severity": "warning"
+        },
+        {
+          "line": 30,
+          "message": "type mismatch 29",
+          "path": "module29.py",
+          "severity": "warning"
+        },
+        {
+          "line": 31,
+          "message": "type mismatch 30",
+          "path": "module30.py",
+          "severity": "warning"
+        },
+        {
+          "line": 32,
+          "message": "type mismatch 31",
+          "path": "module31.py",
+          "severity": "warning"
+        },
+        {
+          "line": 33,
+          "message": "type mismatch 32",
+          "path": "module32.py",
+          "severity": "warning"
+        },
+        {
+          "line": 34,
+          "message": "type mismatch 33",
+          "path": "module33.py",
+          "severity": "warning"
+        },
+        {
+          "line": 35,
+          "message": "type mismatch 34",
+          "path": "module34.py",
+          "severity": "warning"
+        },
+        {
+          "line": 36,
+          "message": "type mismatch 35",
+          "path": "module35.py",
+          "severity": "warning"
+        },
+        {
+          "line": 37,
+          "message": "type mismatch 36",
+          "path": "module36.py",
+          "severity": "warning"
+        },
+        {
+          "line": 38,
+          "message": "type mismatch 37",
+          "path": "module37.py",
+          "severity": "warning"
+        },
+        {
+          "line": 39,
+          "message": "type mismatch 38",
+          "path": "module38.py",
+          "severity": "warning"
+        },
+        {
+          "line": 40,
+          "message": "type mismatch 39",
+          "path": "module39.py",
+          "severity": "warning"
+        },
+        {
+          "line": 41,
+          "message": "type mismatch 40",
+          "path": "module40.py",
+          "severity": "warning"
+        },
+        {
+          "line": 42,
+          "message": "type mismatch 41",
+          "path": "module41.py",
+          "severity": "warning"
+        },
+        {
+          "line": 43,
+          "message": "type mismatch 42",
+          "path": "module42.py",
+          "severity": "warning"
+        },
+        {
+          "line": 44,
+          "message": "type mismatch 43",
+          "path": "module43.py",
+          "severity": "warning"
+        },
+        {
+          "line": 45,
+          "message": "type mismatch 44",
+          "path": "module44.py",
+          "severity": "warning"
+        },
+        {
+          "line": 46,
+          "message": "type mismatch 45",
+          "path": "module45.py",
+          "severity": "warning"
+        },
+        {
+          "line": 47,
+          "message": "type mismatch 46",
+          "path": "module46.py",
+          "severity": "warning"
+        },
+        {
+          "line": 48,
+          "message": "type mismatch 47",
+          "path": "module47.py",
+          "severity": "warning"
+        },
+        {
+          "line": 49,
+          "message": "type mismatch 48",
+          "path": "module48.py",
+          "severity": "warning"
+        },
+        {
+          "line": 50,
+          "message": "type mismatch 49",
+          "path": "module49.py",
+          "severity": "warning"
+        },
+        {
+          "line": 51,
+          "message": "type mismatch 50",
+          "path": "module50.py",
+          "severity": "warning"
+        },
+        {
+          "line": 52,
+          "message": "type mismatch 51",
+          "path": "module51.py",
+          "severity": "warning"
+        },
+        {
+          "line": 53,
+          "message": "type mismatch 52",
+          "path": "module52.py",
+          "severity": "warning"
+        }
+      ],
+      "input": {},
+      "name": "over-cap",
+      "output": "[scope: injected types only]\nmodule0.py:1 [warning] type mismatch 0\nmodule1.py:2 [warning] type mismatch 1\nmodule2.py:3 [warning] type mismatch 2\nmodule3.py:4 [warning] type mismatch 3\nmodule4.py:5 [warning] type mismatch 4\nmodule5.py:6 [warning] type mismatch 5\nmodule6.py:7 [warning] type mismatch 6\nmodule7.py:8 [warning] type mismatch 7\nmodule8.py:9 [warning] type mismatch 8\nmodule9.py:10 [warning] type mismatch 9\nmodule10.py:11 [warning] type mismatch 10\nmodule11.py:12 [warning] type mismatch 11\nmodule12.py:13 [warning] type mismatch 12\nmodule13.py:14 [warning] type mismatch 13\nmodule14.py:15 [warning] type mismatch 14\nmodule15.py:16 [warning] type mismatch 15\nmodule16.py:17 [warning] type mismatch 16\nmodule17.py:18 [warning] type mismatch 17\nmodule18.py:19 [warning] type mismatch 18\nmodule19.py:20 [warning] type mismatch 19\nmodule20.py:21 [warning] type mismatch 20\nmodule21.py:22 [warning] type mismatch 21\nmodule22.py:23 [warning] type mismatch 22\nmodule23.py:24 [warning] type mismatch 23\nmodule24.py:25 [warning] type mismatch 24\nmodule25.py:26 [warning] type mismatch 25\nmodule26.py:27 [warning] type mismatch 26\nmodule27.py:28 [warning] type mismatch 27\nmodule28.py:29 [warning] type mismatch 28\nmodule29.py:30 [warning] type mismatch 29\nmodule30.py:31 [warning] type mismatch 30\nmodule31.py:32 [warning] type mismatch 31\nmodule32.py:33 [warning] type mismatch 32\nmodule33.py:34 [warning] type mismatch 33\nmodule34.py:35 [warning] type mismatch 34\nmodule35.py:36 [warning] type mismatch 35\nmodule36.py:37 [warning] type mismatch 36\nmodule37.py:38 [warning] type mismatch 37\nmodule38.py:39 [warning] type mismatch 38\nmodule39.py:40 [warning] type mismatch 39\nmodule40.py:41 [warning] type mismatch 40\nmodule41.py:42 [warning] type mismatch 41\nmodule42.py:43 [warning] type mismatch 42\nmodule43.py:44 [warning] type mismatch 43\nmodule44.py:45 [warning] type mismatch 44\nmodule45.py:46 [warning] type mismatch 45\nmodule46.py:47 [warning] type mismatch 46\nmodule47.py:48 [warning] type mismatch 47\nmodule48.py:49 [warning] type mismatch 48\nmodule49.py:50 [warning] type mismatch 49\n... (reporting capped at 50)",
+      "scope": "injected types only"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": null
+        }
+      ],
+      "diagnostics": [],
+      "error": "provider fault",
+      "error_class": "RuntimeError",
+      "input": {},
+      "name": "provider-error",
+      "scope": "injected types only"
+    },
+    {
+      "calls": [],
+      "diagnostics": [
+        {
+          "line": 1,
+          "message": "type mismatch 0",
+          "path": "module0.py",
+          "severity": "warning"
+        }
+      ],
+      "input": {
+        "path": "../outside/bad.py"
+      },
+      "name": "refuse-before-provider",
+      "output": "Error: Path escapes workspace: ../outside/bad.py. Paths are relative to the workspace root; an absolute path only works when it points inside the workspace.",
+      "scope": "injected types only"
+    }
+  ],
+  "readonly": true,
+  "risk": "read",
+  "rows": [
+    {
+      "files": [],
+      "input": {},
+      "name": "empty",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "ok.py",
+          "text": "def ok(x: int):\n    return x + 1\n"
+        }
+      ],
+      "input": {},
+      "name": "valid",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": [
+        {
+          "kind": "clean",
+          "source_sha256": "f000c723c74aa0962c546131f792eb423524578ec55994ffcfa262ed2c8226e0"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "bad.py",
+          "text": "def broken(:\n"
+        }
+      ],
+      "input": {},
+      "name": "syntax",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nbad.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "e5c39b5d9e483c96898f2970978fee4d8e5a3814e685d9ab37365a5aa333b5ad"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "z.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "a/first.py",
+          "text": "if True\n    pass\n"
+        },
+        {
+          "path": "ignore.PY",
+          "text": "x =\n"
+        }
+      ],
+      "input": {},
+      "name": "sorted-tree",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\na/first.py:1 [error] expected ':'\nz.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "expected ':'",
+          "source_sha256": "ac73094b89b3d9961c0c22160fe6264e1cfd1a0075085ab11f6f5f5b47d11a91"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "a.py",
+          "text": "a =\n"
+        },
+        {
+          "path": "a/inner.py",
+          "text": "b =\n"
+        },
+        {
+          "path": "z/inner.py",
+          "text": "c =\n"
+        }
+      ],
+      "input": {},
+      "name": "component-sorted-tree",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\na/inner.py:1 [error] invalid syntax\na.py:1 [error] invalid syntax\nz/inner.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "5882187637228502363d1c87842fc1d3ebe7d9062c5be8baf9378f94eced2394"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "85a665a909dfe651de836bc8abacee3ce85b8aeec850b4666682da2e07c88ef6"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "3753d97c64b84c37d1935d0d83964e55b94baba45bd529d6ab4dabaeb4522f6b"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": ".hidden.py",
+          "text": "x =\n"
+        },
+        {
+          "path": ".nested/问题.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {},
+      "name": "hidden-tree",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\n.hidden.py:1 [error] invalid syntax\n.nested/问题.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": ".py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {},
+      "name": "dot-suffix-tree",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\n.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": ".py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": ".py"
+      },
+      "name": "dot-suffix-target",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "bad.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": "."
+      },
+      "name": "dot-directory-target",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "a.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "b.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": "b.py"
+      },
+      "name": "target-only",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nb.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "bad.txt",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": "bad.txt"
+      },
+      "name": "non-python",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": []
+    },
+    {
+      "files": [],
+      "input": {
+        "path": "missing.txt"
+      },
+      "name": "missing-non-python",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": []
+    },
+    {
+      "files": [],
+      "input": {
+        "path": "missing.py"
+      },
+      "name": "missing-python",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nmissing.py:0 [warning] [Errno 2] No such file or directory: '<workspace>/missing.py'",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "directory": true,
+          "path": "dir.py"
+        }
+      ],
+      "input": {
+        "path": "dir.py"
+      },
+      "name": "directory-python",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\ndir.py:0 [warning] [Errno 21] Is a directory: '<workspace>/dir.py'",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "dir.py/child.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {},
+      "name": "directory-python-tree",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\ndir.py:0 [warning] [Errno 21] Is a directory: '<workspace>/dir.py'\ndir.py/child.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [],
+      "input": {
+        "path": "missing'文.py"
+      },
+      "name": "missing-quoted-python",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nmissing'文.py:0 [warning] [Errno 2] No such file or directory: \"<workspace>/missing'文.py\"",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "bad.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": null
+      },
+      "name": "null-path",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nbad.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "bad.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": ""
+      },
+      "name": "empty-path",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nbad.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [],
+      "input": {
+        "path": "../outside/bad.py"
+      },
+      "name": "parent-refusal",
+      "output": "Error: Path escapes workspace: ../outside/bad.py. Paths are relative to the workspace root; an absolute path only works when it points inside the workspace.",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "bad.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": "<workspace>/bad.py"
+      },
+      "name": "absolute-inside",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nbad.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [],
+      "input": {
+        "path": "<outside>/bad.py"
+      },
+      "name": "absolute-outside",
+      "output": "Error: Path escapes workspace: <outside>/bad.py. Paths are relative to the workspace root; an absolute path only works when it points inside the workspace.",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "link.py",
+          "symlink": "<outside>/bad.py"
+        }
+      ],
+      "input": {
+        "path": "link.py"
+      },
+      "name": "symlink-target-refusal",
+      "output": "Error: Path escapes workspace: link.py. Paths are relative to the workspace root; an absolute path only works when it points inside the workspace.",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "link.py",
+          "symlink": "<outside>/bad.py"
+        }
+      ],
+      "input": {},
+      "name": "symlink-tree",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nlink.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "linked",
+          "symlink": "<outside>"
+        }
+      ],
+      "input": {},
+      "name": "symlink-directory-tree",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "link.py",
+          "symlink": "<outside>/missing.py"
+        }
+      ],
+      "input": {},
+      "name": "broken-symlink",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nlink.py:0 [warning] [Errno 2] No such file or directory: '<workspace>/link.py'",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "bytes_hex": "78203d2027ff270a",
+          "path": "ok.py"
+        }
+      ],
+      "input": {},
+      "name": "invalid-utf8-in-string",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": [
+        {
+          "kind": "clean",
+          "source_sha256": "f4987868bc9ba6e992c370a8aa417096892b178d56efb5626e8a0269bd5b0e03"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "bytes_hex": "78203d20ff0a",
+          "path": "bad.py"
+        }
+      ],
+      "input": {},
+      "name": "invalid-utf8-in-code",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nbad.py:1 [error] invalid character '�' (U+FFFD)",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid character '�' (U+FFFD)",
+          "source_sha256": "67ca09061e53ed496fe228974f384fa1522c3aff6961ea6a181dc0cf934f6423"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "bytes_hex": "78203d2027e282270d0a2320ffff0d",
+          "path": "ok.py"
+        }
+      ],
+      "input": {},
+      "name": "replacement-and-newlines",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": [
+        {
+          "kind": "clean",
+          "source_sha256": "0891ca3045d17dfde086c688dea85d65c6a0ee2853f59af94ad65cedbbc5e704"
+        }
+      ]
+    },
+    {
+      "error": "source code string cannot contain null bytes",
+      "error_class": "ValueError",
+      "files": [
+        {
+          "path": "bad.py",
+          "text": "x = '\u0000'\n"
+        }
+      ],
+      "input": {},
+      "name": "nul-source",
+      "parsed": [
+        {
+          "error_class": "ValueError",
+          "kind": "fault",
+          "message": "source code string cannot contain null bytes",
+          "source_sha256": "4c1579f660975496a21a2a363200a11306a34c03128cc473170a2b3ab63f4528"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "limit.py",
+          "repeat": 1000000,
+          "text": "#"
+        }
+      ],
+      "input": {},
+      "name": "byte-limit-exact",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": [
+        {
+          "kind": "clean",
+          "source_sha256": "b01f607593ca2b6af049b072e24a00d32a5ef59d9386eed3f0f7b7a9c9569e7c"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "limit.py",
+          "repeat": 1000001,
+          "text": "#"
+        }
+      ],
+      "input": {},
+      "name": "byte-limit-over",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nlimit.py:0 [warning] skipped: over 1,000,000 bytes",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "f000.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f001.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f002.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f003.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f004.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f005.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f006.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f007.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f008.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f009.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f010.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f011.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f012.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f013.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f014.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f015.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f016.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f017.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f018.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f019.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f020.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f021.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f022.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f023.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f024.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f025.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f026.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f027.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f028.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f029.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f030.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f031.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f032.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f033.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f034.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f035.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f036.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f037.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f038.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f039.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f040.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f041.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f042.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f043.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f044.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f045.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f046.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f047.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f048.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f049.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f050.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f051.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f052.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f053.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f054.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f055.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f056.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f057.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f058.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f059.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f060.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f061.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f062.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f063.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f064.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f065.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f066.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f067.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f068.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f069.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f070.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f071.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f072.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f073.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f074.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f075.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f076.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f077.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f078.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f079.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f080.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f081.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f082.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f083.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f084.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f085.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f086.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f087.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f088.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f089.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f090.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f091.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f092.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f093.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f094.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f095.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f096.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f097.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f098.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f099.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f100.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f101.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f102.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f103.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f104.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f105.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f106.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f107.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f108.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f109.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f110.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f111.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f112.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f113.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f114.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f115.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f116.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f117.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f118.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f119.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f120.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f121.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f122.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f123.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f124.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f125.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f126.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f127.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f128.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f129.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f130.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f131.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f132.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f133.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f134.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f135.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f136.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f137.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f138.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f139.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f140.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f141.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f142.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f143.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f144.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f145.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f146.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f147.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f148.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f149.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f150.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f151.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f152.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f153.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f154.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f155.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f156.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f157.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f158.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f159.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f160.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f161.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f162.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f163.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f164.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f165.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f166.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f167.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f168.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f169.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f170.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f171.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f172.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f173.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f174.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f175.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f176.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f177.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f178.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f179.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f180.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f181.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f182.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f183.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f184.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f185.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f186.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f187.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f188.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f189.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f190.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f191.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f192.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f193.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f194.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f195.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f196.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f197.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f198.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f199.py",
+          "text": "pass\n"
+        },
+        {
+          "path": "f200.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {},
+      "name": "file-cap",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nNo diagnostics.",
+      "parsed": [
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        },
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "f000.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f001.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f002.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f003.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f004.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f005.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f006.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f007.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f008.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f009.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f010.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f011.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f012.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f013.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f014.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f015.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f016.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f017.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f018.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f019.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f020.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f021.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f022.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f023.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f024.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f025.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f026.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f027.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f028.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f029.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f030.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f031.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f032.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f033.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f034.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f035.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f036.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f037.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f038.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f039.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f040.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f041.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f042.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f043.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f044.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f045.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f046.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f047.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f048.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f049.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f050.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f051.py",
+          "text": "x =\n"
+        },
+        {
+          "path": "f052.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {},
+      "name": "report-cap",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nf000.py:1 [error] invalid syntax\nf001.py:1 [error] invalid syntax\nf002.py:1 [error] invalid syntax\nf003.py:1 [error] invalid syntax\nf004.py:1 [error] invalid syntax\nf005.py:1 [error] invalid syntax\nf006.py:1 [error] invalid syntax\nf007.py:1 [error] invalid syntax\nf008.py:1 [error] invalid syntax\nf009.py:1 [error] invalid syntax\nf010.py:1 [error] invalid syntax\nf011.py:1 [error] invalid syntax\nf012.py:1 [error] invalid syntax\nf013.py:1 [error] invalid syntax\nf014.py:1 [error] invalid syntax\nf015.py:1 [error] invalid syntax\nf016.py:1 [error] invalid syntax\nf017.py:1 [error] invalid syntax\nf018.py:1 [error] invalid syntax\nf019.py:1 [error] invalid syntax\nf020.py:1 [error] invalid syntax\nf021.py:1 [error] invalid syntax\nf022.py:1 [error] invalid syntax\nf023.py:1 [error] invalid syntax\nf024.py:1 [error] invalid syntax\nf025.py:1 [error] invalid syntax\nf026.py:1 [error] invalid syntax\nf027.py:1 [error] invalid syntax\nf028.py:1 [error] invalid syntax\nf029.py:1 [error] invalid syntax\nf030.py:1 [error] invalid syntax\nf031.py:1 [error] invalid syntax\nf032.py:1 [error] invalid syntax\nf033.py:1 [error] invalid syntax\nf034.py:1 [error] invalid syntax\nf035.py:1 [error] invalid syntax\nf036.py:1 [error] invalid syntax\nf037.py:1 [error] invalid syntax\nf038.py:1 [error] invalid syntax\nf039.py:1 [error] invalid syntax\nf040.py:1 [error] invalid syntax\nf041.py:1 [error] invalid syntax\nf042.py:1 [error] invalid syntax\nf043.py:1 [error] invalid syntax\nf044.py:1 [error] invalid syntax\nf045.py:1 [error] invalid syntax\nf046.py:1 [error] invalid syntax\nf047.py:1 [error] invalid syntax\nf048.py:1 [error] invalid syntax\nf049.py:1 [error] invalid syntax\n... (reporting capped at 50)",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        },
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "path": "f000.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f001.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f002.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f003.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f004.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f005.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f006.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f007.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f008.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f009.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f010.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f011.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f012.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f013.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f014.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f015.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f016.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f017.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f018.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f019.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f020.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f021.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f022.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f023.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f024.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f025.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f026.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f027.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f028.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f029.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f030.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f031.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f032.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f033.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f034.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f035.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f036.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f037.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f038.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f039.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f040.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f041.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f042.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f043.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f044.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f045.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f046.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f047.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f048.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f049.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f050.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f051.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "f052.py",
+          "repeat": 1000001,
+          "text": "#"
+        },
+        {
+          "path": "z.py",
+          "text": "pass\n"
+        }
+      ],
+      "input": {},
+      "name": "oversized-warnings-pass-report-cap",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nf000.py:0 [warning] skipped: over 1,000,000 bytes\nf001.py:0 [warning] skipped: over 1,000,000 bytes\nf002.py:0 [warning] skipped: over 1,000,000 bytes\nf003.py:0 [warning] skipped: over 1,000,000 bytes\nf004.py:0 [warning] skipped: over 1,000,000 bytes\nf005.py:0 [warning] skipped: over 1,000,000 bytes\nf006.py:0 [warning] skipped: over 1,000,000 bytes\nf007.py:0 [warning] skipped: over 1,000,000 bytes\nf008.py:0 [warning] skipped: over 1,000,000 bytes\nf009.py:0 [warning] skipped: over 1,000,000 bytes\nf010.py:0 [warning] skipped: over 1,000,000 bytes\nf011.py:0 [warning] skipped: over 1,000,000 bytes\nf012.py:0 [warning] skipped: over 1,000,000 bytes\nf013.py:0 [warning] skipped: over 1,000,000 bytes\nf014.py:0 [warning] skipped: over 1,000,000 bytes\nf015.py:0 [warning] skipped: over 1,000,000 bytes\nf016.py:0 [warning] skipped: over 1,000,000 bytes\nf017.py:0 [warning] skipped: over 1,000,000 bytes\nf018.py:0 [warning] skipped: over 1,000,000 bytes\nf019.py:0 [warning] skipped: over 1,000,000 bytes\nf020.py:0 [warning] skipped: over 1,000,000 bytes\nf021.py:0 [warning] skipped: over 1,000,000 bytes\nf022.py:0 [warning] skipped: over 1,000,000 bytes\nf023.py:0 [warning] skipped: over 1,000,000 bytes\nf024.py:0 [warning] skipped: over 1,000,000 bytes\nf025.py:0 [warning] skipped: over 1,000,000 bytes\nf026.py:0 [warning] skipped: over 1,000,000 bytes\nf027.py:0 [warning] skipped: over 1,000,000 bytes\nf028.py:0 [warning] skipped: over 1,000,000 bytes\nf029.py:0 [warning] skipped: over 1,000,000 bytes\nf030.py:0 [warning] skipped: over 1,000,000 bytes\nf031.py:0 [warning] skipped: over 1,000,000 bytes\nf032.py:0 [warning] skipped: over 1,000,000 bytes\nf033.py:0 [warning] skipped: over 1,000,000 bytes\nf034.py:0 [warning] skipped: over 1,000,000 bytes\nf035.py:0 [warning] skipped: over 1,000,000 bytes\nf036.py:0 [warning] skipped: over 1,000,000 bytes\nf037.py:0 [warning] skipped: over 1,000,000 bytes\nf038.py:0 [warning] skipped: over 1,000,000 bytes\nf039.py:0 [warning] skipped: over 1,000,000 bytes\nf040.py:0 [warning] skipped: over 1,000,000 bytes\nf041.py:0 [warning] skipped: over 1,000,000 bytes\nf042.py:0 [warning] skipped: over 1,000,000 bytes\nf043.py:0 [warning] skipped: over 1,000,000 bytes\nf044.py:0 [warning] skipped: over 1,000,000 bytes\nf045.py:0 [warning] skipped: over 1,000,000 bytes\nf046.py:0 [warning] skipped: over 1,000,000 bytes\nf047.py:0 [warning] skipped: over 1,000,000 bytes\nf048.py:0 [warning] skipped: over 1,000,000 bytes\nf049.py:0 [warning] skipped: over 1,000,000 bytes\n... (reporting capped at 50)",
+      "parsed": [
+        {
+          "kind": "clean",
+          "source_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2"
+        }
+      ]
+    },
+    {
+      "error": "unsupported operand type(s) for /: 'PosixPath' and 'list'",
+      "error_class": "TypeError",
+      "files": [],
+      "input": {
+        "path": [
+          "bad.py"
+        ]
+      },
+      "name": "nonempty-list-path",
+      "parsed": []
+    },
+    {
+      "files": [
+        {
+          "path": "bad.py",
+          "text": "x =\n"
+        }
+      ],
+      "input": {
+        "path": []
+      },
+      "name": "empty-list-path",
+      "output": "[scope: Python syntax only (ast.parse); clean output does not mean type- or logic-clean]\nbad.py:1 [error] invalid syntax",
+      "parsed": [
+        {
+          "kind": "syntax",
+          "line": 1,
+          "message": "invalid syntax",
+          "source_sha256": "707e1b82e5553724dd4a6c1a3e3f5a4d1786442f26a7db4b0e785201603d7616"
+        }
+      ]
+    },
+    {
+      "error": "install_diagnostics.<locals>.diagnostics() got an unexpected keyword argument 'extra'",
+      "error_class": "TypeError",
+      "files": [],
+      "input": {
+        "extra": "unrecognized"
+      },
+      "name": "unknown-key",
+      "parsed": []
+    }
+  ],
+  "schema": {
+    "description": "Run language diagnostics over the workspace (or one file). The result names the provider's scope; a clean report covers only that scope.",
+    "input_schema": {
+      "properties": {
+        "path": {
+          "description": "Optional workspace-relative file; omit to check the tree.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "diagnostics"
+  }
+}

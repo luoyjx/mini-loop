@@ -1,0 +1,376 @@
+{
+  "rows": [
+    {
+      "connect_schema": {
+        "description": "Connect an MCP server and add its tools. Available: friendly, second.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "connect_mcp"
+      },
+      "connected": {
+        "friendly": "raw.name",
+        "second": "raw.name"
+      },
+      "factory_calls": [
+        "friendly"
+      ],
+      "list_calls": [
+        "friendly",
+        "second"
+      ],
+      "output": "done",
+      "problems": [
+        "raw.name: 4 credential(s) withheld from the server environment (A, B, C); add them to env_passthrough if it needs them"
+      ],
+      "recipe": {
+        "operations": [
+          {
+            "connect": "missing"
+          },
+          {
+            "connect": "friendly"
+          },
+          {
+            "arguments": {
+              "value": "中文"
+            },
+            "call": "mcp__raw_name__echo"
+          },
+          {
+            "connect": "friendly"
+          },
+          {
+            "connect": "second"
+          },
+          {
+            "arguments": {
+              "value": "new"
+            },
+            "call": "mcp__raw_name__echo"
+          }
+        ],
+        "servers": [
+          {
+            "alias": "friendly",
+            "factory": true,
+            "name": "raw.name",
+            "withheld": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+          },
+          {
+            "alias": "second",
+            "factory": false,
+            "name": "raw.name",
+            "withheld": []
+          }
+        ]
+      },
+      "request_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp",
+          "mcp__raw_name__echo"
+        ]
+      ],
+      "results": [
+        "Error: unknown MCP server 'missing'. Available: friendly, second",
+        "Connected 'friendly'. Added tools: mcp__raw_name__echo",
+        "{\"alias\": \"friendly\", \"arguments\": {\"value\": \"中文\"}, \"name\": \"echo\"}",
+        "MCP server 'friendly' already connected as 'raw.name'",
+        "Connected 'second'. Added tools: mcp__raw_name__echo",
+        "{\"alias\": \"second\", \"arguments\": {\"value\": \"new\"}, \"name\": \"echo\"}"
+      ],
+      "tool_calls": [
+        {
+          "alias": "friendly",
+          "arguments": {
+            "value": "中文"
+          },
+          "name": "echo"
+        },
+        {
+          "alias": "second",
+          "arguments": {
+            "value": "new"
+          },
+          "name": "echo"
+        }
+      ]
+    },
+    {
+      "connect_schema": {
+        "description": "Connect an MCP server and add its tools. Available: first, collision.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "connect_mcp"
+      },
+      "connected": {
+        "collision": "my_server",
+        "first": "my.server"
+      },
+      "factory_calls": [
+        "collision"
+      ],
+      "list_calls": [
+        "first",
+        "collision"
+      ],
+      "output": "done",
+      "problems": [
+        "mcp__my_server__echo: refused, already provided by server 'my.server'"
+      ],
+      "recipe": {
+        "operations": [
+          {
+            "connect": "first"
+          },
+          {
+            "connect": "collision"
+          },
+          {
+            "connect": "collision"
+          },
+          {
+            "arguments": {
+              "value": "kept"
+            },
+            "call": "mcp__my_server__echo"
+          }
+        ],
+        "servers": [
+          {
+            "alias": "first",
+            "factory": false,
+            "name": "my.server",
+            "withheld": []
+          },
+          {
+            "alias": "collision",
+            "factory": true,
+            "name": "my_server",
+            "withheld": []
+          }
+        ]
+      },
+      "request_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp",
+          "mcp__my_server__echo"
+        ]
+      ],
+      "results": [
+        "Connected 'first'. Added tools: mcp__my_server__echo",
+        "Connected 'collision'. Added tools: (none)",
+        "MCP server 'collision' already connected as 'my_server'",
+        "{\"alias\": \"first\", \"arguments\": {\"value\": \"kept\"}, \"name\": \"echo\"}"
+      ],
+      "tool_calls": [
+        {
+          "alias": "first",
+          "arguments": {
+            "value": "kept"
+          },
+          "name": "echo"
+        }
+      ]
+    },
+    {
+      "connect_schema": {
+        "description": "Connect an MCP server and add its tools. Available: (none).",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "connect_mcp"
+      },
+      "connected": {},
+      "factory_calls": [],
+      "list_calls": [],
+      "output": "done",
+      "problems": [],
+      "recipe": {
+        "operations": [
+          {
+            "connect": "missing"
+          },
+          {
+            "connect": ""
+          }
+        ],
+        "servers": []
+      },
+      "request_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp"
+        ]
+      ],
+      "results": [
+        "Error: unknown MCP server 'missing'. Available: (none)",
+        "Error: unknown MCP server ''. Available: (none)"
+      ],
+      "tool_calls": []
+    },
+    {
+      "connect_schema": {
+        "description": "Connect an MCP server and add its tools. Available: empty.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "connect_mcp"
+      },
+      "connected": {
+        "empty": "empty"
+      },
+      "factory_calls": [
+        "empty"
+      ],
+      "list_calls": [
+        "empty"
+      ],
+      "output": "done",
+      "problems": [],
+      "recipe": {
+        "operations": [
+          {
+            "connect": "empty"
+          },
+          {
+            "connect": "empty"
+          }
+        ],
+        "servers": [
+          {
+            "alias": "empty",
+            "factory": true,
+            "name": "empty",
+            "no_tools": true,
+            "withheld": []
+          }
+        ]
+      },
+      "request_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp"
+        ]
+      ],
+      "results": [
+        "Connected 'empty'. Added tools: (none)",
+        "MCP server 'empty' already connected as 'empty'"
+      ],
+      "tool_calls": []
+    },
+    {
+      "connect_schema": {
+        "description": "Connect an MCP server and add its tools. Available: (none).",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "connect_mcp"
+      },
+      "connected": {
+        "": "empty-alias"
+      },
+      "factory_calls": [],
+      "list_calls": [
+        ""
+      ],
+      "output": "done",
+      "problems": [],
+      "recipe": {
+        "operations": [
+          {
+            "connect": ""
+          },
+          {
+            "arguments": {},
+            "call": "mcp__empty-alias__echo"
+          }
+        ],
+        "servers": [
+          {
+            "alias": "",
+            "factory": false,
+            "name": "empty-alias",
+            "withheld": []
+          }
+        ]
+      },
+      "request_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp",
+          "mcp__empty-alias__echo"
+        ]
+      ],
+      "results": [
+        "Connected ''. Added tools: mcp__empty-alias__echo",
+        "{\"alias\": \"\", \"arguments\": {}, \"name\": \"echo\"}"
+      ],
+      "tool_calls": [
+        {
+          "alias": "",
+          "arguments": {},
+          "name": "echo"
+        }
+      ]
+    }
+  ]
+}

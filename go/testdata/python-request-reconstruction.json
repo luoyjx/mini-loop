@@ -1,0 +1,3507 @@
+{
+  "null_output": {
+    "error": "no model_start at seq 10"
+  },
+  "rows": [
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [],
+      "name": "missing",
+      "output": {
+        "error": "no model_start at seq 10"
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "seq": 10,
+          "type": "model_end"
+        }
+      ],
+      "name": "wrong-kind",
+      "output": {
+        "error": "no model_start at seq 10"
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "seq": 10,
+          "type": "model_start"
+        }
+      ],
+      "name": "legacy",
+      "output": {
+        "error": "this model_start predates the epoch stamp"
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "message_count": "bad",
+          "seq": 10,
+          "transcript_epoch": null,
+          "type": "model_start"
+        }
+      ],
+      "name": "null-epoch-before-bad-count",
+      "output": {
+        "error": "this model_start predates the epoch stamp"
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "joined",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "fingerprint": "tools",
+          "schemas": [],
+          "seq": 4,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 5,
+          "text": "latest system",
+          "type": "system_prompt"
+        },
+        {
+          "fingerprint": "caps",
+          "permission_mode": "auto",
+          "seq": 6,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "hash": "system",
+          "seq": 11,
+          "text": "too late",
+          "type": "system_prompt"
+        }
+      ],
+      "name": "latest-preceding",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": null,
+          "permission_mode": "auto",
+          "sandbox": null,
+          "sandbox_confined": null
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": "latest system",
+        "tools": []
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "absent",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "absent",
+          "tool_catalog_fingerprint": "absent",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "unmatched",
+      "output": {
+        "capability": null,
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": null,
+        "tools": null
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "schemas": false,
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "seq": 2,
+          "text": [
+            {
+              "text": "blocks",
+              "type": "text"
+            }
+          ],
+          "type": "system_prompt"
+        },
+        {
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "seq": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "missing-references-match-null",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": null,
+          "permission_mode": null,
+          "sandbox": null,
+          "sandbox_confined": null
+        },
+        "max_tokens": null,
+        "messages": [],
+        "model": null,
+        "system": [
+          {
+            "text": "blocks",
+            "type": "text"
+          }
+        ],
+        "tools": false
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "seq": 11,
+          "type": "status"
+        },
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "physical-order-stop",
+      "output": {
+        "capability": null,
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": null,
+        "tools": null
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 1,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "seq": 10,
+          "type": "model_start"
+        }
+      ],
+      "name": "first-duplicate-start",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "old-epoch",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 3,
+          "type": "model_start"
+        }
+      ],
+      "name": "missing-epoch-rows",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": false,
+          "message_count": 2,
+          "model": [
+            "archive"
+          ],
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "historical-output-scalars",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": false,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": [
+          "archive"
+        ],
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "missing-sequence-does-not-match-zero",
+      "output": {
+        "error": "no model_start at seq 0"
+      },
+      "seq": 0
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "hash": "system",
+          "text": "undated",
+          "type": "system_prompt"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "missing-predecessor-sequence-defaults-zero",
+      "output": {
+        "capability": null,
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": "undated",
+        "tools": null
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": "TypeError",
+      "events": [
+        {
+          "seq": null,
+          "type": "status"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "null-predecessor-sequence",
+      "output": null,
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": "TypeError",
+      "events": [
+        {
+          "seq": "1",
+          "type": "status"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "string-predecessor-sequence",
+      "output": null,
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": {
+            "x": [
+              1.0
+            ]
+          },
+          "schemas": false,
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 2,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": {
+            "x": [
+              1
+            ]
+          },
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "structural-fingerprint-equality",
+      "output": {
+        "capability": null,
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": null,
+        "tools": false
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 0,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-zero",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": -1,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-negative",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": -999,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-very-negative",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 999,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-larger",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          },
+          {
+            "content": "third",
+            "role": "user"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-large-integer",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          },
+          {
+            "content": "third",
+            "role": "user"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": " ٢_٠ ",
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-decimal-string",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          },
+          {
+            "content": "second",
+            "role": "assistant"
+          },
+          {
+            "content": "third",
+            "role": "user"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": 1.9,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-float",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": true,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-true",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [
+          {
+            "content": "first",
+            "role": "user"
+          }
+        ],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": false,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-false",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": null,
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-null",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": [],
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-empty-list",
+      "output": {
+        "capability": {
+          "catalog_fingerprint": "tools",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false
+        },
+        "max_tokens": 123,
+        "messages": [],
+        "model": "source-model",
+        "system": "original system",
+        "tools": [
+          {
+            "input_schema": {
+              "type": "object"
+            },
+            "name": "read"
+          }
+        ]
+      },
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": "ValueError",
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": "not an integer",
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-bad-string",
+      "output": null,
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": "TypeError",
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": [
+            1
+          ],
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-nonempty-list",
+      "output": null,
+      "seq": 10
+    },
+    {
+      "epochs": [
+        {
+          "epoch": 1,
+          "messages": [
+            {
+              "content": "first",
+              "role": "user"
+            },
+            {
+              "content": "second",
+              "role": "assistant"
+            },
+            {
+              "content": "third",
+              "role": "user"
+            }
+          ]
+        },
+        {
+          "epoch": 4,
+          "messages": [
+            {
+              "content": "new epoch",
+              "role": "user"
+            }
+          ]
+        }
+      ],
+      "error": "TypeError",
+      "events": [
+        {
+          "fingerprint": "tools",
+          "schemas": [
+            {
+              "input_schema": {
+                "type": "object"
+              },
+              "name": "read"
+            }
+          ],
+          "seq": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "hash": "system",
+          "seq": 2,
+          "text": "original system",
+          "type": "system_prompt"
+        },
+        {
+          "catalog_fingerprint": "tools",
+          "fingerprint": "caps",
+          "permission_mode": "readonly",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "type": "capability_plan"
+        },
+        {
+          "capability_fingerprint": "caps",
+          "max_tokens": 123,
+          "message_count": {
+            "x": 1
+          },
+          "model": "source-model",
+          "seq": 10,
+          "system_hash": "system",
+          "tool_catalog_fingerprint": "tools",
+          "transcript_epoch": 1,
+          "type": "model_start"
+        }
+      ],
+      "name": "count-nonempty-object",
+      "output": null,
+      "seq": 10
+    }
+  ],
+  "runtime": {
+    "after": {
+      "capability": {
+        "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "permission_mode": "readonly",
+        "sandbox": "NullSandbox",
+        "sandbox_confined": false
+      },
+      "max_tokens": 8000,
+      "messages": [
+        {
+          "content": "original prompt",
+          "role": "user"
+        }
+      ],
+      "model": "claude-sonnet-4-6",
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "fixed reconstruction system",
+          "type": "text"
+        }
+      ],
+      "tools": [
+        {
+          "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+          "input_schema": {
+            "properties": {
+              "approval_prefix": {
+                "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "command": {
+                "type": "string"
+              },
+              "run_in_background": {
+                "description": "Run asynchronously and return a task id immediately.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          },
+          "name": "bash"
+        },
+        {
+          "description": "Read a file's contents (workspace-relative path).",
+          "input_schema": {
+            "properties": {
+              "limit": {
+                "type": "integer"
+              },
+              "offset": {
+                "type": "integer"
+              },
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "name": "read_file"
+        },
+        {
+          "description": "Write content to a file (creates parent dirs).",
+          "input_schema": {
+            "properties": {
+              "content": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "content"
+            ],
+            "type": "object"
+          },
+          "name": "write_file"
+        },
+        {
+          "description": "Replace the first exact occurrence of old_text with new_text.",
+          "input_schema": {
+            "properties": {
+              "new_text": {
+                "type": "string"
+              },
+              "old_text": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "old_text",
+              "new_text"
+            ],
+            "type": "object"
+          },
+          "name": "edit_file"
+        },
+        {
+          "description": "Find workspace files matching a glob pattern.",
+          "input_schema": {
+            "properties": {
+              "pattern": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pattern"
+            ],
+            "type": "object"
+          },
+          "name": "glob"
+        },
+        {
+          "description": "Create/replace the task checklist. Use for multi-step work.",
+          "input_schema": {
+            "properties": {
+              "items": {
+                "items": {
+                  "properties": {
+                    "activeForm": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "pending",
+                        "in_progress",
+                        "completed"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "content",
+                    "status",
+                    "activeForm"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "items"
+            ],
+            "type": "object"
+          },
+          "name": "TodoWrite"
+        },
+        {
+          "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+          "input_schema": {
+            "properties": {
+              "agent_type": {
+                "enum": [
+                  "Explore",
+                  "general-purpose"
+                ],
+                "type": "string"
+              },
+              "prompt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "prompt"
+            ],
+            "type": "object"
+          },
+          "name": "task"
+        },
+        {
+          "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+          "input_schema": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "scope": {
+                "enum": [
+                  "agent",
+                  "user"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "type": "object"
+          },
+          "name": "load_skill"
+        },
+        {
+          "description": "Manually compress the conversation to free context.",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "compress"
+        },
+        {
+          "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+          "input_schema": {
+            "properties": {
+              "question": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "question"
+            ],
+            "type": "object"
+          },
+          "name": "ask_user"
+        }
+      ]
+    },
+    "before": {
+      "capability": {
+        "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "permission_mode": "readonly",
+        "sandbox": "NullSandbox",
+        "sandbox_confined": false
+      },
+      "max_tokens": 8000,
+      "messages": [
+        {
+          "content": "original prompt",
+          "role": "user"
+        }
+      ],
+      "model": "claude-sonnet-4-6",
+      "system": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "text": "fixed reconstruction system",
+          "type": "text"
+        }
+      ],
+      "tools": [
+        {
+          "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+          "input_schema": {
+            "properties": {
+              "approval_prefix": {
+                "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "command": {
+                "type": "string"
+              },
+              "run_in_background": {
+                "description": "Run asynchronously and return a task id immediately.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "type": "object"
+          },
+          "name": "bash"
+        },
+        {
+          "description": "Read a file's contents (workspace-relative path).",
+          "input_schema": {
+            "properties": {
+              "limit": {
+                "type": "integer"
+              },
+              "offset": {
+                "type": "integer"
+              },
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "object"
+          },
+          "name": "read_file"
+        },
+        {
+          "description": "Write content to a file (creates parent dirs).",
+          "input_schema": {
+            "properties": {
+              "content": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "content"
+            ],
+            "type": "object"
+          },
+          "name": "write_file"
+        },
+        {
+          "description": "Replace the first exact occurrence of old_text with new_text.",
+          "input_schema": {
+            "properties": {
+              "new_text": {
+                "type": "string"
+              },
+              "old_text": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "old_text",
+              "new_text"
+            ],
+            "type": "object"
+          },
+          "name": "edit_file"
+        },
+        {
+          "description": "Find workspace files matching a glob pattern.",
+          "input_schema": {
+            "properties": {
+              "pattern": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pattern"
+            ],
+            "type": "object"
+          },
+          "name": "glob"
+        },
+        {
+          "description": "Create/replace the task checklist. Use for multi-step work.",
+          "input_schema": {
+            "properties": {
+              "items": {
+                "items": {
+                  "properties": {
+                    "activeForm": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "pending",
+                        "in_progress",
+                        "completed"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "content",
+                    "status",
+                    "activeForm"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "items"
+            ],
+            "type": "object"
+          },
+          "name": "TodoWrite"
+        },
+        {
+          "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+          "input_schema": {
+            "properties": {
+              "agent_type": {
+                "enum": [
+                  "Explore",
+                  "general-purpose"
+                ],
+                "type": "string"
+              },
+              "prompt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "prompt"
+            ],
+            "type": "object"
+          },
+          "name": "task"
+        },
+        {
+          "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+          "input_schema": {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "scope": {
+                "enum": [
+                  "agent",
+                  "user"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "type": "object"
+          },
+          "name": "load_skill"
+        },
+        {
+          "description": "Manually compress the conversation to free context.",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "compress"
+        },
+        {
+          "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+          "input_schema": {
+            "properties": {
+              "question": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "question"
+            ],
+            "type": "object"
+          },
+          "name": "ask_user"
+        }
+      ]
+    },
+    "epochs": [
+      {
+        "epoch": 1,
+        "messages": [
+          {
+            "content": "original prompt",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "text": "done",
+                "type": "text"
+              }
+            ],
+            "role": "assistant"
+          }
+        ]
+      },
+      {
+        "epoch": 2,
+        "messages": [
+          {
+            "content": "summary",
+            "role": "user"
+          },
+          {
+            "content": "later prompt",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "text": "done",
+                "type": "text"
+              }
+            ],
+            "role": "assistant"
+          }
+        ]
+      }
+    ],
+    "events": [
+      {
+        "seq": 1,
+        "transcript_epoch": 1,
+        "type": "status"
+      },
+      {
+        "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "schemas": [
+          {
+            "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+            "input_schema": {
+              "properties": {
+                "approval_prefix": {
+                  "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "command": {
+                  "type": "string"
+                },
+                "run_in_background": {
+                  "description": "Run asynchronously and return a task id immediately.",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "command"
+              ],
+              "type": "object"
+            },
+            "name": "bash"
+          },
+          {
+            "description": "Read a file's contents (workspace-relative path).",
+            "input_schema": {
+              "properties": {
+                "limit": {
+                  "type": "integer"
+                },
+                "offset": {
+                  "type": "integer"
+                },
+                "path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "type": "object"
+            },
+            "name": "read_file"
+          },
+          {
+            "description": "Write content to a file (creates parent dirs).",
+            "input_schema": {
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "content"
+              ],
+              "type": "object"
+            },
+            "name": "write_file"
+          },
+          {
+            "description": "Replace the first exact occurrence of old_text with new_text.",
+            "input_schema": {
+              "properties": {
+                "new_text": {
+                  "type": "string"
+                },
+                "old_text": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "old_text",
+                "new_text"
+              ],
+              "type": "object"
+            },
+            "name": "edit_file"
+          },
+          {
+            "description": "Find workspace files matching a glob pattern.",
+            "input_schema": {
+              "properties": {
+                "pattern": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "pattern"
+              ],
+              "type": "object"
+            },
+            "name": "glob"
+          },
+          {
+            "description": "Create/replace the task checklist. Use for multi-step work.",
+            "input_schema": {
+              "properties": {
+                "items": {
+                  "items": {
+                    "properties": {
+                      "activeForm": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "enum": [
+                          "pending",
+                          "in_progress",
+                          "completed"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "content",
+                      "status",
+                      "activeForm"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "items"
+              ],
+              "type": "object"
+            },
+            "name": "TodoWrite"
+          },
+          {
+            "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+            "input_schema": {
+              "properties": {
+                "agent_type": {
+                  "enum": [
+                    "Explore",
+                    "general-purpose"
+                  ],
+                  "type": "string"
+                },
+                "prompt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "prompt"
+              ],
+              "type": "object"
+            },
+            "name": "task"
+          },
+          {
+            "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+            "input_schema": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "scope": {
+                  "enum": [
+                    "agent",
+                    "user"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            "name": "load_skill"
+          },
+          {
+            "description": "Manually compress the conversation to free context.",
+            "input_schema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "compress"
+          },
+          {
+            "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+            "input_schema": {
+              "properties": {
+                "question": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "question"
+              ],
+              "type": "object"
+            },
+            "name": "ask_user"
+          }
+        ],
+        "seq": 2,
+        "transcript_epoch": 1,
+        "type": "tool_catalog"
+      },
+      {
+        "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "fingerprint": "1cc7d708a6106d25",
+        "permission_mode": "readonly",
+        "sandbox": "NullSandbox",
+        "sandbox_confined": false,
+        "seq": 3,
+        "transcript_epoch": 1,
+        "type": "capability_plan"
+      },
+      {
+        "hash": "db15f0fe796a7b81",
+        "seq": 4,
+        "text": [
+          {
+            "cache_control": {
+              "type": "ephemeral"
+            },
+            "text": "fixed reconstruction system",
+            "type": "text"
+          }
+        ],
+        "transcript_epoch": 1,
+        "type": "system_prompt"
+      },
+      {
+        "capability_fingerprint": "1cc7d708a6106d25",
+        "max_tokens": 8000,
+        "message_count": 1,
+        "model": "claude-sonnet-4-6",
+        "seq": 5,
+        "system_hash": "db15f0fe796a7b81",
+        "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "transcript_epoch": 1,
+        "type": "model_start"
+      },
+      {
+        "seq": 6,
+        "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "transcript_epoch": 1,
+        "type": "model_end"
+      },
+      {
+        "seq": 7,
+        "text": "done",
+        "transcript_epoch": 1,
+        "type": "assistant_text"
+      },
+      {
+        "seq": 8,
+        "text": "done",
+        "transcript_epoch": 1,
+        "type": "done"
+      },
+      {
+        "seq": 9,
+        "transcript_epoch": 1,
+        "type": "status"
+      },
+      {
+        "capability_fingerprint": "1cc7d708a6106d25",
+        "max_tokens": 8000,
+        "message_count": 2,
+        "model": "claude-sonnet-4-6",
+        "seq": 10,
+        "system_hash": "db15f0fe796a7b81",
+        "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "transcript_epoch": 2,
+        "type": "model_start"
+      },
+      {
+        "seq": 11,
+        "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+        "transcript_epoch": 2,
+        "type": "model_end"
+      },
+      {
+        "seq": 12,
+        "text": "done",
+        "transcript_epoch": 2,
+        "type": "assistant_text"
+      },
+      {
+        "seq": 13,
+        "text": "done",
+        "transcript_epoch": 2,
+        "type": "done"
+      }
+    ],
+    "seq": 5
+  }
+}

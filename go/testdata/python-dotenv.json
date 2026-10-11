@@ -1,0 +1,2219 @@
+{
+  "cases": [
+    {
+      "applied": {
+        "A": "one",
+        "B": "",
+        "D": "two"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=one\n",
+          "value": "one"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=\n",
+          "value": ""
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "export D=two\n",
+          "value": "two"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "basic",
+      "override": true,
+      "text": "A=one\nB=\nC\nexport D=two\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "one"
+        },
+        {
+          "key": "B",
+          "value": ""
+        },
+        {
+          "key": "C",
+          "value": null
+        },
+        {
+          "key": "D",
+          "value": "two"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one",
+        "B": "",
+        "D": "two"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=one\n",
+          "value": "one"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=\n",
+          "value": ""
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "export D=two\n",
+          "value": "two"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "basic",
+      "override": false,
+      "text": "A=one\nB=\nC\nexport D=two\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "one"
+        },
+        {
+          "key": "B",
+          "value": ""
+        },
+        {
+          "key": "C",
+          "value": null
+        },
+        {
+          "key": "D",
+          "value": "two"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one#literal",
+        "B": "two",
+        "C": " # quoted "
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": null,
+          "line": 1,
+          "original": "# heading\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "A=one#literal\n",
+          "value": "one#literal"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 3,
+          "original": "B=two # comment\n",
+          "value": "two"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=' # quoted '\n",
+          "value": " # quoted "
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "comments",
+      "override": true,
+      "text": "# heading\nA=one#literal\nB=two # comment\nC=' # quoted '\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "one#literal"
+        },
+        {
+          "key": "B",
+          "value": "two"
+        },
+        {
+          "key": "C",
+          "value": " # quoted "
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one#literal",
+        "B": "two",
+        "C": " # quoted "
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": null,
+          "line": 1,
+          "original": "# heading\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "A=one#literal\n",
+          "value": "one#literal"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 3,
+          "original": "B=two # comment\n",
+          "value": "two"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=' # quoted '\n",
+          "value": " # quoted "
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "comments",
+      "override": false,
+      "text": "# heading\nA=one#literal\nB=two # comment\nC=' # quoted '\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "one#literal"
+        },
+        {
+          "key": "B",
+          "value": "two"
+        },
+        {
+          "key": "C",
+          "value": " # quoted "
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "value",
+        "exported": "x"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "export A = value\n",
+          "value": "value"
+        },
+        {
+          "error": false,
+          "key": "exported",
+          "line": 2,
+          "original": "exported=x\n",
+          "value": "x"
+        },
+        {
+          "error": false,
+          "key": " spaced = key ",
+          "line": 3,
+          "original": "' spaced = key '=quoted\n",
+          "value": "quoted"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "illegal environment variable name",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "keys",
+      "override": true,
+      "text": "export A = value\nexported=x\n' spaced = key '=quoted\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "value"
+        },
+        {
+          "key": "exported",
+          "value": "x"
+        },
+        {
+          "key": " spaced = key ",
+          "value": "quoted"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "value",
+        "exported": "x"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "export A = value\n",
+          "value": "value"
+        },
+        {
+          "error": false,
+          "key": "exported",
+          "line": 2,
+          "original": "exported=x\n",
+          "value": "x"
+        },
+        {
+          "error": false,
+          "key": " spaced = key ",
+          "line": 3,
+          "original": "' spaced = key '=quoted\n",
+          "value": "quoted"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "illegal environment variable name",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "keys",
+      "override": false,
+      "text": "export A = value\nexported=x\n' spaced = key '=quoted\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "value"
+        },
+        {
+          "key": "exported",
+          "value": "x"
+        },
+        {
+          "key": " spaced = key ",
+          "value": "quoted"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "it's \\ fine",
+        "B": "line\nnext\t\r\u0007\b\f\u000b\"\\"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A='it\\'s \\\\ fine'\n",
+          "value": "it's \\ fine"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=\"line\\nnext\\t\\r\\a\\b\\f\\v\\\"\\\\\"\n",
+          "value": "line\nnext\t\r\u0007\b\f\u000b\"\\"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "quotes",
+      "override": true,
+      "text": "A='it\\'s \\\\ fine'\nB=\"line\\nnext\\t\\r\\a\\b\\f\\v\\\"\\\\\"\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "it's \\ fine"
+        },
+        {
+          "key": "B",
+          "value": "line\nnext\t\r\u0007\b\f\u000b\"\\"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "it's \\ fine",
+        "B": "line\nnext\t\r\u0007\b\f\u000b\"\\"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A='it\\'s \\\\ fine'\n",
+          "value": "it's \\ fine"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=\"line\\nnext\\t\\r\\a\\b\\f\\v\\\"\\\\\"\n",
+          "value": "line\nnext\t\r\u0007\b\f\u000b\"\\"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "quotes",
+      "override": false,
+      "text": "A='it\\'s \\\\ fine'\nB=\"line\\nnext\\t\\r\\a\\b\\f\\v\\\"\\\\\"\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "it's \\ fine"
+        },
+        {
+          "key": "B",
+          "value": "line\nnext\t\r\u0007\b\f\u000b\"\\"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "\\n\\q",
+        "B": "\\q\\u0041\\x41"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A='\\n\\q'\n",
+          "value": "\\n\\q"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=\"\\q\\u0041\\x41\"\n",
+          "value": "\\q\\u0041\\x41"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "unknown-escapes",
+      "override": true,
+      "text": "A='\\n\\q'\nB=\"\\q\\u0041\\x41\"\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "\\n\\q"
+        },
+        {
+          "key": "B",
+          "value": "\\q\\u0041\\x41"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "\\n\\q",
+        "B": "\\q\\u0041\\x41"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A='\\n\\q'\n",
+          "value": "\\n\\q"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=\"\\q\\u0041\\x41\"\n",
+          "value": "\\q\\u0041\\x41"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "unknown-escapes",
+      "override": false,
+      "text": "A='\\n\\q'\nB=\"\\q\\u0041\\x41\"\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "\\n\\q"
+        },
+        {
+          "key": "B",
+          "value": "\\q\\u0041\\x41"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "first\nsecond",
+        "B": "third\nfourth"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A='first\nsecond'\n",
+          "value": "first\nsecond"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 3,
+          "original": "B=\"third\nfourth\"\n",
+          "value": "third\nfourth"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "multiline",
+      "override": true,
+      "text": "A='first\nsecond'\nB=\"third\nfourth\"\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "first\nsecond"
+        },
+        {
+          "key": "B",
+          "value": "third\nfourth"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "first\nsecond",
+        "B": "third\nfourth"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A='first\nsecond'\n",
+          "value": "first\nsecond"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 3,
+          "original": "B=\"third\nfourth\"\n",
+          "value": "third\nfourth"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "multiline",
+      "override": false,
+      "text": "A='first\nsecond'\nB=\"third\nfourth\"\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "first\nsecond"
+        },
+        {
+          "key": "B",
+          "value": "third\nfourth"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one",
+        "B": "two",
+        "C": "three"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "\r\nA=one\r\n",
+          "value": "one"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 3,
+          "original": "B=two\r",
+          "value": "two"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=three\n",
+          "value": "three"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "crlf",
+      "override": true,
+      "text": "\r\nA=one\r\nB=two\rC=three\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "one"
+        },
+        {
+          "key": "B",
+          "value": "two"
+        },
+        {
+          "key": "C",
+          "value": "three"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one",
+        "B": "two",
+        "C": "three"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "\r\nA=one\r\n",
+          "value": "one"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 3,
+          "original": "B=two\r",
+          "value": "two"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=three\n",
+          "value": "three"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "crlf",
+      "override": false,
+      "text": "\r\nA=one\r\nB=two\rC=three\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "one"
+        },
+        {
+          "key": "B",
+          "value": "two"
+        },
+        {
+          "key": "C",
+          "value": "three"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "hi",
+        "键 名": "你好"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": " A = hi # end\n",
+          "value": "hi"
+        },
+        {
+          "error": false,
+          "key": "键 名",
+          "line": 2,
+          "original": "'键 名'=你好\n",
+          "value": "你好"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "unicode",
+      "override": true,
+      "text": " A = hi # end\n'键 名'=你好\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "hi"
+        },
+        {
+          "key": "键 名",
+          "value": "你好"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "hi",
+        "键 名": "你好"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": " A = hi # end\n",
+          "value": "hi"
+        },
+        {
+          "error": false,
+          "key": "键 名",
+          "line": 2,
+          "original": "'键 名'=你好\n",
+          "value": "你好"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "unicode",
+      "override": false,
+      "text": " A = hi # end\n'键 名'=你好\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "hi"
+        },
+        {
+          "key": "键 名",
+          "value": "你好"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "valid",
+        "C": "lost",
+        "D": "end"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "bad key=value\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "A=valid\n",
+          "value": "valid"
+        },
+        {
+          "error": true,
+          "key": null,
+          "line": 3,
+          "original": "B='unterminated\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=lost\n",
+          "value": "lost"
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 5,
+          "original": "D=end\n",
+          "value": "end"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "recovery",
+      "override": true,
+      "text": "bad key=value\nA=valid\nB='unterminated\nC=lost\nD=end\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "valid"
+        },
+        {
+          "key": "C",
+          "value": "lost"
+        },
+        {
+          "key": "D",
+          "value": "end"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "valid",
+        "C": "lost",
+        "D": "end"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "bad key=value\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "A=valid\n",
+          "value": "valid"
+        },
+        {
+          "error": true,
+          "key": null,
+          "line": 3,
+          "original": "B='unterminated\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=lost\n",
+          "value": "lost"
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 5,
+          "original": "D=end\n",
+          "value": "end"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "recovery",
+      "override": false,
+      "text": "bad key=value\nA=valid\nB='unterminated\nC=lost\nD=end\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "valid"
+        },
+        {
+          "key": "C",
+          "value": "lost"
+        },
+        {
+          "key": "D",
+          "value": "end"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "B": "valid",
+        "C": "one;two"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "A='ok' garbage\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=valid\n",
+          "value": "valid"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C=one;two\n",
+          "value": "one;two"
+        },
+        {
+          "error": true,
+          "key": null,
+          "line": 4,
+          "original": "=empty-key\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "trailing",
+      "override": true,
+      "text": "A='ok' garbage\nB=valid\nC=one;two\n=empty-key\n",
+      "values": [
+        {
+          "key": "B",
+          "value": "valid"
+        },
+        {
+          "key": "C",
+          "value": "one;two"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "B": "valid",
+        "C": "one;two"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "A='ok' garbage\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=valid\n",
+          "value": "valid"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C=one;two\n",
+          "value": "one;two"
+        },
+        {
+          "error": true,
+          "key": null,
+          "line": 4,
+          "original": "=empty-key\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "trailing",
+      "override": false,
+      "text": "A='ok' garbage\nB=valid\nC=one;two\n=empty-key\n",
+      "values": [
+        {
+          "key": "B",
+          "value": "valid"
+        },
+        {
+          "key": "C",
+          "value": "one;two"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "B": "two",
+        "﻿A": "one"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "﻿A",
+          "line": 1,
+          "original": "﻿A=one\n",
+          "value": "one"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=two\n",
+          "value": "two"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "bom",
+      "override": true,
+      "text": "﻿A=one\nB=two\n",
+      "values": [
+        {
+          "key": "﻿A",
+          "value": "one"
+        },
+        {
+          "key": "B",
+          "value": "two"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "B": "two",
+        "﻿A": "one"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "﻿A",
+          "line": 1,
+          "original": "﻿A=one\n",
+          "value": "one"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=two\n",
+          "value": "two"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "bom",
+      "override": false,
+      "text": "﻿A=one\nB=two\n",
+      "values": [
+        {
+          "key": "﻿A",
+          "value": "one"
+        },
+        {
+          "key": "B",
+          "value": "two"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "B": "middle"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=first\n",
+          "value": "first"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=middle\n",
+          "value": "middle"
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 3,
+          "original": "A=last\n",
+          "value": "last"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 5,
+          "original": "A\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "duplicates",
+      "override": true,
+      "text": "A=first\nB=middle\nA=last\nC\nA\n",
+      "values": [
+        {
+          "key": "A",
+          "value": null
+        },
+        {
+          "key": "B",
+          "value": "middle"
+        },
+        {
+          "key": "C",
+          "value": null
+        }
+      ]
+    },
+    {
+      "applied": {
+        "B": "middle"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=first\n",
+          "value": "first"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=middle\n",
+          "value": "middle"
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 3,
+          "original": "A=last\n",
+          "value": "last"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 5,
+          "original": "A\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "duplicates",
+      "override": false,
+      "text": "A=first\nB=middle\nA=last\nC\nA\n",
+      "values": [
+        {
+          "key": "A",
+          "value": null
+        },
+        {
+          "key": "B",
+          "value": "middle"
+        },
+        {
+          "key": "C",
+          "value": null
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "external",
+        "B": "",
+        "C": "fallback",
+        "D": "$EXT",
+        "EXT": "external"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=${EXT}\n",
+          "value": "${EXT}"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${ABSENT}\n",
+          "value": "${ABSENT}"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C=${ABSENT:-fallback}\n",
+          "value": "${ABSENT:-fallback}"
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "D=$EXT\n",
+          "value": "$EXT"
+        }
+      ],
+      "environment": {
+        "EXT": "external"
+      },
+      "fault": null,
+      "loaded": true,
+      "name": "interpolation",
+      "override": true,
+      "text": "A=${EXT}\nB=${ABSENT}\nC=${ABSENT:-fallback}\nD=$EXT\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "external"
+        },
+        {
+          "key": "B",
+          "value": ""
+        },
+        {
+          "key": "C",
+          "value": "fallback"
+        },
+        {
+          "key": "D",
+          "value": "$EXT"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "external",
+        "B": "",
+        "C": "fallback",
+        "D": "$EXT",
+        "EXT": "external"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=${EXT}\n",
+          "value": "${EXT}"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${ABSENT}\n",
+          "value": "${ABSENT}"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C=${ABSENT:-fallback}\n",
+          "value": "${ABSENT:-fallback}"
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "D=$EXT\n",
+          "value": "$EXT"
+        }
+      ],
+      "environment": {
+        "EXT": "external"
+      },
+      "fault": null,
+      "loaded": true,
+      "name": "interpolation",
+      "override": false,
+      "text": "A=${EXT}\nB=${ABSENT}\nC=${ABSENT:-fallback}\nD=$EXT\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "external"
+        },
+        {
+          "key": "B",
+          "value": ""
+        },
+        {
+          "key": "C",
+          "value": "fallback"
+        },
+        {
+          "key": "D",
+          "value": "$EXT"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "file-again",
+        "B": "file",
+        "C": "file"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${A}\n",
+          "value": "${A}"
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 3,
+          "original": "A=${A}-again\n",
+          "value": "${A}-again"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=${B}\n",
+          "value": "${B}"
+        }
+      ],
+      "environment": {
+        "A": "external"
+      },
+      "fault": null,
+      "loaded": true,
+      "name": "priority",
+      "override": true,
+      "text": "A=file\nB=${A}\nA=${A}-again\nC=${B}\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "file-again"
+        },
+        {
+          "key": "B",
+          "value": "file"
+        },
+        {
+          "key": "C",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "external",
+        "B": "external",
+        "C": "external"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${A}\n",
+          "value": "${A}"
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 3,
+          "original": "A=${A}-again\n",
+          "value": "${A}-again"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 4,
+          "original": "C=${B}\n",
+          "value": "${B}"
+        }
+      ],
+      "environment": {
+        "A": "external"
+      },
+      "fault": null,
+      "loaded": true,
+      "name": "priority",
+      "override": false,
+      "text": "A=file\nB=${A}\nA=${A}-again\nC=${B}\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "external-again"
+        },
+        {
+          "key": "B",
+          "value": "external"
+        },
+        {
+          "key": "C",
+          "value": "external"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "",
+        "B": "",
+        "D": "",
+        "E": ""
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=\n",
+          "value": ""
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${A:-fallback}\n",
+          "value": "${A:-fallback}"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "D=${C:-fallback}\n",
+          "value": "${C:-fallback}"
+        },
+        {
+          "error": false,
+          "key": "E",
+          "line": 5,
+          "original": "E=${ABSENT:-}\n",
+          "value": "${ABSENT:-}"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "empty-default",
+      "override": true,
+      "text": "A=\nB=${A:-fallback}\nC\nD=${C:-fallback}\nE=${ABSENT:-}\n",
+      "values": [
+        {
+          "key": "A",
+          "value": ""
+        },
+        {
+          "key": "B",
+          "value": ""
+        },
+        {
+          "key": "C",
+          "value": null
+        },
+        {
+          "key": "D",
+          "value": ""
+        },
+        {
+          "key": "E",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "",
+        "B": "",
+        "D": "",
+        "E": ""
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=\n",
+          "value": ""
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${A:-fallback}\n",
+          "value": "${A:-fallback}"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "D=${C:-fallback}\n",
+          "value": "${C:-fallback}"
+        },
+        {
+          "error": false,
+          "key": "E",
+          "line": 5,
+          "original": "E=${ABSENT:-}\n",
+          "value": "${ABSENT:-}"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "empty-default",
+      "override": false,
+      "text": "A=\nB=${A:-fallback}\nC\nD=${C:-fallback}\nE=${ABSENT:-}\n",
+      "values": [
+        {
+          "key": "A",
+          "value": ""
+        },
+        {
+          "key": "B",
+          "value": ""
+        },
+        {
+          "key": "C",
+          "value": null
+        },
+        {
+          "key": "D",
+          "value": ""
+        },
+        {
+          "key": "E",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "first",
+        "B": "你好",
+        "C": "first}",
+        "D": "",
+        "E": ""
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=${A:-first}\n",
+          "value": "${A:-first}"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${键:-你好}\n",
+          "value": "${键:-你好}"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C=${A:-${OTHER}}\n",
+          "value": "${A:-${OTHER}}"
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "D=${A-default}\n",
+          "value": "${A-default}"
+        },
+        {
+          "error": false,
+          "key": "E",
+          "line": 5,
+          "original": "E=${}\n",
+          "value": "${}"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "variable-syntax",
+      "override": true,
+      "text": "A=${A:-first}\nB=${键:-你好}\nC=${A:-${OTHER}}\nD=${A-default}\nE=${}\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "first"
+        },
+        {
+          "key": "B",
+          "value": "你好"
+        },
+        {
+          "key": "C",
+          "value": "first}"
+        },
+        {
+          "key": "D",
+          "value": ""
+        },
+        {
+          "key": "E",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "first",
+        "B": "你好",
+        "C": "first}",
+        "D": "",
+        "E": ""
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=${A:-first}\n",
+          "value": "${A:-first}"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=${键:-你好}\n",
+          "value": "${键:-你好}"
+        },
+        {
+          "error": false,
+          "key": "C",
+          "line": 3,
+          "original": "C=${A:-${OTHER}}\n",
+          "value": "${A:-${OTHER}}"
+        },
+        {
+          "error": false,
+          "key": "D",
+          "line": 4,
+          "original": "D=${A-default}\n",
+          "value": "${A-default}"
+        },
+        {
+          "error": false,
+          "key": "E",
+          "line": 5,
+          "original": "E=${}\n",
+          "value": "${}"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "variable-syntax",
+      "override": false,
+      "text": "A=${A:-first}\nB=${键:-你好}\nC=${A:-${OTHER}}\nD=${A-default}\nE=${}\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "first"
+        },
+        {
+          "key": "B",
+          "value": "你好"
+        },
+        {
+          "key": "C",
+          "value": "first}"
+        },
+        {
+          "key": "D",
+          "value": ""
+        },
+        {
+          "key": "E",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "applied": {
+        "KEEP": "original"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": null,
+          "line": 1,
+          "original": "\n # only comments\n",
+          "value": null
+        }
+      ],
+      "environment": {
+        "KEEP": "original"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "blank",
+      "override": true,
+      "text": "\n # only comments\n",
+      "values": []
+    },
+    {
+      "applied": {
+        "KEEP": "original"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": null,
+          "line": 1,
+          "original": "\n # only comments\n",
+          "value": null
+        }
+      ],
+      "environment": {
+        "KEEP": "original"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "blank",
+      "override": false,
+      "text": "\n # only comments\n",
+      "values": []
+    },
+    {
+      "applied": {},
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "valueless",
+      "override": true,
+      "text": "A\nB\n",
+      "values": [
+        {
+          "key": "A",
+          "value": null
+        },
+        {
+          "key": "B",
+          "value": null
+        }
+      ]
+    },
+    {
+      "applied": {},
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A\n",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "valueless",
+      "override": false,
+      "text": "A\nB\n",
+      "values": [
+        {
+          "key": "A",
+          "value": null
+        },
+        {
+          "key": "B",
+          "value": null
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "external",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        }
+      ],
+      "environment": {
+        "A": "external",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "disabled",
+      "override": true,
+      "text": "A=file\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "external",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        }
+      ],
+      "environment": {
+        "A": "external",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "disabled",
+      "override": false,
+      "text": "A=file\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {},
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": false,
+      "name": "backtracking",
+      "override": true,
+      "text": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+      "values": []
+    },
+    {
+      "applied": {},
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": false,
+      "name": "backtracking",
+      "override": false,
+      "text": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+      "values": []
+    },
+    {
+      "applied": {
+        "A": "valid"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "bad key=value\r",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "\nA=valid\r\n",
+          "value": "valid"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "crlf-errors",
+      "override": true,
+      "text": "bad key=value\r\nA=valid\r\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "valid"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "valid"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "bad key=value\r",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "\nA=valid\r\n",
+          "value": "valid"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "crlf-errors",
+      "override": false,
+      "text": "bad key=value\r\nA=valid\r\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "valid"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "BAD\u0000NAME",
+          "line": 2,
+          "original": "BAD\u0000NAME=value\n",
+          "value": "value"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-name",
+      "override": true,
+      "text": "A=prior\nBAD\u0000NAME=value\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "BAD\u0000NAME",
+          "value": "value"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "BAD\u0000NAME",
+          "line": 2,
+          "original": "BAD\u0000NAME=value\n",
+          "value": "value"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-name",
+      "override": false,
+      "text": "A=prior\nBAD\u0000NAME=value\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "BAD\u0000NAME",
+          "value": "value"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=value\u0000tail\n",
+          "value": "value\u0000tail"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-value",
+      "override": true,
+      "text": "A=prior\nB=value\u0000tail\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "B",
+          "value": "value\u0000tail"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=value\u0000tail\n",
+          "value": "value\u0000tail"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-value",
+      "override": false,
+      "text": "A=prior\nB=value\u0000tail\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "B",
+          "value": "value\u0000tail"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        }
+      ],
+      "environment": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "unicode-disable",
+      "override": true,
+      "text": "A=file\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        }
+      ],
+      "environment": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "unicode-disable",
+      "override": false,
+      "text": "A=file\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
+    }
+  ],
+  "version": "1.2.2"
+}

@@ -1,0 +1,2060 @@
+{
+  "components": {
+    "schemas": {
+      "ApprovalReq": {
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "decision": {
+            "enum": [
+              "allow",
+              "deny"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "remember": {
+            "default": false,
+            "title": "Remember",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "decision"
+        ],
+        "title": "ApprovalReq",
+        "type": "object"
+      },
+      "CreateSessionReq": {
+        "properties": {
+          "mode": {
+            "anyOf": [
+              {
+                "enum": [
+                  "readonly",
+                  "interactive",
+                  "auto"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mode"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "system": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System"
+          },
+          "workspace": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workspace"
+          }
+        },
+        "title": "CreateSessionReq",
+        "type": "object"
+      },
+      "CronReq": {
+        "properties": {
+          "cron": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Cron",
+            "type": "string"
+          },
+          "durable": {
+            "default": true,
+            "title": "Durable",
+            "type": "boolean"
+          },
+          "prompt": {
+            "minLength": 1,
+            "title": "Prompt",
+            "type": "string"
+          },
+          "recurring": {
+            "default": true,
+            "title": "Recurring",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cron",
+          "prompt"
+        ],
+        "title": "CronReq",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "ImprovementReq": {
+        "properties": {
+          "acceptance_command": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Acceptance Command",
+            "type": "string"
+          },
+          "max_rounds": {
+            "default": 3,
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Max Rounds",
+            "type": "integer"
+          },
+          "objective": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Objective",
+            "type": "string"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          }
+        },
+        "required": [
+          "objective",
+          "acceptance_command"
+        ],
+        "title": "ImprovementReq",
+        "type": "object"
+      },
+      "MessageReq": {
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "MessageReq",
+        "type": "object"
+      },
+      "ModeReq": {
+        "properties": {
+          "mode": {
+            "enum": [
+              "readonly",
+              "interactive",
+              "auto"
+            ],
+            "title": "Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "ModeReq",
+        "type": "object"
+      },
+      "PersonalSkillCommitReq": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": {
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          }
+        },
+        "required": [
+          "digest"
+        ],
+        "title": "PersonalSkillCommitReq",
+        "type": "object"
+      },
+      "PersonalSkillPreviewReq": {
+        "additionalProperties": false,
+        "properties": {
+          "focus": {
+            "default": "",
+            "maxLength": 2000,
+            "title": "Focus",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "PersonalSkillPreviewReq",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "WorkflowCancelReq": {
+        "properties": {
+          "reason": {
+            "default": "requested by operator",
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "title": "WorkflowCancelReq",
+        "type": "object"
+      },
+      "WorkflowLaunchReq": {
+        "properties": {
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Id"
+          },
+          "args": {
+            "additionalProperties": true,
+            "default": {},
+            "title": "Args",
+            "type": "object"
+          },
+          "definition": {
+            "additionalProperties": true,
+            "title": "Definition",
+            "type": "object"
+          }
+        },
+        "required": [
+          "definition"
+        ],
+        "title": "WorkflowLaunchReq",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "mini-loop",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "console__get",
+        "responses": {
+          "200": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Console"
+      }
+    },
+    "/benchmark": {
+      "post": {
+        "description": "Run the paired benchmark on the fake transport, in process.\n\nDeliberately fake-only: this exists so the UI can exercise and\ndisplay the instrument. A real-endpoint run spends the operator's\nmodel budget and stays a terminal act (tools/paired_benchmark.py) --\na button that spends money is not a button this server grows.",
+        "operationId": "run_benchmark_benchmark_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Run Benchmark"
+      }
+    },
+    "/healthz": {
+      "get": {
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Healthz"
+      }
+    },
+    "/improvements": {
+      "get": {
+        "description": "The proposal lineage (improvement_archive.py), newest first.\n\nSame scoping rule as /self-audit: authenticated callers read their\nown lineage; an open single-user deployment reads all of it.",
+        "operationId": "list_improvements_improvements_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Improvements"
+      }
+    },
+    "/self-audit": {
+      "get": {
+        "description": "The runtime's self-observation report (self_audit.py).\n\nOwner-scoped under authentication: the caller sees their own\nsessions' activity, ledgers, trajectories and skill usage. The\nmanager-wide subsystem ledgers are included only when auth is not\nconfigured -- on an open single-user deployment the caller IS the\noperator; on an authenticated one, cross-tenant operational\nmetadata stays out of tenant responses.",
+        "operationId": "self_audit_report_self_audit_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Self Audit Report"
+      }
+    },
+    "/self-audit/bench-task-drafts": {
+      "get": {
+        "description": "Candidate benchmark tasks hatched from the problem ledgers.\n\nDrafts, not admissions: each row ships without an expect predicate\nand nothing here touches the task sets -- a human authors the\njudgment and admits the task by editing benchmark.py.",
+        "operationId": "bench_task_drafts_self_audit_bench_task_drafts_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Bench Task Drafts"
+      }
+    },
+    "/self-audit/suggestions": {
+      "get": {
+        "description": "Candidate objectives derived from the problem ledgers.\n\nSuggestion is not authorization: nothing launches from here; the\nhuman reviews, edits, and submits through propose-improvement.",
+        "operationId": "improvement_suggestions_self_audit_suggestions_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Improvement Suggestions"
+      }
+    },
+    "/sessions": {
+      "get": {
+        "operationId": "list_sessions_sessions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Sessions"
+      },
+      "post": {
+        "operationId": "create_session_sessions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Session"
+      }
+    },
+    "/sessions/{session_id}": {
+      "delete": {
+        "operationId": "delete_session_sessions__session_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Session"
+      },
+      "get": {
+        "operationId": "get_session_sessions__session_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Session"
+      }
+    },
+    "/sessions/{session_id}/approvals": {
+      "get": {
+        "description": "Tool calls parked waiting for a human answer (see approvals.py).",
+        "operationId": "list_approvals_sessions__session_id__approvals_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Approvals"
+      }
+    },
+    "/sessions/{session_id}/approvals/{approval_id}": {
+      "post": {
+        "operationId": "resolve_approval_sessions__session_id__approvals__approval_id__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "approval_id",
+            "required": true,
+            "schema": {
+              "title": "Approval Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resolve Approval"
+      }
+    },
+    "/sessions/{session_id}/cancel": {
+      "post": {
+        "description": "Stop the turn in flight, if there is one.",
+        "operationId": "cancel_run_sessions__session_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Run"
+      }
+    },
+    "/sessions/{session_id}/cron": {
+      "get": {
+        "description": "This session's scheduled jobs, structured, with their arm state.",
+        "operationId": "list_cron_sessions__session_id__cron_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Cron"
+      },
+      "post": {
+        "description": "Schedule a job for this session. Scheduling over authenticated\nHTTP is the human authorization edge, so the job is armed exactly\nlike one scheduled from inside the process.",
+        "operationId": "schedule_cron_sessions__session_id__cron_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CronReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Schedule Cron"
+      }
+    },
+    "/sessions/{session_id}/cron/{job_id}": {
+      "delete": {
+        "operationId": "cancel_cron_sessions__session_id__cron__job_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Cron"
+      }
+    },
+    "/sessions/{session_id}/cron/{job_id}/arm": {
+      "post": {
+        "description": "Re-authorize a cron job restored from disk.\n\nActivation is process-local and never persisted: a durable job\nsurvives a restart as a *fact*, but firing unattended again needs a\nnew authorization edge, which this operator call records. Scoped to\nthe caller's own session, like cancel. Deliberately not a model tool.",
+        "operationId": "arm_cron_sessions__session_id__cron__job_id__arm_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Arm Cron"
+      }
+    },
+    "/sessions/{session_id}/events": {
+      "get": {
+        "operationId": "observe_sessions__session_id__events_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "envelope",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Envelope",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Observe"
+      }
+    },
+    "/sessions/{session_id}/fork": {
+      "post": {
+        "description": "Branch a new session from an idle session's transcript.\n\nOwner-scoped like every session route; the child belongs to the same\nowner. A busy source is 409 -- its tail is an open turn, not a\ncompleted boundary (dsh's fork eligibility rule).",
+        "operationId": "fork_session_sessions__session_id__fork_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Fork Session"
+      }
+    },
+    "/sessions/{session_id}/goal": {
+      "get": {
+        "description": "The session's durable objective and soft-mode flags.",
+        "operationId": "session_goal_sessions__session_id__goal_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Session Goal"
+      }
+    },
+    "/sessions/{session_id}/memory": {
+      "get": {
+        "description": "This session owner's memories: names and descriptions, not bodies.",
+        "operationId": "session_memory_sessions__session_id__memory_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Session Memory"
+      }
+    },
+    "/sessions/{session_id}/memory/{name}": {
+      "get": {
+        "description": "One memory's stored body, for its owner.\n\nSafe to serve because the store masks at the write (memories are the\nmost durable disk sink here and the census classifies them RECORDED),\nand because this body is already fed back into the owner's own\nrequests by runtime_facts -- the reader is seeing what their model\nsees, not a new disclosure.",
+        "operationId": "session_memory_body_sessions__session_id__memory__name__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Session Memory Body"
+      }
+    },
+    "/sessions/{session_id}/messages": {
+      "post": {
+        "operationId": "post_message_sessions__session_id__messages_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Post Message"
+      }
+    },
+    "/sessions/{session_id}/messages/stream": {
+      "post": {
+        "operationId": "post_message_stream_sessions__session_id__messages_stream_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Post Message Stream"
+      }
+    },
+    "/sessions/{session_id}/mode": {
+      "post": {
+        "description": "Change the session's risk->decision posture (see permissions.py).\n\nThrough this edge the change is told to the model at its next round\n(session.change_permission_mode queues the note); raw attribute\nwrites remain the silent, process-local path.",
+        "operationId": "set_mode_sessions__session_id__mode_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModeReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Mode"
+      }
+    },
+    "/sessions/{session_id}/personal-skills/preview": {
+      "post": {
+        "description": "Create a reviewable, expiring draft without writing a skill.",
+        "operationId": "preview_personal_skill_sessions__session_id__personal_skills_preview_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalSkillPreviewReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview Personal Skill"
+      }
+    },
+    "/sessions/{session_id}/personal-skills/{draft_id}/commit": {
+      "post": {
+        "description": "Publish exactly the authenticated caller's reviewed pending draft.",
+        "operationId": "commit_personal_skill_sessions__session_id__personal_skills__draft_id__commit_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalSkillCommitReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Commit Personal Skill"
+      }
+    },
+    "/sessions/{session_id}/propose-improvement": {
+      "post": {
+        "description": "Run the verified improvement loop in this session's workspace.\n\nEverything self_improve.py refuses (non-git workspace, empty\nacceptance command) comes back 400; a busy session is 409 like a\nmessage would be. The proposal lands on the isolated branch --\nmerging stays a human act outside this API.",
+        "operationId": "propose_improvement_route_sessions__session_id__propose_improvement_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImprovementReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Propose Improvement Route"
+      }
+    },
+    "/sessions/{session_id}/skills": {
+      "get": {
+        "description": "The layered skill catalogue exactly as this session's model sees it.",
+        "operationId": "session_skills_sessions__session_id__skills_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Session Skills"
+      }
+    },
+    "/sessions/{session_id}/steer": {
+      "post": {
+        "description": "Deliver input to a session whatever it is doing. Never 409s.\n\nBusy: the text reaches the running turn at its next loop round as a\n`<user_interjection>` -- OpenWorker's busy-session steering, on our\ninjector seam. Idle: the text starts an ordinary turn now, in the\nbackground. Both references agree on the idle half (OpenWorker: an\nidle session starts a fresh turn; dsh: steer carries wakeup), and\nparking used to be the behavior here -- durable after round 192, so\na steer to an idle session could wait forever while the caller\nbelieved the words were on their way. The caller who wants\npark-until-next-turn semantics still has them through any\nprocess-local `session.steer()` call; over HTTP, steering means\n\"make sure the agent hears this\", and an idle agent hears it by\nrunning.",
+        "operationId": "steer_session_sessions__session_id__steer_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Steer Session"
+      }
+    },
+    "/sessions/{session_id}/tasks": {
+      "get": {
+        "description": "The session workspace's task board, structured.\n\nRead through a fresh TaskStore over the same directory: the board is\nfile-backed by design (teammates share it through the filesystem),\nso a read-only view needs no live store and mutates nothing.",
+        "operationId": "session_tasks_sessions__session_id__tasks_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Session Tasks"
+      }
+    },
+    "/sessions/{session_id}/team": {
+      "get": {
+        "description": "This session's team identity and a non-consuming inbox view.\n\nServed through MessageBus.peek: read()'s drain is the delivery\ncontract, so a viewer that used it would deliver the agent's\nmessages to nobody (round 250 blocked the pane on exactly that).",
+        "operationId": "session_team_sessions__session_id__team_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Session Team"
+      }
+    },
+    "/sessions/{session_id}/trajectories": {
+      "get": {
+        "operationId": "list_session_trajectories_sessions__session_id__trajectories_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Session Trajectories"
+      }
+    },
+    "/sessions/{session_id}/transcript": {
+      "get": {
+        "description": "One epoch of the durable transcript -- the current one by default.\n\nSuperseded epochs are the canonical record of what the agent actually\nsaw before a compaction rewrote its history (storage.py); this is the\noperator's way to read them. Persisted rows are already masked.",
+        "operationId": "read_transcript_sessions__session_id__transcript_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "epoch",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Epoch"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Read Transcript"
+      }
+    },
+    "/sessions/{session_id}/workflows": {
+      "get": {
+        "description": "This session's workflow runs, or an honest disabled flag.\n\n`enabled` is explicit so the UI can say \"not enabled on this\ndeployment\" instead of rendering a vacuously empty list.",
+        "operationId": "list_workflows_sessions__session_id__workflows_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Workflows"
+      },
+      "post": {
+        "description": "The human's own launch edge.\n\nUnlike /messages -- untrusted on purpose, because message TEXT flows\nthrough the model and any capability would ride every action of the\nturn -- this payload IS the single action the human is invoking:\ndefinition plus args, no model interpretation in between. That is\nexactly what explicit_human authority with a single approved\ncapability was built to express, and it follows the cron precedent\n(scheduling over authenticated HTTP is the human edge). The stamp is\nonly issued on an AUTHENTICATED deployment: an anonymous bind cannot\nclaim to be the human, so an open deployment refuses launch and the\nterminal path (which stamps its own trusted-local context) remains\nthe only edge there.",
+        "operationId": "launch_workflow_sessions__session_id__workflows_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowLaunchReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Launch Workflow"
+      }
+    },
+    "/sessions/{session_id}/workflows/{run_id}": {
+      "get": {
+        "operationId": "workflow_detail_sessions__session_id__workflows__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Workflow Detail"
+      }
+    },
+    "/sessions/{session_id}/workflows/{run_id}/cancel": {
+      "post": {
+        "description": "The human's cancel edge: capability-reducing, so plain ownership\nsuffices -- no authority stamp needed to STOP work.",
+        "operationId": "cancel_workflow_sessions__session_id__workflows__run_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowCancelReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Workflow"
+      }
+    },
+    "/trajectories": {
+      "get": {
+        "operationId": "list_trajectories_trajectories_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "session_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Session Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Trajectories"
+      }
+    },
+    "/trajectories/{trajectory_id}": {
+      "get": {
+        "operationId": "get_trajectory_trajectories__trajectory_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "trajectory_id",
+            "required": true,
+            "schema": {
+              "title": "Trajectory Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Trajectory"
+      }
+    },
+    "/trajectories/{trajectory_id}/export": {
+      "get": {
+        "operationId": "export_trajectory_trajectories__trajectory_id__export_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "trajectory_id",
+            "required": true,
+            "schema": {
+              "title": "Trajectory Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Export Trajectory"
+      }
+    },
+    "/trajectories/{trajectory_id}/view": {
+      "get": {
+        "description": "The dsh-style ledger for one recorded run, as one HTML page.\n\nSame access order as the JSON route below: ownership from the header\nbefore any bulk read, then the size bound -- rendering is a whole-file\nmaterialisation, so it inherits the JSON route's ceiling rather than\ninventing a second one.",
+        "operationId": "view_trajectory_trajectories__trajectory_id__view_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "trajectory_id",
+            "required": true,
+            "schema": {
+              "title": "Trajectory Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "View Trajectory"
+      }
+    },
+    "/ui": {
+      "get": {
+        "description": "The full web UI (docs/WEBUI_PLAN.md): separate sources under\nmini_loop/webui/, assembled into one self-contained inline page so\nthe CSP and the no-static-mount posture stay exactly as they are.",
+        "operationId": "web_ui_ui_get",
+        "responses": {
+          "200": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Web Ui"
+      }
+    }
+  }
+}

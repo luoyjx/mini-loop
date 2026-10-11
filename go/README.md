@@ -1,0 +1,3427 @@
+# Go implementation
+
+This directory is the independent Go port of the Python runtime in `../python/`.
+It is under construction. The httpapi package provides an embeddable HTTP/SSE
+handler; `cmd/miniloop` now provides standalone HTTP startup and signal shutdown.
+UI and the remaining Python default services are still pending. The
+protocol package fixes the default fake-model transcript shapes as explicit Go
+types, completed model replies, usage and stop reasons, and has concrete inputs
+for all ten Python default tools. It rejects
+unsupported tool names and extra fields at the JSON boundary instead of
+admitting an untyped payload into the runtime. The `agent` package adds an
+injected, in-memory fake-model turn loop. Every tool call now passes through a
+typed gate with an immutable executable catalogue, ordered hooks and permission
+modes. `NewSession` registers Bash only and derives a real executor's bound workspace. `NewWorkspaceSession` binds a
+workspace and registers Bash, `read_file`, `write_file`, `edit_file` and `glob` through
+the same gate. `NewRuntimeSession(RuntimeConfig)` adds `TodoWrite`, `load_skill`
+and `ask_user`, plus deferred `compress` and bound `task`: all ten default tools
+now execute through the same gate, with explicit dependencies and state bound to
+one session and owner. Todo, stop, stuck, compaction and scoped child events share a
+typed, sequenced 200-event backlog.
+The `workspace` package preserves bounded Unicode reads, line pagination,
+unique exact edits and atomic replacements. Every file path is checked at
+execution; write paths also undergo permission checks. Thirty-four Python cases
+compare the output and resulting file hashes, including failure cases. Glob
+preserves Python recursive and filename matching, hidden-file filtering,
+workspace result filtering and Unicode budgets before deduplication and sorting.
+A separate snapshot covers 38 searches and 182 filename patterns; cancellation,
+readonly session execution and deep search under a low descriptor limit are
+tested in Go. Enumeration uses native directory order and is not a filesystem
+snapshot.
+The deployment skill catalogue discovers sorted sources, preserves first-wins
+names, bounds descriptions and bodies, reports refusal/omission counts and
+rechecks the complete normalized source digest before serving a body. Streaming
+reads retain bounded prefixes while hashing the full source. Nineteen Python
+catalogue scenarios cover outputs, hashes and diagnostic counts. Ten todo
+updates and four question variants match real Python outputs; tests also cover
+readonly calls, cancellation, session binding and concurrent skill reads.
+`RuntimeConfig.Skills` is explicit; nil supplies an empty catalogue. Descriptions
+enter the actual model request with fitted, immutable tool schemas. User
+skill layering is pending. A nil question surface reports unavailability;
+an injected `Questioner` returns answered text or an unanswered variant, and is
+not a durable broker. Invalid-name values in diagnostics retain at most 2,048 characters
+and mark truncation, unlike Python's potentially unbounded diagnostic text.
+`Provider.Complete` now consumes `protocol.ModelRequest`: model, output budget,
+detached messages, optional system text, recursively typed tool schemas and a
+local request purpose. The default system builder names only fitted tools and
+includes skill descriptions; changed todo/pressure facts enter the message
+stream, leaving the stable prefix alone. Schema fitting and fingerprints match
+Python's JSON character budgets and canonical serialization. The fake provider
+counts messages, system and schemas with Python's ASCII/wide-character model.
+The token meter includes cached input, learns same-envelope growth and sees
+signed shrinkage. Summary usage belongs to its receipt, not the live anchor.
+Workspace-backed sessions run result spill, pair-safe snip, consumed-result
+micro compaction and transcript-plus-model summary in that order. `compress`
+passes the write-risk gate and runs after the entire batch has results. Failures,
+empty summaries and cancellation preserve paired history. Archive/spill paths
+use the workspace resolver and atomic replacement. Automatic compaction can
+write artifacts under readonly tool mode, like Python's ordinary agent;
+read-only workers must inject `InMemoryCompactor`. The Bash-only constructor uses that in-memory strategy for an unbound injected
+executor; a real bound executor selects workspace compaction.
+The context snapshot compares six catalogues, three wire/token cases, four
+cheap-compaction histories, six meter steps, spill output and summary artifacts
+against Python. Future sink masking and team/plan/memory prompt sections
+remain pending. Compaction files persist, but cannot
+restore a Go session on their own.
+`task` passes the execution-risk gate and uses an explicit `SubagentProvider`.
+The default `InProcessSubagents` creates fresh child history, todos and meter;
+it inherits model/budgets and injected context/tool services, then uses a fixed
+role-specific system prompt. `CapabilityRoleToolPolicy` selects tools only when
+their nonempty capability set is entirely allowed. Explore is readonly;
+general-purpose and worker are interactive independently of the parent mode.
+The default roles omit unclassified tools, including task. Custom selected
+built-in handlers are rebound to the child, with the same depth guard.
+`RunWithContext` and `DelegateWithContext` accept caller-stamped `RunContext`;
+`Run` and `Delegate` default to untrusted provenance. Default child derivation
+creates a peer message linked to its parent and drops human actor/approvals.
+Custom providers receive a pinned `SubagentParent` environment and parent run
+context. Every delegation checks the depth quota before invoking the provider
+or emitting start telemetry (defaults: depth 2, child rounds 30). Child events
+forward their original label/depth/provenance into the parent backlog. Exhausted
+runs prepend a stop marker to partial output instead of reporting a clean summary.
+The twelfth Python snapshot covers four role selections, five context snapshots
+and three real child loops (read, write and exhaustion). Go tests also cover
+custom-provider refusal/cancellation, nested task rebinding, readonly Explore
+with an auto parent and shared-provider session isolation under the race detector.
+This library supplies a process-local fleet manager and authenticated HTTP
+ownership through the httpapi handler. Core lifecycle events and shared limiters are implemented.
+Custom broker/state
+inheritance, owner resources remain open.
+`RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
+journal. Stable action IDs hash session/message/tool-use/name; canonical input
+hashes bind final rewritten arguments. Terminal replay does not execute again,
+but still crosses current permissions and post hooks. An unknown action asks an
+optional `ToolVerifier`: already-applied returns a reconciliation marker,
+not-applied permits retry, and undetermined/error/panic preserves unknown.
+`write_file` compares the full strict UTF-8 text with universal newlines inside
+the bound workspace; Bash cannot verify an opaque shell effect.
+`InMemoryActionJournal` keeps all identities and sheds old result text by count
+and aggregate Unicode character budgets. `StoredActionJournal` ports Python
+transitions over a concrete `ActionStore` interface; its durability depends on
+that injected store. The Go SQLite adapter remains pending. Finish changes only
+started records, reconcile changes only unknown records, and terminal settlement
+is immutable. Like Python, a proven non-landing retry does not rewrite unknown
+through finish. Journal settlement runs before observers; cancelled calls settle
+without the cancelled context, and settlement faults propagate. Default children
+have fresh state and do not inherit the parent journal. No cross-process dispatch
+claim or exactly-once side-effect guarantee is supplied by these journals.
+The thirteenth Python snapshot compares twelve input/hash/identity cases, memory
+and SQLite transitions, Unicode bounds and ten real replay/reconciliation paths.
+The Go stored-adapter tests use a typed test backing; they do not prove SQLite
+persistence. The optional bound approval broker now supplies parked requests,
+timeout/cancellation, process-local session grants, reviewer abstention and typed
+approval rows; an injected store is still required for durable writes. Registry
+masking binds implemented results, recordings, approvals and compaction files.
+SQLite adapters, remaining HTTP surfaces, session restoration
+remain pending.
+Python
+contract snapshots and fake reply fixtures are generated into `testdata/` by
+`../python/tools/export_go_contracts.py`.
+
+
+`go/shell.Executor` supplies real foreground host execution on macOS/Linux:
+`/bin/sh -c`, an immutable resolved workspace, new process groups, one default
+120-second process/pipe deadline, aggregate bounded capture and typed `Result`.
+Python's capture bound counts decoded characters despite its "bytes" notice;
+Go preserves that behavior, UTF-8 replacement, universal newlines, channel
+separation and tail-preserving rendering. Nonzero exits and timeout/error status
+reach the gate, journal and observer as failures, with detached command metadata.
+Replays have stored text and no fresh process metadata. Cancellation/overflow
+kill the process group and retry while inherited pipes remain open, covering
+concurrent forks. Explicit interruption enters the same bounded cleanup.
+Pipe cleanup is bounded to five further seconds. A
+child deliberately detaching into a new session is outside the group.
+
+Create an executor with `shell.New(shell.Config{Workspace: root})` and pass it
+as `RuntimeConfig.Bash`. `RuntimeConfig.Secrets` binds an independent credential
+configuration to a real executor before it captures/projects output, with the
+shared explicit interrupt tracker preserved. Registered ambient names are
+scrubbed; only command-mentioned names are injected. Full-stream masks precede
+truncation and protect split-stream credentials. The legacy string executor
+interface stays supported. The typed `Sandbox` argv seam rebinds to the workspace;
+no Go Seatbelt backend ships and cwd is not confinement. Runtime process tests
+ran on macOS. Linux code has no Linux-host execution evidence; other platforms
+reject construction. The sixteenth Python snapshot covers eight actual commands,
+seven rendering recipes and six typo-blocklist decisions. Core tool events are implemented;
+additional sink masking remain pending.
+
+Cache and stuck policies are enabled by default. `RuntimeConfig.CachePolicy`
+can select `NullCachePolicy`; `NewCachePolicy(CacheConfig)` controls TTL, stride
+and breakpoint budget. Annotations belong to one cloned request: system text
+becomes one cached text block on the wire and eligible user blocks receive
+`cache_control`. Live transcript blocks, assistant thinking and signatures stay
+unchanged. Summaries use the same policy. `ModelRequest.System` currently accepts
+plain text only; existing system block-list input remains pending. The fake
+counts the annotated payload and rejects more than four points; real cache
+reuse and savings require an actual provider.
+
+`RuntimeConfig.StuckDetector` can select `NullStuckDetector` or a configured
+`NewStuckDetector(StuckThresholds)`. The default keeps 20 tool steps, checks five
+Python patterns after paired batches, nudges once, then halts with an explicit
+stop marker. Each user intent resets the window and nudge count. Input hashes
+use final gate rewrites; output hashes use final masked results. `StopHooks`
+request another tool-less round through an optional string (nil finishes, empty
+text continues); this is the monologue detection path. Children inherit policies
+and hooks with fresh counters. Hooks receive detached snapshots and must not
+recursively enter their locked session. Constructors reject invalid thresholds
+and cache strides rather than accepting Python's invalid configurations.
+
+The seventeenth Python snapshot compares twelve cache projections/token counts,
+sixteen detector signals, six identity hashes and five actual looping agents.
+Go tests also cover bounded/reset state, paired error exits, rewritten input
+identity, summary and child policy inheritance, and detached/masked events.
+Optional input fields preserve absent versus explicit JSON null through wire,
+cloning and masking; their execution defaults remain unchanged.
+
+`RuntimeConfig.UserPromptHooks` form a typed sequential rewrite chain before the
+submitted user message; nil preserves text and an empty replacement is valid.
+Named `Injectors` receive detached messages, todos and caller-stamped authority,
+validate an entire typed message batch before append, and run before runtime
+facts and compaction each round. Children inherit both seams with fresh history.
+Callbacks must not reenter the locked session and shared callbacks must be safe
+for concurrent sessions. Injected text never changes authority.
+
+Consecutive parallel-safe calls overlap; exclusive calls wait for the prior group
+and remain ordering barriers. `ToolDefinition.WithExecutionClassifier` can choose
+per-call `ExecutionParallel` or `ExecutionExclusive` before gate rewrites. Errors,
+panics and invalid values fall back to exclusive. Static readonly and parallel
+traits remain independent. Every effect still crosses the gate. Result rows and
+stuck steps follow model order; tool-use telemetry starts in that order while
+result telemetry follows completion. Interrupted groups join started workers,
+retain recorded outputs and pair unfinished calls with unknown results. Worker
+panics become type-only errors and release capacity; exclusive panics retain the
+existing repair/rethrow behavior. Custom handlers must honor cancellation.
+
+`NewConcurrencyLimiter(ConcurrencyLimit(n))` supplies a positive shared pool.
+Set `RuntimeConfig.ModelLimiter` to cap provider calls across sessions, children
+and summaries. Nil is unbounded, matching a bare Python Agent. Parallel tools
+use a fresh eight-slot pool unless `ToolLimiter` is explicitly shared; children
+inherit the exact pointers. Exclusive tools bypass this pool, including default
+task delegation. A custom parallel classification must cover handler and hook
+safety; do not classify nested task execution as parallel while it waits for the
+same saturated tool pool. Manager composition and typed environment settings are
+implemented; the standalone launcher composes the supported services.
+An open todo board receives `<reminder>Update your todos.</reminder>` after three
+tool batches without an attempted TodoWrite. The counter persists across user
+turns; child counters are fresh and a TodoWrite attempt resets it even if denied.
+
+The nineteenth Python snapshot compares actual classified batch overlap/barriers,
+ordered outputs and stuck hashes, six mode decisions, nil/empty prompt rewrites
+and four cross-turn Todo counters. Deterministic Go synchronization tests cover
+shared pool caps and waiting cancellation, exclusive bypass, completed-sibling
+repair, worker joins, panic capacity release, atomic injector validation and
+child seam/pool inheritance. Bounded steering and live modes are implemented below; remaining context integrations
+remain open.
+
+`NewSessionManager(ManagerConfig)` owns ordered `ManagedSession` handles. It
+requires a provider and explicit owner identity on every create/lookup operation;
+missing and foreign IDs both return `ErrSessionNotFound`. Unlike the raw Python
+manager, an omitted owner is rejected and missing deletion returns a typed error
+as well as false. Defaults are interactive mode, 50 rounds, shared model/tool
+pools of eight, an in-memory approval broker and action journal, host shell and
+`./workspaces` scratch root. Nil skills select an empty catalogue; inject a
+deployment catalogue explicitly. No full environment loader is implied;
+httpapi supplies authentication when explicitly composed below.
+
+`WorkspaceFactory` selects scratch paths; `BashFactory` receives immutable
+`SessionBinding` identity/owner/workspace/mode. Custom services must be safe to
+share. Factories may inspect the manager but cannot recursively create/delete/stop
+it. `BindableRoots` opts into existing checkout binding. Paths resolve symlinks
+and home prefixes, with policy checked before existence: disabled/outside/manager
+scratch roots return `WorkspaceBindingError` 403; allowed missing/non-directory
+paths return 400. Bound directories are always retained.
+
+Delete closes admission and revokes approvals before unpublishing, allows five
+seconds for a holder to finish, then cancels and joins it before scratch reclaim.
+Shared live and retiring references prevent early removal. `PreserveWorkspace`
+retains scratch explicitly; `WaitCleanup(ctx)` joins asynchronous deleted holders.
+Remembered owners and masked cleanup diagnostics are capped at 10,000 and 100.
+Go reports removal faults rather than silently discarding them. Stop closes all
+admission, gives current holders 250ms, joins pending construction and cleanup,
+and preserves surviving scratch. Cancelling a Stop caller only ends that wait;
+a later Stop joins the same shutdown. Custom providers/sinks must return so a
+joined shutdown can finish. Durable restore, optional fleet services,
+durable steering and session restoration remain pending; per-run trajectory files
+are implemented below.
+
+The twentieth Python snapshot compares initial status/defaults, shared services,
+creation order, ten workspace outcomes, bound retention, scratch deletion and
+stop. Go synchronization/race tests cover queued turns, deletion/shutdown joins,
+construction faults, shared retiring paths, symlink reclamation and bounded
+owner/diagnostic copies.
+
+### Durable state contracts and archival decoding
+
+`sqlitestate.Open(ctx, path)` is now the standalone native SQLite schema library.
+It creates parent directories, owns one pinned connection with WAL/NORMAL/foreign
+keys, and performs Source v7 creation/index/additive upgrades. Callers own Close.
+The fixed mattn/go-sqlite3 v1.14.52 driver requires CGO and a C compiler; this
+checkout validates on Go 1.23.3. Paths containing query/fragment bytes remain
+literal filenames. Twenty-two actual Source database cases compare columns,
+indexes, version rows, preserved values and partial-failure outcomes, then native
+successful opens are reopened to verify idempotency. Schema versions use the
+existing closed scalar integer conversion before comparisons, retaining huge
+future-version diagnostics without narrowing. Corrupt-file errors include Source
+recovery advice; cancellation and environmental failures remain ordinary errors.
+Malformed schema-version conversion diagnostics and broader database error
+categories remain to be audited. The package now implements agent.SessionStore and agent.LeaseStore.
+
+Session upsert keeps the original creation time and lease; reads order by creation
+time and derive cursors from events after fetching session rows. System NULL and
+empty strings remain distinct; optional historical owner/steering/binding columns
+use Source fallback values. Todo and steering JSON use exact spaced UTF-8 bytes.
+A real Source recipe verifies 1,501 Todo/steering entries; these flat typed arrays
+do not inherit the generic archival container-size limit. Current metadata is
+detached; unknown Todo fields and unsupported shapes
+return ErrSessionMetadata instead of silently losing data. Invalid UTF-8 text is
+refused before SQL. Deletion rolls back messages/events/sessions as one immediate
+transaction, retaining action and approval audit rows. Single-statement lease
+claims/renewals preserve Source expiry equality, owner-scoped release and missing
+row refusal. Store Close serializes against these operations. Pre-cancelled calls
+and cancelled pre-commit transactions are explicitly fenced; cleanup uses a live
+rollback context. These operations install no owner authorization or human grants.
+TranscriptStore and EventStore now use the same owned connection and immediate
+transactions for read-head/append. Message ordinals increase across epochs; nil
+selection reads the highest epoch and empty append reports that selected epoch
+count. Source epoch-zero reads/counts stay empty. Whole failed batches roll back.
+Event tails use exclusive physical ordinal and SQL LIMIT semantics, independently
+of live SSE sequences. Known events use the existing untrusted archival decoder,
+including its explicit 16 MiB/variant boundaries. protocol.DecodeStoredMessage
+removes the network cap for known stored rows and text/thinking/result blocks;
+tool-input and caller decoders keep their separate limits. Unsupported historical
+shapes still fail, and reads do not authorize execution. Native action/approval
+rows now complete agent.StateStore conformance. Action updates preserve original
+identity, input hash and creation time; approval updates change only status,
+resolved time and answer. ReadApprovals preserves SQL NULL versus empty tool-use
+IDs through ApprovalRecord.ToolUseIDNull and its JSON codec. Recovery is explicit:
+MarkInflightUnknown atomically changes selected started rows to unknown, either
+per session or globally; Open never invokes it. It establishes no external-effect
+fencing or human grants. Native cron/SQLite close-and-reopen integration now has
+real backend proof: all seven scheduled Source recipes retain the distinct bound,
+scratch, missing-row and foreign-lease rules, including current scheduled system
+building and pre-provider flush. A Manager-created durable one-shot survives
+reconstruction disarmed; Start does not arm it, operator arm enables lazy resolution,
+and the scheduled turn gets no actor/capabilities. Another reopen retains run_count
+and persisted one-shot removal. Job definitions remain in .cron.json and sessions
+remain in SQLite; these tests drive explicit civil-minute ticks, not OS-process
+crash or clock-drift scenarios.
+Native library-injected Manager restoration
+now replays all seven Source recipes over real database close/reopen and resumes a
+Manager-created session with its stored steering and request prefix. Foreign-held
+rows remain unmodified until the lease can be claimed; owned stop releases it.
+Managed transcript reads and bounded event catch-up use the native backend. These
+were initially Manager-instance reconstruction tests. A dedicated test child now
+persists an admitted generation request and lease, publishes a typed checkpoint
+and blocks in Complete. The parent kills that exact child process without
+Manager.Stop or Store.Close. Native reopen preserves its request and lease; another
+process refuses admission until natural lease expiry, acquires a distinct lease
+identity, includes the interrupted-turn marker in its next provider request and
+persists the resumed turn. A further reopen retains repair and run_count=2. This
+proves the killed-generation window, without claiming power-loss durability,
+external-tool effect reconciliation or all crash windows.
+
+Launcher embedding can pass `Options.StateStore` to `NewWithOptions`; no database
+is selected by default. `App.RestoreSessions(ctx)` is an operator method, usually
+called before Serve. Neither constructor nor Serve automatically restores handles.
+Stop cancels/joins Manager work and releases owned leases; the caller closes its
+backend afterward, including on construction/restoration failure. Restore can
+return earlier handles with a later error: there is no fleet transaction. Report's
+named StateBackend distinguishes process-local from injected selection; inspection
+performs no backend reads and makes no durability claim for arbitrary implementations.
+Native HTTP tests close/reopen SQLite, preserve owner isolation and transcript reads,
+and resume another turn without degraded persistence.
+
+Given the embedding's ctx/settings/server/auth/listener, setup can be:
+
+```go
+store, err := sqlitestate.Open(ctx, "var/state.db")
+if err != nil { return err }
+defer store.Close()
+app, err := launcher.NewWithOptions(ctx, settings, server, auth,
+    launcher.Options{StateStore: store})
+if err != nil { return err }
+defer app.Stop(context.Background())
+if _, err := app.RestoreSessions(ctx); err != nil { return err }
+return app.Serve(ctx, listener)
+```
+
+This optional library composition follows Python's custom Manager/manager_factory
+startup seam. No new CLI/environment database option is introduced.
+
+`agent.SessionRecord` models the Python schema-v7 session projection: immutable
+creation time, mutable run/status/todo state, tenant owner, pending steering and
+bound-workspace flag. The event cursor is derived from event rows. Model, mode,
+lineage and human execution authority are not fields in the Python session row.
+`Clone` detaches pointer/slice data before a persistence consumer takes ownership.
+
+The consumer-owned `SessionStore`, `TranscriptStore`, `EventStore`, `LeaseStore`
+and `ApprovalReader` interfaces use concrete records and named IDs/epochs.
+`LeaseOwner` is a process identity, separate from tenant `OwnerID`. Deleting
+operational session/messages/events must retain action and approval audit rows.
+An empty message append returns the requested epoch's count; message ordinals
+continue across rewritten epochs. A nil epoch selects the highest stored epoch.
+`StateStore` aggregates these with action/approval storage for explicit managed
+session composition. The standalone app still has no state-store activation.
+
+`agent.DecodeStoredEvent` reads the current flat writer projections into closed
+event variants, bounded to 16 MiB per row. It requires a positive sequence and
+epoch, a session ID and nonnegative depth. Tool inputs are decoded through the
+existing closed protocol boundary, including its smaller input limits. Unknown
+event/compaction variants fail explicitly; extra unused properties are ignored.
+The rendered error string is retained; its original in-memory cause category is
+not available in the flat row. System-prompt strings and the current single
+cached text-block shape are supported. The existing writer determines ephemeral
+progress markers and canonical approval-refusal reasons on re-encoding.
+
+Stored message lineage remains informational: the decoder assigns untrusted
+authority, no actor and no approved capabilities. Reading approval-grant events
+does not install grants into a broker. This decoder does not execute a turn,
+restore a session, enable durable SSE or implement a SQLite backend.
+
+Snapshot 44 executes Python SQLite directly: two connections, epoch history,
+provider-object serialization, transaction rollback, leases at exact expiry,
+upsert preservation, explicit unknown transitions, audit-preserving deletion,
+concurrent append, v1 migration and future/corrupt-file refusal. Go checks those
+record/message shapes and all current writer variants, including a real tool
+loop and malformed/authority-bearing archival rows. SQL outcomes currently
+remain Python evidence. Live injection is now available through
+`RuntimeConfig.StateStore` and `ManagerServices.StateStore`; optional
+`StateLeaseOwner`/`StateLeaseTTL` and manager-generated process identity preserve
+the tenant/lease distinction. A manager defaults to a stored journal and approval
+rows, while preserving explicit overrides. The caller owns backend close.
+
+Transcript growth is flushed before provider calls, versioned after prefix
+replacement and projected through the registry without mutating live content.
+Session-row explicit system and Todo data follow the source projection; masking
+is applied to transcripts, events and queued steering rather than every metadata
+field. The current epoch count is checked before a request. Events write before the
+subsequent flush; a rewrite event retains its old epoch stamp, while the next
+event uses the new epoch. Ephemeral events consume live sequence IDs only.
+`PersistenceStatus()` reports configured state, masked sticky write faults and
+lease confirmation history; confirmation alone is not a current holder query.
+Ordinary write errors/panics degrade; invariant/query failures stop a request.
+Confirmed renewal loss cancels the turn before later model/tool admission.
+
+Claims occur after serialized turn admission. Queued steering is saved before
+acknowledgment. Delete disables later writes before deleting rows/cancelling work;
+stop releases leases after drain. Cleanup errors are reported without preventing
+remaining cleanup. Renewal and session row refresh require transcript growth,
+so stored status can remain `running` after final text has already been flushed.
+The default manager journal explicitly marks all started actions unknown, as in
+Python; this policy is not proof that a foreign process is dead or external fencing.
+
+Snapshot 45 runs actual Python AgentSession over SQLite to pin guard/capture,
+masking, epochs, metadata timing, ephemeral sequence/ordinal differences and
+confirmed/unconfirmed renewal loss. Go runs the same recipe and failure outcomes
+against a test-only backing. Driver approval and native schema opening are now
+complete; record backend execution
+and durable SSE/launcher activation remain open; passing injection tests does
+not establish physical durability.
+
+`manager.RestoreSessions(ctx)` is an explicit library operation over the supplied
+backend. It restores recorded tenant/workspace/system/run/status, the highest
+transcript epoch and immutable prefix references, Todo and steering. Missing saved
+workspaces are recreated; the new-session workspace factory is not invoked.
+Handles start interactive with no active turn, including recorded `running`
+status. Restore neither installs grants nor activates historical work. The next
+sequence exceeds both physical cursor and stored payload sequences.
+
+Claims precede expiry of pending approvals and crash-tail repair. Expired parked
+calls receive the canonical not-run result; other unanswered calls receive unknown
+results. Bare user tails receive the interruption marker. Repairs append in the
+same epoch; Todo/steering are installed first so the write preserves metadata.
+A foreign-held handle reports `RestorePending` and refuses parked steering; turn
+admission can claim, reload the latest facts, then finish repair. Failed reloads
+release the acquired lease and remain pending. `PersistenceStatus` also reports
+`Restored` and a detached list of `RepairedToolUses`.
+
+Restore read/repair errors prevent publication. Existing historical rows and
+workspaces are retained, including any partial writes; no fleet transaction or
+repair rollback is claimed. Stop waits for restore and refuses late publication.
+Already live IDs are skipped, while reserved/retired IDs fail. Source snapshot 46
+captures seven actual Python/SQLite cases and its repair-time Todo/queue overwrite,
+physical sequence reset and repair-before-claim behavior; Go explicitly fixes
+those three boundaries. Tests make the first resumed model request and check
+pairing and persistence-before-request. The test backing does not prove SQL,
+restarts, concurrent connections or cross-process fencing. Plan/goal event
+variants remain unsupported. `RestoreScheduledSession(ctx, id)` is the privileged
+stable-ID resolver used by cron. It returns live handles unchanged. Saved bound
+rows retain the recorded workspace; saved scratch or missing rows use the current
+factory (the default is WorkspaceRoot/id). Scheduled construction uses the current
+system builder and does not reinstall saved explicit system, matching Python.
+Saved rows restore owner/history/run/status/Todo/steering. Missing rows produce
+an anonymous handle with no history; a missing-row claim refusal leaves it pending
+and prevents any turn/upsert. No-store fallback can run ephemerally.
+A successful growth upsert advances the expected stored projection, so retry after
+partial repair can accept its own selected workspace/system while refusing a
+foreign identity. Restore requests share a lifetime cancellation context; manager
+Stop cancels cooperative reads and joins before lease release/return. Snapshot 47
+executes actual Python manager/SQLite-or-Null restoration and the next model call.
+
+### Use the direct HTTP model adapter
+
+`provider.New(provider.Config{BaseURL: endpoint, APIKey: key})` returns a concrete
+`agent.Provider` usable in `ManagerServices.Provider` or `RuntimeConfig.Provider`.
+Construction reads no environment/profile credentials. The default endpoint is
+`https://api.anthropic.com`; a compatible base path is retained before appending
+`/v1/messages`. The adapter preserves typed request cache annotations and reports
+the response's served model and usage through existing model events.
+
+SDK retry behavior is pinned to Python Anthropic SDK 0.107.1: two retries,
+408/409/429/5xx and connection/timeout/body-read failures, retry override headers,
+0.5..8s exponential backoff with negative jitter and <=60s Retry-After including
+ms/date forms. `Failure` exposes named kind/class/status and separate header
+metadata. This is independent of the Agent recovery policy documented below. Default budget preflight reflects SDK non-streaming limits; custom
+timeouts opt out. A whole-attempt deadline and caller context own calls/waits.
+
+Config permits explicit byte limits (default 8 MiB, maximum 64 MiB), 0..10 HTTP
+retries, a client, and concurrency-safe waiter/clock/jitter seams. Reply ingress
+validates signed thinking and supported default-tool inputs; unknown content
+fails. Five named citation variants and immutable closed extension data survive
+HTTP/SSE, forwarding, masking and SQLite restoration. Explicit `AuthToken` and
+ordered `[]provider.Header` support bearer and custom authentication headers;
+construction validates/copies headers and custom values override static ones.
+Diagnostics scrub key/token/auth-header credentials. Redirects are refused on
+a private HTTP client copy; the supplied client's policy is not modified.
+
+Launcher captures `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_CUSTOM_HEADERS` from
+configuration. A nonempty Settings API key suppresses environment bearer auth,
+matching Python Settings/provider_for; an explicitly empty environment key can
+accompany bearer auth as an empty X-Api-Key header. Custom headers can override
+static authentication. Inspection/snapshots discard live tokens and header values;
+provider identity retains explicit API-key presence, so bearer-only selection
+still reports an absent key. Explicit `Config.Credentials` supplies a typed callback returning validated
+immutable AccessToken values. One synchronized process-local cache belongs to
+the Client and is shared with streaming. SDK 120/30s windows, five-second
+advisory failure backoff and one token-exchange 401 forced retry are retained.
+Callbacks must honor contexts; waiting callers can cancel independently. Static
+auth headers bypass dynamic fetch. Dynamic tokens add OAuth API beta. Model 401
+does not refresh/replay; InvalidateCredentials explicitly forces the next fetch
+without fencing a fetch in flight. Each response scrubs its own token during
+concurrent rotation. File/provider lifetime stays caller-owned. `NewFileProfile(ProfileConfig)` now
+implements explicit file-profile user OAuth credentials. Supply its
+`ModelBaseURL()` and `Headers()` to provider Config, and the profile as Credentials.
+Configuration is read at construction; secrets are re-read when the cache fetches.
+With client_id, expired/forced tokens use the refresh_token grant and atomically
+replace a private 0600 file while preserving extension members and an omitted
+refresh token. Without client_id, rotation remains external. Named model and
+exchange endpoints preserve caller/profile precedence. Profile defaults are
+explicit captured values; it never reads environment variables. Bounded JSON,
+strict string fields, checked civil-time expiry and exact-loopback HTTP admission
+are documented native adaptations. `NewFederation(FederationConfig)` now supplies
+explicit native jwt-bearer exchange with a typed identity source. Literal tokens
+are detached; projected token files follow symlinks and reopen for each exchange.
+Optional request fields are copied; scope remains informational. The driver sends
+both exchange beta flags, validates required expiry/token type, and bounds
+assertions/responses to 16 KiB/1 MiB. Client's existing cache owns reuse and forced
+401 retry. Model 401 does not invalidate/replay. Callback errors/panics and
+exchange replies cannot leak token bodies through diagnostics. `FileProfile` now
+selects `oidc_federation`, validates required selection before cache reads and
+reuses guarded disk tokens with more than 30 seconds remaining. Fractional disk
+expiry retains Source freshness semantics; returned token expiry is an integer.
+Invalid expiry triggers exchange; forced refresh bypasses freshness. Cache writes
+preserve extensions/refresh tokens and use private atomic replacement. Filesystem
+write failure still returns the exchanged token. Reconstructing the profile/client
+reuses a fresh disk cache; all profile exchanges default to 30 seconds. Captured
+federation defaults fill only unset fields. Automatic Launcher discovery, remaining
+request options and production conformance remain pending.
+
+### Typed decision operator library
+
+`go/decisions` evaluates explicit state into `choice`, `score` and `noul`
+judgments. `Request`, `Question`, `Answer`, `Result`, `TokenUsage` and `Provider`
+are named types. The JSON Value domain contains only null, string, number,
+boolean, array and object variants; it stores no `any` or raw JSON. Containers,
+questions, answers and optional usage are detached on construction and access.
+JSON is decoded at a strict boundary with duplicate-key, UTF-8, nesting and byte
+checks. Empty state is allowed; instructions must be nonempty. Question IDs and
+answers must match, probabilities must cover the requested criteria and sum to
+one, choice must select a maximum, and score/legend must match the exact rubric.
+Jev confidence is retained; noul gets no synthesized confidence.
+
+```go
+q, err := decisions.NewNoul(decisions.StringValue("Is a workaround explicit?"))
+if err != nil { return err }
+request, err := decisions.NewRequest(
+    decisions.StringValue("CSV export failed; JSON export still works."),
+    map[string]decisions.Question{"workaround": q},
+)
+if err != nil { return err }
+backend, err := decisions.NewJev(decisions.DefaultJevConfig(apiKey))
+if err != nil { return err }
+result, err := backend.Evaluate(ctx, request)
+```
+
+Jev is an explicit operator library; the calling application selects the data
+and authorization. Construction is offline. Evaluation uses the source fixed
+`https://api.typesafe.ai/v1/systemone`, never follows redirects, and never falls
+back to another backend. Defaults are model `jev-latest`, total timeout 20 seconds
+and two retries; explicit configuration allows (0,120] seconds and 0..3 retries.
+Only HTTP 429/529 retry; numeric Retry-After values cap at two seconds and invalid
+values use bounded exponential fallback. Response bodies cap at 512 KiB while
+reading. Transport/status/malformed-JSON feedback omits response/credential data.
+The actual returned model, provider `typesafe`, probability source `jev` and
+complete token usage remain explicit. Owned clients ignore environment proxies
+and close idle connections. Borrowed clients/transports remain caller-owned;
+redirect policy is applied on a private client copy.
+
+Snapshot 53 compares 28 actual Python request cases, 22 result cases, four UTF-8
+budget boundaries and 21 isolated HTTP recipes. Native tests add detached
+constructor/accessor snapshots, surrogate/duplicate/nonfinite refusal, exact
+integer/float legend equality, total deadline/cancellation, early read bounds,
+real local HTTPS redirects and concurrent independent calls. No paid Jev request
+is made. Go usage uses signed-64 counts; Python accepts unbounded integers. Go
+refuses duplicate local request keys, nonstandard nonfinite JSON and excessive
+raw/ignored response nesting before domain decoding. Map ordering is canonical,
+so byte-for-byte object key order is not a compatibility promise.
+
+The runtime can explicitly install this tool with `RuntimeConfig.DecisionTools`
+or `ManagerServices.DecisionTools`. `DecisionProvider` selects a custom/Jev
+backend; when omitted, a fresh isolated current-LLM query is used. Supplying a
+backend alone does not install the tool. The ten default tools remain unchanged.
+
+```go
+config := agent.RuntimeConfig{
+    DecisionTools: true,
+    DecisionProvider: backend, // an existing decisions.Provider; nil selects LLM
+    DecisionLLM: agent.DecisionLLMConfig{MaxOutputTokens: 4096},
+}
+// Pass config to NewRuntimeSession. Managers use the same fields in ManagerServices.
+```
+
+The external-risk gate preserves before/guard/permission/execute/after/observer
+order, readonly refusal and interactive approval. Explicit state and description
+strings/member names are masked and revalidated before either backend. Both
+backends share the session model limiter; custom providers receive detached
+requests and must honor cancellation. Total tool timeout is 60 seconds.
+
+The LLM query has one explicit user JSON message, the source system prompt and
+no tools, parent transcript, cache policy, stream or parent meter. Recovery is
+shared, with isolated model fallback and actual served model/usage. Only complete
+end-turn text/thinking/opaque-thinking replies are accepted; text alone feeds
+bounded strict estimation. Response key order determines ties and numeric folds.
+Confidence is normalized entropy, not calibrated correctness. Zero LLM settings
+select 60 seconds and 4096 output tokens; negative values fail construction.
+`NewLLMDecisionProvider(parent, run, config)` pins explicit run provenance.
+
+Typed decision events carry metadata; full masked inputs remain private trajectory
+fields. Recording-only masked tool projections cannot execute or acquire action
+identity. Native tests retain and replay a full result larger than 4 KiB without
+another provider call; replay still crosses current guards. Snapshot 54 compares
+31 actual Python LLM recipes and eight common-gate outcomes, including masking,
+provider faults, small custom model events and parent isolation.
+
+Native reply contracts require complete usage/model; Python permits missing usage.
+Go refuses lone surrogate JSON earlier, and unknown backend failures use sanitized
+`RuntimeError`. Derived floats compare within 1e-12; raw probability spelling is
+retained. The standalone launcher now accepts `MINILOOP_DECISIONS=off|llm|jev`.
+Jev requires `TYPESAFE_API_KEY` and uses `MINILOOP_DECISION_MODEL` (jev-latest by
+default). `launcher.Options.DecisionProvider` overrides a selected backend; alone
+it leaves off-mode disabled. With environment off, `DecisionTools` explicitly
+selects LLM when no backend is supplied. `--dump-config` reports off/llm/jev/custom without provider I/O or exposing
+credentials; executable startup may read dotenv files. FakeLLM does not substitute a fake Jev backend.
+Snapshot 55 compares actual source memory/SQLite-reopen large-result replay and
+aggregate shedding. Native gate tests retain exact maximum-size bytes, replay
+from a fresh session, retain three of five maximum results under the shared
+budget, and preserve shed action identities without reexecution. Unicode bounds
+and recorded-tool reconciliation match source. Recreated stored adapters use a
+test backing. Snapshot 56 compares cooperative cancellation, cancelled action
+settlement and permit release. Go also masks the closed backend result before
+JSON escaping, covering backend model strings with quote/Unicode secrets. Managed
+tests inspect nested decoded results across live/SSE, EventSink, journal, stored
+messages/events and private trajectories. This closes a source escaped-output
+masking gap recorded by the negative recipe. Native SQLite/restart and live
+provider verification remain pending.
+
+### Use streaming model calls
+
+`provider.NewStreaming(provider.Config{BaseURL: endpoint, APIKey: key})` selects
+SSE explicitly and can replace the Provider in the same runtime/fleet configuration.
+The session detects the consumer-owned `StreamingProvider` interface. Callbacks
+carry named `protocol.StreamDelta` text/thinking variants and run synchronously;
+they must stop before the provider returns. The returned ModelReply remains the
+only authoritative model response used by tool dispatch and token accounting.
+
+Every send has a fresh ephemeral stream_start, coalesced masked assistant_delta
+progress (200 Unicode chars or 200 ms on incoming fragments), then final
+assistant_text events correlated by stream_id and classified commentary/final_answer.
+Ephemeral progress does not replay. Only flushed text, never thinking or pending
+fragments, is retained above a managed cancellation marker. Successful streams
+clear partial text before returning, including compaction summaries.
+
+Wire assembly validates stopped text, signed thinking and complete default-tool
+JSON. Configured total wire caps include ignored frames; each frame/line/block and
+session progress are bounded by the protocol's 512 KiB limit. SDK retries cover
+opening failures/statuses, and streaming lifts the direct token ceiling. An owned
+body drop/timeout is surfaced to Agent recovery, which starts a fresh generation. Go requires a final delta/stop instead of accepting unchecked partial EOF
+snapshots. Unknown content deltas and nonempty citations remain pending. No external endpoint calls were used to validate this slice.
+
+### Configure stream progress and offline clients
+
+`RuntimeConfig.StreamProgress` and `ManagerServices.StreamProgress` capture typed
+character/duration thresholds and an optional `StreamClock`. Nil fields select
+200 Unicode characters/200 ms. Explicit zero or negative thresholds publish every
+nonempty fragment, matching Python. Duration is checked on fragment arrival; there
+is no timer-only flush. Clock callbacks are synchronous and must be safe when
+shared. Constructor snapshots reach future forks and fresh children; each stream
+still owns fresh buffers, shown-answer state and an independent generation ID.
+
+```go
+chars, duration := 400, 100*time.Millisecond
+config.StreamProgress = agent.StreamProgressConfig{
+    CoalesceChars: &chars, CoalesceDuration: &duration,
+}
+fake := agent.NewFakeProvider(agent.FakeProviderConfig{})
+config.Provider = fake // direct; no streaming or environment discovery implied
+config.Provider = fake.Streaming() // explicit stream view over the same client
+```
+
+A `*FakeProvider` owns an atomic call sequence (`msg_fake_000001`, ...). The zero
+value `&agent.FakeProvider{}` and NewFakeProvider defaults enable signed thinking,
+use the one-bash-then-summary responder, zero delay, and an 8192 direct ceiling.
+Thinking signatures use the Python direct/stream ordinal convention; final usage
+counts all blocks and the full request, and reports the requested model. Streaming
+lifts the ceiling, ignores the direct delay, and fragments text/thinking by Unicode
+characters as Python does. Bare FakeProvider has no streaming interface.
+
+`FakeProviderConfig` captures an optional Thinking pointer, explicit Delay,
+NonStreamingCeiling pointer, DisableNonStreamingCeiling flag and typed
+FakeResponder. A responder returns FakeGeneration content/stop reason; the client
+stamps message identity, thinking, usage and model. Shared responders must honor
+contexts and synchronize state. Use pointers and do not copy clients after use.
+No `MINILOOP_FAKE_DELAY` discovery is implemented yet. The fake proves offline
+protocol/runtime behavior, not endpoint conformance or cache reuse.
+
+### Configure Agent recovery
+
+Nil `RuntimeConfig.Recovery` or `ManagerServices.Recovery` selects DefaultRecovery.
+Use `agent.NewDefaultRecovery(agent.RecoveryConfig{FallbackModel: "backup"})`
+for fallback, or `agent.DirectRecovery{}` to disable Agent recovery. SDK transport
+retries remain independent. Optional pointers configure zero retries/continuations
+or disable escalation; values must be within 0..100. Waiter/Jitter dependencies
+must honor contexts and be safe when shared. Attempt state is local to each call.
+
+Defaults match Python: ten transient retries, 0.5..32s exponential base with
+0..25% positive jitter, finite Retry-After seconds capped at 300s, and 300s total
+outer wait. Shared model permits cover a call (and SDK waits), but not outer
+backoff. Three overloads can select the configured fallback; selection persists
+for subsequent session requests, while children/forks start with fresh override
+state. The default does not configure a fallback.
+
+Truncated replies can regenerate at 64K when the budget increases at least 1.5x;
+listed SDK non-streaming ceilings cap that request. A refused unknown-model
+escalation restores its budget and keeps the original partial. Up to three text
+continuations return the entire answer with the final call's usage/identity. A
+truncated reply containing tools returns for dispatch without an orphaning user
+continuation. One reactive shrink preserves tool pairing and rebases retained
+cache markers; it retries only if the outgoing surface shrinks and mirrors live
+agent history explicitly. Internal summaries do not replace the live transcript.
+
+The consumer-owned Recovery seam accepts concrete RecoveryInput/RecoveryServices.
+Provider adapters expose typed protocol.ModelFailure evidence; custom Go errors
+without that interface retain compatible overload/rate/context/streaming message
+classification, but connection errors should expose a typed failure kind. Durable
+recovery state, advanced provider variants remain pending. Protected efficiency projections are installed.
+
+### Control a managed session
+
+`Steer(text)` parks input for the next round/turn and reports queue length.
+The queue holds 100 entries, drops oldest, and caps each at 16,000 Unicode
+characters plus a visible truncation marker. `ChangePermissionMode(mode)` updates
+readonly/interactive/auto without blocking on the model. Permission evaluation
+reads current mode after before/guard hooks; already made decisions and parked
+approvals remain governed by their existing lifecycle. After the first run starts,
+a real change queues the source meaning gloss in a separate posture_update. Initial
+changes and no-ops are silent. Builtin control injections follow custom injectors
+and precede context facts/compaction. Fresh children cannot drain parent controls.
+TryRunWithSnapshot captures completion Info before releasing admission for a
+completed HTTP response/cache. Info exposes live permission_mode and pending_steering.
+Registered secrets mask
+recorded delivery events; raw input reaches the live model history.
+
+`SubmitSteering` (also `SessionManager.Steer(owner,id,text)`) implements HTTP wakeup.
+On an idle handle it atomically publishes a background active holder, starts the
+text as an ordinary default-untrusted turn, and returns DeliveryNewTurn. Busy
+handles queue and return DeliverySteering. Manager deletion/shutdown owns joining
+these holders; request disconnect does not. StopAccepting refuses late control
+calls. A steer sent after the final round may wait for the next turn, matching
+source. These controls are process-local: durable steering/restoration and
+persist_error reporting remain pending. Posture notes retain source's uncapped
+queue; the steering count bound does not describe posture state.
+
+The twenty-second snapshot compares six actual Python control scenarios and six
+HTTP responses. Targeted Go tests cover before-hook mode changes, Unicode/batch
+bounds, concurrent control updates, child isolation, masking, simultaneous wakeups,
+request cancellation and manager shutdown. They establish delivery, not obedience
+by a live model.
+
+### Fork a completed conversation
+
+`manager.Fork(ctx, owner, sourceID)` returns a fresh scratch session initialized
+with an independent copy of an idle paired transcript and named `ForkLineage`.
+It inherits owner, explicit system and current permission mode; the manager's
+default model, fresh Todo board and empty control queues apply. Workspace files
+are not copied. Source admission pins only the detached snapshot; busy/open
+boundaries are refused. Later source turns/idle wakeup can progress during child
+provisioning without changing that captured history. Construction failure releases admission and cleans unused
+scratch; shutdown joins pending creation. Successful forks emit `session_forked`
+in the source stream, and child detail/listing exposes `forked_from`.
+
+The HTTP route is `POST /sessions/{id}/fork`: ownership precedes rate budget,
+busy returns 409 and success returns child Info. This implementation is
+process-local. Python's configured StateStore flush before the first child turn
+remains pending in Go.
+
+### Run the standalone HTTP server
+
+The binary embeds the same default `code_review` skill as `python/skills`, and
+can run from outside the checkout with no Python interpreter. From this directory:
+
+```sh
+MINILOOP_FAKE_LLM=1 go run ./cmd/miniloop
+# Or build, then run with the same explicit environment settings:
+go build -o /tmp/miniloop ./cmd/miniloop
+/tmp/miniloop --dump-config
+```
+
+`HOST` defaults to `127.0.0.1`, `PORT` to `8000` (zero selects an ephemeral port).
+To use the real HTTP model adapter, supply `ANTHROPIC_API_KEY`, optional
+`ANTHROPIC_BASE_URL` and `MODEL_ID` instead of enabling the fake client. No real
+provider was contacted during port verification. Token auth uses
+`MINILOOP_API_TOKEN` or owner bindings in `MINILOOP_API_TOKENS`; an unauthenticated
+non-loopback host, blank host or actual wildcard listener is refused. Sessions
+start in interactive permission mode. Shell execution uses the host, with no sandbox.
+
+`config.Load` covers all 49 Python Settings fields with named enums, optional values,
+integer limits and checked durations. An explicit environment map is isolated from
+process configuration; nil reads process variables. Loading and `--dump-config` do
+not create workspace directories. The launcher passes supported model/budget/depth,
+concurrency, approval, Bash timeout, fallback, rate and workspace settings into owned
+services, and captures `MINILOOP_FAKE_DELAY`. `MINILOOP_SKILLS_DIR` selects a
+filesystem catalogue with the existing digest recheck; absent selects the compiled skill.
+Configuration errors fail instead of guessing, including invalid inactive feature bounds.
+
+Trajectory recording is enabled by default at `MINILOOP_TRAJECTORY_ROOT` or
+`<workspace root>/.trajectories`; `MINILOOP_TRAJECTORIES=0` disables it. A configured
+trajectory root failure refuses startup. The launcher best-effort constructs the separate private
+spill store at `MINILOOP_SPILL_DIR` (default `./var/spill`; empty disables it).
+A root construction failure disables preservation while startup continues, matching
+Python. The launcher also refuses enabled
+comprehensive feature integrations. Efficiency mode/style settings are supported.
+Implemented decision providers and memory roots have independent selections. Inactive optional settings remain typed and validated.
+Ordinary workspace compaction artifacts remain separate from the private store.
+The default structured Bash tool currently bypasses string-output preservation in
+both Python and Go; see the preservation section below. No dependency was added.
+
+`--dump-config` emits a **settings-and-availability** report with credential presence,
+URL credential/query/fragment removal, build revision, process-local state and unavailable
+activations. It creates no manager or listener and makes no provider probe; it does
+not implement Python's full effective harness/tool posture. Executable startup now
+discovers/overrides dotenv once; no subsequent reload occurs. SDK Load/inspection
+do not perform discovery. The compiled CLI uses Source frozen/cwd origin rather
+than ordinary Python configuration-module origin. Go additionally rejects nonfinite/overflowing numbers
+and positive durations smaller than one nanosecond; representability limits differ
+from Python's arbitrary integers/floats. Fake delay is checked even with a real client.
+
+SIGINT/SIGTERM cancel HTTP request contexts and manager-owned background turns;
+shutdown joins the HTTP server and manager under a ten-second independent timeout,
+then closes the owned provider transport. Header reads are limited to five seconds,
+idle connections to sixty seconds and headers to one MiB; no global write timeout
+cuts off model calls or SSE. This is process-local serving, with optional browser data routes,
+session restart/SQLite and optional fleet routes still pending.
+
+The 28th source snapshot compares 64 actual Python Settings outcomes and the default
+skill bytes/descriptions/load output. Real TCP tests cover authenticated tool execution,
+foreign owners, actual bind refusal, active model/queued SSE shutdown, model options,
+Bash timeout and side-effect-free inspection. A built binary was also exercised outside
+the repository, including SIGTERM during a delayed call.
+
+### Preserve oversized string-Bash output
+
+`spill.Store.SaveText(context.Context, spill.Request)` accepts already-masked text
+and returns a typed `spill.Ref` with opaque locator, byte count and retrieval hint.
+`spill.LocalStore` matches the Python private root/new namespace permissions (0700),
+exclusive leaf creation (0600), SHA-256 namespace grouping, safe filenames, random
+16-hex prefix, exact UTF-8 content and 8,000,000-byte limit. Files are synced before
+success; existing names or symlinks are never overwritten. A namespace is a storage
+group, not an owner ACL; existing namespace permissions are retained as in Python.
+Parent-directory races are not confined by leaf exclusivity. There is no TTL or
+purge, and manager deletion/shutdown does not remove these artifacts.
+
+Set `shell.Config.Spill` for direct use, or `agent.RuntimeConfig.Spill` /
+`ManagerServices.Spill` for scoped composition. Runtime binding clones a real shell
+executor without mutating a caller's executor, and preserves credential selection,
+masking and process tracking. Forks use fresh workspace names; selected child tools
+inherit the bound executor. Injected non-shell executors own their preservation policy.
+
+`ExecuteBash` matches Python `Toolset.run_bash`: after full-stream masking, outputs
+over 50,000 Unicode characters save their stripped captured text and append a
+retrieval note. Save errors/panics keep the same preview. Capture bounds still apply;
+this is the complete captured text, not an unbounded producer transcript. A Unicode
+capture may exceed the store's byte limit and retain only its preview. Cancellation,
+invalid UTF-8 and short-write checks plus best-effort cleanup of a failed leaf are
+additional Go behavior. Cleanup checks inode identity before unlinking; the check
+and unlink are not atomic against host tampering. Retrieval hints are text and
+are not executed by the store.
+
+**Actual default behavior:** Python's built-in Bash calls `run_bash_result`, and
+Go's built-in Bash calls `ExecuteBashResult`. These structured surfaces currently
+bypass the string preservation policy. The 29th actual-source snapshot checks both
+interfaces and a managed Python tool round (zero preservation artifacts). It also
+pins fourteen local-store cases, collision/symlink refusal, eight real shell cases,
+three projection cases and three best-effort manager construction cases. This
+source behavior is recorded as a gap, not advertised as default full-output storage.
+
+### Record and read per-run trajectories
+
+`trajectory.New(trajectory.Config{Root: path, CaptureContent: true})` creates a
+private file store. Pass it through `agent.ManagerServices.Trajectories`; for a
+standalone `ManagedSession`, use `agent.RuntimeConfig.Trajectories` (writer only).
+Raw child/core Session instances do not own separate outer runs. Named Start,
+Finish, Summary, Metrics and Query structures keep the runtime domain typed;
+unknown historical JSON fields survive only at the serialization boundary.
+
+Each run records masked input/metadata, full model requests/responses, full tool and
+child text, ordered non-ephemeral events, and terminal metrics. These full fields are
+private recording details, absent from the bounded live backlog. CaptureContent=false
+applies Python's recursive content-key redaction. Recording faults do not fail the
+model turn; Info and the terminal event report them. The persistence receipt is
+published only after file finish, with terminal status/duration already recorded.
+
+Authenticated GET routes are `/trajectories`, `/sessions/{id}/trajectories`,
+`/trajectories/{id}`, and `/trajectories/{id}/export?format=json|jsonl`. Recorded
+owners are checked before bulk reads. JSON inspection/export has an eight-MiB source
+limit; JSONL streams without a client-held append lock and aborts a failed response.
+Summary scans retain one capped line, not an event array. Files remain readable by
+the recorded owner after server restart and ordinary session deletion. An explicit
+library `DeleteSessionOptions{RemoveTrajectories:true}` drains the writer before purge.
+
+New roots use 0700 and files 0600; reused modes match Python. There are 32 process-local
+striped locks, a Go-specific 64 MiB record cap, and no file fsync or process lease.
+Evidence persistence does not provide session restore or durable event catch-up.
+The store retains at most 50 distinct diagnostic messages with occurrence/eviction
+counts. The HTML viewer and filtered record visitor are implemented below. The thirtieth
+source snapshot covers eight source files, seven managed cases, sixteen HTTP outcomes
+and ten duration rounding boundaries. Tests add concurrent appends, masking, full
+versus live text bounds, terminal publication ordering, stream failure, active purge,
+JSON refusal, retained owner reads and default launcher activation. No dependency added.
+
+### Inspect a trajectory as an HTML ledger
+
+GET `/trajectories/{id}/view` returns the existing Python ledger design as a
+self-contained page. Owner checks precede file size and full JSON reading; the
+page shares the eight-MiB source limit and response security headers. Every input,
+output, label and inspector field crosses the same escaping boundary. Source CSS
+and filter JS are embedded without translating labels or substituting typography.
+
+`traceview.Build` returns named Ledger/Row/Field/Metrics values; encoded JSON remains
+transient at decoding. Span pairs fold once; child depth/agent labels remain visible,
+request numbers cover normal and compaction calls, and parent step numbering excludes
+child calls. Unknown events render generically. Reference payloads live in inspectors.
+Unclosed spans show start markers and `in flight`. Totals are computed before keeping
+the last 2000 rows; previews use 240 characters and inspector fields 20,000, with
+explicit omission markers. Render accepts an explicit generation timestamp.
+
+The offline CLI accepts an export file, trajectory ID or recorded session (up to
+500 recent turns rendered chronologically), with flags before or after the target:
+
+```sh
+go run ./cmd/traceview /path/to/export.jsonl -o /tmp/run.trace.html
+go run ./cmd/traceview SESSION_ID --root /path/to/.trajectories --output /tmp/session.trace.html
+```
+
+New output files use 0600; existing output modes remain unchanged like Python.
+Missing file end records mean interrupted; malformed JSON marks partial, blank lines
+are ignored and the last end wins. Operator-selected files have no whole-file HTTP
+size cap, but retain the Go store's 64 MiB per-line limit. Operator reads do not claim
+HTTP ownership admission, filesystem confinement or crash-durable writes.
+
+`TrajectoryReader.VisitRecords(ctx,id,TrajectoryEventQuery,visitor)` streams detached
+wire bytes. Nil Types means all record types (including headers/ends); an empty slice
+means none. Limit counts yielded records, so a filtered query may scan the entire
+file. Missing/unreadable files yield no records as in Python; cancellation and visitor
+errors propagate. No append lock spans the visitor. Snapshot 31 compares eleven
+actual Python complete HTML pages, exported-file assembly, nine iterator outcomes,
+four HTTP page/error responses and exact CSS/JS hashes. No dependency was added.
+
+### Persistent workspace task graph
+
+`RuntimeConfig.TaskTools: true` or `ManagerServices.TaskTools: true` explicitly
+adds create_task/list_tasks/get_task/claim_task/complete_task to the ten defaults.
+The default `task` is child delegation; these five operate persistent task records.
+The standalone launcher keeps comprehensive `MINILOOP_FEATURES` unsupported.
+Library opt-in does not pretend the full optional bundle is available.
+
+`tasks.New(tasks.Config{Workspace: path, Secrets: masker})` exposes named Task,
+ID/Owner/Status, dependency, worktree and diagnostic records. A board is under
+`.tasks`, initialized lazily by runtime tools. Only unblocked pending tasks can
+be claimed; an exclusive `.owner` file arbitrates between processes. A stale
+marker reports its holder/crash window and is retained for operator inspection.
+Completion writes completed state before removing the spent marker. There is
+no lease, automatic stale-marker takeover or general cross-process write lock.
+
+Writes cap subject/description at 16,000 characters with a notice, mask the
+structure before JSON escaping, fsync a fresh same-directory file and rename,
+then best-effort sync the directory. Creation modes follow the process umask
+like source. Go adds a 64 MiB record-read cap and uses 32 striped process locks.
+List/render still scan the whole board; only display is bounded to 50 tail rows
+and 200-character subjects. Missing dependencies are reported across all rows.
+Diagnostics retain 50 distinct messages with total/eviction counts. Complete
+records remain addressable by ID, and task files are not automatically pruned.
+
+GET `/sessions/{id}/tasks` checks owner before fresh store access and returns
+structured rows without descriptions or consuming claim markers. It works with
+tool opt-in disabled, as Python does. New empty views may create `.tasks`.
+Workspace sharing and operator library access are not host ACLs; host-edited
+parent/symlink paths are not confined by this file store. Scratch deletion still
+removes its board; retained/bound workspaces can reopen files across processes.
+Typed decoding rejects unknown status and malformed non-string inputs; Python's
+open dataclass coercions are not a Go domain contract. No dependency was added.
+
+Snapshot 33 runs 53 source store steps, six actual installed-tool outputs,
+five schemas/traits and five HTTP results. Go tests add real process contention,
+readonly refusal before directory creation, argument cloning/masking/null identity,
+manager/fork activation and fresh workspace isolation.
+
+### Operator background commands
+
+`background.New(background.Config{Shell: shell.Config{Workspace: root}})` creates
+an explicit library service. `Run(ctx, Request{Command: command})` returns a typed
+Started value immediately; `Started.Render()` matches source text. The caller
+context controls admission only. Tasks have independent contexts and Unix
+process groups; use `Wait`, `Get`, `Check`, `LiveCount`, `Drain` or `DrainBatch` to
+observe results. `CancelAll` returns joinable handles; `Close(ctx)` cancels and
+joins the current handles, with the caller responsible for admission quiescence.
+As in Python, a later Run remains allowed. Foreground Interrupt excludes them.
+
+Commands pass the same case-sensitive typo blocklist, sandbox argv, scrubbed
+and selectively injected environment, whole-stream masking and group cleanup
+as foreground commands. Background merges stdout/stderr into one native pipe
+and bounds **bytes**, retaining raw newlines and Python maximal-subpart UTF-8
+replacement. Foreground counts decoded characters and normalizes newlines.
+Default capture is 5,000,000 bytes, default timeout is 300 seconds. `Request.Timeout`
+is optional; explicit zero uses the default and negative is an immediate timeout.
+Finished nonzero exits remain Completed with visible exit text; timeout/spawn
+faults are Error. Rendering preserves the 50,000-character tail recipe.
+
+`Config.MaxResultsRetained` nil means 100, explicit zero sheds every full result,
+and negative is refused. Shed task records still answer with the source marker;
+completion notifications keep independent text until drained. No-argument Check
+lists the newest 50 tasks. DrainBatch keeps the latest 50 notifications and names
+the omitted count. Metadata and undrained notification queues remain unbounded,
+as in source; this is not a globally bounded task store.
+
+The original workspace `.background` ledger records masked 200-character
+command previews, PID and start time before/during execution. Writes are atomic
+best-effort private leaves without fsync or a host ACL; a failed initial write
+adds the source unrecorded warning while execution proceeds. Terminal completion
+and cancellation remove the record. On construction, matching records become
+Orphaned, the counter reserves numeric IDs and the ledger is removed. PID
+liveness is informational, with no ownership/PID-reuse proof; Close never signals
+adopted PIDs. No restart replay, process adoption or session restoration occurs.
+
+Rebind prepares a fresh executor before publishing future cwd/sandbox. Admitted
+commands keep the prior executor; the ledger stays at its original root, matching
+source's pinned `_ledger_dir`. Go additionally publishes deterministic cancelled
+metadata and cleans the ledger even if cancellation precedes process start;
+actual Python cancellation before coroutine entry leaves Running and a record.
+Go also bounds orphan reads to one MiB, rejects malformed field types, catches
+start observer/worker panics without secret-bearing panic values, and refuses
+negative retention. Numeric ledger filenames reserve IDs using Python Unicode
+14 decimal digits, including mixed scripts and arbitrarily large counters. Other
+numeric characters such as superscripts remain reportable orphans; Python can
+raise ValueError while adopting them. No lease is inferred.
+
+`RuntimeConfig.BackgroundTools: true` enables two additional native-session
+model tools through the common gate: background_run (exec) and check_background
+(read). Named inputs preserve absent/null/zero values, detached optional pointers,
+canonical action/step identity and masked recording copies. Timeout is optional
+integer seconds; Go rejects values outside its native duration range instead of
+overflowing. Both shell tool names use the same immutable command deny list,
+destructive-command approval and validated remembered prefix logic.
+
+Activation requires a real shell.Executor bound to the session root. Per-session
+state constructs its manager lazily, including when an existing nonempty ledger
+must surface without a tool call. No caller-supplied shared manager is accepted.
+Enabled Bash uses explicit true or the source slow-operation heuristic to enqueue;
+only the explicit true flag changes scheduling to parallel. Other Bash calls remain
+exclusive and preserve typed foreground metadata. Disabled activation keeps both
+foreground behavior and the default ten-tool catalogue.
+
+Before model requests, completed work becomes a bounded user task_notification
+batch and typed background_result count/dropped event. The injector consumes the
+queue once, keeps the newest 50 and leaves omitted IDs queryable. Operator
+interruption markers name tasks still running, except when repaired tool results
+must remain last. Turn cancellation never closes background task ownership.
+
+Workspace entry prepares the native shell once and publishes it to the background
+state alongside the other execution bindings; in-flight work and original ledger
+stay pinned. Default child roles omit the two capability-empty tools and retain
+native foreground Bash with fresh state. Explicit role selection of background
+tools now binds independent child state, including a check-only catalogue without
+foreground Bash. Source readonly rules still deny Explore execution.
+
+Each selected child uses a `bg_<scope>_<counter>` identity: scope is the 64-character
+SHA-256 of its newly derived peer message identity. Root IDs remain bg_0001 etc.
+The parent adopts preexisting root ledger evidence before child admission;
+`background.NewScopedWithExecutor` accepts only a bound executor and a validated
+lowercase hexadecimal Scope, and never adopts the shared root. This preserves
+both live parent and child records and independent queues/counters. The source
+counter format differs deliberately for children to avoid same-root collisions.
+Root startup adoption reports qualified records as ordinary orphans without PID
+control; source root numeric counters are unchanged.
+
+Child tasks can outlive the returned summary, as in Python. Parent ownership
+retains their scopes and descendants for CloseBackground / manager cleanup;
+cancellation is requested for the entire tree before any handle is awaited.
+Checks, completion queues and interruption live counts remain local to each
+scope; the parent model does not automatically receive a returned child's queue.
+Retained child states/queues are not globally bounded. This is process-local
+lifetime ownership, not host ACLs, a lease or arbitration between separately
+bound sessions/processes in one checkout.
+
+Snapshot 40 proves an actual source gap with inherited harness injectors: a
+child, including a default role without background tools, adopts the live parent
+as an orphan and unlinks its ledger while that parent keeps running. Selected
+child work also survives return without an automatic source close. Go preserves
+continuing child work while retaining a reachable cleanup owner and avoiding
+live-parent adoption. Default children never construct background state.
+
+Bare library callers quiesce admission then call Session.CloseBackground or
+ManagedSession.CloseBackground to cancel/join ownership. ManagerServices can
+select BackgroundTools for the fleet; every session and completed-boundary fork
+gets independent lazy state and a fresh executor/root. Delete/stop first revoke
+admission and drain the active turn, then close/join any created background
+service before reclaiming workspace/recordings. This includes a service first
+created during the grace window. Idle background owners use asynchronous tracked
+cleanup, and Stop also waits for retiring sessions. Bound and preserved roots
+remain intact; stopping retains scratch as source does.
+
+The standalone executable accepts `--background-tools`; embedding callers use
+`launcher.NewWithOptions(..., launcher.Options{BackgroundTools: true})`.
+`--dump-config` / InspectWithOptions report that explicit choice without starting
+services. This is an individual Go service option: MINILOOP_FEATURES continues to
+refuse the unimplemented comprehensive bundle. Defaults remain ten tools.
+
+Snapshot 38 captures codecs and 15 real gated source calls; snapshot 39 adds five
+actual source manager deletion/stop/fork ownership scenarios. Native Go checks
+cover a still-draining turn, lazy creation after admission closes and shutdown
+through real HTTP serving with a local scripted provider. No production model
+endpoint is called. Snapshot 40 adds six actual source child/catalogue/readonly
+scenarios and native Go scope/queue/ledger/lifetime comparisons, including nested
+ownership and orphan evidence from qualified IDs.
+
+### Operator cron scheduler
+
+`cron.New(cron.Config{Resolver: resolver, DurablePath: path, Secrets: registry})`
+binds the operator library explicitly. Job, SessionID, ID, Request, Invocation,
+Problem and Expression are concrete types. The Resolver resolves/restores a
+session through `ResolveScheduled`; the Runner consumes `RunScheduled` with
+read-only prompt/session accessors and an always-untrusted authority accessor.
+The embedding adapter must create a fresh untrusted runtime context. The manager
+now supplies that adapter and owns the service by default, matching Python even
+with the comprehensive feature bundle disabled. Durable session/lease restoration
+remains pending; the default tool catalogue still contains ten tools.
+
+Parse matches Python's five-field ranges/lists/steps, Sunday 0 and restricted
+day-of-month/day-of-week OR rule. Numeric parsing pins Unicode 14 decimal digits,
+signs/underscores and Python's 4,300-digit limit; whitespace includes the ASCII
+record separators that Go Fields omits. The same decimal table now supplies
+background orphan counters, with their earlier 74 source cases unchanged.
+The supplied local civil minute is the deduplication key; no catch-up or timezone
+conversion is added, and repeated local minutes share the source marker.
+
+Schedule caps prompts at 8,000 Unicode characters and jobs at 200, preserves live
+raw prompts and masks only their stored copies. Per-session cancel/arm answers
+foreign IDs exactly like unknown IDs. ArmAll is an operator act and activation
+is never stored. Loaded valid jobs remain disarmed. CancelForSession removes
+future occurrences; it does not interrupt a run already dispatched.
+
+Durable occurrences create private O_EXCL claim files; losers consume the minute
+locally and stay quiet. Winners mark the occurrence and remove one-shot jobs
+before the atomic temp-file/fsync/rename/directory-sync save, then resolve/dispatch.
+An error never dispatches the occurrence; the claim/consumed memory state remains
+as source does. Only successful saves prune the preceding claim. Cancel removes
+the last claim. Source-compatible stale whole-file state remains between live
+writers: this is not a transactional job database, external exactly-once effect,
+host lease, stale-claim reclamation or replay protocol. Store reads/writes are
+additionally capped at eight MiB and files are private; no host symlink sandbox
+or multi-file commit is claimed. Typed decoding rejects malformed field types;
+Python's dataclass can retain some malformed scalar/null fields. Valid rows and
+dataclass defaults match, duplicate IDs replace in place, unknown fields and bad
+cron rows are diagnosed individually. Source non-array JSON yields an empty store.
+
+Go has no ambient asyncio loop: `Start()` explicitly owns the immediate tick and
+20-second ticker. Schedule alone does not start it. `Tick(time)` is the operator
+and deterministic test path. Stop revokes the current admission generation,
+cancels ticker/runs and joins them; expired observers can resume joining, and
+later explicit Start is supported. A delayed resolver cannot dispatch an old
+generation after Stop. Resolver callbacks may inspect scheduler state; masking
+callbacks run inside persistence and must not reenter the scheduler. Runner
+errors/panics and resolver/persistence panics are reported, a Go addition to
+source's asynchronous task failures. Problems retain 50 distinct entries with
+occurrence/eviction counts; state snapshots are detached. Active runs and source
+armed metadata are not globally bounded. Callers quiesce admission before Wait
+or final lifetime cleanup.
+
+Snapshot 41 compares 27 actual source expressions, 14 operator states, one-shot
+removal, two stale claimers, three claim/save loss cases, masked restoration,
+prompt/job limits and actual source untrusted dispatch/missing-session diagnostics.
+Go tests additionally run two independent processes sharing the store and cover
+native filesystem failures, ticker cancellation/resumed joins and delayed
+resolution. Operator evidence alone does not complete managed runtime validation,
+restoration or G7.
+
+### Managed cron lifecycle
+
+`SessionManager.CronScheduler()` is a privileged operator surface without owner
+checks. User-facing callers instead use `ScheduleCron(owner, session, request)`,
+`CronJobs`, `CancelCron` and `ArmCron`: session ownership is checked first and
+foreign job IDs read like missing ones. Inputs and list rows are concrete types;
+callers cannot choose an authoritative session through ScheduleCronRequest.
+
+The default service stores masked durable jobs at `<WorkspaceRoot>/.cron.json`.
+Construction loads jobs without starting goroutines. `SessionManager.Start()`
+starts existing jobs while retaining their disarmed state; standalone Serve calls
+it after listener admission. An admitted owner schedule starts the ticker,
+including a job retained in memory after a save failure. Invalid requests never
+start it. These managed rules are distinct from raw operator Schedule, whose
+Start is explicit. Arm remains an operator action.
+
+Resolution reuses a live session or lazily calls RestoreScheduledSession inside
+the scheduler-owned cancellation context, then calls Run with a fresh default
+untrusted context: no scheduling actor, approved capabilities or parent message
+identity is reused. The ordinary session queue, common gate, shared pools and
+trajectory capture remain in force. A fork shares the service but has no copied
+jobs. Missing-row lease refusal and stopped/faulted restoration produce bounded
+diagnostics; native Go SQLite backend/restart proof remains pending.
+
+Owner mutations and manager deletion/stop share an admission lock. Delete removes
+future jobs before drain and scratch reclamation; save failure is recorded in
+CleanupErrors and cleanup continues, a Go addition to Python's propagating error.
+Stop revokes admission, cancels pending restore reads and drains managed turns
+before cancelling/joining ticker and runs. Queued jobs cannot reenter, native foreground shells are reaped, and an
+expired Stop observer can resume the join. Preserved/bound workspaces and normal
+stop retain files. Cron masking callbacks must not reenter either scheduler or
+manager cron methods while persistence holds their locks.
+
+Snapshot 42 compares actual source authority, delete/preserve/bound/fork/stop
+states and a live cancelled scheduled turn. Additional Go tests exercise foreign
+owner refusal, detached lists, closed admission, a queued scheduled turn, delete
+save failure, real native-shell cleanup and restored-disarmed launcher startup.
+
+### Cron tools and operator HTTP
+
+`RuntimeConfig.CronTools` installs three concrete protocol inputs and source
+schemas: schedule_cron (write), list_crons (read/readonly), cancel_cron (write).
+All are exclusive, without default child capabilities. A typed CronControl seam
+binds established owner/session identities; model arguments cannot select either
+identity and Arm is absent. ManagerServices.CronTools binds the manager service.
+Standalone `--cron-tools` / launcher.Options.CronTools selects these tools alone;
+MINILOOP_FEATURES remains unsupported. Construction/inspection never starts a
+listener or activates restored jobs. The default tool catalogue remains ten.
+
+Calls cross the existing rewrite/guard/permission/journal/masking path. Optional
+booleans distinguish absent defaults from explicit false and detach on copy.
+The model decoder rejects null/nonboolean values against the advertised boolean
+schema; Python's kwargs handler is more permissive for schema-invalid values.
+Forks preserve activation with new job scope. Selected child handlers have no
+CronControl and report source unavailability instead of borrowing parent state.
+Raw library callers can bind their own typed implementation; they own admission.
+
+Four operator method/path operations are always registered, independently of
+CronTools: GET/POST `/sessions/{session_id}/cron`, DELETE
+`/sessions/{session_id}/cron/{job_id}`, and POST
+`/sessions/{session_id}/cron/{job_id}/arm`. Authentication precedes route work;
+all manager reads/mutations admit session ownership and hide foreign jobs. HTTP
+schedule validates its required nonempty fields and 100-character cron limit
+before owner lookup like FastAPI. It preserves Pydantic boolean strings/0/1 and
+rejects null/other values. Error status parity is tested; full structured 422
+validation detail remains an existing open HTTP boundary. Domain refusals are
+400, hidden jobs 404, closed manager 503 and persistence faults a masked 500.
+
+Operator Arm changes process-local authorization only. Save/reload cannot retain
+activation, and future runs still use the fresh untrusted managed context.
+Snapshot 43 compares three actual tool contexts (24 gate calls), six canonical/
+grant variants, three schemas/traits and 29 real Python HTTP requests. Go tests
+also cover before rewrites, retained raw prompts/masked stores, replay without a
+second schedule, foreign authority, a real model tool round, fresh fork/child
+scope, restored HTTP authorization with no stored activation and local TCP
+launcher-to-provider-to-HTTP composition. No paid provider is contacted.
+
+### Plan mode tools and logged guidance
+
+Select `RuntimeConfig.PlanModeTools`, `ManagerServices.PlanModeTools`,
+`launcher.Options.PlanModeTools` or `cmd/miniloop --plan-mode-tools`. This adds
+`enter_plan_mode` and `exit_plan_mode` with named `ExitPlanModeInput{Plan}`.
+Both stay in the fitted catalog while off; both are exclusive read-risk tools.
+The default tool set stays ten. Full feature activation remains unsupported.
+
+Entry sets the active boolean and emits `plan_mode` even when already active.
+Exit requires active planning and full Markdown beginning with `#` after Python
+whitespace trimming. Optional `PlanApprover` reviews `PlanReviewRequest` with
+bound `ToolAuthority` and returns `PlanReview{Approved, Feedback}`. Rejection is
+source error text with feedback and failed=false/completed journal status.
+Inactive/invalid-plan refusals use the same outcome. Callback/hook errors remain
+failed=true; review errors/panics/cancellation keep active state. Nil
+uses source headless auto-approval. The CLI uses this headless path; the normal
+approval broker is not implicitly a plan reviewer.
+
+`DefaultSystemBuilder` appends the exact source `PlanSection` during planning.
+Custom builders receive `SystemContext.PlanMode`; a fixed system remains fixed.
+Plan state never changes the permission/sandbox policy. Auto can still mutate;
+Readonly still denies writes. The envelope changes with the default prompt,
+while schemas stay stable. `Session.PlanModeActive()` is safe during callbacks;
+shared reviewers must synchronize state, honor cancellation and avoid reentry.
+
+A concrete boolean event survives archival decoding, masked capture, trajectory
+recording and stored-event SSE. Restore folds the last logged value, including
+pending claim reload; a new fork starts inactive. Selected child handlers have
+fresh state and bound child authority; default role profiles omit these tools.
+Like Python, restoration folds all logged plan events including child scopes;
+that restored value is guidance, with no recovered reviewer or human authority.
+Go rejects absent/null/nonboolean archival `active` values; Python's general fold
+uses truthiness, while the actual source tools always emit booleans.
+
+Snapshot 50 compares 35 actual source gate calls across headless, readonly,
+approved, rejected and fixed-prompt installations, plus two actual Python SQLite
+restores and their next requests. Go tests actual model-round prompt changes,
+event-before-request persistence, failure/cancellation, masked feedback, owner
+binding, fresh forks/children and local TCP launcher composition. Runtime storage
+tests use injected memory backings; native SQLite and SQL restart remain pending.
+
+Snapshot 50 also pins all 35 source failed/denied flags. Snapshot 52 runs five
+actual Python manager/Agent loops with real JSONL recording, custom result
+observers and memory journals: reject, approve, reviewer fault, before denial and
+after fault. Native Go matches journal settlement before observers, live/stored
+result flags, stuck ledger flags, model result blocks without is_error, aggregate
+tool-error metrics and same-action replay. Refused plans do not count as tool
+errors; callback faults and denials do. Replay of a stored failed call returns
+its text with fresh failed=false unless a current post hook itself faults;
+current permission/guard denials still win before replay. No new permission or
+reviewer authority is introduced by text outcomes.
+
+### Goal tools and bounded continuation
+
+Select `RuntimeConfig.GoalTools`, `ManagerServices.GoalTools`,
+`launcher.Options.GoalTools` or `--goal-tools`. The five tools are `goal_create`,
+`goal_status`, `goal_complete`, `goal_block` and `goal_resume`; the default catalog
+remains ten. Inputs, revisions, phases, reasons and logged snapshots are concrete
+types. Signed 64-bit revisions fail on overflow; provider JSON is strict, unlike
+Python's coercions and unbounded integers. Omitted/null/zero max_rounds use ten;
+valid caps are 1–100. Goal codes preserve actual Python acceptance of repeated
+or trailing hyphens and one trailing newline, despite the lower-kebab-case label.
+
+Create/resume require explicit human authority stamped by a trusted caller via
+`ExplicitHumanRunContext`. Normal HTTP authentication, cron and child delegation
+remain untrusted/peer. Other mutations use revision CAS without arming. Refusals
+are textual results with source `failed=false`; permission denials remain denied.
+A completed goal can be blocked again, matching the shipped source behavior.
+The source ships no edit/clear/pause tools; clear remains a restore tombstone.
+Cap exhaustion text still refers to the source's nonexistent `goal_edit` tool.
+
+Nil StopHooks installs the stateless default `GoalContinuation`, inert until
+an active goal is armed. Any nonnil list replaces it, including an empty list.
+Custom lists may include `GoalContinuation{}`. Only stop-sourced continuation
+consumes budget; tool rounds do not. Counts increment before stuck/global-loop
+limit decisions, so they count requested continuations rather than guaranteed
+model requests. Continuations retain the current source turn's RunContext.
+
+`Session.GoalSnapshot` and `ManagedSession.GoalSnapshot` detach state for readers.
+Owned GET `/sessions/{session_id}/goal` returns goal, goal_armed and plan_mode;
+it never arms or starts a turn. Registered secrets mask the HTTP/event projections
+while live state retains original text. Whole `goal_change` snapshots reach
+trajectories and configured capture/SSE. Restore folds all logged scopes and
+clear tombstones; it always disarms, including pending claim reload. Forks and
+selected children own fresh goals; default role policy excludes capability-free
+goal tools. An explicitly selected child still has peer authority.
+
+Snapshot 51 compares 46 actual gate calls and six direct stop calls across Auto
+and Readonly, the default/custom actual Agent loop, real Python SQLite restore
+and resumed requests, and four owner/auth HTTP views. Go tests CAS concurrency,
+stop replacement, bounded model requests, event-before-request capture, disarmed
+restore/reload, detached masking, fresh child/fork state and real TCP launcher
+selection/refusal. Memory test backings do not prove Go SQLite durability.
+
+### Operator worktree lifecycle
+
+`worktrees.New(worktrees.Config{Repository: repo})` provides named worktree and
+audit records, `Create`, `Changes`, `Keep`, `Remove`, `List`, `PathFor` and
+`WorkspaceFor`. A supplied `*tasks.Store` satisfies the typed TaskBoard seam:
+create checks an existing task before Git, then binds its worktree and logs the
+operation. Optional `*string` Base/BranchPrefix distinguish default values from
+explicit empty overrides. Default paths/branches are `.worktrees/<name>` and
+`wt/<name>`; names match `[A-Za-z0-9._-]{1,64}` excluding `.`/`..`.
+
+Remove checks dirty files and commits ahead of the repository's current HEAD.
+Unknown status refuses. Without explicit discard, Git receives ordinary worktree
+remove and branch `-d`, retaining its own refusal even if work arrives after the
+service check. Explicit discard selects `--force` and `-D`. Like Python, failed
+branch deletion does not undo successful directory removal or erase the branch.
+Audit events append after landed operations; they are not fsynced or an atomic
+Git/task transaction. Later binding/audit failure leaves created work for inspection.
+
+`WorkspaceFor` sanitizes session names, returns existing paths and falls back to
+a plain directory on non-repositories, unborn HEAD or Git creation failure.
+That source-compatible fallback provides no branch isolation. To use the source
+managed factory, construct `agent.NewWorktreeWorkspaceFactory(service)` and set
+`ManagerConfig.WorkspaceFactory` to that concrete adapter. Provisioning is explicit
+and does not install model tools or activate standalone feature flags.
+
+Factory paths are managed scratch (`WorkspaceBound=false`). Matching actual
+Python, delete drains current work and waits for shared scratch holders, then
+removes the directory even if dirty. Git registration and the branch remain;
+manager cleanup does not call the guarded worktree Remove API or append its audit.
+`DeleteSessionOptions.PreserveWorkspace` and manager Stop retain the directory.
+For operator-owned retention, provision explicitly, configure bindable roots and
+pass `CreateSessionRequest.Workspace`; bound cleanup preserves it. Source has no
+Git-aware manager cleanup, so that behavior is a recorded gap rather than a
+missing port. The existing Go manager additionally reclaims unpublished scratch
+on construction failure; Python create leaves it allocated. This Go failure
+cleanup also leaves Git registration and branch. Standalone feature activation
+remains unsupported.
+
+For model tools, explicitly set `RuntimeConfig.WorktreeTools` or
+`ManagerServices.WorktreeTools` and supply `Worktrees: service`. This installs
+`create_worktree`, `remove_worktree`, `keep_worktree`, `list_worktrees` and
+`enter_worktree` through the common gate; without a service their source response
+is `Error: worktree repository is not configured`. Defaults remain ten tools.
+Named create/remove/name input variants preserve omitted versus explicit-null
+task/discard fields. Only explicit true authorizes discard.
+
+`enter_worktree` is an exclusive tool barrier, including when a custom classifier
+requests parallel execution. It prepares replacement files, shell/sandbox,
+catalogue and broker approval/question surfaces before publishing execution
+scope. Later tools in the same batch, model context and fresh children see the
+new directory. Preparation failure keeps the prior execution bindings. Manager
+Info, task HTTP reads, trajectory attribution and scratch reclamation keep the
+original lifecycle workspace; deletion does not erase entered worktrees. An
+initialized task store stays pinned; first lazy creation after entry uses the
+new root. Forks keep manager tool activation but start in fresh scratch.
+
+Built-in `shell.Executor.WithWorkspace` retains deadline, capture, credentials,
+spill and process interrupt ownership while re-binding cwd and sandbox together.
+Custom Bash executors require an explicit `RuntimeConfig.WorkspaceBashFactory`;
+managed construction reuses `Services.BashFactory`. The embedding factory owns
+policy preservation and must return a `WorkspaceBashExecutor` reporting the
+requested workspace. Failed/nil/unbound/wrong-root
+results refuse entry. Source capability sets are empty, so the default child role
+policy omits these optional tools; trusted custom policies can select them.
+Default in-process children still have fresh state without the parent's worktree
+service/task board: even a selected worktree tool reports unconfigured. Child
+files and shell use the parent's current execution directory. Explicit fixed
+prompts, including the child role prompt, remain fixed; the default system
+builder regenerates its workspace from current SystemContext.
+There is no shipped OS sandbox backend. The explicitly enabled background state
+receives the same prepared native executor during entry; its existing runs and
+ledger remain pinned to their admitted bindings.
+
+Git calls inherit the source process environment, take concrete argv, have a
+30-second context-owned deadline, bound each output channel to five MiB and bound
+pipe cleanup waits. Go replaces malformed UTF-8 diagnostics and requires an
+explicit repository; source open/coercion behavior is not a domain contract.
+This operator capability is not a host path/symlink sandbox, owner ACL or lease.
+Native Git must be available; no Go dependency was added. Snapshot 34 compares
+nine real Python/Git scenarios, outputs, file/branch effects, task bindings and
+audit events. Additional Go tests cover stale prechecks, partial failures,
+duplicate creation, cancellation and a real owned session's tool write/delete/stop.
+Snapshot 35 compares three actual source tool flows, 25 steps, all five schemas
+and risk/capability traits, plus eight canonical input identities. Go tests also
+compare a real Python child loop's three results: worktree service unavailability,
+a write in the inherited directory and Bash cwd. They also prove
+atomic preparation refusal, parallel barriers, journal-before-observer
+settlement, broker rebinding, fresh child state, fresh forks, retained task
+roots and scratch deletion that preserves entered work.
+
+### Open the browser console
+
+The standalone binary serves the original Python development console at `/` and
+full interface at `/ui`. Both static documents are public; session data remains
+authenticated. HTML/CSS/JS are embedded, self-contained source copies, preserving
+source typography and interactions. No runtime checkout, Python process, build
+step, external asset or filesystem static mount is needed.
+
+Refresh and verify the embedded inputs from the repository root:
+
+```sh
+.venv/bin/python python/tools/export_go_webui.py
+.venv/bin/python python/tools/export_go_webui.py --check
+```
+
+Core create/message/SSE/control/approval/trajectory flows have implemented APIs.
+The Cron pane uses the implemented list/schedule/cancel/arm APIs; the Goal view
+uses the owned read endpoint without arming. Owned skill catalogue, preview/commit
+and memory reads are also implemented. Optional
+Team/Workflows/Improve/Benchmark/Self-audit
+panels still need Go services and currently display the source error states.
+Serving the full interface is not complete UI feature parity. Snapshot 32 compares
+16 Python HTTP outcomes and exact source assets; 37 real JS interaction regressions
+run against the Go embed inputs. A built-binary browser pass verified core flows.
+
+### Serve the implemented HTTP slice
+
+Compose `httpapi.New` with a manager and `Authenticator`. Resolve token configuration
+with `AuthFromEnvironment(nil)` or pass an explicit snapshot/bindings. Authentication
+is admitted once; its owner flows into session operations and untrusted HTTP
+RunContext. The following is an embedding pattern inside an application that already
+owns `manager` and its lifecycle:
+
+```go
+auth, err := httpapi.AuthFromEnvironment(nil)
+if err != nil { return err }
+if err := httpapi.RefuseOpenBind("127.0.0.1", auth); err != nil { return err }
+handler, err := httpapi.New(httpapi.Config{Manager: manager, Auth: auth})
+if err != nil { return err }
+server := &http.Server{Addr: "127.0.0.1:8000", Handler: handler}
+// The application owns server.Shutdown(ctx) and manager.Stop(ctx).
+return server.ListenAndServe()
+```
+
+For standalone startup, use `cmd/miniloop` above: it enforces requested and actual
+listener policy and owns shutdown. For custom composition, the embedding application
+retains that responsibility.
+Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
+to development; Config.FakeLLM is explicit rather than inferred from a provider.
+The basic health response omits full effective posture and source build hashing.
+Twenty-eight method/path combinations cover create/list/detail/delete, completed message,
+streamed message, cancel, approval list/resolve, event subscription and Null-store
+transcript, public `/` and `/ui` shells, owned Tasks view, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
+messages reject busy turns atomically. Streamed messages queue; disconnect cancels
+that submitted turn or its wait. Observe disconnect only unsubscribes. The event
+wire is a named flat JSON union with sequence IDs and CRLF SSE framing.
+
+All requests pass a ten-MiB admission cap before auth. Event endpoints alone permit
+query-token fallback; headers win. Completed idempotent snapshots are scoped by
+owner/session/key, capped at 1,024, and checked before rate budget. Optional fixed
+minute rate windows are owner-scoped, capped at 4,096, and default off. Listing bounds
+Info work to the latest 1..500 handles. Optional manager Secrets project typed JSON
+and SSE data on output without rewriting live history; projection faults return no
+raw fallback. The new twenty-first source snapshot compares actual finite HTTP/SSE
+responses, with separate Go concurrency and real disconnect tests. The Python live
+disconnect probe was checked separately from that fixture.
+
+This slice uses process-local manager/backlog/cache/rate state, file-backed trajectories
+and disabled workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
+Python; it does not expose a synthetic durable transcript. Full FastAPI validation
+error arrays/coercions, optional browser data routes,
+optional fleet routes, durable SSE gap recovery, SQLite are
+pending. No dependencies were added.
+
+```sh
+cd go
+go test ./...
+go vet ./...
+go test -race ./...
+```
+
+See [the plan](../GO_PORT_PLAN.md) and [parity matrix](../GO_PARITY_MATRIX.md)
+for remaining work. Do not treat a compiling package as runtime parity.
+
+### User-authored skill contracts
+
+`userresources.NewCanonicalSkill(SkillFields)` validates lowercase kebab names,
+raw character/line limits, one-line descriptions, NUL and skill-wrapper refusal.
+Description/body snapshots are normalized like Python: universal CRLF/CR
+newlines and Python whitespace trimming. Content and its SHA-256 are immutable
+strings; returned fields are detached value copies. Digest is the canonical UTF-8
+content hash, not a live catalogue entry digest.
+
+`OwnerDirectoryKey(owner)` derives u- plus SHA-256 from the exact UTF-8 identifier;
+case, whitespace and Unicode normalization forms remain separate. Empty/invalid
+UTF-8 identifiers fail. Only trusted composition may choose this owner. The
+function creates no directory and binds no authority.
+
+Snapshot 57 compares 42 actual source canonicalization cases and ten exact owner
+keys, including Unicode character limits, splitlines boundaries, wrapper aliases
+and newline normalization. Go additionally refuses invalid UTF-8 skill fields.
+Owner directory binding is now available as an explicit operator library.
+Memory, trusted layered session binding, create-only publication,
+next-session activation and runtime/HTTP/configuration integration remain pending.
+
+### Owner resource directories
+
+`userresources.NewDirectoryResolver(ctx, root)` resolves trusted configured links
+before creating/tightening the private root. `ForOwner(ctx, OwnerID)` creates
+0700 digest, skills and memory directories and caches immutable DirectoryBinding
+values. Exact owner IDs remain separate. Paths are operator accessors, not JSON
+receipts; the model never chooses an owner. Cache waiting and initial resolution
+honor cancellation. Cancelled work may leave partial directories, never a cached
+partial binding. Root symlink resolution is bounded at 128 links.
+
+Pre-planted owner/skills/memory links and directory files fail with sanitized
+errors. Checks match source path policy; they are not atomic filesystem fencing
+against an external process replacing directories during checks. Cached paths
+retain source snapshot semantics and are not re-resolved on every call.
+
+Snapshot 58 compares ten actual Python resolver directory recipes, including
+trusted root links/dangling targets, link/.. ordering, lax modes and planted links.
+Native tests add concurrent cache reuse, owner separation and cancellation. The
+source also constructs stores; the native resolver binds directories only. No
+skill/memory store, publication, runtime binding, route or config activation yet.
+
+### Explicit layered skill catalogues
+
+`skills.NewLayeredCatalog(agent, user)` binds two concrete `*skills.Catalog`
+construction snapshots. It implements Descriptions/Load while retaining separate
+source authority: unique names resolve automatically; collisions require
+`agent:name`, `user:name` or explicit scope. No user skill shadows agent policy.
+Rendered instructions include source and body digest. Single-layer and layered
+loads share source-file verification; changed or missing files refuse, and
+diagnostics stay with the source catalogue. The layer copies construction
+problems once and owns combined-budget diagnostics; bounded native logs aggregate
+repeated reports and return detached values.
+
+Both provenance headings and an omission receipt share the 8,000-character
+budget. Agent entries are considered first; user flooding cannot erase the
+agent heading. Explicit loads can still select entries omitted from the prompt.
+Snapshot 59 compares 16 actual Python cases for selection, diagnostics, file
+mutation/newline equivalence and combined/unknown-name bounds. Compiled builtin
+entries need no file re-read. Catalogues are immutable after construction;
+problem logs support concurrent calls.
+
+This is an explicit operator seam. Owner resource bundles, manager/child/restore
+binding, memory stores, publication/next-session activation and configuration
+remain pending. The normal runtime continues to use its agent catalogue.
+
+### Typed owner memory storage
+
+`memory.NewStore(ctx, root, masker)` pins a physical operator root and creates
+a serialized process-local Markdown store. `Write`, `List`, `Index`, `Search`,
+`ReplaceAll`, `Flush` use explicit contexts and typed Input/Record/OwnerID/Origin.
+Writes normalize headers, clamp bodies at 32,000 characters, cap filename slugs,
+mask the whole document, fsync a same-directory temporary file and rename it;
+directory fsync is best effort. New temporary files and roots use private modes,
+which is stronger than standalone Python's default modes. Existing owner roots
+retain DirectoryResolver's permission policy. Invalid UTF-8 fields refuse.
+
+Authenticated filenames digest byte-length-prefixed exact owner/name pairs;
+anonymous filenames preserve compatibility. Legacy same-name/same-owner files
+migrate lazily. Parsed owner keys take precedence over display-owner lines.
+`memory.Bind(store, owner)` returns ScopedStore with no owner override and no
+catch-all delegation; replacement always keeps other owners' files. Passing nil
+to raw Store owner filters is an explicit operator view/replacement of all owners.
+
+Parse caches use mtime/size, including unreadable-file failures; external edits
+reparse and returned records are values. Invalid UTF-8/unreadable memories are
+skipped with bounded diagnostics. Imported type text is retained; writes use the
+four supported types with project fallback. Origins normalize to the four
+supported values. The source's full imported body reads are retained, so write
+caps do not bound operator-imported files. Indices render from records rather
+than trusting MEMORY.md, have an 8,000-character prefix with omission notice, and
+flush deferred disk state on index/search. Lexical search uses unique lowercase
+word terms, occurrence scores, stable filename tie order and Python slice limits.
+
+Snapshot 60 compares 13 actual Python scenarios and 118 operations, exact file
+bytes, body hashes, metadata, index timing and diagnostics. Native tests add
+concurrent scoped replacement, owner protection, cancellation and detached values.
+Cache semantics can retain same-mtime/same-size external edits, matching source;
+multi-file replacement is not transactional or cross-process fenced. Subsequent
+slices deliver owner resource bundles, manager/restore/child binding, explicit
+remember/recall, automatic selection/extraction/consolidation and contained capture.
+
+The standalone launcher constructs shared storage at MINILOOP_MEMORY_ROOT or
+<workspace root>/.memory even with MINILOOP_USER_RESOURCES_ROOT selected. The
+optional owner resolver takes precedence; its root is eagerly private (0700),
+while owner children remain lazy. Either root construction failure refuses
+startup. Binding refusal precedes all these effects. --memory-tools installs
+remember/recall; default startup carries storage without those tools.
+--memory-auto=false disables automatic selection/capture with the tool pair;
+changed context indices still follow recall independently. Embedding uses
+launcher.Options.MemoryTools/MemoryAuto or explicit agent.ManagerServices.Memory
+and UserResources. Inspect/dump reports memory_backend, memory_tools and memory_auto
+without creating roots or making model calls; these are configuration choices,
+not runtime health evidence. Snapshot 70 compares seven actual source constructor
+cases. Native HTTP model tests verify selected roots, exact owners and the copied
+auto override. Admitted skill capture is described below; native-session preview/HTTP routes remain pending.
+
+### Immutable owner resource snapshots
+
+`userresources.NewResolver(ctx, root, agentCatalog, masker)` composes the existing
+private directory policy, concrete agent/user skill catalogues and typed memory
+store. `ForOwner(ctx, OwnerID)` validates the exact identifier and caches one
+complete Resources value, with private binding fields and operator-only path
+accessors. Memory() returns a ScopedStore directly, a stronger boundary than
+Python's raw store inside its frozen bundle. It has no owner override.
+
+Serialized construction and context checks admit the cache only after all
+services exist. Failed/cancelled construction can leave uncached directories;
+retry rechecks every directory rather than reusing a partial directory cache.
+Cached successful bindings preserve their original catalogue and memory service.
+A new resolver reads later user skill edits; live old snapshots remain pinned,
+and changed source files still refuse through the shared skill verifier.
+
+Problems(ctx) is a detached bounded operator projection in owner-resolution
+order. It summarizes repeated local reports with source-compatible counts,
+prefixes opaque owner directory keys and omits agent diagnostics already audited
+through the deployment catalogue. It does not make one owner's model catalogue
+share another owner's mutable log. Snapshot 61 compares four actual Python
+resource/cache/log/memory scenarios; native tests add concurrent reuse, failure/
+retry rechecks, cancellation and invalid-construction side-effect refusal.
+
+This explicit composition library creates full resource bundles; create-only
+skill publication, future-session refresh, manager/restore/child inheritance,
+configuration, scoped serving and memory lifecycle/tool activation remain open.
+Directory checks remain process-local checks, not filesystem fencing.
+
+### Anchored create-only files
+
+`durable.CreateText(ctx, path, text)` and `ReadBytesNoFollow(ctx, path, maxBytes)`
+implement the Python publication file boundary on Darwin/Linux without new
+dependencies or cgo. Paths are opened from `/` component by component using
+O_DIRECTORY/O_NOFOLLOW and owned descriptors; symlink/.. ordering is preserved.
+Relative inputs use the current working directory spelling, so linked components
+still refuse. Publication callers should use their pinned physical owner paths.
+
+Create uses a random same-directory O_EXCL/O_NOFOLLOW scratch file, exact 0600
+mode, file fsync and a no-replace linkat. It returns typed device/inode identity.
+Existing files/directories/links never get replaced. Link success is the commit
+point; cancellation is checked before it, and scratch cleanup/directory fsync/
+descriptor close are best effort afterward. An external rename can relocate the
+anchored directory; the operation stays on that inode rather than following a
+replacement link. This is a path boundary, not host tenancy or multi-file fencing.
+
+Reads verify regular-file type and retain at most maxBytes+1 bytes to detect
+overflow. NONBLOCK is a native strengthening: hostile FIFOs refuse instead of
+hanging before the regular-file check. Syscall pointers are confined to the
+boundary. Linux uses toolchain syscall constants; Darwin numbers are pinned to
+Apple XNU f6217f891ac0bb64f3d375211650a4c1ff8ca1ea, syscalls.master
+(openat 463, linkat 471, unlinkat 472), with Go 1.23's kernel syscall entry.
+
+Snapshot 62 compares 12 actual Python anchored create/read cases, file bytes,
+mode, identity, overflow/errors and scratch cleanup. Native tests add concurrent
+no-replace winners, cancellation, descriptor-preserving parent rename and FIFO
+refusal. The create-only skill publisher, strict secret screening, safe receipts
+and next-session resource replacement are the next composition slice.
+
+
+### Owner/session-bound personal-skill drafts
+
+userresources.NewDraftStore(DefaultDraftStoreConfig()) supplies an explicit
+process-local operator store: 15-minute TTL, 64 total drafts, 16 per owner and
+four per session. The canonical skill validator normalizes fields and hashes
+exact canonical UTF-8 bytes. Evidence integers and four named coverage variants
+stay typed. Add takes trusted owner/session identifiers separately from content.
+Draft handles are immutable identities; Preview detaches public values and
+never emits owner/session authority. Get/Peek use exact owner/session and optional
+digest; wrong authority is indistinguishable from absence. Access preserves FIFO,
+and full capacity can replace only the requester's own oldest draft. Atomic
+Consume has one winner; post-publication DiscardCommitted uses exact identity
+and succeeds after TTL when the object remains stored. It never publishes a file.
+
+Snapshot 71 compares 40 actual Python operations, including quota ordering,
+non-consuming failures, TTL boundary and object-identity cleanup. Native tests
+add evidence detachment, private JSON projection, copied limits and concurrent
+consumption. Typed duration/configuration errors and initial entropy failure use
+safe native errors; source config ValueError and malformed dynamic types have
+no direct domain counterpart. Store Add permits signed/duplicate integer evidence,
+as source does; the candidate parser validates evidence against its
+projection. There is no manager/launcher injection, model preview, authenticated
+turn projection or HTTP skill route yet. Publication should retain a Peek handle
+until successful durable commit, then discard it; Consume is not a pre-commit step.
+
+
+### Typed skill preview business flow
+
+userresources.SkillPreviewer implements the source preview function through
+an explicit SkillPreviewModel seam and typed DraftStore. It preserves name/owner/
+sensitive-name ordering, strict ledger selection, empty-transcript refusal,
+2,000-character masked focus, source system text and 2,500 output tokens. Two
+generation attempts rebuild sanitized payloads; repair contains a safe reason
+without quoting prior output. Successful parse is followed by another health
+check, skip refusal or owner/session-bound draft retention. Failures retain no
+draft; cancellation propagates and native host faults use safe typed errors.
+Snapshot 75 compares 29 actual Python flows, every request hash and accepted
+draft fields. Explicit standalone Session.PreviewPersonalSkill now binds the
+normal model cache/recovery/shared limiter/telemetry with preview purpose and
+empty tools, joining only text blocks. Snapshot 76 compares six actual Agent
+request/repair/refusal/provider flows and model events. Core turn admission
+serializes it; history and token meter remain unchanged. Manager admission/lease
+binding and HTTP routes remain pending; no publication default is activated.
+Manager construction now owns one typed DraftStore and shares it through the
+common create/fork/restore factory. Snapshot 77 compares seven actual Python
+manager injection frames and process-local draft loss at restart. Global 64-item
+capacity cannot be bypassed through another session; foreign owners cannot be
+evicted. Standalone previewers retain independent stores.
+
+### Typed skill candidate parsing
+
+userresources.ParseSkillCandidate returns an immutable SkillCandidate or a named
+CandidateError. Exact five-field schema checks precede recursive secret refusal,
+then decision, field types, strict integer evidence, empty skip and canonical
+create validation. Original strings and evidence order are retained; evidence
+accessors detach. It preserves source duplicate-key last-wins and nonfinite-type
+outcomes using transient JSON boundaries, with no dynamic retained payload or
+nonfinite domain value. Snapshot 74 compares 63 actual Python parser outcomes,
+accepted-field hashes and budget recipes. Native lone-surrogate/invalid-UTF-8
+refusals prevent lossy decoding; native masking panics have a safe named failure.
+This library adds no model request, route, durable effect or publication grant.
+
+### Admitted-turn skill evidence capture
+
+ManagedSession records successful input/final pairs after terminal flush when
+the trusted caller granted personal_skill.capture_source. HTTP normal/streaming
+admission already supplies it; ordinary/peer/cron calls, errors and cancellation
+do not grant capture. Its process-local CaptureLedger is fresh per agent, trims
+source Unicode whitespace, masks fixed fields/keys before 64-message/40k compact
+Unicode JSON bounds and evicts single oldest messages with omission counts.
+Only plain history gap strings set excluded-compaction flags. Unavailable secret
+screening refuses append and latches errors even after a healthy registry later
+returns. Detached snapshots retain established-empty versus absent evidence.
+Projection checks the latch and masked canonical fields without granting roles.
+Snapshot 73 compares 20 actual Python recipes; native tests cover concurrent
+snapshots, contained faults, terminal order and real HTTP idempotent admission.
+Native-session model binding, manager draft injection and publication routes
+remain pending. Capture is not persisted or reconstructed from history.
+
+### Pure skill evidence projection
+
+userresources.ProjectSessionText preserves the source legacy projection over
+protocol.Message: only cleaned ordinary plain user text and assistant text
+blocks survive. User arrays are dropped completely; recalled memory is stripped
+greedily through the final closing wrapper, malformed wrappers are excluded,
+whole user-interjection wrappers unwrap, and known internal markers are excluded.
+Compaction/snipping flags remain visible without their text. Python whitespace,
+IGNORECASE dotted/dotless i and Unicode 14 word boundaries are explicit; the
+shared Unicode exporter now generates the word table along with casing.
+
+ProjectAuthenticatedText accepts already-admitted typed text and preserves its
+nonempty content verbatim. Callers retain provenance responsibility. Both mask
+before fitting a whole-message suffix into compact Unicode Python JSON, with a
+40,000-character cap and source coverage/omission flags. Display role labels and
+the two fixed JSON keys can be masked, including key collisions; these are data
+labels, not provider roles. A transient map is used only by MarshalJSON; domain
+values retain no open payload. Positive integer limits and UTF-8 are checked;
+malformed dynamic protocol data is rejected earlier at native typed boundaries.
+Snapshot 72 compares 38 actual source projections, with deterministic repeats
+for large budget cases, exact JSON hashes, omissions, coverage and exclusion flags.
+The pure helpers do not grant admission. Managed capture is described above;
+native-session preview binding and authenticated skill publication routes remain pending.
+
+### Owned manager skill preview
+
+SessionManager.PreviewPersonalSkill checks owner/configuration, serializes through
+managed admission, rechecks identity/accepting state and requires the process
+lease. It always supplies the admitted-turn ledger and uses the shared draft pool.
+Snapshot 78 compares eight actual source manager policy/preview outcomes, including
+readonly previews and refusal of legacy history when the ledger is empty. The
+private preview lifetime retains idle turn status/count and turn-cancel behavior.
+Go explicitly cancels and joins it on deletion/stop, adding to source turn-only
+cleanup. Lease loss maps to a safe 409 before and during requests. Reviewed commit
+and HTTP routes are described below; no publication model tool is added.
+
+### Reviewed manager skill commit
+
+CommitPersonalSkill shares owned admission/lease/lifetime with preview, checks
+readonly, peeks exact authority/digest, publishes create-only fields and discards
+only after success. The typed receipt activates in next_session; existing live
+resources remain pinned. Failure retains the draft, and durable success survives
+TTL/cancellation after the file commit. Snapshot 79 compares six actual source
+commit/retention outcomes. No model tool is added; HTTP routes are described below.
+
+### Typed personal-skill HTTP requests
+
+PersonalSkillPreviewRequest and PersonalSkillCommitRequest decode into concrete
+name/focus and DraftDigest fields. Unknown fields are rejected with exact,
+case-sensitive keys; name and digest use the source lowercase patterns. Focus
+counts Unicode code points rather than UTF-8 bytes, defaults only when absent,
+and rejects explicit null. Duplicate JSON keys follow source last-value-wins
+behavior. Failed decoding preserves the existing receiver. Snapshot 80 compares
+43 actual Pydantic acceptance and normalized-value cases. These request types
+now feed the preview/commit routes. Valid-JSON HTTP validation lists are described
+below; malformed Unicode handling still requires separate route-boundary evidence.
+
+### Owned personal-skill HTTP routes
+
+The two POST routes reuse the one admitted principal, require its live session,
+then call Manager preview/commit with the request context. They add no model
+publication authority and no rate accounting, matching the source route flow.
+Typed policy/draft errors keep source status, code and message through masked
+JSON projection. Unknown host faults return a safe native failure without host
+text. Snapshot 81 compares 11 actual HTTP responses, with authentic message
+capture, public preview and receipt fields, readonly/wrong-digest/cross-session
+refusals, successful publication and exact draft consumption. Dynamic IDs and
+timestamps are checked independently, then excluded from source comparison.
+Failure cases retain the same draft for eventual commit. Request validation is
+described below; malformed request boundary fidelity remains open.
+
+### Personal-skill request validation lists
+
+Valid-JSON validation failures now return typed ordered detail lists, preserving
+source type/location/message/input/context fields. Schema fields are validated
+in declaration order; extra fields follow input order. Duplicate keys retain
+their last value and original position. Absent or null bodies use body-level
+missing errors; non-object roots use model_attributes_type. A closed six-variant
+ValidationInput exists only in HTTP diagnostics. No open payload is retained in
+session/service state. Responses use the existing masked recording projection,
+including escaped input values and extra-field keys. Snapshot 82 compares 41
+actual FastAPI responses. UTF-16/32, lone-surrogate, extreme numeric input and
+nesting-boundary parity remain open. Syntax/media/UTF-8 behavior is described
+below. The native diagnostic tree caps
+nesting at 256; complete FastAPI parity is not claimed for these boundaries.
+
+### Personal-skill JSON syntax and media admission
+
+Only application/json or application subtypes ending in +json parse JSON bodies,
+matching FastAPI 0.136.3's strict_content_type default. Missing or other media
+types echo a byte-string diagnostic rather than granting object semantics. Empty
+bodies still use the required-body error. A bounded syntax scanner follows the
+CPython prefix grammar and reports code-point positions through a closed
+field/position location variant. UTF-8 BOM is removed before parsing; illegal
+UTF-8 JSON returns source 400 details, while illegal non-JSON input preserves the
+source safe 500 plain response. Snapshot 83 compares 63 actual HTTP results,
+including every supported syntax failure category, multibyte positions, media
+variants and encoding admission. JSON convenience tests now send Content-Type
+explicitly; dedicated missing-header cases use actual untyped requests. Alternate
+UTF-16/32 scalar decoding is described below. Surrogatepass, nonfinite/extreme
+numeric values and depth boundary parity remain open.
+
+### Personal-skill JSON byte decoding
+
+The byte decoder follows Python json.detect_encoding: UTF-32 BOM takes precedence
+over UTF-16, then UTF-8 BOM; absent BOMs use the first four bytes' NUL pattern or
+the two-byte special case. Named encodings and explicit endian reads lower scalar
+UTF-16/32 data into UTF-8 before existing syntax/schema validation. Valid surrogate
+pairs in UTF-16 become one scalar; truncated units and out-of-range UTF-32 refuse.
+Declared charset does not override detection, matching the source. Snapshot 84
+compares 88 actual HTTP results across ten byte forms and both routes. Its six
+surrogate counterexamples are historical and now covered by the next slice.
+
+### Personal-skill surrogatepass boundary
+
+Byte decoding now preserves Python surrogatepass code points without substitution.
+A closed value reader lowers valid syntax directly into the diagnostic tree,
+combining escaped UTF-16 pairs but preserving raw UTF-32/UTF-8 pairs as separate
+source code points. Duplicate keys retain their final value and original position
+before Unicode screening; discarded malformed values do not poison requests.
+Syntax positions count raw non-scalars as one source code point. Active non-scalars
+in retained strings or keys produce the safe source plain 500 response, before
+owner lookup or model execution. Malformed documents still produce their source
+syntax errors. Only scalar, normalized tree data is encoded into concrete requests,
+preventing the old decoder from replacing discarded malformed Unicode. Diagnostic
+encoding independently refuses non-scalar strings/keys. Snapshot 85 compares 90
+actual HTTP outcomes, including the previous six counterexamples; native tests
+also check decoded pair, overwrite and control-escape values. Numeric semantics
+and pinned live HTTP depth are covered by the following slices.
+
+### Personal-skill numeric request boundary
+
+Finite floating-point JSON input now normalizes through IEEE-754 double parsing
+and source-compatible shortest decimal formatting, including signed zero,
+underflow and precision loss. Integer spelling remains arbitrary precision up to
+the pinned CPython default 4300-digit limit; negative integer zero becomes zero.
+The syntax scanner enforces that limit at the point the number is parsed, including
+values later overwritten and numbers followed by malformed syntax. Nonfinite
+literals and floating overflow enter an explicit closed diagnostic variant; after
+last-key retention, any remaining nonfinite value produces safe source plain 500
+before ownership/model work. Discarded nonfinite values do not poison requests.
+Snapshot 86 compares 288 actual HTTP outcomes across both routes, six placements
+and 24 numeric forms, comparing complete diagnostic number spelling without float
+conversion in the test oracle. Source interpreter changes to the integer limit
+fail the fixture pin. The pinned live HTTP depth profile is covered below;
+alternate runtime profiles remain unverified. This does not introduce nonfinite
+values into service/session structs or add dependencies.
+
+### Personal-skill live HTTP depth boundary
+
+Snapshot 87 uses real localhost Uvicorn HTTP with default loop/transport selection
+and CPython recursion limit 1000. It records 144 source outcomes across 12 depths,
+six shapes and both routes. In this pinned profile, parsing permits 985 containers;
+validation echo permits 978. Above the latter, source safe plain 500 is preserved;
+above the former, parsing returns source 400 even for discarded values. Syntax
+errors above the echo budget still return 422 with their small safe diagnostic.
+Array/object/empty-container counting and duplicate retention are explicit.
+TestClient's parse/echo budgets are 980/973 because its stack differs; these are
+not the standalone HTTP target. Alternate server/interpreter stacks are unverified.
+
+Go compares the entire source bodies/statuses in unmasked and registered-secret
+modes (288 comparisons), including a credential at the deepest echoed leaf. A
+separate request-diagnostic projection allows the validated deep tree and keeps
+its own depth-1000 and existing byte bounds, key/string masking, and fail-closed
+panic handling. Ordinary recording retains depth 256. Only concrete validation
+responses use the new projection; no open payload enters runtime state.
+
+### Owned skill catalogue HTTP view
+
+`GET /sessions/{session_id}/skills` authenticates once and requires the admitted
+owner before reading descriptions. `ManagedSession.SkillCatalogue` reads the same
+fixed source used by model requests, and `SkillCatalogueResponse` contains only
+session ID and catalogue text. It never loads skill bodies or resolves a fresh
+owner snapshot on behalf of an existing session. Future independent sessions and
+forks see newly published owner skills; existing sessions keep their bindings.
+Open deployments retain one anonymous principal. Shared custom skill sources must
+obey ManagerServices' existing concurrency contract.
+
+Snapshot 88 compares 48 actual Python HTTP outcomes across empty/shared/layered/
+anonymous configurations, including denied query credentials and foreign reads.
+Additional native tests pin admission before source access, registered-secret
+masking of descriptions, no body loads and safe plain 500 on custom source panic.
+The registered-secret projection is the existing native HTTP safety extension;
+source catalogue comparisons are otherwise exact. No tool/default/owner authority
+is activated by this read. Memory/team/workflow and other remaining routes still
+require their planned slices; this does not close G3 or the full migration.
+
+
+### Owned memory HTTP views
+
+The manager constructs WorkspaceRoot/.memory when Services.Memory is nil, even
+with owner-local resources selected. Owner-local storage takes precedence at
+runtime binding. GET /sessions/{session_id}/memory returns typed metadata;
+GET /sessions/{session_id}/memory/{name} returns the exact stored body. Both
+require the admitted owner and use the existing masked HTTP projection. Existing
+sessions see subsequent writes through their fixed scoped store; tools remain
+explicitly selected. Snapshot 89 compares 45 actual source responses across shared,
+local and anonymous deployments, including auth, quoting and encoded slashes.
+Native tests additionally cover detached views, wrong binding/cancellation,
+registered-secret masking and safe filesystem failure. A removed root produces
+native safe plain 500 whereas Python's glob yields an empty list.
+
+
+### Typed benchmark statistics
+
+`benchmark.AggregateRuns`, `Compare` and `BehavioralMetrics` are operator functions
+on concrete task results and typed transcripts. Six explicit optional measurement
+fields use an immutable closed `Number`: exact integers, finite doubles or booleans
+(the source accepts bool as a number). BigInteger construction/access detach values;
+JSON integer digits are pinned at the current Python 4300-digit limit. Nonfinite
+arithmetic returns a typed error instead of retaining NaN/Infinity.
+
+Aggregation preserves first-seen tasks/arms, strict-majority votes, rounded pass
+rates, first nonempty error and numeric medians over supplied rows. Comparison
+pairs the last row per task but totals every row, refuses unequal task sets, and
+lets any regression override wins. Performance warnings follow six-dimension
+order, use Python decimal rounding and require a rounded delta strictly above 25%.
+Their presence does not change the effect verdict. Motion counts identical path/
+offset/limit windows, with absent/null distinct from explicit zero, and rendered
+errors including Unicode decimal exit notes; is_error alone is not the judge.
+
+Snapshot 90 compares 51 actual Python statistical/behavior/rounding outcomes.
+Native tests additionally cover finite guards, detached large integers/results and
+non-mutating decode failures. Model arms, timing/cost measurement and the HTTP
+endpoint are still pending. No
+model was called by these statistical probes. Earlier package status notes are
+chronological; this is the current component checkpoint.
+
+### Admitted benchmark tasks
+
+`benchmark.DefaultTasks()` and `HeldoutTasks()` return five visible and three
+heldout tasks with the source's exact prompts, trusted typed Judge/Setup callbacks
+and detached optional tool names. `NewTask(TaskConfig)` requires a judge; the zero
+Task refuses execution. Empty names/prompts remain representable. ToolNames returns
+names plus explicit presence: absent means the installed profile, present empty
+means no tools. Custom callbacks own their state and must honor context cancellation.
+
+Prepare creates the exact 6000-line, 324000-byte log for both paging tasks. Judge
+preserves Python substring checks, case lowering, strict UTF-8/universal newlines,
+Unicode splitlines and existence-only nested-file behavior, including directories.
+Missing/broken/looping paths fail the effect check; directory reads and invalid
+UTF-8 become native errors. Native OS error text is not Python exception spelling.
+Snapshot 91 compares eight specifications, 50 real Python judge outcomes and the
+seed digest. Native tests also cover callback faults, cancellation, immutable
+lists/whitelists and explicit empty selection. Model-generated drafts are not
+admitted judges. POST /benchmark now composes these admitted tasks through four independent fake arms.
+
+### Owned benchmark arms
+
+`benchmark.RunArm` takes an explicit workload and ManagerConfig, captures task
+storage before callbacks, creates complete fresh anonymous interactive sessions,
+runs setup, then applies ManagedSession.RestrictTools before the first turn. A caller-supplied workspace factory must isolate tasks.
+Workspaces remain available for inspection; injected shared services stay caller-owned.
+The owned manager is stopped/joined on success, setup faults and cancellation.
+Setup/create faults abort the arm, ordinary run/judge faults score failed rows,
+and cancellation propagates, including cancellation returned by a provider whose
+parent context remains live. Native stage errors unwrap their original cause.
+
+Time measures session.Run only, rounded to one decimal millisecond. Cost/motion
+measure final actual history; empty typed history costs zero. Source recovered
+provider-error text still reaches the effect judge, rather than automatically
+failing the task. Snapshot 92 contains eight actual Python arm recipes: visible,
+heldout, empty, setup/judge/entry-run faults, provider recovery and cancellation.
+All eight default-fake task effects/final texts/deterministic metrics match.
+Native fault labels remain Go diagnostics; the recovered fixture costs 38 tokens
+versus Python's 32 because that class spelling is longer.
+
+`FakeProvider.ObjectView()` represents Python's non-SDK fake-object transcript
+projection, omitting tool caller metadata. Raw FakeProvider continues to model
+the client wire reply with caller=null; dictionary/SDK simulations and actual
+provider absent/null semantics retain that view. The launcher now selects the
+object view. This distinction fixes four excess transcript-estimate tokens per
+default fake task without subtracting fabricated cost. No paid HTTP arm is exposed.
+
+
+### Fake-only benchmark HTTP
+
+`POST /benchmark` requires the normal admitted principal and shares the expensive
+route rate budget. Body/query options cannot select a paid provider, model or
+workload. `benchmark.RunFakeComparison` constructs four fresh object-view fake
+clients, two visible arms and two heldout arms. Only visible rows are returned;
+the heldout verdict supplies a separate comparison. Each arm joins its manager
+before the temporary a/b roots are removed, including cancellation/setup failure.
+The real main manager's provider and owner resources are not injected.
+
+The handler reads the supported environment profile per request, forcing fake
+transport and no spill. `httpapi.Config.BenchmarkSkillsDir` captures the deployment
+path; empty selects compiled builtin data. External catalogue files are read
+fresh for every arm. Launcher passes its actual configured skills path. Explicit
+external memory/trajectory paths retain their configured effects. Unsupported
+comprehensive features fail privately; native profile validation limits remain explicit differences.
+Snapshot 93 compares five actual source HTTP profiles with only nondeterministic
+durations/derived warnings omitted. This is instrument validation, not model
+quality evidence or G7 completion. Paid runs remain operator initiated.
+
+
+### Typed self-audit observations
+
+`selfaudit.BuildReport(Observations, Scope)` renders activity, problems, trajectory
+trends, skill-load correlation and optionally fleet cron authorization. Explicit
+owner selection narrows session/recording data; authenticated callers must pair
+that owner with IncludeGlobal=false. The adapter must authorize before storage IO.
+The pure library reads no files and launches no model/cron/benchmark work.
+Failures retain a class, without private exception content. Input snapshots remain
+unchanged. Source session/trajectory/event bounds and 8000-character report cap
+apply, including owner totals capped at 100 and the explicit truncation marker.
+
+`SuggestObjectives` and `SuggestBenchTasks` return typed human-review data over
+last-three ledger entries, with Python whitespace/300-character deduplication and
+source SHA-256 draft names. Pass MaxSuggestions for the default eight; nonpositive
+limits clamp to one as source. A draft holds NoExpectation, which encodes/decodes
+only null and contains no callable. Admitting a task still requires an explicit
+benchmark judge. Snapshot 94 pins 26 actual Python processing profiles.
+
+Live manager collection is implemented below. Model-tool installation and the
+three self-audit HTTP routes are bound below. This package accepts concrete scalar/finite observations;
+it is not an arbitrary Python object interpreter or an owner-authentication layer.
+
+
+### Exact problem diagnostics
+
+`problems.Log` keeps 50 distinct messages by default, first-seen FIFO order and
+exact occurrence/total/eviction counters. Repeats retain their position; evicted
+entries restart at one when reintroduced. Clear resets total/dropped and retained
+messages while retaining capacity. Snapshot slices and Counter.BigInt views detach
+from the live log. Native locking makes append/clear/snapshot atomic; an Extend
+sequence performs its source append transitions individually. New(limit) preserves
+nonpositive source limits; Append then returns ErrEmptyEviction after incrementing
+total. The zero Log defaults to 50. Messages are already rendered strings.
+
+`selfaudit.ProblemSource` is an optional narrow holder seam. ApprovalBroker and
+InMemoryActionJournal now supply SelfAuditProblems with exact lifetime counts and
+source 50-entry retention. Their existing Problems() methods preserve their prior
+100-entry/deduplication contracts. Ledger.Total uses problems.Counter, so supplied
+counts beyond machine integers retain exact decimal output. It does not use floats
+or retain mutable integer aliases. Snapshot 95 pins nine actual source sequences.
+Native diagnostic holders and live collection are implemented below; stored
+journals without a diagnostic seam remain pending; HTTP and optional model
+binding are implemented below.
+
+
+### Live self-audit collection
+
+`SessionManager.ObserveSelfAudit(ctx, scope)` returns concrete observations for the
+existing pure report/suggestion/draft processors. Embedding callers establish
+authority; authenticated frontends must pair Owner with IncludeGlobal=false.
+It admits owner handles before IO, bounds actual session inspection to 100, keeps
+fleet totals, and never holds manager/session locks during injected callbacks.
+Native holders implement optional ProblemSource; cron snapshots read jobs/arming
+together. Task observation uses the runtime's existing atomic store reference.
+
+Recordings are admitted by session and recorded owner before event reads. Source
+50-recording, recent-20-owned-session, 10-per-session and 200-tool-use limits apply;
+other tools consume the event budget too. Transient wire decoding additionally
+has a total 64 MiB budget. Faults retain class only, and event faults preserve
+trajectory trends. Snapshot 96 compares six actual Python manager constructions,
+while native tests exercise real JSONL, bounded reads, cancellation and concurrency.
+
+A memory binding reports its explicitly attributed write/replacement diagnostics.
+Unreadable shared filenames stay fleet-only; a new binding starts its own ledger.
+The privileged fallback Store exposes its full raw diagnostic snapshot for fleet
+views. Owner-resource fleet observation currently retains binding diagnostics,
+leaving unattributed per-resource errors as a remaining collection gap. This is a
+privacy correction to source shared-memory diagnostic delegation. No model tool
+or HTTP route is installed by this observer itself; the HTTP binding below
+and optional model binding below use it. Suggestions launch no work and task drafts still contain only null judges.
+
+
+### Self-audit HTTP routes
+
+GET `/self-audit` returns the live bounded plain-text report. GET
+`/self-audit/suggestions` returns SelfAuditSuggestionsResponse and GET
+`/self-audit/bench-task-drafts` returns SelfAuditDraftsResponse with fixed null
+expectations. Configured auth always uses the admitted principal with fleet
+inclusion disabled; open deployments use the operator view. No query/body fields
+override those choices or the fixed default limit. These source GETs do not consume
+rate budget, and no suggestion/draft launches a turn or becomes an admitted task.
+
+`ObserveSelfAuditProblems` is the ledger-only embedding seam. It skips activity/
+Info, cron jobs and trajectory list/event IO; it never constructs another task
+board. Source-snapshot failure becomes a private 500 for curation while reports
+preserve class-only section failures. Plain report projection precedes writes,
+fails closed, and reapplies the source Unicode cap/marker after masking expansion.
+JSON responses retain the existing concrete projection.
+
+Snapshot 97 compares 72 actual Python HTTP responses with only generated session
+IDs replaced by labels. Native tests check no recording IO/launches, owner-scoped
+shared-memory omission, global auth/body caps, no-rate behavior, private failed
+projection and expanded mask caps. The handler now exposes 37 operations across
+34 patterns; seven improvement/team/workflow operations remain open, along with the broader port and native persistence gaps.
+
+### Self-audit model input
+
+protocol.SelfAuditSchema and SelfAuditToolInput describe the optional source tool.
+SelfAuditInput is an empty concrete payload; model arguments cannot request another
+owner or fleet visibility. Unknown fields and non-object values are rejected at
+the provider boundary. Canonical replay JSON, recording projection and typed
+provider tool-use blocks preserve the self_audit discriminator. Snapshot 98 pins
+the source schema and keyword contract. The protocol declarations alone do not
+activate the optional runtime binding below.
+
+### Bound self-audit model tool
+
+RuntimeConfig.SelfAuditTools installs the source read-risk, readonly, exclusive
+self_audit tool; ManagerServices.SelfAuditTools selects the same installation.
+RuntimeConfig.SelfAuditObserver is the collector seam. Manager construction binds
+its actual observer for new, forked and restored runtimes. The finite trusted
+SelfAuditView defaults to SelfAuditOwnerView; SelfAuditOperatorView requests an
+unscoped fleet report. Invalid view values fail construction. No model fields
+can alter scope. Selected children inherit the binding; default role policies
+still omit its empty source capability set. A bare activated runtime with no
+observer returns the exact source no-manager notice.
+
+`--self-audit-tools` selects the individual tool at startup. Configured auth picks
+the fixed admitted owner view; open startup retains the source operator report.
+This explicitly corrects Python's unscoped model report in authenticated deployments.
+MINILOOP_FEATURES remains unsupported until its complete bundle is implemented.
+The collector never reenters the running session turn lock. Existing gate guards,
+permissions, journal, result hooks and registered-secret projection remain in
+order. Injected observer panics return a fixed private failure; cancellation
+aborts before/after collection. The source character bound applies before normal
+result hooks/projection; hooks can deliberately replace output, as for other tools.
+
+Snapshot 98 now also captures the actual source handler's no-manager notice;
+snapshot 96 supplies the actual empty manager report. Native tests execute actual
+model tool loops, owned/operator active manager reports, readonly execution,
+selected/default children, guard refusal before observation, masked results and
+local HTTP provider startup under both authentication modes. Dump-config reports
+selection without starting runtime. No additional HTTP operations are introduced.
+
+### Improvement acceptance instruments
+
+improvement.VerifierTouches classifies changed paths by the source substrings,
+retaining case, order and duplicates. VerifierFingerprint(workspace) computes a
+comparable InstrumentFingerprint [16]byte with a fixed 32-hex JSON/text projection.
+The four source globs are tools/verify_*, .github/workflows/*, conftest.py and
+tests/conftest.py, sorted independently in that order. Only regular files count;
+file symlinks are followed. Relative paths and full bytes enter SHA-256 without
+separators; the first 16 bytes are retained. Failed reads hash <unreadable>, while
+stat permission errors and non-permission scan IO failures abort. Missing roots
+produce the empty digest. Literal workspace metacharacters are supported.
+
+Snapshot 99 pins three source classifier profiles and ten source filesystem
+fingerprints. Native tests verify actual filesystem recipes, Unicode/binary and
+symlink behavior, typed projection, changed/restored instrument contents, detached
+classification and explicit IO faults. Malformed path encoding is exercised with
+a detached entry on APFS. This is an operator library. Native archive, verified
+loop, proposal worktree/commit composition and improvement HTTP routes are the
+next steps. These four globs cover their declared locations; acceptance callers
+must sample at each judgment window to detect intermediate tampering.
+
+### Workflow model library
+
+workflows supplies named finite states, immutable definition identity and artifact
+records. Actual Python model evidence lives in python-workflow-models.json (snapshot
+113). The engine below is callable; manager/HTTP/model-tool activation remains pending.
+
+ValidateDefinition, ValidateSchema and ValidateValue now port the actual source DAG,
+budget/tool policy and JSON Schema subset. ArtifactFromSubmission binds structured
+completion to explicit controller IDs; it does not authorize launch or verify truth.
+Snapshot 114 pins exact refusal ordering and structured artifact outcomes.
+
+### Shared provenance records
+
+runmeta owns named MessageID, ActorID, Authority, Capability and the inert Snapshot
+wire record. Snapshot.Clone detaches optional fields and capabilities, retaining
+null versus empty arrays. agent aliases these public types and retains its private
+live RunContext, trusted factories and capability checks. A decoded snapshot is
+archival data; it has no authority constructor or authorization methods. This
+prepares workflow records without a workflows/agent dependency cycle.
+
+### Workflow runtime records
+
+WorkflowRun, NodeState, AttemptClaim, NodeAttempt and OutboxSnapshot have named
+identities, counters and finite run/node/attempt/verification states. Five Decode
+functions preserve Python defaults and validate concrete record input before use.
+Clone detaches all pointers/slices; args and outbox payload use immutable closed
+JSON object values. OutboxSnapshot is a detached mutable view of source frozen
+message data, not a send acknowledgment. AttemptClaim is likewise an input projection.
+Snapshot 115 compares 46 actual source constructors and eight invalid state cases.
+Empty identities, negative counters and extensible outbox kinds survive; store
+admission and scheduler budgets remain separate. Unrecognized recorded provenance
+is retained as inert metadata, never restored as a trusted agent.RunContext.
+No scheduler or live service binding is installed yet; the process-local store core
+below is available as an uninstalled library.
+
+### Process-local workflow store core
+
+NewInMemoryStore provides immutable definition registration, session-key idempotent
+launch admission, detached run/node/attempt reads, run CAS and atomic node claims.
+CreateRunInput carries named metadata and closed object args. StoreError retains
+source failure kinds/details; int64 version overflow is additionally refused.
+Snapshot 116 covers 53 actual Python operations, all 169 run transition combinations
+and three canonical hash refusals. Native race tests exercise 24 concurrent launch
+calls and claim CAS contenders, pointer isolation, first-start retention, UUIDv4
+prefixes, tie ordering and atomic overflow refusal. Store does not authorize launch,
+check argument schemas or schedule dependencies/concurrency; service/engine owns
+those checks. Attempt settlement, artifact binding and outbox leases are described
+below; retention is described in its own section, and live
+manager/tools/HTTP installation remain open. No workflow persistence ships.
+
+### Workflow attempt settlement
+
+StartAttempt and CommitAttempt use attempt CAS; settlement binds an optional
+immutable artifact by exact run/node/attempt IDs. Source terminal-state combinations
+are independently accepted. GetArtifact/ArtifactsForNode retain stored reference order.
+Snapshot 117 compares 14 actual starts and 32 commit/repeat outcomes. Valid enum
+settlement updates attempt/node/run versions and timestamps; no artifact schema or
+verification-truth check is added. The source invalid verification conversion occurs
+late and leaves partial attempt/artifact state. Native reproduces that operator-input
+quirk; use validated VerificationStatus values. Nil selects the source default.
+Overflow checks precede publication; race tests elect one start/commit CAS winner.
+Cancellation, final completion and outbox lease settlement are described below;
+external delivery and live service installation remain open. Retention is
+described below. This store is still process-local.
+
+### Workflow cancellation and completion
+
+CancelClaimedAttempts settles only CLAIMED tasks in insertion order; running tasks
+must commit before FinishCancellation. RequestCancel uses run CAS, preserves source
+sticky reasons and refuses invalid transitions after storing the reason. A RUNNING
+run with no active nodes takes two version increments through CANCELLING to CANCELLED.
+FailRun retains the source read-then-CAS boundary. FinalizeRun checks successful nodes
+and an existing artifact, then creates a named WorkflowCompleted outbox record.
+It does not validate final artifact provenance/schema or establish delivery.
+ListOutbox uses explicit optional run/session filters and an undelivered flag,
+returning detached records sorted by creation time and message ID.
+Snapshot 118 compares 131 actual source profiles and repeated full graph projections.
+Native tests cover cancellation with started/unstarted tasks, concurrent request and
+finalization CAS, single notification creation, counter overflow admission, delivery
+filters and timestamp isolation. Outbox leasing/ack/release is described below;
+whole graph retention is described below. Live service/trusted origins/tools/HTTP
+and manager installation remain open.
+
+### Workflow outbox leases and receipts
+
+EnqueueOutbox deduplicates run/kind and preserves the existing payload/state on
+replay. New payloads must be closed immutable objects. ClaimOutbox returns a fresh
+OutboxLease token, selects messages in insertion order subject to session/run filters
+and limit, then sorts the selected records by timestamp/ID. Nil run IDs admit all;
+an empty list admits none. Nil lease duration selects 30 seconds. Lease age uses
+the current caller's duration; source NaN/positive-infinity comparison quirks remain.
+Claiming does not deliver. AcknowledgeOutbox/ReleaseOutbox use SettleOutboxInput and
+require session-matching messages and the current token before mutation. Delivered
+records no-op after session admission. Acknowledgment requires nonempty token,
+while release can match an explicitly stored empty token. Batches retain earlier
+effects on a later refusal, and duplicate acknowledgment returns duplicate records.
+Callers append before acknowledgment and release on append failure; there is no
+external delivery or durable/exactly-once guarantee in this process-local store.
+Snapshot 119 compares 106 actual source profiles and repeated complete outbox
+projections. Native race tests cover concurrent claims, stale-token fencing after
+expiry, projection isolation, concurrent enqueue deduplication, release/retry/ack
+and finalization's insertion/key indexes. Whole graph retention is described below;
+live service, trusted origins/tools/HTTP and manager composition remain open.
+
+### Workflow terminal graph retention
+
+PruneTerminalRuns accepts an optional TerminalRunLimit; nil retains the newest
+MaxTerminalRuns (500) eligible runs, by creation timestamp and run ID. Eligibility
+requires terminal status and no undelivered notification, even if its claim expired.
+Negative source limits evict all eligible runs. The mutex protects removal of owned
+run/node/attempt/artifact/outbox records, launch/outbox keys and both insertion indexes.
+Definition/hash indexes and surviving parent references remain. A replayed evicted
+launch starts fresh; retained launch identities still reject changed payloads.
+Returned run IDs let a future service remove its own bookkeeping. No automatic
+retention hook is installed yet. Snapshot 120 compares 65 full graph profiles,
+default-500 eviction, timestamp ties and replay outcomes against actual source.
+Native race tests cover acknowledgment versus pruning, index completeness, active/
+unread retention and minimum native integer handling. Live origin/service,
+tools/HTTP/parent append and manager activation remain open; no durable workflow
+backend or restart-resume guarantee ships.
+
+### Workflow batch engine
+
+NewWorkflowEngine uses typed WorkflowRunner and AttemptExecution contracts. Execute
+validates before terminal return, serializes each run, selects dependency-ready nodes
+in definition order and waits for complete batches. Limits combine engine/definition
+concurrency and remaining attempts. Inputs fold one dependency artifact to a scalar
+and other counts to arrays; a dependency named args overwrites the initial args.
+An explicitly shared AttemptPool bounds runner calls across engines. Default capacity
+is four; zero is a cancellable blocked pool. Permits release before settlement.
+Structured submission/schema refusal fails ordinary nodes; verifier failures produce
+source schema-invalid unverified fallback artifacts. Nil verifier submissions retain
+the source AttributeError detail. Cancel signals active contexts and settles claimed
+attempts without joining; Execute joins workers. Runner cancellation is cooperative.
+Parent deadline/cancellation returns a context error after attempt cleanup; a future
+service owns run cancellation and wall-time budgets. Idle run locks are reclaimed.
+Snapshot 121 compares 42 actual Python full-state engine profiles, captured runner
+inputs, repeats and five constructor limits. Native race tests additionally cover
+shared-pool arbitration, duplicate Execute serialization, running/blocked cancellation,
+parent deadline settlement and cancelled lock waits. RunnerError provides finite
+source-style kinds; other callback errors use NativeRunnerError. The native worker
+below is callable; parent append, tools/HTTP and manager activation
+remain pending. The store remains process-local.
+
+### Isolated workflow workers
+
+agent.NewFreshWorkflowRunner implements workflows.WorkflowRunner with explicit
+provider/owner/workspace/live WorkflowContextResolver. Each node creates a fresh
+readonly Session, default Explore-selected read_file/glob tools, synthetic
+return_artifact capture and in-memory compaction. Trusted live RunContext derivation
+names the attempt agent, retains parent provenance and drops human capabilities;
+saved snapshots cannot enter this authority seam. No parent history, injectors,
+hooks, stop hooks, approvals or persistence are retained. Provider/model budgets,
+shared limiters, recovery/cache/stuck/skill/masking/event seams are explicit.
+Configured catalogues retain their handler scope, with readonly permission still
+denying selected write/exec/external/unclassified tools. Builtin files retain root
+confinement and results are masked before model/artifact use. Capture validates first,
+permits repair and accepts once; repeat submissions preserve the original. Normal
+exit without capture raises source RuntimeError. Cancellation is cooperative.
+ReturnArtifactInput is a concrete closed Value variant with exactly-value admission,
+including null, and recursive recording masking. The synthetic ToolSchema retains an
+exact immutable projection, preserving numeric enum/const and archival round trips;
+ordinary tool schema parsing is unchanged. Schema-language validation remains in the
+controller/runner. LastWorker detaches its diagnostic projections under a mutex.
+Snapshot 122 compares eight actual Python worker profiles over real Agents with
+scripted fake model tools. Native race tests also cover widened-role readonly denial,
+masked repository reads, no context-management writes, concurrent fresh histories,
+invalid live contexts and two-node native engine/worker completion. No external model
+endpoint was called. No owned launch service, tools/HTTP, parent append or manager
+workflow activation is installed yet; no durable workflow backend ships.
+
+### Workflow state views and notification delivery
+
+workflows.NewServiceViews provides typed Status/Summaries and first-wins launch-turn
+bookkeeping with explicit pruning cleanup. Status hides foreign sessions as NotFound,
+reads run/node/artifact state coherently under one store lock and detaches projections.
+Session filtering is not owner admission. PrepareNotifications selects strictly
+later-turn runs and caps claims at 50; unset launch turn means zero. NotificationBatch
+keeps scope/token/message identity private and detaches public views. Results over
+8,000 UTF-8 bytes become null plus a 2,000-code-point preview and retrieval instruction.
+Run strings take precedence over arbitrary closed outbox diagnostic variants.
+ContextMessage retains the source untrusted-artifact-data wrapper. DeliverNotifications
+uses an explicit typed NotificationAppender; append precedes ack and preparation/
+construction/append failure releases claims. Ack failure retains the append effect
+and returns count plus error. Empty claims do not append. This is process-local,
+without durable or exactly-once delivery. It is not a live session injector.
+Snapshot 123 compares 33 real Python service/injector profiles, exact/over ASCII/
+multibyte bounds, first/later turn rules, fallback, foreign filtering, release/ack,
+append failure and a 51-notice overflow. Race tests cover concurrent unique delivery,
+coherent detached status during engine execution and pruning parallel bookkeeping.
+The owned launch/journal/context/task service and runtime tools are described below.
+Fleet/HTTP installation and automatic injection remain pending; no native workflow
+persistence is delivered.
+
+## Dynamic workflow definition admission
+
+NewDefinitionAdmission captures explicit DefinitionCaps; DefaultDefinitionCaps
+uses 4 concurrent agents, 32 total attempts, 4 rounds and 900 seconds. Admit strips
+untrusted identity/provenance metadata, forces dynamic source, validates the DAG
+and checks process caps in source order. AdmittedDefinition returns immutable
+Definition and PolicySnapshotHash. It does not authorize launch or bind an action.
+Snapshot 124 compares 20 real Python service recipes, including typed definitions,
+forged metadata, exact/fractional limits, refusal ordering and policy hashes. Native
+unknown-field refusal uses the existing strict decoder diagnostic. The owned service
+and bound runtime tools below compose admission with live launch and action binding.
+
+## Typed workflow tool and action contracts
+
+WorkflowInput carries immutable object Definition and Args. WorkflowReferenceInput
+uses the shared WorkflowRunID alias for status/cancel. DecodeToolInput strictly
+checks outer advertised shape while definition admission stays service-owned.
+Original metadata contributes to canonical action hashes; normalization must not
+replace it before journal Begin. WorkflowToolSchemas advertises three detached
+source schemas without installing tools or granting authority. Snapshot 125 matches
+eight input/action identities, 20 advertised-shape refusals, three schemas and 18
+actual Python memory/SQLite journal profiles. Native injected-store effects are
+compared to SQLite source, without claiming a native SQLite implementation.
+Background launch/wait/cancel/events are implemented by the owned service below;
+Explicit runtime tools are described below; Manager composition is described below; Workflow HTTP and standalone activation are described below.
+
+
+## Owned workflow service
+
+agent.NewWorkflowService is an explicit operator API with captured caps, journal,
+live parent resolver and worker configuration. Launch admits trusted human
+workflow.launch contexts, dynamic definitions and args before action/store effects.
+Supply the original ActionInput for an already-begun model action; nil selects the
+source normalized direct-service fallback. Tasks execute in the background with
+shared permits and min(definition, process) wall-time/round limits.
+
+Wait is shielded from caller cancellation. CancelSession and Close cancel/join
+workers; a timed-out Close caller leaves cleanup running. Service pruning pins
+unfinished publication and removes reclaimed bookkeeping. Queued replay requires
+matching trusted live context; inert stored provenance never restores authority.
+WorkflowEventSink receives closed detached events and bounded progress fields.
+Observer failure is isolated in 100 diagnostics of at most 500 code points.
+
+Snapshot 126 compares 23 actual Python service profiles: complete/serial/verify,
+raw/fallback action identity, worker/factory/missing/invalid result failures,
+timeout/cancel/close/wait shielding, foreign cancellation, terminal replay,
+conflicting payload, observer failure and ordered admission refusals. Native race
+tests additionally cover concurrent replay/cancel, cleanup after caller timeout,
+publication retention, deleted parents, context isolation, actual fresh workers
+and bounded detached observer errors. Native callbacks must cooperate; duration
+limits are explicitly validated. HTTP, SSE/archive integration and
+automatic notification append remain pending. No native SQLite backend is added.
+
+
+## Bound workflow model tools
+
+Pass WorkflowService in RuntimeConfig to NewManagedSession for explicit model
+Workflow/WorkflowStatus/WorkflowCancel tools. The service's journal is shared with
+ToolGate; original input, current parent turn and one bound run identity are retained.
+Tools require private trusted human per-message launch/manage capabilities, remain
+ordering barriers, and preserve exec/read/write permission risks. Native guards
+check bound identity/workspace and capabilities before cached journal results.
+Source handler profiles preserve refusal ordering, foreign-session hiding and
+sorted spaced UTF-8 replies. ToolSelection can reduce the installed surface.
+
+Defaults stay disabled; WorkflowTools without a service preserves its unavailability
+refusal. Bare Session cannot launch. The operator owns the injected service lifetime.
+Snapshot 127 covers 21 actual Python tool handler profiles plus traits; native tests
+cover a real managed model launch/cancel, readonly backstop, raw journal binding,
+matching service journal selection, same-turn notification suppression and replay
+fences. Manager composition is described below; HTTP and automatic notifications remain pending.
+
+
+## Manager-owned workflows
+
+Enable ManagerServices.WorkflowTools or inject WorkflowService. Optional WorkflowCaps
+is captured by value; WorkflowAttemptPool shares aggregate permits and must match an
+injected service by identity. The injected journal is authoritative. New/fork/restored
+sessions bind the service; autonomous teammates omit workflow tools. Default workers
+use real fresh readonly sessions with the manager provider, captured budgets and shared
+model/tool pools. Workflows() exposes only an operator API, without owner admission.
+
+Delete and Stop revoke parent admission and own cancellation/joins. Delete waits for
+terminal publication and in-flight launch admission before reclaiming scratch; bound
+or explicitly preserved workspaces remain. Failures pin shared paths and report bounded
+cleanup errors; shutdown retries safe pins. A cancelled Stop caller does not abandon
+background drainage. Snapshot 128 compares 12 actual Python manager profiles plus
+native tests of real workers, captured caps, deleted replay, partial-admission races,
+terminal publication, failure retention and caller cancellation. Defaults remain off.
+Later-turn result injection, dedicated workflow routes and launcher selection are
+described below. Session observation and summaries are described below; process-local workflow
+graphs do not provide durable recovery.
+
+
+## Workflow session observation
+
+The owned manager now captures the twelve emitted workflow variants in the existing
+closed SessionEvent union. Workflow() returns detached data; archival decoding validates
+version/identity aliases without acquiring trusted authority. The normal event path
+masks workflow metadata and payload strings before injected state storage, active
+trajectory capture, bounded backlog/subscribers and contained operator sinks. Workflow
+JSON retains its event identity and adds sequence equal to the session seq.
+
+Stop revokes launch admission while preserving terminal observations for surviving
+parents. Deleted parents remain absent; injected services keep their resolver policy.
+SessionInfo.Workflows exposes typed session-filtered summaries, with empty disabled
+and fresh-fork results. Existing owner-scoped HTTP info and SSE resume projections
+preserve these records; health reflects activation. Snapshot 129 compares actual Python
+session/SQLite capture for twelve variants, completed/fork/disabled summaries and
+shutdown publication. Native tests exercise real fresh workers and HTTP/SSE ownership.
+DecodeWorkflowObservation now accepts all eighteen Source observation kinds and
+retains complete finite JSON object payloads in an immutable Value. ObservationPayload
+exposes inert archived data; Progress only exposes native service progress. Optional
+PhaseID, sparse payloads, historical decisions and unknown nested fields survive
+recursive masking and archive round trips. Source-valid empty archival event IDs are
+retained; native service IDs remain required. Snapshot 133 compares 22 actual Source
+constructor/session/SQLite observations and ten constructor refusals. Stored provenance
+remains untrusted regardless of claimed authority in payload data. The six reserved
+kinds are observational vocabulary; native producers still emit twelve variants.
+Snapshot 134 adds five actual Source legacy payload recipes through session capture,
+SQLite and the observe route. Nonfinite values and escaped surrogate text/keys remain
+observable via DecodeWorkflowObservation and DecodeStoredEvent. The explicit
+SessionEventRecord.MarshalWorkflowArchiveJSON encoder supplies Source SSE/archive
+vocabulary; standard MarshalJSON stays strict. Owned catch-up still validates
+session/order and re-decodes every row before emitting escaped TCP SSE data.
+Source SQLite accepts nonfinite values, while surrogate writes degrade without
+preventing escaped SSE publication. Snapshot 135 adds ten actual Source trajectory
+file/privacy recipes and forty HTTP outcomes. Concrete native files now apply content
+privacy before legacy UTF-8 encoding, preserve nonfinite payloads through scan/summary,
+JSON assembly and filtered iteration, and refuse surviving surrogate text/keys.
+Source-compatible JSON downloads accept archival scalars while ordinary JSON details
+stay strict. Snapshot 136 adds fourteen actual Source ledgers/pages/file assemblies,
+CLI outcomes and seventy HTTP outcomes. Build retains historical payloads as inert
+inspector strings; pretty printing preserves Source Unicode and scalar vocabulary.
+Source character caps run before RenderUTF8 checks the final HTML. Visible surrogate
+text fails; a fully capped tail may succeed. All CLI load modes preserve 0600 output
+and empty files on failed UTF-8 writes. Owned views retain escaping and mask before
+projection. Store.JSON now supplies archival wire values; HTTP detail/download/view
+adapters choose their encoding boundary explicitly. Native SQL and permissive metadata
+profiles remain pending. Owned later-turn injection is described
+below. Defaults remain off.
+Snapshot 137 adds eleven historical metadata recipes and fifty-five HTTP outcomes.
+Streaming summaries select only used fields; archival JSON retains complete metadata,
+unknown metrics and original scalar identity. Ledger/file readers ignore unused root,
+header and terminal fields before typed decoding. Empty legacy metadata values and
+arbitrary inert metadata members match Source rendering and owned encoding boundaries.
+Snapshot 138 compares forty historical summary field recipes and 280 HTTP outcomes.
+TrajectorySummaryArchive retains named closed metadata, metrics and timestamp values;
+producer settings and native scan counters keep their concrete types. Full archived
+summaries and lists preserve Source values, including unknown metrics. Owned lists
+filter rows before their masked strict UTF-8 projection. Truthy non-object metadata
+fails summary/list and owned admission while direct document reads remain available.
+Direct page and successful HTTP page/list contents match Source. Ledger metric
+conversion, timing/input/output profiles, native SQLite and full G7 remain pending.
+Snapshot 139 compares seventy-one metric recipes and 284 HTTP outcomes. Named
+IntegerCount values retain unbounded token sums; MetricValue retains closed historical
+counters until render-time int conversion. Usage conversion stays at ledger build,
+header counter conversion at render, and integer formatting observes the Source
+4300-digit limit. Pair metrics honor Source scalar key equality. Render now returns
+HTML or a typed error; RenderUTF8 preserves the final text boundary after caps.
+Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP and
+full G7 remain pending.
+
+
+## Owned workflow result injection
+
+Manager-bound workflow parents append later-turn results automatically after user
+injectors and before steering/posture. Launch-turn results remain pending. The core
+turn lock owns append; the concrete parent appender checks live session/owner/turn
+binding and cancellation. ServiceViews releases failed construction/append claims
+and acknowledges only after the message is in history. A failed acknowledgment keeps
+that append observable. The Source untrusted-artifact-data wrapper conveys data and
+grants no capability. Standalone runtimes, Fresh workers and delegated/autonomous
+children have no automatic manager delivery. This path is process-local and is not
+a durable append/ack transaction. Snapshot 130 compares actual Python managed turns.
+
+## Workflow HTTP and standalone activation
+
+MINILOOP_EXPERIMENTAL_WORKFLOWS=1 or --workflow-tools enables the optional
+manager-owned workflow service, model tools and HTTP operations. Defaults stay off.
+The four MINILOOP_WORKFLOW_* caps select concurrency, total agents, rounds and
+wall time; they are validated and captured during startup. --dump-config reports
+workflow_tools selection without constructing a manager, listener or provider.
+MINILOOP_FEATURES remains unsupported until its complete bundle is implemented.
+
+```sh
+MINILOOP_FAKE_LLM=1 MINILOOP_API_TOKENS='alice:dev-token' go run ./cmd/miniloop --workflow-tools
+```
+
+GET session workflows lists runs; GET run detail and POST run cancel require
+session ownership. POST session workflows additionally requires authenticated
+deployment and stamps only workflow.launch. Stable msg_ action identity supports
+journal replay; general HTTP/model text does not gain human authority. Actual
+Source default lifespan selection is compared across six configurations. Native
+TCP tests use the real model adapter and readonly FreshWorkflowRunner for artifact
+completion, refuse model launch from ordinary HTTP messages, and cancel/join an
+active worker request on shutdown. Workflow state remains process-local. Native
+session SQLite, reserved events, archival fidelity and full G7 remain pending.
+
+## Readonly Guardian approvals
+
+MINILOOP_GUARDIAN=1 enables per-action readonly review in the standalone launcher;
+it stays off when unset. Config inspection reports guardian_enabled without creating
+a manager, workspace or provider request. This selection is independent of optional
+model tools and does not enable the comprehensive MINILOOP_FEATURES bundle.
+
+Managed tool turns derive each fresh auditor from current typed parent authority,
+workspace and capability-selected explore tools. The approval broker honors remembered
+human grants first. A decisive review replaces only that action's human answer;
+DEFER/unparsed replies and construction faults park the ordinary human question.
+Cancellation escapes without approval or human parking. The Source/native child loop
+returns ordinary provider faults as error text, and Guardian still parses verdict
+words in that text; the HTTP contract corpus includes this actual behavior.
+
+Explicit library consumers can set ManagerServices.GuardianEnabled or bind
+GuardianReviewer to ApprovalBrokerConfig.Reviewer. Session.Guardian must be called
+outside the parent's held turn; automatic runtime dispatch instead captures its
+current immutable environment without reacquiring the parent mutex. The fake-only
+benchmark composition forwards the same setting to its independent managers.
+Shared concurrency pools remain inherited; this slice adds no nested-pool bypass.
+
+## Token-efficiency typed foundations
+
+The efficiency package implements immutable Descriptor and Receipt constructors
+with explicit DescriptorConfig/ReceiptConfig boundaries. Stage, Mode, Status,
+Lossiness and CostTier are closed named types. Descriptor limits and receipt metrics
+retain arbitrary-size integer values through math/big.Int; constructors and returned
+projections detach each pointer and slice. Descriptor.Snapshot yields normalized
+capabilities in first-seen order; Receipt.Projection preserves bounded warning
+codes, paired raw references/digests and changed detection without carrying content.
+
+Sixty-eight actual Source constructors compare successful projections or exact
+validation messages, including 101-digit descriptor limits and a 1001-digit metric.
+The explicit RawStore library now stores caller-masked text in RAM, with typed
+metadata, cryptographic references, trusted monotonic default TTL, unbounded limits,
+integrity checks and scoped lifecycle. It writes no workspace/directory content.
+Fifteen real Source operation recipes and twelve constructor profiles are captured.
+Explicit RuntimeConfig.TokenArtifactTools/TokenArtifactStore now install bounded
+read_token_artifact through the common gate. Twenty Source handler results match
+actual Go turns, including Unicode pages and unbounded/null pagination. The caller
+owns store lifetime. An immutable catalogue installer preserves same-name custom
+definitions; explicit tool selection still narrows admission. Observation/request/response consumers and Manager/child/Launcher adoption are
+installed. GO_PORT_PLAN.md records remaining profile and persistence work.
+
+
+MaskedObservation and ObservationReduction now own immutable typed state with
+copying snapshots. ObservationMetadata carries ordered key/value pairs using a
+closed JSON sum, including command status fields, repeated keys and nested values.
+NewObservation preserves Source pairing validation without imposing raw-ref/digest
+patterns before the receipt/recovery boundaries. Twenty actual Source constructors
+match, including unsafe legacy paired metadata and repeated reduced_by entries.
+ObservationReducer has named ReductionOptions and concrete ObservationReduction.
+The two stateless builtin reducers match Source descriptors and 69 full-content/
+warning recipes, including ANSI OSC greediness, Unicode-14 word/decimal classes and
+Python ASCII-range IGNORECASE extensions. Shared concurrent calls retain independent
+results. Observation orchestration is described below; full lifecycle and Agent
+adoption remain pending.
+
+
+ObservationPipeline now applies ordered typed reducer bindings and per-component/
+default modes, content/input guards, byte/token inflation guards, single-owner
+projection and recoverable raw-store requirements. Safe immutable receipts retain
+last-good fallback and downstream storage-warning propagation; cancellation escapes.
+WithRawStore shares serialized component calls and synchronized token-counter pairs.
+Thirty-eight real Source runtime outcomes match projections, receipts, call arguments
+and recovered masked text. The observation library now includes clone-shared Initialize/Health/Close admission,
+cached immutable reports, ordered/reverse hooks, drain deadlines/retry and contained
+faults. LifecycleServices and LifecycleCloseOptions are explicit typed seams.
+Nine real Source lifecycle recipes match reports, closed receipts and hook order;
+native concurrency tests verify admission, cancellation, health exclusion and drain.
+Agent masking/event/journal composition, multi-stage registration and default
+activation are not installed.
+Source extremely large timeout/overflow and cross-root identity profiles remain open.
+
+
+RequestPipeline now orchestrates explicit RequestOptimizer bindings on immutable
+RequestDocument/OptimizationContext/RequestOptimizationResult values. The open
+provider-neutral JSON format is represented by closed recursive variants, with no
+any/interface{}/generic service map/RawMessage payload. Stable Source bytes and
+frozen-prefix-before-shadow semantics preserve exact receipts and counter inputs.
+Forty Source recipes cover 39 custom-probe runtime cases plus the actual builtin
+PassthroughRequestContextOptimizer. Common typed hook/coordinator code serves both
+stage libraries, while their independently constructed roots remain separate.
+Request clones share admission, counters and cached lifecycle reports. Agent
+protocol/identity checks, request projection ledger and default adoption remain open.
+
+
+ResponsePipeline adds StableResponseSettings, ResponseMetadata, ResponseContext and
+ResponsePlan with bounded concrete fields and detached snapshots. ResponsePlanner
+supports typed custom policies plus PassthroughResponsePlanner and explicit opt-in
+ConciseResponsePlanner. Exact Source dataclass-repr receipt identities, unchanged/
+shadow ordering and output ceilings match 19 constructor and 48 runtime recipes.
+Clone shares the existing stage coordinator; Manager and environment defaults
+remain pending. Explicit Agent response adoption is described below. Source response does not enforce descriptor max_input_bytes or byte/
+token inflation on settings, so native response planning adds neither guard.
+
+
+Registry now groups explicit typed stage bindings and enforces global IDs. Runtime
+combines stages under one call/lifecycle/counter root. Direct NewStageComponents
+preserves repeated instances/IDs separately from registry admission; shared pointer
+instances serialize across stages and initialize/health/close once per root. WithRawStore
+clones retain global admission and explicit caller-owned store binding. Ten actual
+Source registry recipes and native queued-cancellation/drain tests cover composition.
+Explicit Agent, Manager/child and Launcher mode/style adoption are installed.
+
+
+Explicit agent.RuntimeConfig.TokenEfficiency now adopts response policies before
+cache annotation for agent_turn purpose. ConciseResponse selects opt-in behavior.
+Instructions and tighter caps reach provider requests without changing history; other
+purposes skip planning. Typed optimization_receipt events retain metrics and warning
+counts while excluding digests/warning strings/content. Record snapshots, masking and
+archival decoding support this variant. Fourteen Source Agent recipes and native live
+Run/default-cache tests cover response adoption. The caller retains runtime lifecycle
+ownership. Explicit request and observation adoption are described below; manager
+and environment defaults remain open.
+
+
+Explicit TokenEfficiency now adopts request optimizers between response planning
+and cache annotation. A typed protocol-shape guard fixes roles/counts/tool identities/
+inputs/errors and nontext blocks. Eligible text/result projections are lowered into
+concrete messages. The live row-index/SHA256 ledger preserves earlier provider prefix
+projections while leaving authoritative history unchanged; side calls have no ledger
+ownership. Protected personal-skill previews bypass request/cache projections and
+reassert selected masked messages/cache metadata across recovery calls. Sixteen actual
+Agent recipes, fifteen shape recipes and native live Run/large-row tests cover this
+slice. Observation, Manager/default composition and broader provider profiles remain.
+
+### Explicit Agent observation adoption
+
+TokenEfficiency now reduces masked tool outputs through the shared runtime, before
+journal settlement and observers. Journals retain complete masked authority; model
+results/events/trajectory/observers receive remasked projections and optional recovery
+markers. Replay and read_token_artifact bypass reduction. Marker inflation discards
+unused refs and rewrites public metrics to authority. ObservationRawConfig snapshots
+persist/minimum-byte settings (true/4096 defaults); readonly and absent recovery tools
+forbid raw writes. Explicit runtime and recovery tool share a store; foreign workspace
+bindings are detached. Component/store lifetimes and default service composition remain
+caller-owned/pending. No dependencies or default activation are added.
+
+
+### Manager efficiency composition
+
+ManagerConfig.Efficiency accepts named library settings from
+DefaultManagerEfficiencyConfig (off/normal, raw threshold 16384). An injected
+ManagerServices.TokenEfficiency keeps its mode/components. ManagerServices.Tools
+preserves caller catalogue membership. Writable enforce sessions with selected
+recovery capability receive workspace-bound masked RAM stores. Start initializes
+once; deletion releases last holders after drain; Stop closes distinct stores
+before shared components. EfficiencyStatus returns detached lifecycle reports.
+Fourteen captured Python Manager scenarios, filtered capability admission, failed
+publication and restored-store cleanup have native tests. Launcher and request-time fake benchmark both use runtimeconfig.ManagerEfficiency
+to forward all seven validated settings. Default off/normal remains unchanged.
+Nine real HTTP/native-shell runs compare Source requests and receipts; two fake
+benchmark reports compare selected settings. RunArm now matches Source order:
+construct full session/store, run setup, restrict tools, then run. Seven actual
+Source recipes verify construction/setup inventory, retained stores, model schemas
+and manager closure. Ordinary construction-time selection still filters first.
+
+
+Standard in-process children share the efficiency root and matching store.
+Selected recovery tools bind child identity; role filtering stays authoritative.
+Child concise opt-in and projection ledger start fresh, raw thresholds detach,
+and child completion retains the caller-owned store. Eight Source scenarios and
+a managed task cancellation test cover these paths. Switched-workspace writable
+enforce children with selected recovery now allocate fresh scoped stores from
+detached ObservationRawConfig.StoreLimits. Seven additional Source runs compare
+workspace reads, old/new reference isolation and configured TTL/capacities.
+Child-created stores are transient RAM; shared lifecycle ownership stays with
+the caller/Manager. efficiency.ArtifactLimits and RawStore.Limits expose detached
+parameters without raw authority.
+
+### Restrict a newly constructed managed session
+
+ManagedSession.RestrictTools(ctx, selection) narrows the current catalogue while
+owning nonblocking admission and the core lock. SelectTools() removes all tools;
+zero selection preserves the current inventory. Unknown names are ignored and
+installed order is retained. Repeating a restriction cannot recover removed tools.
+Busy sessions return ErrSessionBusy; prior turns or restored history return
+ErrToolSelectionStarted. Closed/cancelled sessions refuse mutation. The unchanged
+Manager ledger retains any previously allocated stores for teardown. Benchmark
+uses this after setup; HTTP exposes no catalogue-mutation route.
+
+### Efficiency timeout overflow profiles
+
+Arbitrary-size descriptor milliseconds are preserved. The scheduler conversion
+uses the exact ms/1000 ratio; finite values saturate only the Go duration. Ratios
+that overflow binary64 produce a typed OverflowError before component execution.
+Observation/request/response contain the failure in receipts, initialize in its
+report, while close returns the error without caching successful closure. Its
+admission fence remains active. Twenty-five actual Python operations compare body
+calls, status/reason, exact escaped error and post-close admission. Broader SPI
+and Unicode/wire profiles remain under audit.
+
+### Local deployment audit command
+
+From go/, run `go run ./cmd/miniloop-audit` to construct the selected local
+profile, print deployment findings and stop its owned resources. It opens no
+listener and runs no session/tool/model. Workspace/shared-resource directories
+may be created. High/critical findings and operational faults return 1; other
+reports return 0. `--url http://host:port` retains the public health audit mode.
+
+`launcher.AuditDeployment` is the typed SDK constructor/auditor over shared
+launcher composition; `audit.Manager` instead audits a caller-owned manager.
+Injected stores and diagnostics remain caller-owned. Local Source selection
+ignores PORT/non-URL arguments and does not activate the workflow environment
+flag; explicit SDK workflow options remain available. Full CLI features still
+need default diagnostics. Native provider construction now accepts missing keys;
+inspection reports absence and model requests fail before HTTP/retries.
+
+### Provider missing-credential phases
+
+`provider.New` and `NewStreaming` accept an absent API key for construction and
+inspection. Supplied keys still must satisfy existing header/size bounds.
+`Complete` and `CompleteStream` reject missing authentication before transport
+or retry waiting, after their request/body checks. Non-streaming token-ceiling
+refusal has Source priority. `FailureCredential` projects class TypeError and
+ModelFailureOther, distinct from a remote HTTP AuthenticationError. The existing
+Agent run boundary returns `[Error]` text and records a provider error.
+Empty keys do not alter endpoint/error text during redaction. Direct provider
+constructors consume caller configuration; Launcher performs profile/OAuth/federation
+discovery through the named credential selection described below.
+
+### Native dotenv library
+
+The separate dotenv package implements pinned Source 1.2.2 text parsing,
+variable resolution and detached environment application with concrete types.
+All 48 Source profiles match exact bindings/lines, interpolation, ordering,
+disabled loading and partial fault outcomes. Input maps/bindings stay unchanged.
+Parse/Resolve/Apply perform no filesystem or process mutation. Separate
+file APIs are available below and executable CLI activation is implemented. Pure
+SDK inspection reports DotEnvDiscovery=false; CLI inspection reports enabled/disabled
+startup discovery. No new dependency is required.
+
+### Native dotenv filesystem SDK
+
+Find/Walk search upward with an explicit caller/cwd context and Source origin
+selection. Values/LoadFile read files or FIFOs with strict UTF-8, universal
+newlines, linked-file behavior and fallback text. UTF-8-signature and Latin-1
+are explicit finite codec options; Literal disables interpolation. LoadFile
+checks disabled loading before discovery/decoding and returns detached complete
+or partial effects without changing process environment/cwd. All 10 discovery,
+2 missing-file, 3 walk and 40 file-read Source profiles match. Actual FIFO
+producer/EOF execution also passes. Config/CLI do not invoke these libraries;
+Compiled CLI startup uses Source frozen/cwd origin; pure SDK inspection remains false.
+
+### Native startup environment preparation
+
+config.PrepareEnvironment matches actual Source config import: dotenv override,
+then remove ANTHROPIC_AUTH_TOKEN for a truthy custom base URL. Typed failures
+retain earlier writes and skip cleanup. Named PreparedEnvironment hides values
+from diagnostic rendering and Reveal returns detached maps. All 18 real Source
+import/Settings profiles validate phase/environment semantics and successful
+settings values. Pure Load stays independent and creates no roots. Executable
+startup now publishes prepared process effects; see the entry-point contract below.
+
+### Executable dotenv startup
+
+Both compiled commands initialize process environment before dispatch using the
+Source frozen-program search from cwd to root. Ordinary Python source uses its
+config module directory; this cross-language deployment-origin adaptation is
+explicit. Dotenv override=true and auth-token cleanup occur once. Effects are
+published before settings/server/auth/runtime construction and inherited by default
+child processes. Partial dotenv faults publish preceding writes and return code 1
+before runtime creation. Audit also prepares before remote/usage dispatch, matching
+Source package import order. Disabled loading performs no discovery/read but still
+runs custom-base-URL cleanup. CLI dump reports enabled/disabled discovery and still
+creates no runtime/roots; it now reads files and mutates only its own process.
+The pure SDK Load, PrepareEnvironment and launcher inspection remain independent.
+Signal hooks are installed after preparation, preserving termination during a
+blocked startup FIFO. Independent subprocess tests prove all 18 pinned environment
+outcomes, actual executable main dump/failure order, local audit construction,
+HTTP→auto-mode Bash environment inheritance and SIGTERM shutdown/startup handling.
+
+
+### Development reload observer
+
+`reload.NewWatcher(reload.WatchConfig{Roots: []string{sourceRoot}})` explicitly
+observes Go source paths. `Next(ctx)` polls after 250ms by default; `Scan(ctx)`
+performs one observation and `Reset()` clears baselines for a future replacement.
+A typed PythonSource profile supports Source differential checks. New/deleted
+paths and non-increasing mtimes do not trigger, matching Uvicorn StatReload.
+The roots/delay are detached from caller configuration. Directory symlinks are
+not traversed; matching-suffix directories and resolved file symlinks participate.
+It does not build binaries, own children/listeners or change CLI startup.
+The CLI now selects this observer through the native development reload path below.
+
+
+### Native development build artifacts
+
+`reload.NewBuilder(reload.BuildConfig{ModuleDirectory: moduleRoot})` selects
+`./cmd/miniloop` with the existing Go toolchain; one explicit local package may
+replace that default. Build(ctx, diagnostics) creates a private native Go binary
+using readonly modules and the installed local toolchain. A failed build cleans
+its output; a successful Artifact owns its directory. Call Executable(ctx) before
+launch to recheck retained bytes, then stop/join the child before Artifact.Close.
+Environment is captured/detached at construction; compiler diagnostics stream to
+the caller. On macOS/Linux cancellation ends the compiler group, including its
+helpers; other platforms use direct-process cancellation. This operator library
+is not a model tool. Explicit SDK supervision and CLI selection are described below.
+
+### Native development supervisor
+
+`reload.NewSupervisor` takes explicit Builder/Watcher collaborators, child
+arguments, working directory and detached environment. On macOS/Linux Run takes
+ownership of one TCP listener after admission; a supervisor is single-use. The
+parent retains the socket across child replacement and failed compilation.
+Children call `reload.InheritedListener()` to duplicate descriptor 3; callers
+remain responsible for authentication and the actual inherited bind address.
+
+Source changes stop and join the old process group before building/replacing it.
+Shutdown sends SIGTERM, then forces group termination after StopGrace (default
+10 seconds). Artifacts are released only after children are joined. Build/start
+failures emit typed events and wait for a source correction; an exited child
+also waits for an edit. Callback panics cause owned cleanup and an error. Event
+callbacks and output writers must return promptly. Cancellation is normal shutdown.
+The watcher primes before each build so edits during compilation remain visible.
+These finite shutdown and native-build details are Go adaptations of StatReload.
+This SDK has real HTTP replacement/recovery tests; the standalone CLI uses it as below.
+
+### Run the CLI with development reload
+
+From `go/`, use `MINILOOP_RELOAD=1 go run ./cmd/miniloop`. Any nonempty value
+(including `0`/`false`) enables Source-compatible selection. The parent watches
+cwd `.go` entries with StatReload observation rules and rebuilds `./cmd/miniloop`
+from the Go module in cwd/ancestors; `--reload-module /operator/module` overrides
+module discovery. Dump reports server.reload without discovering/probing/building
+a module. An installed executable still needs the local source module and existing
+Go toolchain for reload. Dependencies remain readonly and no toolchain is downloaded.
+
+On macOS/Linux the parent retains one admitted TCP socket and owns no manager.
+Each native child captures its inherited descriptor before dotenv, repeats config
+and actual-address authentication checks, and serves the same port. Child startup
+role remains fixed if dotenv changes reload/HOST/PORT or its private marker; marker
+values are removed before runtime/tool factories capture environment. Source edits
+stop/join the old child before native rebuild; compilation/startup failures keep
+watching for a correction. Replacements reload dotenv and reset process-local
+sessions. SIGTERM/interrupt joins compiler/child and cleans artifacts/listener.
+These native-build/module, bounded-stop and inherited-bind checks are documented
+Go adaptations. Other platforms refuse the inherited-listener supervisor; no
+automatic durable restoration or model/remote reload selection is added.
+
+Current observer boundary: CLI process/build/listener integration uses the explicit
+StatReload fallback profile. Installed Source Uvicorn 0.49.0 selects WatchFilesReload
+with watchfiles 1.2.0. Native add/remove/modify event observation and Source default
+filename filtering remain required before default reload parity; the process tests
+above verify changed existing sources with increasing mtimes, not that event profile.
+
+### Default event filename filter SDK
+
+`reload.NewEventFilter(reload.GoSource)` (or PythonSource for differential checks)
+constructs the captured POSIX default WatchFiles filename policy. Matches(path)
+is lexical: removed files, eligible sources under hidden parent directories and
+matching-suffix directories can match. Hidden/backup basenames are excluded;
+no stat, root-containment or execution authority follows. The zero value matches
+nothing and unknown languages fail construction. Actual Source default cases
+replay for both language profiles. This pure SDK does not start an event source
+or change the current CLI StatReload fallback. The native SDK below selects it.
+
+### Owned macOS native events SDK
+
+`reload.NewNativeEvents(roots, language)` starts an explicit macOS/CGO FSEvents
+subscription using system frameworks, flags 18, latency 0 and since-now. Roots
+must be existing operator-selected directories. `Next(ctx)` returns sorted unique
+lexical paths with a 50ms quiet window and 1600ms batch cap; an empty successful
+batch means native events were excluded by the default filename filter.
+Context cancellation retains unread events and leaves the subscription owned.
+The caller must `Close`, which stops/invalidates/releases the stream and joins its
+OS thread. Integer registry keys cross C; no Go pointer is retained by C.
+Kernel loss and a 4096-path queue overflow fail explicitly, requiring recovery.
+The API is unavailable without Darwin/CGO; no Go module dependency is added.
+
+All 16 actual Source native recipes replay against the real OS subscription,
+including removed/transient paths, identical and same/lower-mtime edits, renames,
+hidden parents, suffix directories and non-source symlink targets. This remains an
+explicit native SDK; the factory below binds captured native/polling profiles.
+Default Linux native observation and CLI selection remain pending. The CLI still
+uses the StatReload fallback.
+
+### Captured observer profiles and owned polling
+
+`reload.SelectObserverProfile(environment, host, forcePolling)` is pure: nil
+means an empty environment; the caller captures host System/Release explicitly.
+An explicit bool overrides force-polling environment; nonempty values except
+false/disable/disabled force polling, including `0`. Auto selection is Linux
+with microsoft-standard in its release. Unicode lowercase/decimal behavior,
+4300-digit conversion and uint64 millisecond bounds follow pinned Source.
+`WATCHFILES_DEBUG` is true for any nonempty value. Profile fields are private.
+
+`reload.NewObserver(ctx, reload.ObserverConfig{Roots: roots, Profile: profile})`
+returns the narrow Next/Close interface. Native selects the existing macOS/CGO
+stream; polling owns a cancellable traversal/timer worker on any supported Go OS.
+The construction context cancels initial traversal; it does not implicitly Close
+an already returned subscription. Next cancellation preserves unread events.
+Close joins polling or stream cleanup. StatReload remains a separate fallback.
+
+Polling follows directory/file links with lexical names, signed whole-second
+mtime and no content hash. Add/delete/rename and increasing seconds emit batches;
+lower/equal/fractional edits and identical writes/touches do not. Dangling entries
+and missing registered roots repeat deletion batches, preserving Source behavior.
+Directory cycles fail before starting the Go worker; Source reports its loop
+fault during initial watching. Polling cannot observe a transient path absent at
+both scans. Duplicate raw changes do not prolong the 50ms quiet/1600ms capped
+batch window. Maximum uint64 waits are partitioned without nanosecond overflow.
+
+Selected diagnostics report raw paths, including filter exclusions. Nil selected
+DiagnosticWriter uses stdout; custom writers must return promptly. Native flags
+(or zero for polling) are printed; text is a native Go adaptation of Rust debug
+output. No observer/profile is implicitly activated by Launcher or the current CLI.
+Linux native event delivery and CLI binding remain next; no dependency is added.
+
+### Launcher credential discovery
+
+`Launcher.NewWithOptions` discovers credentials only for real providers with
+undefined API key and auth token. Explicit profile/config directory or active
+pointer takes precedence, then complete environment federation, then fallback
+profile. Explicit profile errors are eager; bad fallback profiles preserve deferred
+missing-auth request errors. Static custom headers are applied after profile headers.
+`LoadOptions.HomeDirectory` isolates profile roots. Explicit settings maps capture
+literal identity; `IdentityTokenReader` provides rotation and disappearance. Real
+CLI process readers remain live regardless of dotenv selection. Snapshot discards
+live selectors, literals and readers. `Options.ProviderTransport` is borrowed and
+never closed by App; nil owns a private transport. `ProviderNow` supplies an optional
+clock. Token exchanges use the Source 30-second timeout. Fake providers skip discovery.
+
+### Defined-empty auth and literal identity lifecycle
+
+Environment auth presence differs from truthiness: an empty auth token suppresses
+discovery and emits `Authorization: Bearer `, unless a nonempty settings API key
+suppresses bearer selection. An empty API key alone suppresses discovery but still
+fails missing authentication at request admission. Custom authorization headers do
+not independently suppress explicit profile construction. Empty profile/config-dir
+selectors allow fallback. Literal federation identity may be an empty string;
+projected identity files still reject empty stripped contents. Live identity readers
+are re-invoked on refresh: rotated literals exchange again, disappeared values fail
+before a new token/model request. Explicit SDK maps remain captured unless given a
+reader. All these observations are pinned to actual SDK 0.107.1 offline recipes.
+
+### Typed usage metadata and projection
+
+`protocol.TokenUsage` adds named CacheCreationUsage, OutputTokenDetails and
+ServerToolUsage plus InferenceGeo. Optional pointers retain concrete values;
+the codec separately preserves explicit null and closed immutable extensions,
+including nested metadata extensions. Native sparse/fake usage remains sparse.
+`WithSDKDefaults` explicitly supplies seven optional SDK null defaults and missing
+nested counter nulls. Nested counters are named optional integers; sparse native
+constructors preserve omission until this normalization.
+Cloning detaches mutable pointers; MapStrings projects metadata values and
+extension keys/values before serialization. Agent event projection uses this
+without mutating provider values; stored event decoding retains shape and never
+grants authority. Direct HTTP and SSE now preserve this metadata and extensions. SSE updates
+server-tool counts with the SDK accumulator semantics. Native non-negative bounded
+integers remain an ingress adaptation; scalar-string Source output is refused.
+Direct/SSE integration now checks actual SQL event payloads, database close/reopen,
+typed archival reads, explicit Manager restoration and resumed writes, plus raw
+private JSONL and independently reopened recording readers. Registered secrets in
+usage metadata and extension keys/values are masked at these durable boundaries.
+This proves the tested reconstruction recipe; full provider scope acceptance remains open.
+
+### Named container-upload reply blocks
+
+`protocol.NewContainerUploadBlock` and `NewStreamedContainerUploadBlock` retain
+a named FileID plus the observed SDK stream null defaults. The closed Block union
+provides a detached ContainerUpload accessor, cloning, wire/cache serialization and
+stored decoding. Provider direct/SSE adapters accept it and SQLite validates FileID
+UTF-8 at persistence. It is observational metadata, so client-tool authority and
+tool pairing rules do not select it. Decision responses retain the Source allowlist
+of text/thinking/redacted-thinking and continue to refuse this content variant.
+Six actual SDK 0.107.1 captures cover normal, empty and Unicode file IDs under both
+transports; remaining server-tool/result variants and extension scope still need
+reconciliation. The recipe tests serialization and archival codec, not a new actual
+container-file upload/download endpoint or a new native SQLite restart recipe.
+
+### Named server web-search results
+
+`protocol.WebSearchToolResultBlock` exposes ToolUseID, Content and Caller. Content
+is a closed results-or-error union, with detached Results/Error accessors. Each
+result has named Title, URL, EncryptedContent and optional PageAge; errors have a
+named WebSearchErrorCode. Root/result/error extension objects are immutable closed
+JSON values. Recognized fields never remain opaque payloads.
+`WithSDKDefaults` supplies observed caller/page-age nulls; `Block` converts a
+detached result into the closed transcript union. Domain/native sparse codecs
+retain omission. Direct/SSE provider decoding uses these types; stopped SSE blocks
+retain the decoded result. Historical readers support larger frames without changing
+network bounds. SQLite validates all named text fields before writing. Generic
+masked JSON projection includes extension keys/values; this metadata never selects
+client tool execution or tool pairing. The Source decision content allowlist still
+rejects this variant.
+Fourteen pinned SDK 0.107.1 recipes cover empty results, successes, errors/future
+codes, caller variants and extensions. Remaining six SDK reply kinds, caller/other
+external extensions and default/public-entry acceptance remain under audit. This
+slice adds reply representation, not a server search request option or execution backend.
+
+### Named server tool-search results
+
+`protocol.ToolSearchToolResultBlock` retains ToolUseID and a closed references-or-error
+Content union. Results expose detached References with named ToolName values, including
+unknown client names; errors expose Code and optional Message. Root/result/reference/
+error extensions remain immutable closed JSON values. Recognized fields enter named
+types, and references remain inert observations rather than catalogue registrations.
+`WithSDKDefaults(streamed)` selects null error-message defaults and stream-only null
+text/citations/parsed_output fields captured from SDK 0.107.1. Native sparse codecs
+retain omission. Direct/SSE decoding, forwarding/cache encoding, clone isolation,
+masked projections, historical frames and SQLite named-string validation support
+this variant. Decision content admission retains the Source allowlist and rejects it.
+Twelve SDK recipes cover empty references, known/unknown/Unicode names, errors/future
+codes, messages and extensions. Five SDK reply variants and final provider/public-entry
+acceptance remain open. This slice adds reply representation; server tool-search
+request selection and dynamic client catalogue registration are not implemented here.
+
+### Named provider-owned tool-use observations
+
+`protocol.ServerToolUseBlock` exposes ID, ServerToolName, ServerToolInput and optional
+ToolCaller. Seven known server names have constants; future SDK names stay named
+strings. The SDK input contract declares an object without individual known fields.
+ServerToolInput owns immutable closed recursive JSON, with no open map, interface or
+raw payload in the domain. DecodeServerToolInput enforces object shape and network
+bounds; historical codecs accept larger accumulated records. WithInput changes only
+input, retaining caller and immutable root extensions. WithSDKDefaults supplies the
+observed caller null; native sparse codecs retain omission. SSE starts retain metadata,
+complete input deltas replace initial input, and empty deltas retain it. Strict final
+JSON/object admission remains the native boundary; SDK partial/malformed-input and
+caller extension behavior remain separate audit items. Caller supports the existing
+closed direct/code-execution variants. Server observations do not register/execute
+client tools, emit tool-input progress or require client result pairing. Decision
+admission keeps its existing Source allowlist. Thirty-two SDK direct/SSE captures
+match forwarding and archival codecs; actual SQLite close/reopen retains all captures
+and invalid UTF-8 named fields roll back the batch. Four remaining SDK reply kinds
+and final provider/default/public-entry acceptance remain open.
+
+### Named web-fetch documents and results
+
+`protocol.WebFetchToolResultBlock` retains ToolUseID/Caller and a closed
+WebFetchContent result/error union. WebFetchResult exposes URL, optional RetrievedAt
+and FetchedDocument. Its document has named Source, optional Title and optional
+DocumentCitationsConfig with Enabled. DocumentSource is a closed text/PDF variant
+with verbatim Data and named DocumentMediaType. Source metadata remains inert:
+there is no base64/PDF decoding, document opening or URL fetching in this layer.
+All recognized fields enter named types; only unrecognized root/result/document/
+source/configuration/error extensions enter immutable closed JSON. Future error
+codes remain named strings. Clone and accessors detach nullable pointers.
+WithSDKDefaults(streamed) selects caller, retrieval, title and citation-config nulls,
+and observed stream-only null text/citations/parsed_output metadata. Native sparse
+codecs retain omission. Network frames remain bounded; historical document data
+supports larger records. Forty-two SDK 0.107.1 direct/SSE captures cover text/PDF,
+empty text, nulls, citations on/off, caller variants, all nine error codes, future
+code and nested extensions. Forwarding, masking, SQLite close/reopen and batch
+rollback on invalid named UTF-8 fields are verified. Client tool dispatch/pairing
+and decision admission keep their existing authority boundaries. Three SDK execution
+result kinds and broader caller/partial-input/default/public-entry audit remain.
+
+### Named provider code-execution results
+
+`protocol.CodeExecutionToolResultBlock` exposes ToolUseID and a closed
+CodeExecutionContent ordinary/encrypted/error union. Ordinary results have named
+OutputFiles, ReturnCode, Stdout and Stderr; encrypted results use EncryptedStdout.
+CodeExecutionOutput preserves FileID and immutable extensions. ExecutionReturnCode
+owns only the closed JSON integer variant, preserving SDK Python integers above
+machine width; Decimal exposes its spelling. Strings/floats/bools/null are refused
+rather than silently coerced. Four known errors have constants; future codes stay
+named strings. All known metadata fields enter named types. Unrecognized fields
+remain immutable closed extensions. Clone/accessor methods detach output slices.
+WithSDKDefaults(streamed) retains observed stream text/citations/parsed_output
+nulls; native sparse codecs retain omission. Larger historical stdout and ordinary
+network bounds remain separate. Twenty-eight SDK 0.107.1 direct/SSE captures
+compare ordinary/encrypted output, empty/nonempty file arrays, large signed return
+codes, errors/future codes and extensions. Forwarding, masked keys/values, atomic
+nested refusals, SQLite reopen and invalid UTF-8 batch rollback are verified.
+Outputs do not execute code, open files, decrypt ciphertext or grant client tool
+pairing/dispatch authority. The existing Source decision allowlist remains intact.
+Two SDK execution-result kinds and broader caller/partial-input/default/public-entry
+acceptance remain.
+
+### Named provider Bash execution results
+
+`protocol.BashExecutionToolResultBlock` exposes ToolUseID and a closed
+BashExecutionContent result/error union. BashExecutionResult has named OutputFiles,
+ReturnCode, Stdout and Stderr. BashExecutionOutput preserves FileID and its SDK
+bash_code_execution_output tag. ExecutionReturnCode is shared with ordinary code
+execution and retains SDK Python integers above machine width. Bash result/file
+labels remain separate; ordinary code-execution labels are refused here. Five
+known errors include output_file_too_large; future codes stay named strings.
+All recognized fields enter named types. Immutable closed extensions preserve
+unrecognized root/result/output/error fields. Accessors/clones detach output slices.
+WithSDKDefaults(streamed) adds observed null text/citations/parsed_output metadata;
+sparse/history codecs preserve omission and larger stdout. Twenty-six SDK 0.107.1
+direct/SSE captures cover outputs, empty text/files, large signed return codes,
+all errors/future code and extensions. Forwarding, masking, atomic nested refusals,
+SQLite close/reopen and invalid UTF-8 batch rollback are verified. This metadata
+has no client BashInput, command execution, file opening, result pairing or grant
+semantics. Decision admission retains its Source allowlist. The text-editor SDK
+reply kind and broader caller/partial-input/default/public-entry acceptance remain.
+
+### Named provider text-editor results
+
+`protocol.TextEditorToolResultBlock` retains ToolUseID and a closed
+TextEditorContent view/create/replace/error union. View retains Content, FileType,
+optional NumLines/StartLine/TotalLines; create retains IsFileUpdate; replace retains
+optional Lines/NewLines/NewStart/OldLines/OldStart; errors retain Code and optional
+Message. EditorInteger preserves the SDK's signed Python integers above machine
+width; other scalar kinds are refused. Lines retain absent/null/empty/value forms,
+and invalid element kinds are refused without silently substituting empty strings.
+All recognized fields enter named types. Only unrecognized fields enter immutable
+closed extensions. Clone and accessors detach line arrays and nullable pointers.
+WithSDKDefaults(streamed) selects SDK nulls for nested optional fields and stream
+text/citations/parsed_output defaults. Native sparse/history codecs preserve
+omission and larger view data. Forty-eight SDK 0.107.1 direct/SSE captures cover
+text/image/PDF view, create/update, replace, empty/null/value fields, large integers,
+all five errors/future code, extensions and opaque root caller metadata. SSE now
+selects caller decoding by block kind; client ToolCaller admission remains validated.
+The previous eager caller parse failed the actual SDK editor-extension recipe; the
+new regression verifies preservation and retained client rejection behavior.
+Forwarding, masked metadata, atomic refusals, SQLite reopen and invalid UTF-8 batch
+rollback are verified. Observations never read/create/modify files, execute client
+tools or grant result pairing. SDK's twelve declared ContentBlock kinds now have
+named variants, but caller extensions, partial/malformed inputs, consumer scalar
+alignment, defaults/public entry points and complete migration acceptance remain.
+
+### Declared provider caller extensions
+
+ToolCaller retains three named discriminators: direct, code_execution_20250825
+and code_execution_20260120. SDK-declared fields remain typed; unknown members
+are an immutable closed JSON extension object. Direct caller tool_id is unknown
+metadata and does not become typed ToolID. Code-execution callers still require
+a nonempty string ID. Unknown kinds and malformed known fields remain refused
+pending their separate Source contract audit. The extension decoder is atomic.
+Forty-eight SDK 0.107.1 direct/SSE recipes cover absent/null callers and extensions
+in client/server tool-use and web-search/web-fetch results. Forwarding and SQLite
+close/reopen preserve them. Masks cover extension keys/values without changing
+original messages. Nested historical callers follow archival bounds; network
+inputs remain capped. Caller metadata does not select or authorize a client tool.
+
+### Native streamed partial input boundary
+
+On selected SSE client/server tool-use paths, the wire adapter reparses each
+nonempty cumulative delta using internal/jsonvalue.DecodePartial. It returns a
+closed immutable value, drops incomplete scalar members at EOF and retains
+completed nested values/duplicate-key semantics. Empty deltas keep initial input;
+invalid syntax is refused at the corresponding delta. The raw cumulative buffer
+is capped before parsing. At block stop the value must serialize as finite JSON
+and enter the existing named ToolInput or finite observational ServerToolInput decoder.
+No partial bytes enter service/domain records or authorize client tool effects.
+Complete/archival jsonvalue.Decode is unchanged. Ninety-eight SDK per-delta
+recipes and 42 direct jiter edge contracts are enforced as real assertions;
+34 finite server-object results also match forwarding/history and SQLite reopen.
+Client extra/missing fields and root/nonfinite adaptations remain audited gaps.
+The opt-in audit reporter requires MINILOOP_PROVIDER_AUDIT_BASELINE explicitly;
+a successful diagnostic run is not a parity gate.
+
+## Deferred model Bash argument binding — 2026-10-10
+
+Model replies use `protocol.DecodeModelToolInput`; explicit caller admission uses
+strict `DecodeToolInput`. Finite Bash objects with extra parameters or missing
+command carry a named `BashBindingFailure`, typed known arguments and immutable
+unknown extras. Forwarding and history preserve the sparse object and first unknown
+parameter order. ToolGate follows before/guard/permission/journal checks, then
+returns the binding error without invoking a handler; normal after/result hooks
+still run. A before rewrite can replace the fault with valid arguments. Permission
+denial takes precedence. Nonfinite and unsupported known scalar adaptations remain
+unresolved; finite non-mapping observations now follow the named failure path.
+This binding contract represents the default Python Bash handler.
+
+## Named SDK usage count observations
+
+`TokenUsage` and its nested count fields now hold `UsageCount` and optional
+`*UsageCount`, rather than plain int. Use `IntegerUsageCount(n)` for native/fake
+producers. `Kind` and `Integer` inspect observations; `Metered` implements the
+Source numeric projection and must not serve as strict decision validation.
+Private scalar/array/object variants remain immutable. No any/open map/RawMessage
+field enters runtime structures. Sparse optional null flags remain separate.
+
+Direct SDK normalization keeps required values and normalizes optional integer
+fields. SSE validates each captured start/delta count set before accumulation.
+The implementation is verified against 34 real SDK/metering profiles and their
+stage snapshots, not a claim of every Pydantic coercion/error shape. Finite native
+metering bounds remain explicit. Compaction receipts/events keep observed values;
+decision consumers require integer kind and nonnegative value. Masking transforms
+count text and structured keys/values on detached projections. Historical/SQLite
+observations do not supply authority. Default diagnostics and G7 remain open.
+
+## Finite non-mapping model input observations
+
+Model Bash decoding now retains array/null/text/integer/float/bool values in named
+BashRejectedArguments with a closed BashArgumentKind and immutable observation.
+They carry BashNonMappingArguments failure with the actual Source registry TypeError
+wording. The existing ToolGate settles it after before/guard/permission/journal
+checks, without calling a handler, then executes after/result hooks. Before hooks
+may replace the call with valid named input or deny it. Explicit DecodeToolInput
+remains strict. Clone/masking and archival event/message codecs retain the observation
+and error kind; recording projections do not mutate live arguments.
+
+ServerToolInput now retains finite scalar/array/null roots as observational SDK
+metadata. It cannot become client ToolInput or supply grants. The SDK-declared
+object remains a common shape, not a rule that drops permissive SDK observations.
+Twelve actual direct SDK reply/forwarding cases, 49 finite Source execution cases,
+and 78 finite SSE/history/SQLite cases pass. Four nonfinite client/server SDK final
+cases and unsupported known-field scalar input adaptations remain open.
+
+## Named model Bash optional-field projections — 2026-10-10
+
+Baseline: `9c01921` plus this implementation; Source contract commit `ffc3265`.
+`BashBackgroundRequest` and `BashApprovalProposal` preserve finite observed option
+values in immutable closed variants. Bash execution accessors return only a boolean
+Python-truth request and an optional string-array proposal. Candidate length, exact
+command-prefix match, banned heads and actual human approval remain the existing
+agent rules. Invalid proposal shapes are ignored, not converted into grants.
+
+Actual Source Agent/default Bash consumers cover 56 profiles: 15 background request
+shapes and 13 proposal shapes, each with background tools enabled and disabled.
+Text "false", nonzero numbers and nonempty containers request background execution;
+empty text/containers, zero, false and null do not. Disabled background support
+executes foreground regardless of the request. Twenty-eight wire samples (27 unique inputs)
+retain exact original JSON values and kinds through direct/SSE decoding, clone,
+masking, historical message reads and SQLite close/reopen. Native tests execute real
+foreground shells/background tasks, compare Source candidate selection, and prove
+readonly denial starts no background manager. Explicit DecodeToolInput is strict.
+
+This closes the captured finite Bash optional-field adaptation. Nonfinite inputs,
+non-text command values, other default tools, broader SDK/caller/coercion scope,
+default diagnostics dependency approval and complete G7 acceptance remain open.
+
+## Named non-text Bash command consumers — 2026-10-10
+
+Baseline: `400b6b0` plus this implementation. Source contract commit `d12d58b`
+pins actual Agent, default _bash, real Toolset/background consumption, candidate
+functions and PermissionHook. Thirty-six consumption profiles and twenty permission
+profiles cover finite null/bool/integer/float/array/object commands, foreground and
+background activation, extra-keyword priority, before rewrites, before/guard denial,
+readonly and immutable deny-list behavior. No invalid command starts a process/task.
+
+BashCommandObservation owns a closed BashCommandKind and immutable finite value.
+Permission and approval use Python str(value) as a policy-only projection. Native
+handlers return named BashCommandFailure with split/lower stage: foreground split;
+background auto selection lower; explicit background initializes the owned manager
+then fails split. Original JSON stays in model/event/history records. Explicit
+caller admission remains strict, and the existing gate still controls permission,
+journal/replay, after hooks and result observation. Rejected command observations
+are never shell argv. Before rewrite can replace them with executable text.
+
+Protocol clone/masking/history and native direct/SSE/SQLite reopen cover 44 unique
+inputs: 27 optional-field values and 17 non-text command objects. The prior options
+inventory had 28 samples including the repeated absent-options object; uniqueness
+is now enforced. Earlier statements of 28 distinct inputs are corrected to 28
+samples (27 unique). Source authority decisions remain actual captured behavior.
+Nonfinite inputs, other default tools, broader SDK/caller/coercion scope, default
+syntax diagnostics dependency approval and full G7 acceptance remain open.
+
+## Non-text Bash display alignment — 2026-10-10
+
+Baseline: `9f0e9db` plus this implementation; Source display contract `fdb47d8`.
+ToolLabel now reads ShellCommand's observation text for Bash, preserving actual
+Python str(command) instead of the executable string shadow. Thirty-six real
+Source Agent tool_use display fields and twelve independent Source SecretRegistry
+mask_payload/tool_label profiles match native display. Cases cover null/bool/int/
+float, nested arrays/objects, quotes, Unicode, opaque text, secret-key collisions,
+mask-before-preview and the 60-character cap. Existing typed-text activity tests
+still pass. Neither display nor policy text becomes argv or supplies authority.
+
+The actual maskedEvent path recomputes display from a masked immutable input copy.
+Native checks compare labels and canonical JSON values/kinds and prove that the live
+input remains unchanged. Initial comparisons confused HTML/Unicode JSON escaping
+with value changes; canonical comparison fixes the test without changing codecs.
+No new production type or dependency. The previous recorded label gap is resolved.
+Nonfinite inputs, other default tools, broader SDK/caller/default scope and complete
+G7 acceptance remain open; this is not complete event/provider acceptance.
+
+## Background command display alignment — 2026-10-10
+
+Baseline: `fbf75c1` plus this implementation; Source contract `2c3c027`.
+Actual Python tool_label selects the same shell rules for bash/background_run.
+Native ToolLabel now selects both named inputs through ShellCommand. Fourteen
+actual Source masked string-command profiles cover empty/simple heads, Unicode
+space, pipes/substitutions/backticks/redirects/chains/newlines, quotes, Unicode
+preview limits and secret masking before the cap. The existing lifecycle capture
+is otherwise unchanged; the native test failed against the previous generic call
+label and passes after the shared selection. The actual maskedEvent path preserves
+live executable input and emits no registered secret. No new dependency/type,
+execution route or tool catalogue change. Non-text background_run consumers and
+complete default/provider/G7 acceptance remain open. Prior coverage is pinned to
+the Bash display worktree; no coverage refresh is claimed for this slice.
+
+## Native Darwin callback admission — 2026-10-10
+
+Baseline: `45d086b` plus this implementation. notify 8.0.0 callback_impl fences
+recursive event paths against subscription roots; translate_flags ignores
+HistoryDone and emits no change for item-type/OwnEvent/ID-wrap flags alone.
+NativeEvents now owns the detached canonical root list and applies the same
+lexical root/change admission before the existing filename filter. Subscribed
+loss remains a sticky error (a stronger documented native adaptation). No
+leaf stat resolution, wider roots, new dependency, default selection or global
+FSEvents purge. Three independent observer-boundary tests failed with the former
+raw forwarding and pass with admission; cancellation retains later real deletion.
+
+Actual Python native recipes repeated three times: all 48 observations matched
+the committed fixture. Native raw diagnostic runs before this change also matched
+all sixteen recipes in three rounds. Earlier timeout/symlink failures are thus
+not causally explained by this patch and must remain on G3/G7's reliability queue.
+[Source pins and repeated observations](../docs/audits/go-fsevents-boundary-2026-10-10.json)
+retain exact source hashes and proof limits. Source fixtures/expectations and
+runtime timers were not changed; no coverage refresh is claimed for this slice.
+
+The pinned notify run method uses continuous CFRunLoopRun. Native Go's existing
+50ms owner-thread slices now service all pending sources for the slice rather
+than return after the first handled source; Stop is still checked between slices.
+This restores continuous servicing within the existing bounded cleanup design.
+It does not enlarge batch/context timers or claim a proven cause for the old
+intermittent failures. Event class deduplication/complete temporal equivalence
+remain separate acceptance questions.

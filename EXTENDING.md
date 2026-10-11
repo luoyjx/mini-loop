@@ -23,7 +23,7 @@ Everything is injected through **two constructors**:
   *every* session it creates, and then served over HTTP by `create_app`.
 
 A complete, runnable example combining all of the below:
-[`examples/custom_agent.py`](./examples/custom_agent.py).
+[`examples/custom_agent.py`](./python/examples/custom_agent.py).
 
 ---
 
@@ -41,6 +41,7 @@ A complete, runnable example combining all of the below:
 | `caching.py` | `CachePolicy` | `cache_policy=` | where prompt-cache breakpoints go |
 | `storage.py` | `StateStore` | `state_store=` | whether a session survives a restart |
 | `secrets.py` | `SecretRegistry` | `secrets=` | which credentials a tool can see or print |
+| `spill.py` | `SpillStore` | `spill=` / `Harness.spill` | where already-masked oversized string-Bash output is preserved |
 | `sandbox.py` | `Sandbox` | `sandbox=` | what the shell can reach on the host |
 | `stuck.py` | `StuckDetector` | `stuck_detector=` | when a repeating agent is nudged or halted |
 | `recovery.py` | `RecoveryPolicy` | `recovery=` | retry/backoff/token-escalation/fallback on LLM errors |
@@ -77,6 +78,14 @@ router rather than a check repeated per handler, config read at request time,
 and any credential channel opened for one surface staying scoped to it. Two
 deliberate differences — constant-time comparison, and refusing to serve rather
 than defaulting open.
+
+The Go handler accepts `httpapi.Authenticator` with named `Principal` results.
+Its `Authenticate` and `Configured` methods must be safe for concurrent requests.
+Authentication runs once at admission; handlers reuse that principal for ownership
+and the untrusted HTTP stamp. `TokenAuth` supports detached owner bindings;
+`AuthFromEnvironment` resolves only token configuration. The embedding application
+must invoke `RefuseOpenBind` before listening. The standalone Go launcher owns
+that check, additionally checks the actual listener, and refuses blank hosts.
 
 ---
 
@@ -270,6 +279,31 @@ is no new HTTP endpoint or decision store.
 See [Typed decisions](docs/DECISIONS.md) for a complete batch example,
 source-pinned upstream semantics, and validation boundaries.
 
+The Go `decisions.Provider` seam evaluates a detached `decisions.Request` and
+returns a validated `decisions.Result`. Question/Answer expose closed choice,
+score and noul variants; state/criteria use the six supported JSON Value kinds.
+`NewJev(DefaultJevConfig(apiKey))` selects the fixed source endpoint without
+performing I/O during construction. An optional HTTP client is borrowed through
+a private shallow copy that disables redirects; its transport must support
+concurrent evaluations. Owned transports ignore environment proxies and close
+idle connections after each call.
+
+Native `RuntimeConfig` and `ManagerServices` explicitly select `DecisionTools`;
+`DecisionProvider` chooses the backend, while nil selects an isolated current-LLM
+query. Provider injection alone never activates a tool. `DecisionLLMConfig` zero
+values select the source defaults. All calls cross the common external-risk gate,
+mask/revalidate explicit state, and share the model limiter. Providers must honor
+contexts; arbitrary backend error text is omitted. The LLM child shares recovery
+and explicit peer provenance, with fresh history/tools/cache/meter and no stream.
+Typed decision metadata reaches existing sinks; full masked requests are private
+trajectory fields. Native tool results mask closed structures before JSON escaping,
+including backend model/provenance strings; typed provider results remain intact. Selected custom roles may inherit the tool; default child roles
+omit it. Results and replay confer no approval or execution authority. The native
+launcher now accepts MINILOOP_DECISIONS=llm or jev; Jev uses TYPESAFE_API_KEY and
+MINILOOP_DECISION_MODEL. Launcher Options can explicitly install/override the
+backend and tune LLM settings; provider injection alone leaves off-mode disabled.
+Full source replay/SQL audit remains pending. See [Go decisions](go/README.md#typed-decision-operator-library).
+
 ---
 
 ## 2. Hooks — permissions, lifecycle, audit, rewriting
@@ -310,11 +344,13 @@ the first `on_stop` continuation keeps the loop alive. Hooks apply to
 subagents too. Keep hooks stateless (or guard their state) since one `Hooks`
 instance is shared across concurrent sessions.
 
-The default chain contains `PermissionHook`: an immutable command deny-list,
+The default chain contains `GoalContinuation` (inert without an armed goal) and
+`PermissionHook`: an immutable command deny-list,
 ordered `PermissionRule`s, and an optional async approval callback. With no UI
 callback, an `ask` decision fails closed. Passing an explicit `Hooks(...)`
 chain replaces the default, so include `PermissionHook` when a custom fleet
-still needs the standard policy.
+still needs the standard policy and `GoalContinuation` when it needs goal
+continuation.
 
 ---
 
@@ -429,6 +465,33 @@ the end-to-end test: the model could not read the protected file, but found the
 canary in neighbouring files that were never listed. Copies leak; a container's
 filesystem view does not have that failure mode.
 
+The independent Go port exposes the same opt-in boundary in `go/sandbox`.
+`sandbox.NewSeatbelt(sandbox.Config{...})` builds an immutable configuration;
+`sandbox.NewDefault(workspace, sandbox.DefaultOptions{Require: true})` chooses
+the platform backend and refuses an unavailable host. Omitting `Require` permits
+an `UnavailableSandbox` whose reason is visible in runtime posture. Credential
+protection defaults to enabled; `ProtectCredentials` is an optional boolean so
+omission remains distinct from an explicit opt-out. Pass the result through
+`shell.Config.Sandbox`; `shell.Executor.WithWorkspace` rebinds cwd and policy
+together. Only `Config.ExtraWritable` survives a rebind, while ordinary writable
+roots are replaced and shared git metadata is rediscovered. Paths are separate
+`-D` argv entries, and the binary remains `/usr/bin/sandbox-exec`. Real macOS Go
+tests prove read/copy/write denial, explicit networking and worktree commits;
+configuration metadata alone is not evidence of successful OS enforcement.
+Go runtime startup continues to select host execution unless a caller injects
+this backend. No container or resource-consumption limits are provided.
+For the managed SDK, set `agent.ManagerServices.Sandbox` to this backend instead
+of implementing a factory. The default factory binds it for new/restored sessions
+and workspace entry; template metadata is observable even before the first
+session. A nonnil custom BashFactory plus Sandbox is rejected before allocation,
+because the custom factory owns execution configuration. Children retain the
+executor captured at creation while a parent switches to a new workspace.
+For the Launcher SDK, pass `launcher.Options.Sandbox`; its factory preserves the
+configured BashTimeout while binding this backend. InspectWithOptions reports the
+backend type and optional unavailable reason without binding a workspace or
+executing a command. HTTP health uses the actual factory/live executor metadata.
+CLI startup still leaves this option nil; no new environment setting is added.
+
 ---
 
 ## 3a. Secrets — `SecretRegistry`
@@ -484,11 +547,34 @@ None of this substitutes for not giving an agent credentials it does not need.
 
 ## 4. Durable conversation state — `StateStore`
 
+Go's independent `sqlitestate.Open(ctx, path)` now owns native schema-v7 opening
+and additive migration over a pinned CGO SQLite connection. Close releases the
+connection and pool, including on failed admission. Fresh schema creation occurs
+before future-version refusal; partial upgrade DDL/version changes can remain
+when later index creation fails. Source version gates are preserved. It now implements
+SessionStore and LeaseStore over typed metadata and conditional process lease
+UPDATEs. Upsert preserves creation time and lease ownership. Immediate deletion
+retains audit rows and rolls back earlier operational deletes on failure. Source
+expiry equality and optional-column read fallbacks are preserved. Explicit context
+checks precede SQL admission and commit; rollback survives caller cancellation.
+Current Todo/steering variants are decoded explicitly, with unsupported shapes
+refused. TranscriptStore/EventStore now append with immediate read-head transactions,
+retain older epochs, roll back failed batches and distinguish physical event
+ordinals from payload sequence. Known events decode with inert scope; archival
+message decoding permits larger histories while network and tool-input/caller
+limits remain. Native action/approval rows complete StateStore conformance.
+Action conflicts update settlement fields only; approval conflicts update status,
+resolved time and answer only. Nullable approval tool-use IDs retain a separate
+NULL bit through JSON. MarkInflightUnknown is an explicit immediate transaction,
+with optional session scope and whole-operation rollback. Opening alone performs
+no recovery; these library methods do not activate managed restoration or grants.
+
 `TrajectoryStore` records what happened, for audit, and redacts content when
 asked. `StateStore` is the other half: the state a *different process* needs to
 resume a session — the model-facing transcript and the event cursor an SSE
 client reconnects against. Off by default; persistence is a deployment choice,
-and the database holds unredacted transcripts.
+and the database stores the configured secret projection of transcripts; the
+Null-secrets path stores them as supplied.
 
 ```python
 from mini_loop import SessionManager, SQLiteStateStore
@@ -550,8 +636,10 @@ It now decides:
 * an **unknown** record means a dead process dispatched it, so the unknown
   marker is returned rather than a retry.
 
-`DurableActionJournal` stores this in the same SQLite database, and opening the
-store marks every still-`started` action `unknown` — never `failed`, which would
+`DurableActionJournal` stores this in the same SQLite database. The Python
+manager explicitly calls `mark_inflight_unknown()` when composing that journal;
+opening a store or constructing a journal alone does not mark actions.
+Recovery marks still-`started` actions `unknown` — never `failed`, which would
 invite exactly the retry the rule forbids. A replayed tool result carries
 `replayed: True` on its event so an operator can see a resumed turn reused a
 recorded outcome.
@@ -560,8 +648,10 @@ This shape comes from durable-execution engines (Temporal, Restate, Azure
 Durable Task) rather than from any agent harness: harnesses commonly journal
 actions for audit and re-run them regardless.
 
-Still missing: reconciliation. Nothing yet asks an external system whether an
-`unknown` action landed — the harness only refuses to guess.
+An optional tool verifier can reconcile an unknown action: proven landing
+returns a recorded marker, proven non-landing permits execution, and an
+unavailable or inconclusive verifier preserves unknown. This is not a
+transaction with an external side effect.
 
 **Agent-side state.** The transcript mentions the plan but does not rebuild it,
 so the store also carries the TodoWrite board; without it a restored session has
@@ -570,12 +660,108 @@ s05 nag and the runtime-state reminder. The session row is refreshed on every
 flush rather than only at creation — otherwise `run_count` and `status` stay
 frozen at their initial values for the life of the session.
 
-**What this does not do yet.** No action journal, no outbox, no run state
-machine, no cross-process claim or lease, no fork/snapshot. Two processes on one
-database read consistently, but nothing stops both from advancing the same
-session. A process killed mid-run is restored with its recorded status
-(`running`) and no run attached — surfacing the truth rather than inventing a
-resume that the missing run state machine cannot honour.
+**Lease boundary.** A conditional SQLite UPDATE claims an existing session row;
+renewal cannot reclaim a lease that expired or was stolen. A confirmed lease
+lost during persistence stops the turn. This is separate from a transaction
+with external tool effects, and per-event renewal is not a periodic heartbeat.
+A process killed mid-run is restored with its recorded status (`running`) and
+no run attached; restoring state does not automatically resume that work.
+
+**Go contracts.** `agent.SessionRecord` carries the v7 fields with separate
+tenant and process-lease identities. Small consumer-owned session, transcript,
+event, lease and approval-read interfaces complement the existing action and
+approval-write seams. `agent.DecodeStoredEvent` is a bounded archival decoder
+for current known event variants. It preserves informational message lineage
+while stamping it untrusted, with no actor or approved capabilities. Grant
+events are data and do not restore broker grants. Unknown event/compaction
+variants fail; additive unused fields are ignored. These explicit library
+contracts are now composed by `RuntimeConfig.StateStore` and
+`ManagerServices.StateStore` for live managed sessions. The caller owns backend
+close. A manager generates a separate process lease identity; bare managed
+sessions may explicitly omit leases. Default journal/approval services use the
+store; caller-supplied services are preserved. The default stored journal is
+explicitly marked unknown during manager construction, matching Python policy;
+that global operation does not prove another process is dead.
+
+The guard flushes before provider admission, checks the current epoch count and
+uses immutable message content for prefix identity. Event capture writes first,
+then flushes; event epochs are stamped before a rewrite flush advances the epoch.
+Ephemeral events consume live sequence numbers without adding stored ordinals.
+Go names these separately as EventSequence and EventOrdinal. Embedding backends
+must allow context-owned reads concurrently with live writes.
+ManagedSession.CatchUpEvents(ctx, sequence) selects up to 2,000 recent physical
+rows, validates their scope/order/closed variants and returns detached historical
+records without live authority. Subscribe before calling, then de-duplicate
+queued records against the greatest sequence delivered. Fresh cursor zero skips
+the backend. The owned HTTP events route composes this handoff; read faults
+return an opaque 503 before SSE headers and leave writer status unchanged.
+This bounded window/queue does not guarantee complete historical delivery or
+cross-process live tailing, and an injected implementation is not SQL proof.
+`ManagedSession.ReadTranscript(ctx, TranscriptSelection)` reads the stored
+current or selected epoch into a detached TranscriptSnapshot. Exact epoch
+constructors accept a concrete TranscriptEpoch or owned big.Int, preserving
+out-of-range request identity. Empty storage reports epoch zero; historical
+reads do not flush live messages, acquire leases, repair crash tails or install
+authority. Unanswered tool calls are valid archival data. Embedding callers
+own authorization; the HTTP route authenticates, validates epoch, admits the
+owner and then reads. Concurrent read/write safety belongs to the backend.
+Ordinary backend write faults/panics are reported and degrade; count-query or
+coverage failures stop the request. Confirmed renewal loss cancels the active
+turn and suppresses later publication/model/tool admission. Renewal and session
+metadata refresh happen on transcript growth, not a timer or every terminal
+event; stored status can therefore remain `running` after an idle completion.
+Queued steering gets its own metadata write before acknowledgment.
+
+Go claims after acquiring turn admission, closing the source queued-claim gap.
+Deletion disables future writes before removing rows and cancelling parked work,
+preventing late resurrection; backend cleanup faults are reported and remaining
+cleanup continues. Stop releases leases only after turns drain. Snapshot 45 runs
+actual Python AgentSession/SQLite guard, capture, masking, epoch and lease probes;
+Go compares that recipe and additionally tests its admission/teardown rules.
+`SessionManager.RestoreSessions(ctx)` now restores recorded owner, binding,
+explicit system, run/status, immutable transcript references, Todo and steering.
+Missing saved workspaces are recreated without the new-session factory. The
+handle starts interactive and idle even with recorded `running` status; restored
+facts install no human grants, activation or trusted actor. A conditional claim
+precedes approval expiry and repair. A foreign-held row is exposed with
+`PersistenceStatus().RestorePending`; steering acknowledgment and turn admission
+fail until a claim succeeds and the latest rows are reloaded. Read/repair faults
+prevent publication, release owned leases and preserve history; earlier fleet
+handles can remain published when a later row fails. Stop joins the restoration
+operation and prevents late publication. There is no fleet transaction claim.
+
+Snapshot 46 uses actual Python manager/SQLite restoration. It records source
+metadata loss when repair flushes before Todo/steering installation, and source
+sequence reset to physical ordinal. Go installs metadata before repair and starts
+its next sequence above both ordinal and stored payload sequence. It also waits
+for a lease before repair. These are documented Go additions. Crash-tail calls
+get unknown results, while expired parked approvals get not-run results. Tests
+send the next model request, exercise retry/reload and join shutdown races.
+The original snapshot uses a test backing. Native sqlitestate integration now
+replays all seven restoration recipes over database close/reopen and reconstructs
+a Manager-created session after a real live turn and durable steering write.
+Tests verify lease refusal/release, approval expiry, repair persistence, monotonic
+event catch-up, managed transcript reads and the next provider request prefix.
+These tests reconstruct Manager instances in one test process; they do not claim
+OS-process crash testing or external-effect fencing. Launcher now forwards
+Options.StateStore and offers App.RestoreSessions for explicit operator recovery.
+The caller owns database open/close; constructor, Serve and Stop never close it.
+Construction retains the Manager explicit action-recovery policy, but does not
+automatically publish persisted sessions. Inspection reports injected selection
+without backend reads. Native HTTP restart tests preserve owner isolation and
+stored transcripts. Native cron/SQLite reopen tests now run all seven scheduled
+Source recipes, preserving bound paths, selected scratch factory/current system,
+missing-row refusal and foreign-lease denial. A real durable one-shot remains
+disarmed through Manager Start after reconstruction; explicit operator arm causes
+lazy restoration and a fresh untrusted turn. Another reopen proves persisted job
+removal and run_count. Cron definitions still live in .cron.json, while session
+history and leases use SQLite. A separate helper test process now blocks inside
+model generation after native request/lease persistence; killing that exact child
+bypasses Stop/Close. Another process exposes the pending handle without repair or
+model admission until natural lease expiry, then installs distinct process ownership,
+repairs the unanswered user turn and persists a resumed request. A further reopen
+retains repair/run_count. Other crash windows, power-loss and external-effect
+atomicity are not proven; wider archival variants remain pending.
 
 ---
 
@@ -911,7 +1097,7 @@ contract.
 
 ## 5. Skills and user-scoped knowledge
 
-Drop a deployment-managed `skills/<name>/SKILL.md` with frontmatter; it is
+The Python default loads `python/skills/<name>/SKILL.md` with frontmatter; it is
 indexed by description and injected only when the model calls `load_skill`.
 This is the `agent` source shared by the manager.
 
@@ -924,7 +1110,7 @@ description: Company refund policy and the steps to issue one.
 ...full instructions the model loads on demand...
 ```
 
-Point the loader at your directory (`MINILOOP_SKILLS_DIR` or
+Point the loader at another deployment directory (`MINILOOP_SKILLS_DIR` or
 `SkillLoader(path)`), or subclass `SkillLoader` to source skills from a DB/CMS.
 Manager-wide use only calls `descriptions()` and `load(name)`. Layering a user
 source additionally requires the construction snapshot exposed by
@@ -1023,6 +1209,351 @@ contract and inheritance matrix are in
 
 ---
 
+### Go layered skill composition
+
+`skills.NewLayeredCatalog(agent, user)` takes two concrete construction snapshots
+and provides Descriptions/Load with source-qualified names, collision refusal
+and one total prompt budget. The source catalogue owns serve-time digest checks
+and diagnostics. Layered construction copies existing source problems once;
+later source failures stay in the source log. Return values and bounded problem
+reports retain the native catalogue conventions. Callers must bind the user
+catalogue from trusted owner resources; the model cannot supply an owner.
+The owner Resolver composes full bundles; explicit managed runtime layering is
+selected through ManagerServices.UserResources.
+
+### Go owner memory storage
+
+`memory.NewStore(ctx, root, masker)` is an explicit typed file-store seam. Bind
+one trusted owner with `memory.Bind`; ScopedStore exposes only owner-sensitive
+methods without an override parameter or automatic delegation. Optional Masker
+has one typed MaskText operation and can use the existing secrets.Registry. Raw
+Store all-owner views/replacement remain operator operations. The owner Resolver supplies resource bundles;
+managed runtimes bind that owner's store ahead of the shared fallback. Nil
+ManagerServices.Memory creates WorkspaceRoot/.memory during construction, even
+with a resolver selected; failed shared-root construction is fatal. Memory tools
+remain explicitly selected. Do not inject the raw store into an owner-facing handler.
+
+### Go owner resource snapshots
+
+`userresources.NewResolver` takes a concrete deployment catalogue and optional
+typed memory masker. ForOwner resolves a trusted exact owner into immutable
+Resources; Skills() is a concrete LayeredCatalog and Memory() a bound ScopedStore.
+Keep this snapshot for the live session and its selected descendants. Successful
+cache entries never silently rebind; cancelled/failed builds are not published.
+Problems(ctx) is operator-only and derives a fresh bounded view from owner-local
+logs. PublishSkill replaces the cache only for future resolutions; managed
+launcher/configuration activation remains pending.
+
+### Go anchored instruction publication files
+
+`durable.CreateText` and `ReadBytesNoFollow` take operator-selected paths and
+explicit contexts. They anchor each directory component without symlink following;
+the typed identity names the committed hard-link object. No fallible return follows
+the link commit point. Keep canonical validation, secret screening, collision
+checks and future-session bundle preparation above this seam before creating a
+file. PublishSkill composes this seam. Darwin/Linux require no added
+dependency; Darwin syscall constants are pinned in the platform file.
+
+### Go pre-commit skill catalogue preparation
+
+`Catalog.WithSourceDocument(ctx, absolutePath, document)` returns a new concrete
+Catalog without reading or writing files. It parses through the same bounded
+Markdown reader as NewCatalog, refuses malformed/truncated entries and existing
+name/path collisions, sorts by source path and copies bounded diagnostic history
+under the source lock. The original catalogue and later diagnostic mutations stay
+independent. Full source digest verification remains mandatory at load time, so
+a prepared skill cannot serve until its file exists with the expected content.
+
+This operator seam prepares the future snapshot before the hard-link commit. It
+does not establish owner authority, validate the stricter canonical publication
+fields, screen secrets, commit a file or replace a resolver cache. The complete
+create-only publisher now composes these seams while preserving live snapshots.
+
+### Go create-only owner skill publication
+
+`Resolver.PublishSkill(ctx, trustedOwner, SkillFields)` is an operator seam. It
+screens all raw fields, requires a typed registration surface for custom maskers
+and requires healthy registered values. Nil and secrets.Null preserve no-secret
+configuration. A custom memory-only masker without Names cannot publish. Masking
+or health panics become safe errors; no secret names, values or host faults enter
+receipts. Canonical field failures preserve the source code/text; static Go fields
+remove the mapping-shaped invalid_fields case from this library API.
+
+Publication prepares the new source catalogue, layered bundle and receipt before
+the no-replace hard link. Same canonical document/body/active target retries are
+idempotent; changed descriptions/bodies and alternate active paths conflict. A
+competing link winner is freshly scanned and verified without changing its file.
+The successful-link path performs no fallible validation or cancellation check.
+Only the future resolver cache changes; old Resources and their memory binding
+remain pinned. Publication.Receipt and PublicationError.Receipt are safe typed
+JSON projections; Publication.Resources is internal owner composition.
+
+Native prepared entries retain source digests, so later file tampering is refused
+without requiring a restart. Capture/preview, authenticated commit routes, trusted
+launcher/configuration activation and cross-process cache refresh remain pending. This library
+operation does not authorize model-driven publication.
+
+### Go explicit owner memory tools
+
+`RuntimeConfig.MemoryTools` is default-off. An explicit matching `Memory`
+ScopedStore supplies the legacy shared-store binding, or UserResources supplies
+the owner-local store with precedence. Construction rejects missing/foreign
+bindings before workspace writes. `ManagerServices.MemoryTools` selects the pair
+with an explicit UserResources resolver. The launcher still rejects resource/
+memory settings until root configuration and default composition are implemented.
+
+`remember` is a write-risk exclusive tool; `recall` is a readonly read-risk
+exclusive tool. Both pass through the shared rewrite/permission/guard/masking
+gate. Their closed typed inputs have no owner or root override; optional values
+are detached and preserve absent/null values for replay identity. Source
+string/null unknown memory types normalize to project, and empty/null
+descriptions fall back to the name. Malformed non-string fields are refused
+by the typed Go boundary. Store masking must be configured separately for its
+durable sink; gate masking protects recorded inputs and returned observations.
+
+ScopedStore.WithLifecycle serializes callbacks across all bindings of the same
+Store, matching the source lifecycle_lock. Explicit remember holds it through
+Write; recall remains outside it. Waiting observes cancellation and callback
+errors/panics release the lock. Callbacks can perform ordinary scoped operations
+but cannot recursively acquire the lifecycle. The lock is process-local, has no
+rollback, and is independent across Store instances. Automatic end-of-turn capture now holds this lock across the model extraction
+and consolidation stages. The ordinary operation permit remains separate.
+
+Recall renders the source provenance wrapper and lexical search's five-record
+limit. A selected in-process child keeps the parent's scoped store and is
+subject to its own role and permission mode; default role capabilities still
+omit these tools. With both present, automatic selection defaults on; explicit
+RuntimeConfig/ManagerServices.MemoryAuto=false disables it, with copied values.
+The selection request has purpose memory_selection, budget 200, no system/tools
+and the source 4,000-character query tail. It follows normal provider/recovery/
+cache/limiter/event behavior and never anchors the live conversation meter.
+Valid indices retain order/duplicates, including source boolean-as-integer
+behavior; invalid or empty selections and provider faults fall back to lexical
+search. Cancellation and native persistence authority failures propagate.
+The native JSON boundary rejects nonfinite/malformed JSON and uses fallback.
+Selected reference blocks follow rewritten input; a typed memory/load event is
+serialized and decoded for archival reads without granting authority. The dynamic
+index is sent in changed runtime facts only with recall, even when automatic
+selection is disabled. The extraction stage projects supported typed message
+variants, excluding recalled contexts, runtime facts and all tool-result bodies.
+Its source agent_turn request uses a separate side-call entry point so purpose
+alone cannot grant live history/meter ownership. It uses the source 1,500-token
+budget, 40,000-character ASCII JSON tail, first/last bracket decoding, text-block
+concatenation and first-five incremental writes. Missing optional fields use
+source defaults; additional owner/root/origin fields are ignored and the bound
+store fixes attribution. Non-string/null fields are rejected by the native typed
+boundary; source can coerce some malformed scalars. Ordinary faults return zero,
+including after partial writes; cancellation and native state authority failures
+propagate. Capture now runs after final text, a stop-hook stuck halt, and round
+exhaustion when both tools, MemoryAuto and writable posture permit it. Provider
+fault and cancellation exits do not initiate capture. The source tool-batch stuck
+halt lacks capture and is preserved as a measured source omission.
+
+Consolidation starts at ten scoped records and uses a 2,500-token
+memory_consolidation side request. Source lowercase ordered record fields are
+serialized with non-ASCII JSON. Nonobjects/missing names are skipped; no usable
+entries leaves the store untouched. Exact name/type/description/body identities
+retain original origins; changed/new entries receive consolidated. Replacement
+always uses the scoped owner. The source's multi-file replacement has no rollback.
+List failures outside the consolidation best-effort block reach contained capture;
+normal model/parse/write faults return zero. memory/extract carries count and an
+explicit consolidated count; memory/load omits it. Accessors/event clones detach
+pointers, flat serializers and archival readers use known event variants, and
+memory_capture_error carries bounded detail through normal registry masking.
+Native error class labels differ from Python class names. Ordinary capture faults
+preserve the completed turn; cancellation and native state authority loss remain
+errors. Managed-session skill preview/routes remain pending; launcher root configuration
+and individual memory selection are implemented as described below.
+
+### Go owner-bound draft storage
+
+Construct userresources.DraftStore with DefaultDraftStoreConfig or an explicit
+positive TTL and bounded limits. Defaults are 15 minutes, 64 total, 16 per owner
+and four per session. MaxPerOwner nil selects min(16, MaxItems). Clock is an
+optional trusted concurrency-safe test clock. Configuration is copied; Go uses
+time.Duration/integers and stable typed errors rather than Python ValueError.
+
+Add validates canonical fields and binds separate OwnerID/DraftSessionID values.
+The returned Draft is an immutable private identity handle; Preview returns a
+detached DraftPreview with no owner/session fields. Get/Peek bind owner, session
+and optional constant-time digest comparison; wrong authority is 404 before TTL
+or digest evaluation. Successful Consume is atomic and one-shot. Capacity
+replacement is FIFO within the requester; foreign reviewed drafts cannot be
+removed to make room. A cryptographic UUID4 hex identifier is generated; initial
+entropy failure returns a stable 500 before quota mutation.
+
+A future publication flow must Peek, publish the exact reviewed fields, then
+DiscardCommitted with that exact handle. Cleanup checks pointer identity and
+ignores elapsed TTL; it cannot remove a different object with the same ID.
+Do not Consume before publication, because a publication fault must retain the
+reviewed draft. This is a library only: admitted-turn projection, model preview,
+manager binding and authenticated routes remain subsequent work.
+
+### Go skill evidence projections
+
+ProjectSessionText accepts typed protocol messages and implements the legacy
+current-epoch fallback: strip greedy lowercase memory wrappers, unwrap whole
+interjections, exclude internal markers and discard user block arrays as a unit.
+Assistant blocks contribute cleaned text only; thinking/tool data are excluded.
+Compaction markers set the exclusion flag even when their text is filtered out.
+Python whitespace/IGNORECASE and Unicode 14 word boundaries are preserved.
+
+ProjectAuthenticatedText takes already-admitted AuthenticatedText rows. It keeps
+nonempty user/assistant text verbatim, including internal-looking strings, and
+carries prior omissions/excluded-history flags. Neither function establishes
+provenance. ManagedSession now enforces the trusted capture capability before
+recording a successful completed pair; legacy blacklist filtering does not grant
+provenance.
+
+Both mask the two fixed display fields and their keys before budgeting, then keep
+a suffix of whole messages by compact non-ASCII sorted-key Python JSON character
+cost, including commas/brackets, capped at 40,000. ProjectedText holds only fixed
+content/label/key values; MarshalJSON uses a temporary string map at the boundary
+for source key masking/collisions. A masked ProjectionLabel is data, never a
+provider role. Returned arrays are detached. Native positive-limit and UTF-8
+refusals are typed errors rather than source ValueError/dynamic malformed rows.
+The pure helpers have no model/file effect. CaptureLedger.Project uses the
+authenticated helper after interpreting the two canonical source fields from
+masked key labels; masked role keys or role values do not become authority.
+
+### Go admitted-turn skill capture
+
+ManagedSession owns one zero-value CaptureLedger. Successful terminal flush and
+the caller-stamped personal_skill.capture_source capability precede Record.
+HTTP admission supplies that capability; ordinary/peer/cron calls do not.
+Record trims source Unicode whitespace, masks both display fields and keys,
+checks secret names/unresolved/short reports and retains at most 64 messages and
+40k compact Unicode JSON characters. Each oldest message evicted increments the
+omitted count; pairs can split at the bound as in Python. Only plain string
+history markers set sticky compaction exclusion. Block arrays do not.
+
+Screening failure prevents append and latches secret_screening_unavailable;
+recovered registries can append later pairs but do not clear that agent's error.
+Snapshots detach rows; established distinguishes an absent source ledger from a
+valid empty bounded ledger. Project refuses any capture error with source
+capture_source_unavailable/503. Typed native storage cannot represent a corrupt
+dynamic Python state/list or omitted field. Masking faults/invalid UTF-8 use a
+safe capture_failed latch, never private host exceptions. Nothing is persisted
+or restored, and optional capture cannot fail a durably completed turn. Candidate
+parsing, preview business flow and standalone native model binding are described
+below; manager draft injection and preview/commit routes remain.
+
+### Go skill candidate parsing
+
+ParseSkillCandidate accepts raw model text, the caller's requested name, projected
+message count and a trusted masker. It returns an immutable SkillCandidate with
+named create/skip decisions, original description/body and detached integer
+evidence, or a safe enumerated CandidateError. It grants no owner/publication
+authority. The five-field schema must match before recursive secret checks;
+masked fixed/nested keys or strings refuse sensitive_output before subsequent
+schema/decision/type validation. Description/body must be strings; evidence must
+be a list of integers, excluding booleans and float/exponent lexemes. Skip requires
+empty fields/evidence and does not validate the requested name. Create requires
+nonempty unique in-range evidence and reuses NewCanonicalSkill validation without
+normalizing its returned original fields.
+
+Transient RawMessage maps/arrays exist only during JSON boundary validation;
+they never enter domain/service state. Duplicate object keys retain the last
+value, including discarding overridden sensitive values as Python does. Bare
+NaN/Infinity/-Infinity lower to null only for invalid-type outcomes; quoted values
+are preserved and no nonfinite native value is stored. The source default
+4,300-digit integer ceiling is pinned by fixtures. Invalid UTF-8 and escaped lone
+surrogates refuse malformed_json before lossy decoding; Python can represent
+lone surrogate strings. Native masker panics return masking_unavailable without
+private error text. Registry health checks belong to the preview caller, matching
+the source parser's responsibility. Preview business flow is described below;
+runtime and routes remain unbound.
+
+### Go skill preview business flow
+
+SkillPreviewer owns a trusted SkillPreviewModel, masker and process-local DraftStore
+(default source quotas/lifetime when no store is supplied). Preview validates name,
+owner and sensitive name before projection. A supplied CaptureLedger selects
+authenticated evidence, even when empty; nil selects standalone legacy history.
+Empty evidence refuses before a model request. Masked focus is bounded to 2,000
+Unicode characters; secret health is checked before generation. Fixed system text,
+2,500 output tokens and an immutable prompt are supplied to the model seam.
+
+At most two attempts run. Candidate errors add only the safe repair reason to a
+fresh recursively masked, sorted compact Unicode JSON payload; prior model output
+is never quoted. Provider faults refuse provider_failure/502; cancellation passes
+through. Valid candidates trigger another secret-health check before skip refusal
+or bound draft retention. Failed/cancelled operations retain no draft. Native
+masker/provider panics have safe 503/502 errors; explicit context deadlines also
+propagate. Closed JSON Value maps are transient boundary projections, not retained
+service state. Model adapters must extract text blocks and preserve source normal
+model recovery/telemetry with non-live history/meter ownership, empty tools and
+personal_skill_preview purpose. Managed callers must hold admission/lease and
+supply a ledger; this library enforces no session/HTTP authority itself. The
+manager preview binding is described below; commit and HTTP routes remain pending.
+Standalone Session.PreviewPersonalSkill now serializes with the core turn gate
+and binds owner/session from runtime configuration. Its native adapter calls
+completeSideModel with empty tools and preview purpose, concatenates only text
+blocks and preserves configured cache/recovery/shared model limiter and telemetry.
+It grants recovery no live history and does not observe the live token meter.
+The per-session previewer retains only process-local drafts. A manager now owns
+one default DraftStore and injects it through its common runtime factory for
+create/fork/ordinary and scheduled restoration. That internal typed binding keeps
+64/16/4 quotas at fleet/owner/session scope; standalone callers keep their own
+store. Manager restarts start fresh pools and no publication flow is installed.
+SessionManager.PreviewPersonalSkill now checks owner/configuration before
+admission, rechecks the same accepting handle while holding the manager/session
+locks, then requires the lease and supplies the ledger even when empty. Policy
+errors expose closed codes/statuses; typed ledger storage cannot be corrupted
+like the source dynamic list. Lease loss before or during model work maps to
+session_lease_lost/409. A separate preview lifetime does not change run status,
+count or operator turn-cancel behavior. StopAccepting cancels it; deletion/stop
+join it before closing services, releasing leases or reclaiming workspace.
+That join extends the source turn-only cleanup. Context cancellation discards
+any exact retained draft before returning failure. CommitPersonalSkill now shares the same admission/lease/lifetime seam. Readonly
+refusal precedes Peek; source reviewed fields publish through Resolver.PublishSkill.
+A typed receipt binds session/draft/canonical digest, user source, body digest,
+optional warning, idempotency and next_session activation. Reviewed publication
+errors retain code/message with source 409/422/500 status; unknown faults/panics
+use publication_failed/500 without host text. Failures retain drafts. Durable
+success discards only the exact Peek identity and bypasses cancellation/TTL
+checks after the commit point. Existing snapshots remain immutable; future
+sessions resolve the new catalogue. HTTP routes remain open.
+
+### Go trusted session resource binding
+
+`ManagerServices.UserResources` accepts a concrete Resolver and defaults to nil.
+`ManagerServices.Memory` accepts a concrete shared Store as the fallback when no
+resolver is configured. The common create/fork/restore composition binds it to
+the admitted owner through `memory.Bind`; it never passes a raw store to tools.
+Resolver failures refuse admission instead of falling back to shared storage.
+Shared bindings retain the Store lifecycle lock, and files survive fleet stop.
+Neither field alone installs memory tools; select MemoryTools explicitly.
+Create, fork and recorded/scheduled restoration resolve the admitted owner before
+the managed runtime is built. Fork uses the current generation, while existing
+sessions retain their earlier catalogue. Delete and stop preserve durable owner
+files. Failed resource admission cannot publish a handle; native scratch cleanup
+still follows the manager's unpublished-allocation rules.
+
+`RuntimeConfig.UserResources` accepts one concrete Resources value through an
+optional pointer. The constructor copies it, verifies matching owner and complete
+skills/memory, then uses its layered source. The session's UserResources getter
+returns that fixed bundle; changing the caller's config value cannot rebind it.
+SubagentParent and native in-process children inherit the parent's binding. Python
+in-process subagents explicitly inherit skills; native complete bundle retention
+also pins owner memory for future integrations. Source teammates inherit both,
+and Go teammate scheduling inherits that fixed parent bundle. Memory tools/hooks are not activated
+by carrying a bundle. The launcher always constructs shared storage at the
+configured MemoryRoot or WorkspaceRoot/.memory, then optionally constructs a
+UserResourcesRoot resolver with the same agent catalogue. Both roots are mandatory
+when selected; root faults close the owned transport and refuse startup. Binding
+validation precedes root effects. Options.MemoryTools (default false) and the
+copied Options.MemoryAuto override independently select tools and automatic
+lifecycle behavior. --memory-tools and --memory-auto expose these choices; pure
+Inspect reports selection without root creation. User-skill capture/routes remain
+pending.
+
+Builtin Catalog/LayeredCatalog Load returns named skills.RefusalError for domain
+refusals. The runtime renders those as source-compatible `Error: ...` completed
+text outcomes; custom backend faults and cancellation retain error semantics.
+This distinction is verified against actual Python tool events, not inferred
+from an output prefix.
+
 ## 6. LLM / provider — the client
 
 Any object exposing `await client.messages.create(model=, messages=, tools=,
@@ -1035,6 +1566,96 @@ system=, max_tokens=)` returning `.content` (blocks) + `.stop_reason` works.
   `SessionManager(settings, MyClient())`.
 * **Offline:** `MINILOOP_FAKE_LLM=1` uses `FakeAsyncAnthropic`; in tests inject
   a `scripted([...])` responder for exact tool sequences.
+
+The Go `agent.Provider` consumer accepts concrete `protocol.ModelRequest` and
+`ModelReply`. Providers may implement the named `agent.ProviderErrorDetail`
+error interface to supply a bounded Source diagnostic at the final Session provider
+failure boundary. The native adapter opts in only for `FailureNonfiniteRequest`,
+with SDK `ValueError` class and fixed JSON encoding text. Recovery still sees a
+nonretryable protocol failure; general lifecycle errors keep native formatting.
+
+`go/provider.New` supplies an explicit direct Anthropic-compatible
+HTTP adapter with SDK-level bounded retries, cache wire annotations and served-model
+identity. `Config.AuthToken` supplies an explicit bearer token; ordered `Config.Headers`
+override static headers with last-value precedence. Header names/values are
+validated and copied during construction. Both direct and streaming errors scrub
+static and header credentials. Environment/profile discovery is caller-owned;
+Launcher now captures bearer/custom-header environment settings without live
+environment reads during composition. Nonempty Settings API keys suppress bearer
+selection; ordered custom headers can override them. Inspection reports explicit
+key presence and removes live credential fields. SDK profile/federation discovery
+remains open. `Config.Credentials` now accepts a typed CredentialProvider returning
+immutable AccessToken values. The client owns one shared process-local cache;
+provider/file lifetime stays caller-owned. Static auth headers bypass it. Contexts
+own fetches/waits; callbacks must cooperate with cancellation. SDK refresh windows
+and token-endpoint 401 retry are retained. Model 401 does not refresh/replay.
+Explicit InvalidateCredentials requests a forced next fetch without fencing an
+in-flight fetch. Callback messages/panics are contained; request-local token
+redaction survives concurrent rotation. Explicit `NewFileProfile(ProfileConfig)` supplies native user OAuth and file-profile federation drivers.
+Pass its `ModelBaseURL()`, `Headers()` and the profile as `Config.Credentials`;
+merge profile headers before ordered caller overrides. `Directory` and `Name`
+select the config, `HomeDirectory` expands a credentials `~/` override, and
+`DefaultBaseURL`/`DefaultWorkspaceID` and federation organization/rule/account/
+scope/identity-file defaults are detached environment fallbacks.
+The profile endpoint owns refresh while explicit `BaseURL` owns model requests.
+No constructor performs token exchange. File rotation is observed on cache fetch;
+without client_id, an external rotator owns refresh. With client_id, refresh_token
+is required even for a fresh token. Each instance serializes context-owned fetches;
+separate instances/processes remain last-writer-wins. Config/credentials/response
+JSON is bounded to 8 MiB. Non-string truthy credential/config fields and expiries
+outside civil years 0001–9999 are explicitly refused. Parsed exact loopback HTTP
+is allowed; remote token exchange requires HTTPS. Secret leaf symlinks and
+world-readable POSIX files are refused; group mode is accepted. This adds no
+cross-process lock or automatic Launcher discovery. It retains no opaque config
+payload in the service layer. `NewFederation(FederationConfig)` supplies the
+explicit native jwt-bearer driver through `Config.Credentials`. Use its
+`ModelBaseURL()` for model Config; direct federation binds exchange and model
+requests to the same deployment. `IdentityTokenProvider` returns an immutable
+`IdentityAssertion`; `NewLiteralIdentityToken` captures a literal and validates
+it on fetch, while `NewIdentityTokenFile` reopens a projected token on every
+exchange. Projected-file symlinks are followed. Optional request strings are
+copied, preserving nil versus empty; `Scope()` returns a copied informational
+value and scope is never sent. Default token timeout is 30 seconds. Assertions
+are capped at 16 KiB, token responses at 1 MiB, and raw projected files at 8 MiB
+before stripping. Shared callbacks/clock/client transports must support concurrent
+calls and respect context. Callback errors/panics retain safe classifications;
+redirects are refused on a private HTTP client copy. This driver has no internal
+cache or disk write; Client owns refresh policy. File profiles now compose
+this driver with a guarded disk cache. Selection validates required IDs and identity
+source/path before reading a cached token. Disk freshness uses Source's float
+expiry minus 30 seconds, while AccessToken retains integer expiry; forced refresh
+bypasses freshness. Corrupt expiry exchanges again. File replacement preserves
+refresh-token/extension fields; filesystem write errors are best effort and do not
+reject the exchanged token. Private file guards still apply on forced calls.
+Both profile grant paths use a 30-second default exchange timeout. Default paths
+resolve dangling symlink targets for containment. Launcher automatic discovery
+remains pending. `provider.NewStreaming` adds the optional consumer-owned
+`agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
+`protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
+The native adapter retains five named citation variants and closed extension data
+through HTTP normalization, bounded SSE accumulation and request forwarding. Only
+text/thinking fragments produce progress callbacks; citations belong to final content.
+`TextBlock.WithText` preserves immutable metadata during request rewrites. The default
+SDK streaming text profile retains `parsed_output: null`; selecting a structured
+output format is not implemented.
+Implementations must stop callbacks before returning, including on failure. Session
+coalescing, stream IDs, masking and managed cancellation repair own progress.
+`RuntimeConfig.Recovery` and `ManagerServices.Recovery` select a typed policy.
+Nil selects DefaultRecovery; DirectRecovery disables it. RecoveryInput is detached,
+and RecoveryServices supplies named call/event/history/model callbacks. Policies
+must honor contexts, stop callbacks before returning and be safe when shared.
+DefaultRecovery releases model permits during backoff and keeps all attempt state
+local. `RuntimeConfig.StreamProgress` and `ManagerServices.StreamProgress` capture
+optional character/duration thresholds and a named StreamClock. Nil thresholds
+select 200 Unicode characters/200 ms; explicit zero or negative values flush each
+nonempty fragment. The clock runs synchronously on arrival/flush and must be safe
+when shared. Children/forks retain captured settings with fresh pending buffers.
+`NewFakeProvider(FakeProviderConfig)` creates one stateful fake client; use pointers,
+including `&FakeProvider{}` for defaults, and do not copy a used client. Typed
+FakeResponder callbacks return FakeGeneration; identity/usage/thinking remain
+client-owned. Responders must honor contexts and synchronize shared state.
+`fake.Streaming()` selects an explicit streaming view over that same sequence.
+See `go/README.md` for configuration and boundary differences.
 
 ---
 
@@ -1090,7 +1711,232 @@ The store is intentionally independent from `event_sink`: exporter failures do
 not stop an agent run, and custom sinks continue to receive live events. See
 [Agent trajectories](docs/TRAJECTORIES.md) for the schema and API.
 
+The Go port exposes `RuntimeConfig.EventSink` over closed `SessionEventRecord`
+variants. Records are masked and detached before publication. The optional sink
+runs synchronously in event order; faults/panics become bounded diagnostics and
+never rewrite tool outcomes. Slow sinks delay the emitter. A sink may inspect
+`ManagedSession.Info`, event snapshots or subscriptions, but must not recursively
+emit or call the blocking `Messages` accessor while a turn owns the loop lock.
+`Subscribe(replay)` returns a closeable bounded live queue; it sheds oldest at
+2,000 events. Replay is only the 200-event non-ephemeral memory backlog;
+`EventsAfter` does not restore a durable gap. `NewManagedSession` adds outer
+status/done/cancelled events; raw child `Session` loops emit only core telemetry.
+The Go HTTP handler projects the same bounded events into SSE. A trajectory/state
+store and durable cursor gap recovery remain pending. Manager conversation forks
+copy completed history and expose lineage/source events through this seam; their
+first-turn persistence still awaits a Go session store.
+
 ---
+
+### Go trajectory recording seam
+
+`agent.TrajectoryWriter` owns typed Start/Append/Finish/Count operations;
+`TrajectoryReader` owns List/Summary/JSON/ByteSize/Stream/DeleteForSession and
+VisitRecords. The visitor receives detached encoded bytes and a typed type/limit
+query; nil types includes headers/ends, an empty type slice yields none. Its limit
+counts yielded records, not scanned lines; no append lock spans callbacks.
+`TrajectoryStore` combines them for `ManagerServices.Trajectories`.
+`RuntimeConfig.Trajectories` supplies only the writer to ManagedSession; bare core
+sessions and children do not open independent outer recordings. `Build` is explicit
+metadata. The launcher constructs the standard file store by default.
+
+Records are masked before the writer receives their encoded full fields. A private
+closed recording-detail variant carries model request/reply or full tool/child text
+synchronously; live records retain their existing display limits. Append precedes
+backlog/subscriber/sink publication. Finish records terminal status and duration
+before publishing the live persistence receipt. Start/append/finish/count faults and
+panics degrade to bounded masked Info/terminal diagnostics. Disabled recording keeps
+the source Null-state persistence fields. Custom writers must not recursively emit
+or call blocking Messages; inspection through Info and detached event snapshots is
+safe. Reader ownership enforcement belongs to the HTTP/manager caller; raw library
+store access is an operator capability. Default deletion retains files, and explicit
+purge runs after manager drain. File recording has no session-restoration authority.
+`traceview.Build` decodes wire JSON into named ledger rows and plain inspector strings;
+`Render` returns HTML or a conversion error and applies one HTML escaping boundary.
+Named IntegerCount values fold unbounded tokens; MetricValue retains closed counters
+until render-time int conversion. Snapshot 139 compares 71 actual metric recipes and
+284 HTTP outcomes, including Source digit limits and pair-key normalization. The HTTP view uses recorded-owner and
+file-size checks before Build. The standalone traceview CLI is an operator reader,
+with no synthetic HTTP principal. Original CSS and filter JS are embedded.
+
+### Go background command service
+
+`background.New(Config{Shell: shell.Config{Workspace: root, Secrets: registry,
+Sandbox: sandbox}})` binds the operator library explicitly. Request timeout and
+retention are typed; each admitted command receives its own cancellable context.
+Run caller cancellation controls admission only. CancelAll returns cancelled
+joinable handles; Close cancels and joins current handles, with admission
+quiescence supplied by the embedding caller.
+Foreground Interrupt does not reach them. Close permits later Run like source.
+
+The foreground/background paths share argv, environment, mask and native group
+control. Background merges native streams and counts raw bytes, unlike foreground
+character capture/newline decoding. A Started observer must return promptly;
+panic containment ends and joins the process group. Service Rebind prepares a new
+executor, pins existing executions and keeps the original ledger root. Sandbox
+construction must preserve that binding; no OS backend is supplied here.
+
+Ledger writes mask the command preview and tolerate recording failure. Orphan
+records report unknown outcomes and current PID liveness; they never replay work,
+adopt authority or signal the PID. Atomic private files are not fsync, a lease or
+host ownership. Full-result retention is 100, listing/projection counts are 50;
+metadata and undrained notifications remain unbounded. Go validates ledger field
+types/read sizes, refuses negative retention and cleans pre-start cancellation,
+where Python can leave Running metadata.
+
+RuntimeConfig.BackgroundTools explicitly selects two closed native-session tool
+variants, conditional Bash dispatch/classification, bounded next-round completion
+injection and typed background_result events. The native executor supplies the
+exact admitted credentials, sandbox and capture policy through NewWithExecutor;
+no shared manager is injected. State is lazy and also boots for ledger evidence.
+Source-compatible shell prefix approvals and immutable denial cover both names.
+Workspace entry publishes one prepared shell to foreground/background bindings.
+Library callers quiesce admission before CloseBackground; cancelling a turn leaves
+background work running and names live survivors in its interruption marker.
+ManagerServices.BackgroundTools enables fresh per-session/fork ownership.
+Manager delete/stop revoke admission, drain the active turn and then close/join
+background work before reclaiming scratch. Checking ownership after the drain
+covers a service lazily created during that grace window. Idle background owners
+use tracked asynchronous cleanup; Stop also awaits retiring sessions.
+launcher.NewWithOptions and InspectWithOptions accept Options.BackgroundTools;
+the Go executable exposes --background-tools and reports its explicit selection
+under --dump-config. MINILOOP_FEATURES still refuses the incomplete comprehensive
+bundle. Explicitly selected child background tools bind a fresh scoped state to
+the admitted native executor; default capability roles omit these tools. The
+parent initializes existing root evidence before registering children and keeps
+their states reachable for recursive lifetime cleanup. Qualified IDs come from
+the child's peer message identity, while records stay in the admitted workspace's
+ledger; root startup adoption can report them after a crash. Queues and checks
+stay local to each child. Returned child tasks keep running until their own
+completion/deadline or owner cleanup; CloseBackground cancels the entire owned
+tree before waiting, so an expired observer can resume joining. Metadata/queues
+remain unbounded and no cross-session/process ledger authority is implied.
+Actual source with harness-bound inherited injectors can adopt/unlink the live
+parent's record; Go intentionally avoids that gap rather than sharing queues.
+Default ten tools are unchanged.
+
+### Go operator cron service
+
+`cron.New(Config{Resolver, DurablePath, Secrets})` explicitly binds a typed
+operator scheduler. Resolver/Runner adapt session lookup/restoration and an
+always-untrusted Invocation into the embedding runtime; the adapter must create
+a fresh untrusted RunContext. SessionManager supplies this adapter for live
+managed sessions and owns a scheduler by default. Its ScheduleCron/CronJobs/
+CancelCron/ArmCron APIs require owner identity; CronScheduler exposes privileged
+operator access without owner checks. RuntimeConfig.CronTools installs three
+closed model variants through the common gate; RuntimeConfig.Cron binds a typed
+CronControl with schedule/list/cancel only. ManagerServices.CronTools supplies the
+manager binding, and --cron-tools / launcher.Options.CronTools selects it alone.
+Default tools remain ten and MINILOOP_FEATURES remains unsupported.
+Owned HTTP list/schedule/cancel/arm routes work independently of tool activation.
+Missing cron handles now call `RestoreScheduledSession(ctx, id)` inside the
+scheduler-owned context. The privileged method returns live handles unchanged,
+uses the saved path for bound rows and the current workspace factory for saved
+scratch or missing rows. Saved owner/history/run/status/Todo/steering are restored
+before publication. Scheduled system is the current builder rather than saved
+explicit text, matching actual source. Missing rows are anonymous: without a
+backend they run ephemerally; an injected backend refusing its missing-row claim
+produces lease loss without an unconditional upsert. Snapshot 47 executes these
+seven actual Python/SQLite-or-Null recipes and the next offline request.
+Manager Stop cancels restore reads through a lifetime context and joins cleanup.
+The backend must cooperate with cancellation; ignored cancellation can still
+hold shutdown. Native SQLite restart evidence remains pending.
+Schedule arms only current-process jobs. Restored jobs stay disarmed until the
+operator calls Arm/ArmAll, and no model arm tool is supplied. Start is explicit;
+Stop cancels/joins ticker and admitted runs, retaining armed in-memory jobs for
+later Start. Delayed lookup cannot admit a stopped generation. Callers quiesce
+admission before relying on Wait or reclaiming session resources.
+
+Atomic masked storage persists marks/one-shot removal before dispatch; O_EXCL
+minute claims suppress competing stale readers. Failure reports lost occurrences
+without dispatch. This does not arbitrate stale whole-file writers or transact
+with external effects. The eight-MiB store bound and strict scalar decoding are
+Go additions. Resolver callbacks run outside the state lock; Mask must not
+reenter scheduler or manager cron methods. Manager owner mutations serialize
+with deletion/stop; deletion removes future jobs and records save failures while
+continuing cleanup. Stop revokes turn admission, drains sessions and then joins
+cron. Standalone Serve calls manager.Start without arming restored jobs. A fresh
+untrusted ManagedSession.Run retains the normal gate/pools/recording boundaries.
+Forks keep activation with fresh job scope; selected children have no cron
+service. Model booleans are strict against the schema, while HTTP booleans retain
+source coercions. Calls retain permission, replay, masking and observer boundaries.
+Loaded and live prompts differ when masking changes
+the stored copy, and that change is diagnosed. See the operator library contract
+in [go/README.md](go/README.md#operator-cron-scheduler).
+
+### Go operator worktree service
+
+`worktrees.New(worktrees.Config{Repository: repo})` explicitly selects a repository.
+`Base` and `BranchPrefix` are optional string pointers: nil keeps `.worktrees`
+and `wt/`, while an explicit empty value retains the Python override contract.
+Names, task IDs, changes and audit events use named types. `TaskBoard` accepts
+typed `Load` and `BindWorktree` operations; `*tasks.Store` implements it directly.
+
+Create checks the task before invoking Git, then binds it and appends the audit.
+These are separate effects: later binding/audit failure preserves created work.
+Remove fails closed on unknown status or changed/unmerged work unless discard
+was explicit. Git receives `--force`/`-D` only in that case; its ordinary checks
+remain a second guard. Branch cleanup failure is ignored like Python, so a
+successful clean directory removal can leave an unmerged branch for review.
+
+`WorkspaceFor(ctx, sessionName)` ports Python sanitization/existing-directory and
+plain-directory fallback. `agent.NewWorktreeWorkspaceFactory(service)` provides
+an explicit concrete `ManagerConfig.WorkspaceFactory` adapter. Factory admission
+marks the path as scratch; it does not install model tools. Actual Python/Go
+manager delete removes even dirty scratch after draining/shared-holder checks,
+without Git registration/branch cleanup or a worktree removal audit.
+`PreserveWorkspace` and Stop retain it. To retain an operator checkout across
+delete, provision explicitly and use `CreateSessionRequest.Workspace` with the
+manager's configured bindable roots. Bound workspaces survive session cleanup.
+Source create leaves allocated work after construction failure; Go's existing
+unpublished-scratch cleanup removes only the directory, retaining Git metadata.
+Set `RuntimeConfig.WorktreeTools` or `ManagerServices.WorktreeTools` to install
+create/remove/keep/list/enter through the same common gate. Supply `Worktrees` to
+bind the explicit repository; a nil service retains the source unconfigured
+error. The default catalogue remains ten tools. These five tools retain source
+risk/readonly metadata and empty capability sets, so default child roles exclude
+them; a trusted RoleToolPolicy may explicitly select them.
+The default in-process child starts without the parent worktree service/task
+board, matching Python's fresh state. Selected child worktree tools therefore
+report unconfigured; ordinary child files/shell use the parent's current execution
+directory. Manager forks retain service activation with fresh scratch.
+
+Entry always creates an exclusive barrier, prepares files, executor/sandbox,
+catalogue and broker surfaces, then publishes execution scope. Existing catalogue
+snapshots and child bindings remain pinned. Initialized task stores do not move;
+first lazy admission after entry uses the new root. Managed Info, task HTTP reads,
+trajectory attribution and cleanup retain the original lifecycle workspace.
+Built-in `shell.Executor.WithWorkspace` preserves secrets, spill, capture/deadline
+settings and foreground interrupt ownership. A custom Bash executor requires
+`RuntimeConfig.WorkspaceBashFactory`; managed sessions reuse `Services.BashFactory`.
+That factory must return a `WorkspaceBashExecutor` for the supplied SessionBinding, preserve
+its policy and prepare without destroying the old binding. A nil, failed or
+unbound or wrong-root result refuses entry before publication. Custom hooks/handlers,
+approvers and system builders retain their explicit contracts; authority/context
+arguments carry the new execution root. Do not retain an obsolete root in them.
+Explicit fixed prompts, including the source-compatible child role prompt, remain
+fixed; the default system builder consumes the current SystemContext workspace.
+No full feature flag is implied. Source manager cleanup has no Git-aware
+reclaimer; the guarded worktree Remove API is a separate explicit boundary.
+
+### Go persistent task graph seam
+
+`RuntimeConfig.TaskTools` and `ManagerServices.TaskTools` explicitly install
+create_task/list_tasks/get_task/claim_task/complete_task, preserving the ten
+base tools and the single bound execution gate. The task store is initialized
+lazily after permission/context checks, with the runtime's credential projection.
+Task owners are agent labels; HTTP principals control access to the workspace,
+which is a separate ownership boundary. Manager forks retain activation and
+start with a new scratch board. Custom role policies can explicitly select the
+otherwise unclassified optional tools; fresh child handlers bind their own state.
+
+`tasks.New(Config)` is also an operator library capability. It accepts a concrete
+workspace and text masker; shared stores coordinate in process through bounded
+striped locks and arbitrate claims across processes through exclusive markers.
+It does not confine a host-edited `.tasks` symlink or provide a process lease.
+Structured HTTP reads use a fresh store after session ownership admission; an
+empty board may create its directory, matching Python. Readers never complete
+or consume tasks. Diagnostics retain 50 distinct messages and occurrence counts.
 
 ## 9. Serving a customized fleet
 
@@ -1115,6 +1961,22 @@ def app():
 ```sh
 uvicorn myapp:app --factory --port 8000
 ```
+
+For the Go slice, pass `agent.NewSessionManager` to `httpapi.New(Config)` and use the
+result as an `http.Server.Handler`. The application owns listening, server shutdown
+and `manager.Stop`. Alternatively, `config.Load` and `launcher.New` compose the
+supported process-local services; `App.Serve(ctx, listener)` owns the listener and
+joins HTTP/manager shutdown on cancellation. The application still calls `App.Stop`
+when listener acquisition or a pre-serve guard fails. `cmd/miniloop` supplies this
+lifecycle and signal handling. Twenty-three method/path operations, mode/steering,
+process-local SSE and
+embedded public console/UI shells are present. The browser keeps authenticated
+data requests; no host static directory is mounted. Full health posture, optional
+fleet routes and their UI panels, and durable event catch-up remain pending.
+`Config.Now` and shared auth/services must synchronize their state. The
+manager's optional Secrets supply a typed output projection for HTTP JSON/SSE data;
+encoding faults fail closed and live model history remains unchanged. See
+[the Go README](go/README.md) for the explicit composition pattern.
 
 ---
 
@@ -1165,7 +2027,107 @@ Notes:
 
 ---
 
+### Go plan mode seam
+
+`agent.RuntimeConfig.PlanModeTools`, `ManagerServices.PlanModeTools` and
+`launcher.Options.PlanModeTools` explicitly install both closed tool variants.
+`--plan-mode-tools` uses headless approval. The ten default tools stay unchanged.
+`PlanApprover.ApprovePlan(context.Context, PlanReviewRequest)` returns concrete
+`PlanReview{Approved, Feedback}`. The request carries trimmed full Markdown and
+bound `ToolAuthority`; the gate has already applied rewrites, guards and current
+permissions. Rejection returns source error text carrying feedback with
+failed=false and completed journal status. Inactive/invalid plan refusals do the
+same. Callback/hook errors remain failed=true; review errors/panics and cancelled
+reviews retain active state. Callback implementations must honor
+cancellation, synchronize fleet-shared state and avoid reentering an active turn.
+Nil approval auto-approves, matching the source installation; the existing broker
+is not implicitly adapted to plan review.
+
+`SystemContext.PlanMode` is a detached boolean. `DefaultSystemBuilder` adds the
+source planning section; fixed/custom builders can omit or adapt it. This is
+soft guidance with an unchanged catalog and independent permission policy.
+`Session.PlanModeActive` is safe during callbacks. The typed `plan_mode` event
+carries only `active`; successful entry (including no-op) and approved exit emit
+it through existing persistence/trajectory/SSE sinks. Restore folds the last
+logged value; no reviewer/authority/activation is deserialized. Forks start off;
+explicitly selected children bind independent state and the supplied callback.
+The default role policy excludes these tools, whose source capabilities are empty.
+Like source, the restore fold consumes all logged plan events, including child
+scopes; this guidance state does not change effect permissions.
+
+### Go goal seam
+
+Select `RuntimeConfig.GoalTools`, `ManagerServices.GoalTools`,
+`launcher.Options.GoalTools` or `--goal-tools` to add the five named goal inputs.
+All mutations cross the existing gate and use session-bound typed state;
+`goal_status` is readonly. Create/resume require `ExplicitHumanRunContext` from a
+trusted embedding caller. HTTP authentication alone does not stamp this authority;
+model input never supplies it. A goal continuation keeps the source turn's
+provenance; a child derives peer provenance and cannot arm itself.
+
+Nil `StopHooks` selects the default stateless `GoalContinuation`; a nonnil list
+replaces it, including an empty list. Put `GoalContinuation{}` in a custom list
+when continuation is wanted. Shared hooks receive a detached public StopContext;
+the built-in consumer uses a private live session binding. Hook order is meaningful:
+the first continuation wins. The goal counter counts requested continuation before
+stuck/global round-limit decisions, as source does. Read `GoalSnapshot` during
+callbacks without reentering a turn. Returned blocked pointers are detached.
+`goal_change` whole snapshots fold on restore, including clear tombstones and
+pending lease reload; activation is always false. There is no edit/clear tool or
+HTTP arming route. Source cap text mentions `goal_edit`, which is not installed.
+
 ## Concurrency & safety
+
+### Go benchmark statistics seam
+
+`benchmark.AggregateRuns` and `Compare` accept concrete task result rows;
+`BehavioralMetrics` accepts typed protocol messages. Six measurement fields are
+explicit optional Number pointers, never a free-form dimension payload. Number
+has exact-integer, finite-double and source-compatible boolean variants; constructor
+and BigInt access detach state. JSON integers obey the pinned 4300-digit limit,
+and nonfinite arithmetic returns ErrMetric. Duplicate task rows preserve source
+last-row pairing with all-row totals. Effect regressions always override wins;
+dimension warnings inform an operator without changing that verdict.
+
+`agent.SelectTools(names...)` creates a detached immutable ToolSelection for
+`RuntimeConfig.ToolSelection` or `CreateSessionRequest.ToolSelection`. Its zero
+value retains installed tools; calling it with no names removes every tool.
+Unknown names and duplicates are ignored, retaining registry order. Reduction
+happens before the gate is built, so advertised schemas and executable handlers
+agree; permissions and optional feature flags retain their independent meaning.
+Children inherit the reduced parent catalogue. It is a transient construction
+profile, not persisted authorization: independent creates/forks/restores use their
+current configuration. Trusted embeddings must supply durable policy separately.
+
+`benchmark.DefaultTasks` and `HeldoutTasks` now return fresh admitted task lists.
+`NewTask(TaskConfig)` accepts explicit trusted Judge/Setup functions; nil judges
+are rejected, while empty names/prompts remain representable. Task specification
+and optional whitelist storage are immutable/detached; callback authors own and
+synchronize their closed-over state. Prepare/Judge propagate setup/read/decode
+faults and cancellation, without turning them into passing effects. The source's
+permissive substring/existence/line-count judges and exact long-log bytes remain
+intentional. Model output and improvement drafts cannot become these callbacks.
+
+`benchmark.RunArm(ctx, label, ManagerConfig, tasks)` now explicitly launches one
+owned manager and fresh anonymous interactive sessions, captures workload storage
+before callbacks, constructs the complete session, runs setup, then uses
+ManagedSession.RestrictTools before the first turn. It stops/joins on every exit.
+Nil/empty tasks mean no tasks; callers explicitly select DefaultTasks or HeldoutTasks.
+Injected services remain caller-owned, and custom workspace factories must isolate
+task paths. Setup/create failures abort; ordinary run/judge failures score rows;
+cancellation aborts. Native stage errors support errors.Is/As. Duration excludes
+setup/judge; transcript cost and motion are actual measurements, not fake usage.
+Workspaces are retained. Runtime error diagnostic spelling remains native.
+
+`FakeProvider.ObjectView()` adapts non-SDK fake objects to source transcript
+semantics: tool caller metadata is absent. Raw FakeProvider retains client-wire
+caller=null and supports explicit dictionary/SDK simulations; real providers keep
+their existing absent/null contract. The launcher selects the object view. Model
+task drafts remain inadmissible. `benchmark.RunFakeComparison` accepts a concrete
+Settings profile and delay, always owns four new fake clients, and removes its
+transient roots after all arms join. No main provider dependency is accepted.
+HTTP admission captures the app deployment skills path and reads fresh supported
+environment configuration per request; unsupported activations remain errors.
 
 * **Per session (isolated):** workspace, conversation history, `TodoManager`,
   `ctx.state`, the cloned `ToolRegistry`, the run `Lock`.
@@ -1183,3 +2145,2343 @@ Notes:
 * Within one session run, `parallel_safe` tool handlers and their before/after
   hooks may overlap. Non-parallel-safe tools remain ordered barriers, and tool
   results are always appended in model-call order.
+
+The Go runtime exposes these implemented loop seams through `agent.RuntimeConfig`:
+`UserPromptHooks`, `Injectors`, `StopHooks`, `CachePolicy`, `StuckDetector`,
+`EventSink`, `ModelLimiter` and `ToolLimiter`. Prompt/injector views detach history,
+todos and caller authority; callbacks cannot reenter a running session. Shared
+hooks and parallel handlers must synchronize state and honor context cancellation.
+`ToolDefinition.WithExecutionClassifier` is evaluated before gate rewrites and
+fails to an exclusive barrier. Exclusive tools bypass the parallel-tool pool;
+custom nested delegation must avoid holding a permit while waiting for that same
+pool. The Go model pool is explicit (nil is unbounded); its default tool pool has
+eight slots per session, and children inherit the exact pools.
+`agent.NewSessionManager` supplies fleet-wide eight-slot pools, a shared broker
+and journal through typed `ManagerServices`. `WorkspaceFactory` selects scratch
+paths and `BashFactory` receives a typed `SessionBinding`; factories must not
+recursively create/delete/stop the manager. Services and callbacks are shared
+and must synchronize mutable state. Explicit owner identities are required.
+The httpapi handler supplies admitted HTTP ownership; `config` resolves all 49
+source settings and `launcher` passes the supported subset into owned services,
+rejecting unavailable activations. Inspection is settings/availability only, with
+full effective posture and `.env` discovery pending. Default per-run trajectory
+recording and owned read/export routes are implemented. Typed
+`RuntimeConfig.Spill` / `ManagerServices.Spill` accept `spill.Store`; the launcher
+best-effort constructs `spill.LocalStore`. Runtime binds a real shell executor
+independently, retaining its credential scope and process tracker. A custom store
+accepts already-masked `spill.Request` and returns an opaque `spill.Ref`; it must
+synchronize shared state. Failures/panics leave the command preview intact. Namespace
+is storage grouping, not authorization. Python `run_bash` and Go `ExecuteBash`
+preserve oversized string output, while the actual default structured Bash adapters
+bypass this policy in both languages. Do not infer preservation from store presence.
+Injected non-shell executors own their policy; read/glob do not use this seam.
+See `go/README.md` for concrete semantics and the parity matrix for evidence.
+
+Managed Go controls are separate from the transcript/model lock. A before/guard
+hook may call ChangePermissionMode; the gate loads current mode at permission
+selection after those hooks. UserPromptHooks and Injectors receive a detached
+mode snapshot at callback entry. Builtin steering/posture injection follows custom
+injectors and precedes compaction; child sessions inherit custom seams but cannot
+consume parent control queues. Steer is synchronous and parks even when idle;
+SubmitSteering additionally wakes an idle owned turn. Manager shutdown/deletion
+joins that active holder. Neither control text nor posture wrappers grant human
+or workflow authority. See `go/README.md` for queue and persistence boundaries.
+
+
+### Go self-audit observation seam
+
+The separate selfaudit package consumes concrete Observations for sessions, fixed
+global/session ledger slots, prefiltered trajectory tool-use observations and
+cron snapshots. Collection remains adapter-owned. Summaries/total counts and
+failures are optional explicit fields; missing and empty remain distinct.
+Failures expose only their class. Global and per-session recordings retain the
+store ordering; owner report selection uses only BySession. Authorize before
+collecting files, mask output at the recording/HTTP boundary and capture an
+immutable snapshot before rendering. Global inclusion is separate from owner
+selection as in source; authenticated routes must select owner and false.
+
+The library neither launches suggested objectives nor installs benchmark drafts.
+NoExpectation carries only null, and benchmark task construction still requires
+a reviewed judge. Live manager, HTTP and optional model binding are implemented.
+RuntimeConfig accepts SelfAuditObserver and a finite SelfAuditView; owner view is
+the zero value. The observer must avoid acquiring the running session turn lock.
+ManagerServices.SelfAuditTools binds the manager automatically. Operator visibility
+is explicit embedding authority; authenticated frontends select owner view.
+The model has no scope arguments. Selected children retain the trusted binding.
+
+
+### Exact diagnostic ledger seam
+
+The optional selfaudit.ProblemSource interface returns a detached Ledger through
+SelfAuditProblems. It changes no existing action/approval interface requirements.
+The broker and in-memory journal count every occurrence under their holder mutex
+before legacy deduplication; reads do not mutate live state. Shared problems.Log
+uses FIFO distinct retention and immutable Counter values. Ledger totals are exact
+JSON integers with decimal report formatting; Counter.BigInt gives a detached copy.
+
+Live collectors must establish owner scope before IO. The source ScopedMemory
+proxy delegates problems to its backing store through __getattr__; shared stores
+can therefore mix tenants' diagnostic filenames. That accessor alone is not
+owner attribution. Native ScopedStore exposes only explicitly attributed
+write/replacement diagnostics from that binding. Unattributed filenames stay in
+privileged raw-store diagnostics; binding ledgers do not aggregate one another.
+ObserveSelfAudit admits owner handles before IO, validates recording metadata
+before event visits and releases manager/session locks before injected callbacks.
+Existing native holders expose optional ProblemSource; stored journals still need
+an adapter. Authenticated frontends must set Owner and IncludeGlobal=false.
+The observer itself installs no route or model tool. HTTP now binds its full
+report mode and ObserveSelfAuditProblems ledger-only mode. The latter does not
+project Info, enumerate cron jobs or read recordings; a failed ledger snapshot
+is an error instead of an empty proposal set. Authenticated HTTP always selects
+the admitted principal and false, ignores scope query overrides and spends no
+rate budget. Plain text is projected before writing and capped after masking
+expansion; JSON uses the existing typed projection. The separate explicit
+SelfAuditTools binding installs the model tool through the same execution gate.
+
+## Go improvement acceptance-instrument seam
+
+The improvement package supplies the source path classifier and a fixed-size,
+comparable InstrumentFingerprint. A future verified loop must capture its baseline
+before execution and sample again immediately before each acceptance judgment.
+It hashes only the four source root-relative glob selections, in source order;
+substring-based touch flags have a broader scope. Read failures have a stable
+marker; stat permission and other enumeration IO failures remain errors. The
+private filesystem seam exists for fault verification, not as an injected runtime
+service. NewArchive performs no startup IO; Record accepts concrete ProposalFields
+and ArchiveRecordOptions. ArchiveMasker masks string keys and values before the
+append lock, preserving source last-key collision behavior. Projection failures
+abort without raw fallback; filesystem failures return the allocated ID. This
+JSONL review index is best-effort, with a per-instance lock and no cross-process
+lease. List accepts ArchiveQuery with a trusted owner and optional limit, returning
+closed ArchiveValue variants that preserve arbitrary legacy fields without raw
+JSON service state. The decision parser is deliberately stricter (duplicate keys,
+finite/scalar-only values and byte/depth caps) and cannot decode this legacy index.
+Nil owner is an operator query; nil limit defaults to 200,
+while explicit zero/negative selects one. Accepted rows count after owner filtering.
+Reads take no append lock, read the whole source file, and do not remask old rows.
+IO failure yields an empty index; conversion/encoding/scoped shape failures abort.
+SessionManager owns the fixed workspace_root/.improvements archive without startup
+archive IO. ListImprovements accepts a trusted optional OwnerID; default GET binds
+the authenticated principal or an open operator view, ignoring query overrides.
+It returns historical records without remasking and spends no rate budget. Full
+JSON serialization finishes before headers; lone-surrogate/nonfinite values and
+read faults produce source private plain 500s. Verified-loop receipts and proposal
+POST composition remain pending. Archive APIs grant no model tool or merge authority.
+
+## Go verified-loop contract seam
+
+verifiedloop supplies TaskSpec/CheckpointSpec/ReceiptSpec/RoundPlanSpec constructors
+that retain detached private snapshots, named IDs/revisions/statuses and five
+closed Operation variants. ApplyPatch checks CAS, contract revision and every
+receipt hash before applying operations atomically. Verified status needs a clean,
+complete receipt covering that specific state requirement. Empty patches still
+increment revision; duplicate checkpoint rows collapse like source dictionaries.
+NewPatch detaches artifact evidence, operations and receipt slices. Accessors
+return copies; text canonicalization and contract hashing are deterministic.
+Hash excludes source surfaces/persistence/contamination metadata, so a receipt is
+not an authorization signature. The eventual service must generate receipts from
+actual acceptance effects and sample integrity before every judgment, then bind
+the pure fold to the ordinary session/subagent/execution pipeline. This library
+activates no runtime tool, verifier execution, persistence or completion policy.
+
+## Go verified-loop coordination seam
+
+NewService requires a trusted Worker and AcceptanceRunner, with optional integrity
+probe and typed event sink. RunTask keeps state/receipts/feedback local, samples
+integrity before execution and immediately before each acceptance command, and
+folds verified only from its resulting clean complete receipt. Nil baseline
+disables subsequent probes as in source. Missing MaxRounds means three; explicit
+zero/negative emits an unverified checkpoint without executing a worker/command.
+Failures and cancellation abort; callback panics become private errors, not false
+receipts. ShellAcceptance uses the existing configured workspace, credentials,
+spill/process/sandbox policy; it does not establish OS confinement.
+WorkspaceIntegrity supplies the same four source globs, not expanded coverage.
+ManagedSession.RunVerifiedWithContext binds worker role selection, execution
+workspace and round/receipt/checkpoint telemetry to the ordinary session pipeline.
+The trusted caller owns external owner admission; operator acceptance uses the
+structured executor directly as in Python, while worker calls retain tool gates.
+Proposal Git composition and POST remain the next task. No model can
+choose these effect implementations or turn its summary into a verified result.
+
+## Go managed verified task seam
+
+RunVerifiedWithContext takes a trusted RunContext and VerifiedRunOptions. A single
+managed operation owns admission, active cancellation, trajectory and terminal
+publication across all rounds. CheckInstruments enables execution-workspace
+fingerprints; false preserves the source optional probe. A string-only executor
+cannot supply exit authority and is refused. Workspace-aware executors must match
+the session execution root. Round/receipt/checkpoint events have concrete payloads,
+detached accessors and archival decoders; reading them grants no live authority.
+The parent conversation is unchanged; real worker transcripts remain child-owned.
+Configured lease renewal checks precede worker/acceptance/event effects and the
+return boundary, without reacquiring a missing lease. These checks are boundary
+checks, not a heartbeat or fencing of an already running external process. There
+is no registered model tool, HTTP route or default task policy in this API.
+
+## Go improvement proposal seam
+
+selfimprove.Service composes a trusted worker, structured command runner, repository
+checker and optional typed verified/proposal event sinks and archive recorder.
+GitRepository uses the source 30-second git rev-parse exit check; ShellCommands
+uses the caller-configured executor. Acceptance instruments are always sampled
+from the configured workspace. Empty acceptance/non-Git workspaces are refused.
+Git command strings are fixed; objectives never enter a command string. Failed
+add or commit retains an explicit working-tree diff fallback. Unverified attempts
+are still committed for review. Proposal.Lineage distinguishes absent archive
+metadata from an attached archive with a null parent in the flat JSON projection.
+Recorder fields, lineage options and proposed-event slices are detached.
+
+ManagedSession.ProposeImprovementWithContext binds the actual session worker,
+execution root, command executor and owner under one admitted cancellable turn.
+Git, archive and event boundaries use the existing verified lease checks. The
+typed improvement_proposed event follows ordinary masking, recording and archival
+decode; historical rows grant no authority. The trusted operator supplies an
+isolated checkout: source git add -A includes every changed path. This API never
+creates or merges a branch and adds no HTTP/model tool or default policy. The
+manager now supplies the owned proposal POST as described below.
+
+## Go owned improvement proposal HTTP seam
+
+SessionManager.ProposeImprovement resolves an already admitted owner, supplies
+the manager's fixed archive and uses atomic try admission for the entire managed
+proposal. POST /sessions/{session_id}/propose-improvement validates the source
+objective/acceptance lengths and max-round coercion/bounds, ignores unknown fields,
+then performs owner lookup and busy admission. Missing/foreign sessions stay 404,
+busy stays 409, source operator-correctable admission errors stay 400 and other
+failures use a private plain 500. The body cannot choose owner, workspace or archive.
+The route spends no rate budget and does not create an isolated worktree; it runs
+in the existing session execution workspace, matching Python. The operator must
+prepare the isolated checkout before creating/binding the session. Success uses
+the source direct response projection, while events/index use their existing masks.
+
+
+## Go team mailbox and owned-view seam
+
+`teams.New(teams.Config{Root, Masker})` selects a concrete in-memory bus when
+Root is nil or persisted JSONL when it is established. Send takes SendRequest
+with typed mailbox identities, content, optional MessageType (nil means message,
+explicit empty stays empty), object-only Metadata and closed Field extensions.
+Reserved Python parameter names are not extension fields. SendResult separates
+sent/refused text from filesystem/callback faults. Read consumes and owns malformed
+row/overflow reports; Peek does not consume. Problems returns a detached bounded
+ledger. Returned Message data is immutable, preserves historical fields and grants
+no authority. Disk masking traverses structure before escaping; in-memory storage
+retains source unmasked semantics. Applications own the trusted root and callback
+synchronization; masking callbacks must not reenter the same bus. Native
+directories/files use private 0700/0600 modes. Instance serialization is not a
+cross-process transaction.
+
+SessionManager binds `.teams` and team=id/name=lead independently of model-tool
+activation, including restoration and forks. PeekTeam(ctx, owner, id) performs
+owner lookup before IO, supplies the fixed identity and returns newest 50 messages.
+HTTP GET team uses that view and the direct historical source projection. No HTTP
+body can choose another mailbox/root/identity; historical encoding failures remain
+private and leave the mailbox intact. Bare/custom runtime sessions may have no
+identity. `protocol.TeamSchemas()` and the concrete ToolInput constructors now
+cover all ten team/protocol input variants. They encode/decode through the existing
+provider/block/storage boundary. Inputs carry member names and request IDs, never
+owner, session, team identity or mailbox root. Metadata is object-only immutable
+closed JSON; its zero value is an empty object. Optional nil metadata retains
+absent versus explicit null in recording identity, while optional text retains
+absent versus empty and rejects null. Copies/accessors detach pointer state.
+
+CanonicalJSON/SortedPythonJSON recursively sort metadata keys without changing
+live insertion order. MapToolInputStrings masks names, values and nested keys
+before escaping, with source last-value key-collision semantics. Historical
+nonfinite/surrogate values remain supported by the mailbox, but do not enter this
+standard model-input boundary. The source object-only schema remains exactly
+{type:object}, with no invented properties/additionalProperties. Python handlers
+bind keywords without enforcing their advertised scalar types; Go additionally
+rejects wrong scalar/container types as part of its declared typed boundary.
+ManagerServices.TeamTools now binds ten team variants through the
+common gate (see below). Round injection and owned idle/task scheduling are described
+below; self-audit bus aggregation remains a future slice. These codecs
+themselves install no model tools or activation defaults.
+
+## Go team protocol coordination seam
+
+`teams.NewCoordinator(CoordinatorConfig{Bus, Members})` requires an established
+bus and takes a trusted MemberDirectory. Member returns the explicit missing,
+without-agent or ready variant; nil directory means no teammate. Calls to the
+directory occur outside the protocol lock and the callback must be concurrency
+safe. Bus masking callbacks must not reenter either bus or coordinator operations.
+This operator seam grants no HTTP/model identity authority. SessionManager owns its
+coordinator, deriving team/member from the registered owned session for model tools.
+
+RequestShutdown checks member existence, inserts a pending shutdown and delivers
+its reason/default notice. RequestPlan sends a full instruction directly and refuses
+oversize rather than truncating it. SubmitPlan rejects lead and retains the original
+plan in a pending approval record. ReviewPlan checks ID/type/status/team in source
+order, resolves it before sending the response and retains original feedback.
+Deliver preserves a code-point preview of long reports, then records bus refusals.
+The table is process-local and globally capped at 200: resolved oldest-first, then
+oldest pending only when required. Snapshot/TeamProtocols return detached records.
+
+Consume drains before processing, correlates responses and automatically sends
+shutdown acknowledgments for ready teammates. It returns a named ConsumedInbox
+with Messages and a ShutdownRequested assignment flag. The caller owns the sticky
+session shutdown state and must preserve a true flag even with a later error.
+Malformed historical metadata/request IDs may fail after earlier transitions/acks;
+failed batches are not replayed or put back. Rendering uses source ASCII indentation
+and historical closed values; standard HTTP encoding retains its existing refusal
+of nonfinite/surrogate data. Response correlation deliberately retains source
+request-ID/type/status matching; this library does not add sender verification.
+
+ManagerServices.TeamTools (or standalone --team-tools / launcher.Options.TeamTools)
+installs ten tools independently, including owned-lifetime spawn_teammate. A typed private manager
+binding executes closed ToolInput variants only after runtime owner/session/workspace
+checks. A guard before journal replay prevents stale or foreign authority from reading
+settled private projections. Members are read from immutable registered identities in
+manager order; only trusted construction can establish a teammate. Shutdown/plan/review
+are lead-only; send validates the roster plus lead, and broadcast preserves source
+recipient order/refusal summaries. The directory callback runs outside coordinator
+locks. Standard metadata becomes immutable bus fields without reordering.
+
+ReadInbox drains/renders, applies a sticky atomic shutdown assignment even on partial
+failure, and preserves the source read-risk/read-only trait despite automatic acks.
+Tool results, masking, hook order, permission checks and action settlement use the
+existing gate. Selection can only reduce installed tools; forks bind a fresh lead
+team. Delegated subagents inherit selected tools but have a fresh guard and no parent
+manager/bus binding. Bare TeamTools sessions return source unavailable notices.
+Source handler fixtures establish trusted rosters before execution; they do not prove
+spawn/inheritance or lifecycle. Native SessionManager.SpawnTeammate requires an admitted
+owner/parent and reserves names before construction. It inherits the original workspace,
+bound-workspace retention flag and fixed skills/memory/owner resources, while rebuilding
+the manager-default model/system and interactive permission mode. The teammate prefix
+wraps the base system builder; named peer context drops human capabilities. Children
+share the original task store and omit recursive spawn. The manager owns the initial
+run context and cancel/join handle, delivers normal results to lead and drains it before
+reclaiming shared scratch on delete/stop. Parent deletion does not cascade to members.
+Construction faults release reservations and remove unpublished persistence.
+Explicit TeamTools also binds round injection after background notifications and
+before custom injectors. Consumption requires the live registered core identity;
+shutdown assignment survives partial protocol failure. Emit team_inbox count before
+rendering the cleaned message batch, including when malformed sender data then fails.
+The named event has an archival decoder; it grants no authority. Delegated children
+have no parent manager/bus binding and therefore no automatic inbox delivery.
+
+After initial delivery, the owned worker polls, consumes, clears sticky shutdown and
+runs raw historical inbox prompts or the first successfully claimed runnable task.
+Fresh idle contexts are peer_agent / agent, stamped session_manager, delegated by lead
+and named for the teammate, with no parent message or human capabilities. Deadline
+resets after result delivery; source polling may cross the deadline before processing.
+Tasks remain in the original board, and result metadata contains task_id. Existing
+worktree paths select the same atomic dependency rebind used by enter_worktree; invalid
+or missing paths fall back to the lifecycle root. Managed turn admission protects the
+rebind and run from competing turns. Cancellation joins the worker; timeout/shutdown
+leaves the handle registered. ManagerConfig.TeamIdlePoll / TeamIdleTimeout default to
+1s / 60s; negative durations are refused before filesystem effects. The launcher binds
+the already validated MINILOOP_TEAM_IDLE_POLL / MINILOOP_TEAM_IDLE_TIMEOUT settings.
+Task/worktree tool installation remains independently selected.
+
+Snapshot 112 uses actual Python spawn, model turns, injector and idle scheduling for
+8 injection and 11 idle recipes, retaining real task/mailbox effects. Prepared directories
+exercise worktree path selection; they do not claim new Git branch creation. Clock sleeps
+are real and short. IDs/paths are normalized. Native tests add owned idle-run delete joins,
+shutdown registration retention, stale injection admission and delegated-child isolation.
+Fleet diagnostics, restart teammate restoration and full default feature activation
+remain pending; the worker/team identity is process-local.
+
+Managed root composition supplies the source label `main` for create/fork/restore;
+named teammates override it. Low-level runtime callers can still select a label.
+Persisted records carry no team role/identity/runner. Restoring a teammate builds an
+ordinary lead in its own team, retaining recorded owner/workspace/transcript/status,
+and leaves old-group mail untouched. Snapshot 112 includes real source SQLite
+close/reopen evidence; the native injected-store comparison is not SQLite evidence.
+
+## Go workflow model seam
+
+The workflows package exposes finite named states, DecodeDefinition, CanonicalJSON,
+ContentHash and NewArtifact. Value is the existing immutable closed JSON sum; schema
+objects are admitted before explicit ValidateSchema/ValidateValue/ValidateDefinition.
+Definition keeps private canonical projections; detached views cannot change its hash.
+Saved definition_hash never supplies identity or authority. Numeric type identity,
+Unicode and Python enum/status spelling are preserved. Artifact snapshots contain
+explicit IDs/hashes/verification/media/timestamp fields; creation does not validate
+a schema or establish verification truth. No service/tool/storage adapter is installed.
+Validation preserves source error order and its limited schema subset, including
+Python enum/const equality versus strict numeric type admission. Validation does not
+grant launch authority; origin checks remain service-owned. ArtifactFromSubmission
+requires a structured return_artifact result, then validates against the controller's
+schema and binds the controller's run/node/attempt IDs. VerificationFromValue falls
+back to unverified for malformed/missing status. It does not invent verification.
+runmeta.Snapshot is a shared inert provenance record with detached Clone projections.
+agent retains private trusted RunContext construction, validation and capability checks;
+its public provenance types alias runmeta without a wire-format change. Consumers
+may store snapshots but must not use decoded fields to mint execution authority.
+WorkflowRun, NodeState, AttemptClaim, NodeAttempt and OutboxSnapshot now expose
+named record projections and Clone methods. DecodeWorkflowRun/DecodeNodeState/
+DecodeAttemptClaim/DecodeNodeAttempt/DecodeOutboxSnapshot lower JSON through
+concrete variants, refuse unknown fields and validate status enums before return.
+Store/service adapters must clone write/read records and use these boundary
+functions for external JSON instead of decoding directly into mutable projections.
+Args and outbox payload must be closed object values; decoding does not validate
+a workflow input schema, authorize launch or establish delivery/verification.
+Nested provenance is an already materialized snapshot; decoding never stamps missing
+caller fields, normalizes historical grants or reconstructs a trusted live context.
+Native counters are bounded machine integers (versions/cursors use int64), and
+wall timestamps are float64; Python arbitrary live objects are not admitted.
+NewInMemoryStore supplies the process-local registration/admission/transition/claim
+core. CreateRunInput uses named identities, inert provenance and closed object args.
+RegisterDefinition validates before deduplicating revision/content; semantic aliases
+return the existing revision without registering the supplied alias. CreateRun hashes
+definition/args/provenance/parent/action/policy for a session-key launch identity and
+returns the latest detached run on replay. New launch contexts materialize omitted
+capabilities as an empty list; archival Snapshot.Clone still retains nulls. TransitionRun and ClaimNodes require the
+expected run version. Claims validate the entire batch before mutation and retain
+source budget/refusal order; dependency/concurrency scheduling is engine-owned.
+StoreError exposes finite source kinds/details; NativeRecordOverflow refuses int64
+version wrap before mutation. This store is not durable and does not authorize launch,
+check argument schemas, execute workers or append external outbox messages.
+StartAttempt gates CLAIMED -> RUNNING by attempt version. CommitAttemptInput binds
+the attempt ID/version, two terminal enums, optional immutable Artifact, optional
+VerificationStatus and error. Nil verification selects not_applicable; an explicit
+invalid value retains the source late failure after artifact/attempt changes but
+before node/run settlement. Callers must supply validated enum variants; the store
+is not a transactional repair boundary for arbitrary invalid operator input.
+Artifact provenance must match run/node/attempt. Store does not recompute hashes,
+check artifact schemas/schema_valid or correlate the two terminal statuses.
+GetArtifact and ArtifactsForNode expose immutable models in recorded reference order.
+CancelClaimedAttempts settles unstarted attempts in insertion order, retaining
+earlier settlements on a later source node-status refusal. RequestCancel uses run
+CAS and a sticky first nonempty reason; invalid source transitions retain that reason.
+FinishCancellation refuses running nodes. FailRun uses source read-then-CAS ordering.
+FinalizeRun checks run CAS/RUNNING, artifact existence and successful node states,
+then publishes completion and one WorkflowCompleted OutboxSnapshot together.
+It does not bind final artifact ownership/return-node provenance; callers own that
+check. ListOutbox takes a named OutboxFilter and returns detached records ordered by
+creation time/ID. EnqueueOutboxInput supplies named run/kind and immutable object
+payload; an existing run/kind returns the current message before checking a new
+payload. ClaimOutboxInput supplies session, optional run IDs (nil means any; an
+explicit empty list means none), lease seconds (nil selects 30) and optional limit.
+OutboxLease returns a fresh named token even with no selected messages. Selection
+uses insertion order before sorting the response, and checks lease age using the
+current caller's duration. As in source, nonpositive durations fail; operator NaN
+and positive infinity retain Python comparison behavior. No saved expiry is minted.
+SettleOutboxInput identifies session, message IDs and token. AcknowledgeOutbox
+requires a nonempty token; ReleaseOutbox retains source empty-token matching.
+Both use session isolation and preserve earlier sequential effects on a later
+missing/foreign/lease-mismatch refusal. Duplicate acknowledgments retain duplicate
+return records; repeated release can conflict after the first clears the lease.
+Delivered acknowledgment/release is a no-op after session admission. Only caller
+append success justifies acknowledgment; this store does not append externally.
+Native counter/ID allocation admission precedes publication; overflow does not
+publish partial cancellation/finalization. PruneTerminalRuns accepts optional named
+TerminalRunLimit; nil selects MaxTerminalRuns (500). It retains newest terminal
+runs whose outbox is fully delivered; pending/claimed/expired-but-unacknowledged
+notifications spare the run. Negative source limits remove all eligible runs.
+Pruning atomically removes owned maps, launch/outbox keys and both insertion indexes,
+then returns run IDs for service bookkeeping. Ownership is by run_id, not parent
+references; surviving child metadata and reusable definition/hash indexes remain.
+Replaying an evicted session/key starts fresh; replaying a retained one preserves
+its payload conflict boundary. Service installation and trusted live origin adaptation
+remain open; this callable library does not schedule pruning automatically.
+
+WorkflowRunner now receives detached AttemptExecution records (attempt/node/closed
+inputs) and returns an optional structured ArtifactSubmission plus error. Its
+implementation must respect context cancellation; arbitrary panics and hard process
+termination are outside this contract. RunnerError supplies finite Python-style
+error kinds; unspecified native errors render NativeRunnerError. WorkflowEngine
+validates definitions, serializes Execute per run, folds dependency artifacts and
+claims definition-ordered batches bounded by concurrency and remaining attempts.
+AttemptPool is explicitly shareable across engines; default capacity is four,
+negative capacity is refused and zero blocks until cancellation. AttemptPermit.Release
+is idempotent; no arbitrary semaphore growth is exposed. Permits cover runner calls,
+not artifact validation/settlement. Cancel publishes run cancellation and cancels
+in-flight contexts without waiting for workers; Execute joins the batch. Callers must
+join Execute before reclaiming worker resources. Parent context expiration settles
+attempts and returns the context error; run cancellation/wall-time policy remains
+service-owned. Verifier failures retain schema-invalid unverified fallback artifacts,
+including source nil-submission AttributeError. Idle run locks are reclaimed rather
+than accumulating Source's lock table. agent.NewFreshWorkflowRunner now supplies
+the isolated native worker adapter through WorkflowRunnerConfig. Provider, owner,
+workspace and WorkflowContextResolver are required; the resolver receives a detached
+attempt and returns a valid private RunContext. It must resolve trusted live authority,
+never reconstruct it from saved snapshots. Each call creates a fresh readonly session,
+Explore-selected catalogue, owned exact-schema return_artifact handler and in-memory
+compactor. Defaults select read_file/glob; configured catalogues retain handler scope
+and the independent readonly policy denies mutation. Human capabilities are dropped
+in the named peer context. Configured secrets mask read results before the model;
+shared limiters, recovery/cache/stuck/skill/event seams are explicit. No parent history,
+injectors, hooks, stop hooks, approval broker or persistence are inherited. Custom
+handlers remain responsible for their workspace/confinement contract. Capture validates
+before accepting once; duplicate submission is a textual refusal. Synthetic tool inputs
+are a named closed variant, including explicit null; exact immutable schema projections
+preserve numeric enum/const across model requests and archival ToolSchema reads.
+Normal exit without a structured result raises source RuntimeError. Parent cancellation
+must be joined by the engine/service before resource reclamation. LastWorker is a
+synchronized detached diagnostic and does not grant authority. The owned
+WorkflowService below composes this runner. Optional runtime tools are described
+below; HTTP and manager installation remain pending.
+
+workflows.NewServiceViews owns the status/summary and notification projection layer.
+Status reads run/node/artifact state under one store lock and detaches optional fields.
+Session filtering hides foreign run IDs as NotFound but is not owner authentication.
+RecordLaunchTurn is first-wins; PruneTerminalRuns removes matching bookkeeping.
+PrepareNotifications takes named SessionID/ParentTurn, selects strictly later-turn
+runs and caps each lease at MaxWorkflowNotifications (50). NotificationBatch keeps
+its recipient/turn/token/message identities private; public notifications/IDs detach.
+ContextMessage emits the source untrusted artifact-data wrapper. Results over 8,000
+UTF-8 bytes become null with a 2,000-code-point preview; status retains full retrieval.
+Nonempty run error/reason strings override closed outbox payload diagnostics.
+DeliverNotifications requires a NotificationAppender with explicit recipient/turn/
+content. Append must succeed before ack; prepare/construction/append failure releases
+claims, and acknowledgment failure retains the append effect. Return count plus error
+reports that partial boundary. No durable or exactly-once delivery is implied. Caller
+owner admission and live session mutation belong to the future owned-service adapter;
+this package does not append to an agent or install an automatic injector.
+
+DefinitionAdmission captures named DefinitionCaps by value at construction. Admit
+accepts an immutable object Value, discards definition_hash/definition_id/revision/
+parent_revision/source/source_version and forces dynamic source before decoding.
+Definition and graph validation precede concurrency/agent/round/wall-time process
+caps in source order. AdmittedDefinition exposes immutable content and the canonical
+wfpolicy digest, without granting live authority or writing to the store/journal.
+Callers must retain original tool input separately for action identity. Unknown
+wire fields retain the existing native decoder refusal rather than Python constructor
+TypeError text; invalid operator caps are refused before admission.
+
+protocol.WorkflowInput preserves original immutable object Definition/Args rather
+than prematurely lowering DefinitionAdmission's normalized view into the journal.
+WorkflowReferenceInput uses WorkflowRunID shared with workflows.RunID and the
+agent action record alias. The closed ToolInput variants support exact canonical
+and spaced Python JSON, archival round trips and recursive recording masks.
+WorkflowToolSchemas returns detached source schemas; bound runtime handlers below
+consume them. Manager installation remains separate composition. Optional bound runtime tools below
+perform trusted origin/capability checks.
+Optional tools are absent from DefaultToolNames. The decoder enforces the advertised
+outer object shape; it does not validate the definition DAG or argument schema.
+ActionJournal.Begin hashes the original input and AttachWorkflow binds one run
+without changing action status; duplicate binding is idempotent, conflicting run
+binding/replay is refused. A started record is not a dispatch claim. Missing-action
+errors retain existing native diagnostics instead of Python KeyError formatting.
+
+
+### Go owned workflow service seam
+
+agent.NewWorkflowService captures DefinitionCaps, an ActionJournal, a live
+WorkflowParentResolver and WorkflowRunnerConfig. The parent resolver binds a
+trusted OwnerID/workspace and a concurrent-safe WorkflowEventSink. WorkerFactory
+is an optional operator injection; the default creates FreshWorkflowRunner workers.
+Service-supplied parent, live context, rounds and progress sink replace caller worker
+configuration. A shared AttemptPool limits aggregate worker concurrency. Custom
+workers and observers must cooperate with cancellation; callbacks are not sandboxed.
+
+Launch requires a private validated ExplicitHuman RunContext with per-message
+workflow.launch capability, nonempty ActionID and a live owned parent. Definition
+admission, authority policy and argument schema checks precede journal/store effects.
+WorkflowLaunchRequest.ActionInput must carry the original typed model input when
+composition already began its action; nil uses the source direct-service normalized
+fallback. Replays bind one run. Queued replay accepts only a matching original
+trusted live context, never reconstructs authority from a saved runmeta snapshot.
+
+Wait cancellation only ends the caller's wait. Cancel, CancelSession and Close join
+owned tasks; Close continues draining when its caller times out and rejects new
+launches. Live context is reclaimed at terminal task completion. PruneTerminalRuns
+pins registered tasks through terminal event/outbox publication and clears service
+bookkeeping after eviction. Use the service pruning entry point when tasks are active;
+direct Store/Views mutations are operator seams and bypass those lifecycle pins.
+
+WorkflowEvent is a closed payload union. Progress exports only type/name/id/error/
+duration_ms, without tool inputs or outputs. Observer errors retain at most 100
+500-code-point diagnostics and cannot fail execution. Terminal event publication
+and result enqueue events are once per live service. Outbox enqueue retains source
+run/kind deduplication, including the store's three-field completion payload.
+Native wall times must fit a positive Go duration. These process-local mechanisms
+are not durable recovery or exactly-once delivery. Manager/HTTP installation,
+SSE/archive projection and automatic parent append are separate pending work.
+
+
+### Go bound workflow model tools
+
+RuntimeConfig.WorkflowService explicitly enables Workflow/WorkflowStatus/
+WorkflowCancel and supplies that service's journal to the ToolGate. A conflicting
+runtime ActionJournal is superseded, matching source injected-service composition.
+WorkflowTools alone advertises tools whose missing service is a runtime refusal;
+all defaults stay off. ToolSelection can narrow this surface but cannot enable it.
+NewManagedSession binds the actual parent handle so launch records its runCount.
+Bare Session launch is refused. Owner/session/workspace guards and trusted per-
+message launch/manage capability checks run before journal replay and again at the
+handler boundary; this explicit native replay fence protects private cached results.
+
+Launch is exec risk, cancel write risk, status readonly read risk, and all three
+are ordering barriers. Permission mode still applies. A launch retains original
+WorkflowInput for Begin/AttachWorkflow and requires a journaled ToolCall. Status
+and cancel use the bound session filter; cancel joins with reason "cancelled by
+trusted parent". Responses preserve source sorted, spaced UTF-8 JSON. Custom
+service resolution/event sinks remain operator seams. Runtime construction does
+not own the injected service's shutdown; SessionManager does as described below.
+Automatic notification injection and HTTP/SSE/archive integration remain pending.
+
+
+### Go manager-owned workflow lifetime
+
+ManagerServices.WorkflowTools enables one owned WorkflowService with captured
+WorkflowCaps (nil selects defaults). Injected WorkflowService implies activation
+and supplies the manager journal and attempt pool. A conflicting explicitly supplied
+WorkflowAttemptPool is refused by identity. Worker construction inherits provider,
+model budgets, skills, secrets, role policy, recovery/cache/stuck seams and shared
+model/tool permits. The default live parent resolver accepts only current active
+manager sessions. New, forked and restored sessions bind the same service; teammates
+remove the three tools. Workflows() is an operator seam, not owner authentication.
+
+Native bound guards reject deleted/stopping manager handles before journal replay.
+The private managed-parent admission check occurs under the service admission lock;
+CancelSession takes the same barrier before recording its deletion snapshot. Launches
+already in admission register tasks before deletion joins, and closed parents cannot
+admit later tool launches even with an injected custom resolver. Cancellation joins
+terminal publication tasks too. Injected resolvers/callbacks remain trusted operator
+seams and must cooperate; direct operator requests have their own lifetime policy.
+
+Delete owns asynchronous workflow cancellation alongside existing turn/background
+cleanup. Scratch reclamation waits for both; preserve/bound policies remain in force.
+Cancellation errors or remaining work prevent removal and pin the workspace against
+other shared-session cleanups. Shutdown retries eligible pins after service closure
+and cleanup joins, retaining paths still used by surviving sessions. Stop callers
+may cancel their wait while background shutdown still owns drainage. No durable
+worker restart, cross-process fencing or exactly-once effects are implied. Session
+workflow event/SSE/archive projection, summaries, notifications and HTTP remain
+separate pending integrations.
+
+
+### Go workflow session observation
+
+The default manager constructs an internal event resolver distinct from launch
+admission. It may observe terminal publication during Stop, but never resurrects a
+deleted session or grants launch authority. Injected services keep their operator
+resolver/sink policy. The managed sink validates service/session identity and emits a
+closed SessionEvent through the existing masked persistence/trajectory/subscription
+path. Workflow() returns a detached known variant; stored-event decoding carries
+only historical untrusted provenance. The sequence field aliases the live event seq.
+
+SessionInfo.Workflows is a concrete ordered RunSummary slice, empty when disabled
+or freshly forked; the existing HTTP session wrapper preserves it and health reflects
+activation. DecodeWorkflowObservation accepts all eighteen Source observation kinds,
+validates version/identity aliases and retains complete JSON object payloads, including
+historical nonfinite numbers and surrogate text/keys.
+ObservationPayload returns immutable inert data; Progress only exposes native typed
+service progress. Unknown fields and historical decisions cannot reconstruct trusted
+context. PhaseID and optional empty identities are retained; Source-valid explicitly
+empty archived event IDs are accepted while native service IDs remain required.
+Native producers still emit twelve named variants. SessionEventRecord's explicit
+MarshalWorkflowArchiveJSON encoder preserves Source's escaped archival/SSE scalar
+vocabulary and masks decoded keys/values before escaping. Standard MarshalJSON stays
+strict. Owned SSE catch-up re-decodes these records before delivery, preserving scope
+and sequence validation. TrajectoryRecord.MarshalArchiveJSON passes inert historical
+payloads to the concrete writer, which applies content privacy before legacy UTF-8
+encoding. Redacted surrogate text may disappear; surviving surrogate text/keys fail
+the append. Native scanners and filtered iterators retain nonfinite payloads.
+Owned JSON downloads use archival encoding; ordinary JSON details remain strict.
+traceview.Build and file assembly now retain inert legacy payloads in named ledger
+rows and inspector strings. RenderUTF8 validates final output after Source character
+caps; HTTP views and CLI files use this boundary. Source-visible surrogate text fails
+UTF-8 output, while a fully omitted tail can succeed. Store.JSON is an archival wire
+projection; embedding callers must choose strict JSON, archival download or final HTML
+encoding. Historical streaming summaries decode only their used fields; complete
+metadata/metrics and original scalar identities remain in the archival document.
+Ledger/file readers discard unused header fields before typed decoding. Source snapshot
+137 covers eleven legacy metadata recipes and fifty-five HTTP outcomes. Snapshot 138
+adds forty summary recipes and 280 HTTP outcomes. TrajectorySummaryArchive keeps named
+closed observational metadata, metrics and timestamps beside concrete native producer
+settings/counters. ArchiveValue exposes an inert wire projection; standard MarshalJSON
+is strict. Lists filter owned rows before masking and strict UTF-8 encoding. Historical
+non-object metadata shape errors propagate from summary/list and owned admission;
+direct archive documents remain readable. Ledger metric conversions, constructor and
+timing/input/output profiles and native SQLite remain pending. Owned result injection and
+workflow HTTP routes are described below. Stores and callbacks retain their existing
+cooperative and ownership requirements; an injected store is not proof of native SQLite support.
+
+
+## Owned workflow result injection
+
+Manager-bound workflow parents append later-turn results automatically after user
+injectors and before steering/posture. Launch-turn results remain pending. The core
+turn lock owns append; the concrete parent appender checks live session/owner/turn
+binding and cancellation. ServiceViews releases failed construction/append claims
+and acknowledges only after the message is in history. A failed acknowledgment keeps
+that append observable. The Source untrusted-artifact-data wrapper conveys data and
+grants no capability. Standalone runtimes, Fresh workers and delegated/autonomous
+children have no automatic manager delivery. This path is process-local and is not
+a durable append/ack transaction. Snapshot 130 compares actual Python managed turns.
+
+## Go workflow HTTP admission
+
+POST session workflows validates the closed request object before owner lookup,
+then requires the optional service and authenticated deployment. WorkflowHTTPRunContext
+is a trusted caller constructor: the adapter establishes deployment authentication
+and ownership before calling it. Only workflow.launch is approved. Actor, channel,
+stamp and stable msg_ action identity are captured; body fields and saved provenance
+cannot reconstruct or widen live authority. General HTTP messages remain untrusted.
+
+The service retains definition admission, policy checks, typed journal identity,
+worker ownership and terminal publication. HTTP uses Source launch_turn zero, not
+a parent-model turn counter. Unknown request fields are ignored. Retained JSON data
+lowers into immutable closed Value; request diagnostics never enter service authority.
+Known permission/conflict/lookup/validation failures retain HTTP categories; nested
+malformed-definition and retained legacy-scalar profiles still need broader G7 proof.
+
+## Workflow launcher selection
+
+Launcher Options.WorkflowTools and Settings.EnableWorkflows select one optional
+manager service using logical OR. Source MINILOOP_EXPERIMENTAL_WORKFLOWS is supported;
+--workflow-tools is the Go explicit selector. Inspection reports the actual selection
+without side effects. Four typed Settings caps pass to ManagerServices.WorkflowCaps;
+manager normalization captures them before service construction. Model/tool pools,
+journal, readonly worker resolver and shutdown ownership use existing manager seams.
+The independent selector does not activate the comprehensive MINILOOP_FEATURES bundle
+or widen authority on general HTTP messages. Defaults remain disabled.
+
+## Go MCP stdio library seam
+
+`mcp.NewStdio(StdioConfig)` owns a detached argv/passthrough configuration and
+uses only the Go standard library. `SecretEnvironment` accepts the existing
+`secrets.Registry` or `secrets.Null`; `Withheld()` returns a detached sorted
+snapshot, including registered names absent from the parent environment.
+`ListTools(ctx)` applies the configured startup/discovery timeout; `CallTool(ctx,
+name, arguments)` requires a closed JSON object and uses the caller's deadline.
+`ToolDescription` retains inert description/schema/annotation variants; admission
+must lower these values to supported schemas. A readOnlyHint never grants trust.
+
+RPCs are serialized and IDs remain monotonic across child restarts. Initialization
+uses the Source protocolVersion 2024-11-05 and initialized notification. Notifications
+and mismatched IDs are skipped; result text uses Source character caps and fallback
+JSON formatting. Timed-out reads can leave the live child available: a later call
+skips any late response. Cancelling a blocked pipe write kills the child so that
+partial bytes cannot corrupt the next request. Failed handshakes are killed/reaped.
+`Close()` terminates/reaps the child, escalates after two seconds, and permits a
+later start. Failed tool calls are never replayed.
+
+This is an operator library seam. The registration and fixed runtime snapshot
+seam below now preserves collision ownership and common gate dispatch. Session-driven
+connect_mcp publication, manager lifetime and launcher selection remain open.
+No default tools or permission policy change.
+
+## Go MCP registration and fixed runtime catalogue
+
+`agent.MCPRegistry` is an operator builder. `Register(ctx, client, timeout)` accepts
+a named discovery/call interface and returns `MCPRegistration{Catalog, Added}`.
+Zero timeout selects 60 seconds; clients must honor context cancellation. The raw
+client name owns each normalized tool key; another server is refused and reported
+in the bounded `Problems()` ledger. Same-server re-registration replaces its
+definition in place while previously returned catalogues retain old bindings.
+Discovery happens before the short publication lock. Description str conversion,
+4,000 Source-character cap and original tool names are preserved.
+
+Each definition pins external risk, exclusive execution and empty capabilities.
+Readonly is the server's advisory hint and cannot bypass readonly-mode refusal or
+external-action approval. The concrete MCP protocol variant holds an immutable
+closed argument object; masking visits values and keys without changing live input.
+Canonical hashes sort nested keys. Request/archive schema round trips retain
+server-defined language and even null/bool schema values as inert metadata, matching
+Source registration; schema content is not an authority or an argument validator.
+Arguments currently require finite/scalar-Unicode JSON, as the ordinary protocol
+serialization boundary does. Broader historical argument profiles remain open.
+
+Assign a discovered snapshot to `RuntimeConfig.MCPCatalog` before creating a raw
+session. It accepts only namespaced external definitions; ToolSelection still
+narrows installed tools. The model sees fitted schemas and dispatch uses the
+existing before/guard/permission/execute/after/result and journal pipeline. No live
+registry mutation reaches an admitted request. The operator keeps client lifetime
+ownership, including old clients captured by earlier snapshots. This fixed-snapshot
+seam is complemented by the raw-session connector below.
+Manager/fork/child lifecycle composition and launcher selection remain pending.
+
+## Go raw-session MCP connection
+
+Select `RuntimeConfig.MCPTools` and ordered `MCPServers` entries to install
+connect_mcp. Each `MCPServer` has an alias and exactly one concrete Client or typed
+MCPFactory. Aliases/factories are captured at construction; duplicate aliases are
+rejected, while an empty alias is valid. No servers still installs the connector
+with the Source `(none)` description. Factory callbacks execute lazily through
+the external permission gate and must honor context cancellation without reentering
+the active session. They retain client lifecycle ownership; automatic close is
+not implemented by this raw-session seam.
+
+Connected aliases map to the raw client name. A successful connection is idempotent
+for that alias, even if every discovered tool was refused by collision ownership.
+Unknown aliases return Source text without reaching a factory. Factory/discovery
+failure or cancellation before inventory publication does not mark the alias
+connected; already registered metadata is not a rollback guarantee. The connector
+is exclusive: it joins earlier parallel workers before replacing the gate's
+immutable inventory.
+Source `_exec_tool_batch` performs fresh registry lookups after an exclusive effect,
+so the remainder of the same batch can invoke a newly discovered tool. The next
+model request builds a fresh fitted schema snapshot; the old request schema object
+and retained published catalogues do not mutate. Initial ToolSelection restricts
+construction, while an authorized connection appends newly discovered tools, as
+Source ToolRegistry.subset followed by register_mcp does.
+
+Withheld credential diagnostics record count and the first three names.
+`Session.MCPProblems()` reads the bounded ledger without acquiring the turn lock.
+Factory errors use the existing failed-result path; tool call timeout text stays
+in the registration wrapper. Client lifecycle/reference counting, manager factory
+composition, fork/child handling, launcher configuration and InProcessMCP remain
+open. The operator must retain/close factory-produced clients, including clients
+created by an unsuccessful connection; this is not a managed lifecycle claim.
+
+## Go managed MCP connections
+
+Select `ManagerServices.MCPTools` and ordered `[]ManagedMCPServer` entries.
+Each entry contains an Alias and exactly one `*MCPConnection` or
+`MCPConnectionFactory`. Create handles with `NewMCPConnection(ManagedMCPClient)`;
+the named client contract extends discovery/call with `Close() error` and is
+implemented by `mcp.StdioClient`. Share ONE handle for each shared underlying
+client. Raw server names are namespace metadata, not client identity. Do not wrap
+the same client in multiple independent handles. Configuration is detached;
+duplicate aliases and zero/uninitialized handles are rejected before allocation.
+
+Manager create/fork/restore and teammate construction use the same composition
+map. Each session has a fresh connected-alias map and retained-handle lifetime.
+Forks copy the conversation, not discovered tools or live connection state. A
+successful or failed factory result with a non-nil handle is retained before
+registration; even failed discovery and earlier raw-name replacement clients keep
+a cleanup owner. This strengthens Source failure cleanup, whose registered-client
+map can lose these objects. Factories must report every created resource in their
+returned handle; resources hidden behind a nil return remain factory-owned.
+
+Delete revokes admission and asynchronously drains the consumer before releasing
+its handles. Stop drains consumers and waits for pending deletions. Shared handles
+close only when their final acquired session releases them; repeated aliases do
+not add duplicate holders. Configured but unacquired clients are not closed.
+Close errors/panics remain bounded manager cleanup diagnostics and do not prevent
+other retained clients from closing. A new acquisition waits for an in-progress
+close, with context cancellation; a reusable client may restart afterwards.
+Client Close must drain the client, and cannot recursively acquire its own handle.
+Retained catalogues do not extend managed lifetime past session deletion.
+
+Raw `RuntimeConfig.MCPServers` remains operator-owned. Launcher selection is
+available through the seams below, including native InProcessMCP and explicit
+task-child connector selection.
+
+## Go MCP launcher selection
+
+Set `launcher.Options.MCPTools` to install connect_mcp, and supply ordered
+`MCPServers []agent.ManagedMCPServer` through the same options. The launcher
+forwards the concrete handles/factories to manager composition; discovery and
+subprocess launch remain lazy behind the existing external permission gate.
+The manager detaches entries at construction and drains last-holder ownership
+on App.Stop/Serve shutdown. Inspection reports only the `mcp_tools` selector;
+it does not invoke factories or serialize server aliases, commands or credentials.
+
+The executable exposes `--mcp-tools`. Its default list is empty, matching Python
+CLI/server composition; Python has no built-in server-list environment loader.
+Configured servers enter through embedding operator code. For stdio, construct
+`mcp.NewStdio(mcp.StdioConfig{...})`, wrap it with `agent.NewMCPConnection`, then
+pass the handle or a typed lazy factory in the options. An explicitly supplied
+SecretEnvironment controls registered credential scrub and env passthrough.
+The Null registry intentionally inherits the environment, matching Source.
+
+This independent selector preserves the comprehensive MINILOOP_FEATURES refusal.
+Source snapshot 144 compares real HTTP compositions with individual registry
+toggles. Native HTTP tests compare the MCP catalogue, ordered outputs and lifecycle
+counts, and a real native stdio subprocess test proves lazy start, registered
+credential scrub and child reap on app shutdown. Native InProcessMCP and task-child
+binding are described below. No
+session persistence or OS sandbox is added.
+
+## Go in-process MCP handlers
+
+Construct `mcp.NewInProcess(name, []mcp.InProcessTool{...})`. Each entry has a named
+ToolDescription and InProcessHandler. The handler consumes an object and returns
+`mcp.InProcessValue`, a public alias for the immutable closed JSON value contract,
+plus an error. Embedding code can decode JSON into this public type without
+importing internal packages. Scalars and containers become Source Python str text;
+ordinary errors become Error text. Context cancellation/deadlines propagate to the
+caller, while native panics are isolated as type-only diagnostic text.
+
+Handlers must honor cancellation and be concurrency-safe when the client is
+shared. Discovery preserves duplicate definitions and detaches its container;
+dispatch takes the last handler for each raw name, including a nil handler that
+reports unknown-tool text. Close has no resources to release and allows reuse.
+Bare in-process results do not receive the stdio result limit; the agent's existing
+recording/context limits still apply. Native input is a closed object; arbitrary
+Python objects and language-specific callable signatures are not manufactured.
+
+The client implements the managed discovery/call/Close seam. Wrap it with
+`agent.NewMCPConnection` for manager/launcher ownership, or inject it through raw
+RuntimeConfig.MCPServers with operator lifetime. Registration remains external
+risk, including readOnlyHint definitions and local handlers. Default tool selection
+is unchanged. Task-child binding is described below; full feature activation
+remains open.
+
+## Go task-child MCP binding
+
+Default capability role selection excludes connect_mcp and registered MCP tools,
+whose capabilities are empty, matching Source. A custom RoleToolPolicy can select
+these existing tools explicitly. The default InProcessSubagents provider binds a
+selected runtime connector to fresh child registry/connected-alias state, copying
+ordered configured servers from the pinned parent environment. Its existing child
+interactive/Explore readonly modes, peer provenance and permission pipeline apply.
+A custom selection does not grant execution approval or broaden default roles.
+
+Borrowed MCP call handlers retain their original client. Child registration updates
+only the child's inventory and owner metadata; it does not mutate parent aliases,
+handlers or schema snapshots. Manager-created factory closures retain the enclosing
+parent's handle lifetime, including connections created only by child tasks. The
+parent task joins its child; manager deletion/shutdown release handles only after
+the admitted turn drains. This supplies a cleanup owner for Source's child-only
+factory gap. Raw operator servers remain operator-owned. Nested descendants receive
+configuration through the same copy path, but the new differential corpus tests
+one child level rather than claiming a new nested/parallel MCP matrix.
+
+The Source worker runtime alias is a named protocol AgentWorker variant; Source's
+advertised Explore/general-purpose schema is retained. Wider historical role/input
+spellings remain part of the open scalar-profile work. Four real Source task
+recipes and a native blocked-cancelled-child test verify the current boundary.
+
+## Go historical transcript search reader
+
+`sessionquery.Reader` exposes only `TranscriptEpoch` and ordered `LoadMessages` for
+an explicitly supplied SessionID/Epoch. `Message` has named Role and Content fields
+using immutable closed ArchiveValue variants; historical scalars/containers are
+inert data, not live protocol messages. A missing role must be projected as the
+Source question-mark text by the backing adapter. The reader must preserve object
+member order from storage, since structural content is searched as Python JSON text.
+
+`Search` preserves direct empty-needle behavior. `ToolSearch` supplies whitespace
+trimming and empty-query refusal; an absent reader/session differs from a configured
+no-op reader returning empty history. Result/Match fields name epochs, ordinal,
+role, snippet and skipped coverage. Source full Unicode lowercasing determines the
+snippet offset in original text, even when the lowercase form grows. Both APIs
+propagate cancellation/read faults. Search caps epochs and matches; loading each
+stored epoch retains Source's whole-epoch read shape. This interface supplies no
+owner authorization, lifetime management, runtime tool installation or durability.
+Managed runtime binding is described below; native SQLite, request reconstruction
+and historical nonfinite/surrogate parity remain open.
+
+## Go session-bound transcript_search tool
+
+`RuntimeConfig.SessionQueryTools` and `ManagerServices.SessionQueryTools` opt into
+the Source schema/read/parallel traits through the existing execution gate. The
+only model input is a required Query string. Strict decoding refuses scope fields;
+canonical hashing and recording masks preserve the concrete input variant. The
+private runtime binding carries the manager's TranscriptStore; the handler uses
+its trusted SessionID, never a session named by the model. No permission grant is
+introduced by installation, and normal catalogue selection can remove the tool.
+
+A manager with nil storage behaves as Source NullStateStore for search, returning
+empty history. A raw runtime has no manager search binding and returns the Source
+unavailable notice. Default role capability filtering excludes this empty-capability
+tool. A custom selected child rebinds the runtime handler to fresh state and receives
+that same unavailable notice rather than borrowing the parent's store. Managed
+restoration tests search superseded own history and exclude another owner's rows;
+the test backend is not proof of native SQLite restart. The adapter uses existing
+typed stored Message content and retains its encoded member order. Arbitrary Source
+archival content and request reconstruction remain open. Independent launcher/CLI
+selection is described below. Backend close remains operator-owned.
+
+## Go transcript-search launcher selection
+
+`launcher.Options.SessionQueryTools` and `--session-query-tools` independently
+select the optional read-only tool. `Report.SessionQueryTools` records selection;
+Inspect/--dump-config remain free of runtime/storage effects. The launcher still
+constructs process-local state with no persisted transcript reader, so selected
+search returns Source's Null-store no-match text. This option does not activate
+SQLite or accept the incomplete MINILOOP_FEATURES bundle. Raw managed deployments
+can separately inject the StateStore through ManagerServices.
+
+Source snapshot 148 executes real model turns with actual SQLite, including a
+live transcript rewrite and foreign-session history; native injected-store turns
+compare exact tool text, ordered catalogues and current epochs. The Source fake
+omits caller metadata, so native fixture replies preserve omission instead of
+adding caller=null. Two Source/native HTTP recipes compare defaults and selection.
+These observations do not establish native SQLite durability, arbitrary archival
+content parity or request reconstruction.
+
+## Go historical request reconstruction
+
+`sessionquery.ReconstructionReader` supplies ordered RequestEvent snapshots and
+historical message rows for an explicit SessionID and closed archive epoch selector.
+`DecodeRequestEvent` projects a closed historical union; sequence presence survives
+so an absent seq and explicit null cannot be normalized. Unknown kinds retain only
+scan ordering semantics. RequestSequence is a closed immutable integer, with an
+int64 constructor and decimal parser supporting Source-sized large integers.
+
+`Reconstruct` selects the first matching model_start and stops predecessor scanning
+at the first physical seq at/after the target. It never sorts or chooses a later
+start. Missing/legacy records are result variants; Python count/sequence failures
+are typed ReconstructionFault values, separate from context/backing errors. Count
+conversion uses Source truth/int rules and Python negative prefix slicing. Historical
+fingerprints use structural numeric equality, not JSON byte equality or float casts.
+
+A found RequestProjection has named Messages/System/Tools/Capability/Model/MaxTokens
+fields carrying immutable closed archive data. Permission and sandbox fields are
+observations, not live authority. Request() detaches containers; standard JSON output
+retains strict serialization errors. Readers must return stored masked snapshots
+and preserve physical event order and epoch selection. The caller owns authorization,
+lifetime and backend close. No provider invocation, state repair, role installation
+or broker grant is introduced.
+
+`ManagedSession.ReconstructRequest` snapshots its configured enabled StateStore and
+binds its own trusted session ID. The private reader projects typed stored events in
+physical order and loads only the model_start's integer epoch. It releases persistence
+locks before IO and never claims a lease or flushes live history. Nil/disabled storage
+returns MissingStart. State faults are wrapped by ErrRequestReconstruction while
+preserving error identity and type-only panic diagnostics. Messages are validated
+and encoded into detached inert values; recorded masks and caller omission survive.
+Native event types support concrete integer epochs; broader historical scalar and
+malformed records remain the archive library's separate contract. No model tool or
+HTTP route is installed by this operator method. Native SQLite, nonfinite/surrogate
+and wider archival profiles remain unproven.
+
+## Go language diagnostics providers
+
+`diagnostics.Provider` exposes Diagnose(context.Context, diagnostics.Request) and
+Scope(). Its named Diagnostic records have path, integer line, message and provider
+severity vocabulary; NewDiagnostic supplies Source's default error severity. The
+Request has private fields and read-only Root()/Target() accessors, with an explicit
+absent target for whole-tree selection. Only the tool constructs it from a trusted
+workspace.Files and a resolved caller path. Omitted/null/empty paths select the tree;
+explicit escaping paths return Source's refusal before any provider callback.
+
+RuntimeConfig.DiagnosticsProvider and ManagerServices.DiagnosticsProvider explicitly
+install the schema/read/parallel tool when nonnil. SelectTools and role policy still
+control its visibility. The optional string input rejects provider/root/session fields
+and malformed JSON types; absent versus null survives canonical identity and masked
+recording. Input construction/accessors detach pointers. The runtime captures the
+current execution binding under its handler lock, releases that lock before Diagnose,
+and passes the unchanged context. Provider failures remain failures; clean results
+always include scope. Reports preserve provider order and labels, cap at 50, and print
+the cap caveat even at exactly 50. Scope is read after a successful Diagnose.
+
+The caller owns provider lifetime. Shared providers must honor cancellation and return
+owned snapshots safely under concurrent calls. Manager construction shares the explicit
+provider handle; a selected task child receives that provider with its fresh runtime
+binding, without expanding the default capability role catalogue. Workspace entry
+updates later calls through the current session.files snapshot. The common gate,
+permissions, result observers, paired transcript and panic recovery remain in use.
+
+launcher.Options.DiagnosticsProvider forwards the caller-owned handle into managed
+sessions. InspectWithOptions reports diagnostics_tools without invoking Scope or
+Diagnose, allocating workspaces or exposing provider data. App shutdown drains its
+sessions but does not close the provider. Nil selection keeps the tool absent; an
+explicit provider does not bypass MINILOOP_FEATURES bundle refusal. Six actual Source
+HTTP/model traces compare catalogues, results and bound root/target observations.
+No default Python syntax backend or CLI selection is installed yet.
+The six Source injected-provider recipes are replayed; the expanded 37 real Python
+file/AST recipes now also record actual parser inputs/results. The selected provider owns its
+scope/work bounds and tree traversal semantics; explicit-target confinement does not
+prove arbitrary provider tree traversal confinement. A regex or another language's
+parser is not evidence of ast.parse parity. No dependency was added.
+
+### Native Python diagnostic file scanning
+
+NewPythonSyntaxDiagnostics requires an explicit PythonSyntaxParser. Its Parse method
+receives already-decoded text and returns a closed SyntaxResult: CleanSyntax or
+NewSyntaxProblem(line, message); zero/invalid results are rejected. Non-syntax parser
+errors propagate. This interface selects no external compiler or default parser.
+The caller's parser must preserve its declared CPython ast.parse profile, honor the
+provided context and support concurrent use. Scope remains the Source syntax scope;
+implementations must not substitute approximate or unrelated language checks.
+
+The scanner selects either a true .py suffix target or the sorted first 200 tree
+matches. pathlib component order, hidden .py tree matches, matching directories and
+non-traversed symlink directories are retained. Source tree symlink files are followed
+at stat/read; explicit targets have already passed workspace.Files confinement. UTF-8
+maximal-subpart replacement and universal newlines reuse internal/pytext.Reader.
+Filesystem diagnostics retain Source errno/quoted-path text and warning severity.
+
+The 1,000,000-byte gate is stat-before-read, not an atomic cap against file growth.
+The complete tree is enumerated before 200-entry selection. Oversized warnings take
+Source's early continue branch, so they can exceed 50 before an ordinary file checks
+the stop; the outer report still caps at 50. Context is checked during enumeration,
+reading and before/after parser callbacks; failures do not become clean output.
+
+Thirty-four valid Source recipes replay their actual parser input hashes/results
+through a test-only parser seam. Three malformed keyword/list inputs remain native
+strict admission refusals. This proves file/read/control-flow behavior without
+claiming a native Python grammar. The user has been asked to select an installed
+Python compiler or fully native parser; no compiler dependency/default is chosen
+before their reply. CLI/default parser selection and full activation remain pending.
+
+## Go AST configuration and version-output contract
+
+The standalone astcontext package exposes DefaultParameters and NewConfig. The
+validated Config keeps private version bounds and duration; Parameters() returns
+detached environment/digest snapshots. Seven named statuses serialize only when
+valid; ParseStatus rejects unknown strings. Probe holds private immutable fields
+and exposes a typed ProbeSnapshot. A zero probe/config is rejected at serialization
+or version parsing.
+
+ParseVersion accepts named VersionOutput and performs Source banner, homepage and
+version-range checks. Python Unicode 14 decimal components and Python whitespace
+are retained. Config timeouts additionally must fit a finite positive Go duration.
+ParseVersion remains inert observation parsing. The separate Adapter described
+below performs actual configured probes. Bounded source snapshots, structured AST
+payloads, tool installation and startup selection remain pending. No provider/default
+or dependency was installed.
+
+### Standalone Go AST executable probing
+
+NewAdapter requires validated Config. Adapter.Probe(ctx, workspace) owns a fresh
+argv subprocess per call and rechecks resolved executable placement and optional
+SHA-256 before every invocation. Empty workspace means an operator-only probe with
+no model workspace binding; later model tools must pass their trusted session root.
+Workspace-local binaries are rejected before launch, including canonical symlink
+targets. A name-only binary is resolved through host PATH; the child inherits only
+LANG/LC_ALL/SYSTEMROOT and explicit passthrough names, plus forced NO_COLOR=1 and
+a fixed trusted TMPDIR outside the supplied workspace. Digest verification does
+not atomically pin an executable against replacement between verification and exec.
+
+Each stdout/stderr drain retains at most MaxOutputBytes raw bytes and independently
+triggers group termination on overflow. Source buffered 64 KiB read-or-EOF ordering
+is retained: a partial over-limit block with an open pipe may first reach the deadline.
+UTF-8 uses Python maximal-subpart replacement
+without universal-newline conversion. Child exit and both pipe drains share one
+configured deadline. Darwin/Linux retain the launched group ID after direct-child
+exit; other builds terminate only the direct child. Cleanup owns/closes the pipes
+and joins the child/drains. Caller cancellation returns its context error; internal
+timeouts/overflow and ordinary process faults become typed probe statuses. There is
+no persistent child or request cache. Source snapshots and tool activation remain
+pending; an Applied version probe is not proof of semantic payload correctness.
+
+## Go foreground spawn and Interrupt ordering
+
+The shell executor serializes foreground Start and live-PID registration with
+Interrupt under the same tracker lock. A child can publish filesystem effects before
+Start returns to its parent; an interrupt observing those effects must wait for PID
+publication rather than return an empty registry. Startup errors release the lock
+before failure projection. The lock is released before started callbacks, captures,
+waits and policy execution. Background spawning uses its separate owner.
+
+### Native AST ignore policy prerequisite
+
+The internal ignoreSpec represents compiled patterns with an explicit three-state
+ignoreDisposition and selected pattern index. Unmatched must continue searching outer
+frames; kept overrides an outer ignore decision. Empty raw lines are omitted, whereas
+comments/null patterns retain their compiled positions and match-budget count. The
+matcher preserves Source root-relative/globstar rules, file/directory precedence and
+final-newline behavior; character classes are emitted as literal/range rune sets to
+avoid treating Source POSIX-looking text as Go POSIX syntax. Compilation retains the
+Source 4096-character/two-star-group guards and uses standard Go regular expressions.
+Malformed descending ranges remain failures but expose native compiler wording.
+
+ignoreLines follows UTF-8 errors=ignore and Python splitlines; raw control bytes must
+be copied independently, not replaced by decoded lines. This private component has
+no path authority, traversal, frame collection, filesystem budget or public tool.
+The anchored snapshotter must supply those boundaries before model use.
+
+### Anchored AST snapshot filesystem prerequisites
+
+snapshotDirectory is private and expects a canonical trusted root. All child names
+must be single components; never replace openat/fstatat with joined-path reads.
+Hold each directory handle across metadata/filter/open boundaries. Metadata may
+race mutation, so selected opens retain NOFOLLOW and regular-file type rechecks.
+Enumeration reopens dot rather than duplicating a shared directory offset. The
+builder must supply aggregate budgets, timeout context, ignore frames and private
+cleanup; this layer alone is not a complete snapshot or public path selector.
+
+### Complete private Go AST snapshots
+
+Adapter.withSnapshot scopes a named sourceSnapshot to one trusted callback. It
+builds the complete tree using request-local counters/control caches and closes
+source descriptors before the callback. Never retain its private paths for later
+use: cleanup runs on success, callback error and panic. The production limits are
+fixed Source constants; withSnapshotLimits is private fixture capacity injection.
+Raw ignore bytes are copied unchanged; decoded lines only feed matching. Validate
+pattern shape before counting control lines, then compile assembled frames. Empty
+raw lines and compiled null/comment patterns have different budget meanings.
+Do not resolve child paths again after metadata/filtering: regular/child opens use
+the held parent handle. Explicit files intentionally bypass recursive filters.
+Public raw-path resolution and final-basename glob expansion remain separate work;
+this kernel cannot install a model tool without those selectors and typed payloads.
+
+### Private AST canonical and glob selectors
+
+Bind an operator workspace through astWorkspace before resolving model paths.
+astSafePath preserves non-strict realpath and symlink-before-dot-dot ordering;
+never replace it with lexical Clean followed by symlink resolution. Glob static
+prefixes intentionally use lexical normalization and anchored no-follow opens,
+then the shared Python fnmatch matcher. Every entry counts toward the cap before
+filtering; only regular no-follow matches are returned. Source internal glob
+checks occur during iteration, so an empty directory does not expire that check.
+Always pass matches into withSnapshot before invoking an AST CLI. The selector
+alone cannot prevent a post-selection swap. Typed payloads and public operations
+must still be implemented before any tool registry/runtime activation.
+
+### Shared syntax-only JSON scanner
+
+internal/jsonsyntax.Scan owns CPython prefix-grammar diagnostics and character
+offsets. Select fixed Limits per wire profile; HTTP retains 985 containers and
+4300 integer digits. The scanner never lowers successful JSON into host values.
+HTTP's typed value reader and AST's closed payload lowering retain their own
+ownership, failure projection and publication gates. Reuse NumberLength when
+lowering a validated number prefix, rather than duplicating number grammar.
+
+### Go AST result records and captured-output classifier
+
+Native astcontext now has closed Operation and immutable Result/Payload records.
+The private captured-output classifier preserves envelope numeric equality, values-only
+path rewriting, error-before-import handling, iterable warnings/errors, arbitrary integer
+metrics and partial/ambiguity/no-match precedence. All 65 actual Source observations
+replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
+Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
+Actual semantic subprocess execution, four model tools and runtime selection remain
+pending. Extreme CPython recursion/digit-fault wording and lone-surrogate string
+projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
+Use NewPayload for inert object data and NewResult for detached optional records.
+Result.Value retains Source field order; ToJSON permits archival nonfinite numbers,
+while standard MarshalJSON rejects nonfinite values. Neither projection grants
+executable/path authority. Actual Adapter operations must probe and execute through
+the existing admitted process/snapshot boundaries before classifying output.
+
+### Go standalone AST semantic reads
+
+Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and
+SymbolReferences using closed density/view/reference-kind options and typed request
+records. Every operation canonicalizes/validates paths, builds the existing bounded
+no-follow snapshot, probes the operator executable in the original workspace, then
+executes direct CLI argv and classifies output before snapshot cleanup. Leading-dash
+patterns use attached --expression values; show preserves signature flags and bounded
+glob early returns (32 visible matches/16384 UTF-8 bytes), without executing a probe.
+All 26 public Source contracts compare exact ordered result JSON, probe/command argv,
+original cwd and removal of private snapshots through actual native CLI children.
+The child independently verifies external 0400 source copies; a mutation of the live
+workspace during child execution still reads original bytes. Workspace executables
+are refused before side effects and caller cancellation remains a Go error.
+Four model-tool registrations and runtime selection remain next. Final extreme
+numeric/recursion wording and lone-surrogate projection profiles remain open.
+Each method returns (Result, error): ordinary input/filesystem failures produce the
+Source-shaped Error result; caller cancellation and ordinary payload iteration faults
+remain errors. No public arbitrary argv or model-selected environment is exposed.
+The Adapter is request-stateless and can be reused for independent calls.
+
+### Go AST model-input declarations
+
+Native protocol now declares four AST ToolInput variants with named density,
+view and reference-kind enums, detached required arrays and optional presence
+pointers. Canonical sorted UTF-8 identity and recording-only string masking preserve
+supplied fields without inserting execution defaults. The model schema projection
+matches all four actually installed Source declarations, including default values,
+maxLength, array limits, numeric bounds, descriptions and additionalProperties=false.
+InputSchema adds named MaxLength/Minimum/Maximum/Default fields with detached clones
+and typed validation; defaults use existing immutable closed JSON variants.
+The Go boundary refuses non-string arrays, unknown fields, null fields and invalid
+enums. These are explicit typed admission refusals, not a claim of parity for every
+malformed dynamic Python handler input. Scalar/count semantic errors still belong
+to the existing adapter. Runtime registration is the next delivery slice.
+
+### Go explicit runtime AST tool selection
+
+RuntimeConfig.ASTConfig and ManagerServices.ASTConfig now explicitly install the
+four Source-compatible read/parallel AST tools through the existing ToolGate.
+Nil keeps them absent; invalid zero config fails construction before runtime setup.
+The Manager detaches the operator config and forwards it through its shared session
+construction path. The handler captures the current identity/workspace binding
+under lock, then executes immutable request state without holding the mutation lock.
+Foreign session/owner/workspace authority is refused. Selected task-child definitions
+rebind to fresh child handlers while sharing only the stateless configured adapter;
+existing read-capability policy selects all four tools for Explore.
+Real native CLI tests exercise a read-only four-tool model batch, eight version/command
+executions, source freeze modes, values-only path rewriting and post-tool cleanup.
+Guard denials start no child, workspace transitions rebind the root, manager config
+reassignment cannot affect sessions and an actual task-child performs its own probe
+and operation. Installed schemas/traits/capabilities match Source export 158.
+Launcher settings/environment/CLI selection and HTTP end-to-end Source traces remain
+next; default tool installation is unchanged. Final AST malformed/extreme output
+profiles, SQLite, diagnostic parser selection and G0-G7 remain open.
+Construct astcontext.Config through NewConfig and pass its address to ASTConfig.
+Model inputs cannot choose a binary, environment, workspace root or process limits.
+The stateless Adapter needs no persistent subprocess/cache cleanup hook. Its per-call
+process/snapshot lifetime stays beneath the normal gate, hooks and permission policy.
+
+### Go Launcher AST settings
+
+The standalone CLI loads the existing MINILOOP_AST_OUTLINE_* settings and forwards
+ASTConfig through the Manager. Selection is default off; enabled settings require
+a trusted absolute binary path and SHA-256 digest. Launcher settings override the
+library defaults with Source timeout 10 seconds and output cap 1,000,000 bytes.
+Inspect and --dump-config describe selection without probing. Executable availability
+and per-invocation integrity checks remain in the AST adapter, beneath ToolGate.
+No model arguments can select the binary, environment or process limits.
+
+### Go AST text versus result wire bytes
+
+Result.ToJSON is a Source string projection, using closed jsonvalue.LegacyString
+with surrogatepass code points and historical nonfinite values. It is not a strict
+UTF-8 byte encoder. Keep MarshalJSON/MarshalUTF8/MarshalLegacyUTF8 strict. Tool-result
+block encoding checks wireResultText and returns ErrResultUTF8 before provider HTTP;
+in-memory models can still observe the original string. Do not replace characters
+at this boundary. Go provider failures retain their existing typed protocol category.
+
+### Go explicit Guardian review
+
+Call Session.Guardian outside the parent's held turn to pin its current typed
+environment. Review uses fresh readonly auditor state and the explore catalogue,
+returning GuardianDecision (allow/deny/abstain plus Source reason). Explicitly set
+ApprovalBrokerConfig.Reviewer to GuardianReviewer{Guardian: reviewer, Secrets: redactor}
+to bridge masked typed inputs and bounded ASCII preview to the broker. Errors remain
+subject to existing broker containment. Provider failures converted by the child loop
+into Source-style error text are still parsed as answers; an ALLOW/DENY word in that
+text can decide the action. Capture again when execution workspace changes.
+ManagerServices.GuardianEnabled or RuntimeConfig.GuardianEnabled (with Approvals)
+selects automatic per-action binding from the current owned turn. The private path
+clones the surface and captures its parent environment without locking the parent
+again or modifying a shared broker/policy. Direct broker/gate embedding does not
+synthesize a parent. Launcher selects this path with MINILOOP_GUARDIAN; inspection
+reports guardian_enabled without constructing a manager. Never call Session.Guardian
+recursively under an already locked parent tool turn.
+
+## Go token-efficiency contract foundation
+
+Package efficiency exposes DefaultDescriptor/NewDescriptor and NewReceipt. Pass
+DescriptorConfig or ReceiptConfig with named fields and closed enums; required
+integer metrics/limits use *big.Int. Constructors validate and detach mutable input.
+Descriptor.Snapshot and Receipt.Projection return fresh copies of slices, numeric
+values and optional text; zero objects cannot marshal. The event-safe receipt
+projection contains metrics, hashes and references, with no raw content field.
+
+Use DefaultRawStoreConfig(workspace) and NewRawStore for an explicitly owned RAM
+store. The trusted ArtifactClock returns seconds/error; the default uses monotonic
+time. Limits use detached *big.Int values. PutMasked asserts caller redaction and
+refuses invalid UTF-8; it cannot verify that masking ran. GetMasked/Discard resolve
+only this store's cryptographic refs; Sweep, Clear and Close erase owned records.
+NewArtifactPointer/Snapshot provide detached metadata. ArtifactError.Kind and
+errors.Is preserve expired-as-not-found and all storage faults as store errors.
+Directory is validated legacy metadata and is never used to persist content.
+
+ReadMaskedPage(store, RecoveryPage) uses character offsets and limits while bounding
+the complete page, including continuation header, to 50,000 UTF-8 bytes. Numeric
+fields use *big.Int; nil selects defaults. The protocol closed input also retains
+explicit-null pagination for validation and replay. Set RuntimeConfig.TokenArtifactTools
+and TokenArtifactStore to install recovery on an explicit native runtime; nil store
+returns the Source unavailable notice. The caller owns close/clear. Cross-workspace
+stores are refused, and each handler pins session/owner/workspace authority.
+InstallTokenArtifactTool extends an immutable custom catalogue while preserving an
+existing same-name definition and its catalogue identity. It does not widen an
+explicit RuntimeConfig.ToolSelection or register a default feature.
+
+DefaultObservation/NewObservation construct a MaskedObservation assertion, preserving
+MIME-like content type, first-seen reduced_by, optional paired legacy raw metadata
+and ordered ObservationMetadata entries. Metadata values use a closed immutable
+JSON sum; command status scalars and nested JSON are supported without generic maps.
+Snapshot and NewReduction/Snapshot detach mutable slice/pointer inputs. Arbitrary
+Python metadata objects remain outside this typed boundary. Observation itself
+checks raw-ref/digest pairing only; receipts/recovery validate their stronger patterns.
+
+ObservationReducer exposes Descriptor and Reduce with named ReductionOptions and
+ObservationReduction. PassthroughObservationReducer and DeterministicLosslessReducer
+are stateless explicit library implementations. The latter removes ANSI and folds
+noncritical duplicates/blank runs using pinned Python diagnostic/Unicode predicates.
+These reducers do not perform masking or install runtime optimization.
+
+DefaultObservationPipelineConfig/NewObservationPipeline accept ordered
+ReducerBindingConfig entries, per-component/default modes, explicit masked RawStore,
+inflation/double-reduction flags and a named TokenCounter returning *big.Int/error.
+Bindings pin detached descriptors/modes; duplicate IDs and non-observation stages
+are refused. ReduceObservation preserves off/shadow/enforce and emits immutable
+ObservationOutcome snapshots. ComponentFault separates safe exception-class reasons
+from private diagnostics. Ordinary faults and raw-storage failures retain the last
+good projection; cancellation escapes. Deadlines are cooperative context deadlines.
+WithRawStore shares component serialization and synchronized token-counter pairs
+while changing only the explicit store binding. The caller still owns raw storage.
+Very large timeout scheduling saturates Go duration; Source overflow/scheduler
+profiles remain pending migration gates. Runtime below shares component identities
+within one composed root; fresh roots remain independent.
+ObservationPipeline now supports Initialize(ctx, LifecycleServices), synchronous
+Health() and Close(ctx, LifecycleCloseOptions) through three optional named hook
+interfaces. LifecycleServices exposes an explicit RawStore reference; components
+never receive an untyped service bag. Close options detach a positive finite seconds
+deadline. Clones share lifecycle/call gates, cached immutable reports and component
+serialization. Initialization excludes new calls; health excludes concurrent calls;
+close fences admission before draining. A drain/lock timeout returns deadline_exceeded
+without caching teardown, allowing a later retry. Completed hook-error reports are
+cached. Cancellation escapes and clears temporary initialization admission. Hook
+timeouts are cooperative and synchronous health hooks must return promptly. No
+detached worker outlives teardown. Caller-owned raw storage is not auto-closed.
+NewLifecycleHealth/Record/Report validate closed enums and bounded machine codes;
+projections copy record slices. Source malformed/async health values map to typed
+ComponentFaults at a plugin adapter; dynamic Python service objects stay outside this
+explicit service seam. This library does not mask plugin content.
+
+NewRequestDocument accepts an immutable closed JSON Object; it represents the
+provider-neutral request SPI, not trusted session state or a service dictionary.
+Value returns a closed recursive value. Provider callers must lower optimized data
+into concrete protocol types and apply their own message-role/tool-identity guards.
+NewOptimizationContext detaches unbounded frozen-prefix counts and ownership markers;
+NewRequestOptimization detaches bounded warnings. RequestOptimizer exposes explicit
+Optimize arguments/results. DefaultRequestPipelineConfig/NewRequestPipeline apply
+pinned request bindings, Source frozen-prefix-before-shadow ordering, inflation,
+ownership and safe fault receipts. Clone shares hooks/gates/counters/cached reports;
+Initialize/Health/Close use the same coordinator as observation-stage roots. Roots
+are still independent; constructing two stage libraries does not merge lifecycle.
+PassthroughRequestOptimizer implements the explicit Source no-op. Stable request
+bytes sort finite JSON keys and retain integer/float identity; nonfinite JSON falls
+back to Source object repr, while surrogate characters encode as question marks.
+Input documents remain unchanged and optimized requests are transient projections.
+Non-string Python mapping keys and opaque Python objects are outside the closed JSON
+boundary. No Agent cache/projection ledger, provider adoption or default activation
+is added by this library.
+
+NewResponseSettings accepts ResponseSettingsConfig with bounded instruction strings,
+ordered ResponseMetadata pairs, optional unbounded MaxOutputTokens and verbosity.
+Snapshot/MarshalJSON detach numeric/slice/pointer inputs. Metadata keys are unique;
+limits count Source Unicode characters. ResponseContext names task, settings,
+provider capabilities, positive optional budget, opt-in and deduplicated ownership.
+NewResponsePlan names settings/warnings; ResponsePlanner exposes Plan explicitly.
+DefaultResponsePipelineConfig/NewResponsePipeline pin response bindings and modes.
+PlanResponse revalidates settings/warnings, preserves Source unchanged/shadow-before-
+ceiling order and rejects removal/raising of the tighter existing/context output cap.
+Descriptor max_input_bytes does not add a response guard; Source does not enforce it.
+Receipts use the exact StableRequestSettings dataclass representation rather than
+JSON. PassthroughResponsePlanner is a structured no-op. NewConciseResponsePlanner
+uses DefaultConciseResponseConfig, optional opt-in, a detached cap and a nonblank
+instruction; it retains the tighter existing/config/context limit, adds the instruction
+once and replaces response_policy metadata at the end. Its instruction/output bounds
+are validated when producing StableResponseSettings. Root clones share lifecycle,
+serialization and counter state; independently constructed stages remain separate.
+Explicit Agent adoption is described below; default composition remains separate.
+
+Registry offers RegisterObservation/RegisterRequest/RegisterResponse with global IDs,
+stage validation and detached per-binding modes. Snapshot returns immutable typed
+StageComponents membership; Runtime(DefaultRuntimeConfig) constructs a fresh shared
+root. NewStageComponents accepts StageComponentsConfig for direct typed composition:
+unlike Registry, it permits repeated IDs and descriptor-stage reuse. Pointer instances
+share one call lock and first-enabled lifecycle binding across all three stages;
+nonpointer values represent independent copies. Runtime exposes the existing three
+stage operations plus Initialize/Health/Close and WithRawStore. Clones share one
+counter/lifecycle/admission root. Close fences and drains calls across every stage;
+raw-store ownership stays with the caller. Independently constructed stage pipelines
+remain independent. Manager now composes an explicit off/normal root by default; see the managed binding below.
+Launcher and fake benchmark map mode/style settings through runtimeconfig.ManagerEfficiency. Python annotation-violating plugin
+objects and broader Unicode/numeric wire profiles are not claimed by this foundation.
+
+
+### Go explicit Agent response policy adoption
+
+Set agent.RuntimeConfig.TokenEfficiency to an explicitly constructed efficiency.Runtime
+and ConciseResponse to the opt-in flag. Session plans responses on agent_turn purpose
+before CachePolicy.Annotate, including agent_turn side calls without live transcript
+ownership. Other purposes skip response planning. Latest user text excludes tool results.
+Instructions extend a detached optional system string; output caps only tighten.
+Provider-neutral verbosity/metadata are not forwarded, matching Source Agent.
+OptimizationReceipt returns cloned OptimizationMetrics with *big.Int counts and no
+digests, warning strings or content. Typed event JSON/masking and DecodeStoredEvent
+retain the metric-only variant; archival metrics grant no executable authority.
+The caller owns the runtime and shared initialization/close. Explicit request
+and observation adoption are described below; Manager composition is described below; Launcher settings selection is installed. Bare
+RuntimeConfig nil keeps defaults.
+
+
+### Go Agent request projection and protected side calls
+
+RuntimeConfig.TokenEfficiency also applies typed request optimizers before cache
+annotation. Live agent_turn calls retain a process-local row-index/digest ledger
+of provider projections; authority stays in Session.messages and persisted history.
+Newest assistants freeze all rows. Role/count, tool input/ID/error state, thinking
+signatures and other protocol metadata are fixed before concrete text/result lowering.
+Unknown or nontext provider variants are not introduced into the named protocol.
+Rejected candidates emit a closed request_optimization_rejected variant with reason
+message_protocol_guard. Ordinary side calls optimize detached messages without
+ledger ownership. Protected side calls skip request/cache seams and reassert masked
+selected messages plus message cache metadata for each recovery dispatch; personal
+skill previews use this path. Explicit response planning retains its purpose rule.
+The caller owns the shared runtime. Manager composition is described below; Launcher settings selection is installed.
+
+### Go explicit Agent observation adoption
+
+RuntimeConfig.TokenEfficiency also binds post-mask tool observation projection.
+ObservationRawConfig optionally snapshots Persist and MinBytes; defaults true/4096
+apply only to the explicitly injected consumer. Recovery tool and runtime must bind
+the same nonnil store. foreign workspace bindings are detached; callers own store
+creation and close. readonly/absent recovery tools forbid writes. A private named
+projector runs before journal settlement and observers; journals keep full masked
+output while observers/model results receive the remasked candidate/recovery marker.
+Replay and recovery-tool calls bypass reduction. Inflation includes the marker and
+discards unused refs. Source post-mask cancellation leaves journal authority started.
+OptimizationStageError carries only a safe fault class and tool span; no plugin text.
+Manager composition is described below; wider custom runtime profiles remain pending.
+
+
+### Go Manager efficiency ownership
+
+Use DefaultManagerEfficiencyConfig and assign ManagerConfig.Efficiency for explicit
+library selection. Off/normal, raw persistence true, threshold 16384, TTL 3600 and
+2 MB / 20 MB limits match Settings defaults. Integer limits are detached.
+ManagerServices.TokenEfficiency overrides default component/mode selection.
+ManagerServices.Tools supplies an immutable caller catalogue; the Manager does not
+automatically widen it with builtin or recovery tools. Explicit optional feature
+flags remain independent. CreateSessionRequest.ToolSelection filtering precedes
+store allocation. Benchmark constructs first, runs setup, then uses the exclusive
+first-turn ManagedSession.RestrictTools seam. Already bound stores stay owned.
+
+Manager Start/StartContext initializes once with empty lifecycle services. Store
+binding is per workspace; foreign template stores are detached from session roots
+and still closed at manager shutdown. New writable enforce sessions with recovery
+capability get fresh RAM stores; readonly sessions may retain an already matching
+template but get no automatic recovery tool. Delete closes the last session holder
+after drain. Failed publication releases unpublished bindings. Stop owns the drain
+even if its caller stops waiting, closes distinct stores, then closes components.
+EfficiencyStatus returns detached typed lifecycle reports with safe fault codes.
+Bare RuntimeConfig consumers retain caller-owned lifetimes. Standard child
+inheritance is described below. Launcher/HTTP/fake benchmark map validated settings
+through runtimeconfig.ManagerEfficiency; broader runtime-profile work remains open.
+
+
+### Go child efficiency inheritance
+
+SubagentParent pins the shared TokenEfficiency runtime and a detached
+ObservationRawConfig. In-process children retain the shared stage components and
+same-workspace store. Selected native read_token_artifact handlers bind the new
+child SessionID/owner/workspace; role filtering is never widened. Explore remains
+readonly and default selection excludes recovery; an explicit recovery capability
+can read existing masked artifacts without granting writes. Foreign-workspace
+stores detach. Writable enforced children with selected recovery allocate fresh
+stores using detached ObservationRawConfig.StoreLimits, forwarded from Manager
+efficiency settings. Allocation is never triggered by readonly or filtered roles.
+
+Concise opt-in and request projection ledger belong to fresh child state. Shared
+policies still apply their own RequireOptIn setting. Children neither initialize
+nor close the shared root/store; the caller or Manager owns that lifetime. Eight
+actual Source child runs compare real request/response/observation invocation and
+artifact recovery. A managed task test proves Stop cancels and joins the child
+before raw-store revocation and shared component close.
+
+
+### Entered-workspace child artifact parameters
+
+efficiency.ArtifactLimits owns named TTLSeconds, MaxArtifactBytes and MaxTotalBytes
+with validation and detached Clone. RawStore.Limits returns detached settings,
+never content, references or workspace authority. ObservationRawConfig.StoreLimits
+defaults to 3600 / 2 MB / 20 MB and snapshots supplied integers. Manager forwards
+its configured TTL/capacities; child snapshots detach them again. Allocation uses
+Settings values rather than the old store's limits.
+
+After an execution workspace switch, child construction drops the foreign store.
+A writable enforced child with selected recovery gets a new RAM store scoped to
+its entered workspace and rebinds its recovery handler. Failed construction
+closes the unpublished store. Successful child-created stores remain reachable
+through the child runtime and are reclaimed with that transient child; completion
+does not close a retained store, matching Source. Shared component initialization/
+close stays with the caller/Manager. Managed session/template store cleanup
+retains its existing boundaries. Seven Source runs prove new workspace reads,
+old-reference isolation, own-reference recovery, role filtering and 7/200/800
+limits despite the parent's injected 99/100/400 store.
+
+### Go startup efficiency mapping
+
+Use runtimeconfig.ManagerEfficiency only after config.Settings.Validate. The pure
+adapter reads no environment and allocates no services; each integer gets fresh
+ownership. Launcher and fakeManagerConfig forward the same named selection into
+ManagerConfig.Efficiency. The default remains off/normal; custom library-injected
+runtimes retain their own modes/components. Comprehensive MINILOOP_FEATURES still
+refuses activation. Benchmark environment selection happens per HTTP request; the
+main app provider is never reused. Benchmark constructs and runs setup before
+RestrictTools; store ownership survives catalogue reduction and ends at drain/close.
+
+### Go first-turn catalogue restriction
+
+ManagedSession.RestrictTools(ctx, ToolSelection) takes nonblocking turn admission,
+checks accepting state and context, then locks the core and requires no prior turns
+or history. It snapshots a subset of the current immutable catalogue. Removed and
+unknown names cannot add authority; schema publication and ToolGate execution use
+the new inventory. It changes no service/store bindings or lease/history records.
+Ordinary construction filtering remains available. Benchmark uses this seam only
+after task setup, matching Source allocation order. Active/used/restored/closed
+handles must not use this seam; it returns named ErrSessionBusy or
+ErrToolSelectionStarted where applicable.
+
+### Go component timeout conversion
+
+Descriptor.TimeoutMS stays a detached *big.Int. Shared invocationDuration converts
+the exact integer ratio through big.Rat.Float64 before duration saturation. Do not
+convert the millisecond operand directly to float64: 2**1024/1000 is finite even
+though 2**1024 alone overflows. Nonfinite ratios return ComponentFault with class
+OverflowError and the Source division diagnostic. Stage consumers and Initialize
+contain this as component_error:OverflowError. Close conversion occurs outside
+hook fault containment, matching Source; it returns the error with admission
+already fenced, releases lifecycle serialization and leaves close report uncached.
+Missing hooks skip conversion. Expired close budgets retain their existing priority.
+
+### Go built-in feature ordering
+
+`NewRuntimeSession` publishes built-in definitions in Source registry order before
+applying `ToolSelection`. Full feature groups precede independently enabled
+decisions, workflows and AST tools. Unranked extensions retain relative order
+after those built-ins. Supplying `RuntimeConfig.Tools` or `ManagerServices.Tools`
+keeps caller catalogue order. Ordering does not select any feature or grant
+authority; full startup activation still requires parser and injector parity.
+
+### Go explicit lifecycle injector overrides
+
+`RuntimeConfig.Injectors` and `ManagerServices.Injectors` distinguish nil from a
+caller-supplied list. Nil keeps selected background/team lifecycle injection; a
+list (including an empty one) replaces those defaults. Manager and child copies
+preserve this distinction. Custom injectors run in supplied order, followed by
+workflow inbox and core controls. Override does not drain pending background/team
+observations or remove tool access.
+
+### Go Manager full-feature profile
+
+Set `ManagerConfig.EnableFeatures` to publish the Source full registry when
+`ManagerServices.Tools` is nil. Supply `DiagnosticsProvider`; missing default
+parsing fails before workspace or journal effects. Caller catalogues replace
+the automatic registry, while explicit independent options keep their meaning.
+Nil injectors enable full-profile background/team lifecycle binding even for
+custom catalogues; explicit lists replace those notifications. Workflow/AST/
+decision options remain independent. This Manager API does not enable the
+Launcher/CLI environment switch or install a default parser.
+
+### Go Launcher full feature availability
+
+`NewWithOptions` accepts `settings.EnableFeatures` with an explicit
+`Options.DiagnosticsProvider` and forwards the full Manager selection. Inspection
+uses the same rule without invoking providers or allocating state. Configured
+`RepoRoot` supplies the full-mode worktree backend. Plain `New` and the default
+CLI still reject full mode until a default diagnostics parser exists. The caller
+retains the diagnostics provider lifetime; App.Stop does not close it.
+
+### Go HTTP deployment feature reporting
+
+`httpapi.Config.Features` carries the deployment full-feature selection for
+`/healthz`, analogous to `FakeLLM`. Embedding callers supply this setting explicitly;
+Launcher forwards `settings.EnableFeatures`. It does not infer the setting from
+a custom catalogue or independently selected workflow/service groups, and it
+never grants tool authority.
+
+### Go runtime posture observation
+
+`SessionManager.ObserveRuntimePosture(authenticated, environment)` returns a
+concrete detached observation or an error. Nil environment uses the current
+process. It reads first-live/default bindings, retains native implementation labels,
+and observes persisted failures without a session/resource construction or model
+call. Custom maskers may expose `Names() []secrets.Name`; this callback runs outside
+Manager locks, must be concurrency safe, and must not resolve credential values.
+Missing Names means no registered names, matching Source. Panics fail the report.
+Health returns a private 500 for observation failures and masks successful output.
+Existing output masking may resolve registered values; observation reads names only.
+The existing `shell.Sandbox` argv/rebinding seam is injectable. Shell executors
+expose `SandboxPosture()` metadata, including an optional `SandboxReason()` reason.
+Custom Bash factories can implement `shell.SandboxPostureProvider` for empty-fleet
+inspection; otherwise observation fails until a live observable executor exists.
+Metadata callbacks run outside Manager locks, must be concurrency safe and must
+not execute commands. Active executors publish through an atomic binding after
+workspace preparation. Configured metadata is not proof of OS confinement;
+native Seatbelt/default platform selection remain pending.
+The null-store report uses Source's `NullStateStore` marker, because its remote
+auditor checks that exact marker to detect process-local transcripts.
+
+### Go local deployment audit observation
+
+`SessionManager.ObserveDeploymentAudit(ctx)` returns concrete agent-owned
+`DeploymentAuditObservation` metadata. Existing audit observation type names
+remain aliases. `audit.Manager(ctx, manager, settings, environment)` composes
+configuration and live findings over a caller-owned manager; nil environment
+is captured once, and an explicit empty map stays empty. The caller supplies
+the selected settings and trusted fleet visibility. This API provides no owner
+admission, manager lifecycle, route or model tool.
+
+Unlike health's first-live selection, deployment auditing reads manager/template
+bindings. Custom Bash factories must expose `shell.SandboxPostureProvider`;
+unavailable metadata fails observation. Optional secret Names/Unresolved/
+ShortValues getters must return cached reports without resolving values.
+ProblemSource getters run outside manager locks and must be concurrency safe.
+Returned entries, summaries, counters, reasons and failures are detached.
+Callback panics and failed ledgers cannot become successful empty findings.
+Snapshots are component snapshots, not an atomic fleet transaction.
+
+Root cron/skills and actions/approvals/bus/raw-memory/trajectory ledgers match
+Source deployment scope. Per-session task/gate/owner diagnostics stay in existing
+self-audit. All published sessions contribute persistence faults and retained
+MCP entries; repeated counts are merged exactly without count-sized replay.
+Observation opens no owner bundle or task board, visits no historical recording,
+creates no session and invokes no provider/tool.
+
+`launcher.AuditDeployment(ctx, settings, environment, options)` now constructs
+and audits the Source local-CLI profile using shared native composition. It
+stops the owned manager/transport with a fresh bounded cleanup context even
+when the request is cancelled, and reports cleanup faults as errors without
+partial findings. Injected state stores and diagnostics remain caller-owned.
+It returns findings, never an app/listener, so it grants no serving bypass.
+No session restoration/model/tool is started; workspace and shared service roots
+may be created as part of construction. Explicit SDK diagnostics support full
+features; default CLI diagnostics remain pending. Source local mode ignores
+PORT/non-URL arguments and does not forward its workflow environment flag;
+explicit Options.WorkflowTools still works. Native provider constructors
+now permit absent keys and defer missing-authentication refusal until request
+admission, before HTTP/retries. Supplied key bounds remain in construction;
+profile/OAuth/federation discovery is not implemented by the native seam.
+
+### Go provider credential absence
+
+Native `provider.Config.APIKey` empty means absent. Provider construction and
+inspection remain possible; Description reports `<absent>`. Missing request
+authentication returns finite FailureCredential / TypeError with no HTTP/retry
+work. The existing ModelFailureOther projection leaves that refusal terminal;
+non-streaming token limits retain their earlier refusal phase. Client credential
+strings remain captured at construction; this change adds no ambient credential
+lookup, alternate authentication mechanism or rotation. Supplied key, endpoint
+and wire constraints retain their existing native admission bounds.
+
+### Go dotenv text/environment library
+
+`dotenv.Parse` returns named bindings with exact original text/start lines and
+recoverable syntax error flags. `Resolve` consumes an explicit environment and
+override selection; `Apply` returns a detached environment/application result
+and typed ValueError faults with Source partial writes. Nil input environment
+means empty. Nullable values remain distinct from empty strings. Functions
+perform no filesystem access or process mutation and install no config/CLI
+path. Supply scalar UTF-8; parser rejects invalid byte strings. File decoding and
+discovery use the separate explicit SDK APIs below; startup activation remains pending.
+
+### Go dotenv file discovery and loading
+
+`DiscoveryContext` supplies working directory, Source-equivalent caller files
+(nearest first), and explicit interactive/debugger/frozen observations. `Find`
+selects Source origin and searches upward; `Walk` keeps logical absolute paths.
+Neither infers deployment origin from compiled Go source. Missing caller evidence
+returns a typed refusal. Filename nil defaults to .env; explicit empty stays empty.
+`FileOptions` uses nil Path/Stream for discovery, explicit empty Path to suppress
+it, existing regular file/FIFO before fallback Stream, and finite UTF8 (default),
+UTF8Signature and Latin1 encodings. Files use universal newlines; supplied text
+retains its newlines. `Literal` disables interpolation. `Values` resolves with
+override=true independently of disabled loading. `LoadFile` honors override and
+the disabled flag, then returns a detached Application with no process writes.
+Decode faults retain no new writes; application faults retain earlier writes.
+FIFO reads wait for the producer and EOF, as Source does. Other Python codecs
+are outside this finite SDK surface. Local callers own these filesystem inputs;
+these APIs are not automatically wired into runtime tools or startup.
+
+### Go startup environment preparation
+
+PrepareEnvironment(environment, origin) performs dotenv override=true followed
+by Source base-URL authentication cleanup. Nil environment is explicit empty;
+origin is an explicit dotenv.DiscoveryContext. It returns a named
+PreparedEnvironment with a typed optional Failure and private environment.
+Reveal returns a detached credential-bearing map; default diagnostic formatting
+exposes no values. Failure retains preceding dotenv writes and skips cleanup;
+disabled loading does not skip cleanup. Prepare once per startup, then pass the
+revealed map to pure Load/server/auth/child construction. Repeated Load evaluates
+that supplied map and does not discover or reload dotenv. Preparation does not
+mutate process state or create roots. Compiled CLI entry points use the wrapper below.
+
+### Executable process environment publication
+
+internal/commandenv.Initialize belongs only at a compiled command's entry point,
+called once before application signal hooks/dispatch/goroutines. It snapshots
+process variables, prepares with explicit Frozen=true (Source cwd-origin branch),
+then publishes differences, including prior writes on a dotenv fault. Private
+InitializedEnvironment reveals detached maps and exposes DiscoveryEnabled based
+on the pre-load disabled flag; default diagnostics contain no environment values.
+Pure SDK functions do not call this wrapper. Command snapshot helpers continue
+to accept caller-prepared maps without process writes. miniloop dump reports the
+wrapper's actual selection; pure launcher inspection remains false.
+
+### Go CLI development reload ownership
+
+ServerSettings.Reload preserves Source nonempty MINILOOP_RELOAD selection. Only
+cmd/miniloop dispatches reload; SDK Launcher construction/inspection does not
+spawn a supervisor. The explicit --reload-module flag selects trusted local code;
+otherwise resolve a go.mod from runtime cwd/ancestors, never compiler file paths.
+Watcher roots stay cwd, matching the Source development observation origin.
+
+runMain captures the process's inherited-listener role before commandenv loading,
+then removes the marker from both process/prepared environment before factories.
+An inherited child always uses that socket; it must validate the actual address
+with refreshed authentication before manager allocation, independent of dotenv
+HOST/PORT/reload changes. Parent config/bind admission precedes listening/build
+execution. Parent owns observer/build/socket, child owns its App/manager lifetime,
+and Supervisor joins children before artifact cleanup. Failures wait for source
+repair; reload resets process-local state and never restores durable human authority.
+
+### Native development event subscription ownership
+
+`reload.NewNativeEvents` is an explicit macOS/CGO SDK subscription. The caller
+owns Close after every successful construction, including a cancelled Next.
+Close joins stream stop/invalidate/release and registry removal; Next cancellation
+preserves unread batches. Only one Next may be active. Native names remain lexical
+so deleted files, suffix directories and hidden-parent sources retain captured
+Source behavior. Kernel loss or bounded-capacity faults require closing/recovery;
+this SDK performs no stat-based recovery that could miss transient events.
+The pure profile selector and owned native/polling factory now bind captured
+WATCHFILES environment/host choices. Successful subscriptions still require explicit
+Close; construction context cancellation affects initial traversal only. StatReload
+remains separate. Linux native events and CLI binding are delivered below.
+
+### Captured observer and polling boundaries
+
+Observer is the narrow Next(context)/Close ownership interface. Profile construction
+retains selected primitives, never process environment or a mutable force pointer.
+NewObserver grants no model/tool/HTTP entry point. Its roots are trusted operator
+filesystem reads. Poll traversal follows links with lexical names and rejects
+ancestor cycles before creating a worker. Missing registered roots/dangling entries
+repeat Source deletion notifications; callers must not silently treat them as quiet.
+No content hash is introduced. A worker fault requires explicit Close/recovery.
+Batch deduplication tracks raw event identity so short polling periods do not
+extend quiet waits indefinitely; filtered matching capacity remains 4096 paths.
+Raw fingerprint tracking is bounded independently; beyond its retained set the
+hard batch cap still applies. Debug writers are selected operator effects and must
+return promptly; native Go text preserves raw paths without claiming Rust formatting.
+CLI integration must own Close on every exit and preserve observations during
+native builds; owned compiler temporaries must not recursively trigger themselves.
+
+
+## Go reload compiler workspace ownership
+
+Use NewBuildWorkspace for a shared compiler/artifact parent and pass its capability
+to BuildConfig.Workspace and ObserverConfig.Workspace. Join children before closing
+artifacts; close the observer before closing the workspace. Active leases make
+workspace Close fail explicitly. TemporaryParent and Workspace are exclusive.
+Compiler GOTMPDIR/TMPDIR overrides do not alter the server environment. The SDK
+excludes only the allocated workspace subtree; it supplies no arbitrary exclusion
+path or model-controlled authority. CLI binding is described below.
+
+
+## Go supervised event subscription ownership
+
+SupervisorConfig requires exactly one Watcher or Observer. A constructed Observer
+stays caller-owned until Run accepts its listener/platform/single-use admission;
+rejected runs do not close it. An admitted Run owns Close even when descriptor
+duplication fails. It joins the child and closes artifacts before cancelling and
+closing the subscription and joining its reader. BuildWorkspace stays caller-owned;
+close it only after Run returns. SourceChanged.Paths is a detached batch; Path is
+the first entry. Empty batches are inert; backend errors return after cleanup.
+The synchronous reader handoff bounds read-ahead during builds. The CLI now
+selects the owned event-profile path described below.
+
+
+## Linux native reload observation
+
+NewNativeEvents/NewObserver select native inotify on Linux, independently of CGO.
+The worker owns its descriptor and registration maps; callers own Close, or transfer
+it through Supervisor.Run admission. NewObserver's construction context cancels
+initial directory traversal and releases partial watches; it does not own successful
+subscription lifetime. Dynamic traversal observes the subscription stop signal.
+Registration follows Source filesystem iteration order and retains the last lexical
+alias for an inode. Native link loops are skipped; forced polling still reports its
+captured loop fault. Access-only opens are inert. Root moves retain the original
+lexical projection, including subsequent file events; callers must handle that
+projection without resolving deleted leaf paths. Queue overflow/unmount requires
+operator recovery. CLI event-profile activation is described below.
+
+
+## 2026-10-10 CLI owned event-profile binding
+
+The reload parent captures its prepared environment and host once, before observer
+allocation. Linux uname release permits Source WSL automatic polling; explicit
+WATCHFILES settings select forced polling. Native Linux uses inotify and native
+macOS requires CGO; explicit forced polling remains available without CGO.
+Inspection/dump does not probe the host or construct an observer.
+
+Builder and Observer share one private BuildWorkspace rooted under the captured
+TMPDIR. Compiler-only temporary directories stay inside that allocated capability
+and are excluded from source batches. Child/tool environments retain their prepared
+values and never receive the compiler-only overrides or listener role marker.
+Run owns the subscription after listener admission; CLI defers cover earlier failures.
+Cleanup joins child/artifact and observer before closing the workspace. Native loss
+faults terminate with cleanup; an empty filtered batch causes no rebuild.
+
+### Launcher credential discovery
+
+`Launcher.NewWithOptions` discovers credentials only for real providers with
+undefined API key and auth token. Explicit profile/config directory or active
+pointer takes precedence, then complete environment federation, then fallback
+profile. Explicit profile errors are eager; bad fallback profiles preserve deferred
+missing-auth request errors. Static custom headers are applied after profile headers.
+`LoadOptions.HomeDirectory` isolates profile roots. Explicit settings maps capture
+literal identity; `IdentityTokenReader` provides rotation and disappearance. Real
+CLI process readers remain live regardless of dotenv selection. Snapshot discards
+live selectors, literals and readers. `Options.ProviderTransport` is borrowed and
+never closed by App; nil owns a private transport. `ProviderNow` supplies an optional
+clock. Token exchanges use the Source 30-second timeout. Fake providers skip discovery.
+
+### Defined-empty auth and literal identity lifecycle
+
+Environment auth presence differs from truthiness: an empty auth token suppresses
+discovery and emits `Authorization: Bearer `, unless a nonempty settings API key
+suppresses bearer selection. An empty API key alone suppresses discovery but still
+fails missing authentication at request admission. Custom authorization headers do
+not independently suppress explicit profile construction. Empty profile/config-dir
+selectors allow fallback. Literal federation identity may be an empty string;
+projected identity files still reject empty stripped contents. Live identity readers
+are re-invoked on refresh: rotated literals exchange again, disappeared values fail
+before a new token/model request. Explicit SDK maps remain captured unless given a
+reader. All these observations are pinned to actual SDK 0.107.1 offline recipes.
+
+### Typed usage metadata and projection
+
+`protocol.TokenUsage` adds named CacheCreationUsage, OutputTokenDetails and
+ServerToolUsage plus InferenceGeo. Optional pointers retain concrete values;
+the codec separately preserves explicit null and closed immutable extensions,
+including nested metadata extensions. Native sparse/fake usage remains sparse.
+`WithSDKDefaults` explicitly supplies seven optional SDK null defaults and missing
+nested counter nulls. Nested counters are named optional UsageCount observations; sparse native
+constructors preserve omission until this normalization.
+Cloning detaches mutable pointers; MapStrings projects metadata values and
+extension keys/values before serialization. Agent event projection uses this
+without mutating provider values; stored event decoding retains shape and never
+grants authority. Direct HTTP and SSE now preserve this metadata and extensions. SSE updates
+server-tool counts with the SDK accumulator semantics. Known counters use immutable UsageCount variants. Numeric metering is separate from observed values; native integer and finite float bounds remain explicit.
+Direct/SSE integration now checks actual SQL event payloads, database close/reopen,
+typed archival reads, explicit Manager restoration and resumed writes, plus raw
+private JSONL and independently reopened recording readers. Registered secrets in
+usage metadata and extension keys/values are masked at these durable boundaries.
+This proves the tested reconstruction recipe; full provider scope acceptance remains open.
+
+### Named container-upload reply blocks
+
+`protocol.NewContainerUploadBlock` and `NewStreamedContainerUploadBlock` retain
+a named FileID plus the observed SDK stream null defaults. The closed Block union
+provides a detached ContainerUpload accessor, cloning, wire/cache serialization and
+stored decoding. Provider direct/SSE adapters accept it and SQLite validates FileID
+UTF-8 at persistence. It is observational metadata, so client-tool authority and
+tool pairing rules do not select it. Decision responses retain the Source allowlist
+of text/thinking/redacted-thinking and continue to refuse this content variant.
+Six actual SDK 0.107.1 captures cover normal, empty and Unicode file IDs under both
+transports; remaining server-tool/result variants and extension scope still need
+reconciliation. The recipe tests serialization and archival codec, not a new actual
+container-file upload/download endpoint or a new native SQLite restart recipe.
+
+### Named server web-search results
+
+`protocol.WebSearchToolResultBlock` exposes ToolUseID, Content and Caller. Content
+is a closed results-or-error union, with detached Results/Error accessors. Each
+result has named Title, URL, EncryptedContent and optional PageAge; errors have a
+named WebSearchErrorCode. Root/result/error extension objects are immutable closed
+JSON values. Recognized fields never remain opaque payloads.
+`WithSDKDefaults` supplies observed caller/page-age nulls; `Block` converts a
+detached result into the closed transcript union. Domain/native sparse codecs
+retain omission. Direct/SSE provider decoding uses these types; stopped SSE blocks
+retain the decoded result. Historical readers support larger frames without changing
+network bounds. SQLite validates all named text fields before writing. Generic
+masked JSON projection includes extension keys/values; this metadata never selects
+client tool execution or tool pairing. The Source decision content allowlist still
+rejects this variant.
+Fourteen pinned SDK 0.107.1 recipes cover empty results, successes, errors/future
+codes, caller variants and extensions. Remaining six SDK reply kinds, caller/other
+external extensions and default/public-entry acceptance remain under audit. This
+slice adds reply representation, not a server search request option or execution backend.
+
+### Named server tool-search results
+
+`protocol.ToolSearchToolResultBlock` retains ToolUseID and a closed references-or-error
+Content union. Results expose detached References with named ToolName values, including
+unknown client names; errors expose Code and optional Message. Root/result/reference/
+error extensions remain immutable closed JSON values. Recognized fields enter named
+types, and references remain inert observations rather than catalogue registrations.
+`WithSDKDefaults(streamed)` selects null error-message defaults and stream-only null
+text/citations/parsed_output fields captured from SDK 0.107.1. Native sparse codecs
+retain omission. Direct/SSE decoding, forwarding/cache encoding, clone isolation,
+masked projections, historical frames and SQLite named-string validation support
+this variant. Decision content admission retains the Source allowlist and rejects it.
+Twelve SDK recipes cover empty references, known/unknown/Unicode names, errors/future
+codes, messages and extensions. Five SDK reply variants and final provider/public-entry
+acceptance remain open. This slice adds reply representation; server tool-search
+request selection and dynamic client catalogue registration are not implemented here.
+
+### Named provider-owned tool-use observations
+
+`protocol.ServerToolUseBlock` exposes ID, ServerToolName, ServerToolInput and optional
+ToolCaller. Seven known server names have constants; future SDK names stay named
+strings. The SDK input contract declares an object without individual known fields.
+ServerToolInput owns immutable closed recursive JSON, with no open map, interface or
+raw payload in the domain. DecodeServerToolInput enforces object shape and network
+bounds; historical codecs accept larger accumulated records. WithInput changes only
+input, retaining caller and immutable root extensions. WithSDKDefaults supplies the
+observed caller null; native sparse codecs retain omission. SSE starts retain metadata,
+complete input deltas replace initial input, and empty deltas retain it. Strict final
+JSON/object admission remains the native boundary; SDK partial/malformed-input and
+caller extension behavior remain separate audit items. Caller supports the existing
+closed direct/code-execution variants. Server observations do not register/execute
+client tools, emit tool-input progress or require client result pairing. Decision
+admission keeps its existing Source allowlist. Thirty-two SDK direct/SSE captures
+match forwarding and archival codecs; actual SQLite close/reopen retains all captures
+and invalid UTF-8 named fields roll back the batch. Four remaining SDK reply kinds
+and final provider/default/public-entry acceptance remain open.
+
+### Named web-fetch documents and results
+
+`protocol.WebFetchToolResultBlock` retains ToolUseID/Caller and a closed
+WebFetchContent result/error union. WebFetchResult exposes URL, optional RetrievedAt
+and FetchedDocument. Its document has named Source, optional Title and optional
+DocumentCitationsConfig with Enabled. DocumentSource is a closed text/PDF variant
+with verbatim Data and named DocumentMediaType. Source metadata remains inert:
+there is no base64/PDF decoding, document opening or URL fetching in this layer.
+All recognized fields enter named types; only unrecognized root/result/document/
+source/configuration/error extensions enter immutable closed JSON. Future error
+codes remain named strings. Clone and accessors detach nullable pointers.
+WithSDKDefaults(streamed) selects caller, retrieval, title and citation-config nulls,
+and observed stream-only null text/citations/parsed_output metadata. Native sparse
+codecs retain omission. Network frames remain bounded; historical document data
+supports larger records. Forty-two SDK 0.107.1 direct/SSE captures cover text/PDF,
+empty text, nulls, citations on/off, caller variants, all nine error codes, future
+code and nested extensions. Forwarding, masking, SQLite close/reopen and batch
+rollback on invalid named UTF-8 fields are verified. Client tool dispatch/pairing
+and decision admission keep their existing authority boundaries. Three SDK execution
+result kinds and broader caller/partial-input/default/public-entry audit remain.
+
+### Named provider code-execution results
+
+`protocol.CodeExecutionToolResultBlock` exposes ToolUseID and a closed
+CodeExecutionContent ordinary/encrypted/error union. Ordinary results have named
+OutputFiles, ReturnCode, Stdout and Stderr; encrypted results use EncryptedStdout.
+CodeExecutionOutput preserves FileID and immutable extensions. ExecutionReturnCode
+owns only the closed JSON integer variant, preserving SDK Python integers above
+machine width; Decimal exposes its spelling. Strings/floats/bools/null are refused
+rather than silently coerced. Four known errors have constants; future codes stay
+named strings. All known metadata fields enter named types. Unrecognized fields
+remain immutable closed extensions. Clone/accessor methods detach output slices.
+WithSDKDefaults(streamed) retains observed stream text/citations/parsed_output
+nulls; native sparse codecs retain omission. Larger historical stdout and ordinary
+network bounds remain separate. Twenty-eight SDK 0.107.1 direct/SSE captures
+compare ordinary/encrypted output, empty/nonempty file arrays, large signed return
+codes, errors/future codes and extensions. Forwarding, masked keys/values, atomic
+nested refusals, SQLite reopen and invalid UTF-8 batch rollback are verified.
+Outputs do not execute code, open files, decrypt ciphertext or grant client tool
+pairing/dispatch authority. The existing Source decision allowlist remains intact.
+Two SDK execution-result kinds and broader caller/partial-input/default/public-entry
+acceptance remain.
+
+### Named provider Bash execution results
+
+`protocol.BashExecutionToolResultBlock` exposes ToolUseID and a closed
+BashExecutionContent result/error union. BashExecutionResult has named OutputFiles,
+ReturnCode, Stdout and Stderr. BashExecutionOutput preserves FileID and its SDK
+bash_code_execution_output tag. ExecutionReturnCode is shared with ordinary code
+execution and retains SDK Python integers above machine width. Bash result/file
+labels remain separate; ordinary code-execution labels are refused here. Five
+known errors include output_file_too_large; future codes stay named strings.
+All recognized fields enter named types. Immutable closed extensions preserve
+unrecognized root/result/output/error fields. Accessors/clones detach output slices.
+WithSDKDefaults(streamed) adds observed null text/citations/parsed_output metadata;
+sparse/history codecs preserve omission and larger stdout. Twenty-six SDK 0.107.1
+direct/SSE captures cover outputs, empty text/files, large signed return codes,
+all errors/future code and extensions. Forwarding, masking, atomic nested refusals,
+SQLite close/reopen and invalid UTF-8 batch rollback are verified. This metadata
+has no client BashInput, command execution, file opening, result pairing or grant
+semantics. Decision admission retains its Source allowlist. The text-editor SDK
+reply kind and broader caller/partial-input/default/public-entry acceptance remain.
+
+### Named provider text-editor results
+
+`protocol.TextEditorToolResultBlock` retains ToolUseID and a closed
+TextEditorContent view/create/replace/error union. View retains Content, FileType,
+optional NumLines/StartLine/TotalLines; create retains IsFileUpdate; replace retains
+optional Lines/NewLines/NewStart/OldLines/OldStart; errors retain Code and optional
+Message. EditorInteger preserves the SDK's signed Python integers above machine
+width; other scalar kinds are refused. Lines retain absent/null/empty/value forms,
+and invalid element kinds are refused without silently substituting empty strings.
+All recognized fields enter named types. Only unrecognized fields enter immutable
+closed extensions. Clone and accessors detach line arrays and nullable pointers.
+WithSDKDefaults(streamed) selects SDK nulls for nested optional fields and stream
+text/citations/parsed_output defaults. Native sparse/history codecs preserve
+omission and larger view data. Forty-eight SDK 0.107.1 direct/SSE captures cover
+text/image/PDF view, create/update, replace, empty/null/value fields, large integers,
+all five errors/future code, extensions and opaque root caller metadata. SSE now
+selects caller decoding by block kind; client ToolCaller admission remains validated.
+The previous eager caller parse failed the actual SDK editor-extension recipe; the
+new regression verifies preservation and retained client rejection behavior.
+Forwarding, masked metadata, atomic refusals, SQLite reopen and invalid UTF-8 batch
+rollback are verified. Observations never read/create/modify files, execute client
+tools or grant result pairing. SDK's twelve declared ContentBlock kinds now have
+named variants, but caller extensions, partial/malformed inputs, consumer scalar
+alignment, defaults/public entry points and complete migration acceptance remain.
+
+### Declared provider caller extensions
+
+ToolCaller retains three named discriminators: direct, code_execution_20250825
+and code_execution_20260120. SDK-declared fields remain typed; unknown members
+are an immutable closed JSON extension object. Direct caller tool_id is unknown
+metadata and does not become typed ToolID. Code-execution callers still require
+a nonempty string ID. Unknown kinds and malformed known fields remain refused
+pending their separate Source contract audit. The extension decoder is atomic.
+Forty-eight SDK 0.107.1 direct/SSE recipes cover absent/null callers and extensions
+in client/server tool-use and web-search/web-fetch results. Forwarding and SQLite
+close/reopen preserve them. Masks cover extension keys/values without changing
+original messages. Nested historical callers follow archival bounds; network
+inputs remain capped. Caller metadata does not select or authorize a client tool.
+
+### Native streamed partial input boundary
+
+On selected SSE client/server tool-use paths, the wire adapter reparses each
+nonempty cumulative delta using internal/jsonvalue.DecodePartial. It returns a
+closed immutable value, drops incomplete scalar members at EOF and retains
+completed nested values/duplicate-key semantics. Empty deltas keep initial input;
+invalid syntax is refused at the corresponding delta. The raw cumulative buffer
+is capped before parsing. At block stop the value enters a named ToolInput or observational ServerToolInput
+decoder. SDK snapshots retain legacy nonfinite numbers; standard HTTP request
+encoding remains finite. Explicit caller admission is unchanged.
+No partial bytes enter service/domain records or authorize client tool effects.
+Complete/archival jsonvalue.Decode is unchanged. Ninety-eight SDK per-delta
+recipes and 42 direct jiter edge contracts are enforced as real assertions;
+34 finite server-object results also match forwarding/history and SQLite reopen.
+Client extra/missing fields and root/nonfinite adaptations remain audited gaps.
+The opt-in audit reporter requires MINILOOP_PROVIDER_AUDIT_BASELINE explicitly;
+a successful diagnostic run is not a parity gate.
+
+## Deferred model Bash argument binding — 2026-10-10
+
+Model replies use `protocol.DecodeModelToolInput`; explicit caller admission uses
+strict `DecodeToolInput`. Finite Bash objects with extra parameters or missing
+command carry a named `BashBindingFailure`, typed known arguments and immutable
+unknown extras. Forwarding and history preserve the sparse object and first unknown
+parameter order. ToolGate follows before/guard/permission/journal checks, then
+returns the binding error without invoking a handler; normal after/result hooks
+still run. A before rewrite can replace the fault with valid arguments. Permission
+denial takes precedence. Nonfinite and unsupported known scalar adaptations remain
+unresolved; finite non-mapping observations now follow the named failure path.
+This binding contract represents the default Python Bash handler.
+
+## Named SDK usage count observations
+
+`TokenUsage` and its nested count fields now hold `UsageCount` and optional
+`*UsageCount`, rather than plain int. Use `IntegerUsageCount(n)` for native/fake
+producers. `Kind` and `Integer` inspect observations; `Metered` implements the
+Source numeric projection and must not serve as strict decision validation.
+Private scalar/array/object variants remain immutable. No any/open map/RawMessage
+field enters runtime structures. Sparse optional null flags remain separate.
+
+Direct SDK normalization keeps required values and normalizes optional integer
+fields. SSE validates each captured start/delta count set before accumulation.
+The implementation is verified against 34 real SDK/metering profiles and their
+stage snapshots, not a claim of every Pydantic coercion/error shape. Finite native
+metering bounds remain explicit. Compaction receipts/events keep observed values;
+decision consumers require integer kind and nonnegative value. Masking transforms
+count text and structured keys/values on detached projections. Historical/SQLite
+observations do not supply authority. Default diagnostics and G7 remain open.
+
+## Finite non-mapping model input observations
+
+Model Bash decoding now retains array/null/text/integer/float/bool values in named
+BashRejectedArguments with a closed BashArgumentKind and immutable observation.
+They carry BashNonMappingArguments failure with the actual Source registry TypeError
+wording. The existing ToolGate settles it after before/guard/permission/journal
+checks, without calling a handler, then executes after/result hooks. Before hooks
+may replace the call with valid named input or deny it. Explicit DecodeToolInput
+remains strict. Clone/masking and archival event/message codecs retain the observation
+and error kind; recording projections do not mutate live arguments.
+
+ServerToolInput now retains finite scalar/array/null roots as observational SDK
+metadata. It cannot become client ToolInput or supply grants. The SDK-declared
+object remains a common shape, not a rule that drops permissive SDK observations.
+Twelve finite direct SDK reply/forwarding cases, all 51 Source execution cases,
+and 78 finite SSE/history/SQLite cases pass. Four additional nonfinite direct/SSE
+snapshots and message archives retain SDK observations; next requests fail finite
+encoding before transport. Unsupported known-field scalar adaptations remain open.
+
+## Named model Bash optional-field projections — 2026-10-10
+
+Baseline: `9c01921` plus this implementation; Source contract commit `ffc3265`.
+`BashBackgroundRequest` and `BashApprovalProposal` preserve finite observed option
+values in immutable closed variants. Bash execution accessors return only a boolean
+Python-truth request and an optional string-array proposal. Candidate length, exact
+command-prefix match, banned heads and actual human approval remain the existing
+agent rules. Invalid proposal shapes are ignored, not converted into grants.
+
+Actual Source Agent/default Bash consumers cover 56 profiles: 15 background request
+shapes and 13 proposal shapes, each with background tools enabled and disabled.
+Text "false", nonzero numbers and nonempty containers request background execution;
+empty text/containers, zero, false and null do not. Disabled background support
+executes foreground regardless of the request. Twenty-eight wire samples (27 unique inputs)
+retain exact original JSON values and kinds through direct/SSE decoding, clone,
+masking, historical message reads and SQLite close/reopen. Native tests execute real
+foreground shells/background tasks, compare Source candidate selection, and prove
+readonly denial starts no background manager. Explicit DecodeToolInput is strict.
+
+This closes the captured finite Bash optional-field adaptation. Nonfinite inputs,
+non-text command values, other default tools, broader SDK/caller/coercion scope,
+default diagnostics dependency approval and complete G7 acceptance remain open.
+
+## Named non-text Bash command consumers — 2026-10-10
+
+Baseline: `400b6b0` plus this implementation. Source contract commit `d12d58b`
+pins actual Agent, default _bash, real Toolset/background consumption, candidate
+functions and PermissionHook. Thirty-six consumption profiles and twenty permission
+profiles cover finite null/bool/integer/float/array/object commands, foreground and
+background activation, extra-keyword priority, before rewrites, before/guard denial,
+readonly and immutable deny-list behavior. No invalid command starts a process/task.
+
+BashCommandObservation owns a closed BashCommandKind and immutable finite value.
+Permission and approval use Python str(value) as a policy-only projection. Native
+handlers return named BashCommandFailure with split/lower stage: foreground split;
+background auto selection lower; explicit background initializes the owned manager
+then fails split. Original JSON stays in model/event/history records. Explicit
+caller admission remains strict, and the existing gate still controls permission,
+journal/replay, after hooks and result observation. Rejected command observations
+are never shell argv. Before rewrite can replace them with executable text.
+
+Protocol clone/masking/history and native direct/SSE/SQLite reopen cover 44 unique
+inputs: 27 optional-field values and 17 non-text command objects. The prior options
+inventory had 28 samples including the repeated absent-options object; uniqueness
+is now enforced. Earlier statements of 28 distinct inputs are corrected to 28
+samples (27 unique). Source authority decisions remain actual captured behavior.
+Nonfinite inputs, other default tools, broader SDK/caller/coercion scope, default
+syntax diagnostics dependency approval and full G7 acceptance remain open.
+
+## Non-text Bash display alignment — 2026-10-10
+
+Baseline: `9f0e9db` plus this implementation; Source display contract `fdb47d8`.
+ToolLabel now reads ShellCommand's observation text for Bash, preserving actual
+Python str(command) instead of the executable string shadow. Thirty-six real
+Source Agent tool_use display fields and twelve independent Source SecretRegistry
+mask_payload/tool_label profiles match native display. Cases cover null/bool/int/
+float, nested arrays/objects, quotes, Unicode, opaque text, secret-key collisions,
+mask-before-preview and the 60-character cap. Existing typed-text activity tests
+still pass. Neither display nor policy text becomes argv or supplies authority.
+
+The actual maskedEvent path recomputes display from a masked immutable input copy.
+Native checks compare labels and canonical JSON values/kinds and prove that the live
+input remains unchanged. Initial comparisons confused HTML/Unicode JSON escaping
+with value changes; canonical comparison fixes the test without changing codecs.
+No new production type or dependency. The previous recorded label gap is resolved.
+Nonfinite inputs, other default tools, broader SDK/caller/default scope and complete
+G7 acceptance remain open; this is not complete event/provider acceptance.
+
+## Background command display alignment — 2026-10-10
+
+Baseline: `fbf75c1` plus this implementation; Source contract `2c3c027`.
+Actual Python tool_label selects the same shell rules for bash/background_run.
+Native ToolLabel now selects both named inputs through ShellCommand. Fourteen
+actual Source masked string-command profiles cover empty/simple heads, Unicode
+space, pipes/substitutions/backticks/redirects/chains/newlines, quotes, Unicode
+preview limits and secret masking before the cap. The existing lifecycle capture
+is otherwise unchanged; the native test failed against the previous generic call
+label and passes after the shared selection. The actual maskedEvent path preserves
+live executable input and emits no registered secret. No new dependency/type,
+execution route or tool catalogue change. Non-text background_run consumers and
+complete default/provider/G7 acceptance remain open. Prior coverage is pinned to
+the Bash display worktree; no coverage refresh is claimed for this slice.
+
+## Native Darwin callback admission — 2026-10-10
+
+Baseline: `45d086b` plus this implementation. notify 8.0.0 callback_impl fences
+recursive event paths against subscription roots; translate_flags ignores
+HistoryDone and emits no change for item-type/OwnEvent/ID-wrap flags alone.
+NativeEvents now owns the detached canonical root list and applies the same
+lexical root/change admission before the existing filename filter. Subscribed
+loss remains a sticky error (a stronger documented native adaptation). No
+leaf stat resolution, wider roots, new dependency, default selection or global
+FSEvents purge. Three independent observer-boundary tests failed with the former
+raw forwarding and pass with admission; cancellation retains later real deletion.
+
+Actual Python native recipes repeated three times: all 48 observations matched
+the committed fixture. Native raw diagnostic runs before this change also matched
+all sixteen recipes in three rounds. Earlier timeout/symlink failures are thus
+not causally explained by this patch and must remain on G3/G7's reliability queue.
+[Source pins and repeated observations](docs/audits/go-fsevents-boundary-2026-10-10.json)
+retain exact source hashes and proof limits. Source fixtures/expectations and
+runtime timers were not changed; no coverage refresh is claimed for this slice.
+
+The pinned notify run method uses continuous CFRunLoopRun. Native Go's existing
+50ms owner-thread slices now service all pending sources for the slice rather
+than return after the first handled source; Stop is still checked between slices.
+This restores continuous servicing within the existing bounded cleanup design.
+It does not enlarge batch/context timers or claim a proven cause for the old
+intermittent failures. Event class deduplication/complete temporal equivalence
+remain separate acceptance questions.
+
+## Named SDK input observation and archive codecs — 2026-10-11
+
+`protocol.InputObservation`, `MarshalObservedBlocks`, and `DecodeSDKServerToolInput`
+retain immutable legacy SDK numbers without constructing executable arguments.
+Use `Message.MarshalArchiveJSON` and `SessionEventRecord.MarshalArchiveJSON` only
+for archival projections. SQLite append/read paths retain those numbers through
+close/reopen; standard `MarshalJSON` refuses them. Client unknown Bash parameters
+retain the named binding failure settled by the common gate. Historical event
+reads remain untrusted; server observations cannot dispatch a client tool. Other
+nonfinite metadata, unsupported block kinds and malformed JSON remain refused.
+Managed Bash nonfinite SSE delivery is now covered by four memory/SQLite
+HTTP turns. Complete SDK parity and remaining historical consumers remain open.
+
+## Managed nonfinite observation consumers — 2026-10-11
+
+The journal uses finite input fingerprint admission before creating an action.
+Its failure preserves the common before/guard/result path and skips after, as in
+Source; a journal-free gate still settles the named Bash binding failure normally.
+Live state projections use concrete message/event archival encoders and mask
+decoded keys/strings before reconstructing untrusted stored records. SSE exposes
+legacy numbers only for the captured named Bash tool observations; standard REST
+and model request encoders remain finite. Mask failures return no raw projection.
+`InputObservation.MapStrings` builds a read-only query projection independently
+of executable/decision input variants. `ObservedMessagesPythonJSON` and
+`ObservedWireMessagesPythonJSON` support inspection/estimation, retaining detached
+cache annotations. None of these projections supplies live authority.
+
+## Nonfinite historical event restore and catch-up — 2026-10-11
+
+`RestoreSessions` validates known historical events with their named archival
+codec; `CatchUpEvents` uses the same codec before re-decoding untrusted records.
+Standard JSON remains finite. Scope/order/window and explicit restore identity
+checks are preserved. Actual SQLite close/reopen tests retain Bash NaN/Infinity,
+owner and history, restore interactive mode, create no action, and keep the
+resumed request out of transport. The operator still explicitly selects restore;
+catch-up claims no lease or live authority. Broader archival/trajectory consumers
+and full SDK error-text parity remain open.
+
+## Nonfinite trajectory model snapshots — 2026-10-11
+
+TrajectoryRecord.MarshalArchiveJSON uses concrete event, observed-block and
+cache-bearing message encoders. The finite MarshalJSON and request encoders remain
+separate. Masking applies to detached keys/strings before the file writer applies
+capture_content and UTF-8 policy. Request optimizer inputs and ledger digests now
+use observed message values; protocol shape comparison and concrete text/result
+lowering still retain original immutable tool variants. A projection never becomes
+an executable input or a grant. Four real Source/native managed recordings verify
+NaN/Infinity, content on/off, cache controls, masking and live-input preservation.
+Broader historical scalar consumers and SDK error-text fidelity remain open.
+
+## Nonfinite Bash invocation observations — 2026-10-11
+
+Baseline `4c807ae` plus this slice. Known Bash fields use immutable named
+observations and detached masking; finite caller/request encoders remain strict.
+Session dispatch prepares every input before entering the single execution gate.
+An invalid later root therefore prevents earlier effects. Source batch dict-copy
+failures differ from standalone late invocation failures. Actual 36 standalone
+and 24 managed profiles retain that ordering; selected lazy-copy and finite
+journal mutations are caught after passing baselines. Non-string pair keys are
+explicitly unsupported; new SQLite restart profiles and global SDK error text
+equality are not claimed. At that checkpoint, shared background_run decoding remained finite.
+
+## Nonfinite background shell observations — 2026-10-11
+
+Baseline `7992994` plus this slice. backgroundModelArguments reuses named
+BashCommandObservation/BashRejectedArguments for legacy SDK numbers; immutable
+extras retain only unknown parameters. Detached observation/archive encoding
+and finite caller/HTTP/event encoding remain separate. Batch preparation selects
+the actual shell variant and prepares every call before hooks/effects. Standalone
+command split faults create the owned manager without tasks; roots and unknown
+parameters fail before manager creation. Managed finite journal refusal precedes
+that initialization. Actual 27 standalone and 18 managed comparisons, 18 unique
+direct/SSE captures and Python/native SQLite message close/reopen cover these
+boundaries. Native readonly checks are separate from Source permission captures.
+Named timeout/prefix coercion and global SDK error text remain open.
+
+## Darwin serial native callback queue — 2026-10-11
+
+Baseline `a5aed66` plus this slice. The deprecated RunLoop scheduler is replaced
+with FSEventStreamSetDispatchQueue on one owned serial queue per subscription.
+Control start and stop/invalidate serialize with callback delivery. Close drains
+queued callbacks before releasing the stream/queue and retiring the typed Go
+registry; construction failure releases partial ownership. A Go coordinator
+waits for the existing stop signal and joins cleanup; no dedicated locked OS
+thread or extra stop-signalling goroutine is retained.
+
+Apple requires scheduling before start and invalidate before queue detach:
+[queue API](https://developer.apple.com/documentation/coreservices/1444164-fseventstreamsetdispatchqueue),
+[invalidation](https://developer.apple.com/documentation/coreservices/1446990-fseventstreaminvalidate).
+Flags 18, zero latency, since-now, callback admission, 50ms/1600ms batching,
+context deadlines and Source fixture expectations remain intact. A real native
+callback blocked in diagnostic IO verifies that concurrent Close waits for its
+release and registry cleanup. This queue lifecycle change does not independently
+establish the cause of the previous RunLoop/Source timing failures.
+
+## Named background optional execution policies — 2026-10-11
+
+Baseline `b6f49c6`. Background model observations retain timeout/proposal metadata
+separately from strict caller inputs. BackgroundTimeoutPlan lowers into concrete
+shell.BackgroundWait policies; no generic value enters the background service or
+shell. The gate still allocates tasks and returns Started before type/overflow
+faults are consumed after process creation. Honest proposals use existing candidate
+validation; readonly execution cannot initialize a manager. Source fault paths
+leave processes alive; native execution intentionally kills and joins those groups
+before publishing the same task error, preserving its cleanup invariant. Finite
+long deadlines use bounded timer steps, with sub-nanosecond rounding to one ns.
+NaN matches the unguarded immediate-timeout profile; positive infinity has no
+deadline. A Python observer watchdog changes NaN to completion, so exact timer-heap
+interleavings are not claimed. Existing owner contexts, cancellation, secrets,
+sandbox, ledgers, retention and notifications remain the same execution boundaries.
+
+Native tasks use goroutines: process creation can race the caller's return,
+whereas the captured Source hooks do not yield before returning. This slice
+compares allocated call outcomes and settled tasks, not zero process starts at
+return or exact scheduling. Post-spawn faults still require an allocated task.

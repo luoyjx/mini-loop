@@ -1,0 +1,61 @@
+{
+  "baseline": "eea850b plus nonfinite SDK observation worktree",
+  "source_fixture": "go/testdata/python-provider-nonfinite-consumer.json",
+  "source_fixture_sha256": "b063760750a8bc3f87e04e3240852eba7998730edf3a950ca09487071b847bfb",
+  "sdk_replay": {
+    "cases": 98,
+    "differences": 0,
+    "diagnostic_only": true,
+    "report_sha256": "23a865bbf5b9dd74b400b63f47704f9a6e32cfcd4e0473b36e2004f5d026e679"
+  },
+  "proofs": [
+    "Four actual Source direct SDK responses match native snapshots",
+    "All 51 captured actual Source Bash consumer cases match named gate outcomes",
+    "Four message archives survive actual SQLite close/reopen",
+    "Two named client tool events survive actual SQLite close/reopen",
+    "Archived events retain untrusted authority",
+    "Valid next-request transcripts fail finite encoding before HTTP transport",
+    "Nonfinite metadata, unsupported block kinds and malformed replies remain refused"
+  ],
+  "gates": {
+    "targeted": "passed",
+    "ordinary_full": {
+      "passed": false,
+      "failed_package": "reload",
+      "failed_recipes": [
+        "removed-source",
+        "lower-mtime-write",
+        "identical-write"
+      ],
+      "log_sha256": "5f3d9b2b9ae0804f4f5930631b8f13514e97e6f56d98216bef3da5a26d9afdee"
+    },
+    "vet": "passed",
+    "typeaudit": {
+      "production_files": 434,
+      "named_types": 1405,
+      "findings": 0
+    },
+    "race_coverage": "passed",
+    "source_export": {
+      "passed": true,
+      "current_files": 222,
+      "log_sha256": "3304f2765f415de77d5889d9a0d71060ad93fe77d102a910ee0ef0fae9a5f8d7"
+    },
+    "architecture": {
+      "checks_passed": 9,
+      "checks_total": 9,
+      "errors": 0,
+      "warnings": 0,
+      "fresh_visual_inspection": false
+    }
+  },
+  "limitations": [
+    "98 zero-difference SDK replay is a diagnostic, not complete provider acceptance",
+    "Nonfinite SSE event delivery remains unimplemented and unverified",
+    "Other known-field scalar and unknown-tool nonfinite adaptations remain open",
+    "Native watcher ordinary reliability failures remain unresolved",
+    "No non-Darwin, browser, performance or full Python regression refresh",
+    "No merge or push"
+  ],
+  "runtime_commit": "c8491d2"
+}

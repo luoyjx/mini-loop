@@ -1,0 +1,488 @@
+{
+  "cases": [
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        },
+        {
+          "check": "trajectory-content",
+          "detail": "trajectories record full tool inputs and outputs to disk",
+          "remedy": "set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them",
+          "severity": "medium"
+        }
+      ],
+      "name": "default",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n\n2 finding(s): 2 medium",
+      "root": "default/missing",
+      "state": "missing",
+      "trajectory_capture_content": true,
+      "trajectory_enabled": true
+    },
+    {
+      "environment": {
+        "HOST": "localhost"
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "localhost",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "localhost/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "HOST": "::1"
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "ipv6",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "ipv6/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "HOST": ""
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "empty-host",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "empty-host/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "HOST": "0.0.0.0"
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "host-bind",
+          "detail": "the server binds 0.0.0.0 with no authentication -- every session, event stream and transcript is reachable by anyone who can route to the port",
+          "remedy": "set MINILOOP_API_TOKEN, or bind 127.0.0.1 (`python -m mini_loop` now refuses this combination outright)",
+          "severity": "critical"
+        }
+      ],
+      "name": "public",
+      "rendered": "[CRITICAL] host-bind\n           the server binds 0.0.0.0 with no authentication -- every session, event stream and transcript is reachable by anyone who can route to the port\n           -> set MINILOOP_API_TOKEN, or bind 127.0.0.1 (`python -m mini_loop` now refuses this combination outright)\n\n1 finding(s): 1 critical",
+      "root": "public/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "HOST": "127.0.0.2"
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "host-bind",
+          "detail": "the server binds 127.0.0.2 with no authentication -- every session, event stream and transcript is reachable by anyone who can route to the port",
+          "remedy": "set MINILOOP_API_TOKEN, or bind 127.0.0.1 (`python -m mini_loop` now refuses this combination outright)",
+          "severity": "critical"
+        }
+      ],
+      "name": "other-loopback",
+      "rendered": "[CRITICAL] host-bind\n           the server binds 127.0.0.2 with no authentication -- every session, event stream and transcript is reachable by anyone who can route to the port\n           -> set MINILOOP_API_TOKEN, or bind 127.0.0.1 (`python -m mini_loop` now refuses this combination outright)\n\n1 finding(s): 1 critical",
+      "root": "other-loopback/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "HOST": "[::1]"
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "host-bind",
+          "detail": "the server binds [::1] with no authentication -- every session, event stream and transcript is reachable by anyone who can route to the port",
+          "remedy": "set MINILOOP_API_TOKEN, or bind 127.0.0.1 (`python -m mini_loop` now refuses this combination outright)",
+          "severity": "critical"
+        }
+      ],
+      "name": "bracketed-ipv6",
+      "rendered": "[CRITICAL] host-bind\n           the server binds [::1] with no authentication -- every session, event stream and transcript is reachable by anyone who can route to the port\n           -> set MINILOOP_API_TOKEN, or bind 127.0.0.1 (`python -m mini_loop` now refuses this combination outright)\n\n1 finding(s): 1 critical",
+      "root": "bracketed-ipv6/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "HOST": "0.0.0.0",
+        "MINILOOP_API_TOKEN": " fixture-token "
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [],
+      "name": "single-token",
+      "rendered": "audit: no findings.",
+      "root": "single-token/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "HOST": "0.0.0.0",
+        "MINILOOP_API_TOKENS": "alice:one,bob:two"
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [],
+      "name": "multiple-tokens",
+      "rendered": "audit: no findings.",
+      "root": "multiple-tokens/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "MINILOOP_API_TOKEN": " "
+      },
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "blank-token",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "blank-token/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "MINILOOP_API_TOKENS": ", ,"
+      },
+      "error": "TokenAuth needs at least one token",
+      "fake_llm": false,
+      "findings": null,
+      "name": "comma-only",
+      "rendered": null,
+      "root": "comma-only/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "MINILOOP_API_TOKENS": "alice"
+      },
+      "error": "MINILOOP_API_TOKENS entries must be 'principal:token'",
+      "fake_llm": false,
+      "findings": null,
+      "name": "invalid-token",
+      "rendered": null,
+      "root": "invalid-token/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "MINILOOP_API_TOKENS": ":token"
+      },
+      "error": "tokens and principal ids must be non-empty",
+      "fake_llm": false,
+      "findings": null,
+      "name": "empty-principal",
+      "rendered": null,
+      "root": "empty-principal/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {
+        "MINILOOP_API_TOKENS": "alice:one,bob:one"
+      },
+      "error": "MINILOOP_API_TOKENS assigns one token to both 'alice' and 'bob'; a shared credential lets one caller act as the other",
+      "fake_llm": false,
+      "findings": null,
+      "name": "shared-token",
+      "rendered": null,
+      "root": "shared-token/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": true,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        },
+        {
+          "check": "fake-llm",
+          "detail": "MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider",
+          "remedy": "unset it for a real deployment",
+          "severity": "info"
+        }
+      ],
+      "name": "fake-model",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n\n2 finding(s): 1 medium, 1 info",
+      "root": "fake-model/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "content-off",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "content-off/missing",
+      "state": "missing",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": true
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "recording-off",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "recording-off/missing",
+      "state": "missing",
+      "trajectory_capture_content": true,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": true,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        },
+        {
+          "check": "fake-llm",
+          "detail": "MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider",
+          "remedy": "unset it for a real deployment",
+          "severity": "info"
+        },
+        {
+          "check": "workspace-permissions",
+          "detail": "ROOT/writable-order/writable is world-writable, so anything on the host can plant files an agent will read and act on",
+          "remedy": "chmod o-w ROOT/writable-order/writable",
+          "severity": "high"
+        },
+        {
+          "check": "trajectory-content",
+          "detail": "trajectories record full tool inputs and outputs to disk",
+          "remedy": "set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them",
+          "severity": "medium"
+        }
+      ],
+      "name": "writable-order",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[INFO    ] fake-llm\n           MINILOOP_FAKE_LLM is set; the deterministic offline model is answering, not a provider\n           -> unset it for a real deployment\n[HIGH    ] workspace-permissions\n           ROOT/writable-order/writable is world-writable, so anything on the host can plant files an agent will read and act on\n           -> chmod o-w ROOT/writable-order/writable\n[MEDIUM  ] trajectory-content\n           trajectories record full tool inputs and outputs to disk\n           -> set MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0, or make sure secret masking is on so credentials never reach them\n\n4 finding(s): 1 high, 2 medium, 1 info",
+      "root": "writable-order/writable",
+      "state": "writable",
+      "trajectory_capture_content": true,
+      "trajectory_enabled": true
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "protected",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "protected/protected",
+      "state": "protected",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        },
+        {
+          "check": "workspace-permissions",
+          "detail": "ROOT/writable-file/file is world-writable, so anything on the host can plant files an agent will read and act on",
+          "remedy": "chmod o-w ROOT/writable-file/file",
+          "severity": "high"
+        }
+      ],
+      "name": "writable-file",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[HIGH    ] workspace-permissions\n           ROOT/writable-file/file is world-writable, so anything on the host can plant files an agent will read and act on\n           -> chmod o-w ROOT/writable-file/file\n\n2 finding(s): 1 high, 1 medium",
+      "root": "writable-file/file",
+      "state": "file",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        },
+        {
+          "check": "workspace-permissions",
+          "detail": "ROOT/symlink-target/linked is world-writable, so anything on the host can plant files an agent will read and act on",
+          "remedy": "chmod o-w ROOT/symlink-target/linked",
+          "severity": "high"
+        }
+      ],
+      "name": "symlink-target",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n[HIGH    ] workspace-permissions\n           ROOT/symlink-target/linked is world-writable, so anything on the host can plant files an agent will read and act on\n           -> chmod o-w ROOT/symlink-target/linked\n\n2 finding(s): 1 high, 1 medium",
+      "root": "symlink-target/linked",
+      "state": "linked",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "symlink-cycle",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "symlink-cycle/cycle",
+      "state": "cycle",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "dangling-symlink",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "dangling-symlink/broken",
+      "state": "broken",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    },
+    {
+      "environment": {},
+      "error": null,
+      "fake_llm": false,
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript",
+          "remedy": "set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)",
+          "severity": "medium"
+        }
+      ],
+      "name": "nondirectory-parent",
+      "rendered": "[MEDIUM  ] authentication\n           no API tokens are configured; every caller on the loopback interface shares one anonymous identity and can read every session and transcript\n           -> set MINILOOP_API_TOKEN (or MINILOOP_API_TOKENS=alice:...,bob:...)\n\n1 finding(s): 1 medium",
+      "root": "nondirectory-parent/file/child",
+      "state": "file/child",
+      "trajectory_capture_content": false,
+      "trajectory_enabled": false
+    }
+  ]
+}

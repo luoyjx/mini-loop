@@ -1,0 +1,1497 @@
+{
+  "cases": [
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIn0=",
+      "kind": "preview",
+      "name": "surrogate-utf8",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "77u/eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIn0=",
+      "kind": "preview",
+      "name": "surrogate-utf8-bom",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2CIAfQA=",
+      "kind": "preview",
+      "name": "surrogate-utf16le-bom",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "/v8AewAiAG4AYQBtAGUAIgA6ACIAcwBhAGYAZQAiACwAIgBmAG8AYwB1AHMAIgA6ACLYAAAiAH0=",
+      "kind": "preview",
+      "name": "surrogate-utf16be-bom",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAiAAAAfQAAAA==",
+      "kind": "preview",
+      "name": "surrogate-utf32le-bom",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "AAD+/wAAAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAA2AAAAAAiAAAAfQ==",
+      "kind": "preview",
+      "name": "surrogate-utf32be-bom",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoiXHVkODAwIn0=",
+      "kind": "preview",
+      "name": "utf-8-escaped-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoiXHVkODAwIn0=",
+      "kind": "preview",
+      "name": "utf-8-escaped-name",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "Ilx1ZGMwMCI=",
+      "kind": "preview",
+      "name": "utf-8-escaped-root",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoiXHVkODAwXHVkYzAwIn0=",
+      "kind": "preview",
+      "name": "utf-8-escaped-pair",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoiXHVkODAwIiwiZm9jdXMiOiJva2F5In0=",
+      "kind": "preview",
+      "name": "utf-8-escaped-overwritten",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImV4dHJhIjp7IngiOiJcdWQ4MDAiLCJ4Ijoib2theSJ9fQ==",
+      "kind": "preview",
+      "name": "utf-8-nested-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "x": "okay"
+            },
+            "loc": [
+              "body",
+              "extra"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsIlx1ZDgwMCI6MH0=",
+      "kind": "preview",
+      "name": "utf-8-key",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsIlx1ZDgwMCI6MCwi77+9IjoxfQ==",
+      "kind": "preview",
+      "name": "utf-8-different-keys",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIn0=",
+      "kind": "preview",
+      "name": "utf-8-raw-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCA7bCAIn0=",
+      "kind": "preview",
+      "name": "utf-8-raw-pair",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIiwiZm9jdXMiOiJva2F5In0=",
+      "kind": "preview",
+      "name": "utf-8-raw-overwritten",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIix9",
+      "kind": "preview",
+      "name": "utf-8-raw-syntax",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              27
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "WyDtoIAgXQ==",
+      "kind": "preview",
+      "name": "utf-8-raw-outside-string",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "Iu2ggA==",
+      "kind": "preview",
+      "name": "utf-8-raw-unterminated",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgBcAHUAZAA4ADAAMAAiAH0A",
+      "kind": "preview",
+      "name": "utf-16-escaped-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBcAHUAZAA4ADAAMAAiAH0A",
+      "kind": "preview",
+      "name": "utf-16-escaped-name",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4iAFwAdQBkAGMAMAAwACIA",
+      "kind": "preview",
+      "name": "utf-16-escaped-root",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgBcAHUAZAA4ADAAMABcAHUAZABjADAAMAAiAH0A",
+      "kind": "preview",
+      "name": "utf-16-escaped-pair",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgBcAHUAZAA4ADAAMAAiACwAIgBmAG8AYwB1AHMAIgA6ACIAbwBrAGEAeQAiAH0A",
+      "kind": "preview",
+      "name": "utf-16-escaped-overwritten",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGUAeAB0AHIAYQAiADoAewAiAHgAIgA6ACIAXAB1AGQAOAAwADAAIgAsACIAeAAiADoAIgBvAGsAYQB5ACIAfQB9AA==",
+      "kind": "preview",
+      "name": "utf-16-nested-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "x": "okay"
+            },
+            "loc": [
+              "body",
+              "extra"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAFwAdQBkADgAMAAwACIAOgAwAH0A",
+      "kind": "preview",
+      "name": "utf-16-key",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAFwAdQBkADgAMAAwACIAOgAwACwAIgD9/yIAOgAxAH0A",
+      "kind": "preview",
+      "name": "utf-16-different-keys",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2CIAfQA=",
+      "kind": "preview",
+      "name": "utf-16-raw-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2ADcIgB9AA==",
+      "kind": "preview",
+      "name": "utf-16-raw-pair",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2CIALAAiAGYAbwBjAHUAcwAiADoAIgBvAGsAYQB5ACIAfQA=",
+      "kind": "preview",
+      "name": "utf-16-raw-overwritten",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2CIALAB9AA==",
+      "kind": "preview",
+      "name": "utf-16-raw-syntax",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              27
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//5bACAAANggAF0A",
+      "kind": "preview",
+      "name": "utf-16-raw-outside-string",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4iAADY",
+      "kind": "preview",
+      "name": "utf-16-raw-unterminated",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAACIAAAB9AAAA",
+      "kind": "preview",
+      "name": "utf-32-escaped-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAACIAAAB9AAAA",
+      "kind": "preview",
+      "name": "utf-32-escaped-name",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AACIAAABcAAAAdQAAAGQAAABjAAAAMAAAADAAAAAiAAAA",
+      "kind": "preview",
+      "name": "utf-32-escaped-root",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAAFwAAAB1AAAAZAAAAGMAAAAwAAAAMAAAACIAAAB9AAAA",
+      "kind": "preview",
+      "name": "utf-32-escaped-pair",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAACIAAAAsAAAAIgAAAGYAAABvAAAAYwAAAHUAAABzAAAAIgAAADoAAAAiAAAAbwAAAGsAAABhAAAAeQAAACIAAAB9AAAA",
+      "kind": "preview",
+      "name": "utf-32-escaped-overwritten",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABlAAAAeAAAAHQAAAByAAAAYQAAACIAAAA6AAAAewAAACIAAAB4AAAAIgAAADoAAAAiAAAAXAAAAHUAAABkAAAAOAAAADAAAAAwAAAAIgAAACwAAAAiAAAAeAAAACIAAAA6AAAAIgAAAG8AAABrAAAAYQAAAHkAAAAiAAAAfQAAAH0AAAA=",
+      "kind": "preview",
+      "name": "utf-32-nested-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "x": "okay"
+            },
+            "loc": [
+              "body",
+              "extra"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABcAAAAdQAAAGQAAAA4AAAAMAAAADAAAAAiAAAAOgAAADAAAAB9AAAA",
+      "kind": "preview",
+      "name": "utf-32-key",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABcAAAAdQAAAGQAAAA4AAAAMAAAADAAAAAiAAAAOgAAADAAAAAsAAAAIgAAAP3/AAAiAAAAOgAAADEAAAB9AAAA",
+      "kind": "preview",
+      "name": "utf-32-different-keys",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAiAAAAfQAAAA==",
+      "kind": "preview",
+      "name": "utf-32-raw-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAA3AAAIgAAAH0AAAA=",
+      "kind": "preview",
+      "name": "utf-32-raw-pair",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAG8AAABrAAAAYQAAAHkAAAAiAAAAfQAAAA==",
+      "kind": "preview",
+      "name": "utf-32-raw-overwritten",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAiAAAALAAAAH0AAAA=",
+      "kind": "preview",
+      "name": "utf-32-raw-syntax",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              27
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAFsAAAAgAAAAANgAACAAAABdAAAA",
+      "kind": "preview",
+      "name": "utf-32-raw-outside-string",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AACIAAAAA2AAA",
+      "kind": "preview",
+      "name": "utf-32-raw-unterminated",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoiXHVkODAwIn0=",
+      "kind": "commit",
+      "name": "utf-8-escaped-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoiXHVkODAwIn0=",
+      "kind": "commit",
+      "name": "utf-8-escaped-name",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "Ilx1ZGMwMCI=",
+      "kind": "commit",
+      "name": "utf-8-escaped-root",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoiXHVkODAwXHVkYzAwIn0=",
+      "kind": "commit",
+      "name": "utf-8-escaped-pair",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "𐀀",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "𐀀",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoiXHVkODAwIiwiZm9jdXMiOiJva2F5In0=",
+      "kind": "commit",
+      "name": "utf-8-escaped-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "okay",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "okay",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImV4dHJhIjp7IngiOiJcdWQ4MDAiLCJ4Ijoib2theSJ9fQ==",
+      "kind": "commit",
+      "name": "utf-8-nested-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "extra": {
+                "x": "okay"
+              },
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": {
+              "x": "okay"
+            },
+            "loc": [
+              "body",
+              "extra"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsIlx1ZDgwMCI6MH0=",
+      "kind": "commit",
+      "name": "utf-8-key",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsIlx1ZDgwMCI6MCwi77+9IjoxfQ==",
+      "kind": "commit",
+      "name": "utf-8-different-keys",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIn0=",
+      "kind": "commit",
+      "name": "utf-8-raw-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCA7bCAIn0=",
+      "kind": "commit",
+      "name": "utf-8-raw-pair",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIiwiZm9jdXMiOiJva2F5In0=",
+      "kind": "commit",
+      "name": "utf-8-raw-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "okay",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "okay",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSIsImZvY3VzIjoi7aCAIix9",
+      "kind": "commit",
+      "name": "utf-8-raw-syntax",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              27
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "WyDtoIAgXQ==",
+      "kind": "commit",
+      "name": "utf-8-raw-outside-string",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "Iu2ggA==",
+      "kind": "commit",
+      "name": "utf-8-raw-unterminated",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgBcAHUAZAA4ADAAMAAiAH0A",
+      "kind": "commit",
+      "name": "utf-16-escaped-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBcAHUAZAA4ADAAMAAiAH0A",
+      "kind": "commit",
+      "name": "utf-16-escaped-name",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4iAFwAdQBkAGMAMAAwACIA",
+      "kind": "commit",
+      "name": "utf-16-escaped-root",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgBcAHUAZAA4ADAAMABcAHUAZABjADAAMAAiAH0A",
+      "kind": "commit",
+      "name": "utf-16-escaped-pair",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "𐀀",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "𐀀",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgBcAHUAZAA4ADAAMAAiACwAIgBmAG8AYwB1AHMAIgA6ACIAbwBrAGEAeQAiAH0A",
+      "kind": "commit",
+      "name": "utf-16-escaped-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "okay",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "okay",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGUAeAB0AHIAYQAiADoAewAiAHgAIgA6ACIAXAB1AGQAOAAwADAAIgAsACIAeAAiADoAIgBvAGsAYQB5ACIAfQB9AA==",
+      "kind": "commit",
+      "name": "utf-16-nested-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "extra": {
+                "x": "okay"
+              },
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": {
+              "x": "okay"
+            },
+            "loc": [
+              "body",
+              "extra"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAFwAdQBkADgAMAAwACIAOgAwAH0A",
+      "kind": "commit",
+      "name": "utf-16-key",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAFwAdQBkADgAMAAwACIAOgAwACwAIgD9/yIAOgAxAH0A",
+      "kind": "commit",
+      "name": "utf-16-different-keys",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2CIAfQA=",
+      "kind": "commit",
+      "name": "utf-16-raw-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2ADcIgB9AA==",
+      "kind": "commit",
+      "name": "utf-16-raw-pair",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "𐀀",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "𐀀",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2CIALAAiAGYAbwBjAHUAcwAiADoAIgBvAGsAYQB5ACIAfQA=",
+      "kind": "commit",
+      "name": "utf-16-raw-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "okay",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "okay",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//57ACIAbgBhAG0AZQAiADoAIgBzAGEAZgBlACIALAAiAGYAbwBjAHUAcwAiADoAIgAA2CIALAB9AA==",
+      "kind": "commit",
+      "name": "utf-16-raw-syntax",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              27
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//5bACAAANggAF0A",
+      "kind": "commit",
+      "name": "utf-16-raw-outside-string",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4iAADY",
+      "kind": "commit",
+      "name": "utf-16-raw-unterminated",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAACIAAAB9AAAA",
+      "kind": "commit",
+      "name": "utf-32-escaped-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAACIAAAB9AAAA",
+      "kind": "commit",
+      "name": "utf-32-escaped-name",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AACIAAABcAAAAdQAAAGQAAABjAAAAMAAAADAAAAAiAAAA",
+      "kind": "commit",
+      "name": "utf-32-escaped-root",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAAFwAAAB1AAAAZAAAAGMAAAAwAAAAMAAAACIAAAB9AAAA",
+      "kind": "commit",
+      "name": "utf-32-escaped-pair",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "𐀀",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "𐀀",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAFwAAAB1AAAAZAAAADgAAAAwAAAAMAAAACIAAAAsAAAAIgAAAGYAAABvAAAAYwAAAHUAAABzAAAAIgAAADoAAAAiAAAAbwAAAGsAAABhAAAAeQAAACIAAAB9AAAA",
+      "kind": "commit",
+      "name": "utf-32-escaped-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "okay",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "okay",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABlAAAAeAAAAHQAAAByAAAAYQAAACIAAAA6AAAAewAAACIAAAB4AAAAIgAAADoAAAAiAAAAXAAAAHUAAABkAAAAOAAAADAAAAAwAAAAIgAAACwAAAAiAAAAeAAAACIAAAA6AAAAIgAAAG8AAABrAAAAYQAAAHkAAAAiAAAAfQAAAH0AAAA=",
+      "kind": "commit",
+      "name": "utf-32-nested-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "extra": {
+                "x": "okay"
+              },
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": {
+              "x": "okay"
+            },
+            "loc": [
+              "body",
+              "extra"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABcAAAAdQAAAGQAAAA4AAAAMAAAADAAAAAiAAAAOgAAADAAAAB9AAAA",
+      "kind": "commit",
+      "name": "utf-32-key",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABcAAAAdQAAAGQAAAA4AAAAMAAAADAAAAAiAAAAOgAAADAAAAAsAAAAIgAAAP3/AAAiAAAAOgAAADEAAAB9AAAA",
+      "kind": "commit",
+      "name": "utf-32-different-keys",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAiAAAAfQAAAA==",
+      "kind": "commit",
+      "name": "utf-32-raw-focus",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAA3AAAIgAAAH0AAAA=",
+      "kind": "commit",
+      "name": "utf-32-raw-pair",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAG8AAABrAAAAYQAAAHkAAAAiAAAAfQAAAA==",
+      "kind": "commit",
+      "name": "utf-32-raw-overwritten",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "focus": "okay",
+              "name": "safe"
+            },
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": "okay",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAHsAAAAiAAAAbgAAAGEAAABtAAAAZQAAACIAAAA6AAAAIgAAAHMAAABhAAAAZgAAAGUAAAAiAAAALAAAACIAAABmAAAAbwAAAGMAAAB1AAAAcwAAACIAAAA6AAAAIgAAAADYAAAiAAAALAAAAH0AAAA=",
+      "kind": "commit",
+      "name": "utf-32-raw-syntax",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              27
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AAFsAAAAgAAAAANgAACAAAABdAAAA",
+      "kind": "commit",
+      "name": "utf-32-raw-outside-string",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "//4AACIAAAAA2AAA",
+      "kind": "commit",
+      "name": "utf-32-raw-unterminated",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    }
+  ]
+}

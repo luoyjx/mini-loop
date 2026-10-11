@@ -1,0 +1,559 @@
+{
+  "baseline": "45d086b plus native Darwin callback admission and loop servicing",
+  "scope": "Darwin arm64; explicit recursive FSEvents roots; source versions watchfiles 1.2.0 and notify 8.0.0",
+  "source_files": [
+    {
+      "url": "https://raw.githubusercontent.com/notify-rs/notify/notify-8.0.0/notify/src/fsevent.rs",
+      "sha256": "d6c13ff6065b35f335d329aa64424fc491d3cd5899e30b462c3fafe3d1da12cb",
+      "symbols": [
+        "callback_impl",
+        "translate_flags",
+        "FsEventWatcher.run"
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/samuelcolvin/watchfiles/v1.2.0/src/lib.rs",
+      "sha256": "1f13c17776239d402074a187a8d5a50bd24af37ad4fd156a4f4fae30721f8f6a",
+      "symbols": [
+        "RustNotify.py_new",
+        "RustNotify.watch"
+      ]
+    }
+  ],
+  "actual_source_repeats": [
+    {
+      "round": 0,
+      "name": "added-source",
+      "expected": [
+        "new.py"
+      ],
+      "actual": [
+        "new.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "hidden-parent-source",
+      "expected": [
+        ".git/a.py"
+      ],
+      "actual": [
+        ".git/a.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "symlink-target-write",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "removed-source",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "same-mtime-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "lower-mtime-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "identical-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "same-mtime-touch",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "rename-out",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "rename-in",
+      "expected": [
+        "target.py"
+      ],
+      "actual": [
+        "target.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "rename-source",
+      "expected": [
+        "source.py",
+        "target.py"
+      ],
+      "actual": [
+        "source.py",
+        "target.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "ignored-hidden",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "ignored-backup",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "ignored-text",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "source-directory",
+      "expected": [
+        "package.py"
+      ],
+      "actual": [
+        "package.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 0,
+      "name": "transient-source",
+      "expected": [
+        "flash.py"
+      ],
+      "actual": [
+        "flash.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "added-source",
+      "expected": [
+        "new.py"
+      ],
+      "actual": [
+        "new.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "hidden-parent-source",
+      "expected": [
+        ".git/a.py"
+      ],
+      "actual": [
+        ".git/a.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "symlink-target-write",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "removed-source",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "same-mtime-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "lower-mtime-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "identical-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "same-mtime-touch",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "rename-out",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "rename-in",
+      "expected": [
+        "target.py"
+      ],
+      "actual": [
+        "target.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "rename-source",
+      "expected": [
+        "source.py",
+        "target.py"
+      ],
+      "actual": [
+        "source.py",
+        "target.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "ignored-hidden",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "ignored-backup",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "ignored-text",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "source-directory",
+      "expected": [
+        "package.py"
+      ],
+      "actual": [
+        "package.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 1,
+      "name": "transient-source",
+      "expected": [
+        "flash.py"
+      ],
+      "actual": [
+        "flash.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "added-source",
+      "expected": [
+        "new.py"
+      ],
+      "actual": [
+        "new.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "hidden-parent-source",
+      "expected": [
+        ".git/a.py"
+      ],
+      "actual": [
+        ".git/a.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "symlink-target-write",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "removed-source",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "same-mtime-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "lower-mtime-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "identical-write",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "same-mtime-touch",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "rename-out",
+      "expected": [
+        "source.py"
+      ],
+      "actual": [
+        "source.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "rename-in",
+      "expected": [
+        "target.py"
+      ],
+      "actual": [
+        "target.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "rename-source",
+      "expected": [
+        "source.py",
+        "target.py"
+      ],
+      "actual": [
+        "source.py",
+        "target.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "ignored-hidden",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "ignored-backup",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "ignored-text",
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "source-directory",
+      "expected": [
+        "package.py"
+      ],
+      "actual": [
+        "package.py"
+      ],
+      "match": true
+    },
+    {
+      "round": 2,
+      "name": "transient-source",
+      "expected": [
+        "flash.py"
+      ],
+      "actual": [
+        "flash.py"
+      ],
+      "match": true
+    }
+  ],
+  "native_before_change": {
+    "selected_four_profiles": {
+      "rounds": 3,
+      "passed": true
+    },
+    "all_sixteen_profiles_with_raw_diagnostics": {
+      "rounds": 3,
+      "passed": true
+    },
+    "boundary_probes_failed": [
+      "callback outside captured roots entered batch",
+      "HistoryDone and type-only flags remained pending",
+      "outside-root event loss poisoned subscription"
+    ]
+  },
+  "limitations": [
+    "Previous actual native timeouts and stale symlink observations have not been causally explained.",
+    "Passing repeated recipes does not prove absence of timing-dependent regressions.",
+    "Native sticky loss errors remain a documented stronger adaptation than watchfiles ignoring notify Other/rescan.",
+    "No global FSEvents purge, fixture widening or timing sleep was introduced."
+  ],
+  "native_service_change": "Within the existing 50ms owner-thread slice, service pending runloop sources continuously instead of returning after one source; retain stop checks between slices.",
+  "installed_source": {
+    "watchfiles_version": "1.2.0",
+    "uvicorn_version": "0.49.0",
+    "helper_sha256": "c09e0099ca28a9ceb521f5e4793741d51828d972945facebd484c0476b8c39bb"
+  },
+  "before_loop_service_change": {
+    "go_reload_package_three_rounds_passed": true,
+    "full_ordinary_failed": [
+      "TestNativeObserverDuringRealCgoBuildInsideWatchedRoot: late reload_observer_ready.go event",
+      "TestNativeEventsActualSourceRecipes/hidden-parent-source: empty batch instead of .git/a.go"
+    ],
+    "overlapped_full_python_mutation_check": true,
+    "overlap_proven_cause": false
+  },
+  "focused_after_loop_change": {
+    "boundary_and_close_tests_passed": true,
+    "linux_amd64_compile_passed": true
+  },
+  "isolated_full_ordinary_after_loop_change": {
+    "passed": false,
+    "failed": [
+      "TestNativeEventsActualSourceRecipes/hidden-parent-source: context deadline exceeded"
+    ],
+    "other_packages_passed": true,
+    "other_validation_jobs_live": false
+  }
+}

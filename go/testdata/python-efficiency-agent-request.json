@@ -1,0 +1,1734 @@
+{
+  "rows": [
+    {
+      "action": "shorten",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        [
+          {
+            "digest": "baa434628c3ce60f8f6bf1c898a13f446927f525bd689cb7e558828c0bc59d64",
+            "index": 0,
+            "projected": {
+              "content": "short",
+              "role": "user"
+            }
+          }
+        ]
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "tail",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 48,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "short",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": false,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "side-no-ledger",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 48,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "short",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": false,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "compaction",
+      "purpose": "compaction",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 48,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "short",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "shadow",
+      "name": "shadow",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "shadow",
+          "parent_span_id": null,
+          "projected_bytes": 48,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "shadow_candidate",
+          "stage": "request_context",
+          "status": "shadowed",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "off",
+      "name": "off",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": false,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "off",
+          "parent_span_id": null,
+          "projected_bytes": 88,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "mode_off",
+          "stage": "request_context",
+          "status": "passthrough",
+          "tokens_after_estimate": 22,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "prefix",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "old long user task",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          },
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 2,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "old long user task",
+                "role": "user"
+              },
+              {
+                "content": "done",
+                "role": "assistant"
+              },
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "old long user task",
+          "role": "user"
+        },
+        {
+          "content": "done",
+          "role": "assistant"
+        },
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "frozen-prefix",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 160,
+          "raw_bytes": 173,
+          "raw_ref": null,
+          "reason": "frozen_prefix_guard",
+          "stage": "request_context",
+          "status": "degraded",
+          "tokens_after_estimate": 40,
+          "tokens_before_estimate": 44,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "old long user task",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          },
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "question",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "signature": "signed",
+                "thinking": "long internal reasoning",
+                "type": "thinking"
+              },
+              {
+                "text": "long answer",
+                "type": "text"
+              }
+            ],
+            "role": "assistant"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 2,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "question",
+                "role": "user"
+              },
+              {
+                "content": [
+                  {
+                    "signature": "signed",
+                    "thinking": "long internal reasoning",
+                    "type": "thinking"
+                  },
+                  {
+                    "text": "long answer",
+                    "type": "text"
+                  }
+                ],
+                "role": "assistant"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "question",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "signature": "signed",
+              "thinking": "long internal reasoning",
+              "type": "thinking"
+            },
+            {
+              "text": "long answer",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "mode": "enforce",
+      "name": "assistant-frozen",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 175,
+          "raw_bytes": 199,
+          "raw_ref": null,
+          "reason": "frozen_prefix_guard",
+          "stage": "request_context",
+          "status": "degraded",
+          "tokens_after_estimate": 44,
+          "tokens_before_estimate": 50,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "question",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "signature": "signed",
+                "thinking": "long internal reasoning",
+                "type": "thinking"
+              },
+              {
+                "text": "long answer",
+                "type": "text"
+              }
+            ],
+            "role": "assistant"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "role",
+      "calls": [
+        "optimize",
+        "receipt",
+        "rejected",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "role-guard",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 53,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 14,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [
+        "message_protocol_guard"
+      ],
+      "requests": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "drop",
+      "calls": [
+        "optimize",
+        "receipt",
+        "rejected",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "count-guard",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 15,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [
+        "message_protocol_guard"
+      ],
+      "requests": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": [
+              {
+                "id": "call",
+                "input": {
+                  "command": "echo okay"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "long diagnostic result",
+                "tool_use_id": "call",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 1,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": [
+                  {
+                    "id": "call",
+                    "input": {
+                      "command": "echo okay"
+                    },
+                    "name": "bash",
+                    "type": "tool_use"
+                  }
+                ],
+                "role": "assistant"
+              },
+              {
+                "content": [
+                  {
+                    "content": "long diagnostic result",
+                    "tool_use_id": "call",
+                    "type": "tool_result"
+                  }
+                ],
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        [
+          {
+            "digest": "8415045ebd4dd82219672e551ad01d18281d00057d1c5c9e8335ffe0306fd626",
+            "index": 1,
+            "projected": {
+              "content": [
+                {
+                  "content": "short",
+                  "tool_use_id": "call",
+                  "type": "tool_result"
+                }
+              ],
+              "role": "user"
+            }
+          }
+        ]
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": [
+            {
+              "id": "call",
+              "input": {
+                "command": "echo okay"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "long diagnostic result",
+              "tool_use_id": "call",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "tool-payload",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 215,
+          "raw_bytes": 232,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 54,
+          "tokens_before_estimate": 58,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": [
+              {
+                "id": "call",
+                "input": {
+                  "command": "echo okay"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "short",
+                "tool_use_id": "call",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "tool-id",
+      "calls": [
+        "optimize",
+        "receipt",
+        "rejected",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": [
+              {
+                "id": "call",
+                "input": {
+                  "command": "echo okay"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "long diagnostic result",
+                "tool_use_id": "call",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 1,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": [
+                  {
+                    "id": "call",
+                    "input": {
+                      "command": "echo okay"
+                    },
+                    "name": "bash",
+                    "type": "tool_use"
+                  }
+                ],
+                "role": "assistant"
+              },
+              {
+                "content": [
+                  {
+                    "content": "long diagnostic result",
+                    "tool_use_id": "call",
+                    "type": "tool_result"
+                  }
+                ],
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": [
+            {
+              "id": "call",
+              "input": {
+                "command": "echo okay"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "long diagnostic result",
+              "tool_use_id": "call",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "tool-id-guard",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 231,
+          "raw_bytes": 232,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 58,
+          "tokens_before_estimate": 58,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [
+        "message_protocol_guard"
+      ],
+      "requests": [
+        [
+          {
+            "content": [
+              {
+                "id": "call",
+                "input": {
+                  "command": "echo okay"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "long diagnostic result",
+                "tool_use_id": "call",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "error-flag",
+      "calls": [
+        "optimize",
+        "receipt",
+        "rejected",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": [
+              {
+                "id": "call",
+                "input": {
+                  "command": "echo okay"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "long diagnostic result",
+                "tool_use_id": "call",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 1,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": [
+                  {
+                    "id": "call",
+                    "input": {
+                      "command": "echo okay"
+                    },
+                    "name": "bash",
+                    "type": "tool_use"
+                  }
+                ],
+                "role": "assistant"
+              },
+              {
+                "content": [
+                  {
+                    "content": "long diagnostic result",
+                    "tool_use_id": "call",
+                    "type": "tool_result"
+                  }
+                ],
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": [
+            {
+              "id": "call",
+              "input": {
+                "command": "echo okay"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "long diagnostic result",
+              "tool_use_id": "call",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "error-flag-guard",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 231,
+          "raw_bytes": 232,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 58,
+          "tokens_before_estimate": 58,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [
+        "message_protocol_guard"
+      ],
+      "requests": [
+        [
+          {
+            "content": [
+              {
+                "id": "call",
+                "input": {
+                  "command": "echo okay"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "long diagnostic result",
+                "tool_use_id": "call",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": true,
+      "inputs": [],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": false,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "protected",
+      "purpose": "personal_skill_preview",
+      "receipts": [],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "immutable": true,
+      "inputs": [],
+      "ledger": false,
+      "ledgers": [
+        []
+      ],
+      "live": false,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "protected-tamper",
+      "purpose": "personal_skill_preview",
+      "receipts": [],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ]
+      ],
+      "tamper": true
+    },
+    {
+      "action": "cancel",
+      "calls": [
+        "optimize"
+      ],
+      "error": "CancelledError",
+      "histories": [],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": false,
+      "ledgers": [],
+      "live": false,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "cancel",
+      "purpose": "agent_turn",
+      "receipts": [],
+      "rejected": [],
+      "requests": [],
+      "tamper": false
+    },
+    {
+      "action": "shorten",
+      "calls": [
+        "optimize",
+        "receipt",
+        "cache",
+        "provider",
+        "optimize",
+        "receipt",
+        "cache",
+        "provider",
+        "optimize",
+        "receipt",
+        "cache",
+        "provider",
+        "optimize",
+        "receipt",
+        "cache",
+        "provider"
+      ],
+      "error": null,
+      "histories": [
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          }
+        ],
+        [
+          {
+            "content": "long user task with unicode 中文 😀 <tag>",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          },
+          {
+            "content": "next long user task",
+            "role": "user"
+          }
+        ],
+        [
+          {
+            "content": "replacement authoritative task",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          },
+          {
+            "content": "next long user task",
+            "role": "user"
+          }
+        ],
+        [
+          {
+            "content": "replacement authoritative task",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          }
+        ]
+      ],
+      "immutable": false,
+      "inputs": [
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 0,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "long user task with unicode 中文 😀 <tag>",
+                "role": "user"
+              }
+            ]
+          }
+        },
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 2,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "short",
+                "role": "user"
+              },
+              {
+                "content": "done",
+                "role": "assistant"
+              },
+              {
+                "content": "next long user task",
+                "role": "user"
+              }
+            ]
+          }
+        },
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 2,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "replacement authoritative task",
+                "role": "user"
+              },
+              {
+                "content": "done",
+                "role": "assistant"
+              },
+              {
+                "content": "short",
+                "role": "user"
+              }
+            ]
+          }
+        },
+        {
+          "budget_tokens": 100000,
+          "frozen_prefix_messages": 2,
+          "optimized_by": [],
+          "request": {
+            "messages": [
+              {
+                "content": "replacement authoritative task",
+                "role": "user"
+              },
+              {
+                "content": "done",
+                "role": "assistant"
+              }
+            ]
+          }
+        }
+      ],
+      "ledger": true,
+      "ledgers": [
+        [
+          {
+            "digest": "baa434628c3ce60f8f6bf1c898a13f446927f525bd689cb7e558828c0bc59d64",
+            "index": 0,
+            "projected": {
+              "content": "short",
+              "role": "user"
+            }
+          }
+        ],
+        [
+          {
+            "digest": "baa434628c3ce60f8f6bf1c898a13f446927f525bd689cb7e558828c0bc59d64",
+            "index": 0,
+            "projected": {
+              "content": "short",
+              "role": "user"
+            }
+          },
+          {
+            "digest": "561b4b0e327bad917e13c222095ed8e57b0c12c57eb88afc7aa711f6497a4995",
+            "index": 2,
+            "projected": {
+              "content": "short",
+              "role": "user"
+            }
+          }
+        ],
+        [
+          {
+            "digest": "561b4b0e327bad917e13c222095ed8e57b0c12c57eb88afc7aa711f6497a4995",
+            "index": 2,
+            "projected": {
+              "content": "short",
+              "role": "user"
+            }
+          }
+        ],
+        []
+      ],
+      "live": true,
+      "messages": [
+        {
+          "content": "long user task with unicode 中文 😀 <tag>",
+          "role": "user"
+        }
+      ],
+      "mode": "enforce",
+      "name": "ledger-growth-prune",
+      "purpose": "agent_turn",
+      "receipts": [
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 48,
+          "raw_bytes": 88,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 12,
+          "tokens_before_estimate": 22,
+          "warning_count": 0
+        },
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 120,
+          "raw_bytes": 134,
+          "raw_ref": null,
+          "reason": "optimized",
+          "stage": "request_context",
+          "status": "applied",
+          "tokens_after_estimate": 30,
+          "tokens_before_estimate": 34,
+          "warning_count": 0
+        },
+        {
+          "changed": false,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 145,
+          "raw_bytes": 145,
+          "raw_ref": null,
+          "reason": "component_passthrough",
+          "stage": "request_context",
+          "status": "passthrough",
+          "tokens_after_estimate": 37,
+          "tokens_before_estimate": 37,
+          "warning_count": 0
+        },
+        {
+          "changed": true,
+          "component_id": "agent-request-probe",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "parent_span_id": null,
+          "projected_bytes": 112,
+          "raw_bytes": 111,
+          "raw_ref": null,
+          "reason": "frozen_prefix_guard",
+          "stage": "request_context",
+          "status": "degraded",
+          "tokens_after_estimate": 28,
+          "tokens_before_estimate": 28,
+          "warning_count": 0
+        }
+      ],
+      "rejected": [],
+      "requests": [
+        [
+          {
+            "content": "short",
+            "role": "user"
+          }
+        ],
+        [
+          {
+            "content": "short",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          },
+          {
+            "content": "short",
+            "role": "user"
+          }
+        ],
+        [
+          {
+            "content": "replacement authoritative task",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          },
+          {
+            "content": "short",
+            "role": "user"
+          }
+        ],
+        [
+          {
+            "content": "replacement authoritative task",
+            "role": "user"
+          },
+          {
+            "content": "done",
+            "role": "assistant"
+          }
+        ]
+      ],
+      "tamper": false
+    }
+  ]
+}

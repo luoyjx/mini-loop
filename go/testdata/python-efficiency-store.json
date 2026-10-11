@@ -1,0 +1,1012 @@
+{
+  "constructors": [
+    {
+      "error": null,
+      "input": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "default",
+      "output": {
+        "closed": false
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "ttl_seconds must be positive"
+      },
+      "input": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 0
+      },
+      "name": "zero-ttl",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "ttl_seconds must be positive"
+      },
+      "input": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": -1
+      },
+      "name": "negative-ttl",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "artifact size limits must be positive"
+      },
+      "input": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 0,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "zero-item",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "artifact size limits must be positive"
+      },
+      "input": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": -1,
+        "ttl_seconds": 10
+      },
+      "name": "negative-total",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "max_artifact_bytes cannot exceed max_total_bytes"
+      },
+      "input": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 13,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "item-over-total",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "max_total_bytes": 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "ttl_seconds": 10
+      },
+      "name": "large-limits",
+      "output": {
+        "closed": false
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "artifact directory must be a contained relative path"
+      },
+      "input": {
+        "directory": "/tmp/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "absolute",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "artifact directory must be a contained relative path"
+      },
+      "input": {
+        "directory": "a/../b",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "parent",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "artifact directory must be a contained relative path"
+      },
+      "input": {
+        "directory": "",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "empty-directory",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "artifact directory must be a contained relative path"
+      },
+      "input": {
+        "directory": ".",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "dot",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "directory": "a/./b",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "normalized-directory",
+      "output": {
+        "closed": false
+      }
+    }
+  ],
+  "recipes": [
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "roundtrip",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:767567c6f10e35680ea6aaa268e68e37c89db05120daa48416f77f9b71a3e1a1",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 6
+          },
+          "value": "é🔒"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "get",
+          "output": "é🔒",
+          "value": "0"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "raw artifact does not belong to this session"
+          },
+          "op": "get-other",
+          "output": null,
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "capacity",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 8
+          },
+          "value": "12345678"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75",
+            "expires_at": 10.0,
+            "ref": "raw_AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI",
+            "size_bytes": 4
+          },
+          "value": "5678"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactCapacityExceeded",
+            "message": "masked artifact store is at capacity"
+          },
+          "op": "put",
+          "output": null,
+          "value": "x"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "discard",
+          "output": true,
+          "value": "0"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "expires_at": 10.0,
+            "ref": "raw_AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM",
+            "size_bytes": 1
+          },
+          "value": "x"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "oversize",
+      "steps": [
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactTooLarge",
+            "message": "masked artifact is 9 bytes; limit is 8"
+          },
+          "op": "put",
+          "output": null,
+          "value": "123456789"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "empty",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 0
+          },
+          "value": ""
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "get",
+          "output": "",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "expiry",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 6
+          },
+          "value": "secret"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "10"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactExpired",
+            "message": "raw artifact has expired"
+          },
+          "op": "get",
+          "output": null,
+          "value": "0"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "raw artifact does not belong to this session"
+          },
+          "op": "get",
+          "output": null,
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "sweep",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 1
+          },
+          "value": "a"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "5"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
+            "expires_at": 15.0,
+            "ref": "raw_AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI",
+            "size_bytes": 1
+          },
+          "value": "b"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "10"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "sweep",
+          "output": 1,
+          "value": ""
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "get",
+          "output": "b",
+          "value": "1"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "15"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "sweep",
+          "output": 1,
+          "value": ""
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "put-sweeps",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 8
+          },
+          "value": "12345678"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "10"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+            "expires_at": 20.0,
+            "ref": "raw_AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI",
+            "size_bytes": 8
+          },
+          "value": "12345678"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "raw artifact does not belong to this session"
+          },
+          "op": "get",
+          "output": null,
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "lifecycle",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 1
+          },
+          "value": "a"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "discard",
+          "output": true,
+          "value": "0"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "discard",
+          "output": false,
+          "value": "0"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
+            "expires_at": 10.0,
+            "ref": "raw_AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI",
+            "size_bytes": 1
+          },
+          "value": "b"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clear",
+          "output": 1,
+          "value": ""
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6",
+            "expires_at": 10.0,
+            "ref": "raw_AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM",
+            "size_bytes": 1
+          },
+          "value": "c"
+        },
+        {
+          "closed": true,
+          "error": null,
+          "op": "close",
+          "output": 1,
+          "value": ""
+        },
+        {
+          "closed": true,
+          "error": null,
+          "op": "close",
+          "output": 0,
+          "value": ""
+        },
+        {
+          "closed": true,
+          "error": null,
+          "op": "clear",
+          "output": 0,
+          "value": ""
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact store is closed"
+          },
+          "op": "get",
+          "output": null,
+          "value": "2"
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact store is closed"
+          },
+          "op": "put",
+          "output": null,
+          "value": "a"
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact store is closed"
+          },
+          "op": "sweep",
+          "output": null,
+          "value": ""
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact store is closed"
+          },
+          "op": "discard",
+          "output": null,
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "closed-precedence",
+      "steps": [
+        {
+          "closed": true,
+          "error": null,
+          "op": "close",
+          "output": 0,
+          "value": ""
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactTooLarge",
+            "message": "masked artifact is 9 bytes; limit is 8"
+          },
+          "op": "put",
+          "output": null,
+          "value": "123456789"
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "invalid raw artifact reference"
+          },
+          "op": "get-invalid",
+          "output": null,
+          "value": "../bad"
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "invalid raw artifact reference"
+          },
+          "op": "discard-invalid",
+          "output": null,
+          "value": "raw_bad"
+        },
+        {
+          "closed": true,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "fault"
+        },
+        {
+          "closed": true,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact clock failed"
+          },
+          "op": "sweep",
+          "output": null,
+          "value": ""
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "clock-faults",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "fault"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "invalid raw artifact reference"
+          },
+          "op": "get-invalid",
+          "output": null,
+          "value": "bad"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "raw artifact does not belong to this session"
+          },
+          "op": "get-missing",
+          "output": null,
+          "value": ""
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact clock failed"
+          },
+          "op": "put",
+          "output": null,
+          "value": "a"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact clock failed"
+          },
+          "op": "sweep",
+          "output": null,
+          "value": ""
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "nan"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact clock must be finite"
+          },
+          "op": "put",
+          "output": null,
+          "value": "a"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "inf"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "raw artifact clock must be finite"
+          },
+          "op": "sweep",
+          "output": null,
+          "value": ""
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "backward-clock",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "5"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
+            "expires_at": 15.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 1
+          },
+          "value": "a"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "-1"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "get",
+          "output": "a",
+          "value": "0"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "clock",
+          "output": null,
+          "value": "15"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactExpired",
+            "message": "raw artifact has expired"
+          },
+          "op": "get",
+          "output": null,
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "integrity-content",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 4
+          },
+          "value": "abcd"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "corrupt",
+          "output": null,
+          "value": "payload"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "raw artifact failed its content integrity check"
+          },
+          "op": "get",
+          "output": null,
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "integrity-size",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 4
+          },
+          "value": "abcd"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "corrupt",
+          "output": null,
+          "value": "size"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactNotFound",
+            "message": "raw artifact failed its content integrity check"
+          },
+          "op": "get",
+          "output": null,
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "read-limit",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 4
+          },
+          "value": "abcd"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "corrupt",
+          "output": null,
+          "value": "oversize"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactTooLarge",
+            "message": "raw artifact exceeds this store's read limit"
+          },
+          "op": "get",
+          "output": null,
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "config": {
+        "directory": ".token-efficiency/raw",
+        "max_artifact_bytes": 8,
+        "max_total_bytes": 12,
+        "ttl_seconds": 10
+      },
+      "name": "collision",
+      "steps": [
+        {
+          "closed": false,
+          "error": null,
+          "op": "entropy",
+          "output": null,
+          "value": "constant"
+        },
+        {
+          "closed": false,
+          "error": null,
+          "op": "put",
+          "output": {
+            "digest": "sha256:ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
+            "expires_at": 10.0,
+            "ref": "raw_AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE",
+            "size_bytes": 1
+          },
+          "value": "a"
+        },
+        {
+          "closed": false,
+          "error": {
+            "kind": "RawArtifactStoreError",
+            "message": "could not allocate an unpredictable artifact reference"
+          },
+          "op": "put",
+          "output": null,
+          "value": "b"
+        }
+      ]
+    }
+  ]
+}

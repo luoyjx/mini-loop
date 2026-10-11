@@ -1,0 +1,3210 @@
+{
+  "default_injectors": [
+    "background_injector",
+    "team_injector"
+  ],
+  "definitions": [
+    {
+      "capabilities": [
+        "process.exec"
+      ],
+      "definition_id": "bash",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "bash",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+        "input_schema": {
+          "properties": {
+            "approval_prefix": {
+              "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "command": {
+              "type": "string"
+            },
+            "run_in_background": {
+              "description": "Run asynchronously and return a task id immediately.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "command"
+          ],
+          "type": "object"
+        },
+        "name": "bash"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "definition_id": "read_file",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "read_file",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read a file's contents (workspace-relative path).",
+        "input_schema": {
+          "properties": {
+            "limit": {
+              "type": "integer"
+            },
+            "offset": {
+              "type": "integer"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "type": "object"
+        },
+        "name": "read_file"
+      }
+    },
+    {
+      "capabilities": [
+        "workspace.write"
+      ],
+      "definition_id": "write_file",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "write_file",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Write content to a file (creates parent dirs).",
+        "input_schema": {
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "content"
+          ],
+          "type": "object"
+        },
+        "name": "write_file"
+      }
+    },
+    {
+      "capabilities": [
+        "workspace.write"
+      ],
+      "definition_id": "edit_file",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "edit_file",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Replace the first exact occurrence of old_text with new_text.",
+        "input_schema": {
+          "properties": {
+            "new_text": {
+              "type": "string"
+            },
+            "old_text": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "old_text",
+            "new_text"
+          ],
+          "type": "object"
+        },
+        "name": "edit_file"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.search"
+      ],
+      "definition_id": "glob",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "glob",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Find workspace files matching a glob pattern.",
+        "input_schema": {
+          "properties": {
+            "pattern": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "pattern"
+          ],
+          "type": "object"
+        },
+        "name": "glob"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "TodoWrite",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "TodoWrite",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Create/replace the task checklist. Use for multi-step work.",
+        "input_schema": {
+          "properties": {
+            "items": {
+              "items": {
+                "properties": {
+                  "activeForm": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "enum": [
+                      "pending",
+                      "in_progress",
+                      "completed"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content",
+                  "status",
+                  "activeForm"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "items"
+          ],
+          "type": "object"
+        },
+        "name": "TodoWrite"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "task",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "task",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+        "input_schema": {
+          "properties": {
+            "agent_type": {
+              "enum": [
+                "Explore",
+                "general-purpose"
+              ],
+              "type": "string"
+            },
+            "prompt": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "type": "object"
+        },
+        "name": "task"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "load_skill",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "load_skill",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "scope": {
+              "enum": [
+                "agent",
+                "user"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "load_skill"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "compress",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "compress",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Manually compress the conversation to free context.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "compress"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "ask_user",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "ask_user",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+        "input_schema": {
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        "name": "ask_user"
+      }
+    },
+    {
+      "capabilities": [
+        "process.exec"
+      ],
+      "definition_id": "bash:variant-2",
+      "modes": [
+        "exclusive",
+        "parallel"
+      ],
+      "name": "bash",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+        "input_schema": {
+          "properties": {
+            "approval_prefix": {
+              "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "command": {
+              "type": "string"
+            },
+            "run_in_background": {
+              "description": "Run asynchronously and return a task id immediately.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "command"
+          ],
+          "type": "object"
+        },
+        "name": "bash"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "create_task",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "create_task",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Create a persistent task (optionally blockedBy other task ids).",
+        "input_schema": {
+          "properties": {
+            "blockedBy": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "description": {
+              "type": "string"
+            },
+            "subject": {
+              "type": "string"
+            },
+            "worktree": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject"
+          ],
+          "type": "object"
+        },
+        "name": "create_task"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "list_tasks",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "list_tasks",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "List all persistent tasks and their status.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "list_tasks"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "get_task",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "get_task",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Get one task's full JSON by id.",
+        "input_schema": {
+          "properties": {
+            "task_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "task_id"
+          ],
+          "type": "object"
+        },
+        "name": "get_task"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "claim_task",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "claim_task",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Claim a pending, unblocked task (sets you as owner).",
+        "input_schema": {
+          "properties": {
+            "task_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "task_id"
+          ],
+          "type": "object"
+        },
+        "name": "claim_task"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "complete_task",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "complete_task",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Mark a task completed; reports newly-unblocked tasks.",
+        "input_schema": {
+          "properties": {
+            "task_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "task_id"
+          ],
+          "type": "object"
+        },
+        "name": "complete_task"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "background_run",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "background_run",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Run a slow shell command in the background; returns a bg_id immediately. Results arrive later as a <task_notification>.",
+        "input_schema": {
+          "properties": {
+            "approval_prefix": {
+              "description": "Optional: propose the command prefix the human may remember for the session if this needs approval (see bash).",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "command": {
+              "type": "string"
+            },
+            "timeout": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "command"
+          ],
+          "type": "object"
+        },
+        "name": "background_run"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "check_background",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "check_background",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Check background task status (all, or one bg_id).",
+        "input_schema": {
+          "properties": {
+            "bg_id": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "name": "check_background"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "remember",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "remember",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Save a durable fact to the current user's memory (survives across sessions).",
+        "input_schema": {
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "enum": [
+                "user",
+                "feedback",
+                "project",
+                "reference"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "content"
+          ],
+          "type": "object"
+        },
+        "name": "remember"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "recall",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "recall",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Recall the current user's memories matching a query (or list all).",
+        "input_schema": {
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "name": "recall"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "schedule_cron",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "schedule_cron",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Schedule a prompt to run on a cron schedule (wakes this session).",
+        "input_schema": {
+          "properties": {
+            "cron": {
+              "description": "5-field cron: minute hour day-of-month month day-of-week",
+              "type": "string"
+            },
+            "durable": {
+              "type": "boolean"
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "recurring": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "cron",
+            "prompt"
+          ],
+          "type": "object"
+        },
+        "name": "schedule_cron"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "list_crons",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "list_crons",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "List this session's scheduled cron jobs.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "list_crons"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "cancel_cron",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "cancel_cron",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Cancel a scheduled cron job by id.",
+        "input_schema": {
+          "properties": {
+            "job_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "job_id"
+          ],
+          "type": "object"
+        },
+        "name": "cancel_cron"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "spawn_teammate",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "spawn_teammate",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Spawn an autonomous concurrent teammate.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "role",
+            "prompt"
+          ],
+          "type": "object"
+        },
+        "name": "spawn_teammate"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "send_message",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "send_message",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Send a typed message to a teammate.",
+        "input_schema": {
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "metadata": {
+              "type": "object"
+            },
+            "to": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "to",
+            "content"
+          ],
+          "type": "object"
+        },
+        "name": "send_message"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "read_inbox",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "read_inbox",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read, route, and drain your inbox.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "read_inbox"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "broadcast",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "broadcast",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Send a message to all teammates.",
+        "input_schema": {
+          "properties": {
+            "content": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "content"
+          ],
+          "type": "object"
+        },
+        "name": "broadcast"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "list_teammates",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "list_teammates",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "List teammates in this team.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "list_teammates"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "request_shutdown",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "request_shutdown",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Request a teammate shutdown with an auditable handshake.",
+        "input_schema": {
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "target"
+          ],
+          "type": "object"
+        },
+        "name": "request_shutdown"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "request_plan",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "request_plan",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Ask a teammate to submit a plan for a task.",
+        "input_schema": {
+          "properties": {
+            "task": {
+              "type": "string"
+            },
+            "teammate": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "teammate",
+            "task"
+          ],
+          "type": "object"
+        },
+        "name": "request_plan"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "submit_plan",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "submit_plan",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Submit a plan to the lead for approval.",
+        "input_schema": {
+          "properties": {
+            "plan": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "plan"
+          ],
+          "type": "object"
+        },
+        "name": "submit_plan"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "review_plan",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "review_plan",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Approve or reject a submitted teammate plan.",
+        "input_schema": {
+          "properties": {
+            "approve": {
+              "type": "boolean"
+            },
+            "feedback": {
+              "type": "string"
+            },
+            "request_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "request_id",
+            "approve"
+          ],
+          "type": "object"
+        },
+        "name": "review_plan"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "list_protocols",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "list_protocols",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "List protocol request states.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "list_protocols"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "create_worktree",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "create_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Create an isolated git worktree and optionally bind a task.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "task_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "create_worktree"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "remove_worktree",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "remove_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Remove a clean worktree, or explicitly discard its changes.",
+        "input_schema": {
+          "properties": {
+            "discard_changes": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "remove_worktree"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "keep_worktree",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "keep_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Keep a worktree and record it for review.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "keep_worktree"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "list_worktrees",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "list_worktrees",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "List git worktrees.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "list_worktrees"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "enter_worktree",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "enter_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Switch this agent's file tools into a worktree.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "enter_worktree"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "connect_mcp",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "connect_mcp",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "external",
+      "schema": {
+        "description": "Connect an MCP server and add its tools. Available: (none).",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "name": "connect_mcp"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "enter_plan_mode",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "enter_plan_mode",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Switch to plan mode: investigate and design before mutating anything.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "enter_plan_mode"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "exit_plan_mode",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exit_plan_mode",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Present the finished plan for approval and leave plan mode. Only meaningful while plan mode is active.",
+        "input_schema": {
+          "properties": {
+            "plan": {
+              "description": "The complete plan, markdown, starting with a # heading.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "plan"
+          ],
+          "type": "object"
+        },
+        "name": "exit_plan_mode"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "goal_create",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "goal_create",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Create and arm this session's completion goal.",
+        "input_schema": {
+          "properties": {
+            "max_rounds": {
+              "description": "Continuation round cap.",
+              "type": "integer"
+            },
+            "objective": {
+              "description": "The completion objective.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "objective"
+          ],
+          "type": "object"
+        },
+        "name": "goal_create"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "goal_status",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "goal_status",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read the current goal, its phase, revision and round budget.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "goal_status"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "goal_complete",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "goal_complete",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Mark the current goal complete (CAS by revision).",
+        "input_schema": {
+          "properties": {
+            "revision": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "revision"
+          ],
+          "type": "object"
+        },
+        "name": "goal_complete"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "goal_block",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "goal_block",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Mark the goal blocked with a stable kebab-case code and an explanation.",
+        "input_schema": {
+          "properties": {
+            "code": {
+              "description": "stable lower-kebab-case classification",
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "revision": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "revision",
+            "code",
+            "message"
+          ],
+          "type": "object"
+        },
+        "name": "goal_block"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "goal_resume",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "goal_resume",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Resume a paused/blocked goal and re-arm continuation.",
+        "input_schema": {
+          "properties": {
+            "revision": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "revision"
+          ],
+          "type": "object"
+        },
+        "name": "goal_resume"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "diagnostics",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "diagnostics",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Run language diagnostics over the workspace (or one file). The result names the provider's scope; a clean report covers only that scope.",
+        "input_schema": {
+          "properties": {
+            "path": {
+              "description": "Optional workspace-relative file; omit to check the tree.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "name": "diagnostics"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "transcript_search",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "transcript_search",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Search the durable transcript of THIS session (the most recent 20 epochs), including history that compaction summarized away. States when older epochs fall outside the scan.",
+        "input_schema": {
+          "properties": {
+            "query": {
+              "description": "Substring to find (case-insensitive).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "name": "transcript_search"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "self_audit",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "self_audit",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "One bounded report of the runtime's own state: per-subsystem problem ledgers, session activity, recent trajectory outcomes, and scheduled work. Read-only.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "self_audit"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "Workflow",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "Workflow",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Launch a bounded, read-only declarative workflow. This experimental tool is local-only and requires trusted human origin.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "args": {
+              "description": "Arguments validated against definition.input_schema.",
+              "type": "object"
+            },
+            "definition": {
+              "description": "Versioned declarative WorkflowDefinition.",
+              "type": "object"
+            }
+          },
+          "required": [
+            "definition",
+            "args"
+          ],
+          "type": "object"
+        },
+        "name": "Workflow"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "WorkflowStatus",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "WorkflowStatus",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Inspect a workflow owned by this session.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "run_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "run_id"
+          ],
+          "type": "object"
+        },
+        "name": "WorkflowStatus"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "WorkflowCancel",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "WorkflowCancel",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Cooperatively cancel a workflow owned by this session.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "run_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "run_id"
+          ],
+          "type": "object"
+        },
+        "name": "WorkflowCancel"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.semantic_outline"
+      ],
+      "definition_id": "repo_map",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "repo_map",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Map supported source files with ast-outline digest; returns JSON status applied, no_match, partial, error, missing, or incompatible.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "density": {
+              "default": "default",
+              "enum": [
+                "names",
+                "compact",
+                "default",
+                "wide"
+              ],
+              "type": "string"
+            },
+            "include_imports": {
+              "default": false,
+              "type": "boolean"
+            },
+            "paths": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "paths"
+          ],
+          "type": "object"
+        },
+        "name": "repo_map"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.semantic_outline"
+      ],
+      "definition_id": "file_outline",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "file_outline",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read structural signatures and line ranges for files or directories without full method bodies.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "include_imports": {
+              "default": false,
+              "type": "boolean"
+            },
+            "paths": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            },
+            "view": {
+              "default": "full",
+              "enum": [
+                "full",
+                "public",
+                "minimal"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "paths"
+          ],
+          "type": "object"
+        },
+        "name": "file_outline"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.symbol"
+      ],
+      "definition_id": "show_symbol",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "show_symbol",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read exact source or signature for named symbols inside one workspace source file or non-recursive basename glob.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "path_or_glob": {
+              "description": "Workspace source file, or a non-recursive basename glob in a static workspace directory; '**' and intermediate wildcards are rejected.",
+              "maxLength": 2048,
+              "type": "string"
+            },
+            "signature_only": {
+              "default": false,
+              "type": "boolean"
+            },
+            "symbols": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "path_or_glob",
+            "symbols"
+          ],
+          "type": "object"
+        },
+        "name": "show_symbol"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.references"
+      ],
+      "definition_id": "symbol_references",
+      "modes": [
+        "parallel",
+        "parallel"
+      ],
+      "name": "symbol_references",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Find definitions, calls, references, or imports grouped by enclosing scope with ast-outline grep.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "kinds": {
+              "default": [],
+              "items": {
+                "enum": [
+                  "def",
+                  "call",
+                  "ref",
+                  "import",
+                  "comment",
+                  "string"
+                ],
+                "type": "string"
+              },
+              "maxItems": 6,
+              "type": "array"
+            },
+            "max_per_file": {
+              "maximum": 10000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "paths": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            },
+            "patterns": {
+              "items": {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "patterns",
+            "paths"
+          ],
+          "type": "object"
+        },
+        "name": "symbol_references"
+      }
+    },
+    {
+      "capabilities": [],
+      "definition_id": "decision",
+      "modes": [
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "decision",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "external",
+      "schema": {
+        "description": "Evaluate explicit state with typed questions: choice returns an option distribution, score returns a probability-weighted 0-based rubric score, noul returns P(yes). Batch independent questions. Uses the configured decision provider and may incur a separate model/API charge. Returns judgments only; confidence never authorizes actions. Inspect probability_source: llm_estimate is uncalibrated.",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "questions": {
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "criteria": {
+                        "additionalProperties": {
+                          "type": [
+                            "string",
+                            "object",
+                            "array",
+                            "null"
+                          ]
+                        },
+                        "maxProperties": 255,
+                        "minProperties": 1,
+                        "type": "object"
+                      },
+                      "instructions": {
+                        "type": [
+                          "string",
+                          "object",
+                          "array"
+                        ]
+                      },
+                      "type": {
+                        "const": "choice"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "instructions",
+                      "criteria"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "criteria": {
+                        "items": {
+                          "type": [
+                            "string",
+                            "object",
+                            "array"
+                          ]
+                        },
+                        "maxItems": 10,
+                        "minItems": 2,
+                        "type": "array"
+                      },
+                      "instructions": {
+                        "type": [
+                          "string",
+                          "object",
+                          "array"
+                        ]
+                      },
+                      "type": {
+                        "const": "score"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "instructions",
+                      "criteria"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "criteria": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "false": {
+                            "type": [
+                              "string",
+                              "object",
+                              "array"
+                            ]
+                          },
+                          "true": {
+                            "type": [
+                              "string",
+                              "object",
+                              "array"
+                            ]
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "instructions": {
+                        "type": [
+                          "string",
+                          "object",
+                          "array"
+                        ]
+                      },
+                      "type": {
+                        "const": "noul"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "instructions"
+                    ],
+                    "type": "object"
+                  }
+                ]
+              },
+              "description": "Named independent questions evaluated against the same state.",
+              "maxProperties": 32,
+              "minProperties": 1,
+              "type": "object"
+            },
+            "state": {
+              "description": "Explicit evidence to evaluate; no session history is added.",
+              "type": [
+                "string",
+                "object",
+                "array"
+              ]
+            }
+          },
+          "required": [
+            "state",
+            "questions"
+          ],
+          "type": "object"
+        },
+        "name": "decision"
+      }
+    }
+  ],
+  "managers": [
+    {
+      "agent_injectors": [
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "off",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "workflows": false
+    },
+    {
+      "agent_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "full",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ],
+      "workflows": false
+    },
+    {
+      "agent_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "full-custom-tools",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ],
+      "workflows": false
+    },
+    {
+      "agent_injectors": [
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "full-custom-injectors",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ],
+      "workflows": false
+    },
+    {
+      "agent_injectors": [
+        "background_injector",
+        "team_injector",
+        "workflow_injector",
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "background_injector",
+        "team_injector",
+        "workflow_injector",
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "full-workflows",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit",
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "workflows": true
+    },
+    {
+      "agent_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "full-ast",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit",
+        "repo_map",
+        "file_outline",
+        "show_symbol",
+        "symbol_references"
+      ],
+      "workflows": false
+    },
+    {
+      "agent_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "background_injector",
+        "team_injector",
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "full-decisions",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit",
+        "decision"
+      ],
+      "workflows": false
+    },
+    {
+      "agent_injectors": [
+        "background_injector",
+        "team_injector",
+        "workflow_injector",
+        "steering_injector",
+        "posture_injector",
+        "runtime_facts_injector"
+      ],
+      "manager_injectors": [
+        "background_injector",
+        "team_injector",
+        "workflow_injector",
+        "steering_injector",
+        "posture_injector"
+      ],
+      "mode": "interactive",
+      "name": "full-independent",
+      "owner": "fixture",
+      "state_keys": [
+        "action_journal",
+        "agent_name",
+        "bus",
+        "cron",
+        "manager",
+        "memory",
+        "memory_root",
+        "permission_mode",
+        "personal_skill_drafts",
+        "personal_skill_turns",
+        "personal_skill_turns_omitted",
+        "resource_owner",
+        "session",
+        "session_id",
+        "team_id",
+        "workflow_service",
+        "worktrees"
+      ],
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit",
+        "decision",
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel",
+        "repo_map",
+        "file_outline",
+        "show_symbol",
+        "symbol_references"
+      ],
+      "workflows": true
+    }
+  ],
+  "no_default_injectors": [],
+  "registries": [
+    {
+      "name": "default",
+      "tools": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user"
+      ]
+    },
+    {
+      "name": "full",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-tasks",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-background",
+      "tools": [
+        "bash",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-memory",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-cron",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-plan",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-goals",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-diagnostics",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-session_query",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-teams",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-worktrees",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-mcp",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search",
+        "self_audit"
+      ]
+    },
+    {
+      "name": "without-self_audit",
+      "tools": [
+        "bash:variant-2",
+        "read_file",
+        "write_file",
+        "edit_file",
+        "glob",
+        "TodoWrite",
+        "task",
+        "load_skill",
+        "compress",
+        "ask_user",
+        "create_task",
+        "list_tasks",
+        "get_task",
+        "claim_task",
+        "complete_task",
+        "background_run",
+        "check_background",
+        "remember",
+        "recall",
+        "schedule_cron",
+        "list_crons",
+        "cancel_cron",
+        "spawn_teammate",
+        "send_message",
+        "read_inbox",
+        "broadcast",
+        "list_teammates",
+        "request_shutdown",
+        "request_plan",
+        "submit_plan",
+        "review_plan",
+        "list_protocols",
+        "create_worktree",
+        "remove_worktree",
+        "keep_worktree",
+        "list_worktrees",
+        "enter_worktree",
+        "connect_mcp",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "goal_create",
+        "goal_status",
+        "goal_complete",
+        "goal_block",
+        "goal_resume",
+        "diagnostics",
+        "transcript_search"
+      ]
+    }
+  ]
+}

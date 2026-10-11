@@ -1,0 +1,1528 @@
+{
+  "inputs": [
+    {
+      "action_id": "act_f19c309cff5e1d38f23fd6d42c5cf68b376b2e3858103574017103edf151a2c5",
+      "canonical": "{\"args\":{},\"definition\":{\"name\":\"wf\",\"nodes\":[{\"id\":\"a\",\"kind\":\"agent\"}],\"return_from\":\"a\"}}",
+      "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "name": "launch",
+      "spaced": "{\"args\": {}, \"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}}",
+      "tool": "Workflow"
+    },
+    {
+      "action_id": "act_f19c309cff5e1d38f23fd6d42c5cf68b376b2e3858103574017103edf151a2c5",
+      "canonical": "{\"args\":{},\"definition\":{}}",
+      "input_hash": "e794342fa9ffa6b8700c7173cc86c56941bccfebe275a385a4290fe606357dbe",
+      "input_json": "{\"definition\": {}, \"args\": {}}",
+      "name": "empty-definition",
+      "spaced": "{\"args\": {}, \"definition\": {}}",
+      "tool": "Workflow"
+    },
+    {
+      "action_id": "act_f19c309cff5e1d38f23fd6d42c5cf68b376b2e3858103574017103edf151a2c5",
+      "canonical": "{\"args\":{\"a\":\"汉字😀\\n <>&\",\"z\":1.0},\"definition\":{\"definition_hash\":false,\"name\":\"wf\",\"nodes\":[{\"id\":\"a\",\"kind\":\"agent\"}],\"return_from\":\"a\",\"revision\":\"original\",\"source\":\"plugin\"}}",
+      "input_hash": "335738a543259fdda8b0c3307e815256fc9c933b1bddbc383c0c705b5c3ce4d7",
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\", \"revision\": \"original\", \"source\": \"plugin\", \"definition_hash\": false}, \"args\": {\"z\": 1.0, \"a\": \"汉字😀\\n <>&\"}}",
+      "name": "original-metadata",
+      "spaced": "{\"args\": {\"a\": \"汉字😀\\n <>&\", \"z\": 1.0}, \"definition\": {\"definition_hash\": false, \"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\", \"revision\": \"original\", \"source\": \"plugin\"}}",
+      "tool": "Workflow"
+    },
+    {
+      "action_id": "act_f19c309cff5e1d38f23fd6d42c5cf68b376b2e3858103574017103edf151a2c5",
+      "canonical": "{\"args\":{\"a\":1208925819614629174706176,\"z\":[null,false,1,1.0,{\"secret\":\"value\"}]},\"definition\":{\"name\":\"wf\",\"nodes\":[{\"id\":\"a\",\"kind\":\"agent\"}],\"return_from\":\"a\"}}",
+      "input_hash": "c5d3639584337fb9bf0574d2350ef659be4c7672ddd77cfaccf76b8761d9ec9f",
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {\"z\": [null, false, 1, 1.0, {\"secret\": \"value\"}], \"a\": 1208925819614629174706176}}",
+      "name": "nested",
+      "spaced": "{\"args\": {\"a\": 1208925819614629174706176, \"z\": [null, false, 1, 1.0, {\"secret\": \"value\"}]}, \"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}}",
+      "tool": "Workflow"
+    },
+    {
+      "action_id": "act_a1e04db1b016d7b993632345e58981fec64603f46c967367977bc9c338c95c77",
+      "canonical": "{\"run_id\":\"wf_run\"}",
+      "input_hash": "62bc5a13cf47d9e7c5f3dc10aed4f2be905e0c57031eaae5baaa509db039e323",
+      "input_json": "{\"run_id\": \"wf_run\"}",
+      "name": "status",
+      "spaced": "{\"run_id\": \"wf_run\"}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "action_id": "act_2c15a077cd868cb5f82c01a4e79d7467e923726b33207177567b89f089a386b5",
+      "canonical": "{\"run_id\":\"wf_run\"}",
+      "input_hash": "62bc5a13cf47d9e7c5f3dc10aed4f2be905e0c57031eaae5baaa509db039e323",
+      "input_json": "{\"run_id\": \"wf_run\"}",
+      "name": "cancel",
+      "spaced": "{\"run_id\": \"wf_run\"}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "action_id": "act_a1e04db1b016d7b993632345e58981fec64603f46c967367977bc9c338c95c77",
+      "canonical": "{\"run_id\":\"\"}",
+      "input_hash": "2e2f92c499978b499f71fc5adf3448d4e094f35055ad2a7303212bcc1bff5570",
+      "input_json": "{\"run_id\": \"\"}",
+      "name": "empty-status",
+      "spaced": "{\"run_id\": \"\"}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "action_id": "act_2c15a077cd868cb5f82c01a4e79d7467e923726b33207177567b89f089a386b5",
+      "canonical": "{\"run_id\":\"汉字😀\\n <>&\"}",
+      "input_hash": "75e57c7360011fd57ba339d29a148260e8ad791149de76e803ca542c02b2284f",
+      "input_json": "{\"run_id\": \"汉字😀\\n <>&\"}",
+      "name": "unicode-cancel",
+      "spaced": "{\"run_id\": \"汉字😀\\n <>&\"}",
+      "tool": "WorkflowCancel"
+    }
+  ],
+  "refusals": [
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"definition\": {}}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"args\": {}}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"definition\": null, \"args\": {}}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"definition\": [], \"args\": {}}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"definition\": {}, \"args\": null}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"definition\": {}, \"args\": []}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"definition\": {}, \"args\": {}, \"extra\": true}",
+      "tool": "Workflow"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": null}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": 1}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": false}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": []}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": \"r\", \"extra\": true}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": null}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": 1}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": false}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": []}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "error": "ArtifactValidationError",
+      "input_json": "{\"run_id\": \"r\", \"extra\": true}",
+      "tool": "WorkflowCancel"
+    }
+  ],
+  "runs": [
+    {
+      "backing": "memory",
+      "errors": [
+        "",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "attach",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "finish-then-attach",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "fallback-id",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-args",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {\"x\": 1}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-metadata",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\", \"revision\": \"forged\"}, \"args\": {}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "normalized-defaults",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_adf83349003bfd76\", \"revision\": \"wfdef_adf83349003bfd76\", \"parent_revision\": null, \"definition_hash\": \"wfdef:adf83349003bfd767e50a39c2ca5ae05ed00dc335e9c18ea2e2738239e8bf240\"}, \"args\": {}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-tool-use",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-session",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "memory",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-message",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "attach",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "finish-then-attach",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": 0,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": "async_launched",
+          "session_id": "s",
+          "status": "completed",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "fallback-id",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "action",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-args",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {\"x\": 1}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-metadata",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\", \"revision\": \"forged\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "normalized-defaults",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_adf83349003bfd76\", \"revision\": \"wfdef_adf83349003bfd76\", \"parent_revision\": null, \"definition_hash\": \"wfdef:adf83349003bfd767e50a39c2ca5ae05ed00dc335e9c18ea2e2738239e8bf240\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-tool-use",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-session",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    },
+    {
+      "backing": "sqlite",
+      "errors": [
+        "ActionJournalConflict",
+        "",
+        "ActionJournalConflict",
+        "KeyError"
+      ],
+      "input_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}",
+      "mode": "changed-message",
+      "records": [
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": null
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        },
+        {
+          "action_id": "action",
+          "completed_at": null,
+          "created_at": 0,
+          "input_hash": "187bd169d5644617562e2d6d015efe2cb050327c7f56426dd9853317077d1dd5",
+          "message_id": "m",
+          "result": null,
+          "session_id": "s",
+          "status": "started",
+          "tool_name": "Workflow",
+          "tool_use_id": "u",
+          "workflow_run_id": "run"
+        }
+      ],
+      "replay_json": "{\"definition\": {\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"return_from\": \"a\"}, \"args\": {}}"
+    }
+  ],
+  "schemas": [
+    {
+      "description": "Launch a bounded, read-only declarative workflow. This experimental tool is local-only and requires trusted human origin.",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "args": {
+            "description": "Arguments validated against definition.input_schema.",
+            "type": "object"
+          },
+          "definition": {
+            "description": "Versioned declarative WorkflowDefinition.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "definition",
+          "args"
+        ],
+        "type": "object"
+      },
+      "name": "Workflow"
+    },
+    {
+      "description": "Inspect a workflow owned by this session.",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id"
+        ],
+        "type": "object"
+      },
+      "name": "WorkflowStatus"
+    },
+    {
+      "description": "Cooperatively cancel a workflow owned by this session.",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id"
+        ],
+        "type": "object"
+      },
+      "name": "WorkflowCancel"
+    }
+  ]
+}
