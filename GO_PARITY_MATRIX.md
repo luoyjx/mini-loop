@@ -2,7 +2,7 @@
 
 ## Native team SQLite restart — 2026-10-11
 
-Baseline `bf75663`: actual Source now captures first reopening, one resumed turn
+Source `ce544f6`, native test `c19d7f2`, baseline `bf75663`: actual Source now captures first reopening, one resumed turn
 and second reopening. Native SQL integration compares public restoration state,
 request/history, counters, own-team lead identity and separate retained mailbox.
 Existing injected-store tests separately check private role/runner/roster loss.
@@ -65,7 +65,7 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed baseline `bf75663`: native team SQLite two-reopen/resumed-turn public
+Reviewed baseline `bf75663`, native test `c19d7f2`: team SQLite two-reopen/resumed-turn public
 state now matches actual Source; private role/runner/roster checks remain in the
 agent adapter test. Frozen1644 inputs pass Source239, focused team restart tests, all three type audits, full ordinary Go/vet/race+atomic, Python and19 scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 105.85s (0:01:45). Application coverage 89.25% (33084/37068); all Go 89.16% (33240/37283); Provider 86.67% (1522/1756).
 [Current receipt](docs/audits/go-team-sqlite-restart-2026-10-11.json). Runtime topology/defaults/authority unchanged.

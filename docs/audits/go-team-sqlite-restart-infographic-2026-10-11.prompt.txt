@@ -1,0 +1,13 @@
+Use case: infographic-diagram, precise edit of supplied architecture base.
+Input image is the edit target: mini-loop overall five-layer architecture. Preserve its dark blue blueprint style, five horizontal layers, component boxes, all unchanged labels, title proportions and layout; same overall landscape canvas.
+Create the 2026-10-11 iteration image for native team SQLite restart validation. Title: "mini-loop · 团队 SQLite 恢复验证". Subtitle: "真实关闭 / 重开 → 显式继续一轮 → 再次重开".
+Highlight with bright amber outline only the L2 "租约 / 工作区 / 取消 / 恢复" box (especially 恢复), the L4 Teams box, and L5 SQLite 会话 box. Small amber numbered markers 1,2,3 relate to the explanatory right column. Leave all other components muted but readable. This iteration adds validation evidence, no runtime component; do not add/remove boxes or change base topology.
+Replace right column with concise Chinese article:
+Heading "本轮改动与证据"
+1 "真实 SQLite 两次重开" / "Python 契约与 Go 原生集成对照"
+2 "继续一轮后仍可恢复" / "owner、工作区、历史、run count 保留"
+3 "团队恢复边界" / "恢复为自己团队的 lead；旧团队邮件保留，新收件箱为空"
+4 "显式运行才调用模型" / "恢复本身不调用模型；不开放递归 spawn"
+5 "验证范围" / "SQL 测试检查公开状态；私有角色与 runner 由既有 agent 测试检查"
+Footer "本轮只补恢复证据 · 整体迁移验收仍在进行"
+Do not claim full gates passed or add coverage numbers. Preserve directed arrows exactly: Session Agent ↔ Model Provider; Session Agent → ToolGate via tool call; ToolGate → L4 through permission gate; L4 results → Session Agent. Absolutely no Provider → ToolGate edge. Retain L1→L2→L3, optional orchestration boundary and L5 persistence relationships. Crisp legible Chinese, no decorative new technical symbols.

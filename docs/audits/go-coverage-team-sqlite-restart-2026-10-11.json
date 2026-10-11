@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-11",
+  "baseline": "bf75663",
+  "cohort": "Native team SQLite two-reopen and resumed-turn Source parity; frozen full passing gates",
+  "mode": "atomic",
+  "profile_sha256": "c61721fa7f5ab795492e2cd115fd670ed967833d764c505929842d73d7e862ec",
+  "raw_rows": 1249839,
+  "unique_blocks": 26037,
+  "method": "Deduplicate identical source spans; require equal statement counts; union with maximum atomic hits.",
+  "all": {
+    "covered": 33240,
+    "statements": 37283,
+    "percent": 89.1559155647346
+  },
+  "app": {
+    "covered": 33084,
+    "statements": 37068,
+    "percent": 89.25218517319522
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "frozen_inputs": 1644,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-team-sqlite-restart-2026-10-11/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 544.041
+  },
+  "retained_profile": "/tmp/mini-loop-team-sqlite-restart-2026-10-11.cover",
+  "scope": "Darwin Go statements; excludes native C, CLI subprocess internals, Python, branch and non-Darwin coverage.",
+  "limitations": [
+    "Earlier temporal background/native observer failures remain unexplained; current passing cohort does not identify their cause.",
+    "Broader provider, default, platform, feature and original P0/P1/G0-G7 acceptance remains open."
+  ]
+}

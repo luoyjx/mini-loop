@@ -2,6 +2,7 @@
 
 ## 2026-10-11 native team SQLite restart and resumed writes
 
+Source commit `ce544f6`; native test commit `c19d7f2`.
 Baseline local main `bf75663`. The previous team restoration comparison used an
 injected Go state adapter while Python captured a real SQLite reopening. Extend
 that actual Source contract with one explicit resumed turn and a second database
@@ -7184,7 +7185,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `bf75663`; native team SQLite
+Reviewed **2026-10-11** against local main baseline `bf75663`, native test `c19d7f2`; team SQLite
 two-reopen and resumed-turn evidence now matches actual Source. No production
 runtime/default changes. Frozen1644 inputs pass Source239, focused team restart tests, all three type audits, full ordinary Go/vet/race+atomic, Python and19 scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 105.85s (0:01:45). Application coverage 89.25% (33084/37068); all Go 89.16% (33240/37283); Provider 86.67% (1522/1756).
 [Current receipt](docs/audits/go-team-sqlite-restart-2026-10-11.json).
