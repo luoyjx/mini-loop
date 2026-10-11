@@ -28,6 +28,13 @@ overrides them.
   `docs/mini-loop-system.architecture.json`; never hand-edit the generated HTML.
 - Preserve truthful status labels. Do not describe a default-off or
   process-local path as default-on or durable.
+- Maintain `docs/mini-loop-layered-architecture.png` as the built-in imagegen
+  base diagram, derived from the canonical README architecture map.
+- Before ending each iteration, edit that base image with built-in imagegen to
+  highlight the current changes; save the iteration image, exact prompt and
+  concise explanation with the delivery evidence.
+- When architecture parts are added or removed, update the base diagram and
+  its exact prompt in the same iteration, alongside the canonical sources.
 
 ## Validation
 
