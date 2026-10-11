@@ -2,7 +2,7 @@
 
 ## 2026-10-12 compiler-resolved package variable roots
 
-Baseline local main `d273a8e`. G0 named-type gates could miss package variables
+Implementation `1799d20`. Baseline local main `d273a8e`. G0 named-type gates could miss package variables
 whose inferred type retained open payloads without introducing a named type.
 Add `typeaudit -variables` for exported and private package variables, including
 inferred declarations, imported erased aliases/RawMessage, generic instances,
@@ -7227,7 +7227,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against local main baseline `d273a8e`: package-variable
+Reviewed **2026-10-12** against local main baseline `d273a8e`, implementation `1799d20`: package-variable
 compiler closure complements named-root syntax/public/private checks.
 Frozen 1647 inputs pass all 12 gates: Source 239 files, focused typeaudit tests,
 syntax/public/private/variable audits, full ordinary Go/vet/race+atomic, Python and 19

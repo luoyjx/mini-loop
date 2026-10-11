@@ -2,7 +2,7 @@
 
 ## Package variable compiler closure — 2026-10-12
 
-Baseline `d273a8e`: `typeaudit -variables` now resolves inferred, exported and
+Implementation `1799d20`, baseline `d273a8e`: `typeaudit -variables` now resolves inferred, exported and
 private package variable roots through the active compiler/CGO source inventory.
 Focused fixtures identify11 open payload variables while older named-root modes
 pass; closed/platform/shadowed controls and invalid-inventory refusals pass.
@@ -76,7 +76,7 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `d273a8e`: package-variable closure now complements named type
+Reviewed baseline `d273a8e`, implementation `1799d20`: package-variable closure now complements named type
 roots through a shared compiler-selected source resolver. No runtime change.
 Frozen 1647 inputs pass all 12 gates: Source 239 files, focused typeaudit tests,
 syntax/public/private/variable audits, full ordinary Go/vet/race+atomic, Python and 19

@@ -1,0 +1,14 @@
+Use case: infographic-diagram, precise edit.
+Edit the supplied mini-loop overall layered architecture base, preserving its five horizontal L1-L5 layers, dark navy/cyan blueprint style, component names and locations, and all original graph arrows.
+Title: "mini-loop · 包级变量类型审计"
+Subtitle: "补齐隐式类型入口 · 整体迁移验收仍在进行"
+Highlight only the existing L5 "trajectory / trace / audit" box with a bright amber outline and a small badge "-variables". Do not add a new runtime component; this is an operator audit command. Keep the other four layers and SQLite/component boxes readable and unchanged.
+Right column heading: "本轮修改"
+1 "补齐变量入口" / "检查导出、私有与隐式推导的包级变量"
+2 "编译器解析闭包" / "共享源码解析，覆盖当前构建与 CGO 声明"
+3 "反例验证" / "11 个开放变量被识别；原有命名类型根检查可漏过"
+4 "当前仓库" / "50 个包 · 172 个包级变量 · 0 发现"
+5 "仍需验收" / "局部变量、函数体、外部库内部及其他构建配置"
+Short bottom note: "不执行包初始化 · 不改变运行时权限与默认行为"
+Footer: "本轮扩展审计证据 · 完整迁移尚未完成"
+Arrow invariants are mandatory: Session Agent ↔ Model Provider; Session Agent → ToolGate across the top tool-call arrow; ToolGate → L4 through permission gate; L4 result → Session Agent. Never create a Provider→ToolGate edge. Preserve L1→L2→L3, optional orchestration links and L4→L5 persistence relationships. Crisp legible Chinese; restrained highlights; no claims that complete validation or full migration has finished.
