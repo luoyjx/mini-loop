@@ -19310,3 +19310,45 @@ diagnostics/broader IDNA/full G0–G7 remain open.
 
 [Raw gates/bench/contracts](docs/audits/go-json-read-spans-2026-10-11.json) and
 [built-in infographic](docs/audits/go-json-read-spans-infographic-2026-10-11.png).
+
+## Required native absence versus filtered empty batch — 2026-10-11
+
+Baseline `b22a005`; production/test/fixture/policy bytes unchanged. The previous
+full race+atomic run failed four required native recipes with no post-operation
+admitted event diagnostic. A new one-shot diagnostic isolates the original four
+Go subtests and actual Python _native_case captures. Source and Go roots/times
+are separate; this is not a synchronized operation/control or statistical sample.
+
+First Source worker mistakenly passed an unresolved macOS temp alias. The real
+watchfiles_contracts builder canonicalizes scratch before constructing/comparing
+its probe. Those four arm errors are retained as harness failures, not accepted
+Source failures. Corrected Source-only capture resolves the root exactly like the
+original builder and leaves its5s readiness/3s operation/default native backend/
+filters/debounce unchanged. No Go replay after that correction. Watchfiles1.2.0/
+Uvicorn0.49.0: four captures match required fixture; all four Source contexts close.
+ignored-hidden/ignored-backup/ignored-text each produce[]; transient-source yields
+flash.py. Original fixture and producer are not replaced or edited.
+
+The unchanged Go race+atomic cohort passes ignored-hidden/ignored-backup/transient-
+source, fails ignored-text at the original3s operation wait. It has no post-operation
+admitted diagnostic after readiness/drain (package15.521s). Empty filtered batch
+[] is distinct from absence/deadline. recordEvent diagnoses before filename filter;
+recordDarwin still applies change/root fences beforehand. The logs do not identify
+raw C callback presence, kernel cause, fence rejection or a queue problem. The
+next evidence is raw C callback collection before those Go admission fences.
+Variable fresh outcomes do not establish temporal native acceptance or a runtime fix.
+
+Collector refuses completed-prefix reuse before any child dispatch; preflight
+proves receipt bytes unchanged. Six relevant producer/fixture/test/admission/C
+file hashes remain unchanged. Python full2239 passed/28 skipped/74 warnings/24
+subtests (90.51s), preflight and diff check pass. No full Go/vet/race/coverage/
+Source export/invariant/scanner/guard rerun triggered by this audit-only helper;
+original targeted native run remains failed. Four Source recipes are not global
+Source freshness. Prior full native failures/default diagnostics/broader IDNA/
+non-Darwin/full G0–G7 remain open; no dependency/push. README canonical map and
+boundaries reviewed, visible baseline updated; topology/defaults/authority unchanged,
+so graph JSON/HTML unchanged and no rendered acceptance.
+
+[Reproducible collector](docs/audits/go-reload-required-absence-2026-10-11.py),
+[all original/corrected receipts](docs/audits/go-reload-required-absence-2026-10-11.json),
+[built-in infographic](docs/audits/go-reload-required-absence-infographic-2026-10-11.png).

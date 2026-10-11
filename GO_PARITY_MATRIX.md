@@ -11239,3 +11239,27 @@ app89.2073%/all89.1531%/Provider86.6705%,not passing migration acceptance.
 [full evidence](docs/audits/go-json-read-spans-2026-10-11.json),
 [built-in infographic](docs/audits/go-json-read-spans-infographic-2026-10-11.png).
 Native reliability/default diagnostics/broader IDNA/full G0–G7 remain incomplete.
+
+## Required native empty-batch versus absence Source capture — 2026-10-11
+
+Runtime `b22a005` unchanged. Fresh four required Source captures, after matching
+the original builder's canonical scratch root, all match their old fixture: three
+ignored names produce[],transient-source yields flash.py; four Source contexts
+closed (watchfiles1.2.0/Uvicorn0.49.0). Initial unresolved-alias arm errors retained
+as diagnostic setup failures. No fixture/producer/test/deadline/fallback changes.
+
+Original unchanged four-case Go race+atomic cohort passes hidden/backup/transient,
+fails ignored-text with no post-operation admitted diagnostic and original3s wait.
+Source-only correction does not repeat Go.[] and absence stay distinct; separate
+roots/times are not causal/temporal acceptance. Filename filtering follows the
+admitted diagnostic; earlier change/root fences and raw C callback remain unproven.
+Next capture raw C before Go admission rather than weaken golden assertions.
+
+Six relevant source hashes unchanged, repeated-prefix refusal preserves receipt.
+Python2239/28skipped/74warnings/24subtests (90.51s) and diff check pass. Full Go/
+coverage/Source/non-Darwin acceptance not refreshed. Canonical map/boundaries
+reviewed; baseline updated, graph unchanged. Native reliability/default diagnostics/
+broader IDNA/full G0–G7 remain incomplete.
+[Collector](docs/audits/go-reload-required-absence-2026-10-11.py),
+[exact receipts](docs/audits/go-reload-required-absence-2026-10-11.json),
+[built-in infographic](docs/audits/go-reload-required-absence-infographic-2026-10-11.png).

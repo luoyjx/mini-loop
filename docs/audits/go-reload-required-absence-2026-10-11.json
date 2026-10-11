@@ -1,0 +1,496 @@
+{
+  "baseline": "b22a00506b725bf1c27d9aa7d05cdbb4458cd9f1",
+  "original_noncanonical_attempt": {
+    "baseline": "b22a00506b725bf1c27d9aa7d05cdbb4458cd9f1",
+    "versions": {
+      "watchfiles": "1.2.0",
+      "uvicorn": "0.49.0"
+    },
+    "source": [
+      {
+        "name": "ignored-hidden",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "ignored-hidden"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"ignored-hidden\", \"error\": \"Traceback (most recent call last):\\n  File \\\"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\\\", line 26, in source_worker\\n    captured = _native_case(Path(scratch) / \\\"root\\\", recipe)\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\\\", line 168, in _native_case\\n    raise RuntimeError(\\\"native Source observer did not arm\\\") from (errors[0] if errors else None)\\nRuntimeError: native Source observer did not arm\\n\", \"matches_required\": null, \"seconds\": 5.069}\n",
+        "stderr": "",
+        "result": {
+          "name": "ignored-hidden",
+          "error": "Traceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\", line 26, in source_worker\n    captured = _native_case(Path(scratch) / \"root\", recipe)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\", line 168, in _native_case\n    raise RuntimeError(\"native Source observer did not arm\") from (errors[0] if errors else None)\nRuntimeError: native Source observer did not arm\n",
+          "matches_required": null,
+          "seconds": 5.069
+        },
+        "seconds": 5.227
+      },
+      {
+        "name": "ignored-backup",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "ignored-backup"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"ignored-backup\", \"error\": \"Traceback (most recent call last):\\n  File \\\"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\\\", line 26, in source_worker\\n    captured = _native_case(Path(scratch) / \\\"root\\\", recipe)\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\\\", line 168, in _native_case\\n    raise RuntimeError(\\\"native Source observer did not arm\\\") from (errors[0] if errors else None)\\nRuntimeError: native Source observer did not arm\\n\", \"matches_required\": null, \"seconds\": 5.302}\n",
+        "stderr": "",
+        "result": {
+          "name": "ignored-backup",
+          "error": "Traceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\", line 26, in source_worker\n    captured = _native_case(Path(scratch) / \"root\", recipe)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\", line 168, in _native_case\n    raise RuntimeError(\"native Source observer did not arm\") from (errors[0] if errors else None)\nRuntimeError: native Source observer did not arm\n",
+          "matches_required": null,
+          "seconds": 5.302
+        },
+        "seconds": 5.427
+      },
+      {
+        "name": "ignored-text",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "ignored-text"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"ignored-text\", \"error\": \"Traceback (most recent call last):\\n  File \\\"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\\\", line 26, in source_worker\\n    captured = _native_case(Path(scratch) / \\\"root\\\", recipe)\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\\\", line 168, in _native_case\\n    raise RuntimeError(\\\"native Source observer did not arm\\\") from (errors[0] if errors else None)\\nRuntimeError: native Source observer did not arm\\n\", \"matches_required\": null, \"seconds\": 5.058}\n",
+        "stderr": "",
+        "result": {
+          "name": "ignored-text",
+          "error": "Traceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\", line 26, in source_worker\n    captured = _native_case(Path(scratch) / \"root\", recipe)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\", line 168, in _native_case\n    raise RuntimeError(\"native Source observer did not arm\") from (errors[0] if errors else None)\nRuntimeError: native Source observer did not arm\n",
+          "matches_required": null,
+          "seconds": 5.058
+        },
+        "seconds": 5.188
+      },
+      {
+        "name": "transient-source",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "transient-source"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"transient-source\", \"error\": \"Traceback (most recent call last):\\n  File \\\"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\\\", line 26, in source_worker\\n    captured = _native_case(Path(scratch) / \\\"root\\\", recipe)\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\\\", line 168, in _native_case\\n    raise RuntimeError(\\\"native Source observer did not arm\\\") from (errors[0] if errors else None)\\nRuntimeError: native Source observer did not arm\\n\", \"matches_required\": null, \"seconds\": 5.454}\n",
+        "stderr": "",
+        "result": {
+          "name": "transient-source",
+          "error": "Traceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\", line 26, in source_worker\n    captured = _native_case(Path(scratch) / \"root\", recipe)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/yanjixiong/github/mini-loop/python/tools/watchfiles_contracts.py\", line 168, in _native_case\n    raise RuntimeError(\"native Source observer did not arm\") from (errors[0] if errors else None)\nRuntimeError: native Source observer did not arm\n",
+          "matches_required": null,
+          "seconds": 5.454
+        },
+        "seconds": 5.57
+      }
+    ],
+    "required": [
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-hidden",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".hidden.py"
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-backup",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "~backup.py"
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-text",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "notes.txt"
+      },
+      {
+        "changed": [
+          "flash.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "name": "transient-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "transient",
+        "path": "flash.py"
+      }
+    ],
+    "hashes": {
+      "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+      "python/tools/watchfiles_contracts.py": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a",
+      "go/reload/native_events_recipes_test.go": "10c9774fa7324cbc4ede1d0621d43080092a329cce43dfeddb9c4f150ca1b9e9",
+      "go/reload/event_reader.go": "6006f1d1dbebd166e81d0a71b2c6b3ce6e5e32bfec8a4260ae154a062461a0fc",
+      "go/reload/native_events_darwin.go": "c3824702d6b4bb2e6a1e1ffb3d267183fcbe98a848d39b01c6d8f0cfa3c3c144",
+      "go/reload/native_events_darwin.c": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e"
+    },
+    "go": {
+      "command": [
+        "go",
+        "test",
+        "-v",
+        "-race",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-count=1",
+        "-timeout=180s",
+        "-run=^TestNativeEventsActualSourceRecipes/(ignored-hidden|ignored-backup|ignored-text|transient-source)$",
+        "./reload"
+      ],
+      "exit_code": 1,
+      "seconds": 18.747,
+      "log": "/tmp/mini-loop-reload-required-absence-2026-10-11-go.log",
+      "raw_log": "# github.com/luoyjx/mini-loop/go/reload.test\nld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-1536913689/000013.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626\n=== RUN   TestNativeEventsActualSourceRecipes\n=== RUN   TestNativeEventsActualSourceRecipes/ignored-hidden\n=== RUN   TestNativeEventsActualSourceRecipes/ignored-backup\n=== RUN   TestNativeEventsActualSourceRecipes/ignored-text\n    native_events_recipes_test.go:197: context deadline exceeded\n    native_events_recipes_test.go:141: native recipe timeline:\n        +114ms subscription constructed; drain before post-subscription probe\n        +216ms pre-probe next: paths=[] error=context deadline exceeded\n        +1.357s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1691374501/001\" flags=164096\n        +1.357s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1691374501/001/reload_observer_ready.go\" flags=102656\n        +1.408s readiness probe observed; drain remaining setup events\n        +1.51s post-probe next: paths=[] error=context deadline exceeded\n        +1.51s operation=add path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesignored-text1691374501/001/notes.txt\n        +4.513s operation next: paths=[] error=context deadline exceeded\n        \n=== RUN   TestNativeEventsActualSourceRecipes/transient-source\n--- FAIL: TestNativeEventsActualSourceRecipes (15.03s)\n    --- PASS: TestNativeEventsActualSourceRecipes/ignored-hidden (3.59s)\n    --- PASS: TestNativeEventsActualSourceRecipes/ignored-backup (3.33s)\n    --- FAIL: TestNativeEventsActualSourceRecipes/ignored-text (4.52s)\n    --- PASS: TestNativeEventsActualSourceRecipes/transient-source (3.57s)\nFAIL\ncoverage: 13.6% of statements in ./...\nFAIL\tgithub.com/luoyjx/mini-loop/go/reload\t15.521s\nFAIL\n"
+    },
+    "hashes_unchanged": true
+  },
+  "canonical_source_cohort": {
+    "baseline": "b22a00506b725bf1c27d9aa7d05cdbb4458cd9f1",
+    "versions": {
+      "watchfiles": "1.2.0",
+      "uvicorn": "0.49.0"
+    },
+    "source": [
+      {
+        "name": "ignored-hidden",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "ignored-hidden"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"ignored-hidden\", \"capture\": {\"initial\": false, \"mtime\": 100, \"name\": \"ignored-hidden\", \"operation\": \"add\", \"path\": \".hidden.py\", \"changed\": [], \"native_arguments\": {\"force_polling\": false, \"poll_delay_ms\": 300, \"recursive\": true, \"ignore_permission_denied\": true, \"backend\": \"FsEventWatcher\", \"fsevents\": {\"flags\": 18, \"latency_seconds\": 0.0, \"since_now\": true}}, \"closed\": true}, \"matches_required\": true, \"seconds\": 4.587}\n",
+        "stderr": "",
+        "result": {
+          "name": "ignored-hidden",
+          "capture": {
+            "initial": false,
+            "mtime": 100,
+            "name": "ignored-hidden",
+            "operation": "add",
+            "path": ".hidden.py",
+            "changed": [],
+            "native_arguments": {
+              "force_polling": false,
+              "poll_delay_ms": 300,
+              "recursive": true,
+              "ignore_permission_denied": true,
+              "backend": "FsEventWatcher",
+              "fsevents": {
+                "flags": 18,
+                "latency_seconds": 0.0,
+                "since_now": true
+              }
+            },
+            "closed": true
+          },
+          "matches_required": true,
+          "seconds": 4.587
+        },
+        "seconds": 4.742
+      },
+      {
+        "name": "ignored-backup",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "ignored-backup"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"ignored-backup\", \"capture\": {\"initial\": false, \"mtime\": 100, \"name\": \"ignored-backup\", \"operation\": \"add\", \"path\": \"~backup.py\", \"changed\": [], \"native_arguments\": {\"force_polling\": false, \"poll_delay_ms\": 300, \"recursive\": true, \"ignore_permission_denied\": true, \"backend\": \"FsEventWatcher\", \"fsevents\": {\"flags\": 18, \"latency_seconds\": 0.0, \"since_now\": true}}, \"closed\": true}, \"matches_required\": true, \"seconds\": 2.914}\n",
+        "stderr": "",
+        "result": {
+          "name": "ignored-backup",
+          "capture": {
+            "initial": false,
+            "mtime": 100,
+            "name": "ignored-backup",
+            "operation": "add",
+            "path": "~backup.py",
+            "changed": [],
+            "native_arguments": {
+              "force_polling": false,
+              "poll_delay_ms": 300,
+              "recursive": true,
+              "ignore_permission_denied": true,
+              "backend": "FsEventWatcher",
+              "fsevents": {
+                "flags": 18,
+                "latency_seconds": 0.0,
+                "since_now": true
+              }
+            },
+            "closed": true
+          },
+          "matches_required": true,
+          "seconds": 2.914
+        },
+        "seconds": 3.025
+      },
+      {
+        "name": "ignored-text",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "ignored-text"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"ignored-text\", \"capture\": {\"initial\": false, \"mtime\": 100, \"name\": \"ignored-text\", \"operation\": \"add\", \"path\": \"notes.txt\", \"changed\": [], \"native_arguments\": {\"force_polling\": false, \"poll_delay_ms\": 300, \"recursive\": true, \"ignore_permission_denied\": true, \"backend\": \"FsEventWatcher\", \"fsevents\": {\"flags\": 18, \"latency_seconds\": 0.0, \"since_now\": true}}, \"closed\": true}, \"matches_required\": true, \"seconds\": 2.513}\n",
+        "stderr": "",
+        "result": {
+          "name": "ignored-text",
+          "capture": {
+            "initial": false,
+            "mtime": 100,
+            "name": "ignored-text",
+            "operation": "add",
+            "path": "notes.txt",
+            "changed": [],
+            "native_arguments": {
+              "force_polling": false,
+              "poll_delay_ms": 300,
+              "recursive": true,
+              "ignore_permission_denied": true,
+              "backend": "FsEventWatcher",
+              "fsevents": {
+                "flags": 18,
+                "latency_seconds": 0.0,
+                "since_now": true
+              }
+            },
+            "closed": true
+          },
+          "matches_required": true,
+          "seconds": 2.513
+        },
+        "seconds": 2.649
+      },
+      {
+        "name": "transient-source",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py",
+          "--source-worker",
+          "transient-source"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"name\": \"transient-source\", \"capture\": {\"initial\": false, \"name\": \"transient-source\", \"operation\": \"transient\", \"path\": \"flash.py\", \"changed\": [\"flash.py\"], \"native_arguments\": {\"force_polling\": false, \"poll_delay_ms\": 300, \"recursive\": true, \"ignore_permission_denied\": true, \"backend\": \"FsEventWatcher\", \"fsevents\": {\"flags\": 18, \"latency_seconds\": 0.0, \"since_now\": true}}, \"closed\": true}, \"matches_required\": true, \"seconds\": 3.296}\n",
+        "stderr": "",
+        "result": {
+          "name": "transient-source",
+          "capture": {
+            "initial": false,
+            "name": "transient-source",
+            "operation": "transient",
+            "path": "flash.py",
+            "changed": [
+              "flash.py"
+            ],
+            "native_arguments": {
+              "force_polling": false,
+              "poll_delay_ms": 300,
+              "recursive": true,
+              "ignore_permission_denied": true,
+              "backend": "FsEventWatcher",
+              "fsevents": {
+                "flags": 18,
+                "latency_seconds": 0.0,
+                "since_now": true
+              }
+            },
+            "closed": true
+          },
+          "matches_required": true,
+          "seconds": 3.296
+        },
+        "seconds": 3.443
+      }
+    ],
+    "required": [
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-hidden",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": ".hidden.py"
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-backup",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "~backup.py"
+      },
+      {
+        "changed": [],
+        "closed": true,
+        "initial": false,
+        "mtime": 100,
+        "name": "ignored-text",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "add",
+        "path": "notes.txt"
+      },
+      {
+        "changed": [
+          "flash.py"
+        ],
+        "closed": true,
+        "initial": false,
+        "name": "transient-source",
+        "native_arguments": {
+          "backend": "FsEventWatcher",
+          "force_polling": false,
+          "fsevents": {
+            "flags": 18,
+            "latency_seconds": 0.0,
+            "since_now": true
+          },
+          "ignore_permission_denied": true,
+          "poll_delay_ms": 300,
+          "recursive": true
+        },
+        "operation": "transient",
+        "path": "flash.py"
+      }
+    ],
+    "hashes": {
+      "go/testdata/python-watchfiles.json": "fe1e0247ada37a2497f0969cf9446ef5e4209a1624325adf4c757df673c2e4e0",
+      "python/tools/watchfiles_contracts.py": "5f2e444e162f7596a39f28c8246a82808eba018d3bc974a1d8c348ec22bd227a",
+      "go/reload/native_events_recipes_test.go": "10c9774fa7324cbc4ede1d0621d43080092a329cce43dfeddb9c4f150ca1b9e9",
+      "go/reload/event_reader.go": "6006f1d1dbebd166e81d0a71b2c6b3ce6e5e32bfec8a4260ae154a062461a0fc",
+      "go/reload/native_events_darwin.go": "c3824702d6b4bb2e6a1e1ffb3d267183fcbe98a848d39b01c6d8f0cfa3c3c144",
+      "go/reload/native_events_darwin.c": "15cf9973095185393debd179bc89109db8ef37f1796088569321d09962066d4e"
+    },
+    "hashes_unchanged": true
+  },
+  "review": {
+    "scope": "4 required native recipes from the original fixture. No production/test/fixture/deadline/observer policy changes.",
+    "source": "Corrected canonical-root capture4/4 matches required fixture: three empty batches,transient flash.py; four Source contexts closed.",
+    "setup_error": "First Source worker used uncanonicalized macOS temp-root alias; original fixture builder resolves scratch. This is a diagnostic harness error,not accepted Source failure evidence. Preserve first receipts.",
+    "go": "Original unchanged Go race+atomic4-case cohort:3 pass;ignored-text times out before any post-operation admitted native diagnostic event. Required empty batch and absence remain distinct.",
+    "comparison_limit": "Separate fresh roots/times,not synchronized shared operations or statistical reliability proof. Source-only correction did not repeat Go. No cause attributed to kernel/C callback/root fence/queue.",
+    "next_action": "Capture raw C callbacks before Go change/root fences in the ignored-text failure window; retain Source golden and operation3s/readiness contexts.",
+    "unrefreshed": [
+      "Full Go/vet/race/coverage not rerun(diagnostic-only).",
+      "Full Source export/freshness not accepted from4 selected captures.",
+      "Non-Darwin/default diagnostics/broader IDNA/full G0-G7 still incomplete.",
+      "Canonical README map/boundaries reviewed and baseline updated; runtime topology/ownership/authority/defaults unchanged; graph JSON/HTML unchanged; no rendered acceptance."
+    ]
+  },
+  "preflight": "Traceback (most recent call last):\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\", line 93, in <module>\n    main()\n  File \"/Users/yanjixiong/github/mini-loop/docs/audits/go-reload-required-absence-2026-10-11.py\", line 47, in main\n    assert not Path(str(prefix) + \".json\").exists(), \"choose a fresh prefix; do not retry a completed cohort\"\nAssertionError: choose a fresh prefix; do not retry a completed cohort\n",
+  "python_full": {
+    "command": ".venv/bin/python -m pytest -q",
+    "exit_code": 0,
+    "passed": 2239,
+    "skipped": 28,
+    "warnings": 74,
+    "subtests": 24,
+    "seconds": 90.51,
+    "log": "/tmp/mini-loop-reload-required-absence-python-2026-10-11.log"
+  },
+  "script_sha256": "08061fae2468132c9cbe1e54e03292cc99700071b3032027488f1848047f754b",
+  "infographic": {
+    "tool": "built-in imagegen",
+    "image": "docs/audits/go-reload-required-absence-infographic-2026-10-11.png",
+    "prompt": "docs/audits/go-reload-required-absence-infographic-2026-10-11.prompt.txt",
+    "inspection": "4/4 Source,4 closed,3/4 Go,ignored-text timeout,empty/absence distinction,canonical alias setup correction and separate-root/time/no-cause/full-acceptance limits verified."
+  }
+}
