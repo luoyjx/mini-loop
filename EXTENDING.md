@@ -1242,6 +1242,12 @@ after reporting; text truncates by Python code points before masking and final
 UTF-8 encoding. Source-compatible model capture uses this seam. Ordinary typed
 string inputs and explicit remember tools retain their string admission. The
 projection carries no owner/path, raw JSON, rollback or execution capability.
+Selecting WithBody also selects Source header-validation order: fallback name
+hashes are checked before body processing, while authenticated original-name
+hashes and final text encoding are checked after masking. Masking never alters
+the identity used to construct an authenticated filename. The model adapter
+selects this lane even for absent bodies. Ordinary string inputs retain their
+upfront UTF-8 check. Both paths retain the same bound-owner authority.
 
 ### Go owner resource snapshots
 

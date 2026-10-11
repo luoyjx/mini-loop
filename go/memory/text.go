@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"strings"
 	"unicode"
@@ -48,7 +49,7 @@ func splitLines(text string) []string {
 	return lines
 }
 func header(value string) string { return pytext.Strip(strings.Join(splitLines(value), " ")) }
-func slug(name string) string {
+func slug(name string) (string, error) {
 	var out strings.Builder
 	separator := false
 	for _, r := range pytext.Lower(name) {
@@ -67,9 +68,13 @@ func slug(name string) string {
 		result = result[:MaxSlug]
 	}
 	if result == "" || result == "memory" {
+		// Source hashes fallback names before consuming or masking the body.
+		if !utf8.ValidString(name) {
+			return "", errors.New("memory fallback name must be valid UTF-8")
+		}
 		result = "memory-" + hash(name)[:8]
 	}
-	return result
+	return result, nil
 }
 func origin(value Origin, fallback Origin) Origin {
 	normalized := Origin(header(string(value)))

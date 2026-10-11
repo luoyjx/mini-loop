@@ -130,7 +130,11 @@ func (store *Store) Write(ctx context.Context, owner OwnerID, input Input) (stri
 	return store.write(ctx, owner, input, nil)
 }
 func (store *Store) write(ctx context.Context, owner OwnerID, input Input, attributed *problems.Log) (string, error) {
-	for _, field := range []string{input.Name, input.Description, input.Body, string(owner), string(input.Type), string(input.Origin)} {
+	fields := []string{string(owner)}
+	if input.body == nil {
+		fields = append(fields, input.Name, input.Description, input.Body, string(input.Type), string(input.Origin))
+	}
+	for _, field := range fields {
 		if !utf8.ValidString(field) {
 			return "", errors.New("memory fields must be valid UTF-8")
 		}
@@ -150,7 +154,10 @@ func (store *Store) write(ctx context.Context, owner OwnerID, input Input, attri
 	if ownerDisplay == "" {
 		ownerDisplay = "anonymous"
 	}
-	normalized := slug(name)
+	normalized, err := slug(name)
+	if err != nil {
+		return "", err
+	}
 	projection := TextBody(input.Body)
 	if input.body != nil {
 		projection = *input.body
@@ -167,12 +174,16 @@ func (store *Store) write(ctx context.Context, owner OwnerID, input Input, attri
 		return "", err
 	}
 	text := fmt.Sprintf("---\nname: %s\ndescription: %s\ntype: %s\nscope: user\nowner_key: %s\nowner: %s\norigin: %s\n---\n\n%s\n", name, description, kind, hash(string(owner)), ownerDisplay, origin(input.Origin, Explicit), body)
+	text = store.mask(text)
 	filename := normalized + ".md"
 	if owner != "anonymous" {
+		// Masking changes file content, never the original identity being hashed.
+		if !utf8.ValidString(name) {
+			return "", errors.New("memory identity must be valid UTF-8")
+		}
 		filename = "u-" + memoryKey(owner, name) + "-" + normalized + ".md"
 	}
 	delete(store.parsed, filename)
-	text = store.mask(text)
 	if !utf8.ValidString(text) {
 		return "", errors.New("memory text must be valid UTF-8")
 	}

@@ -40,6 +40,8 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			Name, Reply      string
 			Fault            bool
 			Mask             bool
+			Owner            string
+			MaskCalls        int `json:"mask_calls"`
 			Messages         []protocol.Message
 			Calls            []protocol.ModelRequest
 			Count            int
@@ -48,17 +50,22 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 81 {
+	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 105 {
 		t.Fatal(err, len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {
 		t.Run(row.Name, func(t *testing.T) {
 			ctx := context.Background()
-			rawStore, err := memory.NewStore(ctx, t.TempDir(), memoryBodyMasker(row.Mask))
+			masker := &memorySurrogateMasker{}
+			owner := memory.OwnerID(row.Owner)
+			if owner == "" {
+				owner = "owner"
+			}
+			rawStore, err := memory.NewStore(ctx, t.TempDir(), memoryBodyMasker(row.Mask, masker))
 			if err != nil {
 				t.Fatal(err)
 			}
-			store, _ := memory.Bind(rawStore, "owner")
+			store, _ := memory.Bind(rawStore, owner)
 			foreign, _ := memory.Bind(rawStore, "foreign")
 			_, err = foreign.Write(ctx, memory.Input{Name: "foreign", Type: memory.Project, Description: "foreign description", Body: "foreign secret"})
 			if err != nil {
@@ -70,6 +77,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			}
 			provider := &memoryExtractionProvider{output: row.Reply, fault: row.Fault}
 			cfg := runtimeConfig(t.TempDir(), provider)
+			cfg.Owner = OwnerID(owner)
 			cfg.Memory, cfg.MemoryTools, cfg.CachePolicy, cfg.Recovery = store, true, NullCachePolicy{}, DirectRecovery{}
 			session, err := NewRuntimeSession(cfg)
 			if err != nil {
@@ -77,7 +85,11 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			}
 			session.messages = append([]protocol.Message(nil), row.Messages...)
 			before := session.meter.Snapshot()
+			maskBefore := masker.calls
 			count, err := session.extractMemories(ctx)
+			if delta := masker.calls - maskBefore; delta != row.MaskCalls {
+				t.Errorf("mask calls %d want %d", delta, row.MaskCalls)
+			}
 			if err != nil || count != row.Count {
 				t.Fatal(count, err, row.Count)
 			}

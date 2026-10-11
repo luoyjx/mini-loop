@@ -39,6 +39,8 @@ func UnsizedBody() Body { return Body{kind: bodyUnsized} }
 
 // WithBody returns a copy selecting an immutable observation instead of the
 // ordinary Input.Body string field. This changes no owner, path or authority.
+// It also selects Source header encoding phases: fallback name hashing before
+// body processing; authenticated name hashing and final encoding after masking.
 func (input Input) WithBody(body Body) Input {
 	input.Body = ""
 	input.body = &body

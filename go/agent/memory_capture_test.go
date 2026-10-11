@@ -25,6 +25,8 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			Name, Reply      string
 			Fault            bool
 			Mask             bool
+			Owner            string
+			MaskCalls        int `json:"mask_calls"`
 			Seed, Count      int
 			Calls            []protocol.ModelRequest
 			Records, Foreign []memory.Record
@@ -33,17 +35,22 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 72 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 96 {
 		t.Fatal(err)
 	}
 	for _, row := range fixture.Cases {
 		t.Run(row.Name, func(t *testing.T) {
 			ctx := context.Background()
-			store, err := memory.NewStore(ctx, t.TempDir(), memoryBodyMasker(row.Mask))
+			masker := &memorySurrogateMasker{}
+			owner := memory.OwnerID(row.Owner)
+			if owner == "" {
+				owner = "owner"
+			}
+			store, err := memory.NewStore(ctx, t.TempDir(), memoryBodyMasker(row.Mask, masker))
 			if err != nil {
 				t.Fatal(err)
 			}
-			bound, _ := memory.Bind(store, "owner")
+			bound, _ := memory.Bind(store, owner)
 			foreign, _ := memory.Bind(store, "foreign")
 			if _, err := foreign.Write(ctx, memory.Input{Name: "foreign", Type: memory.Project, Description: "foreign description", Body: "foreign secret"}); err != nil {
 				t.Fatal(err)
@@ -58,13 +65,18 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			}
 			provider := &memoryExtractionProvider{output: row.Reply, fault: row.Fault}
 			cfg := runtimeConfig(t.TempDir(), provider)
+			cfg.Owner = OwnerID(owner)
 			cfg.Memory, cfg.Recovery, cfg.CachePolicy = bound, DirectRecovery{}, NullCachePolicy{}
 			session, err := NewRuntimeSession(cfg)
 			if err != nil {
 				t.Fatal(err)
 			}
 			before := session.meter.Snapshot()
+			maskBefore := masker.calls
 			count, err := session.consolidateMemories(ctx)
+			if delta := masker.calls - maskBefore; delta != row.MaskCalls {
+				t.Errorf("mask calls %d want %d", delta, row.MaskCalls)
+			}
 			if err != nil || count != row.Count {
 				t.Fatal(count, err, row.Count)
 			}

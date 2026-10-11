@@ -5688,8 +5688,34 @@ def _memory_body_values() -> list[tuple[str, object]]:
 
 
 class _MemoryBodyMasker:
+    def __init__(self):
+        self.calls = 0
+
     def mask(self, text: str) -> str:
+        self.calls += 1
         return text.replace("\ud800", "safe")
+
+
+def _memory_write_order_values() -> list[dict]:
+    from mini_loop.memory import MAX_BODY
+    long = "a" * (MAX_BODY + 1)
+    profiles = [
+        ("description-long", dict(name="candidate", description="\ud800", body=long), False),
+        ("description-long-repaired", dict(name="candidate", description="\ud800", body=long), True),
+        ("name-ascii-long", dict(name="x\ud800", body=long), False),
+        ("name-ascii-long-repaired", dict(name="x\ud800", body=long), True),
+        ("name-fallback-long-repaired", dict(name="\ud800", body=long), True),
+        ("name-memory-fallback-long-repaired", dict(name="memory\ud800", body=long), True),
+        ("description-container", dict(name="candidate", description="\ud800", body=[0]*(MAX_BODY+1)), True),
+        ("description-absent-body", dict(name="candidate", description="\ud800"), True),
+        ("description-scalar", dict(name="candidate", description="\ud800", body=7), True),
+        ("description-unknown-type", dict(name="candidate", type="\ud800", description="\ud800"), True),
+        ("name-splitline", dict(name="\ud800\nx", body=long), True),
+        ("description-body", dict(name="candidate", description="\ud800", body="\ud800"), True),
+    ]
+    return [dict(name=f"order-{owner}-{label}", owner=owner, mask=mask,
+                 candidate_json=json.dumps(candidate))
+            for owner in ("owner", "anonymous") for label,candidate,mask in profiles]
 
 
 def _memory_header_values() -> list[tuple[str, object]]:
@@ -5754,10 +5780,14 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
         *[dict(name=f"body-{label}",reply=json.dumps([valid,dict(name="body-candidate",body=value),dict(name="after",body="after")]))
           for label,value in _memory_body_values()],
         dict(name="body-masked-surrogate",mask=True,reply=json.dumps([valid,dict(name="body-candidate",body="\ud800"),dict(name="after",body="after")])),
+        *[{**row, "reply": json.dumps([valid, json.loads(row["candidate_json"]), dict(name="after",body="after")])}
+          for row in _memory_write_order_values()],
     ]
     async def scenario(row):
         root=scratch/row["name"]; root.mkdir(parents=True)
-        raw=MemoryStore(root/"memory",secrets=_MemoryBodyMasker() if row.get("mask") else None); store=ScopedMemory(raw,"owner")
+        owner=row.get("owner","owner")
+        masker=_MemoryBodyMasker() if row.get("mask") else None
+        raw=MemoryStore(root/"memory",secrets=masker); store=ScopedMemory(raw,owner)
         raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
         store.write("existing","project","known","seed",origin="explicit")
         calls, events = [], []
@@ -5770,18 +5800,20 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
                                "end_turn",FakeUsage(777,3),model="served-memory")
         async def emit(event): events.append(copy.deepcopy(event))
         agent=Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)),workspace=root,emit=emit,
-                    cache_policy=NullCachePolicy(),state=dict(memory=raw,resource_owner="owner"),
+                    cache_policy=NullCachePolicy(),state=dict(memory=raw,resource_owner=owner),
                     settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
         messages=copy.deepcopy(base)
         if row.get("tail",False): messages=[{"role":"user","content":"字"*7000+"tail"}]
         if row.get("greedy",False): messages=[{"role":"user","content":"<memory_context>\none\n</memory_context>\n\nbetween\n</memory_context>\n\nkeep"}]
         agent.messages=copy.deepcopy(messages)
         before=agent.token_meter.snapshot()
+        mask_before=masker.calls if masker else 0
         count=await extract_memories(store,list(agent.messages),agent.client,agent.settings.model,create=agent._create)
         assert agent.token_meter.snapshot()==before
         assert agent.messages==messages
         return {**row,"fault":row.get("fault",False),"messages":messages,"calls":calls,"count":count,
                 "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),"problems":list(raw.problems),
+                "mask_calls":masker.calls-mask_before if masker else 0,
                 "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
     async def run(): return [await scenario(row) for row in recipes]
     return dict(cases=asyncio.run(run()))
@@ -5817,10 +5849,13 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
                for field in ("name","description","type") for label,value in _memory_header_values()],
              *[dict(name=f"body-{label}",seed=10,mode="body",value_json=json.dumps(value))
                for label,value in _memory_body_values()],
-             dict(name="body-masked-surrogate",seed=10,mode="body",mask=True,value_json=json.dumps("\ud800"))]
+             dict(name="body-masked-surrogate",seed=10,mode="body",mask=True,value_json=json.dumps("\ud800")),
+             *[{**row, "seed":10,"mode":"write-order"} for row in _memory_write_order_values()]]
     async def scenario(row):
         root=scratch/row["name"];root.mkdir(parents=True)
-        raw=MemoryStore(root/"memory",secrets=_MemoryBodyMasker() if row.get("mask") else None);store=ScopedMemory(raw,"owner")
+        owner=row.get("owner","owner")
+        masker=_MemoryBodyMasker() if row.get("mask") else None
+        raw=MemoryStore(root/"memory",secrets=masker);store=ScopedMemory(raw,owner)
         raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
         origins=("explicit","auto_extracted","imported","consolidated")
         primary_name="fact-0"
@@ -5848,8 +5883,9 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
         elif mode=="surrogate":items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],row["field"]:"\ud800"},dict(name="never")]
         elif mode=="header":items=[{**indexed[primary_name],row["field"]:value}]
         elif mode=="body":items=[copy.deepcopy(indexed["fact-0"]),dict(name="body-candidate",body=value),dict(name="after",body="after")]
+        elif mode=="write-order":items=[copy.deepcopy(indexed["fact-0"]),json.loads(row["candidate_json"]),dict(name="after",body="after")]
         else:items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],"body":"changed"},dict(name="new",body="merged",owner="foreign",origin="explicit")]
-        reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=mode in {"surrogate","body"})
+        reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=mode in {"surrogate","body","write-order"})
         if mode=="overflow":reply=reply[:-2]+',"extra":1e400}]'
         if mode=="integer-limit":reply=reply[:-2]+',"extra":'+'1'*4301+'}]'
         calls,events=[],[]
@@ -5859,11 +5895,13 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
             return FakeMessage([text(reply)],"end_turn",FakeUsage(888,4),model="served-memory")
         async def emit(event):events.append(copy.deepcopy(event))
         agent=Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)),workspace=root,emit=emit,
-                    cache_policy=NullCachePolicy(),state=dict(memory=raw,resource_owner="owner"),
+                    cache_policy=NullCachePolicy(),state=dict(memory=raw,resource_owner=owner),
                     settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
+        mask_before=masker.calls if masker else 0
         count=await consolidate_memories(store,agent)
         return {**row,"fault":row.get("fault",False),"reply":reply,"before":before,"calls":calls,"count":count,
                 "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),"problems":list(raw.problems),
+                "mask_calls":masker.calls-mask_before if masker else 0,
                 "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
     async def run():return [await scenario(row) for row in recipes]
     return dict(cases=asyncio.run(run()))

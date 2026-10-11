@@ -83,7 +83,7 @@ func extractedMemoryInput(fields jsonvalue.Value) (memory.Input, error) {
 		// Keep text types for the existing storage normalization.
 		values[index] = text
 	}
-	input := memory.Input{Name: values[0], Type: memory.Type(values[1]), Description: values[2], Origin: memory.AutoExtracted}
+	input := (memory.Input{Name: values[0], Type: memory.Type(values[1]), Description: values[2], Origin: memory.AutoExtracted}).WithBody(memory.TextBody(""))
 	if value, present := fields.Lookup("body"); present {
 		body, err := observedMemoryBody(value)
 		if err != nil {

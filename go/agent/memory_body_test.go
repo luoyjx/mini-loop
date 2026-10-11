@@ -8,15 +8,16 @@ import (
 	"github.com/luoyjx/mini-loop/go/memory"
 )
 
-type memorySurrogateMasker struct{}
+type memorySurrogateMasker struct{ calls int }
 
-func (memorySurrogateMasker) MaskText(text string) string {
+func (masker *memorySurrogateMasker) MaskText(text string) string {
+	masker.calls++
 	return strings.ReplaceAll(text, string([]byte{0xed, 0xa0, 0x80}), "safe")
 }
 
-func memoryBodyMasker(enabled bool) memory.Masker {
+func memoryBodyMasker(enabled bool, masker *memorySurrogateMasker) memory.Masker {
 	if enabled {
-		return memorySurrogateMasker{}
+		return masker
 	}
 	return nil
 }
