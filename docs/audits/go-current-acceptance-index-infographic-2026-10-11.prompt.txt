@@ -1,0 +1,20 @@
+Use case: infographic-diagram
+Create a concise landscape Chinese engineering acceptance dashboard infographic. Dark navy, crisp cyan verified records, amber incomplete gates; restrained typographic grid, ample whitespace, accurate small status labels. Title exact: “Go 迁移：校正当前验收索引”
+Subtitle: “2026-10-11 · 本轮更新文档与证据索引，未修改运行时”
+Main three numeric cards:
+“应用覆盖率” “89.21%”
+“全部 Go” “89.15%”
+“Provider” “86.67%”
+Directly below all coverage cards, exact prominent amber note: “来自失败的全量测试；不是验收通过依据”
+Second row status table:
+“当前 Go 文件树” “与该次全量测量一致”
+“契约文件” “236 个存在；全量 Source 匹配未证明”
+“Go 全量普通 / race” “原生监听门禁仍失败”
+“vet / 类型审计” “保留通过记录”
+“Python 全量” “2239 passed · 28 skipped（保留记录）”
+Bottom open items with amber bullets:
+“原生监听准备与交付可靠性”
+“默认语法诊断后端与 IDNA 决策”
+“P0/P1/G0–G7 最终范围与发布门禁”
+Footer exact: “本轮核验文件树与证据哈希；未重新运行全量测试”
+Avoid saying migration complete or all tests pass. Do not show green overall completion badge, unsupported progress percent, statistical conclusions or new runtime improvements. This round corrected stale current-status claims and reconciled pinned artifacts.

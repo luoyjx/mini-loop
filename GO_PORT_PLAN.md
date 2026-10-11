@@ -19488,3 +19488,8 @@ full native/Python/scanner/guard gates are not rerun. Canonical map/boundaries
 reviewed, visible baseline updated; topology/authority/defaults unchanged,
 architecture JSON/HTML unchanged and no rendered acceptance. No push.
 [Reconciled current index](docs/audits/go-current-acceptance-index-2026-10-11.json).
+
+Built-in imagegen infographic inspected: exact coverage, failed full gates and
+retained/not-rerun labels remain explicit.
+[Infographic](docs/audits/go-current-acceptance-index-infographic-2026-10-11.png),
+[exact prompt](docs/audits/go-current-acceptance-index-infographic-2026-10-11.prompt.txt).
