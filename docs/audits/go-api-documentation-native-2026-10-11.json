@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "baseline": "a1881a9",
+  "implementation_commit": "cf1ebea4d07465c45e9ccb3123e25f0c48a45f46",
+  "scope": "Protected default API documentation routes; no final G0-G7 acceptance claim",
+  "source": {
+    "fastapi_version": "0.136.3",
+    "docs_source_sha256": "3dc8c7d129feca9f7b3b47b15e29dc1bc7a9b18ec04f2242e7aeb66cad4345aa",
+    "cases": 36,
+    "assets": [
+      {
+        "bytes": 32374,
+        "filename": "openapi.json",
+        "media_type": "application/json",
+        "path": "/openapi.json",
+        "sha256": "1a79ce17ddb2c1be395d167dddfff13167f9f329f6128a6203b1f5f0310c4183"
+      },
+      {
+        "bytes": 1008,
+        "filename": "swagger.html",
+        "media_type": "text/html; charset=utf-8",
+        "path": "/docs",
+        "sha256": "a742584684629e8b02fe2f04d7d6cb9202b8441174a9be2469cbc0a663f14ded"
+      },
+      {
+        "bytes": 3012,
+        "filename": "oauth2-redirect.html",
+        "media_type": "text/html; charset=utf-8",
+        "path": "/docs/oauth2-redirect",
+        "sha256": "f45d60bb9f054b1712b3f9e60547eb9e1d523afd6472a4137b89eb503b37f058"
+      },
+      {
+        "bytes": 890,
+        "filename": "redoc.html",
+        "media_type": "text/html; charset=utf-8",
+        "path": "/redoc",
+        "sha256": "c100b65b4d6d73e79d4c2d1dffe0994ac69f0804b4806e5b37441ccdd57421b1"
+      }
+    ],
+    "fresh_contract_files": 230
+  },
+  "native": {
+    "paths": [
+      "/openapi.json",
+      "/docs",
+      "/docs/oauth2-redirect",
+      "/redoc"
+    ],
+    "explicit_business_paths": 40,
+    "admission": "After shared body cap and authentication; query credentials remain stream-only",
+    "methods": [
+      "GET",
+      "HEAD"
+    ],
+    "resources": "Embedded at build time; Python is used only for generation/check",
+    "comparison": "Exact static document bytes; semantic error JSON (whitespace differs); security headers, Allow and redirects compared over actual TCP",
+    "syntax_types": "447 files, 1425 types, zero findings",
+    "public_types": "50 packages, 1189 exported types, zero findings"
+  },
+  "gates": [
+    {
+      "command": "go test -p=1 -count=1 -timeout=300s ./...",
+      "cwd": "go",
+      "exit_code": 1,
+      "log_path": "/tmp/mini-loop-api-docs-go.log",
+      "log_sha256": "5421b8d5151d1767b5107e8bfc021683d5c5885099b22811e94c416b8a170a7b",
+      "last_lines": [
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workflows\t1.473s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workspace\t0.921s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/worktrees\t3.707s",
+        "FAIL"
+      ]
+    },
+    {
+      "command": "go test -race -p=1 -count=1 -timeout=300s ./...",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-race.log",
+      "log_sha256": "c8c6b6397fec16def687f0f917394f8f7205bb03deda6adb6dd848a31b07ae98",
+      "last_lines": [
+        "ok  \tgithub.com/luoyjx/mini-loop/go/verifiedloop\t1.361s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workflows\t3.563s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/workspace\t3.796s",
+        "ok  \tgithub.com/luoyjx/mini-loop/go/worktrees\t5.064s"
+      ]
+    },
+    {
+      "command": "go vet ./...",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "last_lines": []
+    },
+    {
+      "command": "go run ./tools/typeaudit -root .",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-types.log",
+      "log_sha256": "01a1344b3775671e767c74503301143dfa762e15a3d1118dc823ee26c775eb29",
+      "last_lines": [
+        "Go type audit: 447 production files, 1425 package-level types, 0 findings"
+      ]
+    },
+    {
+      "command": "go run ./tools/typeaudit -public -root .",
+      "cwd": "go",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-public-types.log",
+      "log_sha256": "e72b55d7b2a15d2bef0eb94d7419ff0a5873d5158399cf9d5623d580f5bcd0af",
+      "last_lines": [
+        "Go public type audit: 50 packages, 1189 exported types, 0 findings"
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/export_go_api_docs.py --check",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-assets-check.log",
+      "log_sha256": "9c8956258ca94a6af01d04b7d68688c1872a5b9d849891a258c5ba22c43840f3",
+      "last_lines": [
+        "Python→Go documentation resources current: 4 files"
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/export_go_contracts.py --check",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-export-check.log",
+      "log_sha256": "9df6cb3d363dbad7878ffc3dd172f3d28f829424347e8c0e8464f430b0e08b18",
+      "last_lines": [
+        "  return self.__pydantic_serializer__.to_python(",
+        "/Users/yanjixiong/github/mini-loop/.venv/lib/python3.11/site-packages/pathspec/pattern.py:132: FutureWarning: Possible nested set at position 10",
+        "  regex = re.compile(raw_regex)",
+        "Python→Go contracts current: 230 files"
+      ]
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-python.log",
+      "log_sha256": "e9c6460f774c5e9be454964d37275df85d6d68d1d47ac573035fbea0c697ec40",
+      "last_lines": [
+        "    return self.__pydantic_serializer__.to_python(",
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "2232 passed, 28 skipped, 54 warnings, 24 subtests passed in 88.67s (0:01:28)"
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_scans.py",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-scans.log",
+      "log_sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "last_lines": [
+        "  pins       test_write_sites.py::test_every_write_site_is_classified",
+        "  pins       test_write_sites.py::test_the_classification_has_no_dead_entries",
+        "",
+        "all 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied."
+      ]
+    },
+    {
+      "command": ".venv/bin/python python/tools/verify_guards.py -k request-",
+      "cwd": ".",
+      "exit_code": 0,
+      "log_path": "/tmp/mini-loop-api-docs-guards.log",
+      "log_sha256": "10d39750c615dd1e97451cdcb7197ec0d14c8d7edff0ba512623cfac9bf60b0e",
+      "last_lines": [
+        "  caught    request-content-length-unchecked  (r150: an oversized body is refused from its Content-Length before it is buffered: reading a multi-gigabyte body to parse it OOMs the shared server, every tenant on it with it)",
+        "  caught    request-streamed-bytes-uncounted  (r150: the streamed body is counted too, so a chunked request or a lying Content-Length cannot slip a large body past the header check)",
+        "",
+        "all 2 guards are load-bearing (passing baseline, failed test call)."
+      ]
+    }
+  ],
+  "ordinary_go_failure": {
+    "package": "reload",
+    "cases": [
+      "TestNativeEventsActualSourceRecipes/removed-source",
+      "TestNativeEventsActualSourceRecipes/same-mtime-touch"
+    ],
+    "diagnostic_lines": [
+      "--- FAIL: TestNativeEventsActualSourceRecipes (65.39s)",
+      "    --- FAIL: TestNativeEventsActualSourceRecipes/removed-source (5.00s)",
+      "        native_events_recipes_test.go:197: context deadline exceeded",
+      "        native_events_recipes_test.go:141: native recipe timeline:",
+      "            +134ms subscription constructed; drain before post-subscription probe",
+      "            +234ms pre-probe next: paths=[] error=context deadline exceeded",
+      "            +1.845s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source2132660725/001\" flags=164096",
+      "            +1.845s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source2132660725/001/source.go\" flags=103680",
+      "            +1.845s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source2132660725/001/reload_observer_ready.go\" flags=102656",
+      "            +1.897s readiness probe observed; drain remaining setup events",
+      "            +1.999s post-probe next: paths=[] error=context deadline exceeded",
+      "            +1.999s operation=remove path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipesremoved-source2132660725/001/source.go",
+      "            +5.001s operation next: paths=[] error=context deadline exceeded",
+      "            ",
+      "    --- FAIL: TestNativeEventsActualSourceRecipes/same-mtime-touch (7.79s)",
+      "        native_events_recipes_test.go:197: context deadline exceeded",
+      "        native_events_recipes_test.go:141: native recipe timeline:",
+      "            +207ms subscription constructed; drain before post-subscription probe",
+      "            +308ms pre-probe next: paths=[] error=context deadline exceeded",
+      "            +4.631s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch4093887154/001\" flags=164096",
+      "            +4.632s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch4093887154/001/source.go\" flags=103680",
+      "            +4.632s reload native event: path=\"/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch4093887154/001/reload_observer_ready.go\" flags=102656",
+      "            +4.684s readiness probe observed; drain remaining setup events",
+      "            +4.785s post-probe next: paths=[] error=context deadline exceeded",
+      "            +4.785s operation=touch path=/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/TestNativeEventsActualSourceRecipessame-mtime-touch4093887154/001/source.go",
+      "            +7.787s operation next: paths=[] error=context deadline exceeded",
+      "            ",
+      "FAIL",
+      "FAIL\tgithub.com/luoyjx/mini-loop/go/reload\t108.555s",
+      "ok  \tgithub.com/luoyjx/mini-loop/go/runmeta\t0.294s"
+    ],
+    "interpretation": "Full race passed but ordinary failed: observer timing reliability remains open; no deadlines or observer production code changed in this slice"
+  },
+  "architecture": {
+    "validation": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "validate",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "checks": [
+        {
+          "name": "single_svg",
+          "ok": true,
+          "details": [
+            "found 1 <svg> block(s)"
+          ]
+        },
+        {
+          "name": "finite_svg",
+          "ok": true,
+          "details": []
+        },
+        {
+          "name": "orthogonal_arrows",
+          "ok": true,
+          "details": []
+        },
+        {
+          "name": "label_route_clearance",
+          "ok": true,
+          "details": []
+        },
+        {
+          "name": "relationship_crossings",
+          "ok": true,
+          "details": []
+        },
+        {
+          "name": "relationship_corridors",
+          "ok": true,
+          "details": []
+        },
+        {
+          "name": "container_border_runs",
+          "ok": true,
+          "details": []
+        },
+        {
+          "name": "route_rhythm",
+          "ok": true,
+          "details": []
+        },
+        {
+          "name": "legend_clearance",
+          "ok": true,
+          "details": []
+        }
+      ],
+      "composition": {
+        "schemaVersion": 1,
+        "profile": "showcase",
+        "status": "pass",
+        "summary": {
+          "errors": 0,
+          "warnings": 0
+        },
+        "metrics": {
+          "properCrossings": 0,
+          "ambiguousCorridors": 0,
+          "containerBorderRuns": 0,
+          "labelRouteClearanceIssues": 0,
+          "minLabelRouteClearance": 6,
+          "maxBends": 6,
+          "routesOverSuggestedBends": 20,
+          "maxStretch": 2.154,
+          "routesOverSuggestedStretch": 6,
+          "minSegmentPx": 10,
+          "minInteriorSegmentPx": 16,
+          "shortSegmentCount": 1,
+          "shortEndpointSegmentCount": 1,
+          "shortInteriorSegmentCount": 0,
+          "microSegmentCount": 0
+        },
+        "suggestedLimits": {
+          "bendsPerRelationship": 2,
+          "stretch": 1.35,
+          "segmentPx": 16,
+          "microSegmentPx": 8
+        },
+        "issues": []
+      }
+    },
+    "delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "2ac66a3151527ce8cfca80cc9eb59e0c4e9b1e9886cfde90146a9ecd069a559c",
+        "bytes": 134832
+      },
+      "artifact": {
+        "sha256": "0f6c95708204f7654ae72c04428b193a6d3d8461220f4661f578f74c63965c08",
+        "bytes": 785045
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "visual_review": "Skipped: browser security policy rejected local file:// HTML. No proxy or alternate rendering workaround attempted.",
+    "ownership": "Resources stay inside HTTP entry and return after authentication; service requests continue to Manager"
+  },
+  "earlier_source_timing": {
+    "method": "Temporary tracing of actual WatchFilesReload methods, preserving class identity, defaults and deadlines",
+    "native_and_polling": "16 native + 20 polling rows matched; 59.891629 seconds, 1037 timestamp records",
+    "full_export": "229 files current after preceding captures; 96.36053 seconds",
+    "interpretation": "Observational success does not explain prior readiness failure or native Go timeouts; no service restarted"
+  },
+  "limits": [
+    "Browser external Swagger/ReDoc libraries not validated; Source references and CSP preserved",
+    "Custom ASGI mounts/root paths outside default capture",
+    "Coverage not refreshed; previous coverage baseline retains its own failed-run limits",
+    "Default diagnostics dependency decision and final G0-G7 scope audit remain open"
+  ]
+}
