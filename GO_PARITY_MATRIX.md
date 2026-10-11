@@ -11085,3 +11085,46 @@ open. No dependency or push. [Boundary/gate evidence](docs/audits/go-provider-li
 and [coverage receipt](docs/audits/go-coverage-literal-target-2026-10-11.json) preserve
 exact failures and profile aggregation/hash. Built-in imagegen produced the
 [iteration graphic](docs/audits/go-provider-literal-target-infographic-2026-10-11.png).
+
+## SQLite maximum-decision shared-budget diagnosis — 2026-10-11
+
+Production/test baseline `14e3b02`; runtime, original test and fixture are unchanged.
+A maintained overlay script adds only phase/model-call logging to the actual
+maximum sqlite-reopen subtest. The original 512KiB payload, digest, backend-once,
+exact retained replay, current readonly refusal, lease/transcript assertions and
+30-second shared context remain intact. Four distinct modes execute once each:
+
+| Mode | Maximum subtest wall time | Result |
+| --- | --- | --- |
+| Ordinary | 4.65s | Pass |
+| Race only | 14.00s | Pass |
+| Atomic coverage only | 8.98s | Pass |
+| Race + atomic coverage + CPU profile | 30.26s | Fail |
+
+In the combined diagnostic, payload preparation ends at 2.681s; first turn ends
+at 29.218s; action read/digest at 29.500s; restore ends at 30.255s. Replay starts
+with the shared context already expired and fails. This localizes this diagnostic
+failure before replay execution; it does not reconstruct timing of the earlier
+full-suite failure, prove a SQLite defect, or justify changing the test budget.
+CPU samples are 74.61% runtime._ExternalCode and cannot attribute the dominant
+cost to SQLite or any specific encoder. JSON per-rune helpers appear among the
+remaining samples but are not proven as the cause. Overlay logging, CPU profiling
+and host load can affect timings; one run per mode is not a statistical baseline.
+
+Original source hashes and logs are retained. Script syntax compilation and the
+preflight refusal of an already-completed mode pass without rerunning it. Each
+native command terminated; no live job or host-service intervention remains from
+this diagnostic. The profiling binary was moved to the named /tmp artifact; final
+script emits it outside the checkout. README canonical map reviewed, visible
+baseline advanced; topology/ownership/authority/persistence/defaults and generated
+architecture remain unchanged. Full Python regression passes: 2239 passed, 28 skipped, 74 warnings, 24 subtests passed in 166.73s (0:02:46).
+Diff check passes. No full ordinary/race Go, Source export, type/scanner/mutation,
+coverage refresh or non-Darwin gate is rerun:
+production/test/inventory targets are unchanged. Earlier global failures remain.
+
+[Reproducer](docs/audits/go-sqlite-decision-budget-2026-10-11.py),
+[exact logs / overlay / CPU audit](docs/audits/go-sqlite-decision-budget-2026-10-11.json),
+and [built-in imagegen graphic](docs/audits/go-sqlite-decision-budget-infographic-2026-10-11.png)
+retain the evidence. Next measure concrete serialization/validation stages and
+reduce verified costs while retaining full byte/guard contracts; do not infer a
+SQL or host cause from runtime._ExternalCode. Full G0–G7 remains open; no push.
