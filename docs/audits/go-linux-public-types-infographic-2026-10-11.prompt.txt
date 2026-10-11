@@ -1,0 +1,16 @@
+Use case: infographic-diagram
+Create a landscape Chinese engineering progress infographic, dark navy, cyan verified evidence, amber remaining scope, large accurate typography and restrained layout.
+Title exact: “Go 迁移：补充 Linux 公开类型审计”
+Subtitle: “2026-10-11 · 固定 Go 1.23.3 · Linux amd64 · CGO=1”
+Three main numeric cards exact:
+“50” “主模块包”
+“1189” “导出类型”
+“0” “模糊载荷发现”
+Small scope under cards: “编译器导出数据中的公开类型闭包”
+Pipeline: “本地跨编译清单受阻” → “现有固定 Linux 镜像” → “公开类型审计通过” → “已启动全量普通 / vet / race”
+Label beneath last stage: “结果单独记录，尚不宣称通过”
+Evidence box: “只读提交快照 · 已批准 SQLite v1.14.52 · 离线依赖 · 未修改运行时”
+Limit box exact: “amd64 兼容层运行；不代表原生性能”
+Remaining scope: “私有根类型、外部结构内部、数据流和其他构建配置仍待验证”
+Footer: “Darwin 原生监听与全量 Source 门禁仍未完成”
+Avoid saying all Linux runtime gates passed, CGO0 passed, migration complete, all types globally safe, or compiler tests prove behavioral parity. Do not invent performance/coverage metrics. This is a public compiler-type audit only.

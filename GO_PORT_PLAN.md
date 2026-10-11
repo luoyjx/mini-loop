@@ -19537,3 +19537,8 @@ IDNA/global Source/final P0/P1/G0–G7 remain open.
 Early Linux ordinary output already fails background SDK timeout-array with
 message-phase5 versus4; full cohort is still running, so this is partial failure
 evidence, not a terminal full gate or a causal finding. Preserve its owned handle.
+
+Built-in imagegen infographic inspected:50/1189/0 belongs only to Linux CGO
+public closure; full gates remain unaccepted and compatibility/performance limits
+are explicit. [Infographic](docs/audits/go-linux-public-types-infographic-2026-10-11.png),
+[exact prompt](docs/audits/go-linux-public-types-infographic-2026-10-11.prompt.txt).
