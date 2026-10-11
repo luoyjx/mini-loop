@@ -1,0 +1,115 @@
+{
+  "baseline": "c43399c",
+  "implementation_commit": "3916f71",
+  "source_contract_commit": "e1e82f0",
+  "sdk_version": "0.107.1",
+  "scope": "Named completed reply container/refusal metadata, direct/SSE ingress, immutable cloning and public JSON.",
+  "profiles": 22,
+  "observations": 44,
+  "types": [
+    "ReplyMetadataKind",
+    "SDKMetadataText",
+    "ReplyExpiry",
+    "ReplyContainer",
+    "RefusalStopDetails",
+    "ContainerMetadata",
+    "StopDetailsMetadata"
+  ],
+  "rules": [
+    "Missing metadata and required nested fields default to null.",
+    "Provider ingress explicitly normalizes SDK expiry; archival decoding preserves stored observations.",
+    "Finite malformed fields and extensions remain immutable observations.",
+    "SSE retains start.container and replaces stop_details only for non-null deltas."
+  ],
+  "gates": {
+    "go test ./protocol ./provider": "passed, including all 44 captures, clones and public JSON roundtrips",
+    "go test -p=1 -count=1 -timeout=300s ./...": "passed; reload 78.249s",
+    "go test -race -p=1 -count=1 -timeout=300s ./...": "passed; reload 62.849s",
+    "go vet ./...": "passed",
+    "go run ./tools/typeaudit -root .": "passed: 446 production files, 1424 package-level types, 0 findings",
+    "go run ./tools/typeaudit -root . -public": "passed: 50 packages, 1189 exported types, 0 findings",
+    ".venv/bin/python -m pytest -q": "passed: 2231 tests, 28 skipped, 54 warnings, 24 subtests, 134.70s; metadata fixture regenerated and compared",
+    ".venv/bin/python python/tools/verify_scans.py": "passed: 19 anchored guards",
+    ".venv/bin/python python/tools/export_go_contracts.py --check": "failed before full comparison: WatchFiles native Source observer did not arm; exit 1",
+    "git diff --check": "passed"
+  },
+  "source_freshness": {
+    "last_complete_check": "229 files at e1e82f0 Source prerequisite",
+    "current_full_check": "Not completed due to native Source readiness failure; not classified as a fixture mismatch.",
+    "current_metadata_subset": "All 44 observations freshly reconstructed and compared by full Python regression."
+  },
+  "limits": [
+    "No full G4/G7 acceptance or arbitrary datetime/coercion proof.",
+    "Previous native reload timeouts and current Source readiness failure remain unexplained; current native passes do not close temporal acceptance.",
+    "Existing Agent events do not consume the new metadata; no authority, topology, persistence ownership or feature-default change.",
+    "No new dependency or paid-provider deployment check.",
+    "Coverage was not refreshed; Python package invariant/guard mutation gates were not rerun because no Python package/guard changes occurred.",
+    "No remote push."
+  ],
+  "evidence": {
+    "ordinary_go": {
+      "path": "/tmp/mini-loop-reply-metadata-go.log",
+      "sha256": "b06f202e5ef235a47893df4140ade84e4b406ca16b9e6bbae25d293a3f0548df"
+    },
+    "race_go": {
+      "path": "/tmp/mini-loop-reply-metadata-race.log",
+      "sha256": "7e537665b7d3e78356111c975ea9c025d10ce5da27615971894a8b54e4517e28"
+    },
+    "vet": {
+      "path": "/tmp/mini-loop-reply-metadata-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "syntax_types": {
+      "path": "/tmp/mini-loop-reply-metadata-types.log",
+      "sha256": "a13a9da70a0e8c43fe24cba6f44108f43d54b686af13e7fffb9d3329ec91e326"
+    },
+    "public_types": {
+      "path": "/tmp/mini-loop-reply-metadata-public-types.log",
+      "sha256": "e72b55d7b2a15d2bef0eb94d7419ff0a5873d5158399cf9d5623d580f5bcd0af"
+    },
+    "source_export": {
+      "path": "/tmp/mini-loop-reply-metadata-native-export-check.log",
+      "sha256": "6a1cb27ff9b58658034c5bb771de5ee91b2ddcbcb3599128109f8b89eae31e69"
+    },
+    "python_regression": {
+      "path": "/tmp/mini-loop-reply-metadata-python.log",
+      "sha256": "9457f2c219f958a05bc186f5cc61c623f0bcff678a9729a9327ccd2bc56f4cc2"
+    },
+    "scans": {
+      "path": "/tmp/mini-loop-reply-metadata-native-scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+    },
+    "go/testdata/python-provider-reply-metadata.json": {
+      "path": "go/testdata/python-provider-reply-metadata.json",
+      "sha256": "c0ac21be83ddc49535b4aea790ec66d15c5f73b75eac0138f0cf28a408e93bbc"
+    },
+    "go/protocol/reply.go": {
+      "path": "go/protocol/reply.go",
+      "sha256": "b15a92f491afc2eeed444fc614b8aecdecc29f4c4cb031eeefd56f68a4f3f4bd"
+    },
+    "go/protocol/reply_metadata.go": {
+      "path": "go/protocol/reply_metadata.go",
+      "sha256": "d13fac3318bee8c9fff4a80c6edccc3e29e3083ed4d63e80053ef5b469593344"
+    },
+    "go/protocol/reply_expiry.go": {
+      "path": "go/protocol/reply_expiry.go",
+      "sha256": "66ff9e85af1199aa934c159b209c9ef0908f996823ba4a7ba6d4e6e1b6252a0c"
+    },
+    "go/provider/decode.go": {
+      "path": "go/provider/decode.go",
+      "sha256": "defb0b4645da6dd573105dc2a86a2c55c8b8430a61e3f8cc4f3c814145a4a7b1"
+    },
+    "go/provider/stream_decode.go": {
+      "path": "go/provider/stream_decode.go",
+      "sha256": "d0d5747273a664bbba236ee48eb36541f7ee6022558ea6a32a9b9ed9001fce6d"
+    },
+    "go/provider/reply_metadata_test.go": {
+      "path": "go/provider/reply_metadata_test.go",
+      "sha256": "a6f4315cc5bd845cc53de8c37cf38a52228915192381359c2f48a915dcade8b6"
+    },
+    "go/protocol/reply_metadata_test.go": {
+      "path": "go/protocol/reply_metadata_test.go",
+      "sha256": "d1349b848001999ecc043638e9abcc2e11998c0267bdac85a9c8c0497a44bde5"
+    }
+  }
+}

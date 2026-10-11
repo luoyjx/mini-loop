@@ -2,14 +2,14 @@
 
 ## 摘要
 
-当前复核基线：`e2b6e7d`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
+当前复核基线：`3916f71`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
 元数据与实际计量消费者、十二个 SDK content discriminator 已有实现和组合证据。
 初始 usage 缺口已补齐，不能继续作为待实现项；下文早期章节保留各自历史基线。
 
-本轮确认的公开回复缺口是 **`container` 与 `stop_details`**：Python provider/transport
-返回完整 SDK Message，Go 的 ModelReply 与 direct/SSE ingress 当前丢弃这两个顶层字段。
-新增 44 个真实 SDK 离线捕获固定其 null 缺省、日期规范化、有限非标准字段值与流式
-累加规则。它们是下一项 Go 具名结构实现的契约，尚不是原生实现或 G4/G7 验收。
+公开回复的 **`container` 与 `stop_details`** 已在 `3916f71` 补齐：具名闭合变体、
+direct/SSE 入口、不可变克隆与公开 JSON 对照全部 44 个真实 SDK 捕获通过。
+全量 Go 普通/race、vet、类型审计和 Python 回归通过；本轮 Source 全量导出在
+WatchFiles 原生观察器启动处失败，不能宣称全部契约已刷新。G4/G7 继续开放。
 
 ## 实际请求生成路径
 
@@ -398,6 +398,8 @@ the Bash display worktree; no coverage refresh is claimed for this slice.
 
 ## Completed reply metadata Source contracts — 2026-10-11
 
+以下保留 `e1e82f0` 的 Source-only 检查状态；原生实现见下一节。
+
 当前 Python `DirectTransport.send` 返回 SDK Message，`StreamingTransport.send`
 返回 SDK 的 get_final_message；`Agent._create` 也原样返回 reply。现有 Go
 `protocol.ModelReply`、`provider.decodeReply` 和 SSE accumulator 未保留 container
@@ -419,3 +421,23 @@ Message、Container、RefusalStopDetails 与 accumulate_event。已确认：
 当前没有新增运行时依赖或原生行为；G4/G7 仍开放。
 
 [本轮 Source 捕获与验证记录](docs/audits/go-provider-reply-metadata-source-2026-10-11.json)。
+
+## Native completed reply metadata — 2026-10-11
+
+实现提交 `3916f71`：ContainerMetadata / StopDetailsMetadata 使用 null、具名结构、
+有限非对象观察值三个闭合变体。结构内的 SDKMetadataText、ReplyExpiry 与未知扩展
+保留不可变值；getter 返回副本。日期只在 provider 入口规范化，公开存档解码保留
+已有观察值。direct 与 SSE start 接入两个字段；SSE 忽略 container delta，只有非 null
+stop_details delta 替换初值。未新增依赖、事件字段或执行权限。
+
+全部 44 个捕获经实际 native Complete / CompleteStream 重放，并验证克隆与完整回复
+JSON 往返。另验证 getter/扩展数组不可变、非有限数与孤立代理字符拒绝及失败解码原子性。
+全量普通 Go、race、vet、两项类型审计、19 个扫描守卫和 Python 回归通过
+（2231 passed、28 skipped、24 subtests；54 个 serializer/deprecation warnings）。
+
+本轮全量 Source --check 在 WatchFiles 原生观察器 readiness 失败处退出，尚未完成
+所有 fixture 比较；最后完整检查仍是 e1e82f0 的 229 文件。本轮 Python 回归重新构造
+全部 44 个 metadata 捕获并与 fixture 比较通过。当前 native reload 普通/race 均通过，
+但历史超时与此次 Source 失败的根因仍未知，不能据此关闭时序验收。没有刷新覆盖率。
+
+[原生实现与门禁证据](docs/audits/go-provider-reply-metadata-native-2026-10-11.json)。

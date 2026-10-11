@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 at merged `5e4dd67`; latest production implementation `ea35cd3`, recipe setup test `e5064d8`. Named background option policies and actual SDK/managed consumers are delivered, including nonfinite final error text. Last complete Source export passed with 229 files at reply-metadata Source prerequisite `e1e82f0`. This section is the current delivery index;
+Reviewed 2026-10-11 at merged `5e4dd67`; latest production implementation `3916f71`, recipe setup test `e5064d8`. Named background option policies and actual SDK/managed consumers are delivered, including nonfinite final error text. Completed reply metadata now matches 44 SDK captures. Full ordinary/race Go, vet, types and Python regression pass at `3916f71`; current full Source export stopped at native WatchFiles readiness. Last complete Source export passed with 229 files at reply-metadata Source prerequisite `e1e82f0`. This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
 final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
@@ -6867,7 +6867,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Last full export verified 228 Source recipe files, including actual SDK background option/managed consumers; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
+| G7 | Last complete export verified 229 Source recipe files at e1e82f0; current attempt stopped at WatchFiles readiness; actual SDK background option/managed consumers and completed reply metadata are captured; native tests and documented adaptations | Public-entry/default/type audit, broader performance scope and final release gates remain; initial matched fake HTTP performance evidence and refreshed Python regression are delivered; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -6877,10 +6877,11 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
    refuses `MINILOOP_FEATURES`; choosing its proposed CPython backend requires the
    outstanding explicit dependency decision. SQLite driver approval does not approve it.
 
-2. Provider final inventory: completed replies still drop SDK `container` and
-   `stop_details`; 44 actual direct/stream captures now define defaults, date
-   normalization, permissive finite observations and exact delta updates. Implement
-   named closed metadata variants before accepting this public return path.
+2. Provider final inventory: completed reply `container` and `stop_details` now
+   use named closed variants at `3916f71`; 44 actual direct/stream captures match
+   defaults, date normalization, finite observations, delta updates, cloning and
+   public JSON. Arbitrary coercion/date inputs and remaining custom transport
+   behavior still require final inventory reconciliation.
    Native citation normalization, ordered SSE, forwarding,
    immutable cloning/masking and text rewrites have Source and native evidence.
    Citation-bearing HTTP/SQLite/recording recovery is verified for direct and stream
@@ -18376,3 +18377,23 @@ so the reviewed README baseline advances without architecture regeneration. No
 Go runtime tests, full Python regression or coverage refresh in this Source-only
 slice. Next implement named metadata variants, wire ingress, clone and public
 JSON parity for all 44 captures; full G4/G7 acceptance remains open.
+
+## Native completed reply metadata — 2026-10-11
+
+At `3916f71`, named container/refusal variants retain nullable fields, finite SDK
+fallback observations and immutable extensions. Provider ingress selects expiry
+normalization; archive JSON preserves stored observations. SSE keeps the starting
+container and only replaces stop details for a non-null delta. All 44 SDK 0.107.1
+captures match native direct/stream responses, clones and public JSON roundtrips.
+
+Full ordinary/race Go, vet, syntax/public type audits, 19 scan guards and full
+Python regression pass (2231 tests, 28 skipped, 24 subtests, 54 warnings). The full
+Source export --check exits at native WatchFiles observer readiness before full
+comparison; last complete 229-file freshness remains e1e82f0. The 44 metadata
+observations are freshly regenerated and compared by Python regression. Current
+native reload ordinary/race pass; prior timeouts and current Source readiness
+failure remain unexplained. Coverage, arbitrary date/coercion parity and final
+G4/G7 acceptance remain open. No new dependency, authority, topology or default
+selection; README baseline/boundary updated without map regeneration.
+
+See [native metadata evidence](docs/audits/go-provider-reply-metadata-native-2026-10-11.json).

@@ -2,21 +2,21 @@
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed baseline: merged `5e4dd67`; latest production `ea35cd3`, recipe setup tests `e5064d8`. Background option policies, actual SDK/managed consumers and nonfinite final error text are delivered. The entries below retain their historical
+Reviewed baseline: merged `5e4dd67`; latest production `3916f71`, recipe setup tests `e5064d8`. Background option policies, actual SDK/managed consumers and nonfinite final error text are delivered. The entries below retain their historical
 baselines and pending notes; use [the current plan](GO_PORT_PLAN.md#current-status)
 for today's implementation queue. The complete migration is not yet accepted.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | Last full export --check: 229 current files at reply-metadata Source prerequisite (baseline e2b6e7d) | Current Source snapshot matches; prior failed observer captures remain retained in drift audits |
+| Source recipe freshness | Last full export --check: 229 current files at reply-metadata Source prerequisite (baseline e2b6e7d) | Current full attempt stops at WatchFiles native readiness; metadata subset freshly matches all 44 captures in Python regression; prior failed observer captures remain retained |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | Native/polling CLI tests; [preceding-package controls](docs/audits/go-reload-package-prefix-controls-2026-10-11.json); [CLI-only context](docs/audits/go-reload-cli-package-controls-2026-10-11.json) at merged 5e4dd67 | CLI-only prefix then whole reload reproduces two timeouts; later selected Source/native and complete Go polling controls pass. Live service CPU pressure is observed without a causal claim. Previous Source prefix failures remain retained. Full ordinary gate, root cause and temporal G3/G7 acceptance remain open |
-| Package-level type declarations | `go run ./tools/typeaudit -root .` and `-public`; [compiler audit](docs/audits/go-public-types-2026-10-11.json) | Syntax: 444 production files / 1417 types; active-profile compiler closure: 50 packages / 1182 exported types; both zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
-| Completed reply metadata | `go/testdata/python-provider-reply-metadata.json`: 44 actual SDK 0.107.1 direct/stream captures | Confirmed open: native ModelReply/direct/SSE omit container and stop_details; defaults, normalized timestamps and SDK delta retention are captured for named implementation |
+| Development reload | Native/polling CLI tests; [preceding-package controls](docs/audits/go-reload-package-prefix-controls-2026-10-11.json); [CLI-only context](docs/audits/go-reload-cli-package-controls-2026-10-11.json) at merged 5e4dd67 | CLI-only prefix then whole reload reproduces two timeouts; later selected Source/native and complete Go polling controls pass. Live service CPU pressure is observed without a causal claim. Previous Source prefix failures remain retained. Current 3916f71 ordinary/race gates pass; full Source export fails native readiness. Root cause and temporal G3/G7 acceptance remain open |
+| Package-level type declarations | `go run ./tools/typeaudit -root .` and `-public`; [compiler audit](docs/audits/go-public-types-2026-10-11.json); [current gates](docs/audits/go-provider-reply-metadata-native-2026-10-11.json) | At 3916f71: syntax 446 production files / 1424 types; active-profile compiler closure 50 packages / 1189 exported types; both zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
+| Completed reply metadata | `go/testdata/python-provider-reply-metadata.json`: 44 actual SDK 0.107.1 direct/stream captures | Implemented at 3916f71: named finite observations, defaults, normalized timestamps, SDK delta retention, cloning and public JSON match all 44 captures; arbitrary coercion/custom transport and final acceptance remain |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
@@ -10482,3 +10482,14 @@ previous full ordinary failures and coverage baseline retain their limits.
 git diff --check passes; no merge/push; complete port acceptance remains open.
 Next: compare actual Source after preceding compiler/CLI volume workload,
 separating shared filesystem workload from process-local subscription history.
+
+## Native completed reply metadata — 2026-10-11
+
+`3916f71` preserves container/stop_details through named protocol variants,
+direct/SSE ingress, immutable clone and public JSON. All 44 actual SDK 0.107.1
+captures match. Full ordinary/race Go, vet, syntax/public type audits, Python
+regression (2231 passed, 28 skipped, 24 subtests) and 19 scan guards pass. Current
+full Source export is interrupted by WatchFiles native readiness failure; metadata
+fixtures are freshly regenerated and compared by Python regression. Last complete
+full freshness remains the e1e82f0 229-file check. No coverage refresh or complete
+G4/G7 claim. See [evidence](docs/audits/go-provider-reply-metadata-native-2026-10-11.json).
