@@ -102,9 +102,12 @@ func TestUsageSparseNullDefaultsAndNestedExtensions(t *testing.T) {
 	}
 }
 
+// Non-text geo is accepted as observed SDK metadata; the required Source test
+// covers the exact former inference_geo:5 rejection case. Genuine malformed
+// frames, missing required counts and nonfinite counts remain atomic failures.
 func TestUsageMetadataFailureIsAtomicAndBounded(t *testing.T) {
 	initial := TokenUsage{InputTokens: IntegerUsageCount(7), OutputTokens: IntegerUsageCount(8)}
-	for _, raw := range []string{`{"input_tokens":1}`, `{"input_tokens":1,"output_tokens":2,"cache_creation":{"ephemeral_1h_input_tokens":NaN,"ephemeral_5m_input_tokens":0}}`, `{"input_tokens":1,"output_tokens":2,"inference_geo":5}`, `{"input_tokens":1,"output_tokens":2,"output_tokens_details":{"thinking_tokens":NaN}}`, strings.Repeat(" ", MaxWireBytes+1)} {
+	for _, raw := range []string{`{"input_tokens":1}`, `{"input_tokens":1,"output_tokens":2,"cache_creation":{"ephemeral_1h_input_tokens":NaN,"ephemeral_5m_input_tokens":0}}`, `{"input_tokens":1,"output_tokens":2,"output_tokens_details":{"thinking_tokens":NaN}}`, strings.Repeat(" ", MaxWireBytes+1)} {
 		target := initial
 		if err := json.Unmarshal([]byte(raw), &target); err == nil {
 			t.Fatal("invalid usage accepted")

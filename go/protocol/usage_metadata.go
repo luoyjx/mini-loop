@@ -12,17 +12,20 @@ type CacheCreationUsage struct {
 	Ephemeral5mInputTokens *UsageCount `json:"ephemeral_5m_input_tokens"`
 	extra                  jsonvalue.Value
 	nulls                  usageNulls
+	observation            *UsageMetadataObservation
 }
 type OutputTokenDetails struct {
 	ThinkingTokens *UsageCount `json:"thinking_tokens"`
 	extra          jsonvalue.Value
 	nulls          usageNulls
+	observation    *UsageMetadataObservation
 }
 type ServerToolUsage struct {
 	WebFetchRequests  *UsageCount `json:"web_fetch_requests"`
 	WebSearchRequests *UsageCount `json:"web_search_requests"`
 	extra             jsonvalue.Value
 	nulls             usageNulls
+	observation       *UsageMetadataObservation
 }
 
 // TokenUsage keeps absent/null/value for optional fields. Closed extension members
@@ -39,6 +42,8 @@ type TokenUsage struct {
 	ServerToolUse            *ServerToolUsage    `json:"server_tool_use,omitempty"`
 	nulls                    usageNulls
 	extra                    jsonvalue.Value
+	tierObservation          *UsageMetadataObservation
+	geoObservation           *UsageMetadataObservation
 }
 
 type usageNulls uint8
@@ -81,18 +86,23 @@ func (u TokenUsage) clone() TokenUsage {
 	u.CacheReadInputTokens = copyMetadataPointer(u.CacheReadInputTokens)
 	u.CacheCreationInputTokens = copyMetadataPointer(u.CacheCreationInputTokens)
 	u.ServiceTier = copyMetadataPointer(u.ServiceTier)
+	u.tierObservation = copyMetadataPointer(u.tierObservation)
+	u.geoObservation = copyMetadataPointer(u.geoObservation)
 	u.CacheCreation = copyMetadataPointer(u.CacheCreation)
 	u.InferenceGeo = copyMetadataPointer(u.InferenceGeo)
 	u.OutputTokensDetails = copyMetadataPointer(u.OutputTokensDetails)
 	u.ServerToolUse = copyMetadataPointer(u.ServerToolUse)
 	if u.CacheCreation != nil {
+		u.CacheCreation.observation = copyMetadataPointer(u.CacheCreation.observation)
 		u.CacheCreation.Ephemeral1hInputTokens = copyMetadataPointer(u.CacheCreation.Ephemeral1hInputTokens)
 		u.CacheCreation.Ephemeral5mInputTokens = copyMetadataPointer(u.CacheCreation.Ephemeral5mInputTokens)
 	}
 	if u.OutputTokensDetails != nil {
+		u.OutputTokensDetails.observation = copyMetadataPointer(u.OutputTokensDetails.observation)
 		u.OutputTokensDetails.ThinkingTokens = copyMetadataPointer(u.OutputTokensDetails.ThinkingTokens)
 	}
 	if u.ServerToolUse != nil {
+		u.ServerToolUse.observation = copyMetadataPointer(u.ServerToolUse.observation)
 		u.ServerToolUse.WebFetchRequests = copyMetadataPointer(u.ServerToolUse.WebFetchRequests)
 		u.ServerToolUse.WebSearchRequests = copyMetadataPointer(u.ServerToolUse.WebSearchRequests)
 	}
@@ -114,7 +124,7 @@ func (u TokenUsage) WithSDKDefaults() TokenUsage {
 	} else {
 		u.nulls &^= nullCacheInput
 	}
-	if u.ServiceTier == nil {
+	if u.ServiceTier == nil && u.tierObservation == nil {
 		u.nulls |= nullTier
 	} else {
 		u.nulls &^= nullTier
@@ -124,7 +134,7 @@ func (u TokenUsage) WithSDKDefaults() TokenUsage {
 	} else {
 		u.nulls &^= nullCacheCreation
 	}
-	if u.InferenceGeo == nil {
+	if u.InferenceGeo == nil && u.geoObservation == nil {
 		u.nulls |= nullGeo
 	} else {
 		u.nulls &^= nullGeo
@@ -162,29 +172,29 @@ func (u TokenUsage) WithSDKDefaults() TokenUsage {
 }
 func (u TokenUsage) MarshalJSON() ([]byte, error) {
 	wire := struct {
-		Input         UsageCount                        `json:"input_tokens"`
-		Output        UsageCount                        `json:"output_tokens"`
-		Read          *wireOptional[UsageCount]         `json:"cache_read_input_tokens,omitempty"`
-		CreationInput *wireOptional[UsageCount]         `json:"cache_creation_input_tokens,omitempty"`
-		Tier          *wireOptional[ServiceTier]        `json:"service_tier,omitempty"`
-		Creation      *wireOptional[CacheCreationUsage] `json:"cache_creation,omitempty"`
-		Geo           *wireOptional[string]             `json:"inference_geo,omitempty"`
-		Details       *wireOptional[OutputTokenDetails] `json:"output_tokens_details,omitempty"`
-		Server        *wireOptional[ServerToolUsage]    `json:"server_tool_use,omitempty"`
-	}{u.InputTokens, u.OutputTokens, optionalWireValue(u.CacheReadInputTokens, u.nulls&nullCacheRead != 0), optionalWireValue(u.CacheCreationInputTokens, u.nulls&nullCacheInput != 0), optionalWireValue(u.ServiceTier, u.nulls&nullTier != 0), optionalWireValue(u.CacheCreation, u.nulls&nullCacheCreation != 0), optionalWireValue(u.InferenceGeo, u.nulls&nullGeo != 0), optionalWireValue(u.OutputTokensDetails, u.nulls&nullOutputDetails != 0), optionalWireValue(u.ServerToolUse, u.nulls&nullServerTool != 0)}
+		Input         UsageCount                              `json:"input_tokens"`
+		Output        UsageCount                              `json:"output_tokens"`
+		Read          *wireOptional[UsageCount]               `json:"cache_read_input_tokens,omitempty"`
+		CreationInput *wireOptional[UsageCount]               `json:"cache_creation_input_tokens,omitempty"`
+		Tier          *wireOptional[UsageMetadataObservation] `json:"service_tier,omitempty"`
+		Creation      *wireOptional[CacheCreationUsage]       `json:"cache_creation,omitempty"`
+		Geo           *wireOptional[UsageMetadataObservation] `json:"inference_geo,omitempty"`
+		Details       *wireOptional[OutputTokenDetails]       `json:"output_tokens_details,omitempty"`
+		Server        *wireOptional[ServerToolUsage]          `json:"server_tool_use,omitempty"`
+	}{u.InputTokens, u.OutputTokens, optionalWireValue(u.CacheReadInputTokens, u.nulls&nullCacheRead != 0), optionalWireValue(u.CacheCreationInputTokens, u.nulls&nullCacheInput != 0), optionalWireValue(u.sdkTierObservation(), u.nulls&nullTier != 0), optionalWireValue(u.CacheCreation, u.nulls&nullCacheCreation != 0), optionalWireValue(u.sdkGeoObservation(), u.nulls&nullGeo != 0), optionalWireValue(u.OutputTokensDetails, u.nulls&nullOutputDetails != 0), optionalWireValue(u.ServerToolUse, u.nulls&nullServerTool != 0)}
 	return marshalMetadataObject(wire, u.extra)
 }
 func (u *TokenUsage) UnmarshalJSON(data []byte) error {
 	var wire struct {
-		Input         UsageCount          `json:"input_tokens"`
-		Output        UsageCount          `json:"output_tokens"`
-		Read          *UsageCount         `json:"cache_read_input_tokens"`
-		CreationInput *UsageCount         `json:"cache_creation_input_tokens"`
-		Tier          *ServiceTier        `json:"service_tier"`
-		Creation      *CacheCreationUsage `json:"cache_creation"`
-		Geo           *string             `json:"inference_geo"`
-		Details       *OutputTokenDetails `json:"output_tokens_details"`
-		Server        *ServerToolUsage    `json:"server_tool_use"`
+		Input         UsageCount                `json:"input_tokens"`
+		Output        UsageCount                `json:"output_tokens"`
+		Read          *UsageCount               `json:"cache_read_input_tokens"`
+		CreationInput *UsageCount               `json:"cache_creation_input_tokens"`
+		Tier          *UsageMetadataObservation `json:"service_tier"`
+		Creation      *CacheCreationUsage       `json:"cache_creation"`
+		Geo           *UsageMetadataObservation `json:"inference_geo"`
+		Details       *OutputTokenDetails       `json:"output_tokens_details"`
+		Server        *ServerToolUsage          `json:"server_tool_use"`
 	}
 	keys := []string{"input_tokens", "output_tokens", "cache_read_input_tokens", "cache_creation_input_tokens", "service_tier", "cache_creation", "inference_geo", "output_tokens_details", "server_tool_use"}
 	value, extra, err := decodeMetadataObject(data, &wire, keys, true)
@@ -196,7 +206,23 @@ func (u *TokenUsage) UnmarshalJSON(data []byte) error {
 	if !inputPresent || !outputPresent {
 		return errors.New("usage requires input_tokens and output_tokens")
 	}
-	next := TokenUsage{InputTokens: wire.Input, OutputTokens: wire.Output, CacheReadInputTokens: wire.Read, CacheCreationInputTokens: wire.CreationInput, ServiceTier: wire.Tier, CacheCreation: wire.Creation, InferenceGeo: wire.Geo, OutputTokensDetails: wire.Details, ServerToolUse: wire.Server, extra: extra}
+	next := TokenUsage{InputTokens: wire.Input, OutputTokens: wire.Output, CacheReadInputTokens: wire.Read, CacheCreationInputTokens: wire.CreationInput, CacheCreation: wire.Creation, OutputTokensDetails: wire.Details, ServerToolUse: wire.Server, extra: extra}
+	if wire.Tier != nil {
+		if wire.Tier.kind == UsageMetadataText {
+			value := ServiceTier(wire.Tier.text)
+			next.ServiceTier = &value
+		} else {
+			next.tierObservation = wire.Tier
+		}
+	}
+	if wire.Geo != nil {
+		if wire.Geo.kind == UsageMetadataText {
+			value := wire.Geo.text
+			next.InferenceGeo = &value
+		} else {
+			next.geoObservation = wire.Geo
+		}
+	}
 	for i, key := range keys[2:] {
 		if v, present := value.Lookup(key); present && v.Kind() == jsonvalue.Null {
 			next.nulls |= 1 << i
@@ -219,12 +245,23 @@ func usageNullFields(value jsonvalue.Value, keys ...string) usageNulls {
 	return flags
 }
 func (v CacheCreationUsage) MarshalJSON() ([]byte, error) {
+	if v.observation != nil {
+		return v.observation.MarshalJSON()
+	}
 	return marshalMetadataObject(struct {
 		Hour   *wireOptional[UsageCount] `json:"ephemeral_1h_input_tokens,omitempty"`
 		Minute *wireOptional[UsageCount] `json:"ephemeral_5m_input_tokens,omitempty"`
 	}{optionalWireValue(v.Ephemeral1hInputTokens, v.nulls&1 != 0), optionalWireValue(v.Ephemeral5mInputTokens, v.nulls&2 != 0)}, v.extra)
 }
 func (v *CacheCreationUsage) UnmarshalJSON(data []byte) error {
+	observation, err := nonObjectUsageMetadata(data)
+	if err != nil {
+		return err
+	}
+	if observation != nil {
+		*v = CacheCreationUsage{observation: observation}
+		return nil
+	}
 	var wire struct {
 		Hour   *UsageCount `json:"ephemeral_1h_input_tokens"`
 		Minute *UsageCount `json:"ephemeral_5m_input_tokens"`
@@ -240,11 +277,22 @@ func (v *CacheCreationUsage) UnmarshalJSON(data []byte) error {
 	return nil
 }
 func (v OutputTokenDetails) MarshalJSON() ([]byte, error) {
+	if v.observation != nil {
+		return v.observation.MarshalJSON()
+	}
 	return marshalMetadataObject(struct {
 		Thinking *wireOptional[UsageCount] `json:"thinking_tokens,omitempty"`
 	}{optionalWireValue(v.ThinkingTokens, v.nulls&1 != 0)}, v.extra)
 }
 func (v *OutputTokenDetails) UnmarshalJSON(data []byte) error {
+	observation, err := nonObjectUsageMetadata(data)
+	if err != nil {
+		return err
+	}
+	if observation != nil {
+		*v = OutputTokenDetails{observation: observation}
+		return nil
+	}
 	var wire struct {
 		Thinking *UsageCount `json:"thinking_tokens"`
 	}
@@ -259,12 +307,23 @@ func (v *OutputTokenDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 func (v ServerToolUsage) MarshalJSON() ([]byte, error) {
+	if v.observation != nil {
+		return v.observation.MarshalJSON()
+	}
 	return marshalMetadataObject(struct {
 		Fetch  *wireOptional[UsageCount] `json:"web_fetch_requests,omitempty"`
 		Search *wireOptional[UsageCount] `json:"web_search_requests,omitempty"`
 	}{optionalWireValue(v.WebFetchRequests, v.nulls&1 != 0), optionalWireValue(v.WebSearchRequests, v.nulls&2 != 0)}, v.extra)
 }
 func (v *ServerToolUsage) UnmarshalJSON(data []byte) error {
+	observation, err := nonObjectUsageMetadata(data)
+	if err != nil {
+		return err
+	}
+	if observation != nil {
+		*v = ServerToolUsage{observation: observation}
+		return nil
+	}
 	var wire struct {
 		Fetch  *UsageCount `json:"web_fetch_requests"`
 		Search *UsageCount `json:"web_search_requests"`
@@ -300,15 +359,20 @@ func (u TokenUsage) MapStrings(mask func(string) string) TokenUsage {
 			*count = count.MapStrings(mask)
 		}
 	}
+	u.tierObservation = mapUsageMetadata(u.tierObservation, mask)
+	u.geoObservation = mapUsageMetadata(u.geoObservation, mask)
 	u.extra = u.extra.MapStrings(mask)
 	if u.CacheCreation != nil {
 		u.CacheCreation.extra = u.CacheCreation.extra.MapStrings(mask)
+		u.CacheCreation.observation = mapUsageMetadata(u.CacheCreation.observation, mask)
 	}
 	if u.OutputTokensDetails != nil {
 		u.OutputTokensDetails.extra = u.OutputTokensDetails.extra.MapStrings(mask)
+		u.OutputTokensDetails.observation = mapUsageMetadata(u.OutputTokensDetails.observation, mask)
 	}
 	if u.ServerToolUse != nil {
 		u.ServerToolUse.extra = u.ServerToolUse.extra.MapStrings(mask)
+		u.ServerToolUse.observation = mapUsageMetadata(u.ServerToolUse.observation, mask)
 	}
 	return u
 }
@@ -317,12 +381,30 @@ func (u TokenUsage) MapStrings(mask func(string) string) TokenUsage {
 // required direct fields as actual observed values.
 func (u TokenUsage) WithSDKDirectCounts() TokenUsage {
 	u = u.clone()
-	for _, count := range u.countPointers()[2:] {
+	if u.CacheCreation != nil {
+		u.CacheCreation.observation = sdkMetadataArrayDefaults(u.CacheCreation.observation, "ephemeral_1h_input_tokens", "ephemeral_5m_input_tokens")
+	}
+	if u.OutputTokensDetails != nil {
+		u.OutputTokensDetails.observation = sdkMetadataArrayDefaults(u.OutputTokensDetails.observation, "thinking_tokens")
+	}
+	if u.ServerToolUse != nil {
+		u.ServerToolUse.observation = sdkMetadataArrayDefaults(u.ServerToolUse.observation, "web_fetch_requests", "web_search_requests")
+	}
+	for _, count := range []*UsageCount{u.CacheReadInputTokens, u.CacheCreationInputTokens} {
 		if count != nil {
 			if next, ok := count.sdkInteger(); ok {
 				*count = next
 			}
 		}
+	}
+	if u.CacheCreation != nil && u.CacheCreation.observation == nil {
+		normalizeSDKRequiredCounts(u.CacheCreation.Ephemeral1hInputTokens, u.CacheCreation.Ephemeral5mInputTokens)
+	}
+	if u.OutputTokensDetails != nil && u.OutputTokensDetails.observation == nil {
+		normalizeSDKRequiredCounts(u.OutputTokensDetails.ThinkingTokens)
+	}
+	if u.ServerToolUse != nil && u.ServerToolUse.observation == nil {
+		normalizeSDKRequiredCounts(u.ServerToolUse.WebFetchRequests, u.ServerToolUse.WebSearchRequests)
 	}
 	return u.WithSDKDefaults()
 }
@@ -331,7 +413,7 @@ func (u TokenUsage) WithSDKDirectCounts() TokenUsage {
 // fallback construction. If a field cannot validate, required values stay raw.
 func (u TokenUsage) WithSDKStreamCounts() TokenUsage {
 	u = u.clone()
-	valid := true
+	valid := u.sdkMetadataValid()
 	for _, count := range u.countPointers() {
 		if count != nil {
 			if _, ok := count.sdkInteger(); !ok {
@@ -344,4 +426,39 @@ func (u TokenUsage) WithSDKStreamCounts() TokenUsage {
 		u.OutputTokens, _ = u.OutputTokens.sdkInteger()
 	}
 	return u.WithSDKDirectCounts()
+}
+
+func (u TokenUsage) sdkTierObservation() *UsageMetadataObservation {
+	if u.ServiceTier != nil {
+		return &UsageMetadataObservation{kind: UsageMetadataText, text: string(*u.ServiceTier)}
+	}
+	return u.tierObservation
+}
+
+func (u TokenUsage) sdkGeoObservation() *UsageMetadataObservation {
+	if u.InferenceGeo != nil {
+		return &UsageMetadataObservation{kind: UsageMetadataText, text: *u.InferenceGeo}
+	}
+	return u.geoObservation
+}
+
+func (u TokenUsage) sdkMetadataValid() bool {
+	if tier := u.sdkTierObservation(); tier != nil {
+		if tier.kind != UsageMetadataText || (tier.text != "standard" && tier.text != "priority" && tier.text != "batch") {
+			return false
+		}
+	}
+	if geo := u.sdkGeoObservation(); geo != nil && geo.kind != UsageMetadataText {
+		return false
+	}
+	if v := u.CacheCreation; v != nil && !validSDKMetadataModel(v.observation, v.Ephemeral1hInputTokens, v.Ephemeral5mInputTokens) {
+		return false
+	}
+	if v := u.OutputTokensDetails; v != nil && !validSDKMetadataModel(v.observation, v.ThinkingTokens) {
+		return false
+	}
+	if v := u.ServerToolUse; v != nil && !validSDKMetadataModel(v.observation, v.WebFetchRequests, v.WebSearchRequests) {
+		return false
+	}
+	return true
 }

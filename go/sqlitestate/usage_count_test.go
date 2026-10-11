@@ -13,7 +13,16 @@ import (
 )
 
 func TestSDKUsageCountsSurviveSQLiteEventReopen(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-provider-usage-consumer.json")
+	assertSDKUsageEventReopen(t, "../testdata/python-provider-usage-consumer.json", 34)
+}
+
+func TestSDKUsageMetadataShapesSurviveSQLiteEventReopen(t *testing.T) {
+	assertSDKUsageEventReopen(t, "../testdata/python-provider-usage-metadata.json", 191)
+}
+
+func assertSDKUsageEventReopen(t *testing.T, fixturePath string, expectedCases int) {
+	t.Helper()
+	data, err := os.ReadFile(fixturePath)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +35,7 @@ func TestSDKUsageCountsSurviveSQLiteEventReopen(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 34 {
+	if len(fixture.Cases) != expectedCases {
 		t.Fatal("Source inventory changed")
 	}
 	path := filepath.Join(t.TempDir(), "usage.db")
@@ -50,7 +59,7 @@ func TestSDKUsageCountsSurviveSQLiteEventReopen(t *testing.T) {
 	}
 	store = openStore(t, path)
 	rows, err := store.LoadEvents(ctx, "counts", 0, nil)
-	if err != nil || len(rows) != 34 {
+	if err != nil || len(rows) != expectedCases {
 		t.Fatal(len(rows), err)
 	}
 	for i, row := range rows {
