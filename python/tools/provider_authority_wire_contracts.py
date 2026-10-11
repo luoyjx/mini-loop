@@ -19,6 +19,7 @@ WIRE_URLS = (
     ('other-port', 'http://fixture.invalid:8080/tenant'),
     ('unicode-host', 'http://bücher.invalid/tenant'),
     ('sharp-s-host', 'http://faß.invalid/tenant'),
+    ('dotted-i-host', 'http://İ.invalid/tenant'),
     ('empty-fragment', 'http://fixture.invalid/tenant#'),
 )
 

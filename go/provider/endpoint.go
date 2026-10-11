@@ -42,7 +42,16 @@ func providerRequestURL(base *url.URL) string {
 func providerRequestAuthority(base *url.URL) string {
 	host := base.Hostname()
 	ipv6 := strings.Contains(host, ":")
-	if !ipv6 {
+	ascii := true
+	for i := 0; i < len(host); i++ {
+		if host[i] >= 0x80 {
+			ascii = false
+			break
+		}
+	}
+	// Unicode lowercase mapping is contextual in Python (and can expand a
+	// character). Preserve it for transport IDNA instead of Go's rune mapping.
+	if !ipv6 && ascii {
 		host = strings.ToLower(host)
 	}
 	port := strings.TrimLeft(base.Port(), "0")

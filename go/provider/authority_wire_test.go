@@ -41,7 +41,7 @@ func TestCapturedAuthorityHTTPWireMatchesSDK(t *testing.T) {
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 12 {
+	if len(fixture.Cases) != 14 {
 		t.Fatal("Source wire inventory changed")
 	}
 	for _, row := range fixture.Cases {

@@ -271,6 +271,60 @@
       "text": "ok"
     },
     {
+      "base_url": "http://İ.invalid/tenant",
+      "dials": [
+        {
+          "host": "xn--i-9bb.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://İ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "dotted-i-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--i-9bb.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
+      "base_url": "http://İ.invalid/tenant",
+      "dials": [
+        {
+          "host": "xn--i-9bb.invalid",
+          "port": 80
+        }
+      ],
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "http://İ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "dotted-i-host",
+      "requests": [
+        {
+          "api_key": "fixture-key",
+          "host": "xn--i-9bb.invalid",
+          "method": "POST",
+          "target": "/tenant/v1/messages",
+          "version": "HTTP/1.1"
+        }
+      ],
+      "text": "ok"
+    },
+    {
       "base_url": "http://fixture.invalid/tenant#",
       "dials": [
         {

@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `9c39e32` plus captured ASCII/IPv6 request authority normalization and actual loopback HTTP wire proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `3cd31be` plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -2686,14 +2686,19 @@ Accepted ASCII hostname spelling is normalized for outbound requests, numeric
 port spelling loses leading zeros and default HTTP/HTTPS ports are omitted.
 IPv6 literals retain their spelling and brackets; configured audit identity
 remains original. All 32 captured ASCII/IPv6 direct/SSE requests are required
-assertions. Twelve actual loopback HTTP requests also compare Host, target,
+assertions. Fourteen actual loopback HTTP requests also compare Host, target,
 method, API-key and TCP dial authority against SDK captures, including Unicode
 IDNA and empty fragments. Only the TCP destination is redirected to an owned
 listener; HTTP encoding/parsing and provider/SDK behavior are real. Captured
 Unicode and sharp-s hosts reach matching punycode on the native standard HTTP
-wire, while Unicode request-object/custom-transport spelling remains different.
+wire, while Unicode request-object/custom-transport spelling remains different. Expanded
+dotted-I host captures expose two stable native wire failures: 12 of 14 wire
+assertions currently match. The standard native IDNA path does not match Source
+for this input, even at the pre-normalization baseline. ASCII normalization
+leaves Unicode spelling intact. These failures remain required assertions;
+they are not skipped or accepted as parity.
 IDNA request-boundary dependency approval and broader admission reconciliation
-remain open; these twelve wire cases do not prove full IDNA equivalence.
+remain open; these fourteen wire cases do not prove full IDNA equivalence.
 
 A subsequent 68-observation URL scope audit captures the actual Python provider
 factory and both SDK request modes with injected HTTP boundaries. It distinguishes
