@@ -71,9 +71,17 @@ func extractedMemoryInput(fields jsonvalue.Value) (memory.Input, error) {
 		if !ok {
 			continue
 		}
+		if key == "name" || key == "description" {
+			values[index] = value.PythonString()
+			continue
+		}
 		text, ok := value.Text()
 		if !ok {
-			return memory.Input{}, errors.New("memory fields must be strings")
+			if key == "type" { // No non-text JSON value equals a recognized type.
+				values[index] = "project"
+				continue
+			}
+			return memory.Input{}, errors.New("memory body must be a string")
 		}
 		// Preserve text for the storage boundary's UTF-8 check. In consolidation
 		// that failure must occur after owner-scoped deletion and earlier writes.

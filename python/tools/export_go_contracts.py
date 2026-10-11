@@ -5670,6 +5670,15 @@ def _memory_context_contracts(scratch: Path) -> dict:
     return dict(cases=asyncio.run(run()))
 
 
+def _memory_header_values() -> list[tuple[str, object]]:
+    """Closed JSON kinds and legacy numbers, exercised by actual consumers."""
+    return [("null", None), ("bool", True), ("integer", 7), ("float", 1.25),
+            ("negative-zero", -0.0), ("nan", float("nan")),
+            ("infinity", float("inf")), ("negative-infinity", float("-inf")),
+            ("array", [None, True, "line\n用户"]),
+            ("object", {"z": True, "a": "quote'"}), ("text", " line\n用户 ")]
+
+
 def _memory_extraction_contracts(scratch: Path) -> dict:
     """Actual extraction through Agent._create, with incremental owner writes."""
     import asyncio
@@ -5718,6 +5727,8 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
         *[dict(name=f"partial-write-surrogate-{field}",reply=json.dumps([valid,{**valid,"name":"bad",field:"\ud800"},dict(name="never")]))
           for field in ("name","description","body")],
         dict(name="surrogate-unknown-type", reply=json.dumps([{**valid,"type":"\ud800"}])),
+        *[dict(name=f"header-{field}-{label}",reply=json.dumps([{**valid,field:value}]))
+          for field in ("name","description","type") for label,value in _memory_header_values()],
     ]
     async def scenario(row):
         root=scratch/row["name"]; root.mkdir(parents=True)
@@ -5776,13 +5787,25 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
              dict(name="ignored-overflow",seed=10,mode="overflow"),
              dict(name="oversized-integer-whole-reply",seed=10,mode="integer-limit"),
              *[dict(name=f"partial-write-surrogate-{field}",seed=10,mode="surrogate",field=field)
-               for field in ("name","description","body")]]
+               for field in ("name","description","body")],
+             *[dict(name=f"header-{field}-{label}",seed=10,mode="header",field=field,value_json=json.dumps(value))
+               for field in ("name","description","type") for label,value in _memory_header_values()]]
     async def scenario(row):
         root=scratch/row["name"];root.mkdir(parents=True)
         raw=MemoryStore(root/"memory");store=ScopedMemory(raw,"owner")
         raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
         origins=("explicit","auto_extracted","imported","consolidated")
-        for i in range(row["seed"]):store.write(f"fact-{i}","project",f"description-{i} 中文",f"body-{i} café",origin=origins[i%4])
+        primary_name="fact-0"
+        value=json.loads(row["value_json"]) if row["mode"]=="header" else None
+        for i in range(row["seed"]):
+            name,description=f"fact-{i}",f"description-{i} 中文"
+            if i==0 and row["mode"]=="header":
+                # A converted header can equal an existing stored string while
+                # the original JSON value still has a different identity.
+                if row["field"]=="name":name=str(value)
+                if row["field"]=="description":description=str(value)
+                primary_name=" ".join(name.splitlines()).strip() or "memory"
+            store.write(name,"project",description,f"body-{i} café",origin=origins[i%4])
         before=store.list(); indexed={r["name"]:r for r in before}
         mode=row["mode"]
         if mode=="same":items=copy.deepcopy(before)
@@ -5795,6 +5818,7 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
         elif mode=="legacy-extra":items=[{**indexed["fact-0"],"owner":float("nan"),"origin":float("inf"),"root":float("-inf")}]
         elif mode in {"overflow","integer-limit"}:items=[copy.deepcopy(indexed["fact-0"])]
         elif mode=="surrogate":items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],row["field"]:"\ud800"},dict(name="never")]
+        elif mode=="header":items=[{**indexed[primary_name],row["field"]:value}]
         else:items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],"body":"changed"},dict(name="new",body="merged",owner="foreign",origin="explicit")]
         reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=mode=="surrogate")
         if mode=="overflow":reply=reply[:-2]+',"extra":1e400}]'

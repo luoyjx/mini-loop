@@ -2,6 +2,7 @@ package agent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
@@ -26,8 +27,27 @@ type memoryIdentity struct {
 	Body        string
 }
 
-func memoryInputIdentity(input memory.Input) memoryIdentity {
-	return memoryIdentity{input.Name, input.Type, input.Description, input.Body}
+// Python hashes the original tuple before any conversion or replacement. Stored
+// records have string fields, so other hashable JSON scalars cannot match them.
+func memoryReplyIdentity(fields jsonvalue.Value) (memoryIdentity, bool, error) {
+	values := [4]string{"", "project", "", ""}
+	matchable := true
+	for index, key := range []string{"name", "type", "description", "body"} {
+		value, present := fields.Lookup(key)
+		if !present {
+			continue
+		}
+		if value.Kind() == jsonvalue.Array || value.Kind() == jsonvalue.Object {
+			return memoryIdentity{}, false, errors.New("memory identity contains an unhashable value")
+		}
+		text, ok := value.Text()
+		if !ok {
+			matchable = false
+			continue
+		}
+		values[index] = text
+	}
+	return memoryIdentity{values[0], memory.Type(values[1]), values[2], values[3]}, matchable, nil
 }
 
 func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
@@ -61,12 +81,16 @@ func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
 		if _, ok := raw.Lookup("name"); !ok {
 			continue
 		}
+		identity, matchable, err := memoryReplyIdentity(raw)
+		if err != nil {
+			return 0, nil
+		}
 		input, err := extractedMemoryInput(raw)
 		if err != nil {
 			return 0, nil
 		}
 		input.Origin = memory.Consolidated
-		if origin, ok := origins[memoryInputIdentity(input)]; ok {
+		if origin, ok := origins[identity]; matchable && ok {
 			input.Origin = origin
 		}
 		input.Type = storedMemoryType(input.Type)

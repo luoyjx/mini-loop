@@ -46,7 +46,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 26 {
+	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 59 {
 		t.Fatal(err, len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {
@@ -113,7 +113,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 	}
 }
 
-func TestMemoryExtractionCancellationAndClosedFields(t *testing.T) {
+func TestMemoryExtractionCancellationAndMalformedEntries(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cfg := runtimeConfig(t.TempDir(), &memoryExtractionProvider{output: "[]"})
 	session, err := NewRuntimeSession(cfg)
@@ -124,7 +124,7 @@ func TestMemoryExtractionCancellationAndClosedFields(t *testing.T) {
 	if _, err = session.extractMemories(ctx); err != context.Canceled {
 		t.Fatal(err)
 	}
-	for _, text := range []string{`null`, `7`, `{}`, `{"name":null}`, `{"name":"x","body":7}`, `{"name":"x","description":null}`} {
+	for _, text := range []string{`null`, `7`, `{}`, `{"name":"x","body":7}`} {
 		value, err := jsonvalue.Decode(text)
 		if err != nil {
 			t.Fatal(err)

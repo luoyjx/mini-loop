@@ -27,10 +27,11 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			Seed, Count      int
 			Calls            []protocol.ModelRequest
 			Records, Foreign []memory.Record
+			Before           []memory.Record
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 17 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 50 {
 		t.Fatal(err)
 	}
 	for _, row := range fixture.Cases {
@@ -45,9 +46,11 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			if _, err := foreign.Write(ctx, memory.Input{Name: "foreign", Type: memory.Project, Description: "foreign description", Body: "foreign secret"}); err != nil {
 				t.Fatal(err)
 			}
-			origins := []memory.Origin{memory.Explicit, memory.AutoExtracted, memory.Imported, memory.Consolidated}
-			for i := 0; i < row.Seed; i++ {
-				if _, err := bound.Write(ctx, memory.Input{Name: fmt.Sprintf("fact-%d", i), Type: memory.Project, Description: fmt.Sprintf("description-%d 中文", i), Body: fmt.Sprintf("body-%d café", i), Origin: origins[i%4]}); err != nil {
+			if len(row.Before) != row.Seed {
+				t.Fatal("source seed inventory", len(row.Before), row.Seed)
+			}
+			for _, record := range row.Before {
+				if _, err := bound.Write(ctx, memory.Input{Name: record.Name, Type: record.Type, Description: record.Description, Body: record.Body, Origin: record.Origin}); err != nil {
 					t.Fatal(err)
 				}
 			}
