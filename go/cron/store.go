@@ -55,7 +55,7 @@ func (s *Scheduler) save() (err error) {
 	}
 	defer func() {
 		if p := recover(); p != nil {
-			err = fmt.Errorf("cron persistence callback panicked (%v)", p)
+			err = fmt.Errorf("cron persistence callback panicked (%T)", p)
 		}
 	}()
 	jobs := make([]Job, 0, len(s.jobs))

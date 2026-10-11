@@ -361,7 +361,7 @@ func (s *Scheduler) admit(id ID, now time.Time, generation uint64) (Job, bool) {
 func resolve(resolver Resolver, id SessionID) (runner Runner, err error) {
 	defer func() {
 		if p := recover(); p != nil {
-			err = fmt.Errorf("resolver panicked (%v)", p)
+			err = fmt.Errorf("resolver panicked (%T)", p)
 		}
 	}()
 	return resolver.ResolveScheduled(id)
@@ -390,7 +390,7 @@ func (s *Scheduler) fire(j Job, generation uint64) {
 		defer func() {
 			if value := recover(); value != nil {
 				s.mu.Lock()
-				s.problem(fmt.Sprintf("%s: scheduled turn panicked (%v)", j.ID, value))
+				s.problem(fmt.Sprintf("%s: scheduled turn panicked (%T)", j.ID, value))
 				s.mu.Unlock()
 			}
 		}()

@@ -337,7 +337,7 @@
         280,
         76
       ],
-      "tag": "journal begin failure skips after; result retained"
+      "tag": "plan panic: type only; journals fail closed"
     },
     {
       "id": "goBash",
@@ -517,7 +517,7 @@
         330,
         76
       ],
-      "tag": "cron tools opt-in; arm is operator"
+      "tag": "operator arm; type-only panic"
     },
     {
       "id": "goBenchmark",
@@ -1563,7 +1563,8 @@
         "Authority is stamped before resources are resolved",
         "Only authenticated HTTP user/final turns enter preview",
         "Preview cannot publish; commit is a separate caller action",
-        "Agent and user skills retain explicit provenance"
+        "Agent and user skills retain explicit provenance",
+        "Native plan-review and cron resolver/runner/persistence panic recovery reports only the Go type, without invoking caller Formatter/String/Error methods or retaining the original payload. Permission, mark-before-dispatch, lost-occurrence and cleanup rules are unchanged. Returned errors retain their existing contract."
       ]
     },
     {

@@ -1,5 +1,16 @@
 # Python to Go parity matrix
 
+## Native callback panic boundaries — 2026-10-12
+
+Baseline `fc89e97`: compiler body inventory found139 open declarations in21,820
+examined declarations. Four recover sinks formatted panic payloads with `%v`;
+actual callback tests reproduce formatting and disclosure before the fix.
+Plan review and cron resolver/runner/persistence now use type-only diagnostics.
+Focused tests pass without changing approval or occurrence/cleanup semantics.
+All14 frozen gates pass; [full receipt](docs/audits/go-panic-boundaries-2026-10-12.json).
+Raw JSON escape review, other compiler profiles and
+original migration acceptance remain open; inventory findings are not exemptions.
+
 ## Package variable compiler closure — 2026-10-12
 
 Implementation `1799d20`, baseline `d273a8e`: `typeaudit -variables` now resolves inferred, exported and
@@ -76,15 +87,16 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `d273a8e`, implementation `1799d20`: package-variable closure now complements named type
-roots through a shared compiler-selected source resolver. No runtime change.
-Frozen 1647 inputs pass all 12 gates: Source 239 files, focused typeaudit tests,
-syntax/public/private/variable audits, full ordinary Go/vet/race+atomic, Python and 19
-scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 91.64s
-(0:01:31). Application coverage 89.23% (33077/37068); all Go 89.11% (33248/37312);
-Provider 86.45% (1518/1756).
-[Current receipt](docs/audits/go-package-variable-closure-2026-10-12.json). Historical temporal failures remain unexplained;
-final P0/P1/G0-G7 acceptance remains open.
+Reviewed baseline `fc89e97`: four callback panic recovery paths now use type-only
+diagnostics, supported by actual red/green formatter probes. No authority/default
+change. Full-body inventory is review evidence, not a blanket exception list.
+Frozen 1649 inputs pass14 gates: Source239 files, focused panic probes, four type
+audits, full ordinary Go/vet/race+atomic, Python,19 scans and20 selected mutation guards
+(cron14/plan6). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in
+98.33s (0:01:38). Application coverage 89.26% (33086/37068); all Go 89.13%
+(33257/37312); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-panic-boundaries-2026-10-12.json); [declaration inventory](docs/audits/go-local-declarations-2026-10-12.json).
+Historical temporal failures and final original migration acceptance remain open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -100,7 +112,7 @@ final P0/P1/G0-G7 acceptance remains open.
 | Known usage metadata shapes | [191 actual SDK cases/214 stages and full current receipt](docs/audits/go-private-type-closure-2026-10-11.json) | Named inert observations, model/stage fallback, actual event masking/clone/archive and191 SQLite reopen rows pass required assertions. Original100 differences repaired; 86 whole-usage cases now match projected values/stages/messages; broader ranges and final field/default/consumer/public-error scope remain open |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current full ordinary/race+atomic pass; prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
-| Package-level types and variables | Syntax and active-profile public/private/variable audits; [current evidence](docs/audits/go-package-variable-closure-2026-10-12.json) | 457 production files/1442 named types;50 packages/1191 public types/262 private roots/172 variables;zero findings. Locals, methods/bodies, foreign internals, other profiles and runtime flow remain |
+| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 457 files/1442 named types;1191 public types/262 private roots/172 variables;zero findings in four established gates. Body inventory has139 open observations; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
 | Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
@@ -127,15 +139,16 @@ final P0/P1/G0-G7 acceptance remains open.
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 91.64s (0:01:31)**. Full ordinary Go/vet/race+atomic,
-four type audits,239-file Source comparison and19 scans pass on frozen inputs.
-[Current receipt](docs/audits/go-package-variable-closure-2026-10-12.json). Default full-profile CLI syntax backend and broader
-IDNA approvals remain outstanding; SQLite approval covers neither decision.
+Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 98.33s (0:01:38)**. Ordinary Go/vet/race+atomic, four type
+audits,239-file Source check,19 scans and20 selected mutation guards pass.
+[Current receipt](docs/audits/go-panic-boundaries-2026-10-12.json). Full Python mutation sweep not rerun; package
+invariants not rerun because no Python runtime module changed. Default diagnostics
+backend and broader IDNA approvals remain outstanding.
 
-Current full passing-run statement coverage: application excluding tools
-**89.23% (33077/37068)**; all Go **89.11% (33248/37312)**; Provider **86.45% (1518/1756)**.
-[Exact receipt](docs/audits/go-coverage-package-variable-closure-2026-10-12.json). Darwin Go statements exclude native C, CLI child
-internals, Python, branches and other platforms. Full migration acceptance is open.
+Current full passing-run statement coverage: application **89.26% (33086/37068)**;
+all Go **89.13% (33257/37312)**; Provider **86.67% (1522/1756)**.
+[Exact receipt](docs/audits/go-coverage-panic-boundaries-2026-10-12.json). Scope: Darwin Go statements; native C, subprocess
+internals, Python, branches and other platforms excluded. Full port acceptance open.
 
 
 ## 2026-10-09 native SQLite killed-generation process recovery

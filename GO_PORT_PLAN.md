@@ -1,5 +1,50 @@
 # Go port plan
 
+## 2026-10-12 native callback panic diagnostics from declaration review
+
+Baseline local main `fc89e97`. A one-off compiler inventory now resolves complete
+function bodies, methods and local declarations, including inferred payloads.
+It observed50 packages/21,820 declarations with139 open declarations:104 raw JSON,
+21 recover values,7 JSON tokens,4 SQL Scanner method/parameter declarations and3
+compiler-generated CGO functions. These counts are declarations, not defects.
+The inventory is not an exemption list or proof of escape/data-flow closure.
+
+Review of all21 recover values found four inconsistent value-formatting sinks:
+plan review, cron resolver, scheduled runner and persistence-masker recovery.
+`%v` invokes caller formatting methods and can expose panic contents; scheduled
+runner formatting also occurred while holding the scheduler mutex. Four callback
+probes reproduce an invoked formatter and emitted marker before the fix. `%T`
+now reports only the type, invokes no payload formatting callback and matches the
+existing native recovery policy. The tests also retain rejected review and cron
+mark/loss/cleanup boundaries. Returned errors remain unchanged. This repairs
+Go-specific panic handling; it does not redefine Python exception behavior.
+
+The collector's own adversarial fixture checks inferred returns, imported aliases,
+local aliases, generic instances, callback types, method parameters, recover and
+closed/platform controls; package init is not run, and invalid bodies fail.
+104 raw JSON declarations still need caller/escape review; foreign/inactive/other
+build profiles and broader runtime flow remain open. No dependency, runtime
+component, optional activation, owner or authority changes.
+
+Frozen 1649 inputs pass14 gates: Source239 files, focused panic probes, four type
+audits, full ordinary Go/vet/race+atomic, Python,19 scans and20 selected mutation guards
+(cron14/plan6). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in
+98.33s (0:01:38). Application coverage 89.26% (33086/37068); all Go 89.13%
+(33257/37312); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-panic-boundaries-2026-10-12.json); [coverage](docs/audits/go-coverage-panic-boundaries-2026-10-12.json);
+[complete declaration inventory and collector sources](docs/audits/go-local-declarations-2026-10-12.json).
+The scoped guard selection includes the planted-symlink case because its name
+contains "plan"; all20 require passing originals and failed mutated test calls.
+No claim of a full Python mutation sweep. Package invariants were not rerun:
+no Python package-module edits. Source scans pass.
+
+The [iteration image](docs/audits/go-panic-boundaries-infographic-2026-10-12.png)
+edits the base and highlights ToolGate, Cron and audit evidence. Exact prompt is
+saved alongside. No component was added/deleted; base unchanged. Canonical map
+labels and JSON boundaries are updated. HTML generation passes9 checks with zero
+errors/warnings; PNG inspected. Browser HTML visual review remains blocked by
+prior URL policy, with no indirect workaround.
+
 ## 2026-10-12 compiler-resolved package variable roots
 
 Implementation `1799d20`. Baseline local main `d273a8e`. G0 named-type gates could miss package variables
@@ -7227,14 +7272,15 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against local main baseline `d273a8e`, implementation `1799d20`: package-variable
-compiler closure complements named-root syntax/public/private checks.
-Frozen 1647 inputs pass all 12 gates: Source 239 files, focused typeaudit tests,
-syntax/public/private/variable audits, full ordinary Go/vet/race+atomic, Python and 19
-scans. Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 91.64s
-(0:01:31). Application coverage 89.23% (33077/37068); all Go 89.11% (33248/37312);
-Provider 86.45% (1518/1756).
-[Current receipt](docs/audits/go-package-variable-closure-2026-10-12.json). Runtime topology/defaults/authority unchanged.
+Reviewed **2026-10-12** against baseline `fc89e97`: compiler declaration review
+identified four callback panic value-format sinks; type-only recovery now passes
+actual before/after adversarial probes. Permission and scheduling rules unchanged.
+Frozen 1649 inputs pass14 gates: Source239 files, focused panic probes, four type
+audits, full ordinary Go/vet/race+atomic, Python,19 scans and20 selected mutation guards
+(cron14/plan6). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests passed in
+98.33s (0:01:38). Application coverage 89.26% (33086/37068); all Go 89.13%
+(33257/37312); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-panic-boundaries-2026-10-12.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7265,11 +7311,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app **89.23% (33077/37068)**,
-all Go **89.11% (33248/37312)**, Provider **86.45% (1518/1756)**.
-The profile hash and 1647 frozen inputs are retained; coverage excludes
-native C, CLI subprocess internals, Python, branches and non-Darwin.
-[Current coverage](docs/audits/go-coverage-package-variable-closure-2026-10-12.json).
+Current full passing-run statement coverage: app **89.26% (33086/37068)**,
+all Go **89.13% (33257/37312)**, Provider **86.67% (1522/1756)**.
+The profile hash and 1649 frozen inputs are retained; native C,
+CLI subprocess internals, Python, branches and other platforms are excluded.
+[Current coverage](docs/audits/go-coverage-panic-boundaries-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7281,7 +7327,7 @@ work-package acceptance.
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; local types/variables, functions/methods/bodies, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; full-body declaration inventory now identifies139 open boundary observations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |

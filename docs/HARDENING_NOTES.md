@@ -8496,3 +8496,17 @@ Native tasks use goroutines: process creation can race the caller's return,
 whereas the captured Source hooks do not yield before returning. This slice
 compares allocated call outcomes and settled tasks, not zero process starts at
 return or exact scheduling. Post-spawn faults still require an allocated task.
+
+## 2026-10-12 native callback panic values are not diagnostics
+
+Plan reviewer and cron resolver/runner/persistence callbacks may panic with a
+caller-defined value. Recovery reports `%T`, never `%v`/`%s`/`%#v` of that value:
+formatting a payload can call Formatter, String, Error or GoString and expose
+contents. The runner recovery path holds a scheduler mutex, making an implicit
+callback especially inappropriate. Four adversarial tests reproduce formatting
+before the fix and require zero formatter calls plus absent payload marker after.
+Plan approval remains rejected; cron occurrence marking/loss, cleanup and join
+rules remain unchanged. Normal returned errors keep the existing API contract.
+This is a Go-native panic boundary, not a change to Python exception projections.
+Full local-declaration inventory is review evidence, not an exemption mechanism
+or a completed escape/data-flow proof.

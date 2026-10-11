@@ -51,7 +51,7 @@ func reviewPlan(ctx context.Context, reviewer PlanApprover, request PlanReviewRe
 	defer func() {
 		if fault := recover(); fault != nil {
 			review = PlanReview{}
-			err = fmt.Errorf("plan reviewer panic: %v", fault)
+			err = fmt.Errorf("plan reviewer panic: %T", fault)
 		}
 	}()
 	return reviewer.ApprovePlan(ctx, request)
