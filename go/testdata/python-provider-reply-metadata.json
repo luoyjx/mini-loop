@@ -1,0 +1,1513 @@
+{
+  "cases": [
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": null
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "absent",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": null
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "absent",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": null
+      },
+      "message": {
+        "container": null,
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "null",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": null, \"stop_details\": null}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": null
+      },
+      "message": {
+        "container": null,
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "null",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": null, \"stop_details\": null}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-utc",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05Z\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-utc",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05Z\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-naive",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-naive",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05.123400Z",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05.1234Z",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-fractional",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05.1234Z\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05.123400Z",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05.1234Z",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-fractional",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05.1234Z\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05+08:00",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05+08:00",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-offset",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05+08:00\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05+08:00",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05+08:00",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-offset",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05+08:00\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": null,
+          "id": null
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {},
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-empty",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": null,
+          "id": null
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {},
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-empty",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": 1893553445,
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-epoch",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": 1893553445}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": 1893553445,
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-epoch",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": 1893553445}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "future": {
+            "values": [
+              0,
+              null
+            ]
+          },
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "future": {
+            "values": [
+              0,
+              null
+            ]
+          },
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-extra",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05Z\", \"future\": {\"values\": [0, null]}}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "future": {
+            "values": [
+              0,
+              null
+            ]
+          },
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "future": {
+            "values": [
+              0,
+              null
+            ]
+          },
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-extra",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05Z\", \"future\": {\"values\": [0, null]}}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": null,
+          "id": "container_fixture"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "id": "container_fixture"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-missing-expiry",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_fixture\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": null,
+          "id": "container_fixture"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "id": "container_fixture"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-missing-expiry",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_fixture\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "not-a-date",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "not-a-date",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-invalid-expiry",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"not-a-date\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "not-a-date",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "not-a-date",
+          "id": "container_α"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-invalid-expiry",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"not-a-date\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": "opaque",
+        "stop_details": null
+      },
+      "message": {
+        "container": "opaque",
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "container-scalar",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": \"opaque\"}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": "opaque",
+        "stop_details": null
+      },
+      "message": {
+        "container": "opaque",
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "container-scalar",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": \"opaque\"}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "refusal",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "refusal",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": null,
+          "explanation": null,
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "refusal-defaults",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": null,
+          "explanation": null,
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "refusal-defaults",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "future": [
+            false,
+            "x"
+          ],
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "future": [
+            false,
+            "x"
+          ],
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "refusal-extra",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\", \"future\": [false, \"x\"]}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "future": [
+            false,
+            "x"
+          ],
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "future": [
+            false,
+            "x"
+          ],
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "refusal-extra",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\", \"future\": [false, \"x\"]}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "future",
+          "explanation": null,
+          "type": "future"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "future",
+          "type": "future"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "refusal-future-kind",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"future\", \"category\": \"future\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "future",
+          "explanation": null,
+          "type": "future"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "future",
+          "type": "future"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "refusal-future-kind",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"future\", \"category\": \"future\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": null,
+          "explanation": null,
+          "type": null
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {},
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "refusal-empty",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": null,
+          "explanation": null,
+          "type": null
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {},
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "refusal-empty",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": [
+            "future"
+          ],
+          "explanation": false,
+          "type": 0
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": [
+            "future"
+          ],
+          "explanation": false,
+          "type": 0
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "refusal-field-types",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": 0, \"category\": [\"future\"], \"explanation\": false}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": [
+            "future"
+          ],
+          "explanation": false,
+          "type": 0
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": [
+            "future"
+          ],
+          "explanation": false,
+          "type": 0
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "refusal-field-types",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": 0, \"category\": [\"future\"], \"explanation\": false}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": [
+          "opaque"
+        ]
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": [
+          "opaque"
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "refusal-scalar",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": [\"opaque\"]}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": [
+          "opaque"
+        ]
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": [
+          "opaque"
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "refusal-scalar",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": [\"opaque\"]}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "replacement"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "replacement"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "delta-container",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05Z\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"container\": {\"id\": \"replacement\", \"expires_at\": \"2030-01-02T03:04:05Z\"}}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "container_α"
+        },
+        "stop_details": null
+      },
+      "message": {
+        "container": {
+          "expires_at": "2030-01-02T03:04:05Z",
+          "id": "replacement"
+        },
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "delta-container",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"container\": {\"id\": \"container_α\", \"expires_at\": \"2030-01-02T03:04:05Z\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"container\": {\"id\": \"replacement\", \"expires_at\": \"2030-01-02T03:04:05Z\"}}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "delta-refusal",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": null}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\"}}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        },
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "delta-refusal",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": null}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\"}}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": null
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "direct",
+      "name": "delta-refusal-null",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"stop_details\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    },
+    {
+      "expected_metadata": {
+        "container": null,
+        "stop_details": {
+          "category": "cyber",
+          "explanation": "说明",
+          "type": "refusal"
+        }
+      },
+      "message": {
+        "content": [
+          {
+            "text": "ready",
+            "type": "text"
+          }
+        ],
+        "id": "fixture",
+        "model": "fixture-model",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 2
+        }
+      },
+      "mode": "stream",
+      "name": "delta-refusal-null",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 0}, \"stop_details\": {\"type\": \"refusal\", \"category\": \"cyber\", \"explanation\": \"说明\"}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ready\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"stop_details\": null}, \"usage\": {\"output_tokens\": 2}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n"
+    }
+  ],
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "Container": "c902d1e042638fea6652254cbcd935cc7095b5f38478ade5eab570f341adc9c6",
+    "Message": "1ddfb619101c3e15e9e789493531a4b8fc1fa604dd18f0a5697af9fa4507ff5b",
+    "RefusalStopDetails": "b41e792ca040ecfbf2ebdb849e75ef8fcc7c463f8702f3c76a747361f6bb4bc0",
+    "accumulate_event": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098"
+  }
+}
