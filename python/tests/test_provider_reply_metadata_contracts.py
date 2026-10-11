@@ -7,7 +7,7 @@ from tools.provider_reply_metadata_contracts import provider_reply_metadata_cont
 def test_actual_sdk_reply_metadata_defaults_and_stream_updates():
     fixture = provider_reply_metadata_contracts()
     assert fixture["sdk_version"] == "0.107.1"
-    assert len(fixture["cases"]) == 44
+    assert len(fixture["cases"]) == 196
     rows = {(row["name"], row["mode"]): row["expected_metadata"] for row in fixture["cases"]}
     for mode in ("direct", "stream"):
         assert rows["absent", mode] == {"container": None, "stop_details": None}
@@ -24,6 +24,13 @@ def test_actual_sdk_reply_metadata_defaults_and_stream_updates():
         assert rows["refusal-defaults", mode]["stop_details"] == {"type": "refusal", "category": None, "explanation": None}
         assert rows["refusal-extra", mode]["stop_details"]["future"] == [False, "x"]
         assert rows["refusal-scalar", mode]["stop_details"] == ["opaque"]
+        assert rows["expiry-positive-infinity-text", mode]["container"]["expires_at"] == "9999-12-31T23:59:59.999999"
+        assert rows["expiry-unicode-date", mode]["container"]["expires_at"] == "2030-01-02T03:04:05Z"
+        assert rows["expiry-underscored-text", mode]["container"]["expires_at"] == "2030-01-02T03:04:05Z"
+        assert rows["expiry-invalid-calendar", mode]["container"]["expires_at"] == "2030-02-30T03:04:05Z"
+        assert rows["expiry-negative-fractional-epoch", mode]["container"]["expires_at"] == "1969-12-31T23:59:59.123457Z"
+        assert rows["expiry-fallback-negative-fractional-epoch", mode]["container"]["expires_at"] == "1969-12-31T23:59:59.876544Z"
+        assert rows["expiry-fallback-lowercase-zone", mode]["container"]["expires_at"] == "2030-01-02T03:04:05z"
     assert rows["delta-container", "direct"]["container"]["id"] == "replacement"
     assert rows["delta-container", "stream"]["container"]["id"] == "container_α"
     assert rows["delta-refusal", "stream"]["stop_details"]["category"] == "cyber"

@@ -8,13 +8,24 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 )
 
 // Matches the installed SDK's _datetime_parse grammar. Invalid observations are
 // retained, as SDK construction falls back when datetime validation fails.
 var sdkReplyDatetime = regexp.MustCompile(`^(\d{4})-(\d{1,2})-(\d{1,2})[T ](\d{1,2}):(\d{1,2})(?::(\d{1,2})(?:\.(\d{1,6})\d{0,6})?)?(Z|[+-]\d{2}(?::?\d{2})?)?$`)
+var validatedReplyDatetime = regexp.MustCompile(`^(\d{4})-(\d{2})-(\d{2})[Tt _](\d{2}):(\d{2})(?::(\d{2})(?:[.,](\d+))?)?([Zz]|[+-]\d{2}:?\d{2})?$`)
+var validatedReplyNumber = regexp.MustCompile(`^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)$`)
+var pythonReplyNumber = regexp.MustCompile(`^[+-]?(?:(?:[0-9](?:_?[0-9])*(?:\.(?:[0-9](?:_?[0-9])*)?)?|\.[0-9](?:_?[0-9])*)(?:[eE][+-]?[0-9](?:_?[0-9])*)?|(?i:inf(?:inity)?|nan))$`)
 
-func normalizeSDKReplyExpiry(value jsonvalue.Value) jsonvalue.Value {
+// Optional[Container] first validates the whole object. A non-text or absent ID
+// selects SDK loose construction, including Python timedelta's rounding behavior.
+func normalizeSDKReplyExpiry(value jsonvalue.Value, validContainerID bool) jsonvalue.Value {
+	if validContainerID {
+		if parsed, ok := validatedReplyExpiry(value); ok {
+			return parsed
+		}
+	}
 	text, textual := value.Text()
 	numeric := text
 	if integer, ok := value.Integer(); ok {
@@ -30,7 +41,10 @@ func normalizeSDKReplyExpiry(value jsonvalue.Value) jsonvalue.Value {
 			numeric = "0"
 		}
 	}
-	if number, err := strconv.ParseFloat(strings.TrimSpace(numeric), 64); err == nil && !math.IsNaN(number) && !math.IsInf(number, 0) {
+	numeric = strings.TrimFunc(replyDecimalText(numeric), func(r rune) bool {
+		return pytext.Space(r) && !(r >= 0x1c && r <= 0x1f)
+	})
+	if number, ok := pythonReplyFloat(numeric); ok && !math.IsNaN(number) {
 		if number > 3e20 {
 			return jsonvalue.TextValue("9999-12-31T23:59:59.999999")
 		}
@@ -50,7 +64,10 @@ func normalizeSDKReplyExpiry(value jsonvalue.Value) jsonvalue.Value {
 	if !textual {
 		return value
 	}
-	parts := sdkReplyDatetime.FindStringSubmatch(text)
+	return parsedReplyCalendar(value, sdkReplyDatetime.FindStringSubmatch(strings.TrimSuffix(replyDecimalText(text), "\n")), false)
+}
+
+func parsedReplyCalendar(value jsonvalue.Value, parts []string, strict bool) jsonvalue.Value {
 	if parts == nil {
 		return value
 	}
@@ -65,15 +82,22 @@ func normalizeSDKReplyExpiry(value jsonvalue.Value) jsonvalue.Value {
 	}
 	micro := 0
 	if parts[7] != "" {
-		micro, _ = strconv.Atoi(parts[7] + strings.Repeat("0", 6-len(parts[7])))
+		fraction := parts[7]
+		if len(fraction) > 6 {
+			fraction = fraction[:6]
+		}
+		micro, _ = strconv.Atoi(fraction + strings.Repeat("0", 6-len(fraction)))
 	}
-	zone := parts[8]
+	zone := strings.ToUpper(parts[8])
 	offset := 0
 	if zone != "" && zone != "Z" {
 		hours, _ := strconv.Atoi(zone[1:3])
 		mins := 0
 		if len(zone) > 3 {
 			mins, _ = strconv.Atoi(zone[len(zone)-2:])
+		}
+		if strict && mins > 59 {
+			return value
 		}
 		offset = (hours*60 + mins) * 60
 		if offset >= 86400 {
@@ -88,6 +112,91 @@ func normalizeSDKReplyExpiry(value jsonvalue.Value) jsonvalue.Value {
 		return value
 	}
 	return jsonvalue.TextValue(formatSDKReplyDatetime(stamp, zone != ""))
+}
+
+func replyDecimalText(text string) string {
+	return strings.Map(func(r rune) rune {
+		if digit, ok := pytext.DecimalDigit(r); ok {
+			return rune(digit)
+		}
+		return r
+	}, text)
+}
+
+func pythonReplyFloat(text string) (float64, bool) {
+	if !pythonReplyNumber.MatchString(text) {
+		return 0, false
+	}
+	number, err := strconv.ParseFloat(strings.ReplaceAll(text, "_", ""), 64)
+	// Python float accepts overflow as infinity; SDK loose construction saturates it.
+	return number, err == nil || math.IsInf(number, 0)
+}
+
+func validatedReplyExpiry(value jsonvalue.Value) (jsonvalue.Value, bool) {
+	text, textual := value.Text()
+	if textual && !validatedReplyNumber.MatchString(text) {
+		calendar := text
+		if len(text) == 10 {
+			calendar += "T00:00:00"
+		}
+		parsed := parsedReplyCalendar(value, validatedReplyDatetime.FindStringSubmatch(calendar), true)
+		return parsed, !parsed.PythonEqual(value)
+	}
+	if integer, ok := value.Integer(); ok {
+		text = integer
+	}
+	if number, ok := value.Float(); ok {
+		stamp, valid := validatedReplyTimestamp(number, false)
+		return jsonvalue.TextValue(formatSDKReplyDatetime(stamp, true)), valid
+	}
+	if !textual && value.Kind() != jsonvalue.Integer {
+		return jsonvalue.Value{}, false
+	}
+	number, err := strconv.ParseFloat(text, 64)
+	if err != nil {
+		return jsonvalue.Value{}, false
+	}
+	stamp, valid := validatedReplyTimestamp(number, textual)
+	return jsonvalue.TextValue(formatSDKReplyDatetime(stamp, true)), valid
+}
+
+func validatedReplyTimestamp(number float64, textual bool) (time.Time, bool) {
+	if math.IsNaN(number) || math.IsInf(number, 0) || math.Abs(number) >= 9e18 {
+		return time.Time{}, false
+	}
+	// speedate's text and Python-float paths intentionally differ for negatives.
+	var whole, micro float64
+	if textual {
+		if math.Abs(number) > 2e10 {
+			number /= 1000
+		}
+		whole = math.Floor(number)
+		micro = math.Round((number - whole) * 1e6)
+	} else {
+		whole = math.Floor(number)
+		_, fraction := math.Modf(number)
+		scale := 1e6
+		if math.Abs(number) > 2e10 {
+			scale = 1e3
+		}
+		micro = math.Round(math.Abs(fraction) * scale)
+	}
+	seconds := int64(whole)
+	if math.Abs(whole) > 2e10 {
+		// Euclidean remainder matches speedate's negative millisecond handling.
+		quotient, remainder := seconds/1000, seconds%1000
+		if remainder < 0 {
+			quotient--
+			remainder += 1000
+		}
+		seconds = quotient
+		micro += float64(remainder * 1000)
+	}
+	stamp := time.Unix(seconds, int64(micro)*1000).UTC()
+	if stamp.Year() < 1600 || stamp.Year() > 9999 {
+		return time.Time{}, false
+	}
+	return stamp, true
 }
 func formatSDKReplyDatetime(stamp time.Time, zoned bool) string {
 	text := stamp.Format("2006-01-02T15:04:05")

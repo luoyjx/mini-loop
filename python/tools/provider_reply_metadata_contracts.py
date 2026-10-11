@@ -6,9 +6,14 @@ import copy
 import hashlib
 import inspect
 import json
+import unicodedata
 
 import anthropic
 import httpx
+import pydantic
+import pydantic_core
+from anthropic._models import construct_type
+from anthropic._utils._datetime_parse import parse_datetime, _from_unix_seconds, _parse_timezone
 from anthropic.lib.streaming._messages import accumulate_event
 from anthropic.types import Container, Message, RefusalStopDetails
 
@@ -42,6 +47,50 @@ def provider_reply_metadata_contracts() -> dict:
         ("delta-refusal", {"stop_details": None}, {"stop_details": refusal}),
         ("delta-refusal-null", {"stop_details": refusal}, {"stop_details": None}),
     ]
+    # These values pass through actual SDK construction and public serialization;
+    # archive readers must not independently reinterpret their stored observations.
+    expiry_profiles = [
+        ("milliseconds", 1893553445123),
+        ("fractional-epoch", 0.1234565),
+        ("negative-fractional-epoch", -0.1234565),
+        ("true", True), ("false", False),
+        ("numeric-text", " 1.893553445e9 "),
+        ("underscored-text", "1_893_553_445"),
+        ("unicode-numeric-text", "١٨٩٣٥٥٣٤٤٥"),
+        ("positive-infinity-text", "Infinity"),
+        ("negative-infinity-text", "-inf"),
+        ("nan-text", "NaN"),
+        ("overflow", 3.1e20), ("underflow", -3.1e20),
+        ("watershed", 20000000000),
+        ("above-watershed", 20000000001),
+        ("short-fields", "2030-1-2T3:4:5Z"),
+        ("minute-only", "2030-01-02T03:04Z"),
+        ("offset-minute-carry", "2030-01-02T03:04:05+01:60"),
+        ("offset-compact", "2030-01-02T03:04:05-0130"),
+        ("long-fraction", "2030-01-02T03:04:05.123456789012Z"),
+        ("too-long-fraction", "2030-01-02T03:04:05.1234567890123Z"),
+        ("unicode-date", "٢٠٣٠-٠١-٠٢T٠٣:٠٤:٠٥Z"),
+        ("trailing-newline", "2030-01-02T03:04:05Z\n"),
+        ("lowercase-zone", "2030-01-02T03:04:05z"),
+        ("invalid-calendar", "2030-02-30T03:04:05Z"),
+        ("invalid-offset", "2030-01-02T03:04:05+24:00"),
+        ("fallback-list", [1]), ("fallback-object", {"future": 1}),
+        ("date-only", "2030-01-02"),
+        ("lowercase-separator", "2030-01-02t03:04:05z"),
+        ("comma-fraction", "2030-01-02T03:04:05,1234567Z"),
+        ("text-negative-fraction", "-0.1234565"),
+        ("float-second-carry", -0.9999999),
+        ("float-watershed-fraction", 20000000000.5),
+        ("float-negative-watershed-fraction", -20000000000.5),
+        ("text-overflow", "1e999"),
+        ("hexadecimal-text", "0x1p2"),
+        ("two-newlines", "2030-01-02T03:04:05Z\n\n"),
+    ]
+    profiles.extend(("expiry-" + name, {"container": {**container, "expires_at": value}}, {})
+                    for name, value in expiry_profiles)
+    profiles.extend(("expiry-fallback-" + name,
+                     {"container": {"id": 0, "expires_at": value}}, {})
+                    for name, value in expiry_profiles)
 
     async def capture():
         rows = []
@@ -83,6 +132,9 @@ def provider_reply_metadata_contracts() -> dict:
 
     return {
         "sdk_version": anthropic.__version__,
-        "source_sha256": {value.__name__: hashlib.sha256(inspect.getsource(value).encode()).hexdigest() for value in (Message, Container, RefusalStopDetails, accumulate_event)},
+        "pydantic_version": pydantic.__version__,
+        "pydantic_core_version": pydantic_core.__version__,
+        "unicode_version": unicodedata.unidata_version,
+        "source_sha256": {value.__name__: hashlib.sha256(inspect.getsource(value).encode()).hexdigest() for value in (Message, Container, RefusalStopDetails, accumulate_event, construct_type, parse_datetime, _from_unix_seconds, _parse_timezone)},
         "cases": asyncio.run(capture()),
     }

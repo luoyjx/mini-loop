@@ -29,7 +29,7 @@ func TestCompletedReplyMetadataMatchesSDKDirectAndStream(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 44 {
+	if len(fixture.Cases) != 196 {
 		t.Fatal("Source inventory changed", len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {

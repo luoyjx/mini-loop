@@ -84,7 +84,8 @@ func (v ContainerMetadata) Observation() (jsonvalue.Value, bool) {
 }
 func (v ContainerMetadata) WithSDKDatetime() ContainerMetadata {
 	if v.kind == ReplyMetadataStructured {
-		v.container.ExpiresAt.value = normalizeSDKReplyExpiry(v.container.ExpiresAt.value)
+		_, validID := v.container.ID.Text()
+		v.container.ExpiresAt.value = normalizeSDKReplyExpiry(v.container.ExpiresAt.value, validID)
 	}
 	return v
 }
