@@ -6851,22 +6851,42 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11: local main remains `9c39e32`; `fix/go-provider-authority`
-contains `3cd31be` and `b5b7ef8` (expanded Unicode wire follow-up).
-`f230942` expands actual SDK metadata to 196 observations, all matching
-after native two-path normalization (150 before). Full gates are retained in the
-[expiry audit](docs/audits/go-provider-expiry-native-2026-10-11.json). All 32 request-object
-assertions match. Expanded real HTTP wire inventory matches 12/14, with two required
-dotted-I failures (also present before normalization). Latest paired-control preload full ordinary Go fails seven native reload recipes;
-its simultaneous post-workload Source/Go cohort has eight common failures. The branch is not merged while stable Provider failures remain.
-IDNA dependency approval is pending; no dependency added. Final gate receipts and
-historical results are retained in [authority evidence](docs/audits/go-provider-authority-native-2026-10-11.json).
-Coverage was not refreshed: latest measured `f2cdbca` application 89.34%, all Go
-89.31%. G0–G7 completion and prior native timing discrepancies remain open.
-This section is the current delivery index;
-implementation checkpoints below retain historical status at their own baselines.
-An implemented feature is not a claim that its whole work package has passed the
-final G7 scope audit. Original work-package acceptance remains in [Work packages](#work-packages).
+Reviewed **2026-10-11** at local main `92aba47`; latest Go implementation is
+`014e913`. Live Git tree identity confirms current `go/` exactly matches the tree
+used by the full JSON read-span gates. Those full gates remain failed: ordinary
+Go fails CLI/native reload; race+atomic fails four native recipe operation waits.
+Vet and syntax/public type audits pass (450 production files/1434 named types;
+50 packages/1189 exported types, zero findings). SQLite maximum512KiB decision
+restart now passes its original shared30s budget in the focused race+atomic check
+and both full Go runs. This is not full migration acceptance.
+
+Owned provider literal-target transport now passes all224 request-object,40 plain
+HTTP wire and24 proxy/TLS wire assertions, with16 SNI and8 CONNECT authority/key
+checks. The earlier12/14 ASCII wire state is superseded by this required inventory;
+broader IDNA remains an explicit unapproved dependency/implementation item.
+Current exporter registers236 fixture keys, all present on disk. Presence is not
+freshness: latest full Source --check fails its native observer arming handshake
+before global comparison. Four later selected required Source captures match
+fixtures but do not replace that full gate.
+
+Latest full failed-run statement coverage is app**89.21%** (32690/36645), all Go
+**89.15%** (32811/36803), Provider**86.67%** (1515/1748), on the unchanged current
+Go tree. Profile SHA verified; not a passing acceptance baseline. Latest Python
+full regression is2239 passed/28 skipped/74 warnings/24 subtests (138.69s), from
+the same unchanged Python tree. Latest diagnostic adds same-subscription queue/
+post-result control evidence: hidden readiness failure despite300 queue marks and
+a later control C event; three other operations pass. Earlier full native failures
+are not superseded. Neither diagnostics nor scope receipts identify kernel cause.
+
+[Reconciled index receipt](docs/audits/go-current-acceptance-index-2026-10-11.json),
+[full runtime gates](docs/audits/go-json-read-spans-2026-10-11.json),
+[coverage](docs/audits/go-coverage-json-read-spans-2026-10-11.json),
+[literal targets](docs/audits/go-provider-literal-target-2026-10-11.json).
+Default syntax backend/IDNA decisions, native reliability, final P0/P1/G0–G7
+scope reconciliation, non-Darwin and rendered architecture acceptance remain open.
+This is the current delivery index; later checkpoints retain historical baselines.
+Implemented slices do not prove whole work-package acceptance. Original criteria
+remain in [Work packages](#work-packages); Python remains available.
 
 | Package | Current implementation and evidence | Remaining acceptance |
 | --- | --- | --- |
@@ -6879,7 +6899,7 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Historical original-12-wire export verified 234 Source fixtures; 32 request assertions match, expanded wire 12/14 matches with 2 required failures; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter registers236 files (present, not globally refreshed); owned literal transport passes224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; full ordinary/race+atomic native reload gates still fail | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
@@ -19442,3 +19462,29 @@ Built-in infographic inspected against this cohort; preserves original/result/
 control ordering and excludes global acceptance/kernel-cause claims.
 [Infographic](docs/audits/go-reload-required-queue-control-infographic-2026-10-11.png),
 [exact prompt](docs/audits/go-reload-required-queue-control-infographic-2026-10-11.prompt.txt).
+
+## Current acceptance-index reconciliation — 2026-10-11
+
+Reviewed baseline92aba47, latest Go014e913. Updated the primary Current status
+and parity acceptance index rather than adding another historical pass claim.
+Current Git Go tree equals014e913; current Python tree equals the tree of the
+latest2239/28/74/24 full Python receipt. Six retained receipt hashes and the
+full coverage profile SHA were verified. Static exporter AST inventory yields236
+literal keys, all files present; this does not execute producers or prove freshness.
+Exact latest global Source fault is native observer did not arm; its arming
+handshake traceback does not prove native construction itself blocked.
+
+Current index now preserves full ordinary/race+atomic native failures, vet/type
+passes, exact failed-run coverage app89.21/all89.15/Provider86.67 and fixed224/40/24
+required literal transport inventory. Four selected Source captures and queue/
+control diagnoses remain narrower than full acceptance. Old wire failure and
+coverage states retain their historical receipts, while primary current status no
+longer presents them as current. Full P0/P1/G0–G7 is still unproven; no dependency,
+backend, fixture, runtime or default changes, no new full tests/export measurement.
+
+Evidence SHA/tree/profile checks, registered path presence, audit-link validation,
+README outline and diff check pass. Documentation/evidence-index change only;
+full native/Python/scanner/guard gates are not rerun. Canonical map/boundaries
+reviewed, visible baseline updated; topology/authority/defaults unchanged,
+architecture JSON/HTML unchanged and no rendered acceptance. No push.
+[Reconciled current index](docs/audits/go-current-acceptance-index-2026-10-11.json).

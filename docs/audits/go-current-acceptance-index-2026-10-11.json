@@ -1,0 +1,237 @@
+{
+  "review_baseline": "92aba475a515104b2140935431918a9038776846",
+  "latest_go_commit": "014e9139a7e886983fd1f41e5700de614e4f4c57",
+  "go_tree": "50ec060065ae74e321bdb86d42c713d594948cb4",
+  "same_go_tree_as_full_gates": true,
+  "evidence_sha256": {
+    "docs/audits/go-json-read-spans-2026-10-11.json": "2a8b38327798d4bc41f8facc145bef07da5b3d3188fee51cfb1644bee94d70ca",
+    "docs/audits/go-coverage-json-read-spans-2026-10-11.json": "2bd20e35495b81fca0d3fd98f683d207a61f240ff77aa138f2588921cc0df094",
+    "docs/audits/go-json-text-spans-2026-10-11.json": "0d930c7ac5d016337e51eadf40c6f402b0c9fc2812a41d6796e7f5536117331c",
+    "docs/audits/go-provider-literal-target-2026-10-11.json": "4425b74ebd3a511b2d94bcc6c05263482759581df4457188b2f0ac9cafcba475",
+    "docs/audits/go-reload-required-callbacks-2026-10-11.json": "48b710ac81507a0bca36fe3dd955ddc364327a21f4bd6ed893bd22d1fcd1ef84",
+    "docs/audits/go-reload-required-queue-control-2026-10-11.json": "ac7a2328484cd04b5108b9d916e33146b26a30f354d54d799bf9bf75a7ab9a08"
+  },
+  "registered_count": 236,
+  "all_registered_files_present": true,
+  "source_freshness": "not proven: latest full export fails the native observer arming handshake before global comparison",
+  "full_native_gates": [
+    {
+      "name": "ordinary",
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "exit_code": 1,
+      "seconds": 268.024,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-ordinary.log"
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 1.295,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-vet.log"
+    },
+    {
+      "name": "race-coverage",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-coverprofile=/tmp/mini-loop-json-read-spans-2026-10-11.cover",
+        "./..."
+      ],
+      "exit_code": 1,
+      "seconds": 567.955,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-race-coverage.log"
+    },
+    {
+      "name": "types",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 1.083,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-types.log"
+    },
+    {
+      "name": "public-types",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "exit_code": 0,
+      "seconds": 0.806,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-public-types.log"
+    },
+    {
+      "name": "python",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 94.554,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-python.log"
+    },
+    {
+      "name": "scans",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "seconds": 8.168,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-scans.log"
+    },
+    {
+      "name": "guards",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "nonfinite"
+      ],
+      "exit_code": 0,
+      "seconds": 6.318,
+      "log": "/tmp/mini-loop-json-read-spans-2026-10-11-guards.log"
+    }
+  ],
+  "coverage": {
+    "gate_exit_code": 1,
+    "gate_status": "Full race+atomic test run failed native reload recipes; SQLite passes; not a passing acceptance baseline.",
+    "application_excluding_tools": {
+      "covered_statements": 32690,
+      "total_statements": 36645,
+      "percent": 89.207258834766
+    },
+    "all_go": {
+      "covered_statements": 32811,
+      "total_statements": 36803,
+      "percent": 89.15305817460533
+    },
+    "provider": {
+      "covered_statements": 1515,
+      "total_statements": 1748,
+      "percent": 86.67048054919908
+    },
+    "profile_sha256": "662ecc111554026bab2e89e80c1457406ac47db6d6901cf002807f95daeaccb7",
+    "limitations": [
+      "Darwin arm64 Go1.23.3 CGO enabled.",
+      "Go statement coverage only; native C and CLI subprocess internals excluded.",
+      "All package commands finished; native reload failed4 recipes; not passing acceptance.",
+      "No Python/branch/non-Darwin coverage."
+    ]
+  },
+  "latest_python": {
+    "command": ".venv/bin/python -m pytest -q",
+    "exit_code": 0,
+    "passed": 2239,
+    "skipped": 28,
+    "warnings": 74,
+    "subtests_passed": 24,
+    "seconds": 138.69,
+    "log": "/tmp/mini-loop-reload-required-queue-control-python-2026-10-11.log"
+  },
+  "native_diagnostics": [
+    {
+      "receipt": "docs/audits/go-reload-required-callbacks-2026-10-11.json",
+      "exit_code": 1,
+      "readiness_failures": [],
+      "scope": "Callback entry in the original operation window only; not kernel delivery, queue liveness, Go registry/fences or statistical acceptance.",
+      "cases": [
+        {
+          "name": "ignored-hidden",
+          "result": "PASS"
+        },
+        {
+          "name": "ignored-backup",
+          "result": "FAIL"
+        },
+        {
+          "name": "ignored-text",
+          "result": "FAIL"
+        },
+        {
+          "name": "transient-source",
+          "result": "FAIL"
+        }
+      ]
+    },
+    {
+      "receipt": "docs/audits/go-reload-required-queue-control-2026-10-11.json",
+      "exit_code": 1,
+      "readiness_failures": [
+        "ignored-hidden"
+      ],
+      "scope": "Same queue and distinct post-result control, not concurrent operation/control, untouched-source acceptance, kernel cause or statistical reliability. Diagnostic timer/cleanup alter scheduling.",
+      "cases": [
+        {
+          "name": "ignored-hidden",
+          "result": "readiness failure"
+        },
+        {
+          "name": "ignored-backup",
+          "result": "PASS"
+        },
+        {
+          "name": "ignored-text",
+          "result": "PASS"
+        },
+        {
+          "name": "transient-source",
+          "result": "PASS"
+        }
+      ]
+    }
+  ],
+  "provider_required_inventory": {
+    "request_objects": 224,
+    "plain_http_wire": 40,
+    "proxy_tls_wire": 24,
+    "sni": 16,
+    "connect_authority_key_absence": 8
+  },
+  "remaining": [
+    "default CLI full-feature syntax backend approval/implementation",
+    "broader IDNA dependency approval/implementation",
+    "native delivery and readiness reliability",
+    "final P0/P1/G0-G7 scope reconciliation and release gates",
+    "inactive build profiles/unexported roots/foreign internals/runtime data-flow type review",
+    "final provider/public-entry/default/feature inventory and performance scope",
+    "non-Darwin runtime and rendered architecture acceptance"
+  ],
+  "scope": "Current acceptance-index reconciliation against pinned artifacts and live tree identities; not a new full gate run or exhaustive completion audit.",
+  "python_tree": "47f5146e8d157585eaca7d67f7cd41301a31cf4c",
+  "python_tree_same_as_latest_python_gate": true,
+  "validation": {
+    "diff_check": "passed",
+    "receipt_provenance": "six retained evidence SHA256, current Go/Python tree identities,236 registered file paths and full profile SHA verified",
+    "new_test_runs": "none: documentation/evidence-index reconciliation only; pinned gates are explicitly historical",
+    "architecture": "README outline and canonical observer/runtime map reviewed; visible review baseline updated; topology/authority/defaults unchanged, JSON/HTML unchanged; no rendered acceptance"
+  },
+  "source_abort_exact_fault": "RuntimeError: native Source observer did not arm",
+  "source_abort_stage_limit": "The retained traceback proves an arming-handshake failure; it does not prove that native construction itself blocked.",
+  "registered_export_keys_sha256": "6644ad6f54eb0a7c78923c8912edaab64f1dc8f94efd4085bca5f4e563c67c95",
+  "exporter_sha256": "dc9f1a7d8f0661e1ff0a650d4e8831af293daf2ac02b626faf80102d38de21cf"
+}

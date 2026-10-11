@@ -2,22 +2,26 @@
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed baseline: local main `f41b34c`; latest production `4b68574`. Owned named
-ordered routing now passes all 168 actual Source requests. Earlier entries retain
-their original baselines; use [the current plan](GO_PORT_PLAN.md#current-status)
-for the implementation queue. Complete migration acceptance remains open.
+Reviewed **2026-10-11** at local main `92aba47`; latest Go implementation
+`014e913`. Live Git tree comparison verifies the same Go tree as the latest full
+native gates, which remain failed. This index uses pinned receipts rather than
+promoting old passes or selected diagnostics to current full acceptance.
+[Reconciled evidence](docs/audits/go-current-acceptance-index-2026-10-11.json).
+Full P0/P1/G0–G7 completion remains unproven; see
+[the current plan](GO_PORT_PLAN.md#current-status).
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
 | Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | Full export --check with new business-routing prerequisite: 231 current files | Passed; prior WatchFiles readiness failures remain recorded and unexplained |
+| Source recipe freshness | Exporter AST registers236 keys, all files present; latest full --check fails its native observer arming handshake before global comparison; four later required captures match | Open: presence/selected captures do not prove global freshness |
 | Default business routing | All 168 actual Source requests on 40 explicit paths; [native evidence](docs/audits/go-http-routing-native-2026-10-11.json) | Delivered at 4b68574: first-route Allow, known slash redirects and decoded-path semantics match. Required parity assertion replaces diagnostic-only acceptance; broader URL/mount/forwarded-host scope remains |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Current ordinary/race/Source gates](docs/audits/go-http-routing-native-2026-10-11.json), plus historical prefix controls | Ordinary Go fails five native scenarios; full race and Source export pass. No observer code/selection/deadline changed. Root cause and temporal G3/G7 acceptance remain open |
-| Package-level type declarations | Syntax and active-profile public closure audits; [current evidence](docs/audits/go-http-routing-native-2026-10-11.json) | At 4b68574: 448 production files/1430 package types; 50 packages/1189 exported types; zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
+| Development reload | [Full ordinary/race+atomic gates](docs/audits/go-json-read-spans-2026-10-11.json), raw C and same-subscription queue/control receipts | Full ordinary fails CLI/native reload; full race+atomic fails four operation waits. Later diagnostics do not repair/supersede failures. Readiness/delivery reliability and temporal G3/G7 remain open |
+| Package-level type declarations | Syntax and active-profile public closure audits; [current runtime evidence](docs/audits/go-json-read-spans-2026-10-11.json) | On unchanged014e913 Go tree:450 production files/1434 named types;50 packages/1189 exported types;zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
+| Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
 | Completed reply metadata | `go/testdata/python-provider-reply-metadata.json`: 44 actual SDK 0.107.1 direct/stream captures | Implemented at 3916f71: named finite observations, defaults, normalized timestamps, SDK delta retention, cloning and public JSON match all 44 captures; arbitrary coercion/custom transport and final acceptance remain |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
 | Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
@@ -41,21 +45,22 @@ for the implementation queue. Complete migration acceptance remains open.
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Current acceptance refresh: full Python regression passes at unchanged Source
-runtime: **2230 passed, 28 skipped, 50 warnings, 24 subtests passed** (85.80s).
-Invariant declaration verification checks 77 modules; 19 scan guards pass.
-This refresh does not include a full mutation sweep, new full Go/race/vet/type
-measurement or new export sweep; those gates retain their own pinned baselines.
-Default full-feature diagnostics still awaits the explicit CPython dependency
-decision; the approval question was issued during this review.
+Latest full Python result: **2239 passed,28 skipped,74 warnings,24 subtests**
+(138.69s); unchanged current Python tree, retained in the
+[queue/control receipt](docs/audits/go-reload-required-queue-control-2026-10-11.json).
+Latest full Go ordinary and race+atomic runs fail native reload; vet/type audits
+pass. Selected nonfinite mutations cover four checks, not the whole guard inventory.
+Current export/default-type prerequisites have not obtained a new global Source
+comparison; default full-feature CLI syntax backend and broader IDNA approvals
+remain outstanding. SQLite fixed driver approval covers neither decision.
 
-Latest measured coverage: application excluding tools **89.17% (32196/36106)**;
-all Go **89.14% (32243/36170)** on runtime `770f065`. This measurement comes from
-a failing full race/coverpkg run: SQLite maximum decision restart timed out, so
-its profile may undercount. It is not current-HEAD coverage. See
-[package metrics](docs/audits/go-coverage-nonfinite-bash-2026-10-11.json). Darwin
-coverage excludes native C and CLI child-process internals; coverage does not
-prove complete port/default/type acceptance. No merge or push was performed.
+Latest full failed-run statement coverage on the unchanged current Go tree:
+application excluding tools **89.21% (32690/36645)**; all Go
+**89.15% (32811/36803)**; Provider**86.67% (1515/1748)**.
+[Exact coverage receipt](docs/audits/go-coverage-json-read-spans-2026-10-11.json)
+and profile SHA were checked. This is not a passing acceptance baseline or a new
+measurement; Darwin Go statements exclude native C, CLI child internals, Python,
+branch and non-Darwin runtime coverage. Broader scope/final release gates remain open.
 
 
 ## 2026-10-09 native SQLite killed-generation process recovery
