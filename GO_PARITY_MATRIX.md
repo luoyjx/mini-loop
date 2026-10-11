@@ -1,5 +1,52 @@
 # Python to Go parity matrix
 
+## 2026-10-12 memory callback failure containment
+
+Implementation `9194543`, based on local main `32ac048`. Actual Agent.run captures add 32 masker-callback
+scenarios to the 11 endpoint controls, totaling 43. Normal completion, round
+exhaustion and stuck stop/resume endpoints exercise first/second extraction,
+first/second replacement, final index failure, repeated faults and cancellation;
+below-threshold controls prove that partial extraction may remain without a
+later consolidation. Records, foreign records, mask counts, model budgets,
+request purposes, memory events and capture-error counts are required matches.
+All 29 failing pre-fix scenarios escape as native panics. The initial command
+launched outside go/ is retained separately as a command setup failure.
+
+Go now contains ordinary callback panics at the same side-operation boundaries
+as Source: extraction contains its initial List and all writes; consolidation
+reads List before entering its contained preparation/replacement stage. An
+extraction fault returns zero and still permits consolidation. Panics retain
+already-written files and release the shared lifecycle lock. Ordinary panic payloads
+are not retained or emitted. Only an ephemeral error assertion classifies native
+persistence/lease authority failures, which still propagate, as does context
+cancellation. Six additional native public-session controls cover wrapped ordinary,
+transcript and lease errors at extraction/replacement boundaries. The raw memory
+library's callback contract and owner isolation remain unchanged.
+
+The 201 existing extraction/consolidation field scenarios still pass. Parser
+depth/resource limits, broader callback side effects, whole-memory/public-entry
+scope and original P0/P1/G0-G7 acceptance remain open.
+
+Frozen 1653 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
+(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 95.93s (0:01:35). Application coverage 89.30% (33175/37149); all Go 89.18%
+(33346/37393); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-callback-faults-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-callback-faults-2026-10-12.json). All 29 pre-fix panic escapes
+are retained. No new dependency or Python runtime-module change. Package
+invariants and full Python mutation sweep were not rerun. Prior temporal failures
+remain open.
+
+The [iteration image](docs/audits/go-memory-callback-faults-infographic-2026-10-12.png)
+edits the layered base, highlighting L3 exception boundaries and L5 partial-write/lifecycle
+phases. No component added/deleted; base unchanged. Exact prompt saved. Canonical
+map and JSON synchronized; generated HTML passes 9 checks, zero errors/warnings.
+PNG inspected; browser visual acceptance remains blocked by prior URL policy.
+
+Next: capture actual parser depth/resource limits and malformed whole-reply
+boundaries, then complete the broader memory/public-entry and callback side-effect
+review. Original migration criteria and previous temporal failures remain open.
+
 ## 2026-10-12 memory write encoding order
 
 Implementation `387061f`, based on local main `e6a50b8`. Actual Python consumers add 24 extraction and
@@ -201,14 +248,15 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `e6a50b8`: memory write encoding order, with 105 extraction
-and 96 consolidation Source cases and 34 retained pre-fix differences.
-Frozen 1652 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+Reviewed baseline `32ac048`: memory callback containment, with 43 actual end-of-turn
+scenarios, 29 retained pre-fix panic escapes, six native authority controls and
+201 existing extraction/consolidation field scenarios.
+Frozen 1653 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
 audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
 (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 114.47s (0:01:54). Application coverage 89.30% (33166/37142); all Go 89.17%
-(33337/37386); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-write-order-2026-10-12.json). Callback faults and original acceptance remain open.
+passed in 95.93s (0:01:35). Application coverage 89.30% (33175/37149); all Go 89.18%
+(33346/37393); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-callback-faults-2026-10-12.json). Parser resources, broader side effects and original acceptance remain open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -251,15 +299,15 @@ passed in 114.47s (0:01:54). Application coverage 89.30% (33166/37142); all Go 8
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 114.47s (0:01:54)**. Ordinary Go/vet/race+atomic, four type
+Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 95.93s (0:01:35)**. Ordinary Go/vet/race+atomic, four type
 audits, 239-file Source check, 19 scans and selected memory/consolidation guards pass.
-[Current receipt](docs/audits/go-memory-write-order-2026-10-12.json). Full Python mutation sweep and package invariants
+[Current receipt](docs/audits/go-memory-callback-faults-2026-10-12.json). Full Python mutation sweep and package invariants
 not rerun; no Python runtime module changed. Default diagnostics and broader IDNA
 approval remain outstanding.
 
-Current full passing-run statement coverage: application **89.30% (33166/37142)**;
-all Go **89.17% (33337/37386)**; Provider **86.67% (1522/1756)**.
-[Exact receipt](docs/audits/go-coverage-memory-write-order-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
+Current full passing-run statement coverage: application **89.30% (33175/37149)**;
+all Go **89.18% (33346/37393)**; Provider **86.67% (1522/1756)**.
+[Exact receipt](docs/audits/go-coverage-memory-callback-faults-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
 Python, branches and other platforms excluded. Full port acceptance remains open.
 
 
