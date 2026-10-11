@@ -39,20 +39,22 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 		Cases []struct {
 			Name, Reply      string
 			Fault            bool
+			Mask             bool
 			Messages         []protocol.Message
 			Calls            []protocol.ModelRequest
 			Count            int
 			Records, Foreign []memory.Record
+			Problems         []string
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 59 {
+	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 81 {
 		t.Fatal(err, len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {
 		t.Run(row.Name, func(t *testing.T) {
 			ctx := context.Background()
-			rawStore, err := memory.NewStore(ctx, t.TempDir(), nil)
+			rawStore, err := memory.NewStore(ctx, t.TempDir(), memoryBodyMasker(row.Mask))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -89,6 +91,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			if err != nil || !reflect.DeepEqual(records, row.Records) {
 				t.Fatalf("records differ: %#v want %#v err %v", records, row.Records, err)
 			}
+			assertMemoryProblems(t, rawStore, store, foreign, row.Problems)
 			protected, err := foreign.List(ctx)
 			if err != nil || !reflect.DeepEqual(protected, row.Foreign) {
 				t.Fatal("extraction changed foreign memories", protected, err)
@@ -124,7 +127,7 @@ func TestMemoryExtractionCancellationAndMalformedEntries(t *testing.T) {
 	if _, err = session.extractMemories(ctx); err != context.Canceled {
 		t.Fatal(err)
 	}
-	for _, text := range []string{`null`, `7`, `{}`, `{"name":"x","body":7}`} {
+	for _, text := range []string{`null`, `7`, `{}`} {
 		value, err := jsonvalue.Decode(text)
 		if err != nil {
 			t.Fatal(err)

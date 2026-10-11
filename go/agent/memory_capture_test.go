@@ -24,20 +24,22 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 		Cases []struct {
 			Name, Reply      string
 			Fault            bool
+			Mask             bool
 			Seed, Count      int
 			Calls            []protocol.ModelRequest
 			Records, Foreign []memory.Record
 			Before           []memory.Record
+			Problems         []string
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 50 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 72 {
 		t.Fatal(err)
 	}
 	for _, row := range fixture.Cases {
 		t.Run(row.Name, func(t *testing.T) {
 			ctx := context.Background()
-			store, err := memory.NewStore(ctx, t.TempDir(), nil)
+			store, err := memory.NewStore(ctx, t.TempDir(), memoryBodyMasker(row.Mask))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -73,6 +75,7 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			if err != nil || !reflect.DeepEqual(records, row.Records) {
 				t.Fatalf("records differ: %#v want %#v err %v", records, row.Records, err)
 			}
+			assertMemoryProblems(t, store, bound, foreign, row.Problems)
 			records, err = foreign.List(ctx)
 			if err != nil || !reflect.DeepEqual(records, row.Foreign) {
 				t.Fatal("foreign records changed", records, err)

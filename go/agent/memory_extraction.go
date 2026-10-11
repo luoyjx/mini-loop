@@ -65,8 +65,8 @@ func extractedMemoryInput(fields jsonvalue.Value) (memory.Input, error) {
 	if !present {
 		return memory.Input{}, errors.New("memory entry requires name")
 	}
-	values := [4]string{"", "project", "", ""}
-	for index, key := range []string{"name", "type", "description", "body"} {
+	values := [3]string{"", "project", ""}
+	for index, key := range []string{"name", "type", "description"} {
 		value, ok := fields.Lookup(key)
 		if !ok {
 			continue
@@ -77,17 +77,42 @@ func extractedMemoryInput(fields jsonvalue.Value) (memory.Input, error) {
 		}
 		text, ok := value.Text()
 		if !ok {
-			if key == "type" { // No non-text JSON value equals a recognized type.
-				values[index] = "project"
-				continue
-			}
-			return memory.Input{}, errors.New("memory body must be a string")
+			values[index] = "project" // No non-text JSON value equals a recognized type.
+			continue
 		}
-		// Preserve text for the storage boundary's UTF-8 check. In consolidation
-		// that failure must occur after owner-scoped deletion and earlier writes.
+		// Keep text types for the existing storage normalization.
 		values[index] = text
 	}
-	return memory.Input{Name: values[0], Type: memory.Type(values[1]), Description: values[2], Body: values[3], Origin: memory.AutoExtracted}, nil
+	input := memory.Input{Name: values[0], Type: memory.Type(values[1]), Description: values[2], Origin: memory.AutoExtracted}
+	if value, present := fields.Lookup("body"); present {
+		body, err := observedMemoryBody(value)
+		if err != nil {
+			return memory.Input{}, err
+		}
+		input = input.WithBody(body)
+	}
+	return input, nil
+}
+
+func observedMemoryBody(value jsonvalue.Value) (memory.Body, error) {
+	if text, ok := value.Text(); ok {
+		return memory.TextBody(text), nil
+	}
+	size := 0
+	switch value.Kind() {
+	case jsonvalue.Array:
+		items, _ := value.Array()
+		size = len(items)
+	case jsonvalue.Object:
+		size = len(value.Keys())
+	default:
+		return memory.UnsizedBody(), nil
+	}
+	repr := ""
+	if size <= memory.MaxBody {
+		repr = value.PythonString()
+	}
+	return memory.ContainerBody(repr, size)
 }
 
 func memoryReplyArray(reply protocol.ModelReply) []jsonvalue.Value {

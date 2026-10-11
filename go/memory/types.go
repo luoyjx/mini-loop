@@ -35,6 +35,7 @@ type Input struct {
 	Type              Type
 	Description, Body string
 	Origin            Origin
+	body              *Body
 }
 type Record struct {
 	File        string `json:"file"`

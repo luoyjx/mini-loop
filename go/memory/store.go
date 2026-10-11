@@ -151,15 +151,20 @@ func (store *Store) write(ctx context.Context, owner OwnerID, input Input, attri
 		ownerDisplay = "anonymous"
 	}
 	normalized := slug(name)
-	body := input.Body
-	runes := []rune(body)
-	if len(runes) > MaxBody {
-		message := fmt.Sprintf("%s: body truncated from %s to 32,000", normalized, grouped(len(runes)))
+	projection := TextBody(input.Body)
+	if input.body != nil {
+		projection = *input.body
+	}
+	body, originalLength, truncated, err := projection.render()
+	if truncated {
+		message := fmt.Sprintf("%s: body truncated from %s to 32,000", normalized, grouped(originalLength))
 		store.report(message)
 		if attributed != nil {
 			appendDiagnostic(attributed, message)
 		}
-		body = string(runes[:MaxBody]) + "\n[memory truncated]"
+	}
+	if err != nil {
+		return "", err
 	}
 	text := fmt.Sprintf("---\nname: %s\ndescription: %s\ntype: %s\nscope: user\nowner_key: %s\nowner: %s\norigin: %s\n---\n\n%s\n", name, description, kind, hash(string(owner)), ownerDisplay, origin(input.Origin, Explicit), body)
 	filename := normalized + ".md"
@@ -167,7 +172,11 @@ func (store *Store) write(ctx context.Context, owner OwnerID, input Input, attri
 		filename = "u-" + memoryKey(owner, name) + "-" + normalized + ".md"
 	}
 	delete(store.parsed, filename)
-	if err := atomicText(ctx, filepath.Join(store.root, filename), store.mask(text)); err != nil {
+	text = store.mask(text)
+	if !utf8.ValidString(text) {
+		return "", errors.New("memory text must be valid UTF-8")
+	}
+	if err := atomicText(ctx, filepath.Join(store.root, filename), text); err != nil {
 		return "", err
 	}
 	candidates := []string{normalized + ".md"}

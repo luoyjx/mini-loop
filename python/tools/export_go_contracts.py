@@ -5670,6 +5670,28 @@ def _memory_context_contracts(scratch: Path) -> dict:
     return dict(cases=asyncio.run(run()))
 
 
+def _memory_body_values() -> list[tuple[str, object]]:
+    from mini_loop.memory import MAX_BODY
+    return [("null", None), ("bool", True), ("integer", 7), ("float", 1.25),
+            ("nan", float("nan")), ("infinity", float("inf")),
+            ("empty-array", []), ("array", [None, True, "line\n用户"]),
+            ("empty-object", {}), ("object", {"z": True, "a": "quote'"}),
+            ("wide-array-repr", ["x"*(MAX_BODY+1)]),
+            ("wide-object-repr", {"k": "x"*(MAX_BODY+1)}),
+            ("array-at-limit", [0]*MAX_BODY), ("array-over-limit", [0]*(MAX_BODY+1)),
+            ("object-over-limit", {str(i):0 for i in range(MAX_BODY+1)}),
+            ("text-at-limit", "a"*MAX_BODY), ("text-over-limit", "a"*(MAX_BODY+1)),
+            ("unicode-over-limit", "字"*(MAX_BODY+1)),
+            ("surrogate-in-prefix", "\ud800"+"a"*MAX_BODY),
+            ("surrogate-after-prefix", "a"*MAX_BODY+"\ud800"),
+            ("array-surrogate", ["\ud800"])]
+
+
+class _MemoryBodyMasker:
+    def mask(self, text: str) -> str:
+        return text.replace("\ud800", "safe")
+
+
 def _memory_header_values() -> list[tuple[str, object]]:
     """Closed JSON kinds and legacy numbers, exercised by actual consumers."""
     return [("null", None), ("bool", True), ("integer", 7), ("float", 1.25),
@@ -5729,10 +5751,13 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
         dict(name="surrogate-unknown-type", reply=json.dumps([{**valid,"type":"\ud800"}])),
         *[dict(name=f"header-{field}-{label}",reply=json.dumps([{**valid,field:value}]))
           for field in ("name","description","type") for label,value in _memory_header_values()],
+        *[dict(name=f"body-{label}",reply=json.dumps([valid,dict(name="body-candidate",body=value),dict(name="after",body="after")]))
+          for label,value in _memory_body_values()],
+        dict(name="body-masked-surrogate",mask=True,reply=json.dumps([valid,dict(name="body-candidate",body="\ud800"),dict(name="after",body="after")])),
     ]
     async def scenario(row):
         root=scratch/row["name"]; root.mkdir(parents=True)
-        raw=MemoryStore(root/"memory"); store=ScopedMemory(raw,"owner")
+        raw=MemoryStore(root/"memory",secrets=_MemoryBodyMasker() if row.get("mask") else None); store=ScopedMemory(raw,"owner")
         raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
         store.write("existing","project","known","seed",origin="explicit")
         calls, events = [], []
@@ -5756,7 +5781,7 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
         assert agent.token_meter.snapshot()==before
         assert agent.messages==messages
         return {**row,"fault":row.get("fault",False),"messages":messages,"calls":calls,"count":count,
-                "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),
+                "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),"problems":list(raw.problems),
                 "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
     async def run(): return [await scenario(row) for row in recipes]
     return dict(cases=asyncio.run(run()))
@@ -5789,14 +5814,17 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
              *[dict(name=f"partial-write-surrogate-{field}",seed=10,mode="surrogate",field=field)
                for field in ("name","description","body")],
              *[dict(name=f"header-{field}-{label}",seed=10,mode="header",field=field,value_json=json.dumps(value))
-               for field in ("name","description","type") for label,value in _memory_header_values()]]
+               for field in ("name","description","type") for label,value in _memory_header_values()],
+             *[dict(name=f"body-{label}",seed=10,mode="body",value_json=json.dumps(value))
+               for label,value in _memory_body_values()],
+             dict(name="body-masked-surrogate",seed=10,mode="body",mask=True,value_json=json.dumps("\ud800"))]
     async def scenario(row):
         root=scratch/row["name"];root.mkdir(parents=True)
-        raw=MemoryStore(root/"memory");store=ScopedMemory(raw,"owner")
+        raw=MemoryStore(root/"memory",secrets=_MemoryBodyMasker() if row.get("mask") else None);store=ScopedMemory(raw,"owner")
         raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
         origins=("explicit","auto_extracted","imported","consolidated")
         primary_name="fact-0"
-        value=json.loads(row["value_json"]) if row["mode"]=="header" else None
+        value=json.loads(row["value_json"]) if row["mode"] in {"header","body"} else None
         for i in range(row["seed"]):
             name,description=f"fact-{i}",f"description-{i} 中文"
             if i==0 and row["mode"]=="header":
@@ -5819,8 +5847,9 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
         elif mode in {"overflow","integer-limit"}:items=[copy.deepcopy(indexed["fact-0"])]
         elif mode=="surrogate":items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],row["field"]:"\ud800"},dict(name="never")]
         elif mode=="header":items=[{**indexed[primary_name],row["field"]:value}]
+        elif mode=="body":items=[copy.deepcopy(indexed["fact-0"]),dict(name="body-candidate",body=value),dict(name="after",body="after")]
         else:items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],"body":"changed"},dict(name="new",body="merged",owner="foreign",origin="explicit")]
-        reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=mode=="surrogate")
+        reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=mode in {"surrogate","body"})
         if mode=="overflow":reply=reply[:-2]+',"extra":1e400}]'
         if mode=="integer-limit":reply=reply[:-2]+',"extra":'+'1'*4301+'}]'
         calls,events=[],[]
@@ -5834,7 +5863,7 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
                     settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
         count=await consolidate_memories(store,agent)
         return {**row,"fault":row.get("fault",False),"reply":reply,"before":before,"calls":calls,"count":count,
-                "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),
+                "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),"problems":list(raw.problems),
                 "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
     async def run():return [await scenario(row) for row in recipes]
     return dict(cases=asyncio.run(run()))

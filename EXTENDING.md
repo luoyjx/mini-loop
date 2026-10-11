@@ -1233,6 +1233,16 @@ ManagerServices.Memory creates WorkspaceRoot/.memory during construction, even
 with a resolver selected; failed shared-root construction is fatal. Memory tools
 remain explicitly selected. Do not inject the raw store into an owner-facing handler.
 
+`memory.Input.WithBody` selects an immutable `memory.Body` observation while
+clearing the ordinary Body string field on the returned copy. TextBody retains
+text, ContainerBody retains rendered text plus original element count (negative
+counts are rejected), and UnsizedBody defers the scalar len failure to write time.
+Only the write phase reports truncation or body errors. Oversized containers fail
+after reporting; text truncates by Python code points before masking and final
+UTF-8 encoding. Source-compatible model capture uses this seam. Ordinary typed
+string inputs and explicit remember tools retain their string admission. The
+projection carries no owner/path, raw JSON, rollback or execution capability.
+
 ### Go owner resource snapshots
 
 `userresources.NewResolver` takes a concrete deployment catalogue and optional
@@ -1341,8 +1351,11 @@ alone cannot grant live history/meter ownership. It uses the source 1,500-token
 budget, 40,000-character ASCII JSON tail, first/last bracket decoding, text-block
 concatenation and first-five incremental writes. Missing optional fields use
 source defaults; additional owner/root/origin fields are ignored and the bound
-store fixes attribution. Non-string/null fields are rejected by the native typed
-boundary; source can coerce some malformed scalars. Ordinary faults return zero,
+store fixes attribution. Names/descriptions use Python str projection, non-text
+types normalize to project, and bodies lower into the named observation described
+above. Consolidation checks original identity before these conversions; unhashable
+fields fail before deletion, and converted strings cannot inherit original origins.
+Ordinary faults return zero,
 including after partial writes; cancellation and native state authority failures
 propagate. Capture now runs after final text, a stop-hook stuck halt, and round
 exhaustion when both tools, MemoryAuto and writable posture permit it. Provider
