@@ -6851,7 +6851,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** at local main `70003ca`; latest Go implementation is
+Reviewed **2026-10-11** at local main `dc39414`; latest Go implementation is
 `014e913`. Live Git tree identity confirms current `go/` exactly matches the tree
 used by the full JSON read-span gates. Those full gates remain failed: ordinary
 Go fails CLI/native reload; race+atomic fails four native recipe operation waits.
@@ -6860,8 +6860,13 @@ Vet and syntax/public type audits pass (450 production files/1434 named types;
 public-type audit also passes50 packages/1189 exported types with zero findings,
 in a pinned existing Go1.23.3 image through the compatibility layer. Local Linux
 CGO0 inventories fail on SQLite types, and local Linux arm64/CGO1 fails on Darwin
-compiler headers; neither is a type pass. Linux full ordinary/vet/race has been
-dispatched against an isolated readonly commit snapshot; results are pending.
+compiler headers; neither is a type pass. Linux amd64 compatibility-layer full gates are now terminal on the same isolated
+readonly commit snapshot: ordinary and race each fail8 packages, vet passes.
+CLI readonly-HOME cache error is explicit; other platform/phase/signal differences
+need matched Source/native evidence. A separate Linux arm64/writable-HOME cohort
+is terminal without changing assertions or deadlines: public types/vet pass;
+ordinary/race each fail7 packages. Full acceptance remains open.
+[Full Linux evidence](docs/audits/go-linux-full-gates-2026-10-11.json).
 [Profile evidence](docs/audits/go-linux-public-types-2026-10-11.json). SQLite maximum512KiB decision
 restart now passes its original shared30s budget in the focused race+atomic check
 and both full Go runs. This is not full migration acceptance.
@@ -19542,3 +19547,48 @@ Built-in imagegen infographic inspected:50/1189/0 belongs only to Linux CGO
 public closure; full gates remain unaccepted and compatibility/performance limits
 are explicit. [Infographic](docs/audits/go-linux-public-types-infographic-2026-10-11.png),
 [exact prompt](docs/audits/go-linux-public-types-infographic-2026-10-11.prompt.txt).
+
+## Terminal Linux amd64 full gates and native-context follow-up — 2026-10-11
+
+Readonly committed baseline70003ca/Go014e913, image Go1.23.3 Linux amd64 through
+OrbStack's arm64-host compatibility layer, CGO1, offline approved module cache.
+Original one-shot ordinary/vet/race cohort is fully terminal (1434.581s total).
+Container exits0 because its serial script records each gate and proceeds; this
+is not a successful test result. Ordinary exits1 with8 failing packages; vet exits0;
+race exits1 with8 failing packages. No DATA RACE warning appears, which does not
+prove race freedom. Exact commands/full logs/exit codes/failed test+package lists/
+archive tree and log SHA256 are retained. No retry-to-green or fixture weakening.
+
+Ordinary fails agent, benchmark, CLI, HTTP API, reload, user resources, workspace
+and worktrees. Race passes agent but additionally fails shell, alongside the
+other seven. Ordinary background timeout-array has5 messages versus required4;
+race agent pass does not resolve or prove its scheduling cause. Explicit CLI
+errors show its isolated child cannot create /root/.cache/go-build because HOME
+is readonly and the test child drops parent GOCACHE. Debian /bin/sh error text,
+/private root placeholders, symlink inode projection and glob truncation differ
+from pinned captures and need a matched Source/filesystem/path baseline. Signal
+termination during FIFO bootstrap and race detached-pipe cleanup also remain
+unexplained; do not label them production bugs or harmless without native evidence.
+The original Source producer uses in-process MockTransport; native managed tests
+use a real loopback server. This is an observed harness difference, not proof of
+the background message-count cause. No Source recapture or coverage measurement.
+
+Prepared same-version native Linux arm64 image
+sha256:874a8b40ad6058f3f160636c61946394559b067562d7478cc3f9cc500794e9aa.
+A separate owned cohort uses the identical readonly archived inputs with writable
+private HOME and shared default build-cache path, preserving every assertion and
+timeout. Public types/ordinary/vet/race ran serially and ended in626.544s. Public types
+pass50 packages/1189 exported types/zero findings; vet passes. Ordinary and race
+each fail7 packages: astcontext, benchmark, HTTP API, reload, user resources,
+workspace and worktrees. CLI, agent and shell pass in this cohort. The AST test
+fails while opening the recently probed executable for in-place mutation with
+`text file busy`, before the second digest probe. No DATA RACE warning appears.
+These two context changes are not a synchronized causal pair or re-run of the
+amd64 profile; passing selected packages does not establish full acceptance.
+
+Go tree unchanged from retained baseline; logs/tree/diff check verified. Docs/
+evidence only: full Python/scans/guards not rerun. README map/boundaries reviewed,
+baseline updated, runtime topology/authority/defaults unchanged, architecture
+JSON/HTML unchanged; no rendered acceptance/push. Darwin native reliability,
+Source freshness, default syntax/IDNA and complete P0/P1/G0–G7 remain open.
+[Full retained Linux gates](docs/audits/go-linux-full-gates-2026-10-11.json).

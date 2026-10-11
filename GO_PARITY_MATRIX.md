@@ -2,7 +2,7 @@
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed **2026-10-11** at local main `70003ca`; latest Go implementation
+Reviewed **2026-10-11** at local main `dc39414`; latest Go implementation
 `014e913`. Live Git tree comparison verifies the same Go tree as the latest full
 native gates, which remain failed. This index uses pinned receipts rather than
 promoting old passes or selected diagnostics to current full acceptance.
@@ -21,7 +21,8 @@ Full P0/P1/G0–G7 completion remains unproven; see
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | [Full ordinary/race+atomic gates](docs/audits/go-json-read-spans-2026-10-11.json), raw C and same-subscription queue/control receipts | Full ordinary fails CLI/native reload; full race+atomic fails four operation waits. Later diagnostics do not repair/supersede failures. Readiness/delivery reliability and temporal G3/G7 remain open |
 | Package-level type declarations | Syntax and active-profile public closure audits; [current runtime evidence](docs/audits/go-json-read-spans-2026-10-11.json) | On unchanged014e913 Go tree:450 production files/1434 named types;50 packages/1189 exported types;zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
-| Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux gates dispatched, not yet accepted |
+| Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
+| Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
 | Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
 | Completed reply metadata | `go/testdata/python-provider-reply-metadata.json`: 44 actual SDK 0.107.1 direct/stream captures | Implemented at 3916f71: named finite observations, defaults, normalized timestamps, SDK delta retention, cloning and public JSON match all 44 captures; arbitrary coercion/custom transport and final acceptance remain |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
