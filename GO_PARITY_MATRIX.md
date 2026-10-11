@@ -11047,3 +11047,41 @@ transport while preserving these route, SNI, CONNECT and credential boundaries.
 [Proxy/TLS audit](docs/audits/go-provider-proxy-tls-2026-10-11.json) retains all raw
 terminal gate logs and Source observations. [Built-in imagegen graphic](docs/audits/go-provider-proxy-tls-infographic-2026-10-11.png)
 shows Source wire examples, native failures and the scope limits.
+
+## Literal request target native adoption — 2026-10-11
+
+Implementation `978b4fd` preserves Source original path bytes and installs an owned
+standard Transport clone only for literal backslash/caret/pipe paths. Proxy policy
+runs once on original metadata; a wire URL clone selects route-specific forms.
+Caller transport remains unchanged; explicit idle cleanup is available on direct
+and streaming clients. Ordinary/custom transport selection retains its documented
+boundary. Source raw_path maps to URL.RawPath; Go EscapedPath remains canonical.
+
+| Required scope | Previous matches | Current matches |
+| --- | --- | --- |
+| Request URL / raw path, direct and SSE | 218/224 | 224/224 |
+| Actual plain HTTP wire | 34/40 | 40/40 |
+| HTTP proxy / verified TLS / CONNECT wire | 6/24 | 24/24 |
+| TLS SNI | 16/16 | 16/16 |
+| CONNECT authority / API-key absence | 8/8 | 8/8 |
+
+All original failures/counts remain asserted; expected fixtures are unchanged.
+Adapter tests retain proxy/refusal, request ownership and idle-pool lifecycle checks.
+Provider ordinary/race, Python 2239 tests (28 skipped, 24 subtests), vet, both type
+audits, 19 scanner guards and diff check pass. Full ordinary Go fails CLI/reload;
+full race coverage fails native reload and maximum-decision SQLite restart deadline.
+No race warning is reported. Source full --check aborts before fixture comparison
+when the native Source observer does not arm. No retry/deadline widening or fallback.
+
+Current failed-run Go statement coverage: application 32663/36613 = 89.21%, all
+Go 32784/36771 = 89.16%, Provider 1515/1748 = 86.67%. All package commands ended;
+the profile is measurable, but the gate failed. Last passing recorded profile is
+f2cdbca (89.34% / 89.31%). Native C/CLI subprocess internals, Python/branch coverage
+and port completion are outside this Darwin arm64 / Go1.23.3 / CGO denominator.
+Architecture README/spec/generated HTML are synchronized, showcase 9/9; rendered
+review remains policy-blocked. General IDNA/admission, arbitrary custom wire, ambient
+proxy/authentication/HTTP2, default diagnostics, native reliability and G0–G7 remain
+open. No dependency or push. [Boundary/gate evidence](docs/audits/go-provider-literal-target-2026-10-11.json)
+and [coverage receipt](docs/audits/go-coverage-literal-target-2026-10-11.json) preserve
+exact failures and profile aggregation/hash. Built-in imagegen produced the
+[iteration graphic](docs/audits/go-provider-literal-target-infographic-2026-10-11.png).

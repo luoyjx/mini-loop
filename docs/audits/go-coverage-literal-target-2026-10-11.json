@@ -1,0 +1,282 @@
+{
+  "baseline": "978b4fd2cc63b4aa40a7c981a3de66d1fcfeae07",
+  "measured_at_utc": "2026-10-11T07:04:45.666446+00:00",
+  "mode": "mode: atomic",
+  "gate_exit_code": 1,
+  "gate_status": "failed: reload and SQLite maximum-decision restart deadlines; not a passing full-suite acceptance gate",
+  "command": "go test -race -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-provider-literal-target-2026-10-11.cover ./...",
+  "aggregation": "Merge identical source locations using maximum hit count; assert statement counts agree.",
+  "raw_blocks": 1231791,
+  "unique_source_locations": 25661,
+  "profile_path": "/tmp/mini-loop-provider-literal-target-2026-10-11.cover",
+  "profile_bytes": 85868611,
+  "profile_sha256": "287bdbfc48433025b7bfd335243f92863269bb6b980254349af2cec396a3d91f",
+  "packages": {
+    "github.com/luoyjx/mini-loop/go/agent": {
+      "covered_statements": 9154,
+      "total_statements": 10183,
+      "percent": 89.89492291073357
+    },
+    "github.com/luoyjx/mini-loop/go/astcontext": {
+      "covered_statements": 1508,
+      "total_statements": 1692,
+      "percent": 89.12529550827423
+    },
+    "github.com/luoyjx/mini-loop/go/audit": {
+      "covered_statements": 312,
+      "total_statements": 321,
+      "percent": 97.19626168224299
+    },
+    "github.com/luoyjx/mini-loop/go/background": {
+      "covered_statements": 242,
+      "total_statements": 267,
+      "percent": 90.6367041198502
+    },
+    "github.com/luoyjx/mini-loop/go/benchmark": {
+      "covered_statements": 408,
+      "total_statements": 445,
+      "percent": 91.68539325842697
+    },
+    "github.com/luoyjx/mini-loop/go/cmd/miniloop": {
+      "covered_statements": 73,
+      "total_statements": 173,
+      "percent": 42.19653179190752
+    },
+    "github.com/luoyjx/mini-loop/go/cmd/miniloop-audit": {
+      "covered_statements": 39,
+      "total_statements": 56,
+      "percent": 69.64285714285714
+    },
+    "github.com/luoyjx/mini-loop/go/cmd/traceview": {
+      "covered_statements": 43,
+      "total_statements": 59,
+      "percent": 72.88135593220339
+    },
+    "github.com/luoyjx/mini-loop/go/config": {
+      "covered_statements": 416,
+      "total_statements": 478,
+      "percent": 87.02928870292887
+    },
+    "github.com/luoyjx/mini-loop/go/cron": {
+      "covered_statements": 449,
+      "total_statements": 484,
+      "percent": 92.76859504132231
+    },
+    "github.com/luoyjx/mini-loop/go/decisions": {
+      "covered_statements": 795,
+      "total_statements": 891,
+      "percent": 89.22558922558923
+    },
+    "github.com/luoyjx/mini-loop/go/diagnostics": {
+      "covered_statements": 124,
+      "total_statements": 146,
+      "percent": 84.93150684931507
+    },
+    "github.com/luoyjx/mini-loop/go/dotenv": {
+      "covered_statements": 326,
+      "total_statements": 360,
+      "percent": 90.55555555555556
+    },
+    "github.com/luoyjx/mini-loop/go/durable": {
+      "covered_statements": 92,
+      "total_statements": 122,
+      "percent": 75.40983606557377
+    },
+    "github.com/luoyjx/mini-loop/go/efficiency": {
+      "covered_statements": 1489,
+      "total_statements": 1629,
+      "percent": 91.40577041129528
+    },
+    "github.com/luoyjx/mini-loop/go/httpapi": {
+      "covered_statements": 1690,
+      "total_statements": 1889,
+      "percent": 89.46532556908417
+    },
+    "github.com/luoyjx/mini-loop/go/improvement": {
+      "covered_statements": 159,
+      "total_statements": 174,
+      "percent": 91.37931034482759
+    },
+    "github.com/luoyjx/mini-loop/go/internal/commandenv": {
+      "covered_statements": 0,
+      "total_statements": 28,
+      "percent": 0.0
+    },
+    "github.com/luoyjx/mini-loop/go/internal/fnmatch": {
+      "covered_statements": 82,
+      "total_statements": 83,
+      "percent": 98.79518072289157
+    },
+    "github.com/luoyjx/mini-loop/go/internal/jsonsyntax": {
+      "covered_statements": 105,
+      "total_statements": 109,
+      "percent": 96.3302752293578
+    },
+    "github.com/luoyjx/mini-loop/go/internal/jsonvalue": {
+      "covered_statements": 771,
+      "total_statements": 802,
+      "percent": 96.13466334164589
+    },
+    "github.com/luoyjx/mini-loop/go/internal/pytext": {
+      "covered_statements": 102,
+      "total_statements": 106,
+      "percent": 96.22641509433963
+    },
+    "github.com/luoyjx/mini-loop/go/launcher": {
+      "covered_statements": 234,
+      "total_statements": 289,
+      "percent": 80.96885813148789
+    },
+    "github.com/luoyjx/mini-loop/go/mcp": {
+      "covered_statements": 275,
+      "total_statements": 312,
+      "percent": 88.14102564102564
+    },
+    "github.com/luoyjx/mini-loop/go/memory": {
+      "covered_statements": 321,
+      "total_statements": 368,
+      "percent": 87.22826086956522
+    },
+    "github.com/luoyjx/mini-loop/go/problems": {
+      "covered_statements": 71,
+      "total_statements": 74,
+      "percent": 95.94594594594595
+    },
+    "github.com/luoyjx/mini-loop/go/protocol": {
+      "covered_statements": 4051,
+      "total_statements": 4651,
+      "percent": 87.09954848419694
+    },
+    "github.com/luoyjx/mini-loop/go/provider": {
+      "covered_statements": 1515,
+      "total_statements": 1748,
+      "percent": 86.67048054919908
+    },
+    "github.com/luoyjx/mini-loop/go/reload": {
+      "covered_statements": 640,
+      "total_statements": 757,
+      "percent": 84.5442536327609
+    },
+    "github.com/luoyjx/mini-loop/go/runmeta": {
+      "covered_statements": 12,
+      "total_statements": 12,
+      "percent": 100.0
+    },
+    "github.com/luoyjx/mini-loop/go/runtimeconfig": {
+      "covered_statements": 1,
+      "total_statements": 1,
+      "percent": 100.0
+    },
+    "github.com/luoyjx/mini-loop/go/sandbox": {
+      "covered_statements": 157,
+      "total_statements": 189,
+      "percent": 83.06878306878306
+    },
+    "github.com/luoyjx/mini-loop/go/secrets": {
+      "covered_statements": 167,
+      "total_statements": 171,
+      "percent": 97.6608187134503
+    },
+    "github.com/luoyjx/mini-loop/go/selfaudit": {
+      "covered_statements": 228,
+      "total_statements": 231,
+      "percent": 98.7012987012987
+    },
+    "github.com/luoyjx/mini-loop/go/selfimprove": {
+      "covered_statements": 103,
+      "total_statements": 116,
+      "percent": 88.79310344827586
+    },
+    "github.com/luoyjx/mini-loop/go/sessionquery": {
+      "covered_statements": 175,
+      "total_statements": 195,
+      "percent": 89.74358974358974
+    },
+    "github.com/luoyjx/mini-loop/go/shell": {
+      "covered_statements": 420,
+      "total_statements": 447,
+      "percent": 93.95973154362416
+    },
+    "github.com/luoyjx/mini-loop/go/skills": {
+      "covered_statements": 417,
+      "total_statements": 440,
+      "percent": 94.77272727272727
+    },
+    "github.com/luoyjx/mini-loop/go/spill": {
+      "covered_statements": 52,
+      "total_statements": 64,
+      "percent": 81.25
+    },
+    "github.com/luoyjx/mini-loop/go/sqlitestate": {
+      "covered_statements": 583,
+      "total_statements": 706,
+      "percent": 82.57790368271955
+    },
+    "github.com/luoyjx/mini-loop/go/tasks": {
+      "covered_statements": 270,
+      "total_statements": 314,
+      "percent": 85.98726114649682
+    },
+    "github.com/luoyjx/mini-loop/go/teams": {
+      "covered_statements": 384,
+      "total_statements": 401,
+      "percent": 95.76059850374065
+    },
+    "github.com/luoyjx/mini-loop/go/tools/typeaudit": {
+      "covered_statements": 121,
+      "total_statements": 158,
+      "percent": 76.58227848101266
+    },
+    "github.com/luoyjx/mini-loop/go/traceview": {
+      "covered_statements": 557,
+      "total_statements": 617,
+      "percent": 90.27552674230145
+    },
+    "github.com/luoyjx/mini-loop/go/trajectory": {
+      "covered_statements": 449,
+      "total_statements": 522,
+      "percent": 86.01532567049809
+    },
+    "github.com/luoyjx/mini-loop/go/userresources": {
+      "covered_statements": 799,
+      "total_statements": 872,
+      "percent": 91.62844036697248
+    },
+    "github.com/luoyjx/mini-loop/go/verifiedloop": {
+      "covered_statements": 326,
+      "total_statements": 340,
+      "percent": 95.88235294117646
+    },
+    "github.com/luoyjx/mini-loop/go/workflows": {
+      "covered_statements": 1524,
+      "total_statements": 1655,
+      "percent": 92.08459214501511
+    },
+    "github.com/luoyjx/mini-loop/go/workspace": {
+      "covered_statements": 387,
+      "total_statements": 435,
+      "percent": 88.96551724137932
+    },
+    "github.com/luoyjx/mini-loop/go/worktrees": {
+      "covered_statements": 166,
+      "total_statements": 189,
+      "percent": 87.83068783068784
+    }
+  },
+  "limitations": [
+    "Darwin arm64, Go1.23.3, CGO enabled",
+    "Go statement coverage only; native C and CLI subprocess internals excluded",
+    "All package test commands finished, but two packages failed; counts are a failed-run measurement, not a passing acceptance baseline",
+    "No Python or branch coverage measured; not migration completion"
+  ],
+  "all_go": {
+    "covered_statements": 32784,
+    "total_statements": 36771,
+    "percent": 89.15721628457209
+  },
+  "application_excluding_tools": {
+    "covered_statements": 32663,
+    "total_statements": 36613,
+    "percent": 89.21148226039931
+  }
+}

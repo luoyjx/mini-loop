@@ -553,3 +553,24 @@ The HTTP proxy serves the controlled response; HTTPS CONNECT relays opaque TCP.
 Production is unchanged. Python passes 2239; Go full fails target and native reload
 checks. Source compares 235 snapshots, 234 match; WatchFiles removed-source drifts
 and the original fixture remains. See [audit](docs/audits/go-provider-proxy-tls-2026-10-11.json).
+
+## 2026-10-11 Owned literal target transport
+
+Implementation `978b4fd`: all 224 request-object, 40 plain HTTP wire and 24 proxy/TLS
+cases match, fixing the original 30 failures without changing Source expectations.
+Source raw_path is explicitly represented by Go URL.RawPath, separately from the
+canonical EscapedPath; full URL.String and all real wire targets remain asserted.
+Literal paths select a private standard Transport clone, original proxy policy once
+and route-specific wire URL clone. Standard CONNECT/TLS/Host/dial behavior remains;
+caller config/metadata are preserved and idle-pool cleanup is explicit. Custom
+non-standard RoundTrippers retain encoding/routing responsibility, not proven parity.
+
+Provider ordinary/race, full Python 2239 (28 skipped), vet/type/scanner gates pass.
+Full ordinary Go still fails CLI/native reload; race coverage fails native reload
+and maximum-decision SQLite restart deadline. Current failed-run statement coverage
+is application 89.21%, all Go 89.16%; it is not a passing global gate. Source full
+export aborts before comparison at native listener readiness. General IDNA/admission,
+custom wire, ambient proxy/authentication/HTTP2, default diagnostics and complete
+G0–G7 remain open. No dependency or deadline change. [Audit](docs/audits/go-provider-literal-target-2026-10-11.json)
+retains exact logs and the RawPath mapping; [coverage](docs/audits/go-coverage-literal-target-2026-10-11.json)
+retains source-location aggregation and profile hash.

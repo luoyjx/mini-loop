@@ -19023,3 +19023,54 @@ transport while preserving these route, SNI, CONNECT and credential boundaries.
 [Proxy/TLS audit](docs/audits/go-provider-proxy-tls-2026-10-11.json) retains all raw
 terminal gate logs and Source observations. [Built-in imagegen graphic](docs/audits/go-provider-proxy-tls-infographic-2026-10-11.png)
 shows Source wire examples, native failures and the scope limits.
+
+## Owned literal request targets across transport routes — 2026-10-11
+
+Implementation commit: `978b4fd`; previous baseline `44b3b51`.
+The named endpointTarget retains original HTTPX-safe path bytes, full URL spelling
+and raw path. Literal backslash/caret/pipe selects a private standard Transport
+clone. Original proxy policy sees the metadata request once per attempt; a wire
+URL clone selects origin-form for direct/HTTPS and absolute-form for HTTP forward
+proxy. Standard net/http owns Host/IDNA, CONNECT, verified TLS, dial configuration
+and pooling. Response.Request retains the metadata view. Caller Transport is
+unchanged. Client/StreamingClient CloseIdleConnections releases the selected idle
+pool; active requests remain context-owned. Ordinary endpoints retain the selected
+transport. Custom non-standard RoundTrippers own physical encoding/routing.
+
+All required 224 request-object, 40 plain HTTP wire and 24 proxy/TLS assertions
+match, fixing the original 6 + 6 + 18 failures. SNI (16), CONNECT authority/key
+absence (8), application keys, replies, identity and dials remain asserted.
+Source raw_path now maps to explicitly populated URL.RawPath; URL.String remains
+separately asserted. Go EscapedPath retains canonical escaping. This representation
+mapping is independently checked by all 64 physical wire observations; no expected
+fixture or required count changed. New tests prove one proxy-policy call, no dial
+on policy refusal, immutable caller/request observations, idle reuse and closure.
+
+Provider focused/ordinary/race pass. Python full: 2239 passed, 28 skipped,
+74 warnings, 24 subtests (166.48s). Vet, syntax type audit (450 files / 1434 types),
+public closure audit (50 packages / 1189 exported types), 19 scanner guards and
+final diff check pass. Full ordinary Go fails CLI and native reload readiness,
+callback-entry, delivery and supervisor deadlines. Full race coverage fails native
+reload plus maximum-decision SQLite restart at RunWithContext. No race detector
+warning is reported; failed tests are still failures. No retry or deadline change.
+Full Source --check starts after terminal native jobs and aborts during snapshot
+construction: native Source observer did not arm. No full comparison/drift manifest
+is produced; fixtures remain unchanged.
+
+Current completed failed-run statement measurement: application 32663/36613
+(89.21%); all Go 32784/36771 (89.16%); Provider 1515/1748 (86.67%). It is not a
+passing acceptance baseline. The last recorded passing full race coverage remains
+f2cdbca (application 89.34%, all Go 89.31%). Darwin arm64 / Go1.23.3 / CGO only;
+native C, CLI subprocess internals, Python/branch coverage and migration completion
+are excluded. Source/runtime/test bytes were frozen throughout native gates.
+README Mermaid/boundary and interactive specification are synchronized; generated
+HTML deliver passes 9/9 with zero errors/warnings. Rendered inspection remains
+policy-blocked. General URL/IDNA, default diagnostics, HTTP2/custom transport wire,
+native temporal reliability and complete G0–G7 remain open. No dependency or push.
+
+[Exact logs and boundary audit](docs/audits/go-provider-literal-target-2026-10-11.json),
+[coverage metrics](docs/audits/go-coverage-literal-target-2026-10-11.json), and
+[built-in imagegen graphic](docs/audits/go-provider-literal-target-infographic-2026-10-11.png)
+retain this iteration. Next investigate the newly retained SQLite restart deadline
+and native reliability without weakening assertions; broader IDNA dependencies
+and default diagnostic backend still require their pending decisions.
