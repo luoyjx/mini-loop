@@ -1,12 +1,10 @@
 package provider
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"io"
-	"net/http"
 	"strconv"
 	"time"
 
@@ -16,6 +14,9 @@ import (
 // StreamingClient selects streaming explicitly. The underlying client remains
 // safe to share; every call owns its response, accumulator and progress sink.
 type StreamingClient struct{ client *Client }
+
+// CloseIdleConnections releases the shared underlying client's unused connections.
+func (c *StreamingClient) CloseIdleConnections() { c.client.CloseIdleConnections() }
 
 func NewStreaming(cfg Config) (*StreamingClient, error) {
 	client, err := New(cfg)
@@ -77,7 +78,7 @@ func (c *StreamingClient) attempt(ctx context.Context, body []byte, attempt int,
 	client := c.client
 	callCtx, cancel := context.WithTimeout(ctx, client.timeout)
 	defer cancel()
-	req, err := http.NewRequestWithContext(callCtx, http.MethodPost, client.requestURL, bytes.NewReader(body))
+	req, err := client.target.request(callCtx, body)
 	if err != nil {
 		return protocol.ModelReply{}, nil, false, 0, errors.New("cannot construct provider request")
 	}

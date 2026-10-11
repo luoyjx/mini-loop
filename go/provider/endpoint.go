@@ -1,18 +1,39 @@
 package provider
 
 import (
+	"bytes"
+	"context"
 	"net"
+	"net/http"
 	"net/url"
 	"strings"
 
 	"github.com/luoyjx/mini-loop/go/internal/pytext"
 )
 
-// Base has already passed New's endpoint admission. Work on its escaped path:
+// Base has already passed New's endpoint admission. Preserve HTTPX's raw path:
 // HTTPX removes literal dot segments, leaving percent-encoded dots opaque, and
 // the SDK adds a slash only when absent before appending the relative endpoint.
-func providerRequestURL(base *url.URL) string {
-	parts := strings.Split(base.EscapedPath(), "/")
+type endpointTarget struct {
+	url     string
+	rawPath string
+	literal bool
+}
+
+func providerRequestTarget(base *url.URL, configured string) endpointTarget {
+	// New has already validated the URL. Read original path bytes so escapes
+	// introduced by net/url cannot erase HTTPX's literal backslash/caret/pipe.
+	authority := strings.Index(configured, "://") + 3
+	raw := configured[authority:]
+	if slash := strings.IndexByte(raw, '/'); slash >= 0 {
+		raw = raw[slash:]
+	} else {
+		raw = ""
+	}
+	if fragment := strings.IndexByte(raw, '#'); fragment >= 0 {
+		raw = raw[:fragment]
+	}
+	parts := strings.Split(raw, "/")
 	normalized := make([]string, 0, len(parts))
 	for _, part := range parts {
 		switch part {
@@ -30,13 +51,47 @@ func providerRequestURL(base *url.URL) string {
 		path += "/"
 	}
 	path += "v1/messages"
-	// EscapedPath comes from a parsed URL; normalization removes only literal
-	// segments and preserves every percent escape, so unescaping cannot fail.
+	path = quoteProviderPath(path)
+	// Original percent escapes passed parsing; newly quoted bytes are valid too.
 	decoded, _ := url.PathUnescape(path)
 	target := *base
 	target.Host = providerRequestAuthority(base)
 	target.Path, target.RawPath = decoded, path
-	return target.String()
+	literal := strings.ContainsAny(path, "\\^|")
+	if literal {
+		target.Opaque = "//" + target.Host + path
+	}
+	return endpointTarget{url: target.String(), rawPath: path, literal: literal}
+}
+
+// HTTPX's PATH_SAFE excludes space, quotes, #<>?`{} and non-ASCII bytes.
+// Existing percent escapes have already passed URL admission and stay opaque.
+func quoteProviderPath(path string) string {
+	const hex = "0123456789ABCDEF"
+	var out strings.Builder
+	for i := 0; i < len(path); i++ {
+		c := path[i]
+		if c < 0x20 || c >= 0x7f || strings.ContainsRune(" \"#<>?`{}", rune(c)) {
+			out.WriteByte('%')
+			out.WriteByte(hex[c>>4])
+			out.WriteByte(hex[c&15])
+		} else {
+			out.WriteByte(c)
+		}
+	}
+	return out.String()
+}
+
+func (target endpointTarget) request(ctx context.Context, body []byte) (*http.Request, error) {
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, target.url, bytes.NewReader(body))
+	if err != nil {
+		return nil, err
+	}
+	request.URL.RawPath = target.rawPath
+	if target.literal {
+		request.URL.Opaque = "//" + request.URL.Host + target.rawPath
+	}
+	return request, nil
 }
 
 // Normalize the accepted authority at the request boundary. IPv6 literals and

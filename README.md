@@ -475,7 +475,7 @@ tests verify native and polling replacement, failed-build recovery, retained soc
 and released workspace leases. Actual CLI tests cover both native and forced-polling
 selection, dotenv refresh and cleanup with compiler temporaries inside the watched root.
 
-Runtime review baseline: `e4133c2` plus verified proxy/TLS/CONNECT path contracts (runtime unchanged), plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `44b3b51` plus owned literal-path transport and route-specific wire targets, plus verified proxy/TLS/CONNECT path contracts, plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -682,7 +682,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw-path concatenation / literal dot normalization / Python Unicode hostname casing and default ports<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / Python Unicode hostname casing and default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + caller extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -2671,16 +2671,17 @@ and the full public-entry scope audit remain open.
 ### Provider endpoint paths
 
 Direct and streaming providers construct the outbound messages path from the
-validated base URL's escaped path. Literal dot segments follow captured HTTPX
+validated base URL's original path bytes. Literal dot segments follow captured HTTPX
 normalization; existing percent escapes and repeated slashes remain intact. The
 SDK adds a slash only when absent before appending `v1/messages`. The configured
 endpoint used in audit identity is retained. The original 40 SDK requests across
 20 path profiles remain required, including Unicode, spaces, encoded slashes/dots,
 repeated trailing slashes and literal parent/current segments. The expanded inventory
 adds 92 printable ASCII path characters (excluding percent/query/fragment delimiters),
-for 224 required direct/SSE requests. Native matches 218/224; six assertions fail
-for literal backslash, caret and pipe. HTTPX preserves those characters; Go net/url
-escapes them. This is a retained discrepancy, not a completed path acceptance gate.
+for 224 required direct/SSE requests. All 224 now match, including literal
+backslash, caret and pipe. Source raw_path maps to explicitly populated Go
+URL.RawPath; URL.String retains the full captured URL. URL.EscapedPath remains
+the standard Go canonical view and is not claimed to equal Source raw_path.
 Construction performs no HTTP request. Existing credential admission and redirect
 refusal remain in place. Query/userinfo/fragment restrictions retain their current
 native admission rules; general hostname/port normalization and custom transport
@@ -2702,18 +2703,25 @@ required dotted-I failures. No dependency is added. Unicode request-object/custo
 transport spelling still differs from Source's ASCII IDNA view. General IDNA
 validation/normalization, broader admission and TLS/SNI equivalence remain open;
 this wire inventory does not establish them. Six additional literal backslash/caret/pipe
-path requests fail real-wire target comparisons, leaving 34/40 matches. A Go URL
-representation probe shows origin-opaque keeps the target but loses full URL spelling
-and proxy absolute-form, while absolute-opaque changes the direct request target.
-No opaque workaround is adopted; a faithful transport boundary remains required.
+path requests now match real-wire target comparisons, giving 40/40 matches.
+The representation probe established that one Go URL representation cannot retain
+full Source spelling and all wire target forms at once. For these literal paths,
+the client owns a clone of the standard Transport. Proxy policy observes the
+original request once per attempt; a private wire URL clone selects origin-form
+for direct/HTTPS and absolute-form for HTTP forward proxy. Standard net/http
+retains Host/IDNA encoding, CONNECT, TLS verification, dialing and pooling.
+Response.Request refers to the original metadata view. Caller Transport is never
+mutated; CloseIdleConnections releases the selected pool. Ordinary paths use the
+existing transport. Custom non-standard RoundTrippers receive the metadata view
+and retain responsibility for their encoding/routing; their wire parity is unproven.
 The broader IDNA dependency proposal
 remains pending and is not needed for this casing change.
 
 An additional 24 actual transport captures cover HTTP forward proxy, HTTPS direct
 and HTTPS CONNECT, each with ordinary/backslash/caret/pipe paths in direct/SSE.
 The owned TLS origin verifies the pinned test certificate and fixture.invalid
-hostname; CONNECT relays opaque TCP bytes. Go matches six ordinary controls but
-fails all 18 special-path targets. All 16 TLS SNI observations and eight CONNECT
+hostname; CONNECT relays opaque TCP bytes. All 24 native targets now match,
+including the original 18 required failures. All 16 TLS SNI observations and eight CONNECT
 authorities agree; API-key is absent from CONNECT and present in application
 requests. Proxy requests use absolute-form; both HTTPS application routes use
 origin-form. This confirms the transport route must choose the target form. The
@@ -2721,7 +2729,7 @@ explicit proxy/certificate, single hostname and HTTP/1.1 scope do not establish
 environment proxy discovery, proxy authentication, HTTP/2 or general TLS/IDNA
 equivalence. Source handlers/sockets join after SDK reply validation; remaining
 owned sockets are aborted for tunnel shutdown. This is test teardown, not a
-production transport change. The 24 cases remain required failing assertions.
+production transport change. All 24 cases remain required assertions.
 
 A subsequent 68-observation URL scope audit captures the actual Python provider
 factory and both SDK request modes with injected HTTP boundaries. It distinguishes

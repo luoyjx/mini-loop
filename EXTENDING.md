@@ -1576,7 +1576,20 @@ nonretryable protocol failure; general lifecycle errors keep native formatting.
 
 `go/provider.New` supplies an explicit direct Anthropic-compatible
 HTTP adapter with SDK-level bounded retries, cache wire annotations and served-model
-identity. `Config.AuthToken` supplies an explicit bearer token; ordered `Config.Headers`
+identity. For base paths containing literal backslash/caret/pipe, a private standard
+`*http.Transport` clone owns routing and its idle pool. Original proxy policy
+receives full Source URL/RawPath metadata once per attempt; the wire clone selects
+origin-form for direct/HTTPS and absolute-form for HTTP forward proxy. Standard
+CONNECT/TLS/Host encoding remain in net/http. Caller Transport configuration is
+unchanged. `Client.CloseIdleConnections` and its streaming counterpart release
+the selected idle pool without canceling active requests. For ordinary paths this
+method delegates to the selected caller transport. Custom non-standard
+RoundTrippers remain caller-owned and receive full URL.String / explicit RawPath;
+they own physical encoding and routing. URL.EscapedPath is the canonical Go view,
+not HTTPX raw_path. This does not establish arbitrary custom transport, HTTP/2 or
+broader IDNA parity.
+
+`Config.AuthToken` supplies an explicit bearer token; ordered `Config.Headers`
 override static headers with last-value precedence. Header names/values are
 validated and copied during construction. Both direct and streaming errors scrub
 static and header credentials. Environment/profile discovery is caller-owned;

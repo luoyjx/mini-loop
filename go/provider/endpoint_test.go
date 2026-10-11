@@ -43,10 +43,13 @@ func TestEndpointRequestsMatchActualSDK(t *testing.T) {
 			}
 			want := row.Calls[0]
 			calls := 0
+			// HTTPX raw_path maps to the explicitly populated RawPath. EscapedPath
+			// canonicalizes literal backslash/caret/pipe; actual wire targets are
+			// independently required in the plain HTTP and proxy/TLS inventories.
 			httpClient := &http.Client{Transport: transportFunc(func(req *http.Request) (*http.Response, error) {
 				calls++
-				if req.URL.String() != want.URL || req.URL.EscapedPath() != want.RawPath || req.Method != want.Method || req.Header.Get("x-api-key") != want.APIKey {
-					t.Errorf("actual request %s %s path=%s; Source %s %s path=%s", req.Method, req.URL.String(), req.URL.EscapedPath(), want.Method, want.URL, want.RawPath)
+				if req.URL.String() != want.URL || req.URL.RawPath != want.RawPath || req.Method != want.Method || req.Header.Get("x-api-key") != want.APIKey {
+					t.Errorf("actual request %s %s path=%s; Source %s %s path=%s", req.Method, req.URL.String(), req.URL.RawPath, want.Method, want.URL, want.RawPath)
 				}
 				body := string(fixture.Message)
 				headers := http.Header{"Content-Type": []string{"application/json"}}

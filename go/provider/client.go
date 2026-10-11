@@ -3,7 +3,6 @@
 package provider
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -124,7 +123,8 @@ type Client struct {
 	activeToken                 string
 	authToken                   string
 	headers                     []Header
-	endpoint, requestURL, key   string
+	endpoint, key               string
+	target                      endpointTarget
 	compatible                  bool
 	defaultTimeout              bool
 	http                        *http.Client
@@ -135,6 +135,11 @@ type Client struct {
 	jitter                      func() float64
 	now                         func() time.Time
 }
+
+// CloseIdleConnections releases unused connections in the selected transport.
+// For literal-path endpoints this includes the client's privately owned pool.
+// Active requests remain owned by their contexts.
+func (c *Client) CloseIdleConnections() { c.http.CloseIdleConnections() }
 
 func New(cfg Config) (*Client, error) {
 	compatible := cfg.BaseURL != ""
@@ -188,6 +193,10 @@ func New(cfg Config) (*Client, error) {
 		base = cfg.HTTPClient
 	}
 	client := *base
+	target := providerRequestTarget(u, cfg.BaseURL)
+	if target.literal {
+		client.Transport = providerTargetTransport(client.Transport)
+	}
 	// x-api-key is not a standard sensitive header stripped by net/http on a
 	// cross-host redirect. Refuse redirects instead of forwarding a credential.
 	client.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
@@ -195,7 +204,7 @@ func New(cfg Config) (*Client, error) {
 	if cfg.Credentials != nil {
 		credentials = &credentialCache{provider: cfg.Credentials, now: cfg.Now, advisoryFailure: time.Unix(0, 0)}
 	}
-	return &Client{credentials: credentials, endpoint: cfg.BaseURL, requestURL: providerRequestURL(u), key: cfg.APIKey,
+	return &Client{credentials: credentials, endpoint: cfg.BaseURL, target: target, key: cfg.APIKey,
 		authToken: cfg.AuthToken, headers: append([]Header(nil), cfg.Headers...), compatible: compatible,
 		defaultTimeout: defaultTimeout, http: &client, timeout: cfg.Timeout, requestLimit: cfg.MaxRequestBytes,
 		responseLimit: cfg.MaxResponseBytes, retries: retries, wait: cfg.Waiter, jitter: cfg.Jitter, now: cfg.Now}, nil
@@ -255,7 +264,7 @@ func (c *Client) Complete(ctx context.Context, input protocol.ModelRequest) (pro
 func (c *Client) attempt(ctx context.Context, body []byte, attempt int) (protocol.ModelReply, *Failure, bool, time.Duration, error) {
 	callCtx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
-	req, err := http.NewRequestWithContext(callCtx, http.MethodPost, c.requestURL, bytes.NewReader(body))
+	req, err := c.target.request(callCtx, body)
 	if err != nil {
 		return protocol.ModelReply{}, nil, false, 0, errors.New("cannot construct provider request")
 	}
