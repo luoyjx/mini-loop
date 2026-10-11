@@ -455,3 +455,19 @@ JSON 往返。另验证 getter/扩展数组不可变、非有限数与孤立代�
 custom transport 仍需最终核对，不能由这 40 个路径用例推导完整 URL 等价。
 完整验证与 reload/Source 失败记录见
 [endpoint audit](docs/audits/go-provider-endpoint-native-2026-10-11.json)。
+
+## URL construction/admission scope prerequisite — 2026-10-11
+
+基线 `6a6d5ed`：实际 provider factory 与 SDK 捕获 34 种 URL 的 direct/SSE
+共 68 个观察。双方完成 36 个，其中请求观察相同 22 个，不同 14 个。
+6 种 authority 规范化输入贡献 12 个差异；空 fragment 表示贡献另外 2 个。
+另有 26 个 Source 可构造的输入被既有 Go endpoint 规则拒绝。两侧构造拒绝
+6 个，但错误类型与文本还没有等价证明，不能计为 error parity。
+
+这是范围前置证据，显式 Go diagnostic 成功不等于 URL parity 通过。注入 transport
+不会证明 FTP、超范围端口、相对 URL 或 hostname 在真实网络可用；IDNA 的 Go
+请求对象与 net/http 最终 wire host 必须分别核对。query、userinfo 等原生边界
+保持不变。下一步将接受的 authority 差异转成 required native 断言，并逐项
+协调拒绝规则与现有安全要求；不能为了 SDK 相同而直接移除已有拒绝守卫。
+
+[完整观察与范围说明](docs/audits/go-provider-url-scope-2026-10-11.json)。

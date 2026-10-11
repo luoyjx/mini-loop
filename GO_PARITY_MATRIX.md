@@ -10554,3 +10554,37 @@ README canonical boundary and architecture source are updated; generation passes
 9/9 checks with no errors or warnings. Rendered review remains blocked by prior
 browser policy. General URL/hostname/port/custom-transport behavior, coverage
 refresh, default diagnostics decision and final G0–G7 acceptance remain open.
+
+## Provider URL construction/admission scope prerequisite — 2026-10-11
+
+Production baseline `6a6d5ed`. The actual Python `AnthropicCompatibleProvider`
+factory and SDK 0.107.1 / HTTPX 0.28.1 are observed across 34 URL profiles,
+direct and SSE (68 observations). Only HTTP clients/retries and ambient environment
+are injected; URL parsing, SDK construction and request preparation are real.
+The Source fixture has 52 completions, 10 request-stage failures and six constructor
+refusals. Go has 36 completions and 32 constructor refusals. Among 36 completions
+on both sides, 22 have identical captured calls and 14 differ: six authority
+normalization profiles plus the empty-fragment representation. Another 26 cases
+construct in Source but are refused by existing native endpoint admission.
+
+The explicit diagnostic observer is not a parity gate accepting these differences.
+Injected transports do not prove real-network acceptance of FTP, oversized ports,
+relative URLs or host syntax. HTTPX raw_path includes queries while Go EscapedPath
+does not; full URLs and phase evidence must also be compared. Existing native
+credential/query/fragment guards remain intact. No runtime implementation or
+new dependency changes in this prerequisite. Next: normalize accepted authority
+profiles with required assertions, establish real-wire IDNA/fragment evidence,
+and reconcile every admission difference against existing security requirements.
+
+See [URL scope observations](docs/audits/go-provider-url-scope-2026-10-11.json).
+Complete migration, default diagnostics and native reload timing remain open.
+
+Validation for the URL prerequisite: full Source --check completes 233 entries,
+232 match and WatchFiles drifts in two changed-path observations. Full Python
+passes 2235 tests (28 skipped, 54 warnings, 24 subtests), provider race, vet and
+19 scanner guards pass. Full ordinary Go reports agent timeout-fraction settlement
+and reload rename-source delivery failures; no full-race/runtime/type-audit refresh
+was performed because runtime implementation is unchanged. A built-in imagegen
+PNG summarizes this round; text/counts were visually checked and one correction
+removed inaccurate quantitative bar geometry. This is evidence delivery, not G4/G7
+acceptance. Coverage is not refreshed.

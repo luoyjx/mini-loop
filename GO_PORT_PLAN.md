@@ -6851,18 +6851,18 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed 2026-10-11 after local main `0b5545a`; latest production implementation
-`4da75a3`. Compatible-provider endpoint path construction now matches all 40
-actual SDK requests across 20 escaped-path profiles (22 prior differences fixed).
-Owned named routing at `4b68574` retains all 168 required Source assertions.
-This round's full Source export failed at WatchFiles native readiness; the last
-successful complete export remains 231 fixtures at the prior routing delivery.
-The new endpoint fixture is independently checked. Provider ordinary/race, vet,
-type audits (449 files/1430 types, 50 packages/1189 exported types, zero findings)
-and 19 scanning guards pass. Full ordinary Go fails hidden-parent-source delivery
-and native supervisor readiness; full race fails rename-source delivery, all in
-reload. These failures remain open. Python regression is recorded in the linked
-[endpoint audit](docs/audits/go-provider-endpoint-native-2026-10-11.json).
+Reviewed 2026-10-11 at production `6a6d5ed`; latest runtime implementation
+remains `4da75a3`. A new provider URL scope prerequisite observes 68 actual
+Source/native constructions and requests; its diagnostic is not a parity gate.
+Among 36 completions on both sides, 22 calls match and 14 differ. Another 26
+Source-constructible inputs are refused by existing native endpoint admission.
+Full Source export completes all 233 entries: 232 match, only WatchFiles differs
+at two native observations. Complete freshness is not achieved. Python full
+regression passes (2235 passed, 28 skipped, 24 subtests), provider race, vet and
+19 scanning guards pass. Full ordinary Go fails background timeout-fraction
+settlement and reload rename-source delivery. This prerequisite changes no
+runtime implementation; type audits and full Go race were not rerun this round.
+See [URL scope evidence](docs/audits/go-provider-url-scope-2026-10-11.json).
 This section is the current delivery index;
 implementation checkpoints below retain historical status at their own baselines.
 An implemented feature is not a claim that its whole work package has passed the
@@ -6879,9 +6879,13 @@ final G7 scope audit. Original work-package acceptance remains in [Work packages
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Last successful full export verified 231 Source recipes; current attempt fails native WatchFiles readiness; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Last successful complete export verified 231 Source recipes; current 233-entry attempt has 232 matches and WatchFiles drift; all 168 business-routing requests pass required native assertions; existing native tests and documented adaptations remain | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
+
+The latest full ordinary Go also reports a background `timeout-fraction`
+settlement discrepancy. It requires a Source/native timing-order investigation;
+no runtime fix or root-cause claim has been made.
 
 1. Default Python syntax diagnostics: native filesystem diagnostics supports an
    explicit typed `PythonSyntaxParser`, and Manager/Launcher full-feature composition
@@ -18520,3 +18524,37 @@ README canonical boundary and architecture source are updated; generation passes
 9/9 checks with no errors or warnings. Rendered review remains blocked by prior
 browser policy. General URL/hostname/port/custom-transport behavior, coverage
 refresh, default diagnostics decision and final G0–G7 acceptance remain open.
+
+## Provider URL construction/admission scope prerequisite — 2026-10-11
+
+Production baseline `6a6d5ed`. The actual Python `AnthropicCompatibleProvider`
+factory and SDK 0.107.1 / HTTPX 0.28.1 are observed across 34 URL profiles,
+direct and SSE (68 observations). Only HTTP clients/retries and ambient environment
+are injected; URL parsing, SDK construction and request preparation are real.
+The Source fixture has 52 completions, 10 request-stage failures and six constructor
+refusals. Go has 36 completions and 32 constructor refusals. Among 36 completions
+on both sides, 22 have identical captured calls and 14 differ: six authority
+normalization profiles plus the empty-fragment representation. Another 26 cases
+construct in Source but are refused by existing native endpoint admission.
+
+The explicit diagnostic observer is not a parity gate accepting these differences.
+Injected transports do not prove real-network acceptance of FTP, oversized ports,
+relative URLs or host syntax. HTTPX raw_path includes queries while Go EscapedPath
+does not; full URLs and phase evidence must also be compared. Existing native
+credential/query/fragment guards remain intact. No runtime implementation or
+new dependency changes in this prerequisite. Next: normalize accepted authority
+profiles with required assertions, establish real-wire IDNA/fragment evidence,
+and reconcile every admission difference against existing security requirements.
+
+See [URL scope observations](docs/audits/go-provider-url-scope-2026-10-11.json).
+Complete migration, default diagnostics and native reload timing remain open.
+
+Validation for the URL prerequisite: full Source --check completes 233 entries,
+232 match and WatchFiles drifts in two changed-path observations. Full Python
+passes 2235 tests (28 skipped, 54 warnings, 24 subtests), provider race, vet and
+19 scanner guards pass. Full ordinary Go reports agent timeout-fraction settlement
+and reload rename-source delivery failures; no full-race/runtime/type-audit refresh
+was performed because runtime implementation is unchanged. A built-in imagegen
+PNG summarizes this round; text/counts were visually checked and one correction
+removed inaccurate quantitative bar geometry. This is evidence delivery, not G4/G7
+acceptance. Coverage is not refreshed.
