@@ -35,6 +35,24 @@ provider/default, non-Darwin/temporal, performance and original P0/P1/G0–G7 fi
 acceptance remain open. Historical background/native timing failures are not fixed
 or explained by this tool change.
 
+Implementation `e782d81`. The frozen1643-input cohort passes Source239, focused
+adversarial tool tests, syntax/public/private type gates, ordinary/vet/race+atomic,
+Python2240 passed/28 skipped/96 warnings/24 subtests and19 scans. The host profile
+is darwin/arm64/CGO1/Go1.23.3; selected owned source/CGO hashes are recorded after
+terminal gates. [Full receipt](docs/audits/go-private-type-closure-2026-10-11.json).
+Application coverage89.25% (33082/37068), all Go89.15% (33238/37283), Provider86.67%
+(1522/1756); native C, CLI child internals, Python, branch and non-Darwin excluded.
+[Coverage receipt](docs/audits/go-coverage-private-type-closure-2026-10-11.json).
+The [iteration image](docs/audits/go-private-type-closure-infographic-2026-10-11.png)
+edits the five-layer base, highlighting L5 audit and outlining SQLite for status
+reconciliation; exact prompt saved alongside. Existing runtime components and
+arrows are unchanged. JSON status-card text was reconciled after frozen gates,
+then HTML regenerated. Initial rendering rejected a note longer than140
+characters; diagnostic retained and text shortened. Delivery passes9 checks,
+zero errors/warnings. Browser HTML visual review remains blocked by URL policy;
+no indirect workaround. PNG inspected directly. These documentation changes do
+not change the1640 validated program inputs or add a new runtime component.
+
 ## 2026-10-11 SDK integer-text zero padding
 
 Main baseline `338792a`. Actual SDK0.107.1/Pydantic2.13.4 HTTP captures accept
@@ -7138,7 +7156,7 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `2c76207`; this iteration adds
+Reviewed **2026-10-11** against local main baseline `2c76207`; implementation `e782d81` adds
 compiler-resolved private type roots to the existing operator typeaudit tool.
 Current1643 frozen inputs pass Source239, focused tool tests, full ordinary
 Go/vet/race+atomic, syntax455 files/1441 named types, public50 packages/1191

@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-11",
+  "mode": "atomic",
+  "cohort": "Frozen private compiler type-root audit, baseline2c76207; full race exit0",
+  "profile_sha256": "abfdd80ba2cef03f95f070e892d9dc77a5fb226ecb55bfece5a4acbf421609dc",
+  "raw_rows": 1249839,
+  "unique_blocks": 26037,
+  "method": "Deduplicate identical source spans; require equal statement counts; union coverage with maximum atomic hits.",
+  "all": {
+    "covered": 33238,
+    "statements": 37283,
+    "percent": 89.1505511895502
+  },
+  "app": {
+    "covered": 33082,
+    "statements": 37068,
+    "percent": 89.24678968382432
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "frozen_inputs": 1643,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-private-type-closure-2026-10-11/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 593.569
+  },
+  "retained_profile": "/tmp/mini-loop-private-type-closure-2026-10-11.cover",
+  "scope": "Darwin Go statements. Native C, CLI child-process internals, Python, branch and Linux coverage excluded.",
+  "limitations": [
+    "Does not establish broader real count/meter or lexical/repr domain parity or full migration acceptance.",
+    "Prior temporal background/native observer failures remain unexplained; current passing cohort is not a cause finding."
+  ],
+  "post_gate_documentation_only_updates": [
+    "README review/results/exact implementation SHA",
+    "GO_PORT_PLAN current status",
+    "GO_PARITY_MATRIX current acceptance index",
+    "Architecture scope/status card corrections and generated HTML; runtime topology unchanged"
+  ],
+  "implementation_commit": "e782d81"
+}

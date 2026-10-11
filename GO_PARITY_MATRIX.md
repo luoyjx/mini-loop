@@ -57,7 +57,7 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed baseline `2c76207`: private compiler roots now complement public closure
+Reviewed baseline `2c76207`, implementation `e782d81`: private compiler roots now complement public closure
 and all-platform syntax. Current1643 frozen inputs pass Source239, focused tests,
 all three type audits, ordinary Go/vet/race+atomic, Python and19 scans.
 [Current receipt](docs/audits/go-private-type-closure-2026-10-11.json). Runtime topology/defaults/authority unchanged.
