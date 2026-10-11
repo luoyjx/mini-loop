@@ -1,0 +1,18 @@
+Use case: infographic-diagram
+Create a polished landscape Chinese engineering infographic on dark navy, cyan observed evidence and amber incomplete acceptance. Clear large Chinese typography, generous whitespace, no clutter. Exact title: “Go 迁移：同一订阅的队列与对照”
+Subtitle: “2026-10-11 · 仅增加诊断，不修改运行时”
+Left timeline: “原准备 / 操作断言” → “记录原结果” → “写入独立对照文件” → “单独观察 3 秒” → “原 Close”
+Use small labels showing the control is after the result and cannot change the original verdict.
+Central four rows:
+“ignored-hidden” “准备阶段超时”
+“ignored-backup” “操作通过”
+“ignored-text” “操作通过”
+“transient-source” “操作通过”
+Evidence cards:
+“失败订阅仍有 300 次队列标记”
+“最大标记间隔 ≈ 111 ms”
+“4 个订阅均观测到对照 C 事件”
+Conclusion exact: “本组未发生整条队列持续阻塞”
+Limits: “未解释准备事件的缺失；不能认定内核原因”
+Footer: “诊断计时器会影响调度 · 对照在结果之后 · 不构成全量验收通过”
+Avoid asserting Go migration complete, source parity accepted, daemon fault proven, zero loss, or production fix. Do not invent metrics or coverage. This is one diagnostic cohort.

@@ -19437,3 +19437,8 @@ unchanged, architecture JSON/HTML unchanged, no rendered acceptance or push.
 
 [Collector](docs/audits/go-reload-required-queue-control-2026-10-11.py),
 [full retained evidence](docs/audits/go-reload-required-queue-control-2026-10-11.json).
+
+Built-in infographic inspected against this cohort; preserves original/result/
+control ordering and excludes global acceptance/kernel-cause claims.
+[Infographic](docs/audits/go-reload-required-queue-control-infographic-2026-10-11.png),
+[exact prompt](docs/audits/go-reload-required-queue-control-infographic-2026-10-11.prompt.txt).
