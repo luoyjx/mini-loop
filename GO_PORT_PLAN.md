@@ -19117,3 +19117,58 @@ and [built-in imagegen graphic](docs/audits/go-sqlite-decision-budget-infographi
 retain the evidence. Next measure concrete serialization/validation stages and
 reduce verified costs while retaining full byte/guard contracts; do not infer a
 SQL or host cause from runtime._ExternalCode. Full G0–G7 remains open; no push.
+
+## Scalar JSON text span writes — 2026-10-11
+
+Implementation `b85b5c5`, prior baseline `b5c273e`. Standard UTF-8 validation
+rejects surrogatepass eligibility before projection. Valid scalar text copies
+unchanged spans between quote/backslash/C0 escapes; malformed native bytes retain
+the original RuneError path. Scalar ASCII except DEL reuses this byte-equivalent
+writer for ensure_ascii archive text. Unicode/DEL/legacy surrogate escaping remains
+on the original archive path. Closed Value variants, insertion order, finite versus
+legacy numbers, final UTF-8 policy, byte limits, permission and storage schemas are
+unchanged. No dependency or erased domain payload was introduced.
+
+Fourteen compact actual CPython json.dumps recipes cover large ASCII, escaping,
+Unicode, every C0 control, ASCII DEL, scalar edges, empty values and object keys.
+Go compares 56 UTF-8/legacy UTF-8/spaced UTF-8/archive length/hash projections.
+Explicit raw-byte and surrogate-key/value tests retain native fallback/refusal.
+The source producer is registered in full export inventory (nominal 236 files),
+with its own canonical fixture bytes separately confirmed. Required old fixtures
+and the 512KiB decision/context/replay/readonly assertions are unchanged.
+
+Three-iteration race+atomic coverage microbenchmarks (Apple M2 Pro) record:
+
+| Encoder / payload | Before ns/op | Final ns/op |
+| --- | --- | --- |
+| UTF-8 ASCII ~512KiB | 343977458 | 2242958 |
+| UTF-8 escaped text | 340391542 | 3443111 |
+| UTF-8 Unicode text | 149840764 | 4130319 |
+| ASCII archive ~512KiB | 166551125 | 2495945 |
+
+These are local samples, not statistical/whole-service/normal-runtime claims.
+Escaped B/op rises 2538240→2775056 while allocations fall 30→18; append growth
+remains a tradeoff. The archive benchmark includes input setup amortized over
+three iterations in both versions. Initial and final focused decision tests still
+fail the original 30s budget at readonly RunWithContext: 33.91s and 31.30s maximum
+subtest. This does not close the end-to-end timeout or identify its remaining cause.
+
+Focused jsonvalue/protocol/decisions and all 56 byte comparisons pass. Python full
+2239 passed /28 skipped /74 warnings /24 subtests (98.45s); vet, syntax type audit
+450 files/1434 types, public closure 50 packages/1189 types (both zero findings),
+19 scanner guards, 77 invariant module declarations, four selected nonfinite
+mutations and diff check pass. Full ordinary Go fails CLI/native reload; full race
+fails native reload readiness/callback/recipes. SQLite passes both full ordinary
+and race gates; this race gate does not include atomic coverage. No race warning
+reported. Full Source --check starts after native jobs terminate and aborts during
+snapshot construction at native observer readiness; no full comparison/manifest.
+Source/runtime/test/fixture bytes remained frozen throughout native gates.
+
+README canonical map/boundary reviewed and visible baseline advanced; algorithm
+work changes no topology/ownership/control flow/authority/public entry/default,
+so interactive JSON/HTML stay unchanged. No aggregate coverage refresh/non-Darwin
+or rendered-map acceptance. General IDNA/default diagnostics/native reliability
+and G0–G7 remain open; no push. [Exact gates/bench/byte evidence](docs/audits/go-json-text-spans-2026-10-11.json)
+and [built-in imagegen graphic](docs/audits/go-json-text-spans-infographic-2026-10-11.png)
+retain timings, tradeoffs and open checks. Next measure remaining serializers/
+validation work in the unchanged decision lifecycle before optimizing further.

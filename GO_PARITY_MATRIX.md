@@ -11128,3 +11128,35 @@ and [built-in imagegen graphic](docs/audits/go-sqlite-decision-budget-infographi
 retain the evidence. Next measure concrete serialization/validation stages and
 reduce verified costs while retaining full byte/guard contracts; do not infer a
 SQL or host cause from runtime._ExternalCode. Full G0–G7 remains open; no push.
+
+## Native scalar JSON text span adoption — 2026-10-11
+
+Implementation `b85b5c5`. Scalar UTF-8 guard uses standard validation; writer copies
+safe spans between JSON escapes. Malformed native bytes retain RuneError projection;
+surrogatepass remains refused at strict/legacy UTF-8 byte boundaries. ASCII archive
+text except DEL reuses this byte-equivalent path. Unicode/DEL/surrogate archival
+escaping, numeric variants, insertion order and budget/authority schemas are unchanged.
+
+Fourteen real CPython text/object-key recipes yield 56 required native encoding
+comparisons; all pass, including large/quoted/Unicode/control/DEL/scalar-edge data.
+Old fixtures and the decision512KiB/30s context/replay/readonly checks remain intact.
+Three-iteration race+atomic samples: UTF-8 ASCII343.98→2.24ms, escaped340.39→3.44ms,
+Unicode149.84→4.13ms, archiveASCII166.55→2.50ms. Not a statistical or service
+throughput baseline. Escaped allocations30→18 but B/op2538240→2775056; retained
+tradeoff. Archive setup is amortized over the same three iterations in both versions.
+
+Focused codec packages, Python2239 (28 skipped/24 subtests), vet, both zero-finding
+type audits,19 scanner guards,77 invariant declarations,4 selected nonfinite mutation
+guards and diff check pass. Full ordinary fails CLI/native reload; full race fails
+native reload readiness/callback/recipes. SQLite passes both full gates. Separate
+race+atomic decision checks still fail at readonly turn (33.91s initially,31.30s
+finally); original30s budget is not widened. No end-to-end closure is claimed.
+
+Full Source export, after terminal native jobs, aborts at native observer readiness
+before comparison. Nominal inventory236; new fixture canonical bytes independently
+match. Frozen source/test/fixture hashes and all logs are retained in
+[the audit](docs/audits/go-json-text-spans-2026-10-11.json). No aggregate coverage
+refresh, dependency or non-Darwin gate. Canonical architecture reviewed; baseline/
+boundary updated, graph unchanged. General IDNA/default diagnostics/native reliability
+and complete G0–G7 remain open. [Built-in infographic](docs/audits/go-json-text-spans-infographic-2026-10-11.png)
+shows modified writers, measured byte contracts and unresolved acceptance.
