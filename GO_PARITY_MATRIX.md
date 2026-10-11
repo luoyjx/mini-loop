@@ -1,5 +1,50 @@
 # Python to Go parity matrix
 
+## 2026-10-12 memory write encoding order
+
+Implementation `387061f`, based on local main `e6a50b8`. Actual Python consumers add 24 extraction and
+24 consolidation scenarios, totaling 105 and 96. The 12 combined header/body
+recipes run under both authenticated and anonymous owners. They compare exact
+records, owner diagnostics, unchanged foreign data, requests and mask-call counts.
+The corrected pre-fix corpus has 34 failing scenarios. Initial anonymous fixture
+owner mismatch and one fixture OwnerID compile error are retained separately;
+they are test setup failures, not behavioral discrepancies.
+
+Model entries always select the named memory.Body lane, including absent body.
+That lane defers header UTF-8 validation to Source consumption phases: owner hash
+first; fallback slug name hash before body consumption; body len/truncation and
+diagnostics; text masking; authenticated original-name hash; final UTF-8 encoding.
+The ordinary typed Input.Body path retains its upfront UTF-8 admission. Masking
+can repair description/body and anonymous nonfallback names, but cannot repair
+an authenticated original-name identity or a fallback slug hash. No owner, path,
+origin, rollback, dependency or activation authority is added.
+
+The known combined header/body repair cases now match Source. Masker exception
+and side-effect behavior, parser depth/resource limits, other public-entry
+profiles and original P0/P1/G0-G7 acceptance still require evidence. Initial
+focused regex did not select memory-package tests; an unfiltered run covers that
+package and the final ordinary/race gates include all packages.
+
+Frozen 1652 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
+(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 114.47s (0:01:54). Application coverage 89.30% (33166/37142); all Go 89.17%
+(33337/37386); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-write-order-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-write-order-2026-10-12.json). All 34 corrected pre-fix differences
+are retained. No new dependency or Python runtime-module change. Package
+invariants and full Python mutation sweep were not rerun. Prior temporal failures
+remain open.
+
+The [iteration image](docs/audits/go-memory-write-order-infographic-2026-10-12.png)
+edits the layered base, highlighting L3 default-body lowering and L5 write-order
+phases. No component added/deleted; base unchanged. Exact prompt saved. Canonical
+map and JSON synchronized; generated HTML passes 9 checks, zero errors/warnings.
+PNG inspected; browser visual acceptance remains blocked by prior URL policy.
+
+Next: inspect masker exception/panic and side-effect behavior at actual public
+entry points, then parser resource/depth boundaries. Original migration criteria
+remain open; the captured success/repair profiles do not prove callback failures.
+
 ## 2026-10-12 typed memory body consumption
 
 Implementation `6e4ef14`, based on local main `48a09fa`. Actual Source adds 22 extraction and 22
@@ -156,14 +201,14 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `48a09fa`: typed memory body consumption, with 81 extraction
-and 72 consolidation Source cases and 22 retained pre-fix differences.
+Reviewed baseline `e6a50b8`: memory write encoding order, with 105 extraction
+and 96 consolidation Source cases and 34 retained pre-fix differences.
 Frozen 1652 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
 audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
 (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 95.13s (0:01:35). Application coverage 89.28% (33152/37133); all Go 89.15%
-(33323/37377); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-body-values-2026-10-12.json). Combined faults and original acceptance remain open.
+passed in 114.47s (0:01:54). Application coverage 89.30% (33166/37142); all Go 89.17%
+(33337/37386); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-write-order-2026-10-12.json). Callback faults and original acceptance remain open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -179,7 +224,7 @@ passed in 95.13s (0:01:35). Application coverage 89.28% (33152/37133); all Go 89
 | Known usage metadata shapes | [191 actual SDK cases/214 stages and full current receipt](docs/audits/go-private-type-closure-2026-10-11.json) | Named inert observations, model/stage fallback, actual event masking/clone/archive and191 SQLite reopen rows pass required assertions. Original100 differences repaired; 86 whole-usage cases now match projected values/stages/messages; broader ranges and final field/default/consumer/public-error scope remain open |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current full ordinary/race+atomic pass; prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
-| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 457 files/1442 named types;1191 public types/262 private roots/172 variables;zero findings in four established gates. Body inventory has139 open observations; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
+| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 458 files/1444 named types;1192 public types/263 private roots/172 variables;zero findings in four established gates. Body inventory has139 open observations; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
 | Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
@@ -206,15 +251,15 @@ passed in 95.13s (0:01:35). Application coverage 89.28% (33152/37133); all Go 89
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 95.13s (0:01:35)**. Ordinary Go/vet/race+atomic, four type
+Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 114.47s (0:01:54)**. Ordinary Go/vet/race+atomic, four type
 audits, 239-file Source check, 19 scans and selected memory/consolidation guards pass.
-[Current receipt](docs/audits/go-memory-body-values-2026-10-12.json). Full Python mutation sweep and package invariants
+[Current receipt](docs/audits/go-memory-write-order-2026-10-12.json). Full Python mutation sweep and package invariants
 not rerun; no Python runtime module changed. Default diagnostics and broader IDNA
 approval remain outstanding.
 
-Current full passing-run statement coverage: application **89.28% (33152/37133)**;
-all Go **89.15% (33323/37377)**; Provider **86.67% (1522/1756)**.
-[Exact receipt](docs/audits/go-coverage-memory-body-values-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
+Current full passing-run statement coverage: application **89.30% (33166/37142)**;
+all Go **89.17% (33337/37386)**; Provider **86.67% (1522/1756)**.
+[Exact receipt](docs/audits/go-coverage-memory-write-order-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
 Python, branches and other platforms excluded. Full port acceptance remains open.
 
 

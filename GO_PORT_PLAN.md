@@ -1,5 +1,50 @@
 # Go port plan
 
+## 2026-10-12 memory write encoding order
+
+Implementation `387061f`, based on local main `e6a50b8`. Actual Python consumers add 24 extraction and
+24 consolidation scenarios, totaling 105 and 96. The 12 combined header/body
+recipes run under both authenticated and anonymous owners. They compare exact
+records, owner diagnostics, unchanged foreign data, requests and mask-call counts.
+The corrected pre-fix corpus has 34 failing scenarios. Initial anonymous fixture
+owner mismatch and one fixture OwnerID compile error are retained separately;
+they are test setup failures, not behavioral discrepancies.
+
+Model entries always select the named memory.Body lane, including absent body.
+That lane defers header UTF-8 validation to Source consumption phases: owner hash
+first; fallback slug name hash before body consumption; body len/truncation and
+diagnostics; text masking; authenticated original-name hash; final UTF-8 encoding.
+The ordinary typed Input.Body path retains its upfront UTF-8 admission. Masking
+can repair description/body and anonymous nonfallback names, but cannot repair
+an authenticated original-name identity or a fallback slug hash. No owner, path,
+origin, rollback, dependency or activation authority is added.
+
+The known combined header/body repair cases now match Source. Masker exception
+and side-effect behavior, parser depth/resource limits, other public-entry
+profiles and original P0/P1/G0-G7 acceptance still require evidence. Initial
+focused regex did not select memory-package tests; an unfiltered run covers that
+package and the final ordinary/race gates include all packages.
+
+Frozen 1652 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
+(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 114.47s (0:01:54). Application coverage 89.30% (33166/37142); all Go 89.17%
+(33337/37386); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-write-order-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-write-order-2026-10-12.json). All 34 corrected pre-fix differences
+are retained. No new dependency or Python runtime-module change. Package
+invariants and full Python mutation sweep were not rerun. Prior temporal failures
+remain open.
+
+The [iteration image](docs/audits/go-memory-write-order-infographic-2026-10-12.png)
+edits the layered base, highlighting L3 default-body lowering and L5 write-order
+phases. No component added/deleted; base unchanged. Exact prompt saved. Canonical
+map and JSON synchronized; generated HTML passes 9 checks, zero errors/warnings.
+PNG inspected; browser visual acceptance remains blocked by prior URL policy.
+
+Next: inspect masker exception/panic and side-effect behavior at actual public
+entry points, then parser resource/depth boundaries. Original migration criteria
+remain open; the captured success/repair profiles do not prove callback failures.
+
 ## 2026-10-12 typed memory body consumption
 
 Implementation `6e4ef14`, based on local main `48a09fa`. Actual Source adds 22 extraction and 22
@@ -7434,16 +7479,16 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against baseline `48a09fa`: typed memory body
-consumption matches 81 extraction and 72 consolidation Source cases. All 22
-pre-fix differences are retained. Combined header/body/masker faults and original
+Reviewed **2026-10-12** against baseline `e6a50b8`: memory write encoding
+order matches 105 extraction and 96 consolidation Source cases. All 34 corrected
+pre-fix differences are retained. Callback faults and original
 migration acceptance remain open.
 Frozen 1652 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
 audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
 (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 95.13s (0:01:35). Application coverage 89.28% (33152/37133); all Go 89.15%
-(33323/37377); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-body-values-2026-10-12.json).
+passed in 114.47s (0:01:54). Application coverage 89.30% (33166/37142); all Go 89.17%
+(33337/37386); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-write-order-2026-10-12.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7474,11 +7519,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app **89.28% (33152/37133)**,
-all Go **89.15% (33323/37377)**, Provider **86.67% (1522/1756)**.
+Current full passing-run statement coverage: app **89.30% (33166/37142)**,
+all Go **89.17% (33337/37386)**, Provider **86.67% (1522/1756)**.
 The profile hash and 1652 frozen inputs are retained; native C,
 CLI subprocess internals, Python, branches and other platforms are excluded.
-[Current coverage](docs/audits/go-coverage-memory-body-values-2026-10-12.json).
+[Current coverage](docs/audits/go-coverage-memory-write-order-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
