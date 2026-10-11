@@ -1,0 +1,796 @@
+{
+  "assets": [
+    {
+      "bytes": 32374,
+      "filename": "openapi.json",
+      "media_type": "application/json",
+      "path": "/openapi.json",
+      "sha256": "1a79ce17ddb2c1be395d167dddfff13167f9f329f6128a6203b1f5f0310c4183"
+    },
+    {
+      "bytes": 1008,
+      "filename": "swagger.html",
+      "media_type": "text/html; charset=utf-8",
+      "path": "/docs",
+      "sha256": "a742584684629e8b02fe2f04d7d6cb9202b8441174a9be2469cbc0a663f14ded"
+    },
+    {
+      "bytes": 3012,
+      "filename": "oauth2-redirect.html",
+      "media_type": "text/html; charset=utf-8",
+      "path": "/docs/oauth2-redirect",
+      "sha256": "f45d60bb9f054b1712b3f9e60547eb9e1d523afd6472a4137b89eb503b37f058"
+    },
+    {
+      "bytes": 890,
+      "filename": "redoc.html",
+      "media_type": "text/html; charset=utf-8",
+      "path": "/redoc",
+      "sha256": "c100b65b4d6d73e79d4c2d1dffe0994ac69f0804b4806e5b37441ccdd57421b1"
+    }
+  ],
+  "cases": [
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "1a79ce17ddb2c1be395d167dddfff13167f9f329f6128a6203b1f5f0310c4183",
+      "headers": {
+        "content-length": "32374",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "anonymous-get",
+      "path": "/openapi.json",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "32374",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "anonymous-head",
+      "path": "/openapi.json",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "1a79ce17ddb2c1be395d167dddfff13167f9f329f6128a6203b1f5f0310c4183",
+      "headers": {
+        "content-length": "32374",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "token-get",
+      "path": "/openapi.json",
+      "status": 200,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "missing-token",
+      "path": "/openapi.json",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "missing-token-head",
+      "path": "/openapi.json",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "query-token",
+      "path": "/openapi.json?access_token=fixture-token",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [
+        "GET",
+        "HEAD"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "body_kind": "",
+      "body_sha256": "83c09ba9a8daedb136f90b17a294caa90ad471a016e430df6e229acb5a81e100",
+      "headers": {
+        "content-length": "31",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "name": "unsupported-method",
+      "path": "/openapi.json",
+      "status": 405,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "0",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "location": "http://fixture/openapi.json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "trailing-slash",
+      "path": "/openapi.json/",
+      "status": 307,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "request body too large"
+      },
+      "body_kind": "oversized",
+      "body_sha256": "5b9aaa407528d2c8ceb7ba7812b1c314ce810506450f778542d7106ba74242e0",
+      "headers": {
+        "content-length": "36",
+        "content-type": "application/json"
+      },
+      "method": "GET",
+      "name": "oversized-body",
+      "path": "/openapi.json",
+      "status": 413,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "a742584684629e8b02fe2f04d7d6cb9202b8441174a9be2469cbc0a663f14ded",
+      "headers": {
+        "content-length": "1008",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "anonymous-get",
+      "path": "/docs",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "1008",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "anonymous-head",
+      "path": "/docs",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "a742584684629e8b02fe2f04d7d6cb9202b8441174a9be2469cbc0a663f14ded",
+      "headers": {
+        "content-length": "1008",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "token-get",
+      "path": "/docs",
+      "status": 200,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "missing-token",
+      "path": "/docs",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "missing-token-head",
+      "path": "/docs",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "query-token",
+      "path": "/docs?access_token=fixture-token",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [
+        "GET",
+        "HEAD"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "body_kind": "",
+      "body_sha256": "83c09ba9a8daedb136f90b17a294caa90ad471a016e430df6e229acb5a81e100",
+      "headers": {
+        "content-length": "31",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "name": "unsupported-method",
+      "path": "/docs",
+      "status": 405,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "0",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "location": "http://fixture/docs",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "trailing-slash",
+      "path": "/docs/",
+      "status": 307,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "request body too large"
+      },
+      "body_kind": "oversized",
+      "body_sha256": "5b9aaa407528d2c8ceb7ba7812b1c314ce810506450f778542d7106ba74242e0",
+      "headers": {
+        "content-length": "36",
+        "content-type": "application/json"
+      },
+      "method": "GET",
+      "name": "oversized-body",
+      "path": "/docs",
+      "status": 413,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "f45d60bb9f054b1712b3f9e60547eb9e1d523afd6472a4137b89eb503b37f058",
+      "headers": {
+        "content-length": "3012",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "anonymous-get",
+      "path": "/docs/oauth2-redirect",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "3012",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "anonymous-head",
+      "path": "/docs/oauth2-redirect",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "f45d60bb9f054b1712b3f9e60547eb9e1d523afd6472a4137b89eb503b37f058",
+      "headers": {
+        "content-length": "3012",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "token-get",
+      "path": "/docs/oauth2-redirect",
+      "status": 200,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "missing-token",
+      "path": "/docs/oauth2-redirect",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "missing-token-head",
+      "path": "/docs/oauth2-redirect",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "query-token",
+      "path": "/docs/oauth2-redirect?access_token=fixture-token",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [
+        "GET",
+        "HEAD"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "body_kind": "",
+      "body_sha256": "83c09ba9a8daedb136f90b17a294caa90ad471a016e430df6e229acb5a81e100",
+      "headers": {
+        "content-length": "31",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "name": "unsupported-method",
+      "path": "/docs/oauth2-redirect",
+      "status": 405,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "0",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "location": "http://fixture/docs/oauth2-redirect",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "trailing-slash",
+      "path": "/docs/oauth2-redirect/",
+      "status": 307,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "request body too large"
+      },
+      "body_kind": "oversized",
+      "body_sha256": "5b9aaa407528d2c8ceb7ba7812b1c314ce810506450f778542d7106ba74242e0",
+      "headers": {
+        "content-length": "36",
+        "content-type": "application/json"
+      },
+      "method": "GET",
+      "name": "oversized-body",
+      "path": "/docs/oauth2-redirect",
+      "status": 413,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "c100b65b4d6d73e79d4c2d1dffe0994ac69f0804b4806e5b37441ccdd57421b1",
+      "headers": {
+        "content-length": "890",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "anonymous-get",
+      "path": "/redoc",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "890",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "anonymous-head",
+      "path": "/redoc",
+      "status": 200,
+      "token_auth": false
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "c100b65b4d6d73e79d4c2d1dffe0994ac69f0804b4806e5b37441ccdd57421b1",
+      "headers": {
+        "content-length": "890",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "token-get",
+      "path": "/redoc",
+      "status": 200,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "missing-token",
+      "path": "/redoc",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "HEAD",
+      "name": "missing-token-head",
+      "path": "/redoc",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "",
+      "body_sha256": "ca977796fa664cfc5b326175c604cbdfb2bf8a7e1d24e6fd8c9e64cae5a9d57f",
+      "headers": {
+        "content-length": "39",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "query-token",
+      "path": "/redoc?access_token=fixture-token",
+      "status": 401,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [
+        "GET",
+        "HEAD"
+      ],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "Method Not Allowed"
+      },
+      "body_kind": "",
+      "body_sha256": "83c09ba9a8daedb136f90b17a294caa90ad471a016e430df6e229acb5a81e100",
+      "headers": {
+        "content-length": "31",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "POST",
+      "name": "unsupported-method",
+      "path": "/redoc",
+      "status": 405,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": null,
+      "body_kind": "",
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "content-length": "0",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "location": "http://fixture/redoc",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "method": "GET",
+      "name": "trailing-slash",
+      "path": "/redoc/",
+      "status": 307,
+      "token_auth": true
+    },
+    {
+      "allowed_methods": [],
+      "authorization": "Bearer fixture-token",
+      "body_json": {
+        "detail": "request body too large"
+      },
+      "body_kind": "oversized",
+      "body_sha256": "5b9aaa407528d2c8ceb7ba7812b1c314ce810506450f778542d7106ba74242e0",
+      "headers": {
+        "content-length": "36",
+        "content-type": "application/json"
+      },
+      "method": "GET",
+      "name": "oversized-body",
+      "path": "/redoc",
+      "status": 413,
+      "token_auth": true
+    }
+  ],
+  "docs_source_sha256": "3dc8c7d129feca9f7b3b47b15e29dc1bc7a9b18ec04f2242e7aeb66cad4345aa",
+  "fastapi_version": "0.136.3"
+}

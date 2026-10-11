@@ -493,7 +493,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / SDK / Audit / HTTP / SSE",
-      "sublabel": "optional native reload / owned HTTP / feature selection",
+      "sublabel": "owned HTTP/SSE + protected API docs / startup / audit",
       "pos": [
         330,
         800
@@ -502,7 +502,7 @@
         330,
         76
       ],
-      "tag": "public browser / protected data"
+      "tag": "public browser / authenticated documents + data"
     },
     {
       "id": "goCron",
@@ -1588,6 +1588,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Go HTTP serves embedded OpenAPI, Swagger UI, ReDoc and OAuth redirect resources after the common body cap and one authentication admission. GET/HEAD, method refusals and default slash redirects match 36 Source HTTP captures. Schema covers the same 40 business paths; no session reads, execution authority or runtime Python dependency. Source external library references and the existing CSP are retained; external-library browser rendering and custom ASGI root-path mounts are not claimed.",
         "Separate actual Linux Source capture pins Uvicorn 0.49.0 / WatchFiles 1.2.0 INotifyWatcher: 18 native recipes, forward/reverse directory aliases, native directory/file link-loop timeouts and write-open-without-write timeout, with real context closure. This evidence precedes Go backend delivery; CLI event-profile binding is delivered below.",
         "Linux native SDK owns a nonblocking inotify descriptor and recursive directory registrations using Go/syscall APIs with no new dependency or CGO requirement. Filesystem-order registration preserves the last lexical alias projection; native link loops and access-only opens are skipped, while moved roots retain the old projection. Worker Close joins and releases all watches; initial traversal cooperates with construction cancellation. Dynamic subtrees, queue-overflow/unmount faults and ABI bounds are verified on actual Linux aarch64. CLI event-profile binding is delivered below.",
         "Explicit Supervisor selects exactly one StatReload Watcher or event Observer. Listener admission transfers subscription Close ownership; shutdown stops/joins the child, removes its artifact, cancels/closes the observer and joins its bounded synchronous batch reader. Empty filtered batches do not rebuild; observer faults terminate with cleanup. SourceChanged retains a detached full Paths batch plus first Path. Real HTTP native/polling tests verify replacement, failed-build repair, retained socket and released workspace leases. CLI now selects the same event Observer and shares its owned compiler workspace.",

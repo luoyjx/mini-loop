@@ -134,6 +134,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	// One admitted identity is carried through the handler; never authenticate twice.
 	r = r.WithContext(withPrincipal(r.Context(), caller))
+	if s.serveDocumentation(w, r) {
+		return
+	}
 	s.mux.ServeHTTP(w, r)
 }
 
