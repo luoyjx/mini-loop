@@ -504,7 +504,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: `52bb378`, SDK padded integer-text normalization: temporary named SDK construction normalizes zero-padded integer text by significant digits without count authority; null/text projections, exact model/list repr and delta-fault timing remain. Current1640 frozen inputs pass full Source239 files, Go ordinary/vet/race+atomic, two type audits, Python2240 tests/28 skipped/96 warnings and19 scans; app statement coverage is89.25%, all Go89.20%, Provider86.67%. Prior runtime evidence has passing full native and 237-file Source gates, plus exact SDK usage text-integer normalization and 76 direct/SSE contracts, plus same-directory glob truncation enumeration evidence (runtime unchanged), plus AST digest recheck test path-replacement portability (runtime unchanged), plus layered architecture base visualization (runtime unchanged), plus completed Linux amd64 compatibility-layer and native arm64 full gate evidence (runtime unchanged), plus Linux amd64/CGO1 compiler public-type closure evidence (runtime unchanged), with acceptance-index reconciliation against current tree identities (latest Go `014e913`, runtime unchanged), plus same-subscription queue and post-result native control evidence (runtime unchanged), plus required native raw C callback-window evidence (runtime unchanged), plus four required native recipe Source captures and absence diagnosis (runtime unchanged), with safe JSON string read spans, with owned direct-process native stack capture and shared-budget receipt review, with scalar UTF-8 and ASCII archival JSON text span writes, plus four-mode maximum SQLite decision shared-budget diagnosis, with owned literal-path transport and route-specific wire targets, plus verified proxy/TLS/CONNECT path contracts, plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: `2c76207` plus compiler-resolved private type roots: active compiler/CGO source selection and imported aliases/generic fields complement syntax/public closure; existing SQLite backend/restart status reconciled. Current1643 frozen inputs pass Source239 files, ordinary/vet/race+atomic, all three type audits, Python2240 tests/28 skipped/96 warnings and19 scans; app statement coverage is89.25%, all Go89.15%, Provider86.67%. Prior runtime evidence has passing full native and 237-file Source gates, plus exact SDK usage text-integer normalization and 76 direct/SSE contracts, plus same-directory glob truncation enumeration evidence (runtime unchanged), plus AST digest recheck test path-replacement portability (runtime unchanged), plus layered architecture base visualization (runtime unchanged), plus completed Linux amd64 compatibility-layer and native arm64 full gate evidence (runtime unchanged), plus Linux amd64/CGO1 compiler public-type closure evidence (runtime unchanged), with acceptance-index reconciliation against current tree identities (latest Go `014e913`, runtime unchanged), plus same-subscription queue and post-result native control evidence (runtime unchanged), plus required native raw C callback-window evidence (runtime unchanged), plus four required native recipe Source captures and absence diagnosis (runtime unchanged), with safe JSON string read spans, with owned direct-process native stack capture and shared-budget receipt review, with scalar UTF-8 and ASCII archival JSON text span writes, plus four-mode maximum SQLite decision shared-budget diagnosis, with owned literal-path transport and route-specific wire targets, plus verified proxy/TLS/CONNECT path contracts, plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
 plus citation-bearing native SQLite recovery proof,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
@@ -697,7 +697,7 @@ flowchart LR
         Trace["Events · trajectory JSONL · trace viewer<br/>audit · problems · runtime posture"]
     end
 
-    subgraph GoPort["Independent Go port · in progress"]
+    subgraph GoPort["Independent Go port · in progress<br/>operator type gates: syntax / public / private · no runtime grants"]
         GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET / injection / idle turns"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
@@ -999,7 +999,7 @@ or jev, retaining explicit backend precedence and credential-free inspection.
 Source snapshots cover large-result retention and cooperative cancellation.
 Go additionally masks the closed result before escaping to prevent encoded
 backend model values from leaking through output/journal/recording sinks.
-Native SQL restart and live-provider audit remain pending. See [Go decisions](go/README.md#typed-decision-operator-library).
+Native SQL decision restart is verified by `go/sqlitestate/decision_restart_test.go`; live-provider audit remains open. See [Go decisions](go/README.md#typed-decision-operator-library).
 
 `go/userresources` now separates user-authored skill fields from agent skills.
 Its pure typed constructor validates and normalizes canonical SKILL.md content;
@@ -1458,7 +1458,7 @@ non-landing. `write_file` has a workspace-bound verifier; Bash has none. Typed
 settlement precedes result observers; cancellation settles as cancelled. The
 memory journal keeps every action identity while bounding retained result text.
 `StoredActionJournal` supplies transitions over an explicit `ActionStore`; the
-shipped Go SQLite backend remains pending. `agent.SessionRecord` and separate
+native `go/sqlitestate` backend implements action/approval storage and recovery (`audit_test.go`); storage remains explicitly selected. `agent.SessionRecord` and separate
 session/transcript/event/lease/approval-read contracts model the v7 projections.
 `DecodeStoredEvent` reads current known event variants into detached typed rows;
 historical provenance has untrusted authority and cannot reinstall human grants.
@@ -1506,7 +1506,7 @@ uses a physical window plus sequence filtering and saturates valid huge IDs.
 The parser retains Python 3.11 default integer syntax and its 4,300-digit bound.
 Queue shedding and the 2,000-row window can still leave visible gaps; this is
 a bounded resume, not complete history or cross-process live tailing. The injected
-store seam is implemented; native Go SQL persistence/reopen remains pending.
+store seam and native SQLite close/reopen are implemented; the Launcher HTTP and managed catch-up restart tests retain owner and untrusted-history boundaries.
 The Go `sessionquery` library now supplies typed historical search results through
 an explicit read-only Reader, distinct from live protocol messages. It scans at most
 20 recent epochs and returns at most 20 snippets of 240 Python characters, carrying
@@ -1568,7 +1568,7 @@ before storage; `RuntimeConfig.Secrets` supplies the registry for the bound
 session without changing a shared broker configuration. Fresh children
 do not inherit the parent broker surface. Authenticated approval routes bind the
 admitted owner and requested session. Injected-store restore-time expiry is
-implemented; the Go SQLite backend remains pending.
+implemented with native SQLite approval/recovery coverage in `go/sqlitestate/audit_test.go`.
 `task` is the tenth runtime tool and crosses the execution-risk gate before
 delegation. The default in-process provider creates a fresh child history,
 todo state and token meter, with a capability-selected subset of the parent
@@ -1701,10 +1701,11 @@ JSON and HTTP responses use the optional recording projection without changing l
 model history; encoder failures return no raw fallback. These are process-local handler
 services: the embedding application owns listening/shutdown and must call
 `RefuseOpenBind` before listening. The standalone launcher supplies that ownership
-and additionally checks its actual listener. Full health posture, native SQL
-restart evidence and optional fleet services remain pending. Full
+and additionally checks its actual listener. Native SQL/HTTP restart evidence is delivered in `go/launcher/state_test.go`;
+final default/fleet/health-posture acceptance remains open. Full
 FastAPI validation detail/coercion parity remains open. Injected-store restoration
-and bounded catch-up exist; the native Go backend remains pending.
+and bounded catch-up exist with the native SQLite backend; latest nonfinite
+restore/catch-up composition is tested in `go/sqlitestate/nonfinite_restart_test.go`.
 Both browser documents use embedded copies of the Python source HTML/CSS/JS.
 `python/tools/export_go_webui.py --check` verifies the copies; no Python process,
 source checkout, external assets or static directory mount is needed at runtime.
@@ -1740,7 +1741,8 @@ After the first run starts, a real mode change queues a separate harness-authore
 `posture_update` with its meaning for the model. Pre-first changes and no-ops stay
 silent. Fresh children retain their selected mode and never drain parent controls.
 Steering is stored/restored when an explicit StateStore is supplied; posture
-remains process-local and native Go SQLite persistence remains pending.
+remains process-local. Native SQLite steering restart is covered by the
+actual Source manager recipes in `go/sqlitestate/manager_restart_test.go`.
 Manager `Fork` and the owner-scoped HTTP fork route copy only an idle, paired transcript while holding source admission. The child inherits explicit
 system and current mode, uses the manager default model, and has fresh tool/control
 state and a newly provisioned scratch workspace. Typed `forked_from` lineage and
@@ -1767,7 +1769,8 @@ physical event order and the exact stamped epoch, including superseded transcrip
 The caller owns authorization; reads do not take turn admission, flush live messages,
 claim a lease, repair crash tails or reinstall historical capabilities. Missing or
 disabled storage returns the Source missing-start result. Native provider-boundary
-and rewrite tests use an injected backend; native SQLite remains pending.
+and rewrite tests retain their injected backend scope. The native SQLite
+backend is implemented; inspector-specific composition still needs G7 reconciliation.
 
 A nonnil `RuntimeConfig.DiagnosticsProvider` or `ManagerServices.DiagnosticsProvider`
 explicitly installs the typed `diagnostics` tool with Source read/parallel traits.
@@ -2374,7 +2377,8 @@ turning them into live authority. Preview and inspector caps count Source charac
 final HTML UTF-8 validation runs after capping. Visible surrogate text fails, while
 fully capped text can render successfully. File, trajectory-ID and session CLI loads
 retain private 0600 output. Ordinary JSON details and downloads keep their separate
-scalar boundaries. Native Go SQLite and permissive metadata profiles remain pending.
+scalar boundaries. The native Go SQLite backend is implemented; trace-view-specific SQLite
+composition and remaining permissive metadata profiles need final reconciliation.
 Snapshot 137 adds eleven historical metadata recipes and fifty-five HTTP outcomes.
 Streaming summaries select only used fields; archival JSON retains complete metadata,
 unknown metrics and original scalar identity. Ledger/file readers ignore unused root,
@@ -2387,7 +2391,8 @@ summaries and lists preserve Source values, including unknown metrics. Owned lis
 filter rows before their masked strict UTF-8 projection. Truthy non-object metadata
 fails summary/list and owned admission while direct document reads remain available.
 Direct page and successful HTTP page/list contents match Source. Ledger metric
-conversion, timing/input/output profiles, native SQLite and full G7 remain pending.
+conversion, timing/input/output profiles, trace-view-specific native SQLite
+composition and full G7 remain open.
 Snapshot 139 compares seventy-one metric recipes and 284 HTTP outcomes. Named
 IntegerCount values retain unbounded token sums; MetricValue retains closed historical
 counters until render-time int conversion. Usage conversion stays at ledger build,
@@ -2413,7 +2418,7 @@ the existing model-request/gate path; default tools are unchanged. Client lifeti
 is still operator-owned. Nonfinite/surrogate argument profiles remain unsupported
 at the strict protocol boundary; the stdio library's archival values do not expand it.
 Timing/input/output, remaining model/tool scalar and MCP archival profiles,
-native SQLite and full G7 remain pending.
+MCP-specific native SQLite composition and full G7 remain open.
 Snapshot 142 runs five real Source Agent batches: aliases versus raw server names,
 lazy factories, idempotent connection, same-batch discovered tool calls, same raw
 server replacement through another alias, cross-server collision refusal, empty
@@ -2990,9 +2995,14 @@ and signatures nested in those type bodies. Top-level functions and named struct
 methods are outside this traversal. The compiler inventory uses only Go standard
 library tooling and existing module dependencies. Imported aliases and erased
 interfaces are expanded; external structs and named nonempty capabilities remain
-opaque platform boundaries. Private types are traversed when reachable from
-exported types. Inactive platform definitions and unexported roots retain the
-syntax audit's separate scope. Neither check proves runtime data flow, named
+opaque platform boundaries. Private fields reachable from exported types are covered by `-public`. Add
+`-private` to resolve every active package-level unexported type root from the
+compiler-selected source files, including generated CGO declarations. It detects
+imported aliases, instantiated generic payloads and erased external aliases even
+when no exported type references the root. Select only one of `-public` and
+`-private` per invocation. Inactive platform definitions retain the syntax audit's
+separate scope. These checks do not inspect retained package variables, function-local
+types, function bodies, runtime data flow, named
 method implementations or external library internals. Runtime topology and
 feature defaults are unchanged by this audit tool. These checks complement the
 remaining external-type and runtime data-flow review.

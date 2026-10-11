@@ -1,15 +1,12 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"go/importer"
 	"go/token"
 	"go/types"
 	"io"
 	"os"
-	"os/exec"
 )
 
 type moduleMetadata struct {
@@ -18,9 +15,11 @@ type moduleMetadata struct {
 }
 
 type packageMetadata struct {
-	ImportPath string
-	Export     string
-	Module     *moduleMetadata
+	ImportPath      string
+	Dir             string
+	CompiledGoFiles []string
+	Export          string
+	Module          *moduleMetadata
 }
 
 type publicReport struct {
@@ -33,39 +32,18 @@ type publicReport struct {
 // inactive platform definitions remain the syntax audit's separate scope.
 func auditPublic(root string) (publicReport, error) {
 	var out publicReport
-	command := exec.Command("go", "list", "-export", "-deps", "-json", "./...")
-	command.Dir = root
-	var diagnostics bytes.Buffer
-	command.Stderr = &diagnostics
-	data, err := command.Output()
+	inventory, err := inventoryCompilerPackages(root, false)
 	if err != nil {
-		return out, fmt.Errorf("compiler package inventory: %w: %s", err, diagnostics.String())
-	}
-	var packages []packageMetadata
-	exports := make(map[string]string)
-	owned := make(map[string]bool)
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	for {
-		var pkg packageMetadata
-		if err := decoder.Decode(&pkg); err == io.EOF {
-			break
-		} else if err != nil {
-			return out, err
-		}
-		exports[pkg.ImportPath] = pkg.Export
-		if pkg.Module != nil && pkg.Module.Main {
-			packages = append(packages, pkg)
-			owned[pkg.ImportPath] = true
-		}
+		return out, err
 	}
 	positions := token.NewFileSet()
 	compiler := importer.ForCompiler(positions, "gc", func(path string) (io.ReadCloser, error) {
-		if exports[path] == "" {
+		if inventory.exports[path] == "" {
 			return nil, fmt.Errorf("missing compiler export for %s", path)
 		}
-		return os.Open(exports[path])
+		return os.Open(inventory.exports[path])
 	})
-	for _, metadata := range packages {
+	for _, metadata := range inventory.packages {
 		pkg, err := compiler.Import(metadata.ImportPath)
 		if err != nil {
 			return out, err
@@ -77,7 +55,7 @@ func auditPublic(root string) (publicReport, error) {
 				continue
 			}
 			out.types++
-			if publicOpenPayload(object.Type(), owned, make(map[types.Type]bool)) {
+			if publicOpenPayload(object.Type(), inventory.owned, make(map[types.Type]bool)) {
 				out.findings = append(out.findings, finding{positions.Position(object.Pos()), metadata.ImportPath + "." + name})
 			}
 		}

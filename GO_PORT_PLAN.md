@@ -1,5 +1,40 @@
 # Go port plan
 
+## 2026-10-11 compiler-resolved private type roots
+
+Baseline local main `2c76207`. The exported compiler closure previously traversed
+private fields only when reachable from exported type roots. Package-level
+private roots could retain imported aliases or instantiated open payloads without
+being resolved by that mode; the all-platform syntax scanner cannot resolve
+cross-package aliases. `go/tools/typeaudit -private` now parses exactly the active
+compiler-selected source files, including CGO-generated declarations, and checks
+all unexported package-level named type/alias roots with standard go/types and
+the existing compiler export inventory. No new dependencies were introduced.
+
+The shared inventory keeps public mode behavior; the closure retains its opaque
+foreign named struct/capability boundary. Public/private modes are mutually
+exclusive. Errors in compiler inventory/source/type resolution fail closed.
+Focused tests prove previously unreachable imported RawMessage aliases, generic
+any fields, external erased aliases and named callback signatures are detected;
+recursive closed types, shadowed any names, capability handles and inactive
+build-tagged definitions are excluded correctly. Current production syntax:
+455 files/1441 named types; public50 packages/1191 types; private50 packages/261
+roots including compiler-generated CGO declarations; all zero findings.
+
+README canonical map/review boundary and interactive scope metadata are updated
+without changing runtime topology, ownership, defaults or grants. Several old
+SQLite-pending descriptions contradicted current native backend/restart evidence;
+these now distinguish delivered backend coverage from recipe-specific inspector,
+trace-view/MCP and final composition work. This is a documentation reconciliation,
+not a new durability or complete-feature claim.
+
+The private compiler mode covers the active host profile. Package variables,
+function-local types, bodies/method implementations, external library internals,
+other compiler profiles and runtime data flow remain outside this proof. Broader
+provider/default, non-Darwin/temporal, performance and original P0/P1/G0–G7 final
+acceptance remain open. Historical background/native timing failures are not fixed
+or explained by this tool change.
+
 ## 2026-10-11 SDK integer-text zero padding
 
 Main baseline `338792a`. Actual SDK0.107.1/Pydantic2.13.4 HTTP captures accept
@@ -7103,13 +7138,14 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-11** against local main baseline `338792a`; latest runtime
-implementation `52bb378` separates SDK padded integer-text normalization
-from counted decoding. Current1640 frozen inputs pass full Source239 files,
-required focused native checks, full ordinary Go/vet/race+atomic, syntax audit453
-files/1440 named types, public closure50 packages/1191 exported types/zero findings,
-Python2240 passed/28 skipped/96 warnings/24 subtests (129.76s pytest;
-130.381s command) and19 scans. [Current receipt](docs/audits/go-usage-leading-zero-text-2026-10-11.json).
+Reviewed **2026-10-11** against local main baseline `2c76207`; this iteration adds
+compiler-resolved private type roots to the existing operator typeaudit tool.
+Current1643 frozen inputs pass Source239, focused tool tests, full ordinary
+Go/vet/race+atomic, syntax455 files/1441 named types, public50 packages/1191
+exported types and private50 packages/261 roots including generated CGO types,
+all zero findings. Python2240 passed/28 skipped/96 warnings/24 subtests
+(94.70s pytest;95.336s command) and19 scans pass.
+[Current receipt](docs/audits/go-private-type-closure-2026-10-11.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7140,10 +7176,10 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app**89.25% (33084/37068)**,
-all Go**89.20% (33205/37226)**, Provider**86.67% (1522/1756)**. The profile hash
-and1640 frozen inputs are retained; coverage excludes native C, CLI child
-internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-usage-leading-zero-text-2026-10-11.json).
+Current full passing-run statement coverage: app**89.25% (33082/37068)**,
+all Go**89.15% (33238/37283)**, Provider**86.67% (1522/1756)**. The profile hash
+and1643 frozen inputs are retained; coverage excludes native C, CLI child
+internals, Python, branches and Linux. [Current coverage](docs/audits/go-coverage-private-type-closure-2026-10-11.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7155,7 +7191,7 @@ work-package acceptance.
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax and active-profile compiler-resolved exported payload audits pass; foreign internals, unexported roots, inactive profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax and active-profile public/private-root compiler audits pass; package variables/local types, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |

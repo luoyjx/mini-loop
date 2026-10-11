@@ -1,5 +1,17 @@
 # Python to Go parity matrix
 
+## Private compiler type roots — 2026-10-11
+
+At baseline `2c76207`, native typeaudit adds -private for every active package-level
+unexported named root, using compiler-selected/CGO-generated sources and go/types.
+Focused adversarial fixtures catch aliases/generic open fields unreachable from
+exported API, preserve shadowed names/closed recursion/platform handles, and honor
+inactive build tags. Current455 syntax files/1441 named types, public50 packages/
+1191 exported types and private50 packages/261 roots have zero findings. No new
+dependency, runtime component, owner, default or authority was introduced.
+Package variables, local types, bodies, opaque foreign internals, other build
+profiles and runtime data flow remain explicit G0 work; full migration remains open.
+
 ## SDK integer-text zero padding — 2026-10-11
 
 Baseline `338792a`:24 actual direct/SSE cases expose20 parity differences and
@@ -45,18 +57,14 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-11
 
-Reviewed **2026-10-11** against local main baseline `338792a`; implementation `52bb378`; private
-SDK integer-text construction excludes leading zeros from its significant-digit
-limit, independently of counted decoding.
-Current1640 frozen inputs pass ordinary/vet/race+atomic,
-Source239-file comparison, focused tests, both type audits, Python and scans.
-[Current receipt](docs/audits/go-usage-leading-zero-text-2026-10-11.json).
-Required whole-usage Source checks cover86 direct/SSE cases/48 stages and38
-captured delta faults;91 projections survive mask/clone/archive/SQLite, and86
-HTTP/ManagedSession cases verify outcomes. Prior background/native timing failures
-remain unexplained, without watcher/background changes or a non-Darwin claim.
-Full P0/P1/G0–G7 completion remains unproven; see
-[the current plan](GO_PORT_PLAN.md#current-status).
+Reviewed baseline `2c76207`: private compiler roots now complement public closure
+and all-platform syntax. Current1643 frozen inputs pass Source239, focused tests,
+all three type audits, ordinary Go/vet/race+atomic, Python and19 scans.
+[Current receipt](docs/audits/go-private-type-closure-2026-10-11.json). Runtime topology/defaults/authority unchanged.
+Known whole-usage inventory remains86 SDK cases/48 snapshots/38 delta faults,91
+archival projections and86 managed HTTP cases. Prior background/native temporal
+failures remain unexplained; no watcher/background fix or non-Darwin claim.
+Original P0/P1/G0–G7 final acceptance remains open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -68,11 +76,11 @@ Full P0/P1/G0–G7 completion remains unproven; see
 | Glob truncation inputs | [Same-directory Source/Go pair and Source iterator controls](docs/audits/go-glob-enumeration-control-2026-10-11.json) | Darwin pair/fixture exactly match555 names and49,973 characters; selection depends on pre-sort enumeration. Linux same-filesystem Source capture remains open; relative `*.txt` does not charge absolute root length |
 | Full-feature composition | `go/agent/manager_features.go`, `go/launcher/features_test.go`, Source full-feature fixtures | Explicit provider-backed Manager/Launcher composition implemented; default CLI backend unavailable |
 | Usage integer text | [76 new direct/SSE cases and current full gates](docs/audits/go-usage-text-2026-10-11.json) | Exact decimal-zero and integer-separator validation repairs rounding/format differences; event kinds/stages and PromptTokens match. Native ranges and broader malformed metadata shapes remain open |
-| Whole SDK usage | [Current required SDK/wire/managed and archival evidence](docs/audits/go-usage-leading-zero-text-2026-10-11.json) | Current private model-array construction:86 direct/SSE cases/48 stages and38 delta faults;91 projections survive clone/mask/archive/SQLite;86 managed HTTP outcomes verified. Broader ranges/repr/public error scope remains open |
-| Known usage metadata shapes | [191 actual SDK cases/214 stages and full current receipt](docs/audits/go-usage-leading-zero-text-2026-10-11.json) | Named inert observations, model/stage fallback, actual event masking/clone/archive and191 SQLite reopen rows pass required assertions. Original100 differences repaired; 86 whole-usage cases now match projected values/stages/messages; broader ranges and final field/default/consumer/public-error scope remain open |
+| Whole SDK usage | [Current required SDK/wire/managed and archival evidence](docs/audits/go-private-type-closure-2026-10-11.json) | Current private model-array construction:86 direct/SSE cases/48 stages and38 delta faults;91 projections survive clone/mask/archive/SQLite;86 managed HTTP outcomes verified. Broader ranges/repr/public error scope remains open |
+| Known usage metadata shapes | [191 actual SDK cases/214 stages and full current receipt](docs/audits/go-private-type-closure-2026-10-11.json) | Named inert observations, model/stage fallback, actual event masking/clone/archive and191 SQLite reopen rows pass required assertions. Original100 differences repaired; 86 whole-usage cases now match projected values/stages/messages; broader ranges and final field/default/consumer/public-error scope remain open |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Current ordinary/race+atomic gates](docs/audits/go-usage-leading-zero-text-2026-10-11.json), raw C and same-subscription queue/control receipts | Current full ordinary/race+atomic pass; prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
-| Package-level type declarations | Syntax and active-profile public closure audits; [current runtime evidence](docs/audits/go-usage-leading-zero-text-2026-10-11.json) | On current model-array range tree:453 production files/1440 named types;50 packages/1191 exported types;zero findings. Foreign internals, unexported roots, inactive profiles and runtime data-flow review remain |
+| Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current full ordinary/race+atomic pass; prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
+| Package-level type declarations | Syntax and active-profile public closure audits; [current runtime evidence](docs/audits/go-private-type-closure-2026-10-11.json) | On current type-audit tree:455 production files/1441 named types;50 packages/1191 exported types;zero findings. Private compiler roots now pass50 packages/261 types; package variables/local types, foreign internals, other profiles and runtime data-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
 | Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
@@ -100,14 +108,14 @@ Full P0/P1/G0–G7 completion remains unproven; see
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
 Latest full Python result: **2240 passed,28 skipped,96 warnings,24 subtests**
-(129.76s pytest elapsed); full ordinary Go/vet/race+atomic and239-file Source
-comparison pass on frozen inputs. [Current receipt](docs/audits/go-usage-leading-zero-text-2026-10-11.json).
+(94.70s pytest elapsed); full ordinary Go/vet/race+atomic and239-file Source
+comparison pass on frozen inputs. [Current receipt](docs/audits/go-private-type-closure-2026-10-11.json).
 Default full-feature CLI syntax backend and broader IDNA approvals remain
 outstanding. SQLite fixed driver approval covers neither decision.
 
 Current full passing-run statement coverage: application excluding tools
-**89.25% (33084/37068)**; all Go **89.20% (33205/37226)**;
-Provider**86.67% (1522/1756)**. [Exact receipt](docs/audits/go-coverage-usage-leading-zero-text-2026-10-11.json).
+**89.25% (33082/37068)**; all Go **89.15% (33238/37283)**;
+Provider**86.67% (1522/1756)**. [Exact receipt](docs/audits/go-coverage-private-type-closure-2026-10-11.json).
 Darwin Go statements exclude native C, CLI child internals, Python, branch and
 non-Darwin coverage. This does not prove final whole-port acceptance.
 
