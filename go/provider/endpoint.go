@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"net"
 	"net/url"
 	"strings"
 )
@@ -31,6 +32,31 @@ func providerRequestURL(base *url.URL) string {
 	// segments and preserves every percent escape, so unescaping cannot fail.
 	decoded, _ := url.PathUnescape(path)
 	target := *base
+	target.Host = providerRequestAuthority(base)
 	target.Path, target.RawPath = decoded, path
 	return target.String()
+}
+
+// Normalize the accepted authority at the request boundary. IPv6 literals and
+// zone identifiers retain their spelling; configured audit identity is separate.
+func providerRequestAuthority(base *url.URL) string {
+	host := base.Hostname()
+	ipv6 := strings.Contains(host, ":")
+	if !ipv6 {
+		host = strings.ToLower(host)
+	}
+	port := strings.TrimLeft(base.Port(), "0")
+	if base.Port() != "" && port == "" {
+		port = "0"
+	}
+	if (base.Scheme == "https" && port == "443") || (base.Scheme == "http" && port == "80") {
+		port = ""
+	}
+	if port != "" {
+		return net.JoinHostPort(host, port)
+	}
+	if ipv6 {
+		return "[" + host + "]"
+	}
+	return host
 }
