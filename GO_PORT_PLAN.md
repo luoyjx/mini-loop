@@ -1,5 +1,56 @@
 # Go port plan
 
+## 2026-10-12 typed memory body consumption
+
+Implementation `6e4ef14`, based on local main `48a09fa`. Actual Source adds 22 extraction and 22
+consolidation body scenarios, taking the totals to 81 and 72. Twenty-two native
+differences reproduce before repair. Scenarios include all JSON body kinds,
+original element-count versus rendered-text length, 32,000/32,001 boundaries,
+Unicode, unpaired surrogate prefixes and a masker repairing invalid body text.
+Raw and bound-owner diagnostics are compared; foreign binding diagnostics stay
+empty alongside unchanged foreign records.
+
+`memory.Body` is an immutable named projection with private kind, text and
+original length. `TextBody`, `ContainerBody`, `UnsizedBody` and `Input.WithBody`
+carry no JSON payload, owner, path or execution grant. The existing ordinary
+Input.Body string path remains available. Agent lowers closed reply values before
+storage; body errors occur only when Store writes that entry. Lists/objects use
+original element count, so their representation can exceed the string cap.
+Oversized containers report truncation then fail. Scalar bodies fail len at the
+write phase; consolidation therefore retains earlier replacement writes after
+owner-scoped deletion. Its pre-existing unhashable original-identity check still
+refuses container bodies before any deletion.
+
+Observed text counts surrogatepass code points, truncates first, then masks and
+checks final UTF-8 before atomic write. A surrogate outside the retained prefix
+is discarded; one inside fails after the diagnostic unless masking repairs it.
+No rollback, component, optional activation, owner binding or dependency change.
+Combined malformed headers/body/masker faults, full resource/depth limits and the
+original P0/P1/G0-G7 acceptance remain open; captured body parity is not whole-port
+acceptance. The initial focused regex selected no memory-package tests; a separate
+unfiltered memory-package run passed and final ordinary/race gates include it.
+
+Frozen 1652 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
+(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 95.13s (0:01:35). Application coverage 89.28% (33152/37133); all Go 89.15%
+(33323/37377); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-body-values-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-body-values-2026-10-12.json). All 22 pre-fix differences
+are retained. No new dependency or Python runtime-module change. Package
+invariants and full Python mutation sweep were not rerun. Prior temporal failures
+remain open.
+
+The [iteration image](docs/audits/go-memory-body-values-infographic-2026-10-12.png)
+edits the layered base, highlighting L3 body lowering and L5 write/diagnostic
+phases. No component added/deleted; base unchanged. Exact prompt saved. Canonical
+map and JSON synchronized; generated HTML passes 9 checks, zero errors/warnings.
+PNG inspected; browser visual acceptance remains blocked by prior URL policy.
+
+Next: capture combined invalid-description/oversized-body diagnostics and masking,
+invalid-name slug-fallback versus authenticated filename hash order, and absent
+body with repaired description. The single-field corpus does not establish those
+combined stages or full original migration acceptance.
+
 ## 2026-10-12 memory header values and original identity
 
 Implementation `561928e`; baseline local main `1aaa99d`. Implement the next planned memory step with
@@ -7383,16 +7434,16 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against baseline `1aaa99d`: memory header projections
-and original identity checks match 59 extraction and 50 consolidation Source cases.
-54 pre-fix differences and 24 failing origin mutations are retained. Body stages
-and original migration acceptance remain open.
-Frozen 1649 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+Reviewed **2026-10-12** against baseline `48a09fa`: typed memory body
+consumption matches 81 extraction and 72 consolidation Source cases. All 22
+pre-fix differences are retained. Combined header/body/masker faults and original
+migration acceptance remain open.
+Frozen 1652 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
 audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
 (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 97.27s (0:01:37). Application coverage 89.28% (33117/37094); all Go 89.15%
-(33288/37338); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-header-values-2026-10-12.json).
+passed in 95.13s (0:01:35). Application coverage 89.28% (33152/37133); all Go 89.15%
+(33323/37377); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-body-values-2026-10-12.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7423,11 +7474,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app **89.28% (33117/37094)**,
-all Go **89.15% (33288/37338)**, Provider **86.67% (1522/1756)**.
-The profile hash and 1649 frozen inputs are retained; native C,
+Current full passing-run statement coverage: app **89.28% (33152/37133)**,
+all Go **89.15% (33323/37377)**, Provider **86.67% (1522/1756)**.
+The profile hash and 1652 frozen inputs are retained; native C,
 CLI subprocess internals, Python, branches and other platforms are excluded.
-[Current coverage](docs/audits/go-coverage-memory-header-values-2026-10-12.json).
+[Current coverage](docs/audits/go-coverage-memory-body-values-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
