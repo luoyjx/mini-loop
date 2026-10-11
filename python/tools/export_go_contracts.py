@@ -6511,6 +6511,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_usage_contracts import provider_usage_contracts
     from tools.provider_usage_consumer_contracts import provider_usage_consumer_contracts
     from tools.provider_usage_text_contracts import provider_usage_text_contracts
+    from tools.provider_usage_metadata_contracts import provider_usage_metadata_contracts
     from tools.provider_container_contracts import provider_container_contracts
     from tools.provider_reply_metadata_contracts import provider_reply_metadata_contracts
     from tools.api_documentation_contracts import api_documentation_contracts
@@ -6898,6 +6899,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-usage.json": _json_bytes(provider_usage_contracts()),
         "python-provider-usage-consumer.json": _json_bytes(provider_usage_consumer_contracts()),
         "python-provider-usage-text.json": _json_bytes(provider_usage_text_contracts()),
+        "python-provider-usage-metadata.json": _json_bytes(provider_usage_metadata_contracts()),
         "python-provider-container-upload.json": _json_bytes(provider_container_contracts()),
         "python-provider-reply-metadata.json": _json_bytes(provider_reply_metadata_contracts()),
         "python-api-documentation.json": _json_bytes(api_documentation_contracts()),
