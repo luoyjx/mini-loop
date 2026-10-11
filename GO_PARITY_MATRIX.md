@@ -1,5 +1,14 @@
 # Python to Go parity matrix
 
+## Whole usage Source checkpoint — 2026-10-11
+
+At local main baseline `4f75bc9`,28 actual SDK direct/SSE cases and19 snapshots
+fix whole-usage missing/null/scalar/list/partial-model behavior. All14 direct cases
+complete;9 SSE cases fail at delta after a start snapshot,5 object SSE cases
+complete. Native static admission remains stricter; this checkpoint adds Source
+contracts, not a Go parity implementation or refreshed coverage. See the current
+plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`.
+
 ## Current acceptance index — 2026-10-11
 
 Reviewed **2026-10-11** against local main baseline `35de1b8`; latest runtime

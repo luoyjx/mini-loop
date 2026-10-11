@@ -2806,6 +2806,14 @@ flow and defaults unchanged; wider provider/custom-transport acceptance remains 
 
 ### Named usage observations and metering
 
+Whole-usage Source review at `4f75bc9` adds28 actual SDK direct/SSE cases and19
+stage snapshots. Missing/null usage projects to null; scalar/list observations
+project through Python text envelopes. Partial objects receive SDK null defaults.
+Nine SSE profiles fail at delta after an observable start, while direct responses
+complete. Go ingress still rejects these shapes earlier; named whole-usage and
+stage-fault adoption remain pending. See [the Source checkpoint](GO_PORT_PLAN.md#2026-10-11-whole-usage-source-boundary-contracts).
+The layered base and canonical topology are unchanged.
+
 SDK count fields use immutable `UsageCount` variants for integer, float, bool,
 text, null, array and object observations. Known fields remain named; only unknown
 metadata uses the extension boundary. Direct required counts preserve their

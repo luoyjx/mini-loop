@@ -1,5 +1,41 @@
 # Go port plan
 
+## 2026-10-11 whole usage Source boundary contracts
+
+Baseline local main `4f75bc9`. Actual Anthropic SDK0.107.1 / Pydantic2.13.4
+captures28 direct/SSE cases and19 intermediate snapshots in
+`go/testdata/python-provider-whole-usage.json`. Direct missing/null usage projects
+to null; scalar/list usage projects through Python `str` into a named value
+envelope. SDK list mapping entries construct Usage defaults before that repr.
+Missing required counts in objects become null and do not prevent completion.
+Nine non-object/missing SSE cases publish a start snapshot, then fail with
+AttributeError at message_delta when assigning output_tokens. Five object cases
+complete; input-only/complete retain a13-token meter anchor, other cases do not
+anchor. No Go runtime behavior changed in this Source checkpoint.
+
+Follow-up tasks, preserving original G4/G7 scope:
+1. Introduce a named closed whole-usage observation/presence representation;
+   separate SDK ingress construction from strict native/archive admission.
+2. Preserve Source event projection and metering, including Python model/list
+   textual representation; do not use stored any, generic maps or raw JSON.
+3. Apply SSE faults at the actual delta stage after the observable start;
+   required parity must assert intermediate state and terminal error phase.
+4. Verify clone/masking, events/archive, SQLite reopen and managed public flows;
+   reconcile broader count domains and final field/default inventory afterward.
+
+Native static inspection currently shows early refusal: `decodeReply` and
+`consumeStream` require a nonnil TokenUsage and its codec requires both counts.
+This is source-level evidence only; no new native runtime comparison or coverage
+refresh has been claimed. Full migration/default/non-Darwin acceptance remains open.
+The iteration image highlights the existing Provider component on the unchanged
+layered base; no topology/default/owner/component was added or removed.
+
+Validation: full Source239-file check passes; focused1 passed; full Python2240
+passed/28 skipped/81 warnings/24 subtests; Source scans19 anchored; diff check
+passes. Raw logs, initial incorrect test assertion and exact fixture/image hashes
+are retained in [the receipt](docs/audits/go-whole-usage-source-2026-10-11.json).
+No Go code changes: ordinary/vet/race and coverage were not refreshed this round.
+
 ## 2026-10-11 named usage metadata observation implementation
 
 Baseline local main `35de1b8`; implementation `1ab8791`. The four tasks in the

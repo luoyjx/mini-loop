@@ -1,0 +1,1267 @@
+{
+  "cases": [
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": null,
+      "mode": "direct",
+      "name": "absent",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "NoneType",
+      "wire_usage_present": false
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'NoneType' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "absent",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": null,
+          "usage_present": true,
+          "usage_type": "NoneType"
+        }
+      ],
+      "wire_usage_present": false
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": null,
+      "mode": "direct",
+      "name": "null",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":null}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "NoneType",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'NoneType' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "null",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":null}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": null}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": null,
+          "usage_present": true,
+          "usage_type": "NoneType"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "value": "13"
+      },
+      "mode": "direct",
+      "name": "integer",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":13}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "int",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'int' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "integer",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":13}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": 13}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "value": "13"
+          },
+          "usage_present": true,
+          "usage_type": "int"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "value": "13.5"
+      },
+      "mode": "direct",
+      "name": "fraction",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":13.5}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "float",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'float' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "fraction",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":13.5}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": 13.5}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "value": "13.5"
+          },
+          "usage_present": true,
+          "usage_type": "float"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "value": "True"
+      },
+      "mode": "direct",
+      "name": "boolean",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":true}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "bool",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'bool' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "boolean",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":true}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": true}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "value": "True"
+          },
+          "usage_present": true,
+          "usage_type": "bool"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "value": "secret-marker"
+      },
+      "mode": "direct",
+      "name": "text",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":\"secret-marker\"}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "str",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'str' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "text",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":\"secret-marker\"}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": \"secret-marker\"}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "value": "secret-marker"
+          },
+          "usage_present": true,
+          "usage_type": "str"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "value": "[]"
+      },
+      "mode": "direct",
+      "name": "empty-array",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":[]}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "list",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'list' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "empty-array",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":[]}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": []}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "value": "[]"
+          },
+          "usage_present": true,
+          "usage_type": "list"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "value": "[Usage(cache_creation=None, cache_creation_input_tokens=None, cache_read_input_tokens=None, inference_geo=None, input_tokens=13, output_tokens=None, output_tokens_details=None, server_tool_use=None, service_tier=None)]"
+      },
+      "mode": "direct",
+      "name": "array-model",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":[{\"input_tokens\":13}]}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "list",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'list' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "array-model",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":[{\"input_tokens\":13}]}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": [{\"input_tokens\": 13}]}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "value": "[Usage(cache_creation=None, cache_creation_input_tokens=None, cache_read_input_tokens=None, inference_geo=None, input_tokens=13, output_tokens=None, output_tokens_details=None, server_tool_use=None, service_tier=None)]"
+          },
+          "usage_present": true,
+          "usage_type": "list"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "value": "[[{'input_tokens': 13}]]"
+      },
+      "mode": "direct",
+      "name": "nested-array",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":[[{\"input_tokens\":13}]]}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "list",
+      "wire_usage_present": true
+    },
+    {
+      "error": {
+        "class": "AttributeError",
+        "message": "'list' object has no attribute 'output_tokens'"
+      },
+      "mode": "stream",
+      "name": "nested-array",
+      "outcome": "error",
+      "phase": "message_delta",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":[[{\"input_tokens\":13}]]}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": [[{\"input_tokens\": 13}]]}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "value": "[[{'input_tokens': 13}]]"
+          },
+          "usage_present": true,
+          "usage_type": "list"
+        }
+      ],
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "empty-object",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{}}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "empty-object",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {}}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_present": true,
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        },
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_delta",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": null,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        }
+      ],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": null,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "input-only",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13}}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "input-only",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 13}}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_present": true,
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": 13,
+            "observations": 1,
+            "observed": 13,
+            "prompt_tokens": 13
+          },
+          "event": "message_start",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": null,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        },
+        {
+          "consumer": {
+            "anchor": 13,
+            "observations": 1,
+            "observed": 13,
+            "prompt_tokens": 13
+          },
+          "event": "message_delta",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        }
+      ],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "output-only",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"output_tokens\":5}}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "output-only",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"output_tokens\": 5}}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_present": true,
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": null,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        },
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_delta",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": null,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        }
+      ],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "output_tokens_details": null,
+        "secret-marker": [
+          13,
+          "secret-marker"
+        ],
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "extension-only",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"secret-marker\":[13,\"secret-marker\"]}}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": null,
+        "observations": 0,
+        "observed": null,
+        "prompt_tokens": null
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": null,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "secret-marker": [
+          13,
+          "secret-marker"
+        ],
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "extension-only",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"secret-marker\":[13,\"secret-marker\"]}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"secret-marker\": [13, \"secret-marker\"]}}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_present": true,
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_start",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "output_tokens_details": null,
+            "secret-marker": [
+              13,
+              "secret-marker"
+            ],
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        },
+        {
+          "consumer": {
+            "anchor": null,
+            "observations": 0,
+            "observed": null,
+            "prompt_tokens": null
+          },
+          "event": "message_delta",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": null,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "secret-marker": [
+              13,
+              "secret-marker"
+            ],
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        }
+      ],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "direct",
+      "name": "complete",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model"
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5}}",
+      "usage_present": true,
+      "usage_stages": [],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    },
+    {
+      "consumer": {
+        "anchor": 13,
+        "observations": 1,
+        "observed": 13,
+        "prompt_tokens": 13
+      },
+      "event_usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "inference_geo": null,
+        "input_tokens": 13,
+        "output_tokens": 5,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": null
+      },
+      "mode": "stream",
+      "name": "complete",
+      "outcome": "completed",
+      "phase": "final_projection",
+      "request": {
+        "max_tokens": 8,
+        "messages": [
+          {
+            "content": "hello",
+            "role": "user"
+          }
+        ],
+        "model": "fixture-model",
+        "stream": true
+      },
+      "response_json": "{\"id\":\"fixture\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"fixture-model\",\"content\":[],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":13,\"output_tokens\":5}}",
+      "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 13, \"output_tokens\": 5}}}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 5}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+      "usage_present": true,
+      "usage_stages": [
+        {
+          "consumer": {
+            "anchor": 13,
+            "observations": 1,
+            "observed": 13,
+            "prompt_tokens": 13
+          },
+          "event": "message_start",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        },
+        {
+          "consumer": {
+            "anchor": 13,
+            "observations": 1,
+            "observed": 13,
+            "prompt_tokens": 13
+          },
+          "event": "message_delta",
+          "event_usage": {
+            "cache_creation": null,
+            "cache_creation_input_tokens": null,
+            "cache_read_input_tokens": null,
+            "inference_geo": null,
+            "input_tokens": 13,
+            "output_tokens": 5,
+            "output_tokens_details": null,
+            "server_tool_use": null,
+            "service_tier": null
+          },
+          "usage_present": true,
+          "usage_type": "Usage"
+        }
+      ],
+      "usage_type": "Usage",
+      "wire_usage_present": true
+    }
+  ],
+  "pydantic_version": "2.13.4",
+  "python_version": "3.11.3",
+  "sdk_version": "0.107.1",
+  "source_hashes": {
+    "TokenMeter.observe": "58390859b125751f526b3037a3c13f45afb94619434bc1aa65bd4641ee44ae68",
+    "Usage": "d51dd2ee42b225592fcc4b634109d979d6bfc93a7fd6a9232c75b37a14d280e8",
+    "_usage_payload": "b2f08b622caaa77a3a527b0047a0bb75e5797935644f69d44e566911131a4a28",
+    "accumulate_event": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098",
+    "prompt_tokens": "df78201c12ff29a806c2cb3c4b9d74c96ed69f5c97efd22628caa96faa520f82"
+  }
+}
