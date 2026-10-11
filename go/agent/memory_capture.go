@@ -59,6 +59,13 @@ func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
 	if len(records) < 10 {
 		return 0, nil
 	}
+	return s.consolidateMemoryRecords(ctx, records)
+}
+
+// Source's List occurs before its exception handler. Keep that read in the
+// caller so listing faults still reach the outer capture diagnostic boundary.
+func (s *Session) consolidateMemoryRecords(ctx context.Context, records []memory.Record) (count int, err error) {
+	defer recoverMemoryFailure(ctx, &count, &err)
 	body, err := protocol.PythonJSON(records, false, false)
 	if err != nil {
 		return 0, memoryExtractionFailure(ctx, err)

@@ -145,6 +145,17 @@ func memoryExtractionFailure(ctx context.Context, err error) error {
 	return nil
 }
 
+// Called directly by defer at Source's ordinary-exception boundaries. A panic
+// payload is inspected only for native authority errors, never retained or sent
+// as model text. Cancellation and persistence authority loss still propagate.
+func recoverMemoryFailure(ctx context.Context, count *int, err *error) {
+	if failure := recover(); failure != nil {
+		*count = 0
+		cause, _ := failure.(error)
+		*err = memoryExtractionFailure(ctx, cause)
+	}
+}
+
 // Normalize only at the storage handoff. Consolidation compares original fields
 // first: an unknown type must not inherit a project record's previous origin.
 func storedMemoryType(kind memory.Type) memory.Type {
@@ -159,7 +170,8 @@ func storedMemoryType(kind memory.Type) memory.Type {
 // extractMemories is the source extraction stage. Its lifecycle caller owns
 // WithLifecycle; automatic endpoint capture/consolidation is wired separately.
 // Ordinary faults return zero, even if preceding items already reached disk.
-func (s *Session) extractMemories(ctx context.Context) (int, error) {
+func (s *Session) extractMemories(ctx context.Context) (count int, err error) {
+	defer recoverMemoryFailure(ctx, &count, &err)
 	if err := stateRunError(ctx); err != nil {
 		return 0, err
 	}

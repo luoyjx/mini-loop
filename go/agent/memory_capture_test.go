@@ -117,6 +117,8 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 
 type captureMemoryProvider struct {
 	name     string
+	endpoint string
+	masker   *memoryCallbackMasker
 	root     string
 	requests []protocol.ModelRequest
 	restore  func()
@@ -125,24 +127,39 @@ type captureMemoryProvider struct {
 
 func (p *captureMemoryProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
 	p.requests = append(p.requests, request.Clone())
+	endpoint := p.name
+	if p.endpoint != "" {
+		endpoint = p.endpoint
+	}
 	var blocks []protocol.Block
 	reason := protocol.StopEndTurn
 	switch request.MaxTokens {
 	case 200:
 		blocks = []protocol.Block{protocol.NewTextBlock("[0]")}
 	case 1500:
-		blocks = []protocol.Block{protocol.NewTextBlock(`[{"name":"captured","body":"fact"}]`)}
+		content := `[{"name":"captured","body":"fact"}]`
+		if p.masker != nil {
+			content = `[{"name":"captured-0","body":"fact"},{"name":"captured-1","body":"fact"}]`
+		}
+		blocks = []protocol.Block{protocol.NewTextBlock(content)}
 	case 2500:
-		blocks = []protocol.Block{protocol.NewTextBlock(`[{"name":"merged","body":"fact"}]`)}
+		content := `[{"name":"merged","body":"fact"}]`
+		if p.masker != nil {
+			content = `[{"name":"merged-0","body":"fact"},{"name":"merged-1","body":"fact"}]`
+		}
+		blocks = []protocol.Block{protocol.NewTextBlock(content)}
 	default:
-		if p.name == "provider-error" {
+		if p.masker != nil {
+			p.masker.armed = true
+		}
+		if endpoint == "provider-error" {
 			return protocol.ModelReply{}, errors.New("main provider failed")
 		}
-		if p.name == "cancel" {
+		if endpoint == "cancel" {
 			p.cancel()
 			return protocol.ModelReply{}, context.Canceled
 		}
-		if p.name == "capture-error" {
+		if endpoint == "capture-error" {
 			backup := p.root + "-saved"
 			if err := os.Rename(p.root, backup); err != nil {
 				return protocol.ModelReply{}, err
@@ -153,7 +170,7 @@ func (p *captureMemoryProvider) Complete(_ context.Context, request protocol.Mod
 			}
 			p.restore = func() { _ = os.Remove(p.root); _ = os.Rename(backup, p.root) }
 		}
-		if p.name == "exhaustion" || p.name == "tool-halt" {
+		if endpoint == "exhaustion" || endpoint == "tool-halt" {
 			blocks = []protocol.Block{protocol.NewBashUse(fmt.Sprintf("u%d", len(p.requests)), "same")}
 			reason = protocol.StopToolUse
 		} else {
@@ -172,16 +189,24 @@ func TestMemoryCaptureEndpointsMatchActualPythonSource(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name             string
-			Budgets          []int
-			Error            bool
-			Records, Foreign []memory.Record
-			Memory           []MemoryEvent
-			CaptureErrors    int `json:"capture_errors"`
-			Purposes         []protocol.RequestPurpose
+			Name              string
+			Endpoint          string
+			Callback          bool
+			Seed              int
+			MaskAt            int  `json:"mask_at"`
+			RepeatMask        bool `json:"repeat_mask"`
+			CancelMask        bool `json:"cancel_mask"`
+			MaskCalls         int  `json:"mask_calls"`
+			PanicDetailLeaked bool `json:"panic_detail_leaked"`
+			Budgets           []int
+			Error             bool
+			Records, Foreign  []memory.Record
+			Memory            []MemoryEvent
+			CaptureErrors     int `json:"capture_errors"`
+			Purposes          []protocol.RequestPurpose
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 11 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 43 {
 		t.Fatal(err, len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {
@@ -189,7 +214,17 @@ func TestMemoryCaptureEndpointsMatchActualPythonSource(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			root := t.TempDir()
-			store, err := memory.NewStore(ctx, root, nil)
+			endpoint := row.Name
+			if row.Endpoint != "" {
+				endpoint = row.Endpoint
+			}
+			var masker *memoryCallbackMasker
+			var masking memory.Masker
+			if row.Callback {
+				masker = &memoryCallbackMasker{at: row.MaskAt, repeated: row.RepeatMask, cancelOnFault: row.CancelMask, cancel: cancel}
+				masking = masker
+			}
+			store, err := memory.NewStore(ctx, root, masking)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -198,30 +233,32 @@ func TestMemoryCaptureEndpointsMatchActualPythonSource(t *testing.T) {
 			if _, err := foreign.Write(ctx, memory.Input{Name: "foreign", Type: memory.Project, Description: "foreign description", Body: "foreign secret"}); err != nil {
 				t.Fatal(err)
 			}
-			if row.Name == "threshold-after-extract" {
-				for i := 0; i < 9; i++ {
-					name := fmt.Sprintf("seed-%d", i)
-					if _, err := bound.Write(ctx, memory.Input{Name: name, Type: memory.Project, Description: name, Body: "original", Origin: memory.Explicit}); err != nil {
-						t.Fatal(err)
-					}
+			seed := row.Seed
+			if endpoint == "threshold-after-extract" {
+				seed = 9
+			}
+			for i := 0; i < seed; i++ {
+				name := fmt.Sprintf("seed-%d", i)
+				if _, err := bound.Write(ctx, memory.Input{Name: name, Type: memory.Project, Description: name, Body: "original", Origin: memory.Explicit}); err != nil {
+					t.Fatal(err)
 				}
 			}
-			provider := &captureMemoryProvider{name: row.Name, root: root, cancel: cancel}
+			provider := &captureMemoryProvider{name: row.Name, endpoint: endpoint, masker: masker, root: root, cancel: cancel}
 			defer func() {
 				if provider.restore != nil {
 					provider.restore()
 				}
 			}()
 			cfg := runtimeConfig(t.TempDir(), provider)
-			cfg.Memory, cfg.MemoryTools, cfg.CachePolicy, cfg.Recovery, cfg.StuckDetector, cfg.Mode = bound, row.Name != "no-pair", NullCachePolicy{}, DirectRecovery{}, NullStuckDetector{}, ModeAuto
-			if row.Name == "readonly" {
+			cfg.Memory, cfg.MemoryTools, cfg.CachePolicy, cfg.Recovery, cfg.StuckDetector, cfg.Mode = bound, endpoint != "no-pair", NullCachePolicy{}, DirectRecovery{}, NullStuckDetector{}, ModeAuto
+			if endpoint == "readonly" {
 				cfg.Mode = ModeReadonly
 			}
-			if row.Name == "disabled" {
+			if endpoint == "disabled" {
 				disabled := false
 				cfg.MemoryAuto = &disabled
 			}
-			if row.Name == "resume-halt" || row.Name == "tool-halt" {
+			if endpoint == "resume-halt" || endpoint == "tool-halt" {
 				thresholds := DefaultStuckThresholds()
 				thresholds.Monologue, thresholds.RepeatActionResult, thresholds.MaxNudges = 2, 2, 0
 				detector, err := NewStuckDetector(thresholds)
@@ -230,14 +267,33 @@ func TestMemoryCaptureEndpointsMatchActualPythonSource(t *testing.T) {
 				}
 				cfg.StuckDetector = detector
 			}
-			if row.Name == "resume-halt" {
+			if endpoint == "resume-halt" {
 				cfg.StopHooks = []StopHook{resumeStopHook{}}
 			}
 			session, err := NewRuntimeSession(cfg)
 			if err != nil {
 				t.Fatal(err)
 			}
-			_, err = session.Run(ctx, "learn")
+			err = memoryCaptureContractRun(t, session, ctx)
+			if masker != nil {
+				masker.armed = false
+				if masker.calls != row.MaskCalls {
+					t.Errorf("mask calls %d want %d", masker.calls, row.MaskCalls)
+				}
+				probeCtx, stop := context.WithTimeout(context.Background(), time.Second)
+				if lockErr := bound.WithLifecycle(probeCtx, func() error { _, e := bound.List(probeCtx); return e }); lockErr != nil {
+					t.Errorf("lifecycle not released: %v", lockErr)
+				}
+				stop()
+			}
+			leaked := false
+			for _, event := range session.Events() {
+				wire, _ := json.Marshal(event)
+				leaked = leaked || strings.Contains(string(wire), "private-mask-fault")
+			}
+			if leaked != row.PanicDetailLeaked {
+				t.Error("panic payload leakage differs")
+			}
 			if (err != nil) != row.Error {
 				t.Fatal("endpoint error differs", err, row.Error)
 			}

@@ -5922,49 +5922,74 @@ def _memory_capture_contracts(scratch: Path) -> dict:
     class Resume(Hooks):
         async def stop(self,*args):return "keep going"
     recipes=[dict(name=k) for k in ("normal","exhaustion","resume-halt","tool-halt","provider-error","readonly","disabled","no-pair","cancel","capture-error","threshold-after-extract")]
+    recipes += [dict(name=f"mask-{endpoint}-{at}", endpoint=endpoint, callback=True, seed=10, mask_at=at)
+                for endpoint in ("normal","exhaustion","resume-halt") for at in range(6)]
+    recipes += [dict(name=f"mask-{endpoint}-repeat", endpoint=endpoint, callback=True, seed=10, mask_at=1, repeat_mask=True)
+                for endpoint in ("normal","exhaustion","resume-halt")]
+    recipes += [dict(name=f"mask-{endpoint}-cancel-{at}", endpoint=endpoint, callback=True, seed=10, mask_at=at, cancel_mask=True)
+                for endpoint in ("normal","exhaustion","resume-halt") for at in (1,3,5)]
+    recipes += [dict(name=f"mask-no-consolidation-{at}", endpoint="normal", callback=True, seed=0, mask_at=at)
+                for at in (1,2)]
+    class CallbackMasker:
+        def __init__(self,row):
+            self.row,self.calls,self.armed=row,0,False
+        def mask(self,text):
+            if self.armed:
+                self.calls+=1
+                at=self.row.get("mask_at",0)
+                if at and (self.calls==at or self.row.get("repeat_mask") and self.calls>=at):
+                    if self.row.get("cancel_mask"):raise asyncio.CancelledError()
+                    raise RuntimeError("private-mask-fault")
+            return text
     async def scenario(row):
         root=scratch/row["name"];root.mkdir(parents=True)
-        raw=MemoryStore(root/"memory");store=ScopedMemory(raw,"owner")
+        endpoint=row.get("endpoint",row["name"])
+        masker=CallbackMasker(row) if row.get("callback") else None
+        raw=MemoryStore(root/"memory",secrets=masker);store=ScopedMemory(raw,"owner")
         raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
-        if row["name"]=="threshold-after-extract":
-            for i in range(9):store.write(f"seed-{i}","project",f"seed-{i}","original",origin="explicit")
+        seed=row.get("seed",9 if endpoint=="threshold-after-extract" else 0)
+        for i in range(seed):store.write(f"seed-{i}","project",f"seed-{i}","original",origin="explicit")
         registry=install_memory(ToolRegistry())
         async def same(ctx,command):return "same"
         registry.register(Tool("bash","shell",{"type":"object","properties":{"command":{"type":"string"}},"required":["command"]},same,risk="exec"))
-        if row["name"]=="no-pair":registry.unregister("remember")
+        if endpoint=="no-pair":registry.unregister("remember")
         calls,events=[],[]
         original_list=raw.list
         async def create(**kwargs):
             calls.append(copy.deepcopy(kwargs));budget=kwargs["max_tokens"]
             if budget==200:content=[text("[0]")];reason="end_turn"
-            elif budget==1500:content=[text('[{"name":"captured","body":"fact"}]')];reason="end_turn"
-            elif budget==2500:content=[text('[{"name":"merged","body":"fact"}]')];reason="end_turn"
+            elif budget==1500:content=[text(json.dumps([dict(name=f"captured-{i}",body="fact") for i in range(2)]) if masker else '[{"name":"captured","body":"fact"}]')];reason="end_turn"
+            elif budget==2500:content=[text(json.dumps([dict(name=f"merged-{i}",body="fact") for i in range(2)]) if masker else '[{"name":"merged","body":"fact"}]')];reason="end_turn"
             else:
-                if row["name"]=="provider-error":raise RuntimeError("main provider failed")
-                if row["name"]=="cancel":raise asyncio.CancelledError()
-                if row["name"]=="capture-error":
+                if masker:masker.armed=True
+                if endpoint=="provider-error":raise RuntimeError("main provider failed")
+                if endpoint=="cancel":raise asyncio.CancelledError()
+                if endpoint=="capture-error":
                     def broken(*args,**kw):raise RuntimeError("capture listing failed")
                     raw.list=broken
-                if row["name"] in ("exhaustion","tool-halt"):content=[tool("bash",_id=f"u{len(calls)}",command="same")];reason="tool_use"
+                if endpoint in ("exhaustion","tool-halt"):content=[tool("bash",_id=f"u{len(calls)}",command="same")];reason="tool_use"
                 else:content=[text("done")];reason="end_turn"
             return FakeMessage(content,reason,FakeUsage(1234,2),model="served-memory")
         async def emit(event):events.append(copy.deepcopy(event))
-        detector=DefaultStuckDetector(StuckThresholds(monologue=2,repeat_action_result=2,max_nudges=0)) if row["name"] in ("resume-halt","tool-halt") else NullStuckDetector()
+        detector=DefaultStuckDetector(StuckThresholds(monologue=2,repeat_action_result=2,max_nudges=0)) if endpoint in ("resume-halt","tool-halt") else NullStuckDetector()
         agent=Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)),workspace=root,emit=emit,
-                    tools=registry,hooks=Resume() if row["name"]=="resume-halt" else Hooks(),stuck_detector=detector,
+                    tools=registry,hooks=Resume() if endpoint=="resume-halt" else Hooks(),stuck_detector=detector,
                     cache_policy=NullCachePolicy(),max_rounds=2,
-                    state=dict(memory=raw,resource_owner="owner",memory_auto=row["name"]!="disabled",permission_mode="readonly" if row["name"]=="readonly" else "auto"),
+                    state=dict(memory=raw,resource_owner="owner",memory_auto=endpoint!="disabled",permission_mode="readonly" if endpoint=="readonly" else "auto"),
                     settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
         error=False
         try:await agent.run("learn")
         except (Exception,asyncio.CancelledError):error=True
         raw.list=original_list
+        if masker:masker.armed=False
         projected=[]
         for event in events:
             if event["type"]=="memory":projected.append({k:event[k] for k in ("action","count","consolidated") if k in event})
         return {**row,"budgets":[c["max_tokens"] for c in calls],"error":error,"records":store.list(),
                 "foreign":ScopedMemory(raw,"foreign").list(),"memory":projected,
                 "capture_errors":sum(e["type"]=="memory_capture_error" for e in events),
+                "mask_calls":masker.calls if masker else 0,
+                "panic_detail_leaked":any("private-mask-fault" in json.dumps(e,default=str) for e in events),
                 "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
     async def run():return [await scenario(row) for row in recipes]
     return dict(cases=asyncio.run(run()))

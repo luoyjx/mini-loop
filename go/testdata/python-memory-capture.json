@@ -20,6 +20,7 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [
         {
           "action": "extract",
@@ -28,6 +29,7 @@
         }
       ],
       "name": "normal",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn",
         "agent_turn"
@@ -67,6 +69,7 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [
         {
           "action": "extract",
@@ -75,6 +78,7 @@
         }
       ],
       "name": "exhaustion",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn",
         "agent_turn",
@@ -115,6 +119,7 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [
         {
           "action": "extract",
@@ -123,6 +128,7 @@
         }
       ],
       "name": "resume-halt",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn",
         "agent_turn",
@@ -162,8 +168,10 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [],
       "name": "tool-halt",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn",
         "agent_turn"
@@ -189,8 +197,10 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [],
       "name": "provider-error",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn"
       ],
@@ -215,8 +225,10 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [],
       "name": "readonly",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn"
       ],
@@ -241,8 +253,10 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [],
       "name": "disabled",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn"
       ],
@@ -267,8 +281,10 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [],
       "name": "no-pair",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn"
       ],
@@ -293,8 +309,10 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [],
       "name": "cancel",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn"
       ],
@@ -319,8 +337,10 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [],
       "name": "capture-error",
+      "panic_detail_leaked": false,
       "purposes": [
         "agent_turn"
       ],
@@ -348,6 +368,7 @@
           "type": "project"
         }
       ],
+      "mask_calls": 0,
       "memory": [
         {
           "action": "load",
@@ -360,6 +381,7 @@
         }
       ],
       "name": "threshold-after-extract",
+      "panic_detail_leaked": false,
       "purposes": [
         "memory_selection",
         "agent_turn",
@@ -379,6 +401,2226 @@
           "type": "project"
         }
       ]
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 0,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 2
+        }
+      ],
+      "name": "mask-normal-0",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 4,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 0
+        }
+      ],
+      "name": "mask-normal-1",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 2,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 0
+        }
+      ],
+      "name": "mask-normal-2",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 3,
+      "mask_calls": 3,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-normal-3",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 4,
+      "mask_calls": 4,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-normal-4",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 5,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-normal-5",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 0,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 2
+        }
+      ],
+      "name": "mask-exhaustion-0",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 4,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 0
+        }
+      ],
+      "name": "mask-exhaustion-1",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 2,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 0
+        }
+      ],
+      "name": "mask-exhaustion-2",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 3,
+      "mask_calls": 3,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-exhaustion-3",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 4,
+      "mask_calls": 4,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-exhaustion-4",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 5,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-exhaustion-5",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 0,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 2
+        }
+      ],
+      "name": "mask-resume-halt-0",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 4,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 0
+        }
+      ],
+      "name": "mask-resume-halt-1",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 2,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 2,
+          "count": 0
+        }
+      ],
+      "name": "mask-resume-halt-2",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 3,
+      "mask_calls": 3,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-resume-halt-3",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 4,
+      "mask_calls": 4,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-resume-halt-4",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 5,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        },
+        {
+          "action": "extract",
+          "consolidated": 0,
+          "count": 2
+        }
+      ],
+      "name": "mask-resume-halt-5",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 2,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-normal-repeat",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "repeat_mask": true,
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 2,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-exhaustion-repeat",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "repeat_mask": true,
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 2,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-resume-halt-repeat",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "repeat_mask": true,
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 1,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-normal-cancel-1",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [
+        {
+          "body": "original",
+          "description": "seed-7",
+          "file": "u-00ce7709037c9aa98183e5670702c7314529e87e97fd276ec578f8ea58a57c39-seed-7.md",
+          "name": "seed-7",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-3",
+          "file": "u-34cae21bf08b1e5e23c535ad7dc69ed9549b0db94084949bb8cb899cc7e8b972-seed-3.md",
+          "name": "seed-3",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-5",
+          "file": "u-39bbf5d0f650b130e6bf8a969920f4292097cd83b0fda84179804180eb776e1a-seed-5.md",
+          "name": "seed-5",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-9",
+          "file": "u-40f24542359092f9bf1b54e26878ccf25027d05259a1d569355c3971d3e264fd-seed-9.md",
+          "name": "seed-9",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-1",
+          "file": "u-6676022d2c16a8b3c6f492e9f4488b3aaf772e195756a47c764869a8d73418b3-seed-1.md",
+          "name": "seed-1",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-8",
+          "file": "u-73555e70a9fe1b7971c0151eb30ef9bc22a97d00db9f13af9822f7fe2f35bdbd-seed-8.md",
+          "name": "seed-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-6",
+          "file": "u-8adcd4a6c97863035769742298e82d5114c77c2b16e07851e6576c730494242d-seed-6.md",
+          "name": "seed-6",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-2",
+          "file": "u-a866d714609a13bd958dd96867d777998d52dbf5c5501c06f02caf6d6073027b-seed-2.md",
+          "name": "seed-2",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-4",
+          "file": "u-b306c713cfb4d9ce06930b8621196e48fb0a922d06bfc2415c529e292b93c285-seed-4.md",
+          "name": "seed-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-0",
+          "file": "u-e21e9aec4f347425234cea3a298b4f1a8470310bb85d63c43e023eb3cf551ad5-seed-0.md",
+          "name": "seed-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 3,
+      "mask_calls": 3,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-normal-cancel-3",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 5,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-normal-cancel-5",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 1,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-exhaustion-cancel-1",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [
+        {
+          "body": "original",
+          "description": "seed-7",
+          "file": "u-00ce7709037c9aa98183e5670702c7314529e87e97fd276ec578f8ea58a57c39-seed-7.md",
+          "name": "seed-7",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-3",
+          "file": "u-34cae21bf08b1e5e23c535ad7dc69ed9549b0db94084949bb8cb899cc7e8b972-seed-3.md",
+          "name": "seed-3",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-5",
+          "file": "u-39bbf5d0f650b130e6bf8a969920f4292097cd83b0fda84179804180eb776e1a-seed-5.md",
+          "name": "seed-5",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-9",
+          "file": "u-40f24542359092f9bf1b54e26878ccf25027d05259a1d569355c3971d3e264fd-seed-9.md",
+          "name": "seed-9",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-1",
+          "file": "u-6676022d2c16a8b3c6f492e9f4488b3aaf772e195756a47c764869a8d73418b3-seed-1.md",
+          "name": "seed-1",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-8",
+          "file": "u-73555e70a9fe1b7971c0151eb30ef9bc22a97d00db9f13af9822f7fe2f35bdbd-seed-8.md",
+          "name": "seed-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-6",
+          "file": "u-8adcd4a6c97863035769742298e82d5114c77c2b16e07851e6576c730494242d-seed-6.md",
+          "name": "seed-6",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-2",
+          "file": "u-a866d714609a13bd958dd96867d777998d52dbf5c5501c06f02caf6d6073027b-seed-2.md",
+          "name": "seed-2",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-4",
+          "file": "u-b306c713cfb4d9ce06930b8621196e48fb0a922d06bfc2415c529e292b93c285-seed-4.md",
+          "name": "seed-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-0",
+          "file": "u-e21e9aec4f347425234cea3a298b4f1a8470310bb85d63c43e023eb3cf551ad5-seed-0.md",
+          "name": "seed-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 3,
+      "mask_calls": 3,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-exhaustion-cancel-3",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "exhaustion",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 5,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-exhaustion-cancel-5",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 1,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-resume-halt-cancel-1",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [
+        {
+          "body": "original",
+          "description": "seed-7",
+          "file": "u-00ce7709037c9aa98183e5670702c7314529e87e97fd276ec578f8ea58a57c39-seed-7.md",
+          "name": "seed-7",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-3",
+          "file": "u-34cae21bf08b1e5e23c535ad7dc69ed9549b0db94084949bb8cb899cc7e8b972-seed-3.md",
+          "name": "seed-3",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-5",
+          "file": "u-39bbf5d0f650b130e6bf8a969920f4292097cd83b0fda84179804180eb776e1a-seed-5.md",
+          "name": "seed-5",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-9",
+          "file": "u-40f24542359092f9bf1b54e26878ccf25027d05259a1d569355c3971d3e264fd-seed-9.md",
+          "name": "seed-9",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-1",
+          "file": "u-6676022d2c16a8b3c6f492e9f4488b3aaf772e195756a47c764869a8d73418b3-seed-1.md",
+          "name": "seed-1",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-8",
+          "file": "u-73555e70a9fe1b7971c0151eb30ef9bc22a97d00db9f13af9822f7fe2f35bdbd-seed-8.md",
+          "name": "seed-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-6",
+          "file": "u-8adcd4a6c97863035769742298e82d5114c77c2b16e07851e6576c730494242d-seed-6.md",
+          "name": "seed-6",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-2",
+          "file": "u-a866d714609a13bd958dd96867d777998d52dbf5c5501c06f02caf6d6073027b-seed-2.md",
+          "name": "seed-2",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-4",
+          "file": "u-b306c713cfb4d9ce06930b8621196e48fb0a922d06bfc2415c529e292b93c285-seed-4.md",
+          "name": "seed-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "original",
+          "description": "seed-0",
+          "file": "u-e21e9aec4f347425234cea3a298b4f1a8470310bb85d63c43e023eb3cf551ad5-seed-0.md",
+          "name": "seed-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 3,
+      "mask_calls": 3,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-resume-halt-cancel-3",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        200,
+        8000,
+        8000,
+        1500,
+        2500
+      ],
+      "callback": true,
+      "cancel_mask": true,
+      "capture_errors": 0,
+      "endpoint": "resume-halt",
+      "error": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 5,
+      "mask_calls": 5,
+      "memory": [
+        {
+          "action": "load",
+          "count": 1
+        }
+      ],
+      "name": "mask-resume-halt-cancel-5",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "memory_selection",
+        "agent_turn",
+        "agent_turn",
+        "agent_turn",
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-b3d61260c6aacc8649d73228683f73d366d6fcecc4db3f08f0645de4f97dc7c2-merged-1.md",
+          "name": "merged-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-eb7d1fd2642cdd1c68ae1182f7f2376d32604da20176c2f377a46dbc7fb69776-merged-0.md",
+          "name": "merged-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 10
+    },
+    {
+      "budgets": [
+        8000,
+        1500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 1,
+      "mask_calls": 1,
+      "memory": [],
+      "name": "mask-no-consolidation-1",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [],
+      "seed": 0
+    },
+    {
+      "budgets": [
+        8000,
+        1500
+      ],
+      "callback": true,
+      "capture_errors": 0,
+      "endpoint": "normal",
+      "error": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mask_at": 2,
+      "mask_calls": 2,
+      "memory": [],
+      "name": "mask-no-consolidation-2",
+      "panic_detail_leaked": false,
+      "purposes": [
+        "agent_turn",
+        "agent_turn"
+      ],
+      "records": [
+        {
+          "body": "fact",
+          "description": "",
+          "file": "u-f5ad70cec8c807092ae06760a74274ea23ec8833963e6e456a3cf76077767ed7-captured-0.md",
+          "name": "captured-0",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "seed": 0
     }
   ]
 }

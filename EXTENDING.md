@@ -1249,6 +1249,15 @@ the identity used to construct an authenticated filename. The model adapter
 selects this lane even for absent bodies. Ordinary string inputs retain their
 upfront UTF-8 check. Both paths retain the same bound-owner authority.
 
+Agent side-query boundaries contain ordinary callback panics like Source
+exceptions; this does not change the raw store callback contract. Extraction
+contains its initial List and writes, whereas consolidation's initial List stays
+outside its handler. Earlier successful writes are retained, lifecycle ownership
+is released, and extraction failure does not skip a possible consolidation.
+Cancellation and wrapped ErrStateTranscript/ErrSessionLeaseLost propagate.
+Ordinary panic payloads are neither retained in domain state nor emitted in events;
+recognized native authority errors continue through the existing error path.
+
 ### Go owner resource snapshots
 
 `userresources.NewResolver` takes a concrete deployment catalogue and optional
