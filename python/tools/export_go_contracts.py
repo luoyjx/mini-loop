@@ -7047,6 +7047,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http-depth.json": _json_bytes(_personal_skill_http_depth_contracts()),
         "python-skill-catalogue-http.json": _json_bytes(_skill_catalogue_http_contracts()),
         "python-memory-http.json": _json_bytes(_memory_http_contracts()),
+        "python-memory-managed-http.json": _json_bytes(_memory_managed_http_contracts()),
         "python-benchmark-statistics.json": _json_bytes(_benchmark_statistics_contracts()),
         "python-benchmark-tasks.json": _json_bytes(_benchmark_task_contracts()),
         "python-benchmark-arms.json": _json_bytes(_benchmark_arm_contracts()),
@@ -7741,6 +7742,71 @@ def _skill_catalogue_http_contracts() -> dict:
                 capture("fork-after", "fork", actor)
             scenarios.append(dict(mode=mode, cases=rows))
     return dict(scenarios=scenarios)
+
+
+def _memory_managed_http_contracts() -> dict:
+    """Actual authenticated POST/SSE turns and their owner memory effects."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic,text
+    from mini_loop.manager import SessionManager
+    from mini_loop.memory import memory_store_for,install_memory,memory_enabled
+    from mini_loop.server import create_app
+    cases=[]
+    with tempfile.TemporaryDirectory() as scratch:
+        for mode in ("post","stream"):
+            for stage in ("extraction","consolidation"):
+                for shape in ("array","object"):
+                    for depth in (960,967,968,969,971,972,973,980):
+                        root=Path(scratch)/f"{mode}-{stage}-{shape}-{depth}"
+                        nested="["*depth+"0"+"]"*depth if shape=="array" else '{"x":'*depth+"0"+"}"*depth
+                        reply='[{"name":"first","body":"fact"},{"name":"resource","body":"fact","extra":'+nested+'}]'
+                        calls=[]
+                        def respond(request):
+                            budget=request["max_tokens"];calls.append(budget)
+                            if budget==200:return [text("[0]")],"end_turn"
+                            if budget==1500:return [text(reply if stage=="extraction" else "[]")],"end_turn"
+                            if budget==2500:return [text(reply)],"end_turn"
+                            return [text("done")],"end_turn"
+                        cfg=Settings(fake_llm=True,trajectory_enabled=False,enable_features=False,
+                                     workspace_root=root/"workspaces",skills_dir=root/"skills",user_resources_root=None,spill_dir=None)
+                        manager=SessionManager(cfg,FakeAsyncAnthropic(responder=respond,thinking=False))
+                        app=create_app(settings=cfg,manager=manager)
+                        headers={"Authorization":"Bearer token-a"}
+                        with TestClient(app,raise_server_exceptions=False) as http:
+                            app.state.auth=TokenAuth({"token-a":"alice","token-b":"bob"})
+                            created=http.post("/sessions",json={"mode":"auto"},headers=headers)
+                            assert created.status_code==200,created.text
+                            sid=created.json()["id"];session=manager.get(sid);agent=session.agent
+                            agent.tools=install_memory(agent.tools);agent.state["memory_auto"]=True
+                            assert memory_enabled(agent)
+                            store=memory_store_for(agent)
+                            foreign=manager.memory
+                            foreign.write("foreign","project","foreign description","foreign secret",owner="bob")
+                            if stage=="consolidation":
+                                for i in range(10):store.write(f"seed-{i}","project",f"seed-{i}","original",origin="explicit")
+                            path="/sessions/"+sid+"/messages"+("/stream" if mode=="stream" else "")
+                            response=http.post(path,json={"message":"learn"},headers=headers)
+                            wire_events=[]
+                            if mode=="stream":
+                                wire_events=[json.loads(line[6:]) for line in response.text.splitlines() if line.startswith("data: ")]
+                                wire_final=next((e.get("text","") for e in wire_events if e.get("type")=="done"),"")
+                            else:
+                                wire_final=response.json().get("final","") if response.status_code==200 else ""
+                            wire_memory=[{k:e[k] for k in ("action","count","consolidated") if k in e} for e in wire_events if e.get("type")=="memory"]
+                            foreign_response=http.get("/sessions/"+sid+"/memory",headers={"Authorization":"Bearer token-b"})
+                            events=list(session._backlog)
+                            projected=[{k:e[k] for k in ("action","count","consolidated") if k in e} for e in events if e["type"]=="memory"]
+                            info=session.info()
+                            cases.append(dict(name=f"{mode}-{stage}-{shape}-{depth}",mode=mode,stage=stage,shape=shape,depth=depth,
+                                              reply=reply,status=response.status_code,foreign_status=foreign_response.status_code,
+                                              final="done" if any(e["type"]=="done" and e.get("text")=="done" for e in events) else None,
+                                              busy=info["busy"],session_status=info["status"],run_count=info["run_count"],
+                                              budgets=calls,records=store.list(),foreign=foreign.list(owner="bob"),memory=projected,
+                                              capture_errors=sum(e["type"]=="memory_capture_error" for e in events),
+                                              wire_final=wire_final,wire_memory=wire_memory))
+    return dict(cases=cases)
 
 
 def _memory_http_contracts() -> dict:

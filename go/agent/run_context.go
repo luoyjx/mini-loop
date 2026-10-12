@@ -26,15 +26,18 @@ const (
 // RunContext is stamped by a trusted caller, never decoded from model text.
 // A zero value carries no approval. Accessors detach optional/slice data.
 type RunContext struct {
-	messageID       MessageID
-	origin          string
-	actorID         *ActorID
-	channel         string
-	authority       RunAuthority
-	stampedBy       string
-	delegatedBy     *string
-	parentMessageID *MessageID
-	approved        []RunCapability
+	// Transport-selected parsing compatibility is ephemeral and grants no
+	// authority. Snapshots deliberately carry only the existing run metadata.
+	memoryReplyScope memoryReplyScope
+	messageID        MessageID
+	origin           string
+	actorID          *ActorID
+	channel          string
+	authority        RunAuthority
+	stampedBy        string
+	delegatedBy      *string
+	parentMessageID  *MessageID
+	approved         []RunCapability
 }
 type RunContextSnapshot = runmeta.Snapshot
 
@@ -65,6 +68,17 @@ func AuthenticatedHTTPRunContext(actor ActorID) (RunContext, error) {
 	value.origin, value.channel, value.stampedBy = "authenticated_http", "http", "mini_loop.server"
 	value.actorID = &actor
 	value.approved = []RunCapability{CapabilityPersonalSkillCaptureSource}
+	return value, nil
+}
+
+// AuthenticatedHTTPPostRunContext keeps the ordinary HTTP provenance while
+// selecting the pinned Source synchronous POST memory parsing profile.
+func AuthenticatedHTTPPostRunContext(actor ActorID) (RunContext, error) {
+	value, err := AuthenticatedHTTPRunContext(actor)
+	if err != nil {
+		return RunContext{}, err
+	}
+	value.memoryReplyScope = memoryHTTPPostReply
 	return value, nil
 }
 

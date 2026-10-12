@@ -121,16 +121,21 @@ type memoryReplyScope uint8
 const (
 	memorySideReply memoryReplyScope = iota
 	memoryStopReply
+	memoryHTTPPostReply
 )
 
 // Pinned CPython default-recursion profiles, measured through the actual Source
 // consumers. Counts include the reply array and entry object: 977+2 for direct
-// side operations, 972+2 for Agent.run capture. Other host/caller profiles remain
+// side operations, 972+2 for Agent.run/SSE capture, 968+2 for synchronous HTTP
+// POST capture. Other host/caller profiles remain
 // separate acceptance work; archive decoding keeps its independent 1000 bound.
 func (scope memoryReplyScope) limits() jsonsyntax.Limits {
 	containers := 979
 	if scope == memoryStopReply {
 		containers = 974
+	}
+	if scope == memoryHTTPPostReply {
+		containers = 970
 	}
 	return jsonsyntax.Limits{Containers: containers, IntegerDigits: 4300}
 }

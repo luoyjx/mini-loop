@@ -1259,7 +1259,12 @@ Ordinary panic payloads are neither retained in domain state nor emitted in even
 recognized native authority errors continue through the existing error path.
 
 Private memoryReplyScope selects the pinned Source parsing profile: direct
-side-operation helpers use 979 total containers, automatic capture uses 974.
+side-operation helpers use 979 total containers, Agent.run/SSE capture uses 974,
+and synchronous authenticated HTTP POST capture uses 970.
+`AuthenticatedHTTPPostRunContext` retains ordinary HTTP provenance and capability
+rules while selecting only this parsing profile. Its private value stays outside
+RunContextSnapshot; same-caller continuation retains it and peer delegation drops
+it. The SSE adapter uses AuthenticatedHTTPRunContext and the normal capture profile.
 These include the reply array and entry object; actual CPython default-recursion
 fixtures pin the entry budgets. Syntax preflight occurs before all effects,
 including ignored keys, duplicate values and entries after the extraction limit.

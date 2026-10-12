@@ -2,6 +2,7 @@ package agent
 
 import (
 	"encoding/json"
+	"reflect"
 	"testing"
 
 	"github.com/luoyjx/mini-loop/go/runmeta"
@@ -38,5 +39,32 @@ func TestSharedSnapshotCannotModifyLiveRunAuthority(t *testing.T) {
 	peer, err := human.DeriveNamedPeerAgent("controller", "worker")
 	if err != nil || peer.Authority() != AuthorityPeerAgent || peer.Allows(CapabilityWorkflowLaunch) {
 		t.Fatalf("delegation retained a human grant: %v", err)
+	}
+}
+
+func TestHTTPPostMemoryProfileStaysOutsideAuthorityAndDelegation(t *testing.T) {
+	ordinary, err := AuthenticatedHTTPRunContext("alice")
+	if err != nil {
+		t.Fatal(err)
+	}
+	post, err := AuthenticatedHTTPPostRunContext("alice")
+	if err != nil {
+		t.Fatal(err)
+	}
+	left, right := ordinary.Snapshot(), post.Snapshot()
+	left.MessageID, right.MessageID = "", ""
+	if !reflect.DeepEqual(left, right) || post.Allows(CapabilityWorkflowLaunch) || post.Allows(CapabilityWorkflowManage) {
+		t.Fatal("transport profile changed HTTP authority or persisted provenance")
+	}
+	continued, err := post.WithNewMessage(nil)
+	if err != nil || continued.memoryReplyScope != memoryHTTPPostReply {
+		t.Fatalf("same-caller continuation lost its parsing profile: %v", err)
+	}
+	peer, err := post.DerivePeerAgent("controller")
+	if err != nil || peer.memoryReplyScope == memoryHTTPPostReply || peer.Allows(CapabilityPersonalSkillCaptureSource) {
+		t.Fatalf("delegation inherited HTTP parsing or authority: %v", err)
+	}
+	if _, err := AuthenticatedHTTPPostRunContext(""); err == nil {
+		t.Fatal("empty HTTP principal was accepted")
 	}
 }

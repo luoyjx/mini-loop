@@ -191,7 +191,7 @@ func (s *Server) message(w http.ResponseWriter, r *http.Request) {
 		released = true
 	}
 	defer release()
-	run, err := agent.AuthenticatedHTTPRunContext(agent.ActorID(caller.ID))
+	run, err := agent.AuthenticatedHTTPPostRunContext(agent.ActorID(caller.ID))
 	if err != nil {
 		release()
 		writeJSON(s, w, 500, ErrorResponse{"message identity failed"})

@@ -129,13 +129,17 @@ func (s *Session) captureMemories(ctx context.Context) error {
 		return nil
 	}
 	var count, consolidated int
+	scope := memoryStopReply
+	if s.currentRun.memoryReplyScope == memoryHTTPPostReply {
+		scope = memoryHTTPPostReply
+	}
 	err := s.memory.WithLifecycle(ctx, func() error {
 		var err error
-		count, err = s.extractMemoriesInScope(ctx, memoryStopReply)
+		count, err = s.extractMemoriesInScope(ctx, scope)
 		if err != nil {
 			return err
 		}
-		consolidated, err = s.consolidateMemoriesInScope(ctx, memoryStopReply)
+		consolidated, err = s.consolidateMemoriesInScope(ctx, scope)
 		return err
 	})
 	if failure := memoryExtractionFailure(ctx, err); failure != nil {
