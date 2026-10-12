@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-12",
+  "baseline": "40b88bf",
+  "cohort": "Inspection JSON formatter spans; frozen full race FAILED at maximum SQLite readonly retry",
+  "mode": "atomic",
+  "profile_sha256": "656d53e48f4aa02a1908a4e3cd98345b17a6142f73e7bfd9db4df0c370c72277",
+  "raw_rows": 1288518,
+  "unique_blocks": 26295,
+  "method": "Deduplicate identical source spans, require equal statement counts, and union maximum atomic hits.",
+  "all": {
+    "covered": 33554,
+    "statements": 37679,
+    "percent": 89.05225722551023
+  },
+  "app": {
+    "covered": 33188,
+    "statements": 37164,
+    "percent": 89.30147454525886
+  },
+  "provider": {
+    "covered": 1518,
+    "statements": 1756,
+    "percent": 86.44646924829158
+  },
+  "frozen_inputs": 1660,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-decision-value-spans-2026-10-12/coverage.out",
+      "./..."
+    ],
+    "exit_code": 1,
+    "seconds": 705.54
+  },
+  "retained_profile": "/tmp/mini-loop-decision-value-spans-2026-10-12.cover",
+  "scope": "Observed statements from FAILED Darwin full race; not a passing acceptance coverage refresh. Excludes C, subprocess internals, Python, branches and other profiles.",
+  "limitations": [
+    "Prior temporal failures and full original migration acceptance remain open.",
+    "Inventory still rejects absent native Python syntax parser consumer."
+  ],
+  "implementation_commit": "b066c0253fc2fea5682860f9d3a2e5545023ae9d"
+}

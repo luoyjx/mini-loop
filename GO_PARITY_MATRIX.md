@@ -1,5 +1,55 @@
 # Python to Go parity matrix
 
+## 2026-10-12 inspection JSON formatter span writes
+
+Implementation `b066c02`, based on branch `40b88bf`; main remains `89327ab`. The prior full race failure
+at maximum SQLite readonly retry is preserved. Current unchanged-before overlay
+with owned native sampling fails at 35.12s. Its readonly stack window includes
+TokenMeter/compaction → ObservedMessagesPythonJSON → formatPythonJSONBytes →
+atomic/TSAN operations. Full pprof still has 74.17% unresolved ExternalCode; this
+window cannot attribute all CPU, establish a SQL defect or explain every host run.
+
+The formatter now finds encoded quote/backslash boundaries in bulk and reuses
+existing closed text escaping after unchanged json.Unmarshal lowering. It retains
+non-string numeric/legacy spelling, key order and compact/spaced separator rules.
+Four actual Source text/key modes provide 56 byte hashes. Original decision value
+codec benchmarks/byte-budget controls were measured as an initial candidate; its
+production encoder is unchanged. The actual sampled readonly path selected the
+inspection formatter for the implementation. No new dependency or default.
+
+Same race+atomic formatter benchmarks use three iterations per case. ASCII UTF-8
+changes 324.32ms→32.47ms, Unicode UTF-8 386.26ms→104.27ms. Escaped UTF-8 allocation
+bytes increase 3,603,424→4,372,656 despite fewer allocations; preserve that tradeoff.
+The same sampled maximum 512KiB/30s diagnostic passes after the implementation at
+16.84s, with 13.16s context remaining. Backend-once, exact replay, current readonly
+and final lease/persistence assertions all execute. Single runs and profiling
+windows are diagnostic evidence, not release performance or broad reliability proof.
+
+Frozen 1660 inputs record 13 passed validation gates plus a FAILED full race gate:
+Source 240 files/manifest, focused Go/Python, four type audits, full ordinary Go
+JSON/vet/race+atomic, Python, 19 scans, 1 selected meter mutation guards and diff.
+Python: 2243 passed, 28 skipped, 96 warnings, 24 subtests passed in 135.71s (0:02:15).
+Failed-run observed statements: app 89.30% (33188/37164); all Go 89.05% (33554/37679);
+Provider 86.45% (1518/1756). Prior passing app89.28%/all89.16% baseline is retained.
+Separate consumer inventory retains exit1 for the absent syntax-parser consumer; not
+full acceptance.
+[Full receipt](docs/audits/go-inspection-json-spans-2026-10-12.json); [coverage](docs/audits/go-coverage-inspection-json-spans-2026-10-12.json). The prior failed full-race cohort
+and current before-diagnostic failure remain preserved. The full cohort still fails at31.00s in readonly retry. The sampled after case
+passes16.84s, but does not establish full-cohort timing reliability. No retry,
+30s context change or merge. The unresolved external CPU fraction is not
+attributed to SQLite. Escaped-text allocation tradeoff remains explicit. No new
+dependency or runtime Python-module change; full mutation sweep/invariants not rerun.
+
+The [iteration image](docs/audits/go-inspection-json-spans-infographic-2026-10-12.png) edits the existing layered base, highlights L3
+estimation and labels L5 SQLite as validation only. Five layer names and five L5
+cards remain. Base unchanged. Exact built-in prompt saved and PNG inspected;
+canonical map reviewed, boundary/JSON synchronized, HTML passes 9 checks with
+zero errors/warnings. Browser visual acceptance remains blocked by prior URL policy.
+
+Next: measure remaining readonly token/compaction projection costs under the full
+cohort while preserving the original 30s context; do not infer completion from the
+sampled16.84s pass. Original semantic/default/platform acceptance remains open.
+
 ## 2026-10-12 Source/native contract consumer inventory
 
 Implementation `3218d44`, based on local main `89327ab`. G7 now has an explicit operator inventory across
@@ -383,18 +433,18 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `89327ab`: 241 fixture artifacts, 240 current Source manifest
-entries, 240 candidate roots with observed passes and one absent parser consumer.
-The separate inspection requirement rejects it; no complete G7 acceptance.
-Frozen 1658 inputs record 12 passed validation gates and one FAILED full race gate:
-Source 240 files with manifest, focused Go/Python controls, four type audits, full
-ordinary Go JSON/vet/race+atomic, full Python, 19 scanner anchors and diff. Python: 2243
-passed, 28 skipped, 96 warnings, 24 subtests passed in 163.80s (0:02:43). Failed-run
-observed statement counts: application 89.30% (33191/37168); all Go 89.05%
-(33557/37683); Provider 86.67% (1522/1756). These do not replace the prior passing
-coverage baseline. The separate inventory check exits 1 for the absent syntax-parser
-consumer; it is incomplete, not a passing gate.
-[Current receipt](docs/audits/go-contract-consumers-2026-10-12.json). Root passes do not certify fixture reads or semantics.
+Reviewed branch baseline `40b88bf`: 56 exact Source JSON text/key profiles and
+original 512KiB/30s SQLite restart/replay/readonly assertions. Before failure and
+prior failed full race retained; current frozen full race still fails.
+Frozen 1660 inputs record 13 passed validation gates plus a FAILED full race gate:
+Source 240 files/manifest, focused Go/Python, four type audits, full ordinary Go
+JSON/vet/race+atomic, Python, 19 scans, 1 selected meter mutation guards and diff.
+Python: 2243 passed, 28 skipped, 96 warnings, 24 subtests passed in 135.71s (0:02:15).
+Failed-run observed statements: app 89.30% (33188/37164); all Go 89.05% (33554/37679);
+Provider 86.45% (1518/1756). Prior passing app89.28%/all89.16% baseline is retained.
+Separate consumer inventory retains exit1 for the absent syntax-parser consumer; not
+full acceptance.
+[Current receipt](docs/audits/go-inspection-json-spans-2026-10-12.json). Fixture reads/assertions and original acceptance remain open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -403,6 +453,7 @@ consumer; it is incomplete, not a passing gate.
 | Default business routing | All 168 actual Source requests on 40 explicit paths; [native evidence](docs/audits/go-http-routing-native-2026-10-11.json) | Delivered at 4b68574: first-route Allow, known slash redirects and decoded-path semantics match. Required parity assertion replaces diagnostic-only acceptance; broader URL/mount/forwarded-host scope remains |
 | Managed memory HTTP | [64 actual POST/SSE contracts and frozen gates](docs/audits/go-memory-managed-http-2026-10-12.json) | Pinned Source POST/Agent.run+SSE/direct container budgets 970/974/979; trusted selector is ephemeral with unchanged authority. Wire events, owner/foreign records and lifecycle match; other caller/host profiles and full acceptance remain open |
 | Source/native consumer inventory | [Complete file/candidate/root receipt](docs/audits/go-contract-consumers-2026-10-12.json) | 240 current exports + one separate Linux capture; missing parser consumer rejects inspection. Linux root success on Darwin proves no Linux fixture read. Actual reads/assertions and dynamic paths remain open |
+| Inspection JSON / shared budget | [Source bytes, same-budget diagnostics and full gates](docs/audits/go-inspection-json-spans-2026-10-12.json) | Formatter spans retain56 exact profiles; sampled after case passes30s context; current full race still fails31.00s. Prior failure/ExternalCode limits and escaped-allocation tradeoff retained; no all-host timing claim |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision/team-resumed-turn cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Glob truncation inputs | [Same-directory Source/Go pair and Source iterator controls](docs/audits/go-glob-enumeration-control-2026-10-11.json) | Darwin pair/fixture exactly match555 names and49,973 characters; selection depends on pre-sort enumeration. Linux same-filesystem Source capture remains open; relative `*.txt` does not charge absolute root length |
@@ -411,7 +462,7 @@ consumer; it is incomplete, not a passing gate.
 | Whole SDK usage | [Current required SDK/wire/managed and archival evidence](docs/audits/go-private-type-closure-2026-10-11.json) | Current private model-array construction:86 direct/SSE cases/48 stages and38 delta faults;91 projections survive clone/mask/archive/SQLite;86 managed HTTP outcomes verified. Broader ranges/repr/public error scope remains open |
 | Known usage metadata shapes | [191 actual SDK cases/214 stages and full current receipt](docs/audits/go-private-type-closure-2026-10-11.json) | Named inert observations, model/stage fallback, actual event masking/clone/archive and191 SQLite reopen rows pass required assertions. Original100 differences repaired; 86 whole-usage cases now match projected values/stages/messages; broader ranges and final field/default/consumer/public-error scope remain open |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current ordinary passes; aggregate race fails at maximum SQLite readonly retry. Prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
+| Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current ordinary passes; full race still fails maximum SQLite readonly retry. Prior background/native temporal failures and broader reliability remain open; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
 | Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 459 files/1454 named types;1192 public types/273 private roots/172 variables;zero findings in four established gates. Prior body inventory retains139 observations at its original baseline; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
@@ -439,16 +490,16 @@ consumer; it is incomplete, not a passing gate.
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2243 passed, 28 skipped, 96 warnings, 24 subtests passed in 163.80s (0:02:43)**. Ordinary Go JSON/vet and four type audits,
-240-file Source/manifest, focused controls, 19 scans and diff pass. Full race fails at maximum SQLite readonly retry (context deadline, unchanged 30s shared context); no retry, timeout change or merge. The inventory
-requirement exits 1 for the missing native parser consumer; this is incomplete.
-[Current receipt](docs/audits/go-contract-consumers-2026-10-12.json). Package invariants/mutation sweep not rerun;
-no runtime package changed. Default parser and broader IDNA approval remain open.
+Latest full Python result: **2243 passed, 28 skipped, 96 warnings, 24 subtests passed in 135.71s (0:02:15)**. Ordinary Go JSON/vet and four type audits,
+240-file Source/manifest, focused controls, 19 scans, 1 selected meter guards
+and diff pass. Full race still fails maximum SQLite readonly retry at31.00s. No retry/context change/merge. Consumer inspection still rejects the missing native parser consumer.
+[Current receipt](docs/audits/go-inspection-json-spans-2026-10-12.json). Runtime Python unchanged; package invariants/full
+mutation sweep not rerun. Other profiles/approval and original acceptance remain open.
 
-FAILED-run observed statements: app **89.30% (33191/37168)**;
-all Go **89.05% (33557/37683)**; Provider **86.67% (1522/1756)**.
-[Exact receipt](docs/audits/go-coverage-contract-consumers-2026-10-12.json). Darwin statements; native C, subprocess internals,
-Python, branches and other profiles excluded. Prior passing coverage baseline remains authoritative; this failed-run observation does not refresh acceptance. Full migration remains open.
+FAILED-run observed statement coverage: app **89.30% (33188/37164)**;
+all Go **89.05% (33554/37679)**; Provider **86.45% (1518/1756)**.
+[Exact receipt](docs/audits/go-coverage-inspection-json-spans-2026-10-12.json). Darwin statements; native C, subprocess internals,
+Python, branches and other profiles excluded. Prior failed runs remain recorded.
 
 
 ## 2026-10-09 native SQLite killed-generation process recovery
