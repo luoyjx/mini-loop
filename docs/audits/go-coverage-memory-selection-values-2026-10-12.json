@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-12",
+  "baseline": "5ad859c",
+  "mode": "race+atomic",
+  "profile_sha256": "e5a4ff53bc63f1cbd28057dc3414ddc3fc782bc6b1e429aded3dfde26b769d2a",
+  "raw_rows": 1288763,
+  "unique_blocks": 26300,
+  "method": "Deduplicate identical source spans, require equal statement counts, union maximum atomic hits. App excludes tools/ only; command mains remain included.",
+  "all": {
+    "covered": 33561,
+    "statements": 37686,
+    "percent": 89.05429071803853
+  },
+  "app": {
+    "covered": 33195,
+    "statements": 37171,
+    "percent": 89.30348927927686
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-memory-selection-values-2026-10-12/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 664.068
+  },
+  "retained_profile": "var/go-memory-selection-values-2026-10-12/coverage.out",
+  "scope": "Darwin race statement measurement. Native C, subprocess interiors, Python, branches and other profiles excluded; no complete migration acceptance claim.",
+  "implementation_commit": "8e228a3be4c3a2567bda3e070308ab7d30565bee"
+}

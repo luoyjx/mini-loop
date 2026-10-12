@@ -1,5 +1,41 @@
 # Go port plan
 
+## 2026-10-12 closed memory-selection values
+
+Implementation `8e228a3`, based on branch `5ad859c`; main before integration is `89327ab`. Selection previously used
+RawMessage array entries. Sixteen new actual Source recipes extend the twelve
+existing context cases. The pre-change native comparison fails five cases:
+nonfinite mixed/object replies, positive/negative over-limit integers and excessive
+nesting. All five failures are retained; no original test or threshold was relaxed.
+
+`memoryIndices` now decodes the whole reply into the existing immutable closed
+Value before selecting integer indices. All floats, including NaN/Infinity and
+numeric overflow, are ignored. Booleans remain indices; order, duplicates and the
+first-five limit stay unchanged. Full-array errors after a valid first index cause
+lexical fallback. The 4300/4301 integer boundary and surrogate text/key observations
+match Source; 500/1005 nesting controls match the existing 1000-container decoder
+profile. Exact caller-stack recursion edges/custom host profiles remain open.
+Prepared prompts, side-call budgets/purpose, owner/foreign isolation, memory events,
+runtime facts and live-meter isolation compare in all28 required cases. Existing
+rewrite-order and cancellation tests pass. Two local RawMessage observations are
+removed; current pre-change full-body inventory is130 rather than the historical139,
+without implying those remaining observations are defects or exemptions.
+
+Runtime Python is unchanged; only its Source recipe producer and one fixture are
+expanded. No dependency, default, owner binding or authority changed. README and
+canonical architecture explanation/specification updated; HTML9 checks, zero
+errors/warnings. Frozen1662 inputs pass Source240/manifest, focused Go/Python, four type audits, compiler-collector tests and full-body inventory, complete ordinary Go/vet/race+atomic, full Python,19 scans,18 memory guards and diff. Python2243 passed,28 skipped,96 warnings,24 subtests in125.01s. The separate consumer inventory exits1 only for the unreferenced native syntax-parser fixture. Current race statements: app89.30% (33195/37171), all Go89.05% (33561/37686), Provider86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-selection-values-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-selection-values-2026-10-12.json). The completed built-in
+[iteration image](docs/audits/go-memory-selection-values-infographic-2026-10-12.png)
+retains all five layers and required arrows; only L3 is highlighted. Base unchanged.
+Original temporary gate logs/handles and one pending image handle were lost after
+interruption. The replacement cohort persists frozen inputs, stage process IDs and
+logs under ignored var/; the lost run supplies no acceptance. Current full-body
+inventory is51 packages/22036 declarations/128 open observations. Prior ordinary
+Go/Python timing failures remain retained without a runtime fix/cause claim; one
+passing cohort does not close temporal reliability. Local ff-only main integration
+can proceed after commits; remote push and original-scope completion are not claimed.
+
 ## 2026-10-12 timing boundary diagnostics
 
 After `f9d4f61`, runtime and repository tests remain unchanged. Four matched
@@ -7781,19 +7817,13 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against branch baseline `634fe23`: legacy scalar text
-spans match44 compact/pretty Source text/key projections. Non-scalar/raw malformed
-lanes remain. Full race passes original512KiB/30s SQLite; ordinary background and
-Python40-turn timing gates fail and remain unassigned. No merge/full acceptance.
-Frozen 1661 inputs: Source240/manifest, focused Go/Python, four type audits, vet, full
-race+atomic,19 scans,1 selected meter guards and diff pass. Ordinary Go fails background
-timeout-true-expired (completed vs Error: Timeout (Trues)); Python: 1 failed, 2242
-passed, 28 skipped, 96 warnings, 24 subtests passed in 161.92s (0:02:41),
-forty-turn0.526s against0.5s threshold. Separate inventory exits1 for the missing native
-parser. Race statement coverage app 89.30% (33189/37166); all Go 89.05% (33555/37681);
-Provider 86.67% (1522/1756). No ordinary/Python timing or full acceptance claim; no
-merge.
-[Current receipt](docs/audits/go-legacy-text-spans-2026-10-12.json).
+Reviewed **2026-10-12** against branch baseline `5ad859c`: closed memory
+selection matches28 actual Source context cases, repairing five retained old
+native differences. Integer/boolean selection, full-array rejection, owner and
+meter/cancellation boundaries are preserved. Exact caller-stack recursion edges
+remain open. Frozen1662 inputs pass Source240/manifest, focused Go/Python, four type audits, compiler-collector tests and full-body inventory, complete ordinary Go/vet/race+atomic, full Python,19 scans,18 memory guards and diff. Python2243 passed,28 skipped,96 warnings,24 subtests in125.01s. The separate consumer inventory exits1 only for the unreferenced native syntax-parser fixture. Current race statements: app89.30% (33195/37171), all Go89.05% (33561/37686), Provider86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-selection-values-2026-10-12.json). Prior failures remain historical evidence;
+no watcher/background/Python runtime fix or cause claim follows from this cohort.
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7824,12 +7854,12 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Passing-race statement coverage: app **89.30% (33189/37166)**,
-all Go **89.05% (33555/37681)**, Provider **86.67% (1522/1756)**.
-Ordinary Go/Python timing gates fail; this is not full acceptance. Profile hash
-and1661 frozen inputs retained; native C, subprocess internals, Python,
-branches and other profiles excluded.
-[Current coverage](docs/audits/go-coverage-legacy-text-spans-2026-10-12.json).
+Passing-race statement coverage: app **89.30% (33195/37171)**,
+all Go **89.05% (33561/37686)**, Provider **86.67% (1522/1756)**.
+[Current coverage](docs/audits/go-coverage-memory-selection-values-2026-10-12.json). The retained profile measures Darwin statements;
+native C, subprocess interiors, Python, branches and other profiles are excluded.
+Sixteen validation stages pass; consumer inspection remains incomplete. This is
+not final migration acceptance and does not close prior temporal failures.
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7841,20 +7871,22 @@ work-package acceptance.
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; full-body declaration inventory now identifies139 open boundary observations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies128 open boundary observations at51 packages/22036 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes240 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet pass; current full race still fails at maximum SQLite readonly retry;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes240 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass in the current1662-input cohort;28 memory-selection cases now match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
 A prior full ordinary Go again reported background `timeout-fraction`: expected
-5ms timeout, observed completed. The latest cohort passes without a background
-runtime change, so the cause remains open. A Source/native timing-order audit is
+5ms timeout, observed completed. The latest ordinary/race/Python cohort passes without a background
+runtime change, while the previous True/1.1s failure is retained. Injected
+post-spawn delay diagnostics locate a shared Source/native timing boundary but
+do not establish the original failure cause. A Source/native timing-order audit is
 still required; no runtime fix, root-cause claim or retry-to-green has been made.
 
 1. Default Python syntax diagnostics: native filesystem diagnostics supports an
