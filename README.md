@@ -545,7 +545,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: based on local main `59767dc`, with the explicit typed
+Runtime review baseline: implementation `38b76a6`, based on local main `59767dc`, with the explicit typed
 custom-tool input seam. Fourteen actual Python registered-tool
 cases compare results, fault flags and handler effects; thirteen also compare
 exact callback traces. The readonly-write scheduling adaptation is recorded
@@ -560,6 +560,8 @@ The full-body inventory records129 open observations, including one new transien
 recover value; established domain/public/private/variable audits report zero
 findings. The interrupted race has no acceptance exit; its preserved output is
 separate from the completed replacement on identical frozen inputs.
+[Current receipt](docs/audits/go-extension-input-codecs-2026-10-13.json);
+[coverage](docs/audits/go-coverage-extension-input-codecs-2026-10-13.json).
 Default diagnostics, broader IDNA, historical timing failures, other platform
 acceptance and the original complete migration scope remain open.
 
@@ -3002,8 +3004,9 @@ same observations, as do masked clones, canonical identities and stored messages
 Typed executable inputs still require their concrete native decoder. Malformed
 known-tool inputs cannot fall back to this observation. A custom schema alone
 cannot execute it; the gate reports the missing native input decoder instead.
-Registered extension codec design, unknown MCP root shapes and nonfinite inputs
-remain under audit. Strict explicit `DecodeToolInput` admission remains strict.
+Explicit `NewTypedExtensionTool` now binds a named input codec after this gate.
+Broader extension coercion, unknown MCP root shapes and nonfinite inputs remain
+under audit. Strict explicit `DecodeToolInput` admission remains strict.
 
 The Go inspection/estimation JSON formatter reuses closed text span encoding after
 its existing string unmarshal. It keeps raw non-string token spelling, including
