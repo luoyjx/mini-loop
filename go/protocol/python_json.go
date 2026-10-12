@@ -1,10 +1,11 @@
 package protocol
 
 import (
+	"bytes"
 	"encoding/json"
-	"fmt"
 	"strings"
-	"unicode/utf16"
+
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
 // PythonJSON serializes concrete boundary values using json.dumps's separators
@@ -21,54 +22,43 @@ func PythonJSON[T any](value T, ascii, compact bool) (string, error) {
 
 func formatPythonJSONBytes(data []byte, ascii, compact bool) (string, error) {
 	var out strings.Builder
+	out.Grow(len(data))
 	for i := 0; i < len(data); {
 		if data[i] == '"' {
 			end := i + 1
 			for end < len(data) {
+				// Only quote/backslash affect the boundary of this encoded string.
+				// Unmarshal below still validates and lowers all escape sequences.
+				next := bytes.IndexAny(data[end:], "\"\\")
+				if next < 0 {
+					end = len(data)
+					break
+				}
+				end += next
 				if data[end] == '\\' {
 					end += 2
 					continue
 				}
-				if data[end] == '"' {
-					break
-				}
-				end++
+				break
 			}
 			var text string
 			if err := json.Unmarshal(data[i:end+1], &text); err != nil {
 				return "", err
 			}
-			out.WriteByte('"')
-			for _, r := range text {
-				switch r {
-				case '"':
-					out.WriteString("\\\"")
-				case '\\':
-					out.WriteString("\\\\")
-				case '\b':
-					out.WriteString("\\b")
-				case '\f':
-					out.WriteString("\\f")
-				case '\n':
-					out.WriteString("\\n")
-				case '\r':
-					out.WriteString("\\r")
-				case '\t':
-					out.WriteString("\\t")
-				default:
-					if r < 32 || (ascii && r > 126) {
-						if r > 0xffff {
-							a, b := utf16.EncodeRune(r)
-							fmt.Fprintf(&out, "\\u%04x\\u%04x", a, b)
-						} else {
-							fmt.Fprintf(&out, "\\u%04x", r)
-						}
-					} else {
-						out.WriteRune(r)
-					}
-				}
+			// Reuse the closed text codec's span writes. Non-string tokens stay
+			// byte-for-byte below, retaining legacy number spelling and separators.
+			value := jsonvalue.TextValue(text)
+			var encoded []byte
+			var err error
+			if ascii {
+				encoded, err = value.MarshalJSON()
+			} else {
+				encoded, err = value.MarshalUTF8()
 			}
-			out.WriteByte('"')
+			if err != nil {
+				return "", err
+			}
+			out.Write(encoded)
 			i = end + 1
 		} else {
 			out.WriteByte(data[i])

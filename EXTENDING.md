@@ -4562,3 +4562,17 @@ separate platform captures remain labelled outside_current_export. Raw Go test
 stderr is kept separately so malformed/empty JSON result streams fail explicitly.
 `-require-results` rejects missing candidate passing root results; it is a bounded
 inspection check, not complete G7 acceptance. No new dependency or default changes.
+
+
+## Go inspection JSON text span formatter
+
+`PythonJSON` and the observed-message projections retain their typed/closed input
+boundaries. Their private formatter scans encoded quote/backslash boundaries in
+bulk, then keeps the existing json.Unmarshal string lowering. It reuses the closed
+jsonvalue text projection for ASCII/UTF-8 escaping and keeps every non-string
+lexeme unchanged. Caller-selected compact/spaced separators and key order remain.
+The Source text corpus now supplies all four modes, including ASCII with spaces;
+56 text/key hashes and direct numeric/delimiter controls pin the projection.
+Token-meter/compaction fixture results and the original SQLite restart/replay/
+readonly/backend-once assertions remain required. No new default, type variant,
+dependency, cache, context adjustment or execution capability is introduced.

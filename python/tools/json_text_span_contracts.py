@@ -22,6 +22,7 @@ def json_text_span_contracts():
             for profile, ascii_only, spaced in (
                 ("utf8", False, False), ("spaced", False, True),
                 ("archive", True, False),
+                ("ascii_spaced", True, True),
             ):
                 encoded = json.dumps(value, ensure_ascii=ascii_only, allow_nan=False,
                                      separators=None if spaced else (",", ":")).encode("utf-8")
