@@ -1,5 +1,44 @@
 # Go port plan
 
+## 2026-10-12 managed HTTP memory caller profiles
+
+Implementation `afe9207`, based on local main `0898b7d`. Actual Python FastAPI TestClient POST and SSE
+handlers reveal distinct default-recursion budgets: POST accepts 968 nested
+candidate containers (970 including array/entry), SSE accepts 972 (974 total).
+The 64 cases span extraction/consolidation, array/object shapes and eight depths.
+Required native assertions compare final wire text/SSE memory frames, owner and
+foreign records, cross-owner HTTP refusal, run state, model budgets and events.
+These are actual ASGI handler and native httptest adapter contracts, not a live
+TCP server or universal CPython stack emulation. Source is Python 3.11.3 with
+recursion 1000; other host/custom-recursion/caller profiles remain open.
+
+A corrected pre-fix run retains 12 actual POST differences at depths 969/971/972.
+The earlier 64 failures came from missing fake-provider protocol identity and
+are retained as a separate fixture setup failure. The production fix adds a
+private ephemeral memoryReplyScope selected by AuthenticatedHTTPPostRunContext.
+Ordinary HTTP provenance/capabilities, snapshots and peer delegation keep their
+existing rules. Agent.run/SSE remain at 974 and direct side helpers at 979.
+Parsing still precedes writes/replacement; owner binding remains unchanged.
+
+Frozen 1656 inputs pass all 14 gates: Source 240 files, focused Agent/HTTP tests, four
+type audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation
+guards (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24
+subtests passed in 137.73s (0:02:17). Application coverage 89.28% (33185/37168); all Go
+89.16% (33356/37412); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-managed-http-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-managed-http-2026-10-12.json). Twelve corrected native differences
+and the separate provider-fixture setup failure are retained. No new dependency
+or Python runtime-module change. Package invariants and full mutation sweep were
+not rerun; prior temporal failures and original migration acceptance remain open.
+
+The [iteration image](docs/audits/go-memory-managed-http-infographic-2026-10-12.png) edits the layered base, highlighting L1 entry,
+L3 Session parsing and L5 owner-memory admission. No component added/deleted;
+base unchanged. Exact built-in prompt saved and PNG inspected. Canonical Mermaid
+and JSON updated; generated HTML passes 9 checks with zero errors/warnings.
+Rendered browser acceptance remains blocked by the prior URL policy.
+
+Next: reconcile other public caller/host profiles and broader memory effects,
+then original migration inventory and resource/performance acceptance.
+
 ## 2026-10-12 memory reply caller and resource profiles
 
 Implementation `9cb02fc`, based on local main `eaa5f66`. Actual Source expands to 135 extraction, 126
@@ -7575,16 +7614,17 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against baseline `eaa5f66`: memory reply caller/resource
-profiles match 135 extraction, 126 consolidation and 85 actual end-of-turn Source
-cases. Final baseline replay retains 32 differences; expanded 474-case exploration
-retains 112. Other host/caller profiles and original acceptance remain open.
-Frozen 1654 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
-audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
-(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 96.65s (0:01:36). Application coverage 89.30% (33181/37158); all Go 89.17%
-(33352/37402); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-json-resources-2026-10-12.json).
+Reviewed **2026-10-12** against baseline `0898b7d`: 64 managed POST/SSE memory
+contracts match Source; synchronous POST selects 970 total containers and SSE
+retains 974. Twelve corrected native differences are retained separately from
+a provider-fixture setup failure. Other caller/host profiles and full acceptance
+remain open.
+Frozen 1656 inputs pass all 14 gates: Source 240 files, focused Agent/HTTP tests, four
+type audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation
+guards (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24
+subtests passed in 137.73s (0:02:17). Application coverage 89.28% (33185/37168); all Go
+89.16% (33356/37412); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-managed-http-2026-10-12.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7615,11 +7655,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app **89.30% (33181/37158)**,
-all Go **89.17% (33352/37402)**, Provider **86.67% (1522/1756)**.
-The profile hash and 1654 frozen inputs are retained; native C,
-CLI subprocess internals, Python, branches and other platforms are excluded.
-[Current coverage](docs/audits/go-coverage-memory-json-resources-2026-10-12.json).
+Current full passing-run statement coverage: app **89.28% (33185/37168)**,
+all Go **89.16% (33356/37412)**, Provider **86.67% (1522/1756)**.
+Profile hash and 1656 frozen inputs are retained; native C, subprocess
+internals, Python, branches and other platforms are excluded.
+[Current coverage](docs/audits/go-coverage-memory-managed-http-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered

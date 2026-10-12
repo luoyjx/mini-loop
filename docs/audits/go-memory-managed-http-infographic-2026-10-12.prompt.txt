@@ -1,0 +1,7 @@
+Edit target: the supplied canonical mini-loop five-layer base image. Generate this iteration image. Preserve its elegant navy/cyan/teal/amber/purple landscape layout, all five layer headings, icons, component cards and mountain decoration. Do not add/delete architecture components. Keep title mini-loop 整体分层架构. Subtitle: 本轮：HTTP / SSE 记忆解析入口对齐 · 整体迁移验收仍在进行.
+LOCK EXACT FIVE HEADINGS in original positions: L1 入口与组合层; L2 会话与控制层; L3 推理与执行层; L4 能力与编排层; L5 状态与证据层. Never replace headings with iteration labels. New labels INSIDE cards only.
+Highlight exactly three existing cards with thin cyan border, subtle glow and small 本轮 tag: L1 CLI / HTTP / SSE / 浏览器, retain title and add 可信入口选择解析预算; L3 Session Agent 循环 / Context retain title, secondary text POST 970 · SSE 974 and 临时配置不授予权限; L5 owner skills / Markdown memory retain title, add 完整解析后再写入. Other components unchanged.
+CRITICAL ARROWS: Session Agent ↔ Model Provider double-headed arrow; distinct Session Agent → ToolGate arrow ABOVE Provider labelled 工具调用; ToolGate → L4 capabilities; L4 → Session Agent return on left labelled 工具结果. NO Model Provider → ToolGate connector! Preserve optional dashed orchestration arrows.
+Right heading 本轮修改与边界, exactly six numbered paragraphs: 1 POST 与 SSE 使用来源入口预算; 2 请求身份与权限保持原有规则; 3 解析失败先于写入或删除; 4 owner 数据与外部读取均隔离; 5 64 个真实 HTTP / SSE 场景; 6 其他运行配置仍待验收.
+Footer: 固定来源：Python 3.11.3 · recursion 1000 · 本轮 64 场景；默认开关与组件数量不变.
+Readable accurate Chinese. No complete migration/universal Python stack/all-platform acceptance claims. Iteration highlight, not base replacement.
