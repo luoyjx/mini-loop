@@ -1,5 +1,52 @@
 # Python to Go parity matrix
 
+## 2026-10-12 Source/native contract consumer inventory
+
+Implementation `3218d44`, based on local main `89327ab`. G7 now has an explicit operator inventory across
+all 241 Python-labelled Go fixture files, distinguishing the current exporter's
+240 from the separately captured Linux watchfiles artifact. Literal references
+and direct named-function candidate caller links are collected from active Go
+metadata. Go test JSON root terminal actions can be attached without treating
+root success as proof of a fixture read, active branch or complete assertions.
+Enclosing if branches remain visible: the Linux fixture's candidate test root
+can pass on Darwin while its Linux-only read is never selected.
+
+The exporter optionally publishes sorted names/hashes from the same successful
+capture. A failed check cannot publish the success manifest. The native consumer
+rejects byte drift, duplicate/missing manifest entries and malformed/empty result
+streams. Comments, inactive files, shadowed calls, skipped tests and receiver
+ambiguity have explicit counterexamples. No dependency or default changes.
+The parser fixture has no native consumer; its backend decision is still unapproved.
+This inventory does not close original P0/P1/G0-G7 or semantic-parity acceptance.
+
+Frozen 1658 inputs record 12 passed validation gates and one FAILED full race gate:
+Source 240 files with manifest, focused Go/Python controls, four type audits, full
+ordinary Go JSON/vet/race+atomic, full Python, 19 scanner anchors and diff. Python: 2243
+passed, 28 skipped, 96 warnings, 24 subtests passed in 163.80s (0:02:43). Failed-run
+observed statement counts: application 89.30% (33191/37168); all Go 89.05%
+(33557/37683); Provider 86.67% (1522/1756). These do not replace the prior passing
+coverage baseline. The separate inventory check exits 1 for the absent syntax-parser
+consumer; it is incomplete, not a passing gate.
+[Full receipt](docs/audits/go-contract-consumers-2026-10-12.json); [coverage](docs/audits/go-coverage-contract-consumers-2026-10-12.json). All 241 fixture artifacts remain
+visible: 240 current exports and one separate Linux capture. 240 have candidate
+roots with observed pass results; the parser fixture has no reference. The Linux
+root pass on Darwin is retained as a counterexample to fixture-execution claims.
+Semantic/per-field comparison, defaults, other profiles and original acceptance
+remain open. No dependency or runtime package change. Full race fails at maximum SQLite readonly
+retry with the unchanged 30s shared context; no retry, timeout change or merge.
+The last passing main coverage remains app 89.28% / all Go 89.16%. Package invariants and
+mutation sweep were not rerun; Source exporter controls and 19 scans pass.
+
+The [updated base](docs/mini-loop-layered-architecture.png) adds operator contract
+audit evidence. The [iteration image](docs/audits/go-contract-consumers-infographic-2026-10-12.png) edits that new base and highlights
+L1 CLI and L5 contract inventory. Both exact built-in prompts saved, both PNGs
+inspected. Canonical Mermaid/JSON updated; HTML passes 9 checks, zero errors/warnings.
+Rendered browser acceptance remains blocked by the prior URL policy.
+
+Next: diagnose and reduce the current maximum SQLite readonly shared-budget cost
+without increasing the 30s context or retrying to green. Then review actual fixture
+reads/assertions, retaining parser and separate Linux acceptance as unresolved work.
+
 ## 2026-10-12 managed HTTP memory caller profiles
 
 Implementation `afe9207`, based on local main `0898b7d`. Actual Python FastAPI TestClient POST and SSE
@@ -336,14 +383,18 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `0898b7d`: 64 actual managed POST/SSE memory contracts;
-12 corrected native differences and a separate fixture setup failure retained.
-Frozen 1656 inputs pass all 14 gates: Source 240 files, focused Agent/HTTP tests, four
-type audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation
-guards (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24
-subtests passed in 137.73s (0:02:17). Application coverage 89.28% (33185/37168); all Go
-89.16% (33356/37412); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-managed-http-2026-10-12.json). Other caller/host profiles and original acceptance remain open.
+Reviewed baseline `89327ab`: 241 fixture artifacts, 240 current Source manifest
+entries, 240 candidate roots with observed passes and one absent parser consumer.
+The separate inspection requirement rejects it; no complete G7 acceptance.
+Frozen 1658 inputs record 12 passed validation gates and one FAILED full race gate:
+Source 240 files with manifest, focused Go/Python controls, four type audits, full
+ordinary Go JSON/vet/race+atomic, full Python, 19 scanner anchors and diff. Python: 2243
+passed, 28 skipped, 96 warnings, 24 subtests passed in 163.80s (0:02:43). Failed-run
+observed statement counts: application 89.30% (33191/37168); all Go 89.05%
+(33557/37683); Provider 86.67% (1522/1756). These do not replace the prior passing
+coverage baseline. The separate inventory check exits 1 for the absent syntax-parser
+consumer; it is incomplete, not a passing gate.
+[Current receipt](docs/audits/go-contract-consumers-2026-10-12.json). Root passes do not certify fixture reads or semantics.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -351,6 +402,7 @@ subtests passed in 137.73s (0:02:17). Application coverage 89.28% (33185/37168);
 | Source recipe freshness | Full exporter `--check` passes240 files on frozen current inputs | Current Source freshness gate passes; final inventory coverage against public entry points/defaults remains G7 work |
 | Default business routing | All 168 actual Source requests on 40 explicit paths; [native evidence](docs/audits/go-http-routing-native-2026-10-11.json) | Delivered at 4b68574: first-route Allow, known slash redirects and decoded-path semantics match. Required parity assertion replaces diagnostic-only acceptance; broader URL/mount/forwarded-host scope remains |
 | Managed memory HTTP | [64 actual POST/SSE contracts and frozen gates](docs/audits/go-memory-managed-http-2026-10-12.json) | Pinned Source POST/Agent.run+SSE/direct container budgets 970/974/979; trusted selector is ephemeral with unchanged authority. Wire events, owner/foreign records and lifecycle match; other caller/host profiles and full acceptance remain open |
+| Source/native consumer inventory | [Complete file/candidate/root receipt](docs/audits/go-contract-consumers-2026-10-12.json) | 240 current exports + one separate Linux capture; missing parser consumer rejects inspection. Linux root success on Darwin proves no Linux fixture read. Actual reads/assertions and dynamic paths remain open |
 | Native persistence / recovery | `go/sqlitestate/*_test.go`, `go/launcher/state_test.go`; actual schema/reopen/owner/lease/crash/cron/compaction/decision/team-resumed-turn cases | Native backend and restart integration implemented; G7 scope reconciliation remains |
 | Native benchmark arms | `go/benchmark/runner.go`, `fake.go`, runner/filter/fake tests, benchmark HTTP adapter | Implemented; earlier arm-pending notes are superseded; final performance review remains |
 | Glob truncation inputs | [Same-directory Source/Go pair and Source iterator controls](docs/audits/go-glob-enumeration-control-2026-10-11.json) | Darwin pair/fixture exactly match555 names and49,973 characters; selection depends on pre-sort enumeration. Linux same-filesystem Source capture remains open; relative `*.txt` does not charge absolute root length |
@@ -359,8 +411,8 @@ subtests passed in 137.73s (0:02:17). Application coverage 89.28% (33185/37168);
 | Whole SDK usage | [Current required SDK/wire/managed and archival evidence](docs/audits/go-private-type-closure-2026-10-11.json) | Current private model-array construction:86 direct/SSE cases/48 stages and38 delta faults;91 projections survive clone/mask/archive/SQLite;86 managed HTTP outcomes verified. Broader ranges/repr/public error scope remains open |
 | Known usage metadata shapes | [191 actual SDK cases/214 stages and full current receipt](docs/audits/go-private-type-closure-2026-10-11.json) | Named inert observations, model/stage fallback, actual event masking/clone/archive and191 SQLite reopen rows pass required assertions. Original100 differences repaired; 86 whole-usage cases now match projected values/stages/messages; broader ranges and final field/default/consumer/public-error scope remain open |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current full ordinary/race+atomic pass; prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
-| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 458 files/1445 named types;1192 public types/264 private roots/172 variables;zero findings in four established gates. Body inventory has139 open observations; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
+| Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current ordinary passes; aggregate race fails at maximum SQLite readonly retry. Prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
+| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 459 files/1454 named types;1192 public types/273 private roots/172 variables;zero findings in four established gates. Prior body inventory retains139 observations at its original baseline; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
 | Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
@@ -387,16 +439,16 @@ subtests passed in 137.73s (0:02:17). Application coverage 89.28% (33185/37168);
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 137.73s (0:02:17)**. Ordinary Go/vet/race+atomic, four type audits,
-240-file Source check, 19 scans and selected memory/consolidation guards pass.
-[Current receipt](docs/audits/go-memory-managed-http-2026-10-12.json). Full mutation sweep and package invariants not rerun;
-no Python runtime module changed. Default diagnostics and broader IDNA approval
-remain outstanding.
+Latest full Python result: **2243 passed, 28 skipped, 96 warnings, 24 subtests passed in 163.80s (0:02:43)**. Ordinary Go JSON/vet and four type audits,
+240-file Source/manifest, focused controls, 19 scans and diff pass. Full race fails at maximum SQLite readonly retry (context deadline, unchanged 30s shared context); no retry, timeout change or merge. The inventory
+requirement exits 1 for the missing native parser consumer; this is incomplete.
+[Current receipt](docs/audits/go-contract-consumers-2026-10-12.json). Package invariants/mutation sweep not rerun;
+no runtime package changed. Default parser and broader IDNA approval remain open.
 
-Current full passing-run statement coverage: app **89.28% (33185/37168)**;
-all Go **89.16% (33356/37412)**; Provider **86.67% (1522/1756)**.
-[Exact receipt](docs/audits/go-coverage-memory-managed-http-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
-Python, branches and other platforms excluded. Full port acceptance remains open.
+FAILED-run observed statements: app **89.30% (33191/37168)**;
+all Go **89.05% (33557/37683)**; Provider **86.67% (1522/1756)**.
+[Exact receipt](docs/audits/go-coverage-contract-consumers-2026-10-12.json). Darwin statements; native C, subprocess internals,
+Python, branches and other profiles excluded. Prior passing coverage baseline remains authoritative; this failed-run observation does not refresh acceptance. Full migration remains open.
 
 
 ## 2026-10-09 native SQLite killed-generation process recovery

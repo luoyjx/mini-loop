@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-12",
+  "baseline": "89327ab",
+  "cohort": "Operator Source/native fixture consumer inventory; full race gate failed at unchanged maximum SQLite readonly retry",
+  "mode": "atomic",
+  "profile_sha256": "9e338962a7a8526026a8c1698caa80144ecd0837b468c6443dea1a3498ee1cb9",
+  "raw_rows": 1288959,
+  "unique_blocks": 26304,
+  "method": "Deduplicate identical source spans, require equal statement counts, and union maximum atomic hits.",
+  "all": {
+    "covered": 33557,
+    "statements": 37683,
+    "percent": 89.0507655972189
+  },
+  "app": {
+    "covered": 33191,
+    "statements": 37168,
+    "percent": 89.29993542832544
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "frozen_inputs": 1658,
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/tmp/mini-loop-contract-consumers-2026-10-12/coverage.out",
+      "./..."
+    ],
+    "exit_code": 1,
+    "seconds": 717.683
+  },
+  "retained_profile": "/tmp/mini-loop-contract-consumers-2026-10-12.cover",
+  "scope": "Observed statements from a FAILED Darwin race run; not a passing acceptance coverage refresh. Excludes native C, subprocess internals, Python, branches and other profiles.",
+  "limitations": [
+    "Passing root tests do not certify fixture reads or semantic parity.",
+    "Prior temporal failures and full original migration acceptance remain open."
+  ],
+  "implementation_commit": "3218d448964817a738fec4af073b077c0d729479"
+}

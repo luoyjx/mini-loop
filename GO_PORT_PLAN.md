@@ -1,5 +1,52 @@
 # Go port plan
 
+## 2026-10-12 Source/native contract consumer inventory
+
+Implementation `3218d44`, based on local main `89327ab`. G7 now has an explicit operator inventory across
+all 241 Python-labelled Go fixture files, distinguishing the current exporter's
+240 from the separately captured Linux watchfiles artifact. Literal references
+and direct named-function candidate caller links are collected from active Go
+metadata. Go test JSON root terminal actions can be attached without treating
+root success as proof of a fixture read, active branch or complete assertions.
+Enclosing if branches remain visible: the Linux fixture's candidate test root
+can pass on Darwin while its Linux-only read is never selected.
+
+The exporter optionally publishes sorted names/hashes from the same successful
+capture. A failed check cannot publish the success manifest. The native consumer
+rejects byte drift, duplicate/missing manifest entries and malformed/empty result
+streams. Comments, inactive files, shadowed calls, skipped tests and receiver
+ambiguity have explicit counterexamples. No dependency or default changes.
+The parser fixture has no native consumer; its backend decision is still unapproved.
+This inventory does not close original P0/P1/G0-G7 or semantic-parity acceptance.
+
+Frozen 1658 inputs record 12 passed validation gates and one FAILED full race gate:
+Source 240 files with manifest, focused Go/Python controls, four type audits, full
+ordinary Go JSON/vet/race+atomic, full Python, 19 scanner anchors and diff. Python: 2243
+passed, 28 skipped, 96 warnings, 24 subtests passed in 163.80s (0:02:43). Failed-run
+observed statement counts: application 89.30% (33191/37168); all Go 89.05%
+(33557/37683); Provider 86.67% (1522/1756). These do not replace the prior passing
+coverage baseline. The separate inventory check exits 1 for the absent syntax-parser
+consumer; it is incomplete, not a passing gate.
+[Full receipt](docs/audits/go-contract-consumers-2026-10-12.json); [coverage](docs/audits/go-coverage-contract-consumers-2026-10-12.json). All 241 fixture artifacts remain
+visible: 240 current exports and one separate Linux capture. 240 have candidate
+roots with observed pass results; the parser fixture has no reference. The Linux
+root pass on Darwin is retained as a counterexample to fixture-execution claims.
+Semantic/per-field comparison, defaults, other profiles and original acceptance
+remain open. No dependency or runtime package change. Full race fails at maximum SQLite readonly
+retry with the unchanged 30s shared context; no retry, timeout change or merge.
+The last passing main coverage remains app 89.28% / all Go 89.16%. Package invariants and
+mutation sweep were not rerun; Source exporter controls and 19 scans pass.
+
+The [updated base](docs/mini-loop-layered-architecture.png) adds operator contract
+audit evidence. The [iteration image](docs/audits/go-contract-consumers-infographic-2026-10-12.png) edits that new base and highlights
+L1 CLI and L5 contract inventory. Both exact built-in prompts saved, both PNGs
+inspected. Canonical Mermaid/JSON updated; HTML passes 9 checks, zero errors/warnings.
+Rendered browser acceptance remains blocked by the prior URL policy.
+
+Next: diagnose and reduce the current maximum SQLite readonly shared-budget cost
+without increasing the 30s context or retrying to green. Then review actual fixture
+reads/assertions, retaining parser and separate Linux acceptance as unresolved work.
+
 ## 2026-10-12 managed HTTP memory caller profiles
 
 Implementation `afe9207`, based on local main `0898b7d`. Actual Python FastAPI TestClient POST and SSE
@@ -7614,17 +7661,20 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against baseline `0898b7d`: 64 managed POST/SSE memory
-contracts match Source; synchronous POST selects 970 total containers and SSE
-retains 974. Twelve corrected native differences are retained separately from
-a provider-fixture setup failure. Other caller/host profiles and full acceptance
-remain open.
-Frozen 1656 inputs pass all 14 gates: Source 240 files, focused Agent/HTTP tests, four
-type audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation
-guards (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24
-subtests passed in 137.73s (0:02:17). Application coverage 89.28% (33185/37168); all Go
-89.16% (33356/37412); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-managed-http-2026-10-12.json).
+Reviewed **2026-10-12** against baseline `89327ab`: all 241 fixture artifacts
+have explicit candidate-link/test-root inspection evidence. 240 current exports
+are hash-bound to the same successful Source capture; separate Linux evidence
+stays distinct. 240 candidate root passes cannot certify reads or assertions;
+parser absence retains a rejecting inspection result.
+Frozen 1658 inputs record 12 passed validation gates and one FAILED full race gate:
+Source 240 files with manifest, focused Go/Python controls, four type audits, full
+ordinary Go JSON/vet/race+atomic, full Python, 19 scanner anchors and diff. Python: 2243
+passed, 28 skipped, 96 warnings, 24 subtests passed in 163.80s (0:02:43). Failed-run
+observed statement counts: application 89.30% (33191/37168); all Go 89.05%
+(33557/37683); Provider 86.67% (1522/1756). These do not replace the prior passing
+coverage baseline. The separate inventory check exits 1 for the absent syntax-parser
+consumer; it is incomplete, not a passing gate.
+[Current receipt](docs/audits/go-contract-consumers-2026-10-12.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7655,11 +7705,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app **89.28% (33185/37168)**,
-all Go **89.16% (33356/37412)**, Provider **86.67% (1522/1756)**.
-Profile hash and 1656 frozen inputs are retained; native C, subprocess
-internals, Python, branches and other platforms are excluded.
-[Current coverage](docs/audits/go-coverage-memory-managed-http-2026-10-12.json).
+Current run FAILED the full race gate. Observed application statements **89.30% (33191/37168)**,
+all Go **89.05% (33557/37683)**, Provider **86.67% (1522/1756)**.
+Profile hash and 1658 frozen inputs retained; native C, subprocess
+internals, Python, branches and other profiles excluded.
+[Current coverage](docs/audits/go-coverage-contract-consumers-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7678,7 +7728,7 @@ work-package acceptance.
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes239 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; current ordinary/vet/race+atomic pass;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes240 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet pass; current full race fails at the maximum SQLite readonly retry;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
