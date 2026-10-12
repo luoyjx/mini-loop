@@ -1,5 +1,38 @@
 # Go port plan
 
+## 2026-10-12 memory-selection caller profiles
+
+Implementation `6e1da29`, based on main505e867, branch codex/go-memory-selection-profiles. Actual Source
+entry points compare300 array/object cases: direct preparation, raw Agent.run,
+ManagedSession SDK, authenticated synchronous POST and SSE. Independent Source
+script capture pins its ordinary entry stack; an initial -m diagnostic showed
+runpy frames shift direct captures, so final producer uses a direct script. No
+Python runtime or recursion limit was changed.
+
+The old native comparison reports72 SDK and72 HTTP differences (144 total), all
+retained. One HTTP test field-name compile error is separately retained as setup,
+not semantic parity evidence. Source total-container limits are982/980/978/972/976.
+The native closed value decoder now receives whole-reply syntax preflight from a
+private named caller selector. RunContext snapshots omit it; same-caller continuations
+retain it and peer derivation drops it. Managed SDK selection preserves a trusted
+HTTP stamp. Principal, capability, model budget, events, bound-owner records,
+readonly execution and lexical fallback remain unchanged. All300 comparisons pass
+after repair; no earlier assertion or threshold was relaxed.
+
+Source producer failure is required to propagate instead of publishing an empty
+fixture; nine focused exporter tests pass. Frozen1667 inputs pass Source241/manifest,300 required profile cases, focused Go/Python, four type audits, collector tests/body inventory, full ordinary Go/vet/race+atomic, full Python,19 scans,18 memory guards and diff. Python2244 passed,28 skipped,96 warnings,24 subtests in92.74s. Consumer inspection exits1 only for the unreferenced native parser fixture. Race statements: app89.30% (33206/37186), all Go89.05% (33572/37701), Provider86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-selection-profiles-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-selection-profiles-2026-10-12.json). Current types:460 files/1455 named,
+1192 public/274 private roots/172 variables,zero findings. Body inventory51 packages/
+22046 declarations/128 open observations; interprocedural/generic/foreign scope open.
+The [iteration image](docs/audits/go-memory-selection-profiles-infographic-2026-10-12.png)
+edits the base with L1 entry/L2 managed/L3 context highlights. One routing-visibility
+repair restores clear Session/Provider arrowheads; all five layers/cards and required
+routes retained. No component addition/deletion; base unchanged. JSON/HTML synchronized;
+HTML9 checks,zero errors/warnings; prior browser visual limitation remains.
+
+The default parser decision, wider caller/host stacks and original P0/P1/G0-G7
+acceptance remain open. No remote push or completion claim.
+
 ## 2026-10-12 closed memory-selection values
 
 Implementation `8e228a3`, based on branch `5ad859c`; main before integration is `89327ab`. Selection previously used
@@ -7817,13 +7850,13 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against branch baseline `5ad859c`: closed memory
-selection matches28 actual Source context cases, repairing five retained old
-native differences. Integer/boolean selection, full-array rejection, owner and
-meter/cancellation boundaries are preserved. Exact caller-stack recursion edges
-remain open. Frozen1662 inputs pass Source240/manifest, focused Go/Python, four type audits, compiler-collector tests and full-body inventory, complete ordinary Go/vet/race+atomic, full Python,19 scans,18 memory guards and diff. Python2243 passed,28 skipped,96 warnings,24 subtests in125.01s. The separate consumer inventory exits1 only for the unreferenced native syntax-parser fixture. Current race statements: app89.30% (33195/37171), all Go89.05% (33561/37686), Provider86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-selection-values-2026-10-12.json). Prior failures remain historical evidence;
-no watcher/background/Python runtime fix or cause claim follows from this cohort.
+Reviewed **2026-10-12** against main505e867: five ordinary memory-selection
+caller profiles match300 actual Source array/object cases. Private choice does not
+alter authority, persistence snapshots or peer delegation. Bounds982/980/978/972/976
+include the reply array. Prior144 native differences remain retained; custom host/
+caller stacks remain open. Frozen1667 inputs pass Source241/manifest,300 required profile cases, focused Go/Python, four type audits, collector tests/body inventory, full ordinary Go/vet/race+atomic, full Python,19 scans,18 memory guards and diff. Python2244 passed,28 skipped,96 warnings,24 subtests in92.74s. Consumer inspection exits1 only for the unreferenced native parser fixture. Race statements: app89.30% (33206/37186), all Go89.05% (33572/37701), Provider86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-selection-profiles-2026-10-12.json). Prior temporal failures stay historical evidence;
+no unrelated runtime fix/cause claim follows from this passing cohort.
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7854,12 +7887,12 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Passing-race statement coverage: app **89.30% (33195/37171)**,
-all Go **89.05% (33561/37686)**, Provider **86.67% (1522/1756)**.
-[Current coverage](docs/audits/go-coverage-memory-selection-values-2026-10-12.json). The retained profile measures Darwin statements;
-native C, subprocess interiors, Python, branches and other profiles are excluded.
-Sixteen validation stages pass; consumer inspection remains incomplete. This is
-not final migration acceptance and does not close prior temporal failures.
+Passing-race statement coverage: app **89.30% (33206/37186)**,
+all Go **89.05% (33572/37701)**, Provider **86.67% (1522/1756)**.
+[Current coverage](docs/audits/go-coverage-memory-selection-profiles-2026-10-12.json). Darwin statements only; native C/subprocess
+interiors, Python, branches and other profiles excluded. Sixteen validation stages
+pass; native parser consumer inspection remains incomplete. Original migration
+acceptance and historical temporal reliability stay open.
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -7871,14 +7904,14 @@ work-package acceptance.
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies128 open boundary observations at51 packages/22036 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies128 open boundary observations at51 packages/22046 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes240 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass in the current1662-input cohort;28 memory-selection cases now match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes240 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass in the current1667-input cohort;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
