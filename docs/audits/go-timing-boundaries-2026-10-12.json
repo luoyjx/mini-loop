@@ -1,0 +1,360 @@
+{
+  "date": "2026-10-12",
+  "baseline": "f9d4f617032ecb89ce64730a58b6365b8e099a17",
+  "main": "89327ab53f3fc4552a19c51527d067c624548f8d",
+  "scope": "Diagnostic Source/native post-spawn timing and one profiled offline Python workload. Runtime, tests and thresholds in the repository unchanged.",
+  "acceptance": false,
+  "prior_gate_receipt": "docs/audits/go-legacy-text-spans-2026-10-12.json",
+  "frozen_cohort_check": {
+    "inputs": 1661,
+    "changes": [
+      "README.md"
+    ],
+    "classification": "Only already-recorded post-gate README documentation differs; every runtime/test/Source input matches."
+  },
+  "background": {
+    "pairs": [
+      {
+        "name": "normal-expired",
+        "injected_delay_ms": 0,
+        "source": {
+          "name": "normal-expired",
+          "delay_ms": 0,
+          "status": "error",
+          "result": "Error: Timeout (Trues)",
+          "events": [
+            {
+              "seconds": 0.005234333002590574,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 0.005902999997488223,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 0.005910666004638188,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 1.0081761250039563,
+              "stage": "deadline-received"
+            },
+            {
+              "seconds": 1.0081846250104718,
+              "stage": "kill-group"
+            }
+          ]
+        },
+        "native": {
+          "Name": "normal-expired",
+          "DelayMS": 0,
+          "TimedOut": true,
+          "Result": "Error: Timeout (Trues)",
+          "DurationMS": 1004,
+          "events": [
+            {
+              "seconds": 0.001246583,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 0.001271792,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 0.001425292,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 0.00143125,
+              "stage": "drain-1"
+            },
+            {
+              "seconds": 1.003529417,
+              "stage": "deadline-received"
+            },
+            {
+              "seconds": 1.004606542,
+              "stage": "drain-2"
+            },
+            {
+              "seconds": 1.004762958,
+              "stage": "reaped"
+            }
+          ]
+        },
+        "same_terminal_projection": true
+      },
+      {
+        "name": "delayed-ledger-expired",
+        "injected_delay_ms": 250,
+        "source": {
+          "name": "delayed-ledger-expired",
+          "delay_ms": 250,
+          "status": "completed",
+          "result": "options-done",
+          "events": [
+            {
+              "seconds": 0.006851957994513214,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 0.27111204199900385,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 0.27116266699158587,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 1.1215875420020893,
+              "stage": "drained"
+            },
+            {
+              "seconds": 1.1217521670041606,
+              "stage": "wait-return"
+            }
+          ]
+        },
+        "native": {
+          "Name": "delayed-ledger-expired",
+          "DelayMS": 250,
+          "TimedOut": false,
+          "Result": "options-done",
+          "DurationMS": 1118,
+          "events": [
+            {
+              "seconds": 0.002155584,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 0.253346042,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 0.253688709,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 0.253745042,
+              "stage": "drain-1"
+            },
+            {
+              "seconds": 1.118601125,
+              "stage": "drain-2"
+            },
+            {
+              "seconds": 1.1186485,
+              "stage": "reaped"
+            }
+          ]
+        },
+        "same_terminal_projection": true
+      },
+      {
+        "name": "delayed-ledger-finished",
+        "injected_delay_ms": 1250,
+        "source": {
+          "name": "delayed-ledger-finished",
+          "delay_ms": 1250,
+          "status": "completed",
+          "result": "options-done",
+          "events": [
+            {
+              "seconds": 0.010566499986452982,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 1.2679465409892146,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 1.2679633329971693,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 1.2683733749872772,
+              "stage": "drained"
+            },
+            {
+              "seconds": 1.2684234159969492,
+              "stage": "wait-return"
+            }
+          ]
+        },
+        "native": {
+          "Name": "delayed-ledger-finished",
+          "DelayMS": 1250,
+          "TimedOut": false,
+          "Result": "options-done",
+          "DurationMS": 1253,
+          "events": [
+            {
+              "seconds": 0.001390583,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 1.252550208,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 1.252992208,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 1.253092166,
+              "stage": "drain-1"
+            },
+            {
+              "seconds": 1.25311175,
+              "stage": "reaped"
+            },
+            {
+              "seconds": 1.253117,
+              "stage": "drain-2"
+            }
+          ]
+        },
+        "same_terminal_projection": true
+      },
+      {
+        "name": "quick-completion",
+        "injected_delay_ms": 0,
+        "source": {
+          "name": "quick-completion",
+          "delay_ms": 0,
+          "status": "completed",
+          "result": "options-done",
+          "events": [
+            {
+              "seconds": 0.004217791996779852,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 0.00512308299948927,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 0.005142666996107437,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 0.046771124994847924,
+              "stage": "drained"
+            },
+            {
+              "seconds": 0.0469225829874631,
+              "stage": "wait-return"
+            }
+          ]
+        },
+        "native": {
+          "Name": "quick-completion",
+          "DelayMS": 0,
+          "TimedOut": false,
+          "Result": "options-done",
+          "DurationMS": 42,
+          "events": [
+            {
+              "seconds": 0.002179459,
+              "stage": "spawn-return"
+            },
+            {
+              "seconds": 0.0022485,
+              "stage": "observer-return"
+            },
+            {
+              "seconds": 0.002311125,
+              "stage": "timer-ready"
+            },
+            {
+              "seconds": 0.002317042,
+              "stage": "drain-1"
+            },
+            {
+              "seconds": 0.042679667,
+              "stage": "drain-2"
+            },
+            {
+              "seconds": 0.04274525,
+              "stage": "reaped"
+            }
+          ]
+        },
+        "same_terminal_projection": true
+      }
+    ],
+    "source_functions": {
+      "BackgroundManager._exec": "5cc677234beed41376abbf972978f9246ddbd19daf9fb41ae86062cffab4ab68",
+      "BackgroundManager._write_ledger": "3fc934e31807430c99f41e0e229f0fb28ff08a4c49eca83cd646cff40c784e5e",
+      "asyncio.wait_for": "2e3efae791fd8896c9e4b594bde9d03a62a6b1986ad11390d31523fe43a85c37"
+    },
+    "observation": "Both implementations begin numeric capture waits after process creation returns and the PID/Started observer finishes. Injected 250ms delay leaves less than 1s child execution remaining, so both finish the 1.1s command. The 1.25s observer delay lets it finish before capture admission.",
+    "limits": [
+      "Injected delays are controlled diagnostics, not observations from the failed ordinary gate.",
+      "Go Started callback is documented to return promptly; deliberately delayed callbacks do not certify supported caller timing.",
+      "Original failure lacks spawn/observer/timer timestamps; its cause remains unestablished.",
+      "No assertion was weakened; no timer threshold was increased; no original test was retried."
+    ],
+    "native_setup_failure": {
+      "exit_code": 1,
+      "reason": "vet: open shell/timing_diagnostic_test.go: no such file or directory",
+      "correction": "Overlay appends the diagnostic to an existing test file. This changes diagnostic setup only."
+    },
+    "native_command": [
+      "go",
+      "test",
+      "-overlay=/tmp/mini-loop-timing-diagnosis-2026-10-12/go-overlay.json",
+      "-json",
+      "-count=1",
+      "-run",
+      "^TestDiagnosticBackgroundTiming$",
+      "./shell"
+    ],
+    "native_exit_code": 0,
+    "native_json_log": "{\"Time\":\"2026-10-12T16:41:25.811071+08:00\",\"Action\":\"start\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\"}\n{\"Time\":\"2026-10-12T16:41:26.248635+08:00\",\"Action\":\"run\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming\"}\n{\"Time\":\"2026-10-12T16:41:26.248675+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming\",\"Output\":\"=== RUN   TestDiagnosticBackgroundTiming\\n\"}\n{\"Time\":\"2026-10-12T16:41:26.248715+08:00\",\"Action\":\"run\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\"}\n{\"Time\":\"2026-10-12T16:41:26.248719+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"=== RUN   TestDiagnosticBackgroundTiming/normal-expired\\n\"}\n{\"Time\":\"2026-10-12T16:41:26.250388+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_EVENT 0.001246583 spawn-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:26.250401+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_EVENT 0.001271792 observer-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:26.250572+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_EVENT 0.001425292 timer-ready\\n\"}\n{\"Time\":\"2026-10-12T16:41:26.25061+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_EVENT 0.001431250 drain-1\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.253025+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_EVENT 1.003529417 deadline-received\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.253936+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_EVENT 1.004606542 drain-2\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.25399+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_EVENT 1.004762958 reaped\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.254195+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"TIMING_RESULT {\\\"Name\\\":\\\"normal-expired\\\",\\\"DelayMS\\\":0,\\\"TimedOut\\\":true,\\\"Result\\\":\\\"Error: Timeout (Trues)\\\",\\\"DurationMS\\\":1004}\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.257349+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Output\":\"--- PASS: TestDiagnosticBackgroundTiming/normal-expired (1.01s)\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.25741+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/normal-expired\",\"Elapsed\":1.01}\n{\"Time\":\"2026-10-12T16:41:27.257498+08:00\",\"Action\":\"run\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\"}\n{\"Time\":\"2026-10-12T16:41:27.25751+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"=== RUN   TestDiagnosticBackgroundTiming/delayed-ledger-expired\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.26057+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"TIMING_EVENT 0.002155584 spawn-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.511889+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"TIMING_EVENT 0.253346042 observer-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.512892+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"TIMING_EVENT 0.253688709 timer-ready\\n\"}\n{\"Time\":\"2026-10-12T16:41:27.512995+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"TIMING_EVENT 0.253745042 drain-1\\n\"}\n{\"Time\":\"2026-10-12T16:41:28.377034+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"TIMING_EVENT 1.118601125 drain-2\\n\"}\n{\"Time\":\"2026-10-12T16:41:28.377107+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"TIMING_EVENT 1.118648500 reaped\\n\"}\n{\"Time\":\"2026-10-12T16:41:28.377126+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"TIMING_RESULT {\\\"Name\\\":\\\"delayed-ledger-expired\\\",\\\"DelayMS\\\":250,\\\"TimedOut\\\":false,\\\"Result\\\":\\\"options-done\\\",\\\"DurationMS\\\":1118}\\n\"}\n{\"Time\":\"2026-10-12T16:41:28.379942+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Output\":\"--- PASS: TestDiagnosticBackgroundTiming/delayed-ledger-expired (1.12s)\\n\"}\n{\"Time\":\"2026-10-12T16:41:28.379981+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-expired\",\"Elapsed\":1.12}\n{\"Time\":\"2026-10-12T16:41:28.380153+08:00\",\"Action\":\"run\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\"}\n{\"Time\":\"2026-10-12T16:41:28.380166+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"=== RUN   TestDiagnosticBackgroundTiming/delayed-ledger-finished\\n\"}\n{\"Time\":\"2026-10-12T16:41:28.381909+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"TIMING_EVENT 0.001390583 spawn-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.633177+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"TIMING_EVENT 1.252550208 observer-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.636781+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"TIMING_EVENT 1.252992208 timer-ready\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.640611+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"TIMING_EVENT 1.253092166 drain-1\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.645184+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"TIMING_EVENT 1.253111750 reaped\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.648193+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"TIMING_EVENT 1.253117000 drain-2\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.648217+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"TIMING_RESULT {\\\"Name\\\":\\\"delayed-ledger-finished\\\",\\\"DelayMS\\\":1250,\\\"TimedOut\\\":false,\\\"Result\\\":\\\"options-done\\\",\\\"DurationMS\\\":1253}\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.64825+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Output\":\"--- PASS: TestDiagnosticBackgroundTiming/delayed-ledger-finished (1.26s)\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.648266+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/delayed-ledger-finished\",\"Elapsed\":1.26}\n{\"Time\":\"2026-10-12T16:41:29.648285+08:00\",\"Action\":\"run\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\"}\n{\"Time\":\"2026-10-12T16:41:29.64856+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"=== RUN   TestDiagnosticBackgroundTiming/quick-completion\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.654084+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"TIMING_EVENT 0.002179459 spawn-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.657171+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"TIMING_EVENT 0.002248500 observer-return\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.657224+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"TIMING_EVENT 0.002311125 timer-ready\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.657303+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"TIMING_EVENT 0.002317042 drain-1\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.694286+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"TIMING_EVENT 0.042679667 drain-2\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.697782+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"TIMING_EVENT 0.042745250 reaped\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.701187+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"TIMING_RESULT {\\\"Name\\\":\\\"quick-completion\\\",\\\"DelayMS\\\":0,\\\"TimedOut\\\":false,\\\"Result\\\":\\\"options-done\\\",\\\"DurationMS\\\":42}\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.707072+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Output\":\"--- PASS: TestDiagnosticBackgroundTiming/quick-completion (0.06s)\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.710294+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming/quick-completion\",\"Elapsed\":0.06}\n{\"Time\":\"2026-10-12T16:41:29.713175+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming\",\"Output\":\"--- PASS: TestDiagnosticBackgroundTiming (3.45s)\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.714583+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Test\":\"TestDiagnosticBackgroundTiming\",\"Elapsed\":3.45}\n{\"Time\":\"2026-10-12T16:41:29.717168+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.717369+08:00\",\"Action\":\"output\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Output\":\"ok  \\tgithub.com/luoyjx/mini-loop/go/shell\\t3.906s\\n\"}\n{\"Time\":\"2026-10-12T16:41:29.719344+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/luoyjx/mini-loop/go/shell\",\"Elapsed\":3.908}\n"
+  },
+  "python": {
+    "profile": {
+      "diagnostic_only": true,
+      "acceptance": false,
+      "original_failure_retained": true,
+      "turns": 40,
+      "model_calls": 80,
+      "profiled_elapsed_seconds": 0.5234417500032578,
+      "source_test_sha256": "4f8aa9e19615d8b09207de1c75481a0d20f05374727edf3c8be30568c30073f2"
+    },
+    "call_tree": "         1732507 function calls (1506955 primitive calls) in 0.523 seconds\n\n   Ordered by: cumulative time\n   List reduced from 588 to 45 due to restriction <45>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.523    0.523 runners.py:160(run)\n        3    0.000    0.000    0.523    0.174 base_events.py:617(run_until_complete)\n        1    0.000    0.000    0.523    0.523 runners.py:86(run)\n        3    0.000    0.000    0.523    0.174 base_events.py:593(run_forever)\n        6    0.000    0.000    0.523    0.087 base_events.py:1845(_run_once)\n        6    0.000    0.000    0.523    0.087 events.py:78(_run)\n        6    0.000    0.000    0.523    0.087 {method 'run' of '_contextvars.Context' objects}\n        1    0.000    0.000    0.523    0.523 profile_forty_turns.py:15(workload)\n       40    0.000    0.000    0.523    0.013 agent.py:1127(run)\n       40    0.000    0.000    0.523    0.013 agent.py:1215(_run_one_turn)\n       40    0.002    0.000    0.522    0.013 agent.py:1250(_loop)\n       80    0.008    0.000    0.386    0.005 agent.py:858(_create)\n    28858    0.019    0.000    0.173    0.000 __init__.py:183(dumps)\n    28858    0.018    0.000    0.145    0.000 encoder.py:183(encode)\n      338    0.001    0.000    0.132    0.000 agent.py:800(_send)\n      338    0.001    0.000    0.131    0.000 session.py:880(emit)\n      338    0.002    0.000    0.129    0.000 session.py:291(_capture_event)\n    28818    0.123    0.000    0.123    0.000 encoder.py:205(iterencode)\n96014/240    0.060    0.000    0.113    0.000 copy.py:128(deepcopy)\n 5168/240    0.005    0.000    0.110    0.000 copy.py:201(_deepcopy_list)\n16686/3455    0.019    0.000    0.104    0.000 copy.py:227(_deepcopy_dict)\n89714/6248    0.033    0.000    0.096    0.000 storage.py:118(_json_safe)\n       80    0.000    0.000    0.092    0.001 compaction.py:334(maybe_compact)\n28282/6248    0.021    0.000    0.088    0.000 storage.py:137(<dictcomp>)\n      338    0.001    0.000    0.080    0.000 session.py:566(_flush_messages)\n    10125    0.007    0.000    0.070    0.000 agent.py:414(_canonical_message_digest)\n      160    0.015    0.000    0.067    0.000 agent.py:355(_message_protocol_shape)\n8039/4522    0.004    0.000    0.063    0.000 storage.py:142(<listcomp>)\n11491/9247    0.010    0.000    0.060    0.000 storage.py:160(_content_blocks)\n       80    0.000    0.000    0.056    0.001 token_efficiency.py:1731(optimize_request)\n       80    0.000    0.000    0.056    0.001 token_efficiency.py:1758(_optimize_request_components)\n      161    0.000    0.000    0.050    0.000 {method 'extend' of 'list' objects}\n     3015    0.001    0.000    0.050    0.000 session.py:608(<genexpr>)\n     2855    0.005    0.000    0.049    0.000 session.py:81(_row_digest)\n       80    0.000    0.000    0.049    0.001 recovery.py:246(run)\n       80    0.000    0.000    0.048    0.001 agent.py:1001(call)\n       80    0.000    0.000    0.048    0.001 transport.py:64(send)\n       80    0.000    0.000    0.048    0.001 fake_llm.py:339(create)\n    14918    0.004    0.000    0.046    0.000 agent.py:363(canonical)\n      400    0.000    0.000    0.042    0.000 compaction.py:21(estimate_tokens)\n       80    0.000    0.000    0.034    0.000 fake_llm.py:143(validate_request)\n       80    0.008    0.000    0.034    0.000 fake_llm.py:65(validate_transcript)\n348059/347739    0.021    0.000    0.029    0.000 {built-in method builtins.isinstance}\n      240    0.000    0.000    0.026    0.000 compaction.py:238(context_used)\n      160    0.001    0.000    0.026    0.000 session.py:600(<listcomp>)\n\n\n",
+    "observations": [
+      "The profiled workload includes 40 user turns and 80 offline model calls.",
+      "Request preparation, event/storage conversion and JSON projections appear among the cumulative hot paths; the previous ASCII generator was already replaced.",
+      "Profiling adds overhead. Its 0.523s wall time is not a rerun acceptance result and does not establish the cause of the earlier 0.526s test failure."
+    ],
+    "pstats_path": "/tmp/mini-loop-timing-diagnosis-2026-10-12/forty-turns.pstats",
+    "pstats_sha256": "a32f1b718a162fd7e799d6224349efd6c2c62fa77c32058a4dc6540904369448"
+  },
+  "diagnostic_sources": {
+    "source_background_timing.py": "import asyncio, hashlib, inspect, json, pathlib, tempfile, time\nfrom unittest.mock import patch\nfrom mini_loop.background import BackgroundManager\nfrom mini_loop import background\nout=pathlib.Path('/tmp/mini-loop-timing-diagnosis-2026-10-12')\ncases=[('normal-expired',0,'sleep 1.1; printf options-done'),('delayed-ledger-expired',0.25,'sleep 1.1; printf options-done'),('delayed-ledger-finished',1.25,'sleep 1.1; printf options-done'),('quick-completion',0,'sleep 0.03; printf options-done')]\nasync def capture():\n rows=[]\n for name, delay, command in cases:\n  with tempfile.TemporaryDirectory(prefix='mini-loop-background-timing-') as tmp:\n   manager=BackgroundManager(pathlib.Path(tmp));events=[];began=time.monotonic()\n   original_ledger=manager._write_ledger;original_wait=asyncio.wait_for;original_read=manager._bounded_read;original_kill=background._kill_group\n   def event(stage): events.append({'seconds':time.monotonic()-began,'stage':stage})\n   def ledger(bg_id,command,*,pid):\n    if pid is not None: event('spawn-return');time.sleep(delay)\n    result=original_ledger(bg_id,command,pid=pid)\n    if pid is not None:event('observer-return')\n    return result\n   async def wait(awaitable,timeout):\n    event('timer-ready')\n    try:\n     result=await original_wait(awaitable,timeout)\n     event('wait-return');return result\n    except asyncio.TimeoutError:\n     event('deadline-received');raise\n   async def read(*args):\n    result=await original_read(*args);event('drained');return result\n   def kill(proc):event('kill-group');original_kill(proc)\n   with patch.object(manager,'_write_ledger',ledger),patch.object(manager,'_bounded_read',read),patch.object(asyncio,'wait_for',wait),patch.object(background,'_kill_group',kill):\n    manager.run(command,timeout=True)\n    await manager._tasks['bg_0001']['handle']\n   row=manager._tasks['bg_0001'];rows.append({'name':name,'delay_ms':round(delay*1000),'status':row['status'],'result':row['result'],'events':events})\n   await manager.close()\n return rows\nreceipt={'diagnostic_only':True,'acceptance':False,'original_failure_retained':True,'delays_are_injected_after_spawn':True,'cases':asyncio.run(capture()),'source_sha256':{name:hashlib.sha256(inspect.getsource(fn).encode()).hexdigest() for name,fn in [('BackgroundManager._exec',BackgroundManager._exec),('BackgroundManager._write_ledger',BackgroundManager._write_ledger),('asyncio.wait_for',asyncio.wait_for)]}}\n(out/'source-background-timing.json').write_text(json.dumps(receipt,indent=2)+'\\n')\nfor row in receipt['cases']: print(row['name'],row['status'],row['result'])\n",
+    "profile_forty_turns.py": "import asyncio, cProfile, hashlib, json, pathlib, pstats, tempfile, time\nfrom mini_loop import SessionManager, Settings\nfrom mini_loop.fake_llm import FakeAsyncAnthropic, text, tool\nroot = pathlib.Path('/Users/yanjixiong/github/mini-loop')\nout = pathlib.Path('/tmp/mini-loop-timing-diagnosis-2026-10-12')\nturns = {'n': 0}\ndef responder(request):\n    turns['n'] += 1\n    if turns['n'] % 2:\n        return ([tool('run_bash', _id=f\"t{turns['n']}\", command='echo hi')], 'tool_use')\n    return ([text('X' * 3000)], 'end_turn')\nwith tempfile.TemporaryDirectory(prefix='mini-loop-cost-diagnostic-') as tmp:\n    manager = SessionManager(Settings(fake_llm=True, workspace_root=pathlib.Path(tmp)/'ws', skills_dir=root/'python/skills'), FakeAsyncAnthropic(responder=responder))\n    session = manager.create()\n    async def workload():\n        for index in range(40):\n            await session.agent.run(f'turn {index}')\n    profiler=cProfile.Profile()\n    began=time.monotonic()\n    profiler.enable()\n    asyncio.run(workload())\n    profiler.disable()\n    elapsed=time.monotonic()-began\n    profiler.dump_stats(str(out/'forty-turns.pstats'))\n    with (out/'forty-turns-profile.txt').open('w') as stream:\n        pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats('cumtime').print_stats(45)\n    receipt={'diagnostic_only':True,'acceptance':False,'original_failure_retained':True,'turns':40,'model_calls':turns['n'],'profiled_elapsed_seconds':elapsed,'source_test_sha256':hashlib.sha256((root/'python/tests/test_double_cost.py').read_bytes()).hexdigest()}\n    (out/'forty-turns-profile.json').write_text(json.dumps(receipt,indent=2)+'\\n')\n    print(receipt)\n",
+    "executor_timing.go": "package shell\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"fmt\"\n\t\"io\"\n\t\"os\"\n\t\"os/exec\"\n\t\"sort\"\n\t\"strings\"\n\t\"sync\"\n\t\"time\"\n\n\t\"github.com/luoyjx/mini-loop/go/internal/pytext\"\n\t\"github.com/luoyjx/mini-loop/go/protocol\"\n\t\"github.com/luoyjx/mini-loop/go/secrets\"\n\t\"github.com/luoyjx/mini-loop/go/spill\"\n\t\"github.com/luoyjx/mini-loop/go/workspace\"\n)\n\n// SecretSource supplies both narrow environment injection and whole-value masks.\ntype SecretSource interface {\n\tScrubEnvironment(secrets.Environment) secrets.Environment\n\tEnvForCommand(string) secrets.Environment\n\tMaskText(string) string\n}\n\n// Sandbox owns argv and must return a workspace-bound instance. No sandbox is\n// configured by default. The opt-in Seatbelt backend lives in package sandbox.\ntype Sandbox interface {\n\tForWorkspace(string) (Sandbox, error)\n\tArgv(string) ([]string, error)\n}\ntype Config struct {\n\tSpill        spill.Store\n\tWorkspace    string\n\tTimeout      time.Duration\n\tCaptureLimit int\n\tSecrets      SecretSource\n\tSandbox      Sandbox\n}\ntype Executor struct {\n\tspill        spill.Store\n\troot         string\n\ttimeout      time.Duration\n\tcaptureLimit int\n\tsecrets      SecretSource\n\tsandbox      Sandbox\n\tprocesses    *processTracker\n}\n\ntype processTracker struct {\n\tmu   sync.Mutex\n\tlive map[*os.Process]chan struct{}\n}\n\nfunc New(config Config) (*Executor, error) {\n\tif !groupsSupported {\n\t\treturn nil, errors.New(\"foreground process groups require Linux or macOS\")\n\t}\n\tfiles, err := workspace.NewFiles(config.Workspace)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tinfo, err := os.Stat(files.Root())\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif !info.IsDir() {\n\t\treturn nil, errors.New(\"shell workspace must be a directory\")\n\t}\n\tif config.Timeout < 0 || config.CaptureLimit < 0 {\n\t\treturn nil, errors.New(\"shell timeout and capture limit cannot be negative\")\n\t}\n\tif config.Timeout == 0 {\n\t\tconfig.Timeout = 120 * time.Second\n\t}\n\tif config.CaptureLimit == 0 {\n\t\tconfig.CaptureLimit = CaptureLimit\n\t}\n\tif config.Secrets == nil {\n\t\tconfig.Secrets = secrets.Null{}\n\t}\n\tif config.Sandbox != nil {\n\t\tconfig.Sandbox, err = config.Sandbox.ForWorkspace(files.Root())\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\tif config.Sandbox == nil {\n\t\t\treturn nil, errors.New(\"sandbox binding returned nil\")\n\t\t}\n\t}\n\treturn &Executor{spill: config.Spill, root: files.Root(), timeout: config.Timeout, captureLimit: config.CaptureLimit, secrets: config.Secrets, sandbox: config.Sandbox, processes: &processTracker{live: make(map[*os.Process]chan struct{})}}, nil\n}\n\n// WithSecrets returns an independent executor using the same bound process\n// configuration. A session never changes a shared executor's credential scope.\nfunc (executor *Executor) WithSecrets(source SecretSource) (*Executor, error) {\n\tclone, err := New(Config{Workspace: executor.root, Timeout: executor.timeout, CaptureLimit: executor.captureLimit, Secrets: source, Sandbox: executor.sandbox, Spill: executor.spill})\n\tif err == nil {\n\t\tclone.processes = executor.processes\n\t}\n\treturn clone, err\n}\n\n// WithWorkspace rebinds cwd and sandbox together while retaining credentials,\n// capture/deadline policy, spill and interrupt ownership. Existing copies stay\n// bound to their old workspace; a child can safely keep its pinned executor.\nfunc (executor *Executor) WithWorkspace(root string) (*Executor, error) {\n\tclone, err := New(Config{Workspace: root, Timeout: executor.timeout, CaptureLimit: executor.captureLimit, Secrets: executor.secrets, Sandbox: executor.sandbox, Spill: executor.spill})\n\tif err == nil {\n\t\tclone.processes = executor.processes\n\t}\n\treturn clone, err\n}\n\n// WithSpill returns an independent executor bound to the same workspace,\n// credentials and process tracker. Nil explicitly disables its string spill policy.\nfunc (executor *Executor) WithSpill(store spill.Store) (*Executor, error) {\n\tclone, err := New(Config{Workspace: executor.root, Timeout: executor.timeout, CaptureLimit: executor.captureLimit, Secrets: executor.secrets, Sandbox: executor.sandbox, Spill: store})\n\tif err == nil {\n\t\tclone.processes = executor.processes\n\t}\n\treturn clone, err\n}\n\ntype TextMasker interface{ MaskText(string) string }\ntype maskingSecrets struct {\n\tSecretSource\n\tmasker TextMasker\n}\n\nfunc (source maskingSecrets) MaskText(text string) string { return source.masker.MaskText(text) }\nfunc (executor *Executor) WithMasker(masker TextMasker) (*Executor, error) {\n\tif masker == nil {\n\t\treturn executor.WithSecrets(executor.secrets)\n\t}\n\treturn executor.WithSecrets(maskingSecrets{executor.secrets, masker})\n}\n\nfunc (executor *Executor) Workspace() string { return executor.root }\n\n// MaskText supplies the same credential projection to a bound background ledger.\nfunc (executor *Executor) MaskText(text string) string { return executor.secrets.MaskText(text) }\n\n// Configured sandbox argv is not evidence of OS confinement.\nfunc (executor *Executor) SandboxConfigured() bool { return executor.sandbox != nil }\nfunc (executor *Executor) ExecuteBash(ctx context.Context, input protocol.BashInput) (string, error) {\n\tresult, err := executor.ExecuteBashResult(ctx, input)\n\treturn executor.projectBash(ctx, result), err\n}\n\n// Interrupt kills all active foreground groups, including pipe-holding children\n// whose shell has exited. The command goroutine owns reaping and pipe cleanup.\nfunc (executor *Executor) Interrupt() int {\n\texecutor.processes.mu.Lock()\n\tdefer executor.processes.mu.Unlock()\n\tfor process, interrupted := range executor.processes.live {\n\t\tkillGroup(process)\n\t\tselect {\n\t\tcase interrupted <- struct{}{}:\n\t\tdefault:\n\t\t}\n\t}\n\treturn len(executor.processes.live)\n}\nfunc (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.BashInput) (Result, error) {\n\treturn executor.execute(ctx, input.Command, executionPolicy{timeout: executor.timeout})\n}\n\nfunc (executor *Executor) execute(ctx context.Context, command string, policy executionPolicy) (result Result, returnedErr error) {\n\tstarted := time.Now()\n\tresult.CaptureLimit = executor.captureLimit\n\tdefer func() { result.DurationMS = time.Since(started).Milliseconds() }()\n\tfailure := func(err error) (Result, error) {\n\t\ttext := executor.secrets.MaskText(\"Error: \" + err.Error())\n\t\tresult.Error = &text\n\t\treturn result, nil\n\t}\n\tif err := ctx.Err(); err != nil {\n\t\treturn result, err\n\t}\n\tif LooksDangerous(command) {\n\t\treturn failure(errors.New(\"Dangerous command blocked\"))\n\t}\n\targv := []string{\"/bin/sh\", \"-c\", command}\n\tif executor.sandbox != nil {\n\t\tvar err error\n\t\targv, err = executor.sandbox.Argv(command)\n\t\tif err != nil {\n\t\t\treturn failure(err)\n\t\t}\n\t}\n\tif len(argv) == 0 || argv[0] == \"\" {\n\t\treturn failure(errors.New(\"sandbox returned empty argv\"))\n\t}\n\tscrubbed := executor.secrets.ScrubEnvironment(nil)\n\tenv := make(secrets.Environment, len(scrubbed))\n\tfor key, value := range scrubbed {\n\t\tenv[key] = value\n\t}\n\tfor key, value := range executor.secrets.EnvForCommand(command) {\n\t\tenv[key] = value\n\t}\n\tkeys := make([]string, 0, len(env))\n\tfor key := range env {\n\t\tkeys = append(keys, string(key))\n\t}\n\tsort.Strings(keys)\n\tcmd := exec.Command(argv[0], argv[1:]...)\n\tcmd.Dir = executor.root\n\t// Explicit non-nil Env prevents an empty scrubbed environment inheriting host credentials.\n\tcmd.Env = make([]string, 0, len(keys))\n\tfor _, key := range keys {\n\t\tcmd.Env = append(cmd.Env, key+\"=\"+env[secrets.Name(key)])\n\t}\n\tconfigureGroup(cmd)\n\tstdout, stdoutWrite, err := os.Pipe()\n\tif err != nil {\n\t\treturn failure(err)\n\t}\n\tdefer stdout.Close()\n\tdefer stdoutWrite.Close()\n\tstderr, stderrWrite, err := os.Pipe()\n\tif err != nil {\n\t\treturn failure(err)\n\t}\n\tdefer stderr.Close()\n\tdefer stderrWrite.Close()\n\tcmd.Stdout, cmd.Stderr = stdoutWrite, stderrWrite\n\tif policy.background {\n\t\tcmd.Stderr = stdoutWrite\n\t}\n\t// A child can publish effects immediately after Start. Serialize foreground\n\t// start and registration with Interrupt so an already-running child cannot\n\t// be missed merely because its parent has not published the PID yet.\n\tif !policy.background {\n\t\texecutor.processes.mu.Lock()\n\t}\n\tif err := cmd.Start(); err != nil {\n\t\tif !policy.background {\n\t\t\texecutor.processes.mu.Unlock()\n\t\t}\n\t\treturn failure(err)\n\t}\n\tfmt.Printf(\"TIMING_EVENT %.9f spawn-return\\n\", time.Since(started).Seconds())\n\t_ = stdoutWrite.Close()\n\t_ = stderrWrite.Close()\n\tinterrupted := make(chan struct{}, 1)\n\tif !policy.background {\n\t\texecutor.processes.live[cmd.Process] = interrupted\n\t\texecutor.processes.mu.Unlock()\n\t\tdefer func() {\n\t\t\texecutor.processes.mu.Lock()\n\t\t\tdelete(executor.processes.live, cmd.Process)\n\t\t\texecutor.processes.mu.Unlock()\n\t\t}()\n\t}\n\tvar startFault error\n\tif policy.started != nil {\n\t\tstartFault = notifyStarted(policy.started, ProcessID(cmd.Process.Pid))\n\t}\n\tfmt.Printf(\"TIMING_EVENT %.9f observer-return\\n\", time.Since(started).Seconds())\n\tcapture := &boundedCapture{limit: executor.captureLimit, overflow: make(chan struct{}, 1)}\n\tdrained := make(chan error, 2)\n\tvar bytes *byteCapture\n\tif policy.background {\n\t\tbytes = &byteCapture{limit: executor.captureLimit, overflow: capture.overflow}\n\t\tgo func() { drained <- bytes.drain(stdout) }()\n\t\tgo func() { drained <- nil }()\n\t} else {\n\t\tgo func() { drained <- capture.drain(stdout, false) }()\n\t\tgo func() { drained <- capture.drain(stderr, true) }()\n\t}\n\twaited := make(chan error, 1)\n\tgo func() { waited <- cmd.Wait() }()\n\twait := NumericBackgroundWait(policy.timeout.Seconds(), fmt.Sprintf(\"%g\", policy.timeout.Seconds()))\n\tif policy.wait != nil {\n\t\twait = *policy.wait\n\t}\n\tvar timer *time.Timer\n\tvar deadline <-chan time.Time\n\tvar remaining float64\n\tif wait.kind == backgroundWaitNumeric && wait.seconds > 0 {\n\t\tif policy.wait == nil {\n\t\t\ttimer = time.NewTimer(policy.timeout) // Preserve the typed caller's exact duration.\n\t\t} else {\n\t\t\tstep, rest := backgroundWaitStep(wait.seconds)\n\t\t\tremaining = rest\n\t\t\ttimer = time.NewTimer(step)\n\t\t}\n\t\tdeadline = timer.C\n\t\tdefer timer.Stop()\n\t}\n\tif wait.kind == backgroundWaitFault && startFault == nil {\n\t\tstartFault = wait.failure()\n\t}\n\tfmt.Printf(\"TIMING_EVENT %.9f timer-ready\\n\", time.Since(started).Seconds())\n\tcancelled := ctx.Done()\n\toverflow := capture.overflow\n\tvar drainError error\n\tvar waitError error\n\tvar cleanup *time.Timer\n\tvar killRetry *time.Ticker\n\tvar retryKill <-chan time.Time\n\tdefer func() {\n\t\tif cleanup != nil {\n\t\t\tcleanup.Stop()\n\t\t}\n\t\tif killRetry != nil {\n\t\t\tkillRetry.Stop()\n\t\t}\n\t}()\n\tdrains := 0\n\treaped := false\n\tabandonedWait := false\n\tkilled := false\n\tendGroup := func() {\n\t\tif killed {\n\t\t\treturn\n\t\t}\n\t\tkilled = true\n\t\tkillGroup(cmd.Process)\n\t\tcleanup = time.NewTimer(5 * time.Second)\n\t\tdeadline = cleanup.C\n\t\t// A concurrent shell fork can join the group after the first signal\n\t\t// broadcast. Retry while pipes remain open, within the cleanup deadline.\n\t\tkillRetry = time.NewTicker(20 * time.Millisecond)\n\t\tretryKill = killRetry.C\n\t}\n\tif startFault != nil {\n\t\tendGroup()\n\t} else if wait.kind == backgroundWaitImmediate || wait.kind == backgroundWaitNumeric && wait.seconds <= 0 {\n\t\tresult.TimedOut = true\n\t\tendGroup()\n\t}\n\tfor drains < 2 || !reaped && !abandonedWait {\n\t\tselect {\n\t\tcase err := <-drained:\n\t\t\tfmt.Printf(\"TIMING_EVENT %.9f drain-%d\\n\", time.Since(started).Seconds(), drains+1)\n\t\t\tdrains++\n\t\t\tif drains == 2 && killRetry != nil {\n\t\t\t\tkillRetry.Stop()\n\t\t\t\tretryKill = nil\n\t\t\t}\n\t\t\tif err != nil && !errors.Is(err, os.ErrClosed) && drainError == nil {\n\t\t\t\tdrainError = err\n\t\t\t}\n\t\tcase err := <-waited:\n\t\t\tfmt.Printf(\"TIMING_EVENT %.9f reaped\\n\", time.Since(started).Seconds())\n\t\t\twaitError = err\n\t\t\treaped = true\n\t\t\twaited = nil\n\t\tcase <-overflow:\n\t\t\toverflow = nil\n\t\t\tendGroup()\n\t\tcase <-cancelled:\n\t\t\treturnedErr = ctx.Err()\n\t\t\tcancelled = nil\n\t\t\tendGroup()\n\t\tcase <-interrupted:\n\t\t\tinterrupted = nil\n\t\t\tendGroup()\n\t\tcase <-retryKill:\n\t\t\tif drains < 2 {\n\t\t\t\tkillGroup(cmd.Process)\n\t\t\t}\n\t\tcase <-deadline:\n\t\t\tfmt.Printf(\"TIMING_EVENT %.9f deadline-received\\n\", time.Since(started).Seconds())\n\t\t\tif !killed {\n\t\t\t\tif remaining > 0 {\n\t\t\t\t\tstep, rest := backgroundWaitStep(remaining)\n\t\t\t\t\tremaining = rest\n\t\t\t\t\ttimer.Reset(step)\n\t\t\t\t\tcontinue\n\t\t\t\t}\n\t\t\t\tresult.TimedOut = true\n\t\t\t\tendGroup()\n\t\t\t} else {\n\t\t\t\t// A descendant may detach itself from the group and keep a pipe open.\n\t\t\t\t// Closing our read ends releases readers without an unbounded cleanup wait.\n\t\t\t\t_ = stdout.Close()\n\t\t\t\t_ = stderr.Close()\n\t\t\t\tdeadline = nil\n\t\t\t\tkillRetry.Stop()\n\t\t\t\tretryKill = nil\n\t\t\t\tif !reaped {\n\t\t\t\t\tabandonedWait = true\n\t\t\t\t\twaited = nil\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\tif bytes != nil {\n\t\tresult.Stdout, result.Overflowed = bytes.finish()\n\t} else {\n\t\tresult.Stdout, result.Stderr, result.Overflowed = capture.finish()\n\t}\n\t// Drainers and the parent can all finish before select consumes overflow.\n\t// The already-exited parent can still have a live producer in its group.\n\tif result.Overflowed && !killed {\n\t\tkillGroup(cmd.Process)\n\t}\n\tprojection := executor.secrets.MaskText(result.Stdout + result.Stderr)\n\tresult.Stdout = executor.secrets.MaskText(result.Stdout)\n\tresult.Stderr = executor.secrets.MaskText(result.Stderr)\n\tif projection != result.Stdout+result.Stderr {\n\t\tresult.Stdout, result.Stderr = projection, \"\"\n\t}\n\tresult.Projection = &projection\n\tif reaped && cmd.ProcessState != nil {\n\t\tcode := processExitCode(cmd.ProcessState)\n\t\tresult.ExitCode = &code\n\t}\n\tif startFault != nil {\n\t\ttext := executor.secrets.MaskText(\"Error: \" + startFault.Error())\n\t\tresult.Error = &text\n\t} else if result.TimedOut {\n\t\ttext := executor.secrets.MaskText(fmt.Sprintf(\"Error: Timeout (%ss)\", wait.label))\n\t\tresult.Error = &text\n\t} else if drainError != nil {\n\t\ttext := executor.secrets.MaskText(\"Error: \" + drainError.Error())\n\t\tresult.Error = &text\n\t} else if waitError != nil {\n\t\tvar exit *exec.ExitError\n\t\tif !errors.As(waitError, &exit) {\n\t\t\ttext := executor.secrets.MaskText(\"Error: \" + waitError.Error())\n\t\t\tresult.Error = &text\n\t\t}\n\t}\n\treturn result, returnedErr\n}\n\n// Python's capture budget counts decoded characters, despite its bytes label.\n// The fixed-size read buffers and shared rune budget bound allocation by the cap.\ntype boundedCapture struct {\n\tmu             sync.Mutex\n\tlimit, size    int\n\tstdout, stderr strings.Builder\n\toverflowed     bool\n\toverflow       chan struct{}\n}\n\nfunc (capture *boundedCapture) drain(stream *os.File, stderr bool) error {\n\treader := pytext.NewReader(stream)\n\tvar chunk strings.Builder\n\tcount := 0\n\ttarget := min(4096, capture.limit+1)\n\tflush := func() bool {\n\t\tif count == 0 {\n\t\t\treturn false\n\t\t}\n\t\tcapture.mu.Lock()\n\t\tdefer capture.mu.Unlock()\n\t\tif capture.overflowed {\n\t\t\treturn true\n\t\t}\n\t\troom := capture.limit - capture.size\n\t\ttext := chunk.String()\n\t\taccepted := count\n\t\tif accepted > room {\n\t\t\taccepted = room\n\t\t\ttext = string([]rune(text)[:room])\n\t\t}\n\t\tif stderr {\n\t\t\tcapture.stderr.WriteString(text)\n\t\t} else {\n\t\t\tcapture.stdout.WriteString(text)\n\t\t}\n\t\tcapture.size += accepted\n\t\tif count > accepted {\n\t\t\tcapture.overflowed = true\n\t\t\tcapture.overflow <- struct{}{}\n\t\t\treturn true\n\t\t}\n\t\tchunk.Reset()\n\t\tcount = 0\n\t\ttarget = min(4096, capture.limit-capture.size+1)\n\t\treturn false\n\t}\n\tfor {\n\t\tr, err := reader.ReadTextRune()\n\t\tif err != nil {\n\t\t\tflush()\n\t\t\tif errors.Is(err, os.ErrClosed) || errors.Is(err, io.EOF) {\n\t\t\t\treturn nil\n\t\t\t}\n\t\t\treturn err\n\t\t}\n\t\tchunk.WriteRune(r)\n\t\tcount++\n\t\tif count >= target {\n\t\t\tif flush() {\n\t\t\t\treturn nil\n\t\t\t}\n\t\t}\n\t}\n}\nfunc (capture *boundedCapture) finish() (string, string, bool) {\n\tcapture.mu.Lock()\n\tdefer capture.mu.Unlock()\n\treturn capture.stdout.String(), capture.stderr.String(), capture.overflowed\n}\n",
+    "background_timing_test.go": "package shell\n\nimport (\n \"encoding/json\"\n \"fmt\"\n\t\"context\"\n\t\"strings\"\n\t\"testing\"\n\t\"time\"\n)\n\nfunc TestBackgroundIsExcludedFromForegroundInterrupt(t *testing.T) {\n\texecutor := makeExecutor(t, Config{})\n\tctx, cancel := context.WithCancel(context.Background())\n\tdefer cancel()\n\tstarted := make(chan ProcessID, 1)\n\tdone := make(chan error, 1)\n\tgo func() {\n\t\t_, err := executor.ExecuteBackground(ctx, BackgroundCommand{Command: \"sleep 30\", Started: func(pid ProcessID) { started <- pid }})\n\t\tdone <- err\n\t}()\n\tselect {\n\tcase <-started:\n\tcase <-time.After(3 * time.Second):\n\t\tt.Fatal(\"background never started\")\n\t}\n\tif killed := executor.Interrupt(); killed != 0 {\n\t\tt.Fatal(\"foreground interrupt reached background work\", killed)\n\t}\n\tselect {\n\tcase err := <-done:\n\t\tt.Fatal(\"background ended with foreground interrupt\", err)\n\tdefault:\n\t}\n\tcancel()\n\tselect {\n\tcase err := <-done:\n\t\tif err != context.Canceled {\n\t\t\tt.Fatal(\"background lost caller cancellation\", err)\n\t\t}\n\tcase <-time.After(6 * time.Second):\n\t\tt.Fatal(\"background cancellation did not join\")\n\t}\n}\n\nfunc TestBackgroundStartObserverPanicEndsAndJoinsGroup(t *testing.T) {\n\texecutor := makeExecutor(t, Config{})\n\tresult, err := executor.ExecuteBackground(context.Background(), BackgroundCommand{Command: \"sleep 30\", Started: func(ProcessID) { panic(\"private-value\") }})\n\tif err != nil || result.Error == nil || !strings.Contains(*result.Error, \"start observer panicked\") || strings.Contains(*result.Error, \"private-value\") || result.ExitCode == nil {\n\t\tt.Fatal(\"start observer panic did not yield reaped, bounded failure\", result, err)\n\t}\n}\n\ntype timingCase struct { Name string; Delay time.Duration; Command string }\nfunc TestDiagnosticBackgroundTiming(t *testing.T) {\n cases:=[]timingCase{\n  {\"normal-expired\",0,\"sleep 1.1; printf options-done\"},\n  {\"delayed-ledger-expired\",250*time.Millisecond,\"sleep 1.1; printf options-done\"},\n  {\"delayed-ledger-finished\",1250*time.Millisecond,\"sleep 1.1; printf options-done\"},\n  {\"quick-completion\",0,\"sleep 0.03; printf options-done\"},\n }\n for _,row:=range cases { t.Run(row.Name,func(t *testing.T){\n  executor:=makeExecutor(t,Config{})\n  wait:=NumericBackgroundWait(1,\"True\")\n  result,err:=executor.ExecuteBackground(context.Background(),BackgroundCommand{Command:row.Command,Wait:&wait,Started:func(ProcessID){time.Sleep(row.Delay)}})\n  if err!=nil {t.Fatal(err)}\n  data,_:=json.Marshal(struct{Name string;DelayMS int64;TimedOut bool;Result string;DurationMS int64}{row.Name,row.Delay.Milliseconds(),result.TimedOut,result.Render(),result.DurationMS})\n  fmt.Printf(\"TIMING_RESULT %s\\n\",data)\n }) }\n}\n",
+    "go-overlay.json": "{\n  \"Replace\": {\n    \"/Users/yanjixiong/github/mini-loop/go/shell/executor.go\": \"/tmp/mini-loop-timing-diagnosis-2026-10-12/executor_timing.go\",\n    \"/Users/yanjixiong/github/mini-loop/go/shell/background_test.go\": \"/tmp/mini-loop-timing-diagnosis-2026-10-12/background_timing_test.go\"\n  }\n}\n"
+  },
+  "architecture": {
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "757be9721a4a3f501352bf164c8363feee5fcae4602cad3d47faab0d21048881",
+    "base_changed": false,
+    "iteration": "docs/audits/go-timing-boundaries-infographic-2026-10-12.png",
+    "iteration_sha256": "7af000c57e4b4b4ee2d46cc2b61eb80fc361553628198723b0f9169bb6458616",
+    "prompt": "docs/audits/go-timing-boundaries-infographic-2026-10-12.prompt.txt",
+    "prompt_sha256": "8d15b86867532a1e631ced33296ce60c0eef265ed92537d99e79bc1583c57856",
+    "visual_review": "Preserved five exact layer headings, all five L5 cards, bidirectional Session/Provider, Session-to-ToolGate above Provider, gate/L4 and L4-to-Session routes. Highlights Shell/background and audit as observations only. Corrected broad no-delay wording to the specific 1.1s/1s scenario.",
+    "components_added_or_removed": false
+  },
+  "validation": "JSON paired scenario projections agree; all existing runtime/test/Source hashes unchanged; diff check required. Prior ordinary Go/Python failures remain; full implementation gates not rerun for this documentation-only diagnostic.",
+  "remaining": [
+    "Obtain the missing original-equivalent native spawn/observer/timer timeline before assigning a background failure cause.",
+    "Measure Python stage cost without cProfile overhead before selecting a runtime optimization.",
+    "Resolve ordinary Go and full Python mandatory failures before local main merge.",
+    "Original migration scope and diagnostics parser decision remain open."
+  ]
+}

@@ -1,5 +1,30 @@
 # Go port plan
 
+## 2026-10-12 timing boundary diagnostics
+
+After `f9d4f61`, runtime and repository tests remain unchanged. Four matched
+Source/Go scenarios show that the numeric capture wait begins after process
+creation and PID-observer preparation. The 1.1s command times out with no injected
+registration delay, but both complete after a 250ms delay; the short command also
+completes. These controlled delays do not establish the cause of the earlier
+ordinary Go failure, which lacks those timestamps. The native Started observer
+still requires a prompt return. No original assertion, timeout or threshold changed.
+
+One cProfile capture of the Python 40-turn workload (80 model calls) shows request
+preparation, event/storage conversion and JSON projections among its hot paths.
+The profiled 0.523s includes measurement overhead and is not a passing or failing
+acceptance rerun. The original 0.526s/0.5s Python failure remains unresolved.
+[Exact diagnostics and sources](docs/audits/go-timing-boundaries-2026-10-12.json);
+[base-derived observation image](docs/audits/go-timing-boundaries-infographic-2026-10-12.png).
+Five layers and required arrows inspected; no component addition/deletion, so the
+base is unchanged. Runtime/test/Source hashes match the prior frozen cohort;
+only its already-recorded README documentation differs. Full gates not rerun for
+this documentation-only diagnostic. Main remains `89327ab`; no merge or push.
+
+Next: obtain the missing native timing stages and measure Python stage cost
+without profiler overhead before changing implementation. Original acceptance
+and the diagnostics-parser decision remain open.
+
 ## 2026-10-12 legacy string text span reuse
 
 Implementation `00059f1`, based on branch `634fe23`; main remains `89327ab`. Prior full race failure at
