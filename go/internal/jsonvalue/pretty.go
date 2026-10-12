@@ -1,6 +1,9 @@
 package jsonvalue
 
-import "strings"
+import (
+	"strings"
+	"unicode/utf8"
+)
 
 // LegacyStringIndent is Python's ensure_ascii=False, indent=2 string projection.
 // Surrogatepass characters remain in the string until its final UTF-8 boundary.
@@ -9,6 +12,11 @@ func (v Value) LegacyStringIndent() (string, error) {
 	return string(data), err
 }
 func appendLegacyStringText(out []byte, text string) []byte {
+	// Scalar UTF-8 has the same quoting in the legacy string and byte codecs.
+	// Keep surrogatepass/native malformed text on its existing rune path below.
+	if utf8.ValidString(text) {
+		return appendTextUTF8(out, text)
+	}
 	out = append(out, '"')
 	for len(text) > 0 {
 		r, n := textRune(text)

@@ -4576,3 +4576,15 @@ The Source text corpus now supplies all four modes, including ASCII with spaces;
 Token-meter/compaction fixture results and the original SQLite restart/replay/
 readonly/backend-once assertions remain required. No new default, type variant,
 dependency, cache, context adjustment or execution capability is introduced.
+
+
+## Go legacy string text span reuse
+
+LegacyString and LegacyStringIndent retain closed Value inputs and Python-string
+semantics. Their shared text helper delegates scalar UTF-8 to the existing span
+codec. Invalid/surrogatepass native text stays on the original textRune/appendRune
+path. This does not make a surrogate-containing string valid HTTP/SQLite UTF-8.
+Compact/pretty Source hashes include text and keys, paired surrogate code points,
+replacement scalars and controls. Existing malformed-byte replacement checks,
+nonfinite variants, member order and nesting policies remain unchanged. No new
+variant, dependency, default, cache, execution authority or context adjustment.
