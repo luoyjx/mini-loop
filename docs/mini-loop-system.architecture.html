@@ -4544,7 +4544,7 @@
 
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read">
-      <svg viewBox="0 0 2500 1760" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
+      <svg viewBox="0 0 2500 2000" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
         <desc id="archify-diagram-description">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns, native SQLite and explicit restoration; final default/platform/feature acceptance remains</desc>
         <!-- Definitions -->
@@ -4639,6 +4639,8 @@
         <path data-edge-from="goGate" data-edge-to="goWorkflow" data-edge-key="50" data-edge-id="go-workflow-tools" data-composition-points="1510,1180;1510,1143;1510,1143;1510,1106" d="M 1510 1180 L 1510 1143 L 1510 1143 L 1510 1106" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goWorkflow" data-edge-to="goSession" data-edge-key="51" data-edge-id="goWorkflowEvents" data-composition-points="1370,1068;1300,1068;1300,1090;790,1090;790,1218;850,1218" d="M 1370 1068 L 1308 1068 Q 1300 1068 1300 1076 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goApprovals" data-edge-to="goChildren" data-edge-key="52" data-edge-id="goGuardianReview" data-composition-points="2200,1018;2410,1018;2410,1700;1535,1700;1535,1616" d="M 2200 1018 L 2402 1018 Q 2410 1018 2410 1026 L 2410 1692 Q 2410 1700 2402 1700 L 1543 1700 Q 1535 1700 1535 1692 L 1535 1616" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goContractInputs" data-edge-to="goContractAudit" data-edge-key="53" data-edge-id="goContractRead" data-composition-points="650,1858;990,1858" d="M 650 1858 L 990 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goContractAudit" data-edge-to="goContractEvidence" data-edge-key="54" data-edge-id="goContractRecord" data-composition-points="1310,1858;1650,1858" d="M 1310 1858 L 1650 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5059,6 +5061,42 @@
         <text data-detail="context" x="1510" y="1082" class="t-muted" font-size="9" text-anchor="middle">18 observations / UTF-8 archives; local DAG</text>
         </g>
 
+        <g id="node-goContractInputs" data-node-id="goContractInputs" data-node-label="Source / Go / test result files" tabindex="0" role="button" aria-label="Focus Source / Go / test result files, manifest hashes + separate platform captures, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="manifest hashes + separate platform captures" data-node-context="Architecture component">
+          <title>Source / Go / test result files · manifest hashes + separate platform captures · Architecture component</title>
+          <rect x="350" y="1820" width="300" height="76" rx="6" class="c-mask"/>
+          <rect x="350" y="1820" width="300" height="76" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(356 1826) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-detail-anchor x="500" y="1856" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Source / Go / test result files</text>
+        <text data-detail="context" x="500" y="1872" class="t-muted" font-size="9" text-anchor="middle">manifest hashes + separate platform captures</text>
+        </g>
+
+        <g id="node-goContractAudit" data-node-id="goContractAudit" data-node-label="Go contractaudit · operator CLI" tabindex="0" role="button" aria-label="Focus Go contractaudit · operator CLI, candidate links / hashes / test-root actions, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="candidate links / hashes / test-root actions" data-node-tag="no semantic-parity certificate" data-node-context="Architecture component">
+          <title>Go contractaudit · operator CLI · candidate links / hashes / test-root actions · Architecture component · no semantic-parity certificate</title>
+          <rect x="990" y="1820" width="320" height="76" rx="6" class="c-mask"/>
+          <rect x="990" y="1820" width="320" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(996 1826) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="1150" y="1856" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go contractaudit · operator CLI</text>
+        <text data-detail="context" x="1150" y="1872" class="t-muted" font-size="9" text-anchor="middle">candidate links / hashes / test-root actions</text>
+        <text data-detail="fine" x="1150" y="1888" class="t-backend" font-size="7" text-anchor="middle">no semantic-parity certificate</text>
+        </g>
+
+        <g id="node-goContractEvidence" data-node-id="goContractEvidence" data-node-label="Repository contract inventory receipts" tabindex="0" role="button" aria-label="Focus Repository contract inventory receipts, locations / branches / candidate test results, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="locations / branches / candidate test results" data-node-context="Architecture component">
+          <title>Repository contract inventory receipts · locations / branches / candidate test results · Architecture component</title>
+          <rect x="1650" y="1820" width="330" height="76" rx="6" class="c-mask"/>
+          <rect x="1650" y="1820" width="330" height="76" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1656 1826) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-detail-anchor x="1815" y="1856" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Repository contract inventory receipts</text>
+        <text data-detail="context" x="1815" y="1872" class="t-muted" font-size="9" text-anchor="middle">locations / branches / candidate test results</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -5219,32 +5257,34 @@
 
 
 
+
+
         <!-- Legend -->
         <g data-legend-bridge>
-          <text x="40" y="1731" class="t-primary" font-size="9" font-weight="600">Legend</text>
+          <text x="40" y="1971" class="t-primary" font-size="9" font-weight="600">Legend</text>
           <g data-legend-kind="external">
-            <rect x="40" y="1736" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
-            <text x="60" y="1744" class="t-muted" font-size="8">External</text>
+            <rect x="40" y="1976" width="14" height="9" rx="2" class="c-external" stroke-width="1"/>
+            <text x="60" y="1984" class="t-muted" font-size="8">External</text>
           </g>
           <g data-legend-kind="frontend">
-            <rect x="144" y="1736" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="164" y="1744" class="t-muted" font-size="8">Frontend</text>
+            <rect x="144" y="1976" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
+            <text x="164" y="1984" class="t-muted" font-size="8">Frontend</text>
           </g>
           <g data-legend-kind="security">
-            <rect x="248" y="1736" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="268" y="1744" class="t-muted" font-size="8">Security</text>
+            <rect x="248" y="1976" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
+            <text x="268" y="1984" class="t-muted" font-size="8">Security</text>
           </g>
           <g data-legend-kind="backend">
-            <rect x="352" y="1736" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="372" y="1744" class="t-muted" font-size="8">Backend</text>
+            <rect x="352" y="1976" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
+            <text x="372" y="1984" class="t-muted" font-size="8">Backend</text>
           </g>
           <g data-legend-kind="messagebus">
-            <rect x="451" y="1736" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
-            <text x="471" y="1744" class="t-muted" font-size="8">Message bus</text>
+            <rect x="451" y="1976" width="14" height="9" rx="2" class="c-messagebus" stroke-width="1"/>
+            <text x="471" y="1984" class="t-muted" font-size="8">Message bus</text>
           </g>
           <g data-legend-kind="database">
-            <rect x="570" y="1736" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
-            <text x="590" y="1744" class="t-muted" font-size="8">Database</text>
+            <rect x="570" y="1976" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="590" y="1984" class="t-muted" font-size="8">Database</text>
           </g>
         </g>
       </svg>
@@ -5490,6 +5530,7 @@
           <h3>Language layout</h3>
         </div>
         <ul>
+          <li>&bull; Explicit contractaudit CLI maps Source fixture hashes and active Go literal/direct-function candidate test links to root test terminal actions. This operator produces repo inspection evidence, grants no runtime authority and cannot certify actual reads or semantic parity. Separate Linux captures remain distinct; default Python parser and final G7 inventory remain open.</li>
           <li>&bull; Operator go/tools/typeaudit now has compiler-resolved private roots, separate from its public closure and all-platform syntax modes. Active source/CGO files resolve imported aliases and generic arguments even for private roots unreachable from exported API. Foreign named capabilities remain opaque; package variables, function-local types, bodies, runtime flow and inactive compiler profiles remain outside this mode. No runtime component/default/owner/authority changed.</li>
           <li>&bull; Go HTTP serves embedded OpenAPI, Swagger UI, ReDoc and OAuth redirect resources after the common body cap and one authentication admission. GET/HEAD, method refusals and default slash redirects match 36 Source HTTP captures. Schema covers the same 40 business paths; no session reads, execution authority or runtime Python dependency. Source external library references and the existing CSP are retained; external-library browser rendering and custom ASGI root-path mounts are not claimed. Business paths use owned named route segments and ordered methods after admission, preserving first-route 405 Allow and recognized-path 307 redirects. The fully decoded path is matched without dot/empty-segment cleaning or escaped-slash parameter matching. All 168 actual Source routing captures are required native assertions; no Manager effect occurs on routing refusals or redirects.</li>
           <li>&bull; Separate actual Linux Source capture pins Uvicorn 0.49.0 / WatchFiles 1.2.0 INotifyWatcher: 18 native recipes, forward/reverse directory aliases, native directory/file link-loop timeouts and write-open-without-write timeout, with real context closure. This evidence precedes Go backend delivery; CLI event-profile binding is delivered below.</li>

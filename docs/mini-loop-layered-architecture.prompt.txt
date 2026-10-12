@@ -1,25 +1,5 @@
-Use case: infographic-diagram
-Asset type: mini-loop canonical layered architecture base image for future annotated iterations.
-Create a polished Chinese landscape engineering architecture infographic on dark navy with cyan, neutral white, muted amber. Large readable text. LEFT 75% layered boxes, RIGHT 25% short explanation. No iteration highlighting yet.
-Title “mini-loop 整体分层架构”
-Subtitle “Python 基准实现 · 独立 Go 实现 · 迁移验收仍在进行”
-Stack five layers with clearly grouped boxes:
-L1 “入口与组合层” — “CLI / HTTP / SSE / 浏览器”, “Launcher / 配置 / 环境”, “认证与 owner 边界”
-L2 “会话与控制层” — “SessionManager / ManagedSession”, “租约 / 工作区 / 取消 / 恢复”, “会话资源 / 工具目录”
-L3 “推理与执行层” — left “Session Agent 循环 / Context” with “技能 / 内存 / 压缩 / 缓存 / 计量”; center “Model Provider / HTTP / SSE”; right “ToolGate” with exact “before → guard → permission → execute → after → result”
-L4 “能力与编排层” — “文件 / Shell / AST / Diagnostics / MCP” plus optional grouping “后台 / Cron / Tasks / Teams / Workflow / Decision / Worktree”
-L5 “状态与证据层” — “SQLite 会话 / epochs / events / leases”, “action / approval / goal 日志”, “owner skills / Markdown memory”, “trajectory / trace / audit”
-Main arrows: entry → manager → session loop; session loop ↔ provider; session loop → ToolGate → capability backends → session loop; session and gate → state/evidence. Side dashed optional orchestration → sessions. Avoid implying every capability is default-on.
-Small testing ribbon below L4: “验证：Python 契约 · Go 测试 · 跨平台门禁”; visually connect AST capability to its validation ribbon so iterations can highlight this location.
-Right explanation heading “边界说明”
-“Python 与 Go 是独立实现，共用契约对照”
-“权限与效果统一经过 ToolGate”
-“可选能力按部署显式选择”
-“恢复不会恢复旧授权，也不会自动重新武装 Cron / Goal”
-“AST 摘要重检是每次执行前校验，不是原子执行文件固定”
-“默认全功能 CLI 的诊断后端与完整验收仍待完成”
-Footer “来源：README 规范架构图 · Go 迁移计划与门禁证据”
-Keep named terms exact, no invented components, no passing release badge. This is a navigable conceptual layer summary, not every box in the detailed canonical Mermaid.
-
-Correction edit, using the first generated image as reference:
-Edit this architecture base image. Keep its five layers, positions, Chinese typography, colors and all boundary explanations. Correct ONLY architectural connectors and neutral base emphasis: remove Model Provider ↔ ToolGate arrow, remove downward arrows from Model Provider to L4/L5, remove direct Session/Context→L4 backend arrow. Add a clearly routed horizontal arrow Session Agent/Context → ToolGate, passing above the Provider box without entering it, label '工具调用'. Retain Session Agent/Context ↔ Model Provider. Add ToolGate → L4 capability backend group, label '经权限门禁'. Add capability backend group → Session Agent/Context return arrow along left side, label '工具结果'. Keep state/evidence arrows only from Session and ToolGate, not Provider. Keep optional orchestration dashed arrows to session/control. Make the AST box the same emphasis as File/Shell/Diagnostics/MCP; remove its special gold glow and special AST→validation arrow, because this is an unannotated base diagram. The validation ribbon is a separate testing annotation, not a runtime data flow. Do not add release success or imply all capabilities are default-on. Preserve source footer.
+Edit target: supplied canonical mini-loop layered architecture base image. Update the BASE, preserving title, subtitle, navy landscape style, mountain decoration, all L1-L4 cards and exact headings: L1 入口与组合层; L2 会话与控制层; L3 推理与执行层; L4 能力与编排层; L5 状态与证据层. This is the generic base, so add no iteration highlights or case counts.
+Add the new explicit operator contract inventory capability in L5. Reflow its four existing cards into FIVE readable cards: SQLite 会话 / epochs · events · leases; action / approval / goal 日志; owner skills / Markdown memory; trajectory / trace / audit; 操作员契约审计 / contractaudit / 候选链接与测试证据. The new fifth card represents repository inspection evidence, not runtime state or model authority. Preserve every existing component elsewhere.
+Right boundary notes remain generic. Change note 2 to 模型工具效果统一经过 ToolGate. Keep notes 1,3,4,5,6 and their truthful incomplete/default labels unchanged.
+CRITICAL ARROWS: Session Agent ↔ Model Provider double-headed arrow; separate Session Agent → ToolGate arrow ABOVE Provider labelled 工具调用; ToolGate → L4 capabilities; L4 → Session Agent return on left labelled 工具结果. NO Model Provider → ToolGate connector. Preserve optional dashed orchestration arrows. No arrow from the new operator audit card to model/tool execution.
+Keep readable exact Chinese typography, clear spacing and all five layer headings in original positions. Do not claim completed migration or semantic parity. Footer 来源：README 架构图 · Go 迁移计划与门禁.

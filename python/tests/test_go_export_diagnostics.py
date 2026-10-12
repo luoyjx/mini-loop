@@ -97,3 +97,28 @@ def test_capture_retains_compared_expected_bytes_during_target_change(monkeypatc
     capture, = diagnostics.iterdir()
     assert (capture / "expected/changing.json").read_bytes() == b"compared\n"
     assert path.read_bytes() == b"concurrent edit\n"
+
+
+@pytest.mark.parametrize("check", [False, True])
+def test_success_manifest_hashes_exact_single_capture(monkeypatch, tmp_path, check):
+    manifest_path = tmp_path / "nested" / "source.json"
+    snapshot = {"python-b.json": b"second\n", "python-a.json": b"first\n"}
+    args = ["--manifest", str(manifest_path)] + (["--check"] if check else [])
+    target, calls = configure(monkeypatch, tmp_path, snapshot, *args)
+    if check:
+        for name, body in snapshot.items():
+            (target / name).write_bytes(body)
+    assert exporter.main() == 0
+    assert calls == [True]
+    manifest = json.loads(manifest_path.read_bytes())
+    assert manifest["files"] == [{"name": name, "sha256": hashlib.sha256(body).hexdigest()}
+                                  for name, body in sorted(snapshot.items())]
+    assert manifest["producer_sha256"] == hashlib.sha256(exporter.Path(exporter.__file__).read_bytes()).hexdigest()
+
+
+def test_failed_check_does_not_publish_success_manifest(monkeypatch, tmp_path):
+    manifest_path = tmp_path / "source.json"
+    configure(monkeypatch, tmp_path, {"missing.json": b"{}\n"},
+              "--check", "--manifest", str(manifest_path))
+    assert exporter.main() == 1
+    assert not manifest_path.exists()

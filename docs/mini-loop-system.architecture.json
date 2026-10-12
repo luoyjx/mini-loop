@@ -10,7 +10,7 @@
     "quality_profile": "showcase",
     "viewBox": [
       2500,
-      1760
+      2000
     ],
     "views": [
       {
@@ -590,6 +590,49 @@
       ],
       "size": [
         280,
+        76
+      ]
+    },
+    {
+      "id": "goContractInputs",
+      "type": "database",
+      "label": "Source / Go / test result files",
+      "sublabel": "manifest hashes + separate platform captures",
+      "pos": [
+        350,
+        1820
+      ],
+      "size": [
+        300,
+        76
+      ]
+    },
+    {
+      "id": "goContractAudit",
+      "type": "backend",
+      "label": "Go contractaudit · operator CLI",
+      "sublabel": "candidate links / hashes / test-root actions",
+      "pos": [
+        990,
+        1820
+      ],
+      "size": [
+        320,
+        76
+      ],
+      "tag": "no semantic-parity certificate"
+    },
+    {
+      "id": "goContractEvidence",
+      "type": "database",
+      "label": "Repository contract inventory receipts",
+      "sublabel": "locations / branches / candidate test results",
+      "pos": [
+        1650,
+        1820
+      ],
+      "size": [
+        330,
         76
       ]
     }
@@ -1543,6 +1586,18 @@
           1700
         ]
       ]
+    },
+    {
+      "id": "goContractRead",
+      "from": "goContractInputs",
+      "to": "goContractAudit",
+      "variant": "dashed"
+    },
+    {
+      "id": "goContractRecord",
+      "from": "goContractAudit",
+      "to": "goContractEvidence",
+      "variant": "dashed"
     }
   ],
   "cards": [
@@ -1592,6 +1647,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Explicit contractaudit CLI maps Source fixture hashes and active Go literal/direct-function candidate test links to root test terminal actions. This operator produces repo inspection evidence, grants no runtime authority and cannot certify actual reads or semantic parity. Separate Linux captures remain distinct; default Python parser and final G7 inventory remain open.",
         "Operator go/tools/typeaudit now has compiler-resolved private roots, separate from its public closure and all-platform syntax modes. Active source/CGO files resolve imported aliases and generic arguments even for private roots unreachable from exported API. Foreign named capabilities remain opaque; package variables, function-local types, bodies, runtime flow and inactive compiler profiles remain outside this mode. No runtime component/default/owner/authority changed.",
         "Go HTTP serves embedded OpenAPI, Swagger UI, ReDoc and OAuth redirect resources after the common body cap and one authentication admission. GET/HEAD, method refusals and default slash redirects match 36 Source HTTP captures. Schema covers the same 40 business paths; no session reads, execution authority or runtime Python dependency. Source external library references and the existing CSP are retained; external-library browser rendering and custom ASGI root-path mounts are not claimed. Business paths use owned named route segments and ordered methods after admission, preserving first-route 405 Allow and recognized-path 307 redirects. The fully decoded path is matched without dot/empty-segment cleaning or escaped-slash parameter matching. All 168 actual Source routing captures are required native assertions; no Manager effect occurs on routing refusals or redirects.",
         "Separate actual Linux Source capture pins Uvicorn 0.49.0 / WatchFiles 1.2.0 INotifyWatcher: 18 native recipes, forward/reverse directory aliases, native directory/file link-loop timeouts and write-open-without-write timeout, with real context closure. This evidence precedes Go backend delivery; CLI event-profile binding is delivered below.",

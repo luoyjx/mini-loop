@@ -4541,3 +4541,24 @@ Native tasks use goroutines: process creation can race the caller's return,
 whereas the captured Source hooks do not yield before returning. This slice
 compares allocated call outcomes and settled tasks, not zero process starts at
 return or exact scheduling. Post-spawn faults still require an allocated task.
+
+
+## Go Source contract consumer inventory
+
+`go/tools/contractaudit` is an explicit operator command. It consumes active
+main-module Go metadata, file bytes, a successful exporter manifest and optional
+Go test JSON stdout. It starts no session or model and grants no run capability.
+Named report records retain file hashes, literal reference locations, enclosing
+if branches, direct-function candidate callers and root test terminal actions.
+Comments, inactive files, local function shadows and lowercase non-test functions
+cannot manufacture caller links. Method/interface calls, global constants,
+function aliases and dynamic paths remain visible acceptance work. No candidate
+link or passing root action establishes an actual read or semantic comparison.
+
+`export_go_contracts.py --manifest` saves sorted names/hashes from the same single
+successful Source capture. Failed freshness checks do not publish this success
+manifest. The consumer rejects byte drift and duplicate/missing manifest entries;
+separate platform captures remain labelled outside_current_export. Raw Go test
+stderr is kept separately so malformed/empty JSON result streams fail explicitly.
+`-require-results` rejects missing candidate passing root results; it is a bounded
+inspection check, not complete G7 acceptance. No new dependency or default changes.

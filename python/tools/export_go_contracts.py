@@ -9370,9 +9370,21 @@ def _report_export_drift(snapshot: dict[str, bytes], expected_snapshot: dict[str
         print(f"Exact drift capture: {capture}", file=sys.stderr)
 
 
+def _write_contract_manifest(snapshot: dict[str, bytes], output: Path | None) -> None:
+    if output is None:
+        return
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_bytes(_json_bytes({
+        "producer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "files": [{"name": name, "sha256": hashlib.sha256(body).hexdigest()}
+                  for name, body in sorted(snapshot.items())],
+    }))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="reject stale exports")
+    parser.add_argument("--manifest", type=Path, help="save exact successful Source fixture names and hashes")
     parser.add_argument("--diagnostics-dir", type=Path, help="retain exact failed --check snapshots in a fresh child directory")
     args = parser.parse_args()
     if args.diagnostics_dir is not None and not args.check:
@@ -9388,12 +9400,14 @@ def main() -> int:
             _report_export_drift(snapshot, expected, stale, args.diagnostics_dir)
             return 1
         print(f"Python→Go contracts current: {len(snapshot)} files")
+        _write_contract_manifest(snapshot, args.manifest)
         return 0
 
     TARGET.mkdir(parents=True, exist_ok=True)
     for name, body in snapshot.items():
         (TARGET / name).write_bytes(body)
         print(f"wrote {TARGET / name} ({len(body)} bytes)")
+    _write_contract_manifest(snapshot, args.manifest)
     return 0
 
 
