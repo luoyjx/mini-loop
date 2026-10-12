@@ -1370,7 +1370,11 @@ cache/limiter/event behavior and never anchors the live conversation meter.
 Valid indices retain order/duplicates, including source boolean-as-integer
 behavior; invalid or empty selections and provider faults fall back to lexical
 search. Cancellation and native persistence authority failures propagate.
-The native JSON boundary rejects nonfinite/malformed JSON and uses fallback.
+The native selection boundary decodes immutable closed values: nonfinite floats are
+ignored without discarding valid integer/boolean indices. Full-array syntax,
+4300-digit integer and existing decoder depth checks occur before selection;
+failures use lexical fallback. Captured 500/1005 nesting controls match Source,
+while exact caller-stack recursion edges remain open.
 Selected reference blocks follow rewritten input; a typed memory/load event is
 serialized and decoded for archival reads without granting authority. The dynamic
 index is sent in changed runtime facts only with recall, even when automatic

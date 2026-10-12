@@ -5638,6 +5638,22 @@ def _memory_context_contracts(scratch: Path) -> dict:
         dict(name="remember-missing", reply="[0]", query="alpha", remember=False),
         dict(name="unicode-query-tail", reply="[1]", query="前"*4001+"tail"),
         dict(name="non-array-brackets", reply='[0] [2]', query="alpha"),
+        dict(name="nonfinite-mixed", reply="[NaN, Infinity, -Infinity, 2]", query="alpha"),
+        dict(name="nonfinite-object", reply='[{"ignored": NaN}, 2]', query="alpha"),
+        dict(name="nonfinite-only-fallback", reply="[NaN, Infinity, -Infinity]", query="beta"),
+        dict(name="overflow-float-ignored", reply="[1e10000, 2]", query="alpha"),
+        dict(name="float-index-ignored", reply="[2.0, 2e0, 1]", query="alpha"),
+        dict(name="signed-zero-bools", reply="[-0, false, true, 0, 1, 2]", query="unrelated"),
+        dict(name="wide-integer-ignored", reply="[999999999999999999999999999, 2]", query="alpha"),
+        dict(name="integer-limit-accepted", reply="["+"9"*4300+", 2]", query="alpha"),
+        dict(name="integer-limit-rejects-whole-array", reply="[2, "+"9"*4301+"]", query="alpha"),
+        dict(name="negative-integer-limit-rejects-whole-array", reply="[2, -"+"9"*4301+"]", query="alpha"),
+        dict(name="surrogate-text-ignored", reply='["\\ud800", 2]', query="alpha"),
+        dict(name="surrogate-object-key-ignored", reply='[{"\\udfff": 1}, 2]', query="alpha"),
+        dict(name="invalid-nonfinite-rejects-whole-array", reply="[2, -NaN]", query="alpha"),
+        dict(name="malformed-tail-rejects-whole-array", reply="[2,]", query="alpha"),
+        dict(name="nested-ignored", reply="[2, "+"["*500+"0"+"]"*500+"]", query="alpha"),
+        dict(name="nested-overflow-rejects-whole-array", reply="[2, "+"["*1005+"0"+"]"*1005+"]", query="alpha"),
     ]
     async def scenario(row):
         root=scratch/row["name"];root.mkdir(parents=True)

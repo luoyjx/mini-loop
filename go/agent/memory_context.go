@@ -2,12 +2,12 @@ package agent
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
@@ -45,24 +45,33 @@ func (s *Session) automaticMemoryEnabled() bool {
 	return s.memoryAuto && s.memory != nil && remember && recall
 }
 
-// Boundary-only JSON values are discarded after selecting integer indices.
-// Python also treats booleans as ints, retains duplicates and ignores floats.
+// Closed JSON observations are discarded after selecting integer indices.
+// Python treats booleans as ints and ignores all floats, including nonfinite values.
+// Decode the whole array before selection so ignored values can still reject it.
 func memoryIndices(text string, size, limit int) []int {
 	start, end := strings.IndexByte(text, '['), strings.LastIndexByte(text, ']')
 	if start < 0 || end < start {
 		return nil
 	}
-	var wire []json.RawMessage
-	if err := json.Unmarshal([]byte(text[start:end+1]), &wire); err != nil {
+	decoded, err := jsonvalue.Decode(text[start : end+1])
+	if err != nil {
+		return nil
+	}
+	items, ok := decoded.Array()
+	if !ok {
 		return nil
 	}
 	var result []int
-	for _, raw := range wire {
-		value := strings.TrimSpace(string(raw))
-		if value == "true" {
-			value = "1"
-		} else if value == "false" {
-			value = "0"
+	for _, item := range items {
+		value, integer := item.Integer()
+		if flag, boolean := item.Bool(); boolean {
+			value, integer = "0", true
+			if flag {
+				value = "1"
+			}
+		}
+		if !integer {
+			continue
 		}
 		index, err := strconv.Atoi(value)
 		if err == nil && index >= 0 && index < size {

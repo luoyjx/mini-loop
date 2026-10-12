@@ -72,7 +72,7 @@ func TestMemoryContextMatchesActualSourceSelectionAndRuntimeFacts(t *testing.T) 
 			Facts  []protocol.Message
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 12 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 28 {
 		t.Fatal("incomplete source cases", err)
 	}
 	for _, row := range fixture.Cases {
