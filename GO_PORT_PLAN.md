@@ -1,5 +1,54 @@
 # Go port plan
 
+## 2026-10-12 memory reply caller and resource profiles
+
+Implementation `9cb02fc`, based on local main `eaa5f66`. Actual Source expands to 135 extraction, 126
+consolidation and 85 Agent.run endpoint cases (346 total). The final corpus adds
+30/30/42 cases; the complete exploratory 474-case snapshots and their 112 native
+differences are retained separately. Final cases cover adjacent array/object
+nesting boundaries, consumed fields, ignored duplicate fields, deep entries after
+five valid items, a 50,000-element ignored array, 2 MiB ignored text, 100,000 Unicode
+characters and a malformed wide tail. Large replies are rebuilt from named
+fixture recipes and checked against their actual Source SHA-256 before use.
+
+The pinned CPython default recursion setting is 1,000. Actual direct consumers
+accept 977 nested containers inside the candidate; the three actual normal,
+exhausted and stuck stop/resume paths accept 972. Including the outer array and
+entry object, native memoryReplyScope selects 979 or 974 container budgets.
+Trusted code selects the scope; reply fields cannot. A typed syntax preflight
+checks the complete selected array before closed decoding, five-item selection
+or replacement deletion. Integer admission remains 4,300 digits. The shared
+archive decoder keeps its existing profile. No whole-reply byte or element cap
+is invented; the finite wide/text controls still match Source.
+
+These are pinned caller profiles, with required native assertions through actual
+side operations and Session.Run. Other host versions, custom recursion settings,
+additional caller/HTTP stacks, memory exhaustion and release resource/performance
+acceptance remain open; this cohort cannot establish universal Python-stack
+emulation or full original P0/P1/G0-G7 acceptance. The initial Source export was
+blocked by sandbox loopback bind permissions; its exact failure is retained and
+subsequent authorized local-loopback generation succeeds.
+
+Frozen 1654 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
+(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 96.65s (0:01:36). Application coverage 89.30% (33181/37158); all Go 89.17%
+(33352/37402); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-json-resources-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-json-resources-2026-10-12.json). All 32 final baseline differences
+are retained. No new dependency or Python runtime-module change. Package
+invariants and full Python mutation sweep were not rerun. Prior temporal failures
+remain open.
+
+The [iteration image](docs/audits/go-memory-json-resources-infographic-2026-10-12.png)
+edits the layered base, highlighting L3 caller parsing and L5 pre-effect admission
+phases. No component added/deleted; base unchanged. Exact prompt saved. Canonical
+map and JSON synchronized; generated HTML passes 9 checks, zero errors/warnings.
+PNG inspected; browser visual acceptance remains blocked by prior URL policy.
+
+Next: reconcile other actual public/HTTP caller stacks and host profiles, then
+broader memory side effects and release resource/performance acceptance. Custom
+recursion settings and original migration criteria remain open.
+
 ## 2026-10-12 memory callback failure containment
 
 Implementation `9194543`, based on local main `32ac048`. Actual Agent.run captures add 32 masker-callback
@@ -7526,16 +7575,16 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-12** against baseline `32ac048`: memory callback
-containment matches 43 actual end-of-turn Source scenarios; 29 pre-fix panic
-escapes and six native authority controls are retained. Existing 201 field cases
-still pass. Parser resources, broader side effects and original acceptance remain open.
-Frozen 1653 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+Reviewed **2026-10-12** against baseline `eaa5f66`: memory reply caller/resource
+profiles match 135 extraction, 126 consolidation and 85 actual end-of-turn Source
+cases. Final baseline replay retains 32 differences; expanded 474-case exploration
+retains 112. Other host/caller profiles and original acceptance remain open.
+Frozen 1654 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
 audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
 (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 95.93s (0:01:35). Application coverage 89.30% (33175/37149); all Go 89.18%
-(33346/37393); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-callback-faults-2026-10-12.json).
+passed in 96.65s (0:01:36). Application coverage 89.30% (33181/37158); all Go 89.17%
+(33352/37402); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-json-resources-2026-10-12.json).
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7566,11 +7615,11 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Current full passing-run statement coverage: app **89.30% (33175/37149)**,
-all Go **89.18% (33346/37393)**, Provider **86.67% (1522/1756)**.
-The profile hash and 1653 frozen inputs are retained; native C,
+Current full passing-run statement coverage: app **89.30% (33181/37158)**,
+all Go **89.17% (33352/37402)**, Provider **86.67% (1522/1756)**.
+The profile hash and 1654 frozen inputs are retained; native C,
 CLI subprocess internals, Python, branches and other platforms are excluded.
-[Current coverage](docs/audits/go-coverage-memory-callback-faults-2026-10-12.json).
+[Current coverage](docs/audits/go-coverage-memory-json-resources-2026-10-12.json).
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered

@@ -1,5 +1,54 @@
 # Python to Go parity matrix
 
+## 2026-10-12 memory reply caller and resource profiles
+
+Implementation `9cb02fc`, based on local main `eaa5f66`. Actual Source expands to 135 extraction, 126
+consolidation and 85 Agent.run endpoint cases (346 total). The final corpus adds
+30/30/42 cases; the complete exploratory 474-case snapshots and their 112 native
+differences are retained separately. Final cases cover adjacent array/object
+nesting boundaries, consumed fields, ignored duplicate fields, deep entries after
+five valid items, a 50,000-element ignored array, 2 MiB ignored text, 100,000 Unicode
+characters and a malformed wide tail. Large replies are rebuilt from named
+fixture recipes and checked against their actual Source SHA-256 before use.
+
+The pinned CPython default recursion setting is 1,000. Actual direct consumers
+accept 977 nested containers inside the candidate; the three actual normal,
+exhausted and stuck stop/resume paths accept 972. Including the outer array and
+entry object, native memoryReplyScope selects 979 or 974 container budgets.
+Trusted code selects the scope; reply fields cannot. A typed syntax preflight
+checks the complete selected array before closed decoding, five-item selection
+or replacement deletion. Integer admission remains 4,300 digits. The shared
+archive decoder keeps its existing profile. No whole-reply byte or element cap
+is invented; the finite wide/text controls still match Source.
+
+These are pinned caller profiles, with required native assertions through actual
+side operations and Session.Run. Other host versions, custom recursion settings,
+additional caller/HTTP stacks, memory exhaustion and release resource/performance
+acceptance remain open; this cohort cannot establish universal Python-stack
+emulation or full original P0/P1/G0-G7 acceptance. The initial Source export was
+blocked by sandbox loopback bind permissions; its exact failure is retained and
+subsequent authorized local-loopback generation succeeds.
+
+Frozen 1654 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
+(memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
+passed in 96.65s (0:01:36). Application coverage 89.30% (33181/37158); all Go 89.17%
+(33352/37402); Provider 86.67% (1522/1756).
+[Full receipt](docs/audits/go-memory-json-resources-2026-10-12.json); [coverage](docs/audits/go-coverage-memory-json-resources-2026-10-12.json). All 32 final baseline differences
+are retained. No new dependency or Python runtime-module change. Package
+invariants and full Python mutation sweep were not rerun. Prior temporal failures
+remain open.
+
+The [iteration image](docs/audits/go-memory-json-resources-infographic-2026-10-12.png)
+edits the layered base, highlighting L3 caller parsing and L5 pre-effect admission
+phases. No component added/deleted; base unchanged. Exact prompt saved. Canonical
+map and JSON synchronized; generated HTML passes 9 checks, zero errors/warnings.
+PNG inspected; browser visual acceptance remains blocked by prior URL policy.
+
+Next: reconcile other actual public/HTTP caller stacks and host profiles, then
+broader memory side effects and release resource/performance acceptance. Custom
+recursion settings and original migration criteria remain open.
+
 ## 2026-10-12 memory callback failure containment
 
 Implementation `9194543`, based on local main `32ac048`. Actual Agent.run captures add 32 masker-callback
@@ -248,15 +297,15 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-12
 
-Reviewed baseline `32ac048`: memory callback containment, with 43 actual end-of-turn
-scenarios, 29 retained pre-fix panic escapes, six native authority controls and
-201 existing extraction/consolidation field scenarios.
-Frozen 1653 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
+Reviewed baseline `eaa5f66`: memory reply caller/resource profiles, with 135 extraction,
+126 consolidation and 85 actual end-of-turn Source cases. Final baseline replay
+retains 32 differences; expanded exploration retains 474 cases and 112 differences.
+Frozen 1654 inputs pass all 14 gates: Source 239 files, focused memory tests, four type
 audits, full ordinary Go/vet/race+atomic, Python, 19 scans and selected mutation guards
 (memory 18, consolidation 1). Python: 2240 passed, 28 skipped, 96 warnings, 24 subtests
-passed in 95.93s (0:01:35). Application coverage 89.30% (33175/37149); all Go 89.18%
-(33346/37393); Provider 86.67% (1522/1756).
-[Current receipt](docs/audits/go-memory-callback-faults-2026-10-12.json). Parser resources, broader side effects and original acceptance remain open.
+passed in 96.65s (0:01:36). Application coverage 89.30% (33181/37158); all Go 89.17%
+(33352/37402); Provider 86.67% (1522/1756).
+[Current receipt](docs/audits/go-memory-json-resources-2026-10-12.json). Other host/caller profiles and original acceptance remain open.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
@@ -272,7 +321,7 @@ passed in 95.93s (0:01:35). Application coverage 89.30% (33175/37149); all Go 89
 | Known usage metadata shapes | [191 actual SDK cases/214 stages and full current receipt](docs/audits/go-private-type-closure-2026-10-11.json) | Named inert observations, model/stage fallback, actual event masking/clone/archive and191 SQLite reopen rows pass required assertions. Original100 differences repaired; 86 whole-usage cases now match projected values/stages/messages; broader ranges and final field/default/consumer/public-error scope remain open |
 | Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
 | Development reload | [Current ordinary/race+atomic gates](docs/audits/go-private-type-closure-2026-10-11.json), raw C and same-subscription queue/control receipts | Current full ordinary/race+atomic pass; prior background/native temporal failures remain unexplained; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
-| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 458 files/1444 named types;1192 public types/263 private roots/172 variables;zero findings in four established gates. Body inventory has139 open observations; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
+| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-local-declarations-2026-10-12.json) | 458 files/1445 named types;1192 public types/264 private roots/172 variables;zero findings in four established gates. Body inventory has139 open observations; RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
 | Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
@@ -299,15 +348,15 @@ passed in 95.93s (0:01:35). Application coverage 89.30% (33175/37149); all Go 89
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
 | Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
 
-Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 95.93s (0:01:35)**. Ordinary Go/vet/race+atomic, four type
+Latest full Python result: **2240 passed, 28 skipped, 96 warnings, 24 subtests passed in 96.65s (0:01:36)**. Ordinary Go/vet/race+atomic, four type
 audits, 239-file Source check, 19 scans and selected memory/consolidation guards pass.
-[Current receipt](docs/audits/go-memory-callback-faults-2026-10-12.json). Full Python mutation sweep and package invariants
+[Current receipt](docs/audits/go-memory-json-resources-2026-10-12.json). Full Python mutation sweep and package invariants
 not rerun; no Python runtime module changed. Default diagnostics and broader IDNA
 approval remain outstanding.
 
-Current full passing-run statement coverage: application **89.30% (33175/37149)**;
-all Go **89.18% (33346/37393)**; Provider **86.67% (1522/1756)**.
-[Exact receipt](docs/audits/go-coverage-memory-callback-faults-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
+Current full passing-run statement coverage: application **89.30% (33181/37158)**;
+all Go **89.17% (33352/37402)**; Provider **86.67% (1522/1756)**.
+[Exact receipt](docs/audits/go-coverage-memory-json-resources-2026-10-12.json). Darwin Go statements; native C, subprocess internals,
 Python, branches and other platforms excluded. Full port acceptance remains open.
 
 
