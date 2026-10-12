@@ -1,0 +1,374 @@
+{
+  "cases": [
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"World\"}",
+      "mode": "auto",
+      "name": "text",
+      "output": "Hello, World!|after",
+      "received": [
+        "World"
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Hello, World!|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"\\u7528\\u6237 caf\\u00e9\"}",
+      "mode": "auto",
+      "name": "unicode",
+      "output": "Hello, 用户 café!|after",
+      "received": [
+        "用户 café"
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Hello, 用户 café!|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{}",
+      "mode": "auto",
+      "name": "default",
+      "output": "Hello, default!|after",
+      "received": [
+        "default"
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Hello, default!|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"World\", \"extra\": {\"x\": [1]}}",
+      "mode": "auto",
+      "name": "ignored-extra",
+      "output": "Hello, World!|after",
+      "received": [
+        "World"
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Hello, World!|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"\"}",
+      "mode": "auto",
+      "name": "empty-text",
+      "output": "Hello, !|after",
+      "received": [
+        ""
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Hello, !|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": null}",
+      "mode": "auto",
+      "name": "null",
+      "output": "Error: name must be text|after",
+      "received": [],
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: name must be text|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": 7}",
+      "mode": "auto",
+      "name": "integer",
+      "output": "Error: name must be text|after",
+      "received": [],
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: name must be text|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": [1]}",
+      "mode": "auto",
+      "name": "array-value",
+      "output": "Error: name must be text|after",
+      "received": [],
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: name must be text|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"old\"}",
+      "mode": "auto",
+      "name": "rewrite",
+      "output": "Hello, rewritten!|after",
+      "received": [
+        "rewritten"
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Hello, rewritten!|after"
+        }
+      ],
+      "rewrite": true,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": true,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"World\"}",
+      "mode": "auto",
+      "name": "before-deny",
+      "output": "before blocked",
+      "received": [],
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "before blocked"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": true,
+      "input_json": "{\"name\": \"World\"}",
+      "mode": "auto",
+      "name": "guard-deny",
+      "output": "guard blocked",
+      "received": [],
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "guard blocked"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"World\"}",
+      "mode": "readonly",
+      "name": "readonly-read",
+      "output": "Hello, World!|after",
+      "received": [
+        "World"
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "Hello, World!|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"World\"}",
+      "mode": "readonly",
+      "name": "readonly-write",
+      "output": "Permission denied: this session is read-only (tool risk: write)",
+      "received": [],
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        }
+      ],
+      "rewrite": false,
+      "risk": "write",
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "before_deny": false,
+      "guard_deny": false,
+      "input_json": "{\"name\": \"boom\"}",
+      "mode": "auto",
+      "name": "handler-error",
+      "output": "Error: extension failed|after",
+      "received": [
+        "boom"
+      ],
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: extension failed|after"
+        }
+      ],
+      "rewrite": false,
+      "risk": "read",
+      "trace": [
+        "before",
+        "guard",
+        "decode",
+        "handle",
+        "after",
+        "result"
+      ]
+    }
+  ],
+  "limits": [
+    "Explicit registered named-input handler, not arbitrary Go value decoding.",
+    "Codec/handler remain trusted construction-time seams; schema alone grants no execution."
+  ]
+}

@@ -266,6 +266,16 @@ summarizes the canonical map below. Each iteration edits this base image to
 highlight its changes; added or removed architecture parts also update the base.
 The image's right column records deployment and authority boundaries.
 
+Go custom tools can explicitly bind a concrete `ExtensionInput`,
+`ExtensionInputCodec[T]` and `ExtensionToolHandler[T]` with
+`NewTypedExtensionTool`. The existing gate runs before/guard/permission and
+journal admission before decoding or validation. Provider input stays an inert,
+immutable observation in transcripts and action identity; the named application
+payload exists only at execution. Schema-only registrations retain their missing
+decoder refusal. No custom tool is installed by default. Source readonly-write
+refusal happens in its default before hook; the native gate retains guard-before-
+permission ordering. This timing difference remains explicit.
+
 Memory side-model replies are parsed completely into closed JSON variants before
 any write. Nonfinite numbers and ignored extras remain inert observations;
 owner-scoped extraction consumes at most five items and retains earlier writes
@@ -535,7 +545,24 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: implementation `6e1da29`, based on main `505e867`, with pinned memory-selection caller profiles. Five actual Source entry stacks compare300 array/object scenarios; prior144 differences and one test-setup compile error are retained. Native direct/Agent/Managed/HTTP POST/SSE limits are982/980/978/972/976 total containers. Private parsing selection stays out of snapshots and peer delegation and grants no authority. Frozen1667 inputs pass Source241/manifest,300 required profile cases, focused Go/Python, four type audits, collector tests/body inventory, full ordinary Go/vet/race+atomic, full Python,19 scans,18 memory guards and diff. Python2244 passed,28 skipped,96 warnings,24 subtests in92.74s. Consumer inspection exits1 only for the unreferenced native parser fixture. Race statements: app89.30% (33206/37186), all Go89.05% (33572/37701), Provider86.67% (1522/1756). [Current receipt](docs/audits/go-memory-selection-profiles-2026-10-12.json). Other caller/host stacks and original acceptance remain open. Twenty-eight actual Source context scenarios pass targeted native tests, repairing five retained pre-change differences. Nonfinite floats and ignored containers no longer discard valid indices; full-array integer/syntax/depth failures still trigger lexical fallback. Source bool-as-int, duplicates, first-five selection, ownership, cancellation and live-meter isolation remain. Frozen1662 inputs pass Source240/manifest, focused Go/Python, four type audits, compiler-collector tests and full-body inventory, complete ordinary Go/vet/race+atomic, full Python,19 scans,18 memory guards and diff. Python2243 passed,28 skipped,96 warnings,24 subtests in125.01s. The separate consumer inventory exits1 only for the unreferenced native syntax-parser fixture. Current race statements: app89.30% (33195/37171), all Go89.05% (33561/37686), Provider86.67% (1522/1756). Prior ordinary Go/Python timing failures remain retained without a runtime fix/cause claim; this is one passing cohort. [Current receipt](docs/audits/go-memory-selection-values-2026-10-12.json). Other caller-stack/recursion profiles and original acceptance remain open. The previous full maximum SQLite readonly31s failure remains retained. Prior owned readonly sampling includes appendLegacyString/appendLegacyStringText after the first formatter optimization. Scalar UTF-8 legacy compact/pretty text now reuses the existing span codec; surrogatepass and malformed native bytes keep the original rune lane. Forty-four actual Source legacy text/key projections and native replacement controls preserve byte output and strict final UTF-8 refusal. ASCII compact race+atomic benchmark changes508.24ms→7.39ms; escaped allocation bytes increase slightly. Frozen 1661 inputs: Source240/manifest, focused Go/Python, four type audits, vet, full race+atomic,19 scans,1 selected meter guards and diff pass. Ordinary Go fails background timeout-true-expired (completed vs Error: Timeout (Trues)); Python: 1 failed, 2242 passed, 28 skipped, 96 warnings, 24 subtests passed in 161.92s (0:02:41), forty-turn0.526s against0.5s threshold. Separate inventory exits1 for the missing native parser. Race statement coverage app 89.30% (33189/37166); all Go 89.05% (33555/37681); Provider 86.67% (1522/1756). No ordinary/Python timing or full acceptance claim; no merge. [Current receipt](docs/audits/go-legacy-text-spans-2026-10-12.json). Default parser, other profiles, prior temporal failures and original acceptance remain open. Prior runtime evidence has passing full native and 237-file Source gates, plus exact SDK usage text-integer normalization and 76 direct/SSE contracts, plus same-directory glob truncation enumeration evidence (runtime unchanged), plus AST digest recheck test path-replacement portability (runtime unchanged), plus layered architecture base visualization (runtime unchanged), plus completed Linux amd64 compatibility-layer and native arm64 full gate evidence (runtime unchanged), plus Linux amd64/CGO1 compiler public-type closure evidence (runtime unchanged), with acceptance-index reconciliation against current tree identities (latest Go `014e913`, runtime unchanged), plus same-subscription queue and post-result native control evidence (runtime unchanged), plus required native raw C callback-window evidence (runtime unchanged), plus four required native recipe Source captures and absence diagnosis (runtime unchanged), with safe JSON string read spans, with owned direct-process native stack capture and shared-budget receipt review, with scalar UTF-8 and ASCII archival JSON text span writes, plus four-mode maximum SQLite decision shared-budget diagnosis, with owned literal-path transport and route-specific wire targets, plus verified proxy/TLS/CONNECT path contracts, plus required ASCII path/request-target discrepancy capture (runtime unchanged), plus event-boundary interruption test verification (runtime unchanged), plus diagnostic two-root native stream liveness capture (runtime topology unchanged), plus Python Unicode 14.0.0 hostname casing before native transport IDNA plus captured SDK validation/loose-construction expiry normalization, plus ASCII-only request authority normalization and expanded Unicode wire discrepancy proof, plus provider URL construction/admission scope review, plus captured SDK endpoint path construction, plus owned named ordered business routing, including protected embedded API documentation routes, plus named completed reply container/refusal metadata, plus named nonfinite provider encoding failures and bounded Source error projection, plus named background optional observations and post-spawn wait policies, plus per-subscription Darwin dispatch queue ownership and joined native callbacks, plus nonfinite background command/root/extra observations and shared shell batch preparation, plus nonfinite known Bash observations and pre-effect batch input preparation, plus nonfinite trajectory model snapshots and request observation projections, plus nonfinite historical event restore/catch-up validation, plus managed nonfinite archive/SSE observations and finite journal fingerprints, plus native federation profile disk-cache dispatch,
+Runtime review baseline: based on local main `59767dc`, with the explicit typed
+custom-tool input seam. Fourteen actual Python registered-tool
+cases compare results, fault flags and handler effects; thirteen also compare
+exact callback traces. The readonly-write scheduling adaptation is recorded
+separately. Cancellation, callback panic containment, reserved-name refusal,
+journal replay/current permission and a model-driven session are checked.
+Frozen1671 inputs pass Source242/manifest, focused Go/Python, four type audits,
+collector tests, complete ordinary Go/vet/race+atomic, full Python,19 scans,
+6 selected guard checks and diff. Python2244 passed,28 skipped. Consumer inspection
+exits1 only for the unreferenced native parser fixture. Darwin race statements:
+app89.32% (33244/37217), all Go89.08% (33610/37732), Provider86.67% (1522/1756).
+The full-body inventory records129 open observations, including one new transient
+recover value; established domain/public/private/variable audits report zero
+findings. The interrupted race has no acceptance exit; its preserved output is
+separate from the completed replacement on identical frozen inputs.
+Default diagnostics, broader IDNA, historical timing failures, other platform
+acceptance and the original complete migration scope remain open.
+
 
 Timing evidence review after `f9d4f61`: [four paired post-spawn timing scenarios and Python workload profile](docs/audits/go-timing-boundaries-2026-10-12.json) retain the original ordinary Go/Python failures. Runtime and thresholds are unchanged; injected delays establish a timing boundary, not the missing original failure cause. The [diagnostic iteration image](docs/audits/go-timing-boundaries-infographic-2026-10-12.png) highlights observations on the existing base without adding or deleting components.
 
@@ -716,7 +743,7 @@ flowchart LR
     end
 
     Provider["Model provider<br/>streaming transport · recovery"]
-    Backends["Tool backends<br/>files · shell · AST · diagnostics · MCP<br/>sandbox · secrets · spill"]
+    Backends["Tool backends<br/>files · shell · AST · diagnostics · MCP · custom tools<br/>sandbox · secrets · spill"]
     Decisions["Optional DecisionProvider<br/>Jev API or explicit LLM estimates<br/>choice · score · noul"]
 
     subgraph Async["Optional orchestration"]
@@ -766,7 +793,7 @@ flowchart LR
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
-        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>plan panic diagnostics: type only"]
+        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>explicit typed extension codec / handler<br/>callback panic diagnostics: type only"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · named wait policies · orphan ledger"]

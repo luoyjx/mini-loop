@@ -89,15 +89,16 @@ type ToolHandler interface {
 }
 
 type ToolDefinition struct {
-	name         protocol.ToolName
-	risk         ToolRisk
-	readonly     bool
-	parallelSafe bool
-	capabilities []Capability
-	handler      ToolHandler
-	schema       protocol.ToolSchema
-	verifier     ToolVerifier
-	classifier   ExecutionClassifier
+	name           protocol.ToolName
+	risk           ToolRisk
+	readonly       bool
+	parallelSafe   bool
+	capabilities   []Capability
+	handler        ToolHandler
+	extensionInput bool
+	schema         protocol.ToolSchema
+	verifier       ToolVerifier
+	classifier     ExecutionClassifier
 }
 
 type EffectVerdict string

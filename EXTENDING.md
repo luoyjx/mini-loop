@@ -223,6 +223,41 @@ selection and execution-time authority agree.
 
 ---
 
+### Go explicit typed custom tools
+
+`agent.NewTypedExtensionTool[T]` binds an ordinary `protocol.ToolSchema` and
+`agent.ToolTraits` to two construction-time interfaces. Use one named concrete
+application input type implementing `Validate() error`:
+
+- `ExtensionInputCodec[T].DecodeExtensionInput(ctx, protocol.ToolInput) (T, error)`
+- `ExtensionToolHandler[T].ExecuteExtensionTool(ctx, agent.ToolAuthority, T) (string, error)`
+
+The codec can obtain argument JSON with `ToolInput.MarshalJSON()` and decode it
+into its concrete type. Schema properties are descriptive; the codec and
+`Validate` must enforce application semantics. The schema name must not have a
+native built-in or MCP decoder. Nil interfaces are refused; callback panics,
+including typed-nil callback faults, become type-only tool errors.
+
+Only this constructor enables immutable unknown-model observations to reach its
+bound adapter. The common before/guard/permission/journal pipeline still runs
+first. Codec errors, validation errors or cancellation skip the handler. Recorded
+inputs remain closed observations; application payloads do not enter transcripts,
+cache identity, snapshots or action logs. Replay reads the settled result without
+decoding or executing again and rechecks current permissions.
+
+Pass the resulting immutable `ToolDefinition` through `NewToolCatalog` to the
+existing `RuntimeConfig.Tools` or manager catalogue. Registration installs no
+process-wide codec and grants no capability. Operator callbacks must honor
+context and be safe for the declared parallel policy; this seam cannot forcibly
+interrupt a callback that ignores cancellation. `NewToolDefinitionWithSchema`
+continues to refuse unknown inputs unless it has a native decoder.
+
+The captured Source handler uses named `name` semantics and ignored extras;
+this establishes fourteen registered-tool cases, not arbitrary Python coercion.
+Source's default PermissionHook can refuse readonly-write during `before_tool`;
+Go retains guards before permission evaluation. The differing trace is preserved.
+
+
 ## 1a. Typed judgments — `DecisionProvider`
 
 `decision` evaluates an explicit `state` against a batch of named questions.
