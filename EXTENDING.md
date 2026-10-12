@@ -4592,3 +4592,20 @@ Compact/pretty Source hashes include text and keys, paired surrogate code points
 replacement scalars and controls. Existing malformed-byte replacement checks,
 nonfinite variants, member order and nesting policies remain unchanged. No new
 variant, dependency, default, cache, execution authority or context adjustment.
+
+
+## Go memory-selection caller profiles
+
+Private memorySelectionScope selects the measured ordinary CPython3.11 caller
+profile: direct preparation982, raw Agent.run980, ManagedSession SDK978,
+synchronous authenticated POST972 and SSE976 total containers, including the
+outer reply array. Whole-reply syntax preflight precedes every index selection.
+Integer4300-digit and closed decoding remain independent. Native RunContext keeps
+only this ephemeral parsing choice; persisted snapshots omit it, same-caller
+continuations retain it and peer derivation drops it. Managed execution selects
+its SDK profile only for an unstamped raw-run choice. Trusted HTTP constructors
+select POST/SSE profiles without changing principal/capabilities. No reply field
+or untrusted snapshot can choose the rule. Other/custom interpreter stacks are
+not claimed. Source capture runs in an independent script process so exporter
+frames do not shift the measured boundaries; failed producers cannot publish an
+empty substitute fixture. Python runtime modules remain unchanged.

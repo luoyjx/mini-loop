@@ -303,7 +303,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 	if err != nil {
 		return "", err
 	}
-	prompt, err = s.prepareMemoryContext(ctx, prompt)
+	prompt, err = s.prepareMemoryContextInScope(ctx, prompt, run.memorySelectionScope)
 	if err != nil {
 		return "", err
 	}

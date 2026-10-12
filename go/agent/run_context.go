@@ -28,16 +28,17 @@ const (
 type RunContext struct {
 	// Transport-selected parsing compatibility is ephemeral and grants no
 	// authority. Snapshots deliberately carry only the existing run metadata.
-	memoryReplyScope memoryReplyScope
-	messageID        MessageID
-	origin           string
-	actorID          *ActorID
-	channel          string
-	authority        RunAuthority
-	stampedBy        string
-	delegatedBy      *string
-	parentMessageID  *MessageID
-	approved         []RunCapability
+	memoryReplyScope     memoryReplyScope
+	memorySelectionScope memorySelectionScope
+	messageID            MessageID
+	origin               string
+	actorID              *ActorID
+	channel              string
+	authority            RunAuthority
+	stampedBy            string
+	delegatedBy          *string
+	parentMessageID      *MessageID
+	approved             []RunCapability
 }
 type RunContextSnapshot = runmeta.Snapshot
 
@@ -68,6 +69,7 @@ func AuthenticatedHTTPRunContext(actor ActorID) (RunContext, error) {
 	value.origin, value.channel, value.stampedBy = "authenticated_http", "http", "mini_loop.server"
 	value.actorID = &actor
 	value.approved = []RunCapability{CapabilityPersonalSkillCaptureSource}
+	value.memorySelectionScope = memorySelectionHTTPStream
 	return value, nil
 }
 
@@ -79,6 +81,7 @@ func AuthenticatedHTTPPostRunContext(actor ActorID) (RunContext, error) {
 		return RunContext{}, err
 	}
 	value.memoryReplyScope = memoryHTTPPostReply
+	value.memorySelectionScope = memorySelectionHTTPPost
 	return value, nil
 }
 

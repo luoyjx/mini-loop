@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonsyntax"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -48,12 +49,16 @@ func (s *Session) automaticMemoryEnabled() bool {
 // Closed JSON observations are discarded after selecting integer indices.
 // Python treats booleans as ints and ignores all floats, including nonfinite values.
 // Decode the whole array before selection so ignored values can still reject it.
-func memoryIndices(text string, size, limit int) []int {
+func memoryIndices(text string, size, limit int, scope memorySelectionScope) []int {
 	start, end := strings.IndexByte(text, '['), strings.LastIndexByte(text, ']')
 	if start < 0 || end < start {
 		return nil
 	}
-	decoded, err := jsonvalue.Decode(text[start : end+1])
+	raw := text[start : end+1]
+	if jsonsyntax.Scan([]byte(raw), scope.limits()) != nil {
+		return nil
+	}
+	decoded, err := jsonvalue.Decode(raw)
 	if err != nil {
 		return nil
 	}
@@ -85,6 +90,10 @@ func memoryIndices(text string, size, limit int) []int {
 }
 
 func (s *Session) prepareMemoryContext(ctx context.Context, prompt string) (string, error) {
+	return s.prepareMemoryContextInScope(ctx, prompt, memorySelectionDirect)
+}
+
+func (s *Session) prepareMemoryContextInScope(ctx context.Context, prompt string, scope memorySelectionScope) (string, error) {
 	if !s.automaticMemoryEnabled() {
 		return prompt, nil
 	}
@@ -120,7 +129,7 @@ func (s *Session) prepareMemoryContext(ctx context.Context, prompt string) (stri
 				text.WriteString(value.Text)
 			}
 		}
-		for _, index := range memoryIndices(text.String(), len(records), 5) {
+		for _, index := range memoryIndices(text.String(), len(records), 5, scope) {
 			selected = append(selected, records[index])
 		}
 	}

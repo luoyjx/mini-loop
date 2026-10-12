@@ -116,6 +116,18 @@ def test_success_manifest_hashes_exact_single_capture(monkeypatch, tmp_path, che
     assert manifest["producer_sha256"] == hashlib.sha256(exporter.Path(exporter.__file__).read_bytes()).hexdigest()
 
 
+def test_memory_profile_capture_failure_cannot_become_a_fixture(monkeypatch):
+    import subprocess
+    from tools import memory_selection_profiles
+
+    def failed(*args, **kwargs):
+        raise subprocess.CalledProcessError(1, args[0], output=b'{"cases": []}')
+
+    monkeypatch.setattr(memory_selection_profiles.subprocess, "run", failed)
+    with pytest.raises(subprocess.CalledProcessError):
+        memory_selection_profiles.memory_selection_profiles()
+
+
 def test_failed_check_does_not_publish_success_manifest(monkeypatch, tmp_path):
     manifest_path = tmp_path / "source.json"
     configure(monkeypatch, tmp_path, {"missing.json": b"{}\n"},

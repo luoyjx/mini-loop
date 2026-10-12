@@ -250,6 +250,9 @@ func (session *ManagedSession) TryRunWithSnapshot(ctx context.Context, prompt st
 }
 
 func (session *ManagedSession) runWithContext(ctx context.Context, prompt string, run RunContext, try bool, snapshot *SessionInfo) (output string, err error) {
+	if run.memorySelectionScope == memorySelectionRun {
+		run.memorySelectionScope = memorySelectionManaged
+	}
 	return session.runOperation(ctx, prompt, run, try, snapshot, session.core.RunWithContext)
 }
 
