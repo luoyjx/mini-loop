@@ -5727,6 +5727,48 @@ def _memory_header_values() -> list[tuple[str, object]]:
             ("object", {"z": True, "a": "quote'"}), ("text", " line\n用户 ")]
 
 
+def _memory_reply_resource_values() -> list[dict]:
+    """Reply grammar built as text so fixture construction cannot hit recursion."""
+    def nested(depth,shape):
+        return "["*depth+"0"+"]"*depth if shape=="array" else '{"x":'*depth+"0"+"}"*depth
+    rows=[dict(name=f"resource-depth-{shape}-{depth}",depth=depth,shape=shape,field="extra",value_json=nested(depth,shape))
+          for depth in (970,975,976,977,978,979,1000,1001) for shape in ("array","object")]
+    rows += [dict(name=f"resource-consumed-{field}-{depth}",depth=depth,shape="array",field=field,value_json=nested(depth,"array"))
+             for field in ("name","body") for depth in (970,977,978)]
+    rows += [dict(name=f"resource-tail-{depth}",depth=depth,shape="array",field="extra",value_json=nested(depth,"array"),tail=True)
+             for depth in (977,978)]
+    rows += [dict(name=f"resource-duplicate-{depth}",depth=depth,shape="array",field="extra",value_json=nested(depth,"array"),duplicate=True)
+             for depth in (977,978)]
+    rows += [dict(name="resource-wide-array",field="extra",resource_kind="array",resource_count=50000,value_json="["+",".join(["0"]*50000)+"]"),
+             dict(name="resource-large-text",field="extra",resource_kind="text",resource_text="x",resource_count=2*1024*1024,value_json=json.dumps("x"*(2*1024*1024))),
+             dict(name="resource-large-unicode",field="extra",resource_kind="text",resource_text="字",resource_count=100000,value_json=json.dumps("字"*100000,ensure_ascii=False)),
+             dict(name="resource-large-malformed-tail",field="extra",resource_kind="malformed-array",resource_count=50000,value_json="["+",".join(["0"]*50000)+",]")]
+    return rows
+
+
+def _memory_compact_resource_result(result: dict,row: dict,reply: str) -> dict:
+    if not row.get("resource_kind"):
+        return result
+    prefix,matched,suffix=reply.partition(row["value_json"])
+    assert matched
+    for key in ("reply","value_json","resource_kind","resource_count","resource_text"):
+        result.pop(key,None)
+    result["resource"]=dict(kind=row["resource_kind"],count=row["resource_count"],
+                            text=row.get("resource_text",""),prefix=prefix,suffix=suffix,
+                            sha256=hashlib.sha256(reply.encode()).hexdigest())
+    return result
+
+
+def _memory_resource_reply(first: dict,row: dict) -> str:
+    candidate=dict(name="resource",body="fact")
+    candidate.pop(row["field"],None)
+    fields=json.dumps(candidate)[:-1]+',"'+row["field"]+'":'+row["value_json"]
+    if row.get("duplicate"):fields+=',"extra":0'
+    fields+='}'
+    prefix=[first] if not row.get("tail") else [dict(name=f"prefix-{i}",body="fact") for i in range(5)]
+    return "["+",".join(json.dumps(item) for item in prefix)+","+fields+"]"
+
+
 def _memory_extraction_contracts(scratch: Path) -> dict:
     """Actual extraction through Agent._create, with incremental owner writes."""
     import asyncio
@@ -5782,6 +5824,7 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
         dict(name="body-masked-surrogate",mask=True,reply=json.dumps([valid,dict(name="body-candidate",body="\ud800"),dict(name="after",body="after")])),
         *[{**row, "reply": json.dumps([valid, json.loads(row["candidate_json"]), dict(name="after",body="after")])}
           for row in _memory_write_order_values()],
+        *[{**row,"reply":_memory_resource_reply(valid,row)} for row in _memory_reply_resource_values()],
     ]
     async def scenario(row):
         root=scratch/row["name"]; root.mkdir(parents=True)
@@ -5811,10 +5854,11 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
         count=await extract_memories(store,list(agent.messages),agent.client,agent.settings.model,create=agent._create)
         assert agent.token_meter.snapshot()==before
         assert agent.messages==messages
-        return {**row,"fault":row.get("fault",False),"messages":messages,"calls":calls,"count":count,
+        result = {**row,"fault":row.get("fault",False),"messages":messages,"calls":calls,"count":count,
                 "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),"problems":list(raw.problems),
                 "mask_calls":masker.calls-mask_before if masker else 0,
                 "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
+        return _memory_compact_resource_result(result,row,row["reply"])
     async def run(): return [await scenario(row) for row in recipes]
     return dict(cases=asyncio.run(run()))
 
@@ -5850,7 +5894,8 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
              *[dict(name=f"body-{label}",seed=10,mode="body",value_json=json.dumps(value))
                for label,value in _memory_body_values()],
              dict(name="body-masked-surrogate",seed=10,mode="body",mask=True,value_json=json.dumps("\ud800")),
-             *[{**row, "seed":10,"mode":"write-order"} for row in _memory_write_order_values()]]
+             *[{**row, "seed":10,"mode":"write-order"} for row in _memory_write_order_values()],
+             *[{**row,"seed":10,"mode":"resource"} for row in _memory_reply_resource_values()]]
     async def scenario(row):
         root=scratch/row["name"];root.mkdir(parents=True)
         owner=row.get("owner","owner")
@@ -5886,6 +5931,7 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
         elif mode=="write-order":items=[copy.deepcopy(indexed["fact-0"]),json.loads(row["candidate_json"]),dict(name="after",body="after")]
         else:items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],"body":"changed"},dict(name="new",body="merged",owner="foreign",origin="explicit")]
         reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=mode in {"surrogate","body","write-order"})
+        if mode=="resource":reply=_memory_resource_reply(copy.deepcopy(indexed["fact-0"]),row)
         if mode=="overflow":reply=reply[:-2]+',"extra":1e400}]'
         if mode=="integer-limit":reply=reply[:-2]+',"extra":'+'1'*4301+'}]'
         calls,events=[],[]
@@ -5899,10 +5945,11 @@ def _memory_consolidation_contracts(scratch: Path) -> dict:
                     settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
         mask_before=masker.calls if masker else 0
         count=await consolidate_memories(store,agent)
-        return {**row,"fault":row.get("fault",False),"reply":reply,"before":before,"calls":calls,"count":count,
+        result = {**row,"fault":row.get("fault",False),"reply":reply,"before":before,"calls":calls,"count":count,
                 "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),"problems":list(raw.problems),
                 "mask_calls":masker.calls-mask_before if masker else 0,
                 "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
+        return _memory_compact_resource_result(result,row,reply)
     async def run():return [await scenario(row) for row in recipes]
     return dict(cases=asyncio.run(run()))
 
@@ -5930,6 +5977,13 @@ def _memory_capture_contracts(scratch: Path) -> dict:
                 for endpoint in ("normal","exhaustion","resume-halt") for at in (1,3,5)]
     recipes += [dict(name=f"mask-no-consolidation-{at}", endpoint="normal", callback=True, seed=0, mask_at=at)
                 for at in (1,2)]
+    recipes += [dict(name=f"resource-{endpoint}-{stage}-{depth}",endpoint=endpoint,
+                     seed=10 if stage=="consolidation" else 0,resource_stage=stage,depth=depth,
+                     resource_reply=_memory_resource_reply(dict(name="first",body="fact"),
+                       dict(field="extra",value_json="["*depth+"0"+"]"*depth)))
+                for endpoint in ("normal","exhaustion","resume-halt")
+                for stage in ("extraction","consolidation")
+                for depth in (960,970,971,972,973,974,980)]
     class CallbackMasker:
         def __init__(self,row):
             self.row,self.calls,self.armed=row,0,False
@@ -5958,8 +6012,12 @@ def _memory_capture_contracts(scratch: Path) -> dict:
         async def create(**kwargs):
             calls.append(copy.deepcopy(kwargs));budget=kwargs["max_tokens"]
             if budget==200:content=[text("[0]")];reason="end_turn"
-            elif budget==1500:content=[text(json.dumps([dict(name=f"captured-{i}",body="fact") for i in range(2)]) if masker else '[{"name":"captured","body":"fact"}]')];reason="end_turn"
-            elif budget==2500:content=[text(json.dumps([dict(name=f"merged-{i}",body="fact") for i in range(2)]) if masker else '[{"name":"merged","body":"fact"}]')];reason="end_turn"
+            elif budget==1500:
+                reply=row["resource_reply"] if row.get("resource_stage")=="extraction" else "[]" if row.get("resource_stage")=="consolidation" else json.dumps([dict(name=f"captured-{i}",body="fact") for i in range(2)]) if masker else '[{"name":"captured","body":"fact"}]'
+                content=[text(reply)];reason="end_turn"
+            elif budget==2500:
+                reply=row["resource_reply"] if row.get("resource_stage")=="consolidation" else json.dumps([dict(name=f"merged-{i}",body="fact") for i in range(2)]) if masker else '[{"name":"merged","body":"fact"}]'
+                content=[text(reply)];reason="end_turn"
             else:
                 if masker:masker.armed=True
                 if endpoint=="provider-error":raise RuntimeError("main provider failed")

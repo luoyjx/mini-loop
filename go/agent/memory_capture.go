@@ -51,6 +51,10 @@ func memoryReplyIdentity(fields jsonvalue.Value) (memoryIdentity, bool, error) {
 }
 
 func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
+	return s.consolidateMemoriesInScope(ctx, memorySideReply)
+}
+
+func (s *Session) consolidateMemoriesInScope(ctx context.Context, scope memoryReplyScope) (int, error) {
 	// Source List is outside its best-effort block, so failure reaches capture.
 	records, err := s.memory.List(ctx)
 	if err != nil {
@@ -59,12 +63,12 @@ func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
 	if len(records) < 10 {
 		return 0, nil
 	}
-	return s.consolidateMemoryRecords(ctx, records)
+	return s.consolidateMemoryRecords(ctx, records, scope)
 }
 
 // Source's List occurs before its exception handler. Keep that read in the
 // caller so listing faults still reach the outer capture diagnostic boundary.
-func (s *Session) consolidateMemoryRecords(ctx context.Context, records []memory.Record) (count int, err error) {
+func (s *Session) consolidateMemoryRecords(ctx context.Context, records []memory.Record, scope memoryReplyScope) (count int, err error) {
 	defer recoverMemoryFailure(ctx, &count, &err)
 	body, err := protocol.PythonJSON(records, false, false)
 	if err != nil {
@@ -81,7 +85,7 @@ func (s *Session) consolidateMemoryRecords(ctx context.Context, records []memory
 		origins[memoryIdentity{record.Name, record.Type, record.Description, record.Body}] = record.Origin
 	}
 	inputs := make([]memory.Input, 0)
-	for _, raw := range memoryReplyArray(reply) {
+	for _, raw := range memoryReplyArray(reply, scope) {
 		if raw.Kind() != jsonvalue.Object {
 			continue
 		}
@@ -127,11 +131,11 @@ func (s *Session) captureMemories(ctx context.Context) error {
 	var count, consolidated int
 	err := s.memory.WithLifecycle(ctx, func() error {
 		var err error
-		count, err = s.extractMemories(ctx)
+		count, err = s.extractMemoriesInScope(ctx, memoryStopReply)
 		if err != nil {
 			return err
 		}
-		consolidated, err = s.consolidateMemories(ctx)
+		consolidated, err = s.consolidateMemoriesInScope(ctx, memoryStopReply)
 		return err
 	})
 	if failure := memoryExtractionFailure(ctx, err); failure != nil {

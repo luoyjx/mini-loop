@@ -23,6 +23,7 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 	var fixture struct {
 		Cases []struct {
 			Name, Reply      string
+			Resource         *memoryReplyResource
 			Fault            bool
 			Mask             bool
 			Owner            string
@@ -35,7 +36,7 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 96 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 126 {
 		t.Fatal(err)
 	}
 	for _, row := range fixture.Cases {
@@ -63,7 +64,7 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			provider := &memoryExtractionProvider{output: row.Reply, fault: row.Fault}
+			provider := &memoryExtractionProvider{output: memoryResourceReply(t, row.Reply, row.Resource), fault: row.Fault}
 			cfg := runtimeConfig(t.TempDir(), provider)
 			cfg.Owner = OwnerID(owner)
 			cfg.Memory, cfg.Recovery, cfg.CachePolicy = bound, DirectRecovery{}, NullCachePolicy{}
@@ -116,13 +117,14 @@ func TestMemoryConsolidationMatchesActualPythonSource(t *testing.T) {
 }
 
 type captureMemoryProvider struct {
-	name     string
-	endpoint string
-	masker   *memoryCallbackMasker
-	root     string
-	requests []protocol.ModelRequest
-	restore  func()
-	cancel   context.CancelFunc
+	name                         string
+	endpoint                     string
+	resourceReply, resourceStage string
+	masker                       *memoryCallbackMasker
+	root                         string
+	requests                     []protocol.ModelRequest
+	restore                      func()
+	cancel                       context.CancelFunc
 }
 
 func (p *captureMemoryProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
@@ -141,11 +143,20 @@ func (p *captureMemoryProvider) Complete(_ context.Context, request protocol.Mod
 		if p.masker != nil {
 			content = `[{"name":"captured-0","body":"fact"},{"name":"captured-1","body":"fact"}]`
 		}
+		if p.resourceStage == "extraction" {
+			content = p.resourceReply
+		}
+		if p.resourceStage == "consolidation" {
+			content = "[]"
+		}
 		blocks = []protocol.Block{protocol.NewTextBlock(content)}
 	case 2500:
 		content := `[{"name":"merged","body":"fact"}]`
 		if p.masker != nil {
 			content = `[{"name":"merged-0","body":"fact"},{"name":"merged-1","body":"fact"}]`
+		}
+		if p.resourceStage == "consolidation" {
+			content = p.resourceReply
 		}
 		blocks = []protocol.Block{protocol.NewTextBlock(content)}
 	default:
@@ -191,6 +202,8 @@ func TestMemoryCaptureEndpointsMatchActualPythonSource(t *testing.T) {
 		Cases []struct {
 			Name              string
 			Endpoint          string
+			ResourceReply     string `json:"resource_reply"`
+			ResourceStage     string `json:"resource_stage"`
 			Callback          bool
 			Seed              int
 			MaskAt            int  `json:"mask_at"`
@@ -206,7 +219,7 @@ func TestMemoryCaptureEndpointsMatchActualPythonSource(t *testing.T) {
 			Purposes          []protocol.RequestPurpose
 		}
 	}
-	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 43 {
+	if err := json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 85 {
 		t.Fatal(err, len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {
@@ -243,7 +256,7 @@ func TestMemoryCaptureEndpointsMatchActualPythonSource(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			provider := &captureMemoryProvider{name: row.Name, endpoint: endpoint, masker: masker, root: root, cancel: cancel}
+			provider := &captureMemoryProvider{name: row.Name, endpoint: endpoint, resourceReply: row.ResourceReply, resourceStage: row.ResourceStage, masker: masker, root: root, cancel: cancel}
 			defer func() {
 				if provider.restore != nil {
 					provider.restore()

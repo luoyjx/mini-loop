@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonsyntax"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -115,7 +116,26 @@ func observedMemoryBody(value jsonvalue.Value) (memory.Body, error) {
 	return memory.ContainerBody(repr, size)
 }
 
-func memoryReplyArray(reply protocol.ModelReply) []jsonvalue.Value {
+type memoryReplyScope uint8
+
+const (
+	memorySideReply memoryReplyScope = iota
+	memoryStopReply
+)
+
+// Pinned CPython default-recursion profiles, measured through the actual Source
+// consumers. Counts include the reply array and entry object: 977+2 for direct
+// side operations, 972+2 for Agent.run capture. Other host/caller profiles remain
+// separate acceptance work; archive decoding keeps its independent 1000 bound.
+func (scope memoryReplyScope) limits() jsonsyntax.Limits {
+	containers := 979
+	if scope == memoryStopReply {
+		containers = 974
+	}
+	return jsonsyntax.Limits{Containers: containers, IntegerDigits: 4300}
+}
+
+func memoryReplyArray(reply protocol.ModelReply, scope memoryReplyScope) []jsonvalue.Value {
 	var text strings.Builder
 	for _, block := range reply.Content {
 		if value, ok := block.Text(); ok {
@@ -127,7 +147,11 @@ func memoryReplyArray(reply protocol.ModelReply) []jsonvalue.Value {
 	if first < 0 || last < first {
 		return nil
 	}
-	decoded, err := jsonvalue.Decode(value[first : last+1])
+	raw := value[first : last+1]
+	if jsonsyntax.Scan([]byte(raw), scope.limits()) != nil {
+		return nil
+	}
+	decoded, err := jsonvalue.Decode(raw)
 	if err != nil {
 		return nil
 	}
@@ -171,6 +195,10 @@ func storedMemoryType(kind memory.Type) memory.Type {
 // WithLifecycle; automatic endpoint capture/consolidation is wired separately.
 // Ordinary faults return zero, even if preceding items already reached disk.
 func (s *Session) extractMemories(ctx context.Context) (count int, err error) {
+	return s.extractMemoriesInScope(ctx, memorySideReply)
+}
+
+func (s *Session) extractMemoriesInScope(ctx context.Context, scope memoryReplyScope) (count int, err error) {
 	defer recoverMemoryFailure(ctx, &count, &err)
 	if err := stateRunError(ctx); err != nil {
 		return 0, err
@@ -201,7 +229,7 @@ func (s *Session) extractMemories(ctx context.Context) (count int, err error) {
 	if err != nil {
 		return 0, memoryExtractionFailure(ctx, err)
 	}
-	items := memoryReplyArray(reply)
+	items := memoryReplyArray(reply, scope)
 	if len(items) > 5 {
 		items = items[:5]
 	}

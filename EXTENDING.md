@@ -1258,6 +1258,16 @@ Cancellation and wrapped ErrStateTranscript/ErrSessionLeaseLost propagate.
 Ordinary panic payloads are neither retained in domain state nor emitted in events;
 recognized native authority errors continue through the existing error path.
 
+Private memoryReplyScope selects the pinned Source parsing profile: direct
+side-operation helpers use 979 total containers, automatic capture uses 974.
+These include the reply array and entry object; actual CPython default-recursion
+fixtures pin the entry budgets. Syntax preflight occurs before all effects,
+including ignored keys, duplicate values and entries after the extraction limit.
+The existing 4300-digit integer and archive profiles are preserved. Large fixture
+replies use named recipes and exact Source hashes; finite size controls add no
+new production byte/node cap. Other caller stacks/custom host settings and
+resource exhaustion remain explicit acceptance work.
+
 ### Go owner resource snapshots
 
 `userresources.NewResolver` takes a concrete deployment catalogue and optional

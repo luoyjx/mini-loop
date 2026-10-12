@@ -38,6 +38,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 	var fixture struct {
 		Cases []struct {
 			Name, Reply      string
+			Resource         *memoryReplyResource
 			Fault            bool
 			Mask             bool
 			Owner            string
@@ -50,7 +51,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			Purposes         []protocol.RequestPurpose
 		}
 	}
-	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 105 {
+	if err = json.Unmarshal(raw, &fixture); err != nil || len(fixture.Cases) != 135 {
 		t.Fatal(err, len(fixture.Cases))
 	}
 	for _, row := range fixture.Cases {
@@ -75,7 +76,7 @@ func TestMemoryExtractionMatchesActualPythonSource(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			provider := &memoryExtractionProvider{output: row.Reply, fault: row.Fault}
+			provider := &memoryExtractionProvider{output: memoryResourceReply(t, row.Reply, row.Resource), fault: row.Fault}
 			cfg := runtimeConfig(t.TempDir(), provider)
 			cfg.Owner = OwnerID(owner)
 			cfg.Memory, cfg.MemoryTools, cfg.CachePolicy, cfg.Recovery = store, true, NullCachePolicy{}, DirectRecovery{}
