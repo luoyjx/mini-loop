@@ -558,7 +558,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: based on local main `85a4f80`, with typed tool execution
+Runtime review baseline: implementation `be59a60`, based on local main `85a4f80`, with typed tool execution
 scope. ToolAuthority carries only fixed informational label/depth,
 stamped by Session dispatch. Eighteen actual Source Explore/worker/general-purpose
 capability/risk profiles compare fresh child requests, schemas, callback scope,
@@ -572,7 +572,10 @@ collector tests/body inventory, complete Go ordinary/vet/race+atomic, full Pytho
 Audits:462 production files/1460 named types/1196 public/275 private roots/172
 variables,zero findings. Body51 packages/22096 declarations/129 observations.
 Darwin statements:app89.36% (33285/37250), all Go89.11% (33651/37765),
-Provider86.67% (1522/1756). Scope is neither an
+Provider86.67% (1522/1756).
+[Current receipt](docs/audits/go-extension-subagents-2026-10-13.json);
+[coverage](docs/audits/go-coverage-extension-subagents-2026-10-13.json).
+Scope is neither an
 input nor authority, and contains no mutable Agent or business-state pointer.
 Default syntax/IDNA approvals, broader lifecycle/platform/public/type/temporal scope
 and full original migration acceptance remain open.

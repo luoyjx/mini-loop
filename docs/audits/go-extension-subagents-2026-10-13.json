@@ -1,0 +1,519 @@
+{
+  "date": "2026-10-13",
+  "baseline": "85a4f80",
+  "branch": "codex/go-extension-subagents",
+  "scope": "Fixed informational callback scope and actual custom child role/capability/risk behavior; not arbitrary mutable Agent/business-state API or full migration acceptance.",
+  "source_profiles": 18,
+  "case_names": [
+    "Explore/read",
+    "Explore/write",
+    "Explore/mixed",
+    "Explore/unclassified",
+    "Explore/foreign",
+    "Explore/read-cap-write-risk",
+    "worker/read",
+    "worker/write",
+    "worker/mixed",
+    "worker/unclassified",
+    "worker/foreign",
+    "worker/read-cap-write-risk",
+    "general-purpose/read",
+    "general-purpose/write",
+    "general-purpose/mixed",
+    "general-purpose/unclassified",
+    "general-purpose/foreign",
+    "general-purpose/read-cap-write-risk"
+  ],
+  "source_files": {
+    "python/mini_loop/subagents.py": "d4dd47a98fd5840e06c0da49b940db34b5ee8b671ccc214886fad3812034d102",
+    "python/mini_loop/tool_policy.py": "289d4697d1bb546850e52d9f30f0aae637d2aba8a71a748832426fd15cdf42c1",
+    "python/mini_loop/registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/tools/extension_subagent_contracts.py": "4a7878f9d0d7e886a8a49263305e49e56f95b40413c137b84c6b351b76079731"
+  },
+  "source_fixture_sha256": "970dcf36c77d16446c84ada498df8d801f6b65134ad872ac7c111e529afc7aac",
+  "source_manifest": {
+    "path": "var/go-extension-subagents-2026-10-13/source-manifest.json",
+    "sha256": "915aa12db82833166e5d58b82a1bee119ca72cdce263243306d19601bf29365b",
+    "current_files": 244
+  },
+  "initial_failure": {
+    "description": "Current named handler/Source assertions run against the original Session dispatcher restored with a Go overlay. Old dispatcher has no scope stamp, so label/depth are empty/zero. All18 required comparisons fail. This is a controlled previous-dispatch regression check, not a full original-tree cohort.",
+    "failure_count": 18,
+    "overlay_path": "var/go-extension-subagents-2026-10-13/before-overlay.json",
+    "overlay_sha256": "f7a3b7a6fa9a0419960eba91aa62f82bc6e52e025e297b0daced0fe9c2e858df",
+    "original_dispatch_source_sha256": "f23254bd04fe37a369e609d60ed4aa0107b6151b3e2e253f729c31150cee39ae",
+    "log": "var/go-extension-subagents-2026-10-13/before-scope.log"
+  },
+  "setup_diagnostic": "Initial fixture reader used the built-in InputSchema subset for a pattern-bearing custom schema. It rejected pattern before any test case ran; fixed reader uses ExtensionToolSchema and full metadata. Source data/expectations and runtime guards were not relaxed.",
+  "boundaries": {
+    "scope": "ToolAuthority.Scope has named fixed ToolExecutionScope{Label,Depth}; Session dispatch supplies current values to before/gate/handler/after/result callbacks. Direct gate callers may leave zero scope. It contains no mutable Agent/business-state pointer.",
+    "authority": "Scope is informational only. It does not select owner, principal, workspace, capabilities, permissions or quota. A human-looking label/depth999 does not bypass readonly; depth checks still precede every provider.",
+    "inheritance": "Default capability policy requires every declared capability to fit and skips unclassified tools. The selected immutable definitions retain their typed adapter/schema/handler. Explore uses readonly; worker/general-purpose interactive.",
+    "peer": "Fresh child request has no parent transcript. Workspace remains resolved parent root, new child session ID remains bound to the original owner. Derived peer context clears actor/human approvals and preserves trusted provenance and parent message lineage.",
+    "limits": "Source fixed label/depth/workspace/mode/provenance and output/denial/error profiles only. No arbitrary Agent state methods, parallel callback safety, remote worker or complete lifecycle/platform proof."
+  },
+  "gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-extension-subagents-2026-10-13/source-manifest.json"
+      ],
+      "exit_code": 0,
+      "seconds": 99.023
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "./agent",
+        "-run",
+        "TestTypedExtension|TestToolExecutionScope|TestRealTaskChildren|TestEverySubagentProvider",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 1.212
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_export_diagnostics.py",
+        "python/tests/test_extensions.py",
+        "python/tests/test_extension_contracts.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.637
+    },
+    {
+      "name": "types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.553
+    },
+    {
+      "name": "public-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "exit_code": 0,
+      "seconds": 1.865
+    },
+    {
+      "name": "private-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "exit_code": 0,
+      "seconds": 0.665
+    },
+    {
+      "name": "variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "seconds": 0.67
+    },
+    {
+      "name": "collector-tests",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-extension-subagents-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.66
+    },
+    {
+      "name": "body-inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-extension-subagents-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "run",
+        ".",
+        "/Users/yanjixiong/github/mini-loop/go"
+      ],
+      "exit_code": 0,
+      "seconds": 1.137
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 190.715
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-extension-subagents-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-extension-subagents-2026-10-13/ordinary.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "seconds": 0.914
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 1.038
+    },
+    {
+      "name": "race",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-extension-subagents-2026-10-13/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 470.144
+    },
+    {
+      "name": "python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 88.919
+    },
+    {
+      "name": "scans",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "seconds": 8.232
+    },
+    {
+      "name": "guards-tool",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "guard"
+      ],
+      "exit_code": 0,
+      "seconds": 5.134
+    },
+    {
+      "name": "diff",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.03
+    }
+  ],
+  "frozen_inputs": {
+    "count": 1680,
+    "path": "var/go-extension-subagents-2026-10-13/frozen.json",
+    "sha256": "3c16cebc34c08afd6e0420b4db12d1834726b69f444c88d38b28413e2e71e199",
+    "changes_during_gates": []
+  },
+  "implementation_hashes": {
+    "go/agent/catalog.go": "e0ef356e2ab0024b0761d0b3758dbb056ecc5edde65365790105758e11e1465d",
+    "go/agent/lifecycle.go": "0382886ae7263f6e963ab818800eaafeb1705091598fa51d42657e053ccc7812",
+    "go/agent/extension_subagent_test.go": "1f45869a76fbba99a5f173c60ce6e30b6e3262a402ebb7a61016f2842f17bedc",
+    "python/tools/extension_subagent_contracts.py": "4a7878f9d0d7e886a8a49263305e49e56f95b40413c137b84c6b351b76079731",
+    "python/tools/export_go_contracts.py": "eb17857f22693e57e3a4dee3c6c8756008a0145e6c99fe4068b0fa62d13232a3",
+    "go/testdata/python-extension-subagents.json": "970dcf36c77d16446c84ada498df8d801f6b65134ad872ac7c111e529afc7aac"
+  },
+  "type_audits": {
+    "types": "Go type audit: 462 production files, 1460 package-level types, 0 findings",
+    "public-types": "Go public type audit: 51 packages, 1196 exported types, 0 findings",
+    "private-types": "Go private type audit: 51 packages, 275 private root types, 0 findings",
+    "variables": "Go variable audit: 51 packages, 172 package variables, 0 findings"
+  },
+  "body_inventory": {
+    "packages": 51,
+    "declarations": 22096,
+    "open_observations": 129,
+    "path": "var/go-extension-subagents-2026-10-13/body-inventory.log",
+    "sha256": "1820be8686dda782f301e5b81188fc5b51f9843909e74afd400157f3b565384a",
+    "limitations": "Compiler observation inventory does not prove interprocedural/caller/escape/runtime/generic/foreign/other-profile closure."
+  },
+  "consumer_inventory": {
+    "packages": 51,
+    "files": 245,
+    "counts": {
+      "test_pass_observed": 244,
+      "unreferenced": 1
+    },
+    "new_fixture": {
+      "name": "python-extension-subagents.json",
+      "sha256": "970dcf36c77d16446c84ada498df8d801f6b65134ad872ac7c111e529afc7aac",
+      "references": [
+        {
+          "file": "agent/extension_subagent_test.go",
+          "line": 33,
+          "function": "TestTypedExtensionFreshChildrenMatchSourceCapabilitiesAndScope"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestTypedExtensionFreshChildrenMatchSourceCapabilitiesAndScope",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "parser": {
+      "name": "python-syntax-parser.json",
+      "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+      "references": [],
+      "candidate_callers": [],
+      "status": "unreferenced",
+      "producer_scope": "current_export"
+    },
+    "limitations": [
+      "Active go list profile only; Source freshness must be checked independently.",
+      "Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.",
+      "Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.",
+      "A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement."
+    ]
+  },
+  "python_result": "2244 passed, 28 skipped, 96 warnings, 24 subtests passed in 88.35s (0:01:28)",
+  "scans": "harness\n  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\n  pins       test_identity.py::test_the_build_id_covers_the_package_source\n  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double\n  pins       test_spawn_sites.py::test_every_spawn_site_is_classified\n  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries\n  pins       test_write_sites.py::test_every_write_site_is_classified\n  pins       test_write_sites.py::test_the_classification_has_no_dead_entries\n\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.\n",
+  "guards": " request; skipping it silently retires the model-visible-means-logged rule)\n  caught    transcript-guard-checks-count-not-content  (r190: the transcript invariant verifies content, not only count: a flushed row mutated in place would let the model see text the durable record never held)\n  caught    guardian-guesses-when-it-cannot-parse  (r216: an undecidable guardian reply falls to the human (the stricter answerer), never to an assumed approval)\n  caught    guardian-cannot-be-turned-on  (r221: default-off must mean opt-in, not unreachable: the guardian flag actually binds a reviewer, or the feature is dead code with tests)\n\nall 6 guards are load-bearing (passing baseline, failed test call).\n",
+  "logs": {
+    "source": {
+      "path": "var/go-extension-subagents-2026-10-13/source.log",
+      "sha256": "e24e9c3a2253e674804d1bbf12b7646b782ec85e5d7b9b86e3ba863e26710eb5",
+      "bytes": 79118
+    },
+    "focused-go": {
+      "path": "var/go-extension-subagents-2026-10-13/focused-go.log",
+      "sha256": "9729dfe284e3fab03f32d58845d2172d252da1aa2013e0fcebf4c0065abd2008",
+      "bytes": 49
+    },
+    "focused-python": {
+      "path": "var/go-extension-subagents-2026-10-13/focused-python.log",
+      "sha256": "99c716b8108ee140896b8b751e1c4c81a2332326397b3cb57edbb6c2324fcb3c",
+      "bytes": 99
+    },
+    "types": {
+      "path": "var/go-extension-subagents-2026-10-13/types.log",
+      "sha256": "bd167f995436382abad20de8cc316039e2728440031854c09a7566455bed19ac",
+      "bytes": 74
+    },
+    "public-types": {
+      "path": "var/go-extension-subagents-2026-10-13/public-types.log",
+      "sha256": "b332128883352a2289f94507af7a346b867cc12bce300a26e3bfe5d0f5679500",
+      "bytes": 67
+    },
+    "private-types": {
+      "path": "var/go-extension-subagents-2026-10-13/private-types.log",
+      "sha256": "315d2205d27509f727f4530c8b0aa408f122d22b9cd19f610df619a1e8755134",
+      "bytes": 71
+    },
+    "variables": {
+      "path": "var/go-extension-subagents-2026-10-13/variables.log",
+      "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0",
+      "bytes": 66
+    },
+    "collector-tests": {
+      "path": "var/go-extension-subagents-2026-10-13/collector-tests.log",
+      "sha256": "6bf8cdd90c8f750b1ff7359f171c29538acfc53876b3598a06fe051cbd29bf8a",
+      "bytes": 36
+    },
+    "body-inventory": {
+      "path": "var/go-extension-subagents-2026-10-13/body-inventory.log",
+      "sha256": "1820be8686dda782f301e5b81188fc5b51f9843909e74afd400157f3b565384a",
+      "bytes": 55192
+    },
+    "ordinary": {
+      "path": "var/go-extension-subagents-2026-10-13/ordinary.log",
+      "sha256": "5f014392513fc36615d15d5057552d88a4e08cbea4f38ad26bbf90b5016455ee",
+      "bytes": 10619053
+    },
+    "inventory": {
+      "path": "var/go-extension-subagents-2026-10-13/inventory.log",
+      "sha256": "2dd21dd9ad800c92386cb17e495897a02ffc91f4bc9fbdc29ac33defb301dbd7",
+      "bytes": 314209
+    },
+    "vet": {
+      "path": "var/go-extension-subagents-2026-10-13/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "race": {
+      "path": "var/go-extension-subagents-2026-10-13/race.log",
+      "sha256": "3d2babe4742dfa0f11315bae9365352bc0e5661e943b7b40fc1921c4e48e4a1e",
+      "bytes": 6325
+    },
+    "python": {
+      "path": "var/go-extension-subagents-2026-10-13/python.log",
+      "sha256": "841dac281d54da9660027c43079d054ebf5a28aa6cc6025aeda7c761961da692",
+      "bytes": 51428
+    },
+    "scans": {
+      "path": "var/go-extension-subagents-2026-10-13/scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "bytes": 1663
+    },
+    "guards-tool": {
+      "path": "var/go-extension-subagents-2026-10-13/guards-tool.log",
+      "sha256": "30af31247f5eb40fe5d697b62f27e7f41494d33c3a7e1b0772d849aea4ba0e4f",
+      "bytes": 1195
+    },
+    "diff": {
+      "path": "var/go-extension-subagents-2026-10-13/diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "focused-schema-setup": {
+      "path": "var/go-extension-subagents-2026-10-13/focused-schema-setup.log",
+      "sha256": "b9f473c6bdbb5517ad492dd2d31cfeb6870e6861246f4d7b6e781057e9acdd3c",
+      "bytes": 205
+    },
+    "before-scope": {
+      "path": "var/go-extension-subagents-2026-10-13/before-scope.log",
+      "sha256": "255a70164ec5e74369fb7365759cadd6c774f53eef69e7027171ff91327926a7",
+      "bytes": 10928
+    },
+    "focused": {
+      "path": "var/go-extension-subagents-2026-10-13/focused.log",
+      "sha256": "e5fcb6763d5917da98874fb5081ad6ab910d0cc8aaef97b2e042c089d1b9fb0c",
+      "bytes": 49
+    }
+  },
+  "runner": {
+    "path": "var/go-extension-subagents-2026-10-13/run.py",
+    "sha256": "5d69f24614172edb8f56210a0d4386e49f05d96ba4c3f58a73cc85de692b28be"
+  },
+  "architecture": {
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "base_changed": false,
+    "components_added_or_removed": false,
+    "iteration": "docs/audits/go-extension-subagents-infographic-2026-10-13.png",
+    "iteration_sha256": "431ccadbfc5c130cc35bb187eb1032651dd91eef3788139c68891ce47437f001",
+    "prompt": "docs/audits/go-extension-subagents-infographic-2026-10-13.prompt.txt",
+    "prompt_sha256": "29fe66147f99dffd36b857d96b3cf46d91705aa81cea1cabb85a5cd112c0126a",
+    "visual_review": "Exact five layers/cards; visible Session/Provider double-headed route, separate Session-to-Gate above Provider, Gate-to-L4 and L4-result-to-Session; no Provider-to-Gate. Highlights only Session/Gate/task delegation. No component added or removed.",
+    "html_delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "77e317fdef782e288ebc0aa82ece16ff9e6e90bcbaa7a4b7b0023e681c0e1510",
+        "bytes": 146204
+      },
+      "artifact": {
+        "sha256": "ebc996037ad4c2b198a76ec8ed9fd5ca3dd1671231f9d532bda7626bd8b433d8",
+        "bytes": 800327
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "html_visual_review": "No new rendered browser acceptance;9 structural/geometry showcase checks stay separate."
+  },
+  "coverage_receipt": "docs/audits/go-coverage-extension-subagents-2026-10-13.json",
+  "remaining": [
+    "Default CPython syntax backend and broader IDNA approvals remain pending.",
+    "Readonly-write callback scheduling adaptation and arbitrary mutable Agent/business-state/parallel/remote/other-lifecycle profiles remain separate.",
+    "129 body observations, provider/public/default/feature/platform/performance/release scope and historical temporal failures remain open under original P0/P1/G0-G7."
+  ],
+  "skipped": [
+    "No Python runtime package-module changes; invariant gate not required.",
+    "No new dependency, paid model call, remote fetch/push or Linux full gates."
+  ],
+  "integration_plan": "Two logical commits then local main ff-only after required gates; original goal remains active.",
+  "post_gate_documentation_only_updates": [
+    "README.md"
+  ],
+  "post_gate_readme_sha256": "d6e30bb23d66a295e290347fb1f6210b26cfb825541b08930ba3773161fce0b5",
+  "implementation_commit": "be59a603cd4c05a3526314ed3bcfbc2c22ea093a",
+  "delivery_setup_correction": "Receipt writer initially reused the previous coverage filename; current coverage moved to its dedicated file and the unrelated prior receipt restored byte-for-byte from HEAD. No gate/program/profile changed."
+}

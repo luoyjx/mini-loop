@@ -1,5 +1,44 @@
 # Go port plan
 
+## 2026-10-13 fixed tool execution scope and custom child inheritance
+
+Implementation `be59a60`, based on local main `85a4f80`, branch
+`codex/go-extension-subagents`. Actual Source callbacks expose current Agent
+label/depth. Go now supplies fixed `ToolAuthority.Scope: ToolExecutionScope`,
+stamped by Session dispatch. It is informational, never selects principal/owner/
+workspace/capability/permission or depth quota, and carries no mutable Agent or
+business-state pointer. Direct gate callers may leave zero scope.
+
+Eighteen actual Source Explore/worker/general-purpose profiles exercise read,
+write, mixed, unclassified, foreign capability and read-cap/write-risk selections.
+Required assertions compare complete selected schemas, fresh request history,
+callback label/depth/workspace/mode, cleared-human peer provenance and outcomes.
+Typed codecs/handlers remain selected; filtered names remain unknown, Explore
+refuses writes and parent history stays private. A previous-dispatch Go overlay
+fails all18 assertions at empty/zero scope; retained log is a controlled regression
+comparison, not a complete old-tree cohort. Initial fixture reader rejected a
+pattern-bearing schema before any case; corrected reader uses the complete
+metadata constructor without changing Source expectations or runtime guards.
+
+Frozen1680 inputs pass Source244/manifest, focused Go/Python, four type audits,
+collector tests/body inventory, ordinary Go/vet/race+atomic, full Python,19 scans,
+6 selected guards and diff. Python2244 passed,28 skipped,96 warnings,24 subtests
+in88.35s. Consumer inspection exits1 only for the unreferenced native parser.
+Audits:462 production files/1460 named types/1196 public/275 private roots/172
+variables,zero findings. Body51 packages/22096 declarations/129 observations.
+Darwin statements:app89.36% (33285/37250), all Go89.11% (33651/37765),
+Provider86.67% (1522/1756). [Full receipt](docs/audits/go-extension-subagents-2026-10-13.json);
+[coverage](docs/audits/go-coverage-extension-subagents-2026-10-13.json).
+
+README canonical map/boundary/JSON/generated HTML agree;9 showcase checks,zero
+errors/warnings. No component addition/deletion; base unchanged. The built-in
+[iteration image](docs/audits/go-extension-subagents-infographic-2026-10-13.png)
+highlights existing Session/Gate/task delegation. Required arrows/cards inspected;
+exact prompt retained. Default syntax/IDNA approvals, arbitrary mutable Agent/state
+API, wider callbacks/parallel/remote/lifecycle/platform/type/temporal/public scope
+and original P0/P1/G0-G7 acceptance remain open. Local ff-only main integration
+after two logical commits; no remote push or complete-port claim.
+
 ## 2026-10-13 complete custom schema metadata
 
 Implementation `c92fe51`, based on local main `82cc93d`, branch
@@ -7941,16 +7980,15 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-13**: implementation `c92fe51`, based on main `82cc93d`,
-preserves complete finite custom schema metadata. Sixteen Source profiles/32
-managed owner sessions compare snapshots/fingerprints/model requests/results;
-sixteen native SQLite reopen/restore profiles retain metadata and current owner/
-permission binding. Frozen1677 inputs pass Source243/manifest, focused Go/Python,
+Reviewed **2026-10-13**: implementation `be59a60`, based on main `85a4f80`,
+adds fixed Session-stamped callback scope. Eighteen Source custom child capability/
+risk profiles compare schema, fresh history, lineage/workspace/mode/peer context,
+results and denials. Frozen1680 inputs pass Source244/manifest, focused Go/Python,
 four type audits, collector tests/body inventory, ordinary Go/vet/race+atomic,
 Python2244 passed/28 skipped,19 scans,6 guards and diff. Parser consumer inspection
-remains exit1. [Current receipt](docs/audits/go-extension-schema-preservation-2026-10-13.json).
-Original acceptance, historical temporal failures, wider schema/server/callback/
-caller/profile and default dependency decisions remain open.
+remains exit1. [Current receipt](docs/audits/go-extension-subagents-2026-10-13.json).
+Scope grants no authority; original acceptance, arbitrary mutable state and wider
+callback/platform/type/temporal/public profiles and dependency decisions remain open.
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -7981,9 +8019,9 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Passing-race statement coverage: app **89.34% (33280/37250)**,
-all Go **89.09% (33646/37765)**, Provider **86.67% (1522/1756)**.
-[Current coverage](docs/audits/go-coverage-extension-schema-preservation-2026-10-13.json). Darwin statements only; native C/subprocess
+Passing-race statement coverage: app **89.36% (33285/37250)**,
+all Go **89.11% (33651/37765)**, Provider **86.67% (1522/1756)**.
+[Current coverage](docs/audits/go-coverage-extension-subagents-2026-10-13.json). Darwin statements only; native C/subprocess
 interiors, Python, branches and other profiles excluded. Sixteen validation stages
 pass; native parser consumer inspection remains incomplete. Original migration
 acceptance and historical temporal reliability stay open.
@@ -8005,7 +8043,7 @@ work-package acceptance.
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes243 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass in the current1677-input cohort;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes244 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass in the current1680-input cohort;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
