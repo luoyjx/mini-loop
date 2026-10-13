@@ -2982,19 +2982,27 @@ Discovery happens before the short publication lock. Description str conversion,
 Each definition pins external risk, exclusive execution and empty capabilities.
 Readonly is the server's advisory hint and cannot bypass readonly-mode refusal or
 external-action approval. Explicit MCP caller input remains an immutable object. Model ingress separately
-retains finite root observations without making a non-object callable. Session
+retains closed legacy root observations without making a non-object callable. Session
 prepares every batch member with Source `dict(input or {})`: falsey roots become
-`{}`, pair arrays become string-key objects and malformed truthy roots fail before
-hooks, journal or any earlier effect. Model history/masked clones/identity/archive
+`{}`, pair arrays retain an immutable ordered scalar-key mapping; unhashable keys and
+malformed rows fail before hooks, journal or any earlier effect. Hashable non-text
+keys preserve Python equality/first-key kind/last-value replacement and defer
+keyword binding failure until the common permission/execute stage. Sorted query
+comparison faults occur before result observers even without an active reducer. Model history/masked clones/identity/archive
 retain the original root. `MCP()` exposes callable arguments only when object-shaped.
-Nonfinite/non-string mapping-key and wider caller/transport profiles remain open.
+116 actual direct and116 journal profiles compare stages/effects, hashes and
+original model history. Seven native SQLite reopen/owner-restore scenarios also
+check event stages and persistence errors. Numeric keys are masked by their
+original kind before archive JSON projection. Broader nonfinite-object/NaN-identity
+and caller/transport profiles remain open.
 The concrete MCP protocol variant holds an immutable
 closed argument object; masking visits values and keys without changing live input.
 Canonical hashes sort nested keys. Request/archive schema round trips retain
 server-defined language and even null/bool schema values as inert metadata, matching
 Source registration; schema content is not an authority or an argument validator.
-Arguments currently require finite/scalar-Unicode JSON, as the ordinary protocol
-serialization boundary does. Broader historical argument profiles remain open.
+Explicit caller arguments and callable MCP client objects require finite/scalar-
+Unicode JSON. Model roots/keys and archival metadata are observations; they grant
+no execution authority. Broader historical argument profiles remain open.
 
 Assign a discovered snapshot to `RuntimeConfig.MCPCatalog` before creating a raw
 session. It accepts only namespaced external definitions; ToolSelection still

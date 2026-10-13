@@ -9,12 +9,21 @@ import (
 // InputObservation is a detached SDK input snapshot, never executable arguments.
 // Standard JSON encoding still refuses its nonfinite numbers. LegacyJSON is only
 // for inspection and archival projections, not HTTP request encoding.
-type InputObservation struct{ value jsonvalue.Value }
+type InputObservation struct {
+	value      jsonvalue.Value
+	mcpMapping *mcpMapping
+}
 
 func (observation InputObservation) LegacyJSON() ([]byte, error) {
+	if observation.mcpMapping != nil {
+		return observation.mcpMapping.marshal(false, true)
+	}
 	return observation.value.MarshalLegacyUTF8()
 }
 func (observation InputObservation) MarshalJSON() ([]byte, error) {
+	if observation.mcpMapping != nil {
+		return observation.mcpMapping.marshal(false, false)
+	}
 	return observation.value.MarshalJSON()
 }
 
@@ -23,10 +32,21 @@ func (observation InputObservation) MapStrings(mask func(string) string) InputOb
 	if mask == nil {
 		return observation
 	}
-	return InputObservation{value: observation.value.MapStrings(mask)}
+	copy := InputObservation{value: observation.value.MapStrings(mask)}
+	if observation.mcpMapping != nil {
+		copy.mcpMapping = observation.mcpMapping.masked(mask)
+	}
+	return copy
 }
 
 func (observation InputObservation) SortedPythonJSON() (string, error) {
+	if observation.mcpMapping != nil {
+		data, err := observation.mcpMapping.marshal(true, true)
+		if err != nil {
+			return "", err
+		}
+		return formatPythonJSONBytes(data, false, false)
+	}
 	data, err := observation.value.Sorted().MarshalLegacyUTF8()
 	if err != nil {
 		return "", err
@@ -36,6 +56,9 @@ func (observation InputObservation) SortedPythonJSON() (string, error) {
 func (input ToolInput) Observation() (InputObservation, error) {
 	if err := input.Validate(); err != nil {
 		return InputObservation{}, err
+	}
+	if IsMCPToolName(input.name) {
+		return InputObservation{value: input.mcpArguments, mcpMapping: input.mcpMapping}, nil
 	}
 	if input.name == ToolBash && (input.bashBinding != nil || input.bashCommand != nil || input.bashBackground != nil || input.bashApproval != nil) {
 		return InputObservation{value: input.bashObservation()}, nil
@@ -129,6 +152,16 @@ func (block Block) observationValue() (jsonvalue.Value, error) {
 			return jsonvalue.Value{}, observeErr
 		}
 		observed = snapshot.value
+		if snapshot.mcpMapping != nil {
+			projection, projectionErr := snapshot.LegacyJSON()
+			if projectionErr != nil {
+				return jsonvalue.Value{}, projectionErr
+			}
+			observed, err = jsonvalue.Decode(string(projection))
+			if err != nil {
+				return jsonvalue.Value{}, err
+			}
+		}
 		var caller *wireOptional[ToolCaller]
 		if block.callerPresent {
 			caller = &wireOptional[ToolCaller]{value: block.toolUse.Caller}

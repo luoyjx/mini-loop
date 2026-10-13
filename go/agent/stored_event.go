@@ -51,7 +51,7 @@ func DecodeStoredEvent(data []byte) (SessionEventRecord, error) {
 		if SessionEventKind(text) == EventToolUse {
 			name, _ := value.Lookup("name")
 			toolName, _ := name.Text()
-			if protocol.ToolName(toolName) == protocol.ToolBash {
+			if protocol.ToolName(toolName) == protocol.ToolBash || protocol.IsMCPToolName(protocol.ToolName(toolName)) {
 				return decodeLegacyToolObservationEvent(value)
 			}
 		}

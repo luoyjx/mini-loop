@@ -30,7 +30,17 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return PythonJSON(input.unknownModelTool.arguments.Sorted(), false, compact)
 	}
 	if IsMCPToolName(input.Name()) {
-		return PythonJSON(input.mcpArguments.Sorted(), false, compact)
+		var data []byte
+		var err error
+		if input.mcpMapping != nil {
+			data, err = input.mcpMapping.marshal(true, true)
+		} else {
+			data, err = input.mcpArguments.Sorted().MarshalLegacyUTF8()
+		}
+		if err != nil {
+			return "", err
+		}
+		return formatPythonJSONBytes(data, false, compact)
 	}
 	if IsASTTool(input.Name()) {
 		raw, err := input.marshalAST()

@@ -359,6 +359,8 @@ func (gate *ToolGate) dispatchProjected(ctx context.Context, authority ToolAutho
 			executeErr = failure
 		} else if failure, ok := call.Input.BackgroundBindingFailure(); ok {
 			executeErr = failure
+		} else if failure, ok := call.Input.MCPKeywordBindingFailure(); ok {
+			executeErr = failure
 		} else if _, unknown := call.Input.UnknownModelToolObservation(); unknown && !definition.extensionInput {
 			executeErr = fmt.Errorf("tool requires a named native input decoder: %s", call.Name())
 		} else if handler, ok := definition.handler.(detailedToolHandler); ok {

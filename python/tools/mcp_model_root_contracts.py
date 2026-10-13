@@ -25,7 +25,7 @@ def mcp_model_root_contracts() -> dict:
         ])
 
 
-def capture_mcp_model_root_cases(recipes, *, batch_names=(), batch_all=False) -> list[dict]:
+def capture_mcp_model_root_cases(recipes, *, batch_names=(), batch_all=False, journal=False) -> list[dict]:
     from mini_loop.agent import Agent
     from mini_loop.config import Settings
     from mini_loop.fake_llm import FakeAsyncAnthropic, ToolUseBlock, text
@@ -55,16 +55,25 @@ def capture_mcp_model_root_cases(recipes, *, batch_names=(), batch_all=False) ->
             if batch:blocks.append(ToolUseBlock("mcp__peer__echo",{"first":1},"first"))
             blocks.append(ToolUseBlock("mcp__peer__echo",copy.deepcopy(value),"model"))
             return blocks,"tool_use"
+        state={"permission_mode":mode}
+        if journal:
+            from mini_loop.actions import InMemoryActionJournal
+            state["action_journal"]=InMemoryActionJournal()
         agent=Agent(client=FakeAsyncAnthropic(responder=responder,thinking=False),workspace=root,
                     settings=Settings(fake_llm=True,skills_dir=root/"skills",spill_dir=None),
-                    hooks=Hooks([Probe(),PermissionHook()]),state={"permission_mode":mode})
+                    hooks=Hooks([Probe(),PermissionHook()]),state=state)
         await register_mcp(agent,Peer())
         try:output=await agent.run("call MCP");error=None
         except Exception as failure:output=None;error=dict(kind=type(failure).__name__,message=str(failure))
-        return dict(name=mode+"/"+name+("/batch" if batch else ""),mode=mode,input_json=json.dumps(value,ensure_ascii=False),
+        row=dict(name=mode+"/"+name+("/batch" if batch else ""),mode=mode,input_json=json.dumps(value,ensure_ascii=False),
                     batch=batch,output=output,error=error,trace=trace,calls=calls,results=results,
                     model_input_unchanged=json.dumps(agent.messages[1]["content"][-1]["input"],ensure_ascii=True)==json.dumps(value,ensure_ascii=True),
                     requests=len(requests))
+        if journal:
+            records=state["action_journal"]._records.values()
+            row["actions"]=[dict(tool_use_id=r.tool_use_id,status=r.status,input_hash=r.input_hash,result=r.result)
+                            for r in sorted(records,key=lambda r:r.tool_use_id)]
+        return row
     with tempfile.TemporaryDirectory(prefix="mini-loop-mcp-model-root-") as scratch:
         async def collect():
             rows=[]

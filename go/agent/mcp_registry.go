@@ -132,6 +132,9 @@ func (handler mcpToolHandler) ExecuteTool(ctx context.Context, authority ToolAut
 	if err := authority.Validate(); err != nil {
 		return "", err
 	}
+	if _, failed := input.MCPKeywordBindingFailure(); failed && input.Name() == handler.name {
+		return "", protocol.MCPKeywordBindingFailure{}
+	}
 	arguments, ok := input.MCP()
 	if !ok || input.Name() != handler.name {
 		return "", errors.New("MCP handler input does not match its registered tool")

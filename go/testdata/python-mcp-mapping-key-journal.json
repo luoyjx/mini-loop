@@ -1,0 +1,3097 @@
+{
+  "cases": [
+    {
+      "actions": [
+        {
+          "input_hash": "12b0137f6e4f4cc6df162a759f9ae58d020baa561b9e0fc5d34cf682ccef2699",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "12b0137f6e4f4cc6df162a759f9ae58d020baa561b9e0fc5d34cf682ccef2699",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[1, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "1e6e3b4de4def2857eac6c38730573fea0c28fac43a014d03f8a386c055c709a",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[-1, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "1e6e3b4de4def2857eac6c38730573fea0c28fac43a014d03f8a386c055c709a",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[-1, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "6834a620be05272dd0f9cbf3e4cf0f474741213610ec0a291c063e97234d6284",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1.5, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/float-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "6834a620be05272dd0f9cbf3e4cf0f474741213610ec0a291c063e97234d6284",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[1.5, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/float-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "c83d30b8b90015e27a3f7ee7497fb2456b8134f203fa784466d2cbc61f4eaa24",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[true, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/true-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "c83d30b8b90015e27a3f7ee7497fb2456b8134f203fa784466d2cbc61f4eaa24",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[true, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/true-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "34c6dfa12695c69baf685b5a0abaf461992d1d2c300ba5541ea17387099b9fa9",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[false, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/false-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "34c6dfa12695c69baf685b5a0abaf461992d1d2c300ba5541ea17387099b9fa9",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[false, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/false-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "e19539465ab94883a9c5ca5f8bfd7020d949e3735cb669cfb751b87982e76aed",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[null, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/null-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "e19539465ab94883a9c5ca5f8bfd7020d949e3735cb669cfb751b87982e76aed",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[null, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/null-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[NaN, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/nan-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[NaN, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/nan-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[Infinity, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/positive-infinity-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[Infinity, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/positive-infinity-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[-Infinity, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-infinity-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[-Infinity, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-infinity-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[\"x\"], \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/array-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[\"x\"], \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/array-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[], \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-array-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[], \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-array-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{\"x\": 1}, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/object-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{\"x\": 1}, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/object-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{}, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-object-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{}, \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-object-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'int' and 'str'"
+      },
+      "input_json": "[[\"x\", \"first\"], [1, \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/text-then-integer",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'int' and 'str'"
+      },
+      "input_json": "[[\"x\", \"first\"], [1, \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/text-then-integer/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'NoneType'"
+      },
+      "input_json": "[[null, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/null-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'NoneType'"
+      },
+      "input_json": "[[null, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/null-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'bool'"
+      },
+      "input_json": "[[true, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/true-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'bool'"
+      },
+      "input_json": "[[true, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/true-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'float'"
+      },
+      "input_json": "[[1.5, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/float-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'float'"
+      },
+      "input_json": "[[1.5, \"first\"], [\"x\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/float-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "2c5543d4b7a502ecbef93b41063896e933942ada76ef4fd7cffec733ac085af4",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, \"first\"], [1.0, \"second\"], [true, \"third\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/equal-number-keys",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "2c5543d4b7a502ecbef93b41063896e933942ada76ef4fd7cffec733ac085af4",
+          "result": "Error: keywords must be strings",
+          "status": "failed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[1, \"first\"], [1.0, \"second\"], [true, \"third\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/equal-number-keys/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"1\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-and-text-keys",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"1\", \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-and-text-keys/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "c50c9e7f8403b32e90b6567d2463473da748798a661338a748495f925a73cfa5",
+          "result": "{\"\":\"value\"}",
+          "status": "completed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [
+        {
+          "": "value"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"\", \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-text-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"\":\"value\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "c50c9e7f8403b32e90b6567d2463473da748798a661338a748495f925a73cfa5",
+          "result": "{\"\":\"value\"}",
+          "status": "completed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        },
+        {
+          "": "value"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"\", \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-text-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"\":\"value\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "291eca4861724b374b68ca93f82a1ef6b5948df6c1d41ef83cfe49c28806aa21",
+          "result": "{\"class\":\"value\"}",
+          "status": "completed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [
+        {
+          "class": "value"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"class\", \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/keyword-text",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"class\":\"value\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "291eca4861724b374b68ca93f82a1ef6b5948df6c1d41ef83cfe49c28806aa21",
+          "result": "{\"class\":\"value\"}",
+          "status": "completed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        },
+        {
+          "class": "value"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"class\", \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/keyword-text/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"class\":\"value\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "2d84aab52bd5b088f84db1a80a76821ecb1ab74fa2b23644fe7f93b3a5e87127",
+          "result": "{\"has space\":\"value\"}",
+          "status": "completed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": false,
+      "calls": [
+        {
+          "has space": "value"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"has space\", \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/spaced-text-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"has space\":\"value\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        },
+        {
+          "input_hash": "2d84aab52bd5b088f84db1a80a76821ecb1ab74fa2b23644fe7f93b3a5e87127",
+          "result": "{\"has space\":\"value\"}",
+          "status": "completed",
+          "tool_use_id": "model"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        },
+        {
+          "has space": "value"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"has space\", \"value\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/spaced-text-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"has space\":\"value\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #1 has length 1; 2 is required"
+      },
+      "input_json": "[[1, \"first\"], [\"x\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/later-short-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #1 has length 1; 2 is required"
+      },
+      "input_json": "[[1, \"first\"], [\"x\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/later-short-row/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[1, \"first\"], [[\"x\"], \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/later-unhashable-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[1, \"first\"], [[\"x\"], \"second\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/later-unhashable-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/nan-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/nan-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/positive-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/positive-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-key-nan-value",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [
+        {
+          "input_hash": "774f958deec5b02dd6d95db6d282d75d329e49d0c997f40fae3b51eae9b8614e",
+          "result": "{\"first\":1}",
+          "status": "completed",
+          "tool_use_id": "first"
+        }
+      ],
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-key-nan-value/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: Out of range float values are not JSON compliant"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[-1, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[-1, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1.5, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/float-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1.5, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/float-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[true, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/true-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[true, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/true-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[false, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/false-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[false, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/false-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[null, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/null-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[null, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/null-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[NaN, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/nan-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[NaN, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/nan-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[Infinity, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/positive-infinity-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[Infinity, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/positive-infinity-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[-Infinity, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-infinity-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[-Infinity, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-infinity-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[\"x\"], \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/array-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[\"x\"], \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/array-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[], \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-array-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[[], \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-array-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{\"x\": 1}, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/object-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{\"x\": 1}, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/object-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{}, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-object-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'dict'"
+      },
+      "input_json": "[[{}, \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-object-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'int' and 'str'"
+      },
+      "input_json": "[[\"x\", \"first\"], [1, \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/text-then-integer",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'int' and 'str'"
+      },
+      "input_json": "[[\"x\", \"first\"], [1, \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/text-then-integer/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'NoneType'"
+      },
+      "input_json": "[[null, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/null-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'NoneType'"
+      },
+      "input_json": "[[null, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/null-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'bool'"
+      },
+      "input_json": "[[true, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/true-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'bool'"
+      },
+      "input_json": "[[true, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/true-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'float'"
+      },
+      "input_json": "[[1.5, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/float-then-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'float'"
+      },
+      "input_json": "[[1.5, \"first\"], [\"x\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/float-then-text/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, \"first\"], [1.0, \"second\"], [true, \"third\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/equal-number-keys",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, \"first\"], [1.0, \"second\"], [true, \"third\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/equal-number-keys/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"1\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-and-text-keys",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": [
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'<' not supported between instances of 'str' and 'int'"
+      },
+      "input_json": "[[1, \"first\"], [\"1\", \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-and-text-keys/batch",
+      "output": null,
+      "requests": 1,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"\", \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-text-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"\", \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-text-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"class\", \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/keyword-text",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"class\", \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/keyword-text/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"has space\", \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/spaced-text-key",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"has space\", \"value\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/spaced-text-key/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #1 has length 1; 2 is required"
+      },
+      "input_json": "[[1, \"first\"], [\"x\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/later-short-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #1 has length 1; 2 is required"
+      },
+      "input_json": "[[1, \"first\"], [\"x\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/later-short-row/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[1, \"first\"], [[\"x\"], \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/later-unhashable-key",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "input_json": "[[1, \"first\"], [[\"x\"], \"second\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/later-unhashable-key/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/nan-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/nan-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/positive-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/positive-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "actions": [],
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-key-nan-value",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "actions": [],
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-key-nan-value/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    }
+  ],
+  "limits": [
+    "Actual Agent.run, FakeAsyncAnthropic, register_mcp and default PermissionHook; not SDK/HTTP/Stdio or arbitrary callback parity.",
+    "Scalar non-text keys reach keyword binding after permission; unhashable keys fail whole-batch dict preparation before effects.",
+    "Mixed-key ordering faults can happen after after_tool but before on_result. Auto batches may retain the earlier successful effect.",
+    "NaN/infinity observations are encoded only inside input_json text; fixture envelope stays finite JSON.",
+    "Captured direct/journal profiles require exact staged native assertions; broader managed/transport and repeated-NaN identity profiles remain separate.",
+    "Actual InMemoryActionJournal begin/finish records added; no durable manager/replay/SQLite claim from this capture."
+  ]
+}

@@ -1301,6 +1301,161 @@
     {
       "batch": false,
       "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/nan-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/nan-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/positive-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/positive-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-key-nan-value",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        }
+      ],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-key-nan-value/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Error: keywords must be strings"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
       "error": null,
       "input_json": "[[1, \"value\"]]",
       "mode": "readonly",
@@ -2416,6 +2571,153 @@
       "requests": 1,
       "results": [],
       "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/nan-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "NaN",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/nan-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/positive-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/positive-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-infinity-root",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "-Infinity",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-infinity-root/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-key-nan-value",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[1, NaN]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-key-nan-value/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
     }
   ],
   "limits": [
@@ -2423,6 +2725,6 @@
     "Scalar non-text keys reach keyword binding after permission; unhashable keys fail whole-batch dict preparation before effects.",
     "Mixed-key ordering faults can happen after after_tool but before on_result. Auto batches may retain the earlier successful effect.",
     "NaN/infinity observations are encoded only inside input_json text; fixture envelope stays finite JSON.",
-    "Native required comparison is pending; current native differences must remain retained, not relabelled as accepted adaptations."
+    "Captured direct/journal profiles require exact staged native assertions; broader managed/transport and repeated-NaN identity profiles remain separate."
   ]
 }

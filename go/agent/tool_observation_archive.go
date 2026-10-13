@@ -5,10 +5,10 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
-// MarshalArchiveJSON preserves deferred Bash binding observations in the event
+// MarshalArchiveJSON preserves deferred shell/MCP observations in the event
 // store. It does not relax standard request JSON or reconstruct live authority.
 func (record SessionEventRecord) MarshalArchiveJSON() ([]byte, error) {
-	if record.Event.kind != EventToolUse || record.Event.toolUse.Name != protocol.ToolBash {
+	if record.Event.kind != EventToolUse || (record.Event.toolUse.Name != protocol.ToolBash && !protocol.IsMCPToolName(record.Event.toolUse.Name)) {
 		return record.MarshalJSON()
 	}
 	observation, err := record.Event.toolUse.Input.Observation()
@@ -23,12 +23,18 @@ func (record SessionEventRecord) MarshalArchiveJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if _, err = input.MarshalJSON(); err == nil {
-		return record.MarshalJSON()
+	if data, ordinaryErr := record.MarshalJSON(); ordinaryErr == nil {
+		return data, nil
 	}
 	copy := record
 	copy.Event = record.Event.clone()
 	copy.Event.toolUse.Input = protocol.BashToolInput(protocol.BashInput{Command: "archive-placeholder"})
+	if protocol.IsMCPToolName(record.Event.toolUse.Name) {
+		copy.Event.toolUse.Input, err = protocol.DecodeModelToolInput(record.Event.toolUse.Name, []byte(`{}`))
+		if err != nil {
+			return nil, err
+		}
+	}
 	data, err := copy.MarshalJSON()
 	if err != nil {
 		return nil, err

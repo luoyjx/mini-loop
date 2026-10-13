@@ -19,6 +19,7 @@ const (
 	batchElementNotSequence
 	batchWrongPairLength
 	batchUnsupportedKey
+	batchUnhashableKey
 )
 
 func (failure ModelBatchInputFailure) SourceClass() string {
@@ -38,6 +39,8 @@ func (failure ModelBatchInputFailure) Error() string {
 		return fmt.Sprintf("cannot convert dictionary update sequence element #%d to a sequence", failure.index)
 	case batchWrongPairLength:
 		return fmt.Sprintf("dictionary update sequence element #%d has length %d; 2 is required", failure.index, failure.length)
+	case batchUnhashableKey:
+		return fmt.Sprintf("unhashable type: '%s'", failure.rootKind)
 	default:
 		return "non-string model batch mapping keys require a named mapping observation"
 	}
@@ -47,14 +50,10 @@ func (failure ModelBatchInputFailure) Error() string {
 // The original assistant block remains unchanged. Non-string mapping-key
 // profiles remain explicit rather than entering a string-key domain object.
 func (input ToolInput) ForModelBatch() (ToolInput, error) {
-	rejected := input.bashRejected
-	if input.mcpModel && input.mcpArguments.Kind() != jsonvalue.Object {
-		value, err := rejectedBashArguments(input.mcpArguments)
-		if err != nil {
-			return ToolInput{}, err
-		}
-		rejected = &value
+	if input.mcpModel {
+		return input.prepareMCPModelBatch()
 	}
+	rejected := input.bashRejected
 	if input.backgroundModel != nil {
 		rejected = input.backgroundModel.rejected
 	}

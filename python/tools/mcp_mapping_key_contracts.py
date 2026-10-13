@@ -2,7 +2,7 @@
 from tools.mcp_model_root_contracts import capture_mcp_model_root_cases
 
 
-def mcp_mapping_key_contracts() -> dict:
+def mcp_mapping_key_contracts(*, journal=False) -> dict:
     recipes = [
         ("integer-key", [[1, "value"]]),
         ("negative-key", [[-1, "value"]]),
@@ -29,14 +29,24 @@ def mcp_mapping_key_contracts() -> dict:
         ("spaced-text-key", [["has space", "value"]]),
         ("later-short-row", [[1, "first"], ["x"]]),
         ("later-unhashable-key", [[1, "first"], [["x"], "second"]]),
+        ("nan-root", float("nan")),
+        ("positive-infinity-root", float("inf")),
+        ("negative-infinity-root", float("-inf")),
+        ("integer-key-nan-value", [[1, float("nan")]]),
     ]
     return {
-        "cases": capture_mcp_model_root_cases(recipes, batch_all=True),
+        "cases": capture_mcp_model_root_cases(recipes, batch_all=True, journal=journal),
         "limits": [
             "Actual Agent.run, FakeAsyncAnthropic, register_mcp and default PermissionHook; not SDK/HTTP/Stdio or arbitrary callback parity.",
             "Scalar non-text keys reach keyword binding after permission; unhashable keys fail whole-batch dict preparation before effects.",
             "Mixed-key ordering faults can happen after after_tool but before on_result. Auto batches may retain the earlier successful effect.",
             "NaN/infinity observations are encoded only inside input_json text; fixture envelope stays finite JSON.",
-            "Native required comparison is pending; current native differences must remain retained, not relabelled as accepted adaptations.",
+            "Captured direct/journal profiles require exact staged native assertions; broader managed/transport and repeated-NaN identity profiles remain separate.",
         ],
     }
+
+
+def mcp_mapping_key_journal_contracts() -> dict:
+    snapshot = mcp_mapping_key_contracts(journal=True)
+    snapshot["limits"].append("Actual InMemoryActionJournal begin/finish records added; no durable manager/replay/SQLite claim from this capture.")
+    return snapshot

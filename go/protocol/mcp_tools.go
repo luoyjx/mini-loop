@@ -48,7 +48,8 @@ func MCPToolInput(name ToolName, arguments jsonvalue.Value) (ToolInput, error) {
 	return input, input.Validate()
 }
 func (input ToolInput) MCP() (MCPInput, bool) {
-	return MCPInput{input.mcpArguments}, IsMCPToolName(input.name) && input.mcpArguments.Kind() == jsonvalue.Object
+	_, finite := input.mcpArguments.MarshalJSON()
+	return MCPInput{input.mcpArguments}, IsMCPToolName(input.name) && input.mcpMapping == nil && input.mcpArguments.Kind() == jsonvalue.Object && finite == nil
 }
 
 func decodeModelMCPInput(name ToolName, data []byte) (ToolInput, error) {

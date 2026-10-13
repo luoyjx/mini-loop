@@ -272,16 +272,19 @@ Go custom tools can explicitly bind a concrete `ExtensionInput`,
 journal admission before decoding or validation. Provider input stays an inert,
 immutable observation in transcripts and action identity; the named application
 payload exists only at execution. Schema-only registrations retain their missing
-decoder refusal. No custom tool is installed by default. Model MCP inputs retain finite root
+decoder refusal. No custom tool is installed by default. Model MCP inputs retain closed root
 observations until the whole tool batch is prepared as Source `dict(input or {})`.
-Falsey roots become empty objects; pair arrays become string-key objects, and invalid
+Falsey roots become empty objects; pair arrays become named ordered mappings, and invalid
 truthy roots fail before any batch effect. Original model history stays unchanged.
 Explicit caller MCP inputs and callable handler arguments remain object-only.
 Fifty-two actual Source auto/readonly/root/batch profiles compare failures, hooks,
 prepared client arguments, outputs and external-risk refusal; a readOnlyHint grants
 no trust. Direct/SSE and history/masked clones retain originals, including through
-native SQLite reopen and explicit owner restore. Legacy nonfinite/non-string-key
-and other root profiles remain separate acceptance. Tool callbacks receive a fixed
+native SQLite reopen and explicit owner restore. Non-string scalar keys remain inert until keyword binding after permission;
+unhashable keys fail preparation. Sorted query faults retain Source stage even
+without an active reducer.116 direct and116 actual journal profiles compare
+these stages, hashes, history and earlier effects; broader nonfinite-object/
+NaN-identity/transport profiles remain separate acceptance. Tool callbacks receive a fixed
 `ToolAuthority.Scope` with the current Session label/depth. Session dispatch stamps
 this informational lineage; it cannot grant capabilities, select an owner or bypass
 role/depth policy. Eighteen actual Source child role/capability/risk profiles compare
@@ -567,24 +570,30 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: Source prerequisite `d477f53`; Go programs remain unchanged.
-Actual Agent.run/register_mcp captures25 key profiles × auto/readonly × single/batch:
-100 required Source observations. Existing52-root fixture bytes are unchanged.
-Current native required comparison fails88/100;12 text-key profiles pass. Hashable
-non-text keys reach binding after auto permission, unhashable keys fail whole-batch
-preparation, and mixed-key ordering faults can happen near result recording after
-earlier effects. Readonly blocks invocation but does not prevent every later
-comparison fault. These are open native defects, not accepted adaptations.
-Frozen1689 inputs pass Source246/manifest,
-11 focused Python tests, ordinary Go/vet,19 scans and diff. Full Python fails the
-unchanged memory-scaling cost guard: 0.25ms/1.55ms at100/800 records exceeds4×.
-2245 tests pass,28 skip; no threshold or runtime fix. Main integration is held.
-Two later wall/CPU/GC histories do not reproduce that failure and prove no cause.
-Consumer inspection exits1 with two absent consumers: native syntax parser and new mapping
-keys. The read-only overlay comparison is retained separately from normal gates.
-[Current Source receipt](docs/audits/go-mcp-mapping-keys-source-2026-10-13.json).
-Latest race/coverage and type/body receipts remain at the previous unchanged Go
-programs; no fresh race, type or body closure is claimed by this Source slice.
+Runtime review baseline: implementation based on branch `6087e29` / main `778315e`, native MCP ordered scalar-key mapping
+and Source fault-stage alignment.116 direct and116 actual journal profiles pass
+required assertions, including original88 differences and added nonfinite roots/
+values. Immutable named entries preserve first-key kind, Python numeric equality
+and last-value replacement. Unhashable keys fail batch preparation; non-text
+keyword binding fails after permission, sorted query faults precede result
+observers even without an active reducer. Explicit/callable MCP objects stay
+finite; external risk unchanged. Direct/SSE, clone/mask/archive and seven real
+SQLite close/reopen/owner-restore profiles preserve original roots, event stages,
+current authority and fresh leases without external-effect replay.
+Frozen1695 inputs pass Source247/manifest, focused Go/Python, four type gates,
+collector/body inventory, ordinary Go/vet/race+atomic, full Python,19 scans,
+6 guards and diff. Consumer inspection exits1 only for the absent syntax-parser
+consumer. [Current receipt](docs/audits/go-mcp-mapping-native-2026-10-13.json).
+Previous full Python memory-scaling failure remains retained without a runtime/
+threshold fix or cause claim; this new implementation cohort is separate.
+Broader mapping/NaN-identity/caller/transport and original P0/P1/G0-G7 stay open.
+
+Passing-race statement coverage: app **89.38% (33496/37478)**,
+all Go **89.13% (33862/37993)**, Provider **86.67% (1522/1756)**.
+[Current coverage](docs/audits/go-coverage-mcp-mapping-native-2026-10-13.json).
+Darwin statements only; native C/subprocess interiors, Python, branches and other
+profiles excluded. Original migration acceptance and historical temporal
+reliability remain open.
 
 Previous verified runtime baseline: implementation `48f7b85`, based on main `6cb887e`, with finite MCP model-root
 observations and whole-batch preparation. Fifty-two actual Source profiles and
@@ -815,7 +824,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP root preparation before effects · ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]

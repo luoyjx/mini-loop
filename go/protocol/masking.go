@@ -24,6 +24,9 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	if IsMCPToolName(input.name) {
 		input.mcpArguments = input.mcpArguments.MapStrings(mask)
+		if input.mcpMapping != nil {
+			input.mcpMapping = input.mcpMapping.masked(mask)
+		}
 		return input
 	}
 	switch input.name {

@@ -89,7 +89,7 @@ func observationRecoveryMarker(observation efficiency.ObservationConfig) string 
 
 func (p sessionObservationProjector) projectToolOutcome(ctx context.Context, authority ToolAuthority, call ToolCall, outcome ToolOutcome) (projected ToolOutcome, err error) {
 	s := p.session
-	if s.tokenEfficiency == nil || outcome.Replayed || call.Name() == protocol.ToolReadTokenArtifact {
+	if outcome.Replayed || call.Name() == protocol.ToolReadTokenArtifact {
 		return outcome, nil
 	}
 	projected = outcome
@@ -106,6 +106,11 @@ func (p sessionObservationProjector) projectToolOutcome(ctx context.Context, aut
 	query, err := input.MapStrings(func(value string) string { return maskedText(s.secrets, value) }).SortedPythonJSON()
 	if err != nil {
 		return outcome, err
+	}
+	// Source constructs the masked sorted query even with no active reducer.
+	// Mapping-key comparison faults therefore precede result observers.
+	if s.tokenEfficiency == nil {
+		return outcome, nil
 	}
 	config := efficiency.DefaultObservation(outcome.Output)
 	config.ContentType = observationContentType(outcome.Output)

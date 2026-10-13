@@ -160,6 +160,7 @@ type ToolInput struct {
 	// Model ingress retains finite roots until whole-batch dict preparation.
 	// Explicit caller MCP arguments remain object-only.
 	mcpModel          bool
+	mcpMapping        *mcpMapping
 	workflow          WorkflowInput
 	workflowReference WorkflowReferenceInput
 	returnArtifact    jsonvalue.Value
@@ -524,8 +525,15 @@ func (input ToolInput) Validate() error {
 		return input.validateAST()
 	}
 	if IsMCPToolName(input.name) {
+		if input.mcpMapping != nil {
+			return input.mcpMapping.validate()
+		}
 		if !input.mcpModel && input.mcpArguments.Kind() != jsonvalue.Object {
 			return errors.New("MCP arguments must be an object")
+		}
+		if input.mcpModel {
+			_, err := input.mcpArguments.MarshalLegacyUTF8()
+			return err
 		}
 		_, err := input.mcpArguments.MarshalJSON()
 		return err
@@ -609,6 +617,9 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 	if IsMCPToolName(input.name) {
 		if err := input.Validate(); err != nil {
 			return nil, err
+		}
+		if input.mcpMapping != nil {
+			return input.mcpMapping.marshal(false, false)
 		}
 		return input.mcpArguments.MarshalJSON()
 	}

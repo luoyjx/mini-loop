@@ -85,7 +85,7 @@ func TestMCPModelRootsPreserveHistoryIdentityAndExplicitBoundary(t *testing.T) {
 	if _, err := DecodeModelToolInput("mcp__peer__echo", []byte(`{`)); err == nil {
 		t.Fatal("accepted malformed model root")
 	}
-	if _, err := DecodeModelToolInput("mcp__peer__echo", []byte(`NaN`)); err == nil {
+	if _, err := DecodeToolInput("mcp__peer__echo", []byte(`NaN`)); err == nil {
 		t.Fatal("finite MCP root boundary widened")
 	}
 }

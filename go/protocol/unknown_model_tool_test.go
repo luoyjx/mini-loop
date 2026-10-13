@@ -88,7 +88,7 @@ func TestUnknownModelToolFallbackDoesNotHideKnownDecoderErrors(t *testing.T) {
 		Name  ToolName
 		Input string
 	}{
-		{ToolReadFile, `{"path":17}`}, {ToolTodoWrite, `{"items":"invalid"}`}, {"mcp__missing__tool", `NaN`},
+		{ToolReadFile, `{"path":17}`}, {ToolTodoWrite, `{"items":"invalid"}`}, {"mcp__missing__tool", `{broken`},
 		{"missing-tool", `NaN`}, {"missing-tool", `{"nested":Infinity}`}, {"missing-tool", `{broken`},
 	} {
 		if _, err := DecodeModelToolInput(row.Name, []byte(row.Input)); err == nil {
@@ -99,6 +99,9 @@ func TestUnknownModelToolFallbackDoesNotHideKnownDecoderErrors(t *testing.T) {
 	// empty object. Explicit MCP calls still require object-shaped arguments.
 	if _, err := DecodeToolInput("mcp__missing__tool", []byte(`null`)); err == nil {
 		t.Fatal("explicit MCP decoder accepted a non-object root")
+	}
+	if _, err := DecodeToolInput("mcp__missing__tool", []byte(`NaN`)); err == nil {
+		t.Fatal("explicit MCP decoder accepted a nonfinite root")
 	}
 	input, err := DecodeModelToolInput("missing-tool", []byte(`{}`))
 	if err != nil {
