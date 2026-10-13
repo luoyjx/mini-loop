@@ -1,5 +1,33 @@
 # Go port plan
 
+## 2026-10-13 Provider IDNA Source prerequisite
+
+Branch `codex/go-provider-idna-boundary`, based on main `66f3645`. The new
+[Source evidence](docs/audits/go-provider-idna-source-2026-10-13.md) captures 42
+hostnames through real provider/SDK direct and SSE paths: 84 observations,
+48 complete, 34 constructor `InvalidURL` refusals and two request-stage
+`InvalidCodepoint` refusals. The original-host ASCII branch, lower/IDNA order,
+NFC, separators, contextual validation, Bidi and installed Unicode versions are
+recorded with actual source hashes. The new native consumer is not implemented.
+Existing two Unicode URL-object probes still fail; 32 ASCII request-object and
+40 real HTTP Host controls pass.
+
+Focused Python: 3 passed; full Source export: 253 files current. Consumer
+inventory retains 252 previously observed passing native candidates plus two
+unreferenced fixtures (default parser and IDNA); prior ordinary Go results are
+explicitly reused, with all 1249 previously frozen Go files unchanged. Full
+Python was refused before launch by host memory pressure, confirmed at warning
+level 2. Invariants/scans/Archify were not reached; lightweight diff check passed.
+1748 frozen files remain unchanged, and no heavy retry was started this iteration.
+The validation wrapper's initial inventory-output parsing error is separately
+retained; it is not a test failure. Source changes are committed on the branch;
+merging to main waits for remaining validation.
+
+New IDNA dependencies await explicit approval under `AGENTS.md`. No Go runtime,
+Go test source, dependency, guard, default or architecture topology changed.
+The base image is unchanged; a built-in imagegen iteration and exact prompt are
+saved with the evidence. Original P0/P1/G0–G7 criteria remain unchanged.
+
 ## 2026-10-13 current acceptance reconciliation and resource-budget evidence
 
 Review baseline: accepted main `82b14bf`. The original P0/P1/G0–G7 work-package

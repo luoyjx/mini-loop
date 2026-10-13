@@ -1,5 +1,25 @@
 # Python to Go parity matrix
 
+## 2026-10-13 Provider IDNA Source prerequisite — not native acceptance
+
+On `codex/go-provider-idna-boundary` from main `66f3645`, the new
+[84-row Source corpus](go/testdata/python-provider-idna.json) covers 42 hostnames
+in direct/SSE modes: 48 completed, 34 constructor `InvalidURL` refusals, two
+request-stage `InvalidCodepoint` refusals. Actual versions and source hashes
+preserve ASCII bypass, Unicode lower/IDNA, NFC, contextual rules and labelwise
+Bidi. The new fixture has no native consumer. Existing two Unicode request-object
+probes still fail; existing 32 ASCII and 40 HTTP Host controls pass.
+
+[Validation receipt](docs/audits/go-provider-idna-source-2026-10-13.json): focused
+Python 3 passed, Source export 253 current. Consumer inventory exits 1 with two
+unreferenced fixtures: IDNA and default parser. Its other 252 passing-candidate
+observations come from the prior ordinary Go result, not a new full Go run.
+Full Python was resource-blocked before launch on host memory pressure;
+invariants/scans/Archify remain pending. Main stays `66f3645` until remaining
+validation passes. No new dependencies or Go runtime changes were made;
+dependency approval and native consumption remain open. The accepted runtime
+index below retains its prior complete gates and coverage.
+
 ## 2026-10-13 current inventory and resource-budget reconciliation
 
 Accepted baseline is main `82b14bf`; original P0/P1/G0–G7 criteria are unchanged.

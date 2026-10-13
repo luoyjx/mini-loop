@@ -1,0 +1,17 @@
+Edit the provided canonical mini-loop layered architecture base image, preserving its overall landscape layout, deep navy/cyan/purple/gold visual language and legible Chinese typography. This is a SOURCE CONTRACT PREPARATION iteration, not a completed runtime implementation. Keep all five existing layers and ALL existing components and arrows. Do not add or remove architecture parts.
+Title: mini-loop 整体分层架构
+Subtitle: 本轮：Provider IDNA 契约准备 · Go 原生实现尚未完成
+Preserve L1 入口与组合层, L2 会话与控制层, L3 推理与执行层, L4 能力与编排层, L5 状态与证据层.
+Mandatory topology: Session/Agent/Context exchanges requests and responses ONLY with Model Provider via the existing double arrow. Tool invocation runs from Session across the line ABOVE Provider to ToolGate. NEVER draw Provider→ToolGate. ToolGate points down to L4; tool results return to Session. Keep optional orchestration dashed edge as in base.
+Retain six L4 backends: 文件, Shell, AST, Diagnostics, MCP, 自定义工具; retain seven orchestration items: 后台, Cron, Tasks, Teams, Workflow, Decision, Worktree. Retain all five L5 blocks including 操作员契约审计.
+Highlight ONLY the existing L3 Model Provider / HTTP SSE card with a thin amber halo and a small tag “主机名契约”. Highlight the existing L5 operator contract audit card similarly with “Source 实采”. Do not highlight ToolGate or imply execution-authority changes.
+Replace right-side boundary prose with a concise six-part current-iteration explanation, keeping it spacious and readable:
+1. 新增 42 种主机名 × direct / SSE = 84 条真实 Python 观察
+2. 48 完成 · 34 构造拒绝 · 2 请求拒绝
+3. 原 host 先判 ASCII；Unicode 再 lower / IDNA。固定 NFC、CONTEXTJ/O、Bidi 边界
+4. HTTPX 0.28.1 · idna 3.18；IDNA 数据 Unicode 17 / CPython 属性 Unicode 14
+5. Go 原有两条 URL 对象对照仍失败；现有 ASCII 与 HTTP Host 契约通过
+6. 新依赖待明确批准；新 Go 原生消费者尚未实现
+Add a small bottom annotation: 校验串行 · Go 并发 2 · 软内存目标 512 MiB · 自有进程 RSS 预算 1 GiB · 内存压力异常即停
+Footer: Source 契约证据不等于 Go 行为通过；完整迁移验收仍在进行。
+Keep the mountain/water illustration only as a quiet decorative margin. Do not invent extra numbers, new components, completion claims, hard memory guarantees or new runtime defaults. Exact punctuation may adapt for layout; preserve all meanings.
