@@ -1,0 +1,904 @@
+{
+  "cases": [
+    {
+      "answers": [],
+      "approval_fault": "",
+      "command": "echo safe",
+      "error": null,
+      "handler_calls": [
+        {
+          "command": "echo safe",
+          "tool": "probe"
+        }
+      ],
+      "masked": false,
+      "mode": "readonly",
+      "name": "readonly-read",
+      "ordered_trace": [
+        {
+          "tool": "probe",
+          "type": "tool_use"
+        },
+        {
+          "tool": "probe",
+          "type": "handler"
+        },
+        {
+          "tool": "probe",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [],
+      "risk": "read",
+      "status": "idle",
+      "tool_name": "probe",
+      "tool_results": [
+        {
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe",
+          "output": "handled:echo safe"
+        }
+      ]
+    },
+    {
+      "answers": [],
+      "approval_fault": "",
+      "command": "echo safe",
+      "error": null,
+      "handler_calls": [],
+      "masked": false,
+      "mode": "readonly",
+      "name": "readonly-exec",
+      "ordered_trace": [
+        {
+          "tool": "probe",
+          "type": "tool_use"
+        },
+        {
+          "decision": "deny",
+          "rule": "readonly-mode",
+          "tool": "probe",
+          "type": "permission"
+        },
+        {
+          "tool": "probe",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "deny",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "risk=exec",
+          "rule": "readonly-mode",
+          "session": "session",
+          "tool": "probe",
+          "type": "permission"
+        }
+      ],
+      "risk": "exec",
+      "status": "idle",
+      "tool_name": "probe",
+      "tool_results": [
+        {
+          "denied": true,
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe",
+          "output": "Permission denied: this session is read-only (tool risk: exec)"
+        }
+      ]
+    },
+    {
+      "answers": [],
+      "approval_fault": "",
+      "command": "echo safe",
+      "error": null,
+      "handler_calls": [],
+      "masked": false,
+      "mode": "readonly",
+      "name": "readonly-external",
+      "ordered_trace": [
+        {
+          "tool": "probe",
+          "type": "tool_use"
+        },
+        {
+          "decision": "deny",
+          "rule": "readonly-mode",
+          "tool": "probe",
+          "type": "permission"
+        },
+        {
+          "tool": "probe",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "deny",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "risk=external",
+          "rule": "readonly-mode",
+          "session": "session",
+          "tool": "probe",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "probe",
+      "tool_results": [
+        {
+          "denied": true,
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe",
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ]
+    },
+    {
+      "answers": [],
+      "approval_fault": "",
+      "command": "echo safe",
+      "error": null,
+      "handler_calls": [],
+      "masked": false,
+      "mode": "readonly",
+      "name": "readonly-unclassified",
+      "ordered_trace": [
+        {
+          "tool": "probe",
+          "type": "tool_use"
+        },
+        {
+          "decision": "deny",
+          "rule": "readonly-mode",
+          "tool": "probe",
+          "type": "permission"
+        },
+        {
+          "tool": "probe",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "deny",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "risk=None",
+          "rule": "readonly-mode",
+          "session": "session",
+          "tool": "probe",
+          "type": "permission"
+        }
+      ],
+      "risk": null,
+      "status": "idle",
+      "tool_name": "probe",
+      "tool_results": [
+        {
+          "denied": true,
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe",
+          "output": "Permission denied: this session is read-only (tool risk: unclassified)"
+        }
+      ]
+    },
+    {
+      "answers": [],
+      "approval_fault": "",
+      "command": "sudo safe",
+      "error": null,
+      "handler_calls": [],
+      "masked": false,
+      "mode": "auto",
+      "name": "immutable-auto",
+      "ordered_trace": [
+        {
+          "tool": "bash",
+          "type": "tool_use"
+        },
+        {
+          "decision": "deny",
+          "rule": "immutable-deny-list",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "tool": "bash",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "deny",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "sudo",
+          "rule": "immutable-deny-list",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "risk": "exec",
+      "status": "idle",
+      "tool_name": "bash",
+      "tool_results": [
+        {
+          "denied": true,
+          "error": false,
+          "id": "permission-tool",
+          "name": "bash",
+          "output": "Permission denied: 'sudo' is blocked"
+        }
+      ]
+    },
+    {
+      "answers": [],
+      "approval_fault": "",
+      "command": "echo safe",
+      "error": null,
+      "handler_calls": [
+        {
+          "command": "echo safe",
+          "tool": "probe"
+        }
+      ],
+      "masked": false,
+      "mode": "auto",
+      "name": "auto-external",
+      "ordered_trace": [
+        {
+          "tool": "probe",
+          "type": "tool_use"
+        },
+        {
+          "decision": "allow",
+          "rule": "external-action",
+          "tool": "probe",
+          "type": "permission"
+        },
+        {
+          "tool": "probe",
+          "type": "handler"
+        },
+        {
+          "tool": "probe",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "auto mode",
+          "rule": "external-action",
+          "session": "session",
+          "tool": "probe",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "probe",
+      "tool_results": [
+        {
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe",
+          "output": "handled:echo safe"
+        }
+      ]
+    },
+    {
+      "answers": [
+        true
+      ],
+      "approval_fault": "",
+      "command": "echo safe",
+      "error": null,
+      "handler_calls": [
+        {
+          "command": "echo safe",
+          "tool": "probe"
+        }
+      ],
+      "masked": false,
+      "mode": "interactive",
+      "name": "interactive-allow",
+      "ordered_trace": [
+        {
+          "tool": "probe",
+          "type": "tool_use"
+        },
+        {
+          "rule": "external-action",
+          "tool": "probe",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "allow",
+          "rule": "external-action",
+          "tool": "probe",
+          "type": "permission"
+        },
+        {
+          "tool": "probe",
+          "type": "handler"
+        },
+        {
+          "tool": "probe",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Tool acts outside this machine",
+          "rule": "external-action",
+          "session": "session",
+          "tool": "probe",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "probe",
+      "tool_results": [
+        {
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe",
+          "output": "handled:echo safe"
+        }
+      ]
+    },
+    {
+      "answers": [
+        false
+      ],
+      "approval_fault": "",
+      "command": "echo safe",
+      "error": null,
+      "handler_calls": [],
+      "masked": false,
+      "mode": "interactive",
+      "name": "interactive-deny",
+      "ordered_trace": [
+        {
+          "tool": "probe",
+          "type": "tool_use"
+        },
+        {
+          "rule": "external-action",
+          "tool": "probe",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "deny",
+          "rule": "external-action",
+          "tool": "probe",
+          "type": "permission"
+        },
+        {
+          "tool": "probe",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "deny",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Tool acts outside this machine",
+          "rule": "external-action",
+          "session": "session",
+          "tool": "probe",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "probe",
+      "tool_results": [
+        {
+          "denied": true,
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe",
+          "output": "Permission denied: Tool acts outside this machine"
+        }
+      ]
+    },
+    {
+      "answers": [],
+      "approval_fault": "",
+      "command": "rm safe",
+      "error": null,
+      "handler_calls": [
+        {
+          "command": "rm safe",
+          "tool": "bash"
+        }
+      ],
+      "masked": false,
+      "mode": "auto",
+      "name": "auto-two-rules",
+      "ordered_trace": [
+        {
+          "tool": "bash",
+          "type": "tool_use"
+        },
+        {
+          "decision": "allow",
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "decision": "allow",
+          "rule": "external-action",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "tool": "bash",
+          "type": "handler"
+        },
+        {
+          "tool": "bash",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "auto mode",
+          "rule": "destructive-shell",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "auto mode",
+          "rule": "external-action",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "bash",
+      "tool_results": [
+        {
+          "error": false,
+          "id": "permission-tool",
+          "name": "bash",
+          "output": "handled:rm safe"
+        }
+      ]
+    },
+    {
+      "answers": [
+        true,
+        true
+      ],
+      "approval_fault": "",
+      "command": "rm safe",
+      "error": null,
+      "handler_calls": [
+        {
+          "command": "rm safe",
+          "tool": "bash"
+        }
+      ],
+      "masked": false,
+      "mode": "interactive",
+      "name": "interactive-two-allow",
+      "ordered_trace": [
+        {
+          "tool": "bash",
+          "type": "tool_use"
+        },
+        {
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "allow",
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "rule": "external-action",
+          "tool": "bash",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "allow",
+          "rule": "external-action",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "tool": "bash",
+          "type": "handler"
+        },
+        {
+          "tool": "bash",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Potentially destructive shell command",
+          "rule": "destructive-shell",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Tool acts outside this machine",
+          "rule": "external-action",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "bash",
+      "tool_results": [
+        {
+          "error": false,
+          "id": "permission-tool",
+          "name": "bash",
+          "output": "handled:rm safe"
+        }
+      ]
+    },
+    {
+      "answers": [
+        true,
+        false
+      ],
+      "approval_fault": "",
+      "command": "rm safe",
+      "error": null,
+      "handler_calls": [],
+      "masked": false,
+      "mode": "interactive",
+      "name": "interactive-later-deny",
+      "ordered_trace": [
+        {
+          "tool": "bash",
+          "type": "tool_use"
+        },
+        {
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "allow",
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "rule": "external-action",
+          "tool": "bash",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "deny",
+          "rule": "external-action",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "tool": "bash",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Potentially destructive shell command",
+          "rule": "destructive-shell",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "agent": "main",
+          "decision": "deny",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Tool acts outside this machine",
+          "rule": "external-action",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "bash",
+      "tool_results": [
+        {
+          "denied": true,
+          "error": false,
+          "id": "permission-tool",
+          "name": "bash",
+          "output": "Permission denied: Tool acts outside this machine"
+        }
+      ]
+    },
+    {
+      "answers": [
+        true
+      ],
+      "approval_fault": "error",
+      "command": "rm safe",
+      "error": null,
+      "handler_calls": [],
+      "masked": false,
+      "mode": "interactive",
+      "name": "approval-later-error",
+      "ordered_trace": [
+        {
+          "tool": "bash",
+          "type": "tool_use"
+        },
+        {
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "allow",
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "rule": "external-action",
+          "tool": "bash",
+          "type": "approval_callback"
+        },
+        {
+          "tool": "bash",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Potentially destructive shell command",
+          "rule": "destructive-shell",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "bash",
+      "tool_results": [
+        {
+          "error": true,
+          "id": "permission-tool",
+          "name": "bash",
+          "output": "Error: fixture approval failed"
+        }
+      ]
+    },
+    {
+      "answers": [
+        true
+      ],
+      "approval_fault": "cancel",
+      "command": "rm safe",
+      "error": {
+        "text": "",
+        "type": "CancelledError"
+      },
+      "handler_calls": [],
+      "masked": false,
+      "mode": "interactive",
+      "name": "approval-later-cancel",
+      "ordered_trace": [
+        {
+          "tool": "bash",
+          "type": "tool_use"
+        },
+        {
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "allow",
+          "rule": "destructive-shell",
+          "tool": "bash",
+          "type": "permission"
+        },
+        {
+          "rule": "external-action",
+          "tool": "bash",
+          "type": "approval_callback"
+        }
+      ],
+      "output": null,
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Potentially destructive shell command",
+          "rule": "destructive-shell",
+          "session": "session",
+          "tool": "bash",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "bash",
+      "tool_results": []
+    },
+    {
+      "answers": [
+        true
+      ],
+      "approval_fault": "",
+      "command": "echo secret_token",
+      "error": null,
+      "handler_calls": [
+        {
+          "command": "echo secret_token",
+          "tool": "probe_secret_token"
+        }
+      ],
+      "masked": true,
+      "mode": "interactive",
+      "name": "masked-interactive",
+      "ordered_trace": [
+        {
+          "tool": "probe_<hidden>",
+          "type": "tool_use"
+        },
+        {
+          "rule": "external-action",
+          "tool": "probe_secret_token",
+          "type": "approval_callback"
+        },
+        {
+          "decision": "allow",
+          "rule": "external-action",
+          "tool": "probe_<hidden>",
+          "type": "permission"
+        },
+        {
+          "tool": "probe_secret_token",
+          "type": "handler"
+        },
+        {
+          "tool": "probe_<hidden>",
+          "type": "tool_result"
+        }
+      ],
+      "output": "done",
+      "pending_approvals": 0,
+      "permission_events": [
+        {
+          "agent": "main",
+          "decision": "allow",
+          "depth": 0,
+          "message_id": "turn",
+          "reason": "Tool acts outside this machine",
+          "rule": "external-action",
+          "session": "session",
+          "tool": "probe_<hidden>",
+          "type": "permission"
+        }
+      ],
+      "risk": "external",
+      "status": "idle",
+      "tool_name": "probe_secret_token",
+      "tool_results": [
+        {
+          "error": false,
+          "id": "permission-tool",
+          "name": "probe_<hidden>",
+          "output": "handled:echo <hidden>"
+        }
+      ]
+    }
+  ],
+  "mask": {
+    "replacement": "<hidden>",
+    "value": "secret_token"
+  },
+  "scope": "Actual SessionManager/AgentSession.run with FakeAsyncAnthropic, PermissionHook and ApprovalBroker; safe handlers only, no shell or live network. Permission fields are emitted and masked by the real session; only random session identity and supplied turn identity are normalized. Private callback/handler observations retain actual arguments.",
+  "source_sha256": {
+    "mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "mini_loop/approvals.py": "abb347fbe988d8b0500dc2d74b384578a9ca2b28fdd7237971a4f769383c13f5",
+    "mini_loop/fake_llm.py": "69bc93ea2d875c668681b3b219705129f4d4bba5d44ce713820fcc9e597414a9",
+    "mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "mini_loop/permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+    "mini_loop/registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+    "mini_loop/secrets.py": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+    "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "tools/permission_event_contracts.py": "919c058ba6aa267ea0cb594d1c5e1537543136d11e1869e258909ab91ef39042"
+  }
+}
