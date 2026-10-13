@@ -123,10 +123,7 @@ func fakeManagerConfig(ctx context.Context, settings config.Settings, delay time
 	if settings.FallbackModel != nil {
 		fallback = *settings.FallbackModel
 	}
-	recovery, err := agent.NewDefaultRecovery(agent.RecoveryConfig{FallbackModel: fallback})
-	if err != nil {
-		return agent.ManagerConfig{}, err
-	}
+	recoveryConfig := &agent.RecoveryConfig{FallbackModel: fallback, LegacyFallbackModel: settings.LegacyFallbackModel()}
 	var traces agent.TrajectoryStore
 	if settings.TrajectoryEnabled {
 		root := filepath.Join(settings.WorkspaceRoot, ".trajectories")
@@ -144,6 +141,6 @@ func fakeManagerConfig(ctx context.Context, settings config.Settings, delay time
 		WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{GuardianEnabled: settings.GuardianEnabled, Provider: agent.NewFakeProvider(agent.FakeProviderConfig{Delay: delay}).ObjectView(), Memory: shared, UserResources: resources, Skills: catalog, Recovery: recovery, Trajectories: traces, BashFactory: fakeBashFactory{time.Duration(settings.BashTimeout) * time.Second}},
+		Services: agent.ManagerServices{GuardianEnabled: settings.GuardianEnabled, Provider: agent.NewFakeProvider(agent.FakeProviderConfig{Delay: delay}).ObjectView(), Memory: shared, UserResources: resources, Skills: catalog, DefaultRecoveryConfig: recoveryConfig, Trajectories: traces, BashFactory: fakeBashFactory{time.Duration(settings.BashTimeout) * time.Second}},
 	}, nil
 }

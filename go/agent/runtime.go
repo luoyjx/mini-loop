@@ -129,33 +129,35 @@ type RuntimeConfig struct {
 	Owner                OwnerID
 	Provider             Provider
 	Recovery             Recovery
-	StreamProgress       StreamProgressConfig
-	Bash                 BashExecutor
-	Workspace            string
-	Mode                 PermissionMode
-	MaxRounds            int
-	Skills               SkillSource
-	Questions            Questioner
-	Approver             Approver
-	Hooks                GateHooks
-	Model                string
-	MaxTokens            int
-	TokenThreshold       int
-	SystemBuilder        SystemBuilder
-	Compactor            Compactor
-	Label                string
-	Depth                int
-	SubagentMaxDepth     int
-	SubagentMaxRounds    int
-	Subagents            SubagentProvider
-	RoleToolPolicy       RoleToolPolicy
-	ActionJournal        ActionJournal
-	Approvals            *ApprovalBroker
-	Secrets              ApprovalRedactor
-	CachePolicy          CachePolicy
-	StuckDetector        StuckDetector
-	StopHooks            []StopHook
-	EventSink            EventSink
+	// Used only when Recovery is nil; the default is constructed per session.
+	DefaultRecoveryConfig *RecoveryConfig
+	StreamProgress        StreamProgressConfig
+	Bash                  BashExecutor
+	Workspace             string
+	Mode                  PermissionMode
+	MaxRounds             int
+	Skills                SkillSource
+	Questions             Questioner
+	Approver              Approver
+	Hooks                 GateHooks
+	Model                 string
+	MaxTokens             int
+	TokenThreshold        int
+	SystemBuilder         SystemBuilder
+	Compactor             Compactor
+	Label                 string
+	Depth                 int
+	SubagentMaxDepth      int
+	SubagentMaxRounds     int
+	Subagents             SubagentProvider
+	RoleToolPolicy        RoleToolPolicy
+	ActionJournal         ActionJournal
+	Approvals             *ApprovalBroker
+	Secrets               ApprovalRedactor
+	CachePolicy           CachePolicy
+	StuckDetector         StuckDetector
+	StopHooks             []StopHook
+	EventSink             EventSink
 
 	UserPromptHooks []UserPromptHook
 	// Nil selects lifecycle defaults; nonnil (even empty) replaces background/team
@@ -342,6 +344,11 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 			config.efficiencyOwner.releaseEfficiencySession(config.ID)
 		}
 	}()
+	if config.Recovery == nil && config.DefaultRecoveryConfig != nil {
+		if err := config.DefaultRecoveryConfig.validate(); err != nil {
+			return nil, err
+		}
+	}
 
 	observationRaw, err := normalizedObservationRaw(config.ObservationRaw)
 	if err != nil {
@@ -727,6 +734,11 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	if config.Recovery != nil {
 		session.recovery = config.Recovery
+	} else if config.DefaultRecoveryConfig != nil {
+		session.recovery, err = NewDefaultRecovery(*config.DefaultRecoveryConfig)
+		if err != nil {
+			return nil, err
+		}
 	}
 	session.team = clonePointer(config.team)
 	session.planApprover = config.PlanApprover

@@ -1756,6 +1756,23 @@ coalescing, stream IDs, masking and managed cancellation repair own progress.
 Nil selects DefaultRecovery; DirectRecovery disables it. RecoveryInput is detached,
 and RecoveryServices supplies named call/event/history/model callbacks. Policies
 must honor contexts, stop callbacks before returning and be safe when shared.
+`RecoveryConfig.FallbackModel` takes precedence when nonempty; otherwise nil
+`LegacyFallbackModel` reads `FALLBACK_MODEL_ID` at construction. A non-nil pointer
+captures the explicit environment input, including empty text which suppresses
+ambient lookup. Neither input is trimmed or capped at 512 bytes. The selected
+string is copied once; future environment or pointer changes cannot alter it.
+Launcher and fake benchmark preserve the modern Settings value and pass the
+detached legacy input as default configuration. Default managed sessions each
+construct a policy; explicitly injected Recovery and inherited child policies
+remain shared. `config.Load(nil, ...)` defers only legacy lookup;
+explicit maps stay isolated. Public Settings snapshots exclude this private
+construction input. Custom Recovery policies continue to replace the default.
+`RuntimeConfig.DefaultRecoveryConfig`, `ManagerServices.DefaultRecoveryConfig`
+and `WorkflowRunnerConfig.DefaultRecoveryConfig` supply that default configuration
+only when the corresponding `Recovery` is nil. Manager/workflow constructors copy
+pointer options and validate retry bounds without reading the environment;
+workers resolve their default policy at worker construction. Waiter/Jitter
+remain borrowed concurrency-safe dependencies.
 DefaultRecovery releases model permits during backoff and keeps all attempt state
 local. `RuntimeConfig.StreamProgress` and `ManagerServices.StreamProgress` capture
 optional character/duration thresholds and a named StreamClock. Nil thresholds

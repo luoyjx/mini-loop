@@ -49,7 +49,8 @@ func (manager *SessionManager) initializeWorkflows() error {
 		MaxTokens: manager.config.Defaults.MaxTokens, TokenThreshold: manager.config.Defaults.TokenThreshold,
 		Skills: services.Skills, Secrets: services.Secrets, RolePolicy: services.RoleToolPolicy,
 		Recovery: services.Recovery, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector,
-		ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter,
+		DefaultRecoveryConfig: services.DefaultRecoveryConfig,
+		ModelLimiter:          services.ModelLimiter, ToolLimiter: services.ToolLimiter,
 	}
 	var err error
 	manager.workflows, err = NewWorkflowService(WorkflowServiceConfig{

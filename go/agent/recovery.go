@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand/v2"
+	"os"
 	"strings"
 	"time"
 
@@ -62,12 +63,35 @@ func (recoveryTimer) Wait(ctx context.Context, delay time.Duration) error {
 }
 
 type RecoveryConfig struct {
-	FallbackModel                string
+	FallbackModel string
+	// Nil reads FALLBACK_MODEL_ID when recovery is constructed. A non-nil
+	// value is an explicit environment snapshot, including an empty value.
+	// A nonempty FallbackModel takes precedence over either source.
+	LegacyFallbackModel          *string
 	MaxRetries, MaxContinuations *int
 	Escalate                     *bool
 	Waiter                       RecoveryWaiter
 	Jitter                       func() float64
 }
+
+func (cfg RecoveryConfig) clone() RecoveryConfig {
+	cfg.LegacyFallbackModel = clonePointer(cfg.LegacyFallbackModel)
+	cfg.MaxRetries = clonePointer(cfg.MaxRetries)
+	cfg.MaxContinuations = clonePointer(cfg.MaxContinuations)
+	cfg.Escalate = clonePointer(cfg.Escalate)
+	return cfg
+}
+
+// Validate numeric policy without resolving the construction-time environment.
+func (cfg RecoveryConfig) validate() error {
+	for _, limit := range []*int{cfg.MaxRetries, cfg.MaxContinuations} {
+		if limit != nil && (*limit < 0 || *limit > 100) {
+			return errors.New("invalid recovery configuration")
+		}
+	}
+	return nil
+}
+
 type DefaultRecovery struct {
 	fallback               string
 	retries, continuations int
@@ -77,7 +101,18 @@ type DefaultRecovery struct {
 }
 
 func NewDefaultRecovery(cfg RecoveryConfig) (*DefaultRecovery, error) {
-	r := &DefaultRecovery{fallback: cfg.FallbackModel, retries: RecoveryMaxRetries, continuations: RecoveryMaxContinuations, escalate: true, wait: cfg.Waiter, jitter: cfg.Jitter}
+	if err := cfg.validate(); err != nil {
+		return nil, err
+	}
+	fallback := cfg.FallbackModel
+	if fallback == "" {
+		if cfg.LegacyFallbackModel != nil {
+			fallback = *cfg.LegacyFallbackModel
+		} else {
+			fallback = os.Getenv("FALLBACK_MODEL_ID")
+		}
+	}
+	r := &DefaultRecovery{fallback: fallback, retries: RecoveryMaxRetries, continuations: RecoveryMaxContinuations, escalate: true, wait: cfg.Waiter, jitter: cfg.Jitter}
 	if cfg.MaxRetries != nil {
 		r.retries = *cfg.MaxRetries
 	}
@@ -86,9 +121,6 @@ func NewDefaultRecovery(cfg RecoveryConfig) (*DefaultRecovery, error) {
 	}
 	if cfg.Escalate != nil {
 		r.escalate = *cfg.Escalate
-	}
-	if r.retries < 0 || r.retries > 100 || r.continuations < 0 || r.continuations > 100 || len(r.fallback) > 512 {
-		return nil, errors.New("invalid recovery configuration")
 	}
 	if r.wait == nil {
 		r.wait = recoveryTimer{}

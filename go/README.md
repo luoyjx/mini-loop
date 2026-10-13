@@ -706,7 +706,29 @@ Defaults match Python: ten transient retries, 0.5..32s exponential base with
 outer wait. Shared model permits cover a call (and SDK waits), but not outer
 backoff. Three overloads can select the configured fallback; selection persists
 for subsequent session requests, while children/forks start with fresh override
-state. The default does not configure a fallback.
+state. A nonempty `FallbackModel` wins; otherwise construction reads
+`FALLBACK_MODEL_ID`. Whitespace and long model names are preserved literally.
+`RecoveryConfig.LegacyFallbackModel` can supply a detached legacy environment
+value: nil selects that ambient lookup, while a pointer to empty text suppresses
+it. Selection is fixed at construction, before any recovery call.
+
+Launcher and fake benchmark construction pass the modern Settings fallback and
+the captured legacy input as default recovery configuration. Each new, restored
+or forked managed session constructs its own default policy; explicit Recovery
+injection wins and remains shared. Children inherit their parent's policy.
+`config.Load(nil, ...)` fixes the modern value at Settings construction but
+leaves legacy lookup until that session's Recovery construction.
+`config.Load(explicitEnvironment, ...)` isolates both values from the host, even
+when the legacy key is absent or empty. `Settings.LegacyFallbackModel()` returns
+a detached copy; public Settings snapshots retain only the modern fallback field.
+Manually constructed Settings with no legacy input use the ambient lookup.
+
+`RuntimeConfig.DefaultRecoveryConfig` and
+`ManagerServices.DefaultRecoveryConfig` apply only when `Recovery` is nil.
+Managers copy pointer options at construction and validate retry limits without
+reading the legacy environment. Workflow workers receive the same default
+configuration and each construct their own policy when starting. Waiter/Jitter
+remain caller-owned dependencies under the shared-policy concurrency contract.
 
 Truncated replies can regenerate at 64K when the budget increases at least 1.5x;
 listed SDK non-streaming ceilings cap that request. A refused unknown-model

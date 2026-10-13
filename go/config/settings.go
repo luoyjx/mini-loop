@@ -55,6 +55,7 @@ func (s Secret) GoString() string             { return s.String() }
 func (s Secret) MarshalJSON() ([]byte, error) { return json.Marshal(s.String()) }
 
 type Settings struct {
+	legacyFallbackModel               *string
 	authTokenDefined                  bool
 	providerCredentials               ProviderCredentialSettings
 	apiKeyDefined                     bool
@@ -138,6 +139,7 @@ func (s Settings) Snapshot() Snapshot {
 	result.Settings.apiKeyDefined = false
 	result.Settings.authTokenDefined = false
 	result.Settings.providerCredentials = ProviderCredentialSettings{}
+	result.Settings.legacyFallbackModel = nil
 	result.BindableRoots = append([]string{}, s.BindableRoots...)
 	if s.BaseURL != nil {
 		result.Settings.BaseURL = ptr(RedactEndpoint(*s.BaseURL))
@@ -160,6 +162,12 @@ func (s Settings) String() string {
 }
 func (s Settings) GoString() string { return s.String() }
 
+// LegacyFallbackModel returns the detached legacy environment input for recovery
+// construction. Nil preserves ambient lookup at that later construction point;
+// a non-nil empty value keeps an explicit Load environment isolated from it.
+// This input is not part of the public Settings snapshot or FallbackModel value.
+func (s Settings) LegacyFallbackModel() *string { return clone(s.legacyFallbackModel) }
+
 type LoadOptions struct {
 	Directory, DefaultSkillsDir string
 	HomeDirectory               string
@@ -168,6 +176,9 @@ type LoadOptions struct {
 
 func Load(env map[string]string, options LoadOptions) (Settings, error) {
 	var s Settings
+	if env != nil {
+		s.legacyFallbackModel = ptr(env["FALLBACK_MODEL_ID"])
+	}
 	get := func(name string) (string, bool) {
 		if env == nil {
 			return os.LookupEnv(name)

@@ -92,8 +92,11 @@ type ManagerServices struct {
 	Spill            spill.Store
 	Provider         Provider
 	Recovery         Recovery
-	StreamProgress   StreamProgressConfig
-	BashFactory      BashFactory
+	// Used only when Recovery is nil. Pointer values are copied by the manager;
+	// Waiter and Jitter remain shared dependencies under the service contract.
+	DefaultRecoveryConfig *RecoveryConfig
+	StreamProgress        StreamProgressConfig
+	BashFactory           BashFactory
 	// Sandbox binds the default shell factory. A custom BashFactory owns this
 	// boundary itself; configuring both is rejected before allocation.
 	Sandbox         shell.Sandbox

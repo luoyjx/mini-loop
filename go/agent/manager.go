@@ -131,6 +131,15 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		config.DeleteGrace = DefaultDeleteGrace
 	}
 	services := &config.Services
+	if services.DefaultRecoveryConfig != nil {
+		copied := services.DefaultRecoveryConfig.clone()
+		services.DefaultRecoveryConfig = &copied
+		if services.Recovery == nil {
+			if err := copied.validate(); err != nil {
+				return nil, err
+			}
+		}
+	}
 	if err := normalizeManagerMCP(services); err != nil {
 		return nil, err
 	}
@@ -480,6 +489,7 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 	}
 	runtime := RuntimeConfig{GuardianEnabled: services.GuardianEnabled, DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
 	runtime.Tools = services.Tools
+	runtime.DefaultRecoveryConfig = services.DefaultRecoveryConfig
 	runtime.featureLifecycle = manager.config.EnableFeatures
 	runtime.TokenEfficiency = services.TokenEfficiency
 	if store := runtime.TokenEfficiency.RawStore(); store != nil && store.Workspace() != path {

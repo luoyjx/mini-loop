@@ -62,6 +62,7 @@ func (w *recoveryTestWaiter) Wait(ctx context.Context, d time.Duration) error {
 	return ctx.Err()
 }
 func TestRecoveryMatchesActualPython(t *testing.T) {
+	t.Setenv("FALLBACK_MODEL_ID", "")
 	data, err := os.ReadFile("../testdata/python-recovery.json")
 	if err != nil {
 		t.Fatal(err)

@@ -570,7 +570,21 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: `1b8e3e8`; this iteration publishes named permission
+Runtime review baseline: local main `69cba43`; this iteration aligns default
+recovery construction with the actual Python source. A nonempty explicit or
+`MINILOOP_FALLBACK_MODEL` value wins; otherwise `FALLBACK_MODEL_ID` is read when
+Recovery is constructed and then retained. Whitespace remains a literal model
+name. Explicit Go environment maps capture their legacy input, including empty
+or absent values, so later ambient changes cannot supply a fallback. Public
+Settings snapshots still expose only the modern setting. Nine constructor,
+eleven Agent constructions and six actual Agent.run scenarios cover precedence,
+construction timing, DirectRecovery and an untruncated 513-byte legacy model.
+Default managed sessions construct their own recovery policy; five actual
+Manager scenarios compare sequential session selection and explicit policy
+sharing. Children continue to inherit their parent's policy. Validation and remaining
+acceptance boundaries are recorded with this slice's delivery.
+
+Previous runtime review baseline: `1b8e3e8`; that iteration publishes named permission
 decisions at their actual policy decision points, before later rules or tool
 effects. Session event scope, masking, live publication and historical codecs
 carry the four decision fields without granting authority from stored events.
@@ -961,7 +975,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · modern / explicit then captured legacy fallback<br/>live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -1673,7 +1687,15 @@ recovery: at most ten transient retries, bounded outer waits, token escalation,
 whole-answer continuation, one reactive shrink and optional fallback model. Backoff
 waits release shared model permits. Context overflow retries only after request
 shrink, and mirrors paired live history explicitly. Fallback selection persists
-per session; children inherit the policy with fresh fallback state. Explicit `provider.NewStreaming` adds bounded
+per session; children inherit the policy with fresh fallback state. A nonempty
+modern/explicit model takes precedence over legacy `FALLBACK_MODEL_ID`, which
+is captured at Recovery construction. Explicit environment maps retain their
+own legacy input and never fall through to the ambient environment. The model
+is not stripped or capped at 512 bytes; provider admission remains independent.
+Default Launcher/benchmark managers defer construction to each session; an
+explicitly injected Recovery remains shared and takes precedence over default
+configuration. Existing sessions and their child policies keep the captured value.
+Explicit `provider.NewStreaming` adds bounded
 SSE assembly and validates text, signed thinking and complete tool JSON before
 returning a final reply. Per-session `StreamingProvider` progress defaults to coalescing at
 200 Unicode characters or 200 ms on fragment arrival. Explicit captured

@@ -26,6 +26,8 @@ type WorkflowRunnerConfig struct {
 	Catalog                   *ToolCatalog
 	RolePolicy                RoleToolPolicy
 	Recovery                  Recovery
+	// Used only when Recovery is nil; selection happens when each worker starts.
+	DefaultRecoveryConfig     *RecoveryConfig
 	CachePolicy               CachePolicy
 	StuckDetector             StuckDetector
 	Skills                    SkillSource
@@ -52,6 +54,15 @@ type FreshWorkflowRunner struct {
 }
 
 func NewFreshWorkflowRunner(config WorkflowRunnerConfig) (*FreshWorkflowRunner, error) {
+	if config.DefaultRecoveryConfig != nil {
+		copied := config.DefaultRecoveryConfig.clone()
+		config.DefaultRecoveryConfig = &copied
+		if config.Recovery == nil {
+			if err := copied.validate(); err != nil {
+				return nil, err
+			}
+		}
+	}
 	rounds := 8
 	if config.MaxRounds != nil {
 		rounds = *config.MaxRounds
@@ -224,6 +235,11 @@ func (runner *FreshWorkflowRunner) Run(ctx context.Context, execution workflows.
 	worker.compactor = InMemoryCompactor{worker.tokenThreshold, 50}
 	if runner.config.Recovery != nil {
 		worker.recovery = runner.config.Recovery
+	} else if runner.config.DefaultRecoveryConfig != nil {
+		worker.recovery, err = NewDefaultRecovery(*runner.config.DefaultRecoveryConfig)
+		if err != nil {
+			return nil, err
+		}
 	}
 	if runner.config.CachePolicy != nil {
 		worker.cachePolicy = runner.config.CachePolicy

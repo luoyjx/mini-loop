@@ -129,6 +129,15 @@ type WorkflowService struct {
 }
 
 func NewWorkflowService(config WorkflowServiceConfig) (*WorkflowService, error) {
+	if config.Worker.DefaultRecoveryConfig != nil {
+		copied := config.Worker.DefaultRecoveryConfig.clone()
+		config.Worker.DefaultRecoveryConfig = &copied
+		if config.Worker.Recovery == nil {
+			if err := copied.validate(); err != nil {
+				return nil, err
+			}
+		}
+	}
 	admission, err := workflows.NewDefinitionAdmission(config.Caps)
 	if err != nil {
 		return nil, err

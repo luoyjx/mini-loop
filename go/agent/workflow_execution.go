@@ -155,6 +155,10 @@ func (s *WorkflowService) runAttempt(ctx context.Context, execution workflows.At
 	s.emit(context.Background(), run, WorkflowNodeClaimed, &attempt, workflowEventPayload{nodeKind: execution.Node.Kind, spawn: attempt.SpawnIndex})
 	s.emit(context.Background(), run, WorkflowAgentStarted, &attempt, workflowEventPayload{nodeKind: execution.Node.Kind})
 	config := s.config.Worker
+	if config.DefaultRecoveryConfig != nil {
+		copied := config.DefaultRecoveryConfig.clone()
+		config.DefaultRecoveryConfig = &copied
+	}
 	config.Owner, config.Workspace = parent.Owner, parent.Workspace
 	rounds := min(info.Budget.MaxRounds, s.config.Caps.MaxRounds)
 	config.MaxRounds = &rounds
