@@ -6741,6 +6741,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.extension_schema_contracts import extension_schema_contracts
     from tools.public_helper_contracts import public_helper_contracts
     from tools.public_budget_text_contracts import public_budget_text_contracts
+    from tools.batch_step_boundary_contracts import batch_step_boundary_contracts
     from tools.extension_subagent_contracts import extension_subagent_contracts
     from tools.mcp_model_root_contracts import mcp_model_root_contracts
     from tools.mcp_mapping_key_contracts import mcp_mapping_key_contracts, mcp_mapping_key_journal_contracts
@@ -7139,6 +7140,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-extension-schemas.json": _json_bytes(extension_schema_contracts()),
         "python-public-helpers.json": _json_bytes(public_helper_contracts()),
         "python-public-budget-text.json": _json_bytes(public_budget_text_contracts()),
+        "python-batch-step-boundary.json": _json_bytes(batch_step_boundary_contracts()),
         "python-extension-subagents.json": _json_bytes(extension_subagent_contracts()),
         "python-mcp-model-roots.json": _json_bytes(mcp_model_root_contracts()),
         "python-mcp-mapping-keys.json": _json_bytes(mcp_mapping_key_contracts()),

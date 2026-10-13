@@ -1,0 +1,1257 @@
+{
+  "cases": [
+    {
+      "bad": -1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad--1/capacity-1",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "exclusive",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "exclusive",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "exclusive",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": -1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad--1/capacity-2",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "exclusive",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "exclusive",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "exclusive",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 1,
+      "effects": [
+        0
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad-0/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 2,
+      "effects": [
+        0
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad-0/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad-1/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad-1/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad-2/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "exclusive",
+        "exclusive"
+      ],
+      "name": "exclusive/bad-2/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": -1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad--1/capacity-1",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "parallel",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "parallel",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "parallel",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": -1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad--1/capacity-2",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "parallel",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "parallel",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "parallel",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad-0/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad-0/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad-1/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad-1/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad-2/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "parallel",
+        "parallel"
+      ],
+      "name": "parallel/bad-2/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": -1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad--1/capacity-1",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "parallel",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "exclusive",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "parallel",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": -1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad--1/capacity-2",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "parallel",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "exclusive",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "parallel",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 1,
+      "effects": [
+        0
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad-0/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 2,
+      "effects": [
+        0
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad-0/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad-1/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad-1/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad-2/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "parallel",
+        "exclusive",
+        "parallel"
+      ],
+      "name": "parallel-barrier/bad-2/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": -1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad--1/capacity-1",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "exclusive",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "parallel",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "parallel",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": -1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": null,
+      "messages": 4,
+      "model_starts": 2,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad--1/capacity-2",
+      "output": "done",
+      "requests": 2,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_text_json": [
+        "\"output-0\"",
+        "\"output-1\"",
+        "\"output-2\""
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "d4cbf7720c9b02e4",
+          "name": "exclusive",
+          "output_hash": "76e3452fc339a07d"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "b4545d44772e665e",
+          "name": "parallel",
+          "output_hash": "abe5555eda8ee434"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "input_hash": "e5c63f0e15f5e496",
+          "name": "parallel",
+          "output_hash": "2e1dc1d4e9850fd4"
+        }
+      ],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 1,
+      "effects": [
+        0
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad-0/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0"
+      ]
+    },
+    {
+      "bad": 0,
+      "capacity": 2,
+      "effects": [
+        0
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad-0/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad-1/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 1,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad-1/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 1,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad-2/capacity-1",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    },
+    {
+      "bad": 2,
+      "capacity": 2,
+      "effects": [
+        0,
+        1,
+        2
+      ],
+      "error": "UnicodeEncodeError",
+      "messages": 2,
+      "model_starts": 1,
+      "modes": [
+        "exclusive",
+        "parallel",
+        "parallel"
+      ],
+      "name": "barrier-parallel/bad-2/capacity-2",
+      "output": "",
+      "requests": 1,
+      "result_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ],
+      "result_ids": [],
+      "result_text_json": [],
+      "steps": [],
+      "tool_event_ids": [
+        "id-0",
+        "id-1",
+        "id-2"
+      ]
+    }
+  ],
+  "limits": [
+    "Actual Source Agent.run with registered read tools, exclusive/parallel barriers and capacities1/2.",
+    "Callbacks are immediate observations; delayed/canceled/resource-exhausted/wider host/platform cases remain separate.",
+    "Successful batches drain steps in model order. Ordinary UTF-8 hash failure preserves events/effects but admits no batch-local step/history."
+  ]
+}
