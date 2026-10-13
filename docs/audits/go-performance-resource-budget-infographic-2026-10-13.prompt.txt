@@ -1,0 +1,17 @@
+Use case: precise-object-edit / infographic-diagram.
+Edit the supplied mini-loop layered architecture base into a sibling engineering iteration image. Preserve its navy style, five rows, all cards, and correct control/data-flow arrows. No component is added or removed.
+Keep the exact layer titles: L1 入口与组合层; L2 会话与控制层; L3 推理与执行层; L4 能力与编排层; L5 状态与证据层.
+Preserve six L4 backend cards including explicitly registered custom tools, all seven optional orchestration cards, and all five L5 state/evidence cards including operator contractaudit.
+Critical arrows: Session Agent ↔ Model Provider; Session Agent → ToolGate routed ABOVE Model Provider; ToolGate → L4; L4 tool results → Session Agent. Never add a Provider → ToolGate arrow.
+Highlight existing L1 CLI / HTTP / SSE / 浏览器 card and existing L5 操作员契约审计 card with amber borders and a small 本轮验收 badge. The highlighted work is an engineering validation harness, not an added runtime authority or component.
+Subtitle: "2026-10-13 · 受控性能对照与迁移清单核对".
+Replace the right column with title "本轮修改与证据" and these six numbered notes:
+1 "隔离环境保留 CPU 与内存设置"
+2 "Go 并发 2，软内存目标 512 MiB"
+3 "三组交错运行，核对真实 Bash 效果"
+4 "P0 清单核对，六处名称已有映射"
+5 "局部类型边界逐项复核"
+6 "默认解析器、Unicode 端点、Linux 仍待收口"
+Below the notes add: "测试进程树采样预算 1 GiB；压力升高即停。"
+Footer: "性能结果只代表本次受控样本；不是运行时硬限制或完整迁移验收。基础图保持不变。"
+Retain independent Python and Go implementation framing and explicit optional/custom-tool selection. Do not imply that Go is uniformly faster, that CPU/RSS limits are OS hard caps, that all types/platforms are proven, or that migration is complete. This is a sibling iteration image; preserve the original base.

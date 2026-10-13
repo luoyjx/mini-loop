@@ -1,0 +1,4147 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-13T09:21:25.114306+00:00",
+  "code_baseline": "82b14bf610d789dc380af48f0c7df525ffa9b8bc",
+  "instrument_sha256": "a1e126696bb009c16253bb310b3f3a1ce1af344bad00535a7517397e9d124545",
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "release": "24.5.0"
+  },
+  "python": "3.11.3 (main, Apr  7 2023, 20:13:31) [Clang 14.0.0 (clang-1400.0.29.202)]",
+  "go_build": "/Users/yanjixiong/github/mini-loop/var/go-performance-resource-budget-2026-10-13/miniloop: go1.23.3\n\tpath\tgithub.com/luoyjx/mini-loop/go/cmd/miniloop\n\tmod\tgithub.com/luoyjx/mini-loop/go\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\tCGO_ENABLED=1\n\tbuild\tCGO_CFLAGS=\n\tbuild\tCGO_CPPFLAGS=\n\tbuild\tCGO_CXXFLAGS=\n\tbuild\tCGO_LDFLAGS=\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tGOARM64=v8.0\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=82b14bf610d789dc380af48f0c7df525ffa9b8bc\n\tbuild\tvcs.time=2026-10-13T09:06:06Z\n\tbuild\tvcs.modified=true\n",
+  "go_binary_sha256": "830a38556075edd73f5ef1db36e160d2d6910e3427359e27c59700f3dffe3cd7",
+  "parameters": {
+    "pairs": 3,
+    "health_samples": 100,
+    "turns": 20,
+    "warmup_turns": 2
+  },
+  "resource_environment": {
+    "GOMAXPROCS": "2",
+    "GOMEMLIMIT": "512MiB",
+    "GOFLAGS": "-p=1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "resource_scope": "Fixed child environment, independent of inherited limits. Go memory target is soft; parent process-tree/host-pressure monitoring remains required. Not a hard CPU/RSS cap.",
+  "scope": "serial persistent HTTP; default fake; zero provider delay; real Bash with verified file effect; fresh sessions; prebuilt Go; nearest-rank p95; RSS after workload, not peak/descendants; startup includes readiness polling; no SSE/SQLite/concurrency/provider benchmark",
+  "summary": {
+    "python": {
+      "startup": {
+        "n": 3,
+        "median_ms": 288.11683299863944,
+        "p95_ms": 393.32558299793163,
+        "min_ms": 282.11108400137164,
+        "max_ms": 393.32558299793163
+      },
+      "health": {
+        "n": 300,
+        "median_ms": 0.6331665026664268,
+        "p95_ms": 0.7974580003065057,
+        "min_ms": 0.5586250044871122,
+        "max_ms": 1.2156250013504177
+      },
+      "create": {
+        "n": 60,
+        "median_ms": 2.843082998879254,
+        "p95_ms": 4.115999996429309,
+        "min_ms": 1.4867079953546636,
+        "max_ms": 4.301166998629924
+      },
+      "turn": {
+        "n": 60,
+        "median_ms": 10.332645502785454,
+        "p95_ms": 11.87512500473531,
+        "min_ms": 9.541750005155336,
+        "max_ms": 12.655624996114057
+      },
+      "delete": {
+        "n": 60,
+        "median_ms": 0.7283330014615785,
+        "p95_ms": 0.8616659979452379,
+        "min_ms": 0.6477500064647757,
+        "max_ms": 0.9155830048257485
+      }
+    },
+    "go": {
+      "startup": {
+        "n": 3,
+        "median_ms": 14.45774999592686,
+        "p95_ms": 498.37633300194284,
+        "min_ms": 13.638541000545956,
+        "max_ms": 498.37633300194284
+      },
+      "health": {
+        "n": 300,
+        "median_ms": 0.08999999772640876,
+        "p95_ms": 0.1429579933756031,
+        "min_ms": 0.07770799857098609,
+        "max_ms": 0.21237500186543912
+      },
+      "create": {
+        "n": 60,
+        "median_ms": 5.2452915006142575,
+        "p95_ms": 8.569624995288905,
+        "min_ms": 1.2984999993932433,
+        "max_ms": 8.964332999312319
+      },
+      "turn": {
+        "n": 60,
+        "median_ms": 8.677771002112422,
+        "p95_ms": 9.053875000972766,
+        "min_ms": 7.8395840027951635,
+        "max_ms": 9.487666000495665
+      },
+      "delete": {
+        "n": 60,
+        "median_ms": 0.29052049649180844,
+        "p95_ms": 0.3807079992839135,
+        "min_ms": 0.26337500457884744,
+        "max_ms": 0.567667004361283
+      }
+    }
+  },
+  "runs": [
+    {
+      "runtime": "python",
+      "pair": 0,
+      "samples": [
+        {
+          "metric": "startup",
+          "milliseconds": 393.32558299793163
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7053750014165416
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6760830001439899
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6880829969304614
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6254160034586675
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6157500029075891
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6310419994406402
+        },
+        {
+          "metric": "health",
+          "milliseconds": 1.0061249995487742
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7849579997127876
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6250840015127324
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6907499991939403
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7194999998318963
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6102499974076636
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5980839996482246
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.608207999903243
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6031669981894083
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.593832999584265
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.569708994589746
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6035839978721924
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5870420063729398
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5873330010217614
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5586250044871122
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6088750014896505
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5906669975956902
+        },
+        {
+          "metric": "health",
+          "milliseconds": 1.170249997812789
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6517079964396544
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6152920032036491
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6691250018775463
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7269580019055866
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6070000017643906
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6074999982956797
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5799579957965761
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5804579996038228
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5637089998344891
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5692499980796129
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6658749989583157
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6515830027638003
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7629999963683076
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6531250037369318
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.599291997787077
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6897499988554046
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6730419991072267
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6132920025265776
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5919999966863543
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6067079957574606
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7157500003813766
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5987499971524812
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6643750020884909
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6516659996123053
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6156250019557774
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6970000031287782
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5993750019115396
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6060829982743599
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6938750011613593
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6007909978507087
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6013340025674552
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5986249962006696
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6606669994653203
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5902920020162128
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6454169997596182
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5835839983774349
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6335830039461143
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.629791000392288
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.705625003320165
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6394170050043613
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6291660029091872
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6482910030172206
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5984579984215088
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6443340025725774
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6161670025903732
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6102920015109703
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6415000025299378
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6714999981340952
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6057919963495806
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5950830018264242
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5948340040049516
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7262500002980232
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6542080009239726
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8057919985731132
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6695830015814863
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7740000000922009
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8297499953187071
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8773330046096817
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6546250006067567
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7290830035344698
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6429589993786067
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7114589971024543
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7808750015101396
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6682500024908222
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8819170034257695
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6493749970104545
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6128329987404868
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6062920001568273
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6381659986800514
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6110419999458827
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6084999986342154
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5909579995204695
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5874589987797663
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5877500007045455
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5891250038985163
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6158750038594007
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.7302500054938719
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 11.712582992913667
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7387090008705854
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.545708000776358
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.450458998093382
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7242499996209517
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.7017499994835816
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.969499995349906
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6985419968259521
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.799541998479981
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.295833002601285
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6649579954682849
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.9443330020294525
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.255207998852711
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7367080033873208
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.0964580035069957
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 12.241374999575783
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6731670000590384
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.3658329955651425
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.516333000850864
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6928750008228235
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.33454199769767
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 11.149375000968575
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7582910038763657
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.123667003819719
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.936875001585577
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7465840026270598
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.6585840023471974
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.31929100281559
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6786250014556572
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.8302499995334074
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.774874997674488
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6644579989369959
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.8559159982251003
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.631082997657359
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7221249979920685
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.9844999953638762
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.713250001368579
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6510000021080486
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.205833003448788
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.164833001908846
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.720124997314997
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.3676249950076453
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.346000002755318
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7885419981903397
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.457624996372033
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.766334005689714
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7271249996847473
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.5112499972456135
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.64675000088755
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7263749939738773
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.9648750025662594
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.28891700116219
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.8125839958665892
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.115999996429309
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.023582995927427
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7213339995360002
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.029625000839587
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.102540996740572
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6589999975403771
+        }
+      ],
+      "finals": [
+        "Done. Tool said: handled: performance-probe-0",
+        "Done. Tool said: handled: performance-probe-1",
+        "Done. Tool said: handled: performance-probe-2",
+        "Done. Tool said: handled: performance-probe-3",
+        "Done. Tool said: handled: performance-probe-4",
+        "Done. Tool said: handled: performance-probe-5",
+        "Done. Tool said: handled: performance-probe-6",
+        "Done. Tool said: handled: performance-probe-7",
+        "Done. Tool said: handled: performance-probe-8",
+        "Done. Tool said: handled: performance-probe-9",
+        "Done. Tool said: handled: performance-probe-10",
+        "Done. Tool said: handled: performance-probe-11",
+        "Done. Tool said: handled: performance-probe-12",
+        "Done. Tool said: handled: performance-probe-13",
+        "Done. Tool said: handled: performance-probe-14",
+        "Done. Tool said: handled: performance-probe-15",
+        "Done. Tool said: handled: performance-probe-16",
+        "Done. Tool said: handled: performance-probe-17",
+        "Done. Tool said: handled: performance-probe-18",
+        "Done. Tool said: handled: performance-probe-19"
+      ],
+      "rss_kib_after_workload": 59360
+    },
+    {
+      "runtime": "go",
+      "pair": 0,
+      "samples": [
+        {
+          "metric": "startup",
+          "milliseconds": 498.37633300194284
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11495799844851717
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10354199912399054
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0949160021264106
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11833299504360184
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10020899935625494
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09070899977814406
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09108400263357908
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0894170007086359
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08979099948192015
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08762499783188105
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09616699389880523
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0865420006448403
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08745800005272031
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09070800297195092
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08683299529366195
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08570799400331452
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08725000225240365
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.15699999494245276
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.18362500122748315
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.15416699898196384
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.109583001176361
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.14245899365050718
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11837499914690852
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09875000250758603
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09091700485441834
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0857090053614229
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08837499626679346
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0849170028232038
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08499999967170879
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08983300358522683
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09012500231619924
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09095800487557426
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09941699681803584
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09045800106832758
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09983299969462678
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08445799903711304
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08525000157533213
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09049999789567664
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09845800377661362
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11629200162133202
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11395800538593903
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11416699999244884
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10979099897667766
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11337499745422974
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1140000022132881
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11245899804634973
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12458400306059048
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11250000534346327
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10316599946236238
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10745799954747781
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10341699817217886
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10845799988601357
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10391700197942555
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10916699829977006
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12216699542477727
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10679200204322115
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1022910000756383
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10591700265649706
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08570800127927214
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09954200504580513
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09866699838312343
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0808749973657541
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08179100404959172
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08120799611788243
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08020800305530429
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0787919998401776
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10541600204305723
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08762499783188105
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0797079992480576
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07912499859230593
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07770799857098609
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08125000022118911
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09979199967347085
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08666700159665197
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08037500083446503
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08162499580066651
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08004099800018594
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07950000144774094
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07954100146889687
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09316600335296243
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07974999607540667
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07937500049592927
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0793330036685802
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08499999967170879
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07879100303398445
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07891700079198927
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07999999797903001
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07824999920558184
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0784579970058985
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0792499995441176
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07841699698474258
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07941699732327834
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09683299867901951
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0849170028232038
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08725000225240365
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09337500523542985
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08266700024250895
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07904099766165018
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07908399857115
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.082791993918363
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.4797920011915267
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.702874998562038
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.27970800147159025
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.7759160036803223
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.384500004467554
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.26625000464264303
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.3127500026021153
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.013041999423876
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2857919971575029
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.40762500470737
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.005542000522837
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3038340000784956
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.085500000452157
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 7.855125004425645
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.28216599457664415
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.409333003219217
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.82754100166494
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.26337500457884744
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.572834000806324
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.068625000305474
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3807079992839135
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.9738749983371235
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 7.981333001225721
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2928749963757582
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.442749996087514
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 7.8395840027951635
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3525830034050159
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.129083001520485
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 7.8700830054003745
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.279416999546811
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.266959000437055
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.618040999863297
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2712920031626709
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.530707996513229
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.135166994179599
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3453329991316423
+        },
+        {
+          "metric": "create",
+          "milliseconds": 6.360291998134926
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.352332999696955
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2910409966716543
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.947583995293826
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.066624999628402
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.268291994871106
+        },
+        {
+          "metric": "create",
+          "milliseconds": 6.640583000262268
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.876041996700224
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.31966700043994933
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.248292000440415
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.269000005384441
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.31166600092547014
+        },
+        {
+          "metric": "create",
+          "milliseconds": 8.421625003393274
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.03174999600742
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2793750027194619
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.33912499708822
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.222541997383814
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.29149999318178743
+        },
+        {
+          "metric": "create",
+          "milliseconds": 8.768916995904874
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.913707999454346
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2808330027619377
+        },
+        {
+          "metric": "create",
+          "milliseconds": 8.569624995288905
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.118958998238668
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.27837499510496855
+        }
+      ],
+      "finals": [
+        "Done. Tool said: handled: performance-probe-0",
+        "Done. Tool said: handled: performance-probe-1",
+        "Done. Tool said: handled: performance-probe-2",
+        "Done. Tool said: handled: performance-probe-3",
+        "Done. Tool said: handled: performance-probe-4",
+        "Done. Tool said: handled: performance-probe-5",
+        "Done. Tool said: handled: performance-probe-6",
+        "Done. Tool said: handled: performance-probe-7",
+        "Done. Tool said: handled: performance-probe-8",
+        "Done. Tool said: handled: performance-probe-9",
+        "Done. Tool said: handled: performance-probe-10",
+        "Done. Tool said: handled: performance-probe-11",
+        "Done. Tool said: handled: performance-probe-12",
+        "Done. Tool said: handled: performance-probe-13",
+        "Done. Tool said: handled: performance-probe-14",
+        "Done. Tool said: handled: performance-probe-15",
+        "Done. Tool said: handled: performance-probe-16",
+        "Done. Tool said: handled: performance-probe-17",
+        "Done. Tool said: handled: performance-probe-18",
+        "Done. Tool said: handled: performance-probe-19"
+      ],
+      "rss_kib_after_workload": 22144
+    },
+    {
+      "runtime": "go",
+      "pair": 1,
+      "samples": [
+        {
+          "metric": "startup",
+          "milliseconds": 13.638541000545956
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.15083299513207749
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11458300286903977
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.14774999726796523
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1528330030851066
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.13187500007916242
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.13029100227868184
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12075000267941505
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10641600238159299
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09529199451208115
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09308299922849983
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0995840018731542
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11225000343983993
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0950840039877221
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09683299867901951
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08958299440564588
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08991699723992497
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0887080022948794
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08866699499776587
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08983299630926922
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09070899977814406
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08837499626679346
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08912500197766349
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08900000102585182
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09258299542125314
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08362499647773802
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08754200098337606
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08904199785320088
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08362500375369564
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08158300624927506
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08220900053856894
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08741700003156438
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08433299808530137
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08633299876237288
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08770900603849441
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08845899719744921
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08479200187139213
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0855410035001114
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08583399903727695
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08183400495909154
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08595800318289548
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08600000001024455
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09175000013783574
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08549999620299786
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08841700037010014
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08708400127943605
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08145799802150577
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08541699935449287
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08591699588578194
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08420900121564046
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08516700472682714
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08625000191386789
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0873340031830594
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08570800127927214
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0865420006448403
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08166599582182243
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08433300536125898
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09583300561644137
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08649999654153362
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08587499905843288
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08237500151153654
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08600000001024455
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08679200254846364
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08566700125811622
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0857090053614229
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08645799971418455
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08529100159648806
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07941699732327834
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08066699956543744
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08437499491265044
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.07991700113052502
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08062500273808837
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0792499995441176
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08470800094073638
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1429579933756031
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1229170011356473
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09533300180919468
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10441600170452148
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.113207999675069
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11591599468374625
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08608300413470715
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08474999776808545
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08383399836020544
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08341699867742136
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08274999709101394
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0832090008771047
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08320799679495394
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10304100578650832
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10991699673468247
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09041700104717165
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08391700248466805
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08216700371121988
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09395799861522391
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09579100151313469
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09183300426229835
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08795799658400938
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08220900053856894
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08325000089826062
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08145800529746339
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08250000246334821
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08591699588578194
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.7047080036718398
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.730499997909646
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.28649999876506627
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.9409170054132119
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.44820799829904
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.30775000050198287
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.337791993340943
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.663749998959247
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3017919952981174
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.444124998874031
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.686042005138006
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.27475000388221815
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.9417919940897264
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.629582996945828
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3092920014751144
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.1592089944751933
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.97120899753645
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.26370800333097577
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.6509589990600944
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.956624995335005
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.34383300226181746
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.2564999966998585
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.827292003843468
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2779580026981421
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.624124994734302
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.680582999659237
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3379159970791079
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.387750003137626
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.706583001185209
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.27062500157626346
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.229374997725245
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.455625000351574
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.30916599644115195
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.597041003056802
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.770791006099898
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3224579995730892
+        },
+        {
+          "metric": "create",
+          "milliseconds": 6.010790995787829
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.285083000373561
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3233339957660064
+        },
+        {
+          "metric": "create",
+          "milliseconds": 6.7876670000259764
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.487666000495665
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.31391700031235814
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.291166999493726
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.810041996184736
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.28579200443346053
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.288875000085682
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 7.908416002464946
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.4360000020824373
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.44874999509193
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.893042002455331
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.36433299828786403
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.984750001924112
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.83712499489775
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.34795799729181454
+        },
+        {
+          "metric": "create",
+          "milliseconds": 8.428458000707906
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.674959004565608
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.29641700530191883
+        },
+        {
+          "metric": "create",
+          "milliseconds": 8.964332999312319
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.458083000732586
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.28008300432702526
+        }
+      ],
+      "finals": [
+        "Done. Tool said: handled: performance-probe-0",
+        "Done. Tool said: handled: performance-probe-1",
+        "Done. Tool said: handled: performance-probe-2",
+        "Done. Tool said: handled: performance-probe-3",
+        "Done. Tool said: handled: performance-probe-4",
+        "Done. Tool said: handled: performance-probe-5",
+        "Done. Tool said: handled: performance-probe-6",
+        "Done. Tool said: handled: performance-probe-7",
+        "Done. Tool said: handled: performance-probe-8",
+        "Done. Tool said: handled: performance-probe-9",
+        "Done. Tool said: handled: performance-probe-10",
+        "Done. Tool said: handled: performance-probe-11",
+        "Done. Tool said: handled: performance-probe-12",
+        "Done. Tool said: handled: performance-probe-13",
+        "Done. Tool said: handled: performance-probe-14",
+        "Done. Tool said: handled: performance-probe-15",
+        "Done. Tool said: handled: performance-probe-16",
+        "Done. Tool said: handled: performance-probe-17",
+        "Done. Tool said: handled: performance-probe-18",
+        "Done. Tool said: handled: performance-probe-19"
+      ],
+      "rss_kib_after_workload": 20976
+    },
+    {
+      "runtime": "python",
+      "pair": 1,
+      "samples": [
+        {
+          "metric": "startup",
+          "milliseconds": 282.11108400137164
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7164580019889399
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6489579973276705
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7210000039776787
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6916670026839711
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6139170000096783
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7064579986035824
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6327500013867393
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.9070000014617108
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7559160003438592
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6295839993981645
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7004170038271695
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6046670023351908
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5912080014240928
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5815830008941703
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5840829981025308
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5761659995187074
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8012499965843745
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6610000054934062
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5926669982727617
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.574917001358699
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5793329983134754
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5756660029874183
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5798749989480712
+        },
+        {
+          "metric": "health",
+          "milliseconds": 1.2156250013504177
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6530410028062761
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7518340062233619
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7023750004009344
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7346249985857867
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6804169970564544
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6552920021931641
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6398750047083013
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6156669987831265
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6319160020211712
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6774170033168048
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6240000002435409
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6003329981467687
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6908330033184029
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6423340018955059
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6221660005394369
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6403329971362837
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6972909977775998
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6587079988094047
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7126249984139577
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7007079984759912
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6988749955780804
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6606250026379712
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6592909994651563
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6470829976024106
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7210830008261837
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6652920055785216
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6448749991250224
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6460000004153699
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.760165996325668
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6833340012235567
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6772080014343373
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7463329966412857
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6229999999050051
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6197080001584254
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6574159997398965
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6109160021878779
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6704580009682104
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6060840023565106
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6702500031678937
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6155840019346215
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6419580022338778
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6165000013425015
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8022909969440661
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7184999994933605
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6490829982794821
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6245839977054857
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6264170006033964
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6026659975759685
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6305420029093511
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7974580003065057
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6614169979002327
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6326250004349276
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6233749954844825
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6478750001406297
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6107500012149103
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6225420002010651
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6959169986657798
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6706670028506778
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6402500002877787
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.630208000075072
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6130420006229542
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7284999956027605
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6142499987618066
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6195419991854578
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6099169986555353
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6436669937102124
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6105830034357496
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6107919980422594
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6969999958528206
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6737919975421391
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6107500012149103
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6612910001422279
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6168749969219789
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8894580023479648
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7047499966574833
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6855419997009449
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.488707996031735
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 11.87512500473531
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.775167005485855
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.614458000403829
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.469542001374066
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7143750044633634
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.6366249983548187
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.475374998350162
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.702582998201251
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.743834000080824
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.624165995977819
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7485000023734756
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.9329160058987327
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.179666998737957
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7496670004911721
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.065000000584405
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.606999996525701
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.741167001251597
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.2134579994599335
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.491500004718546
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7112499952199869
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.3108750028768554
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.947958998964168
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7987080025486648
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.509749996534083
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.5536659975769
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7732079975539818
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.6742920017568395
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.71270799729973
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7295410032384098
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.7965830013272353
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.95254199753981
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.687250001647044
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.8662499971687794
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.699207996367477
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6863750022603199
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.9773340065730736
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 11.215457998332568
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7609590029460378
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.4531250057625584
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.598624998237938
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7901250064605847
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.556292002031114
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.252500003844034
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7000000041443855
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.6299579951446503
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.293874998751562
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.65487500251038
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.624249999120366
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 11.181666995980777
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7028749969322234
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.725541006133426
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 12.111791998904664
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7561250022263266
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.9433330020983703
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.79770799697144
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.8616659979452379
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.301166998629924
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.84883300063666
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7897090035839938
+        }
+      ],
+      "finals": [
+        "Done. Tool said: handled: performance-probe-0",
+        "Done. Tool said: handled: performance-probe-1",
+        "Done. Tool said: handled: performance-probe-2",
+        "Done. Tool said: handled: performance-probe-3",
+        "Done. Tool said: handled: performance-probe-4",
+        "Done. Tool said: handled: performance-probe-5",
+        "Done. Tool said: handled: performance-probe-6",
+        "Done. Tool said: handled: performance-probe-7",
+        "Done. Tool said: handled: performance-probe-8",
+        "Done. Tool said: handled: performance-probe-9",
+        "Done. Tool said: handled: performance-probe-10",
+        "Done. Tool said: handled: performance-probe-11",
+        "Done. Tool said: handled: performance-probe-12",
+        "Done. Tool said: handled: performance-probe-13",
+        "Done. Tool said: handled: performance-probe-14",
+        "Done. Tool said: handled: performance-probe-15",
+        "Done. Tool said: handled: performance-probe-16",
+        "Done. Tool said: handled: performance-probe-17",
+        "Done. Tool said: handled: performance-probe-18",
+        "Done. Tool said: handled: performance-probe-19"
+      ],
+      "rss_kib_after_workload": 60144
+    },
+    {
+      "runtime": "python",
+      "pair": 2,
+      "samples": [
+        {
+          "metric": "startup",
+          "milliseconds": 288.11683299863944
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.752874999307096
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6305420029093511
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6658749989583157
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6450419969041832
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6299579981714487
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.615333003224805
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7099169961293228
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8517500027664937
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6574169965460896
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6216249967110343
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.687749998178333
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6060420055291615
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5927500023972243
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5831660018884577
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5834999974467792
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.589667004533112
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5755000020144507
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5787499976577237
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.590125004237052
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5796250043204054
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5924169963691384
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6064999979571439
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6260419977479614
+        },
+        {
+          "metric": "health",
+          "milliseconds": 1.1555000019143336
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6395829987013713
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.632124996627681
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6062920001568273
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5989589990349486
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.607791000220459
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6114999996498227
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.600958002905827
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5875420029042289
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.611374998698011
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6066659989301115
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7539169964729808
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6553750063176267
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7592500041937456
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7118329958757386
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6954580021556467
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8572910010116175
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7041669960017316
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6376660021487623
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7102079980541021
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7002499987720512
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.683707999996841
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6065420020604506
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6612080032937229
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5971669961581938
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6705420018988661
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6425829997169785
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6136250012787059
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5999999993946403
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5946669989498332
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5779589992016554
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5935829976806417
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6022080051479861
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.669749999360647
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.8013750048121437
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5948749967501499
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5827499990118667
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.577749997319188
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.659040997561533
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5867919971933588
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5774999954155646
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.578125000174623
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6006249968777411
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.663791004626546
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5921670017414726
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5903749988647178
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6343329951050691
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7024999940767884
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7101669980329461
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6013340025674552
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.5907090016989969
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7225000008475035
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6299170054262504
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6310000026132911
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6404169980669394
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.608125003054738
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6168330000946298
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6315829959930852
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.741584000934381
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6482919998234138
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6587090028915554
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6237920024432242
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6569170000148006
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6385830056387931
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7146249990910292
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6139170000096783
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6582919959328137
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6055839985492639
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6587919997400604
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6070419985917397
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6274999977904372
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6262910028453916
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6084999986342154
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6906249982421286
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.7346670026890934
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6554999999934807
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.6630420029978268
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.578124996740371
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 11.170666999532841
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7661659983568825
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.4867079953546636
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.695709006336983
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6477500064647757
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.57845899957465
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.855249998508953
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.8817920024739578
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.9816669955616817
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.057250001409557
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6768329985789023
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.8865829988499172
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.552334002568386
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.9155830048257485
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.0540419936878607
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.244707998936065
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6965409993426874
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.168667000660207
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.617625000828411
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6866670009912923
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.3257499997271225
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.81991699518403
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.820791996375192
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.5202500037266873
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.541750005155336
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.8862079994287342
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.1535000016447157
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 12.655624996114057
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.8402079984080046
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.018959003384225
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.632000004989095
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7790419986122288
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.1275829969672486
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.521832999074832
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.661584002955351
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.097791995969601
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.94275000266498
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7722500013187528
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.1326249954872765
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.289416997693479
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.6853329978184775
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.437749997829087
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.27554199390579
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7148750009946525
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.638334004790522
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.027249998529442
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7485839960281737
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.664666997792665
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.997875000408385
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7639169998583384
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.061332998389844
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 11.176708001585212
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7087909980327822
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.171833003056236
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 10.49037499615224
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7517920021200553
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.160666998359375
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.93074999860255
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.7472079960280098
+        }
+      ],
+      "finals": [
+        "Done. Tool said: handled: performance-probe-0",
+        "Done. Tool said: handled: performance-probe-1",
+        "Done. Tool said: handled: performance-probe-2",
+        "Done. Tool said: handled: performance-probe-3",
+        "Done. Tool said: handled: performance-probe-4",
+        "Done. Tool said: handled: performance-probe-5",
+        "Done. Tool said: handled: performance-probe-6",
+        "Done. Tool said: handled: performance-probe-7",
+        "Done. Tool said: handled: performance-probe-8",
+        "Done. Tool said: handled: performance-probe-9",
+        "Done. Tool said: handled: performance-probe-10",
+        "Done. Tool said: handled: performance-probe-11",
+        "Done. Tool said: handled: performance-probe-12",
+        "Done. Tool said: handled: performance-probe-13",
+        "Done. Tool said: handled: performance-probe-14",
+        "Done. Tool said: handled: performance-probe-15",
+        "Done. Tool said: handled: performance-probe-16",
+        "Done. Tool said: handled: performance-probe-17",
+        "Done. Tool said: handled: performance-probe-18",
+        "Done. Tool said: handled: performance-probe-19"
+      ],
+      "rss_kib_after_workload": 60288
+    },
+    {
+      "runtime": "go",
+      "pair": 2,
+      "samples": [
+        {
+          "metric": "startup",
+          "milliseconds": 14.45774999592686
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.20045800192747265
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.18120799359166995
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.18470899522071704
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11999999696854502
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10429199755890295
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1651659986237064
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.15104200429050252
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11337500473018736
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.13537499762605876
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09441699512535706
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08941600390244275
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08674999844515696
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11279199679847807
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12258400238351896
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11745800293283537
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10937500337604433
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09316700015915558
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12170799891464412
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12029200297547504
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1125839989981614
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09899999713525176
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10637499508447945
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10062500223284587
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09324999700766057
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11558400001376867
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10945799294859171
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1202910061692819
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0914999982342124
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10670899791875854
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11995800014119595
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09241600491805002
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12387499737087637
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11504199937917292
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11395800538593903
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.17129200568888336
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.12008300109300762
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10595899948384613
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10091700096381828
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10087500413646922
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09666600089985877
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.097999996796716
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09608399705030024
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09579199831932783
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09370900079375133
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09379100083606318
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08891600009519607
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09020799916470423
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09133299317909405
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09270799637306482
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09012500231619924
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0910419985302724
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08949999755714089
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09087500075111166
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08820799848763272
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09449999924981967
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09141700138570741
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09074999979929999
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0898750004125759
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08979200356407091
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0890829978743568
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08979099948192015
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08912500197766349
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08925000292947516
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08895900100469589
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08895900100469589
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09049999789567664
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09133300045505166
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10387499787611887
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09183300426229835
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09004199819173664
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08991699723992497
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08891699690138921
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08908400195650756
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08895900100469589
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09116599539993331
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08670899842400104
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08945899753598496
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.09233300079358742
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08558300032746047
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08650000381749123
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08995799726108089
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08854099723976105
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08900000102585182
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.087958003859967
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08900000102585182
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08679200254846364
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.0887080022948794
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08908300515031442
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.08729200635571033
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.10091700096381828
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11520900443429127
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11341700155753642
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11358300253050402
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11383299715816975
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11345899838488549
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.21237500186543912
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.14437500067288056
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.1412089986843057
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.17074999777833
+        },
+        {
+          "metric": "health",
+          "milliseconds": 0.11929200263693929
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.2984999993932433
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.926667003834154
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2846670031431131
+        },
+        {
+          "metric": "create",
+          "milliseconds": 1.9411670000408776
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 7.966541998030152
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.567667004361283
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.2685420044581406
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.563416005927138
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.44637500104727224
+        },
+        {
+          "metric": "create",
+          "milliseconds": 2.7889170014532283
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.75004100089427
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.29329100652830675
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.035166999325156
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.56579199898988
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2782500014291145
+        },
+        {
+          "metric": "create",
+          "milliseconds": 3.099583998846356
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.153916998708155
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2851669996744022
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.005916998721659
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.346708003955428
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2873339981306344
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.138791999139357
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.687916997587308
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2915419972850941
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.339667000749614
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.87262500327779
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2825840056175366
+        },
+        {
+          "metric": "create",
+          "milliseconds": 4.800916998647153
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.315584000432864
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.36120900040259585
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.2612080035032704
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 9.053875000972766
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2854170015780255
+        },
+        {
+          "metric": "create",
+          "milliseconds": 5.859040997165721
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.87983400025405
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.28625000413740054
+        },
+        {
+          "metric": "create",
+          "milliseconds": 6.0261660037213005
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.732665999559686
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2708749962039292
+        },
+        {
+          "metric": "create",
+          "milliseconds": 6.27041699772235
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.836291999614332
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2724169971770607
+        },
+        {
+          "metric": "create",
+          "milliseconds": 6.379042002663482
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.672125004522968
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2899999963119626
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.773124998493586
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.844291005516425
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.3729579984792508
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.500416002585553
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.63608300278429
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2969170018332079
+        },
+        {
+          "metric": "create",
+          "milliseconds": 7.998291999683715
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.521083000232466
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.2767919941106811
+        },
+        {
+          "metric": "create",
+          "milliseconds": 8.612958998128306
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 8.726791995286476
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.28612499590963125
+        },
+        {
+          "metric": "create",
+          "milliseconds": 8.561000002373476
+        },
+        {
+          "metric": "turn",
+          "milliseconds": 7.9519589999108575
+        },
+        {
+          "metric": "delete",
+          "milliseconds": 0.30137500289129093
+        }
+      ],
+      "finals": [
+        "Done. Tool said: handled: performance-probe-0",
+        "Done. Tool said: handled: performance-probe-1",
+        "Done. Tool said: handled: performance-probe-2",
+        "Done. Tool said: handled: performance-probe-3",
+        "Done. Tool said: handled: performance-probe-4",
+        "Done. Tool said: handled: performance-probe-5",
+        "Done. Tool said: handled: performance-probe-6",
+        "Done. Tool said: handled: performance-probe-7",
+        "Done. Tool said: handled: performance-probe-8",
+        "Done. Tool said: handled: performance-probe-9",
+        "Done. Tool said: handled: performance-probe-10",
+        "Done. Tool said: handled: performance-probe-11",
+        "Done. Tool said: handled: performance-probe-12",
+        "Done. Tool said: handled: performance-probe-13",
+        "Done. Tool said: handled: performance-probe-14",
+        "Done. Tool said: handled: performance-probe-15",
+        "Done. Tool said: handled: performance-probe-16",
+        "Done. Tool said: handled: performance-probe-17",
+        "Done. Tool said: handled: performance-probe-18",
+        "Done. Tool said: handled: performance-probe-19"
+      ],
+      "rss_kib_after_workload": 21328
+    }
+  ]
+}
