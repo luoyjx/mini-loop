@@ -570,14 +570,15 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Validation review baseline: `7fad16d`. The current memory-efficiency iteration
+Validation review baseline: `8a5eec4`. The current memory-efficiency iteration
 keeps this architecture unchanged. Isolated CLI tests now pass the outer Go
 resource budget to their startup/reload children; product configuration and
 defaults are unaffected. Race and all-package coverage will run as separate
 serial gates. The [resource record](docs/audits/go-low-memory-validation-2026-10-13.md)
 records two passing budget regressions and native/polling real reload checks
-(sampled peaks 48.16/403.91 MiB). Full-Go preflight remained resource-blocked;
-coverage and complete acceptance are still pending. These different workloads
+(sampled peaks 48.16/403.91 MiB). A later full-Go attempt ran for 70.378 s before
+host pressure interrupted it; coverage and complete acceptance are still pending.
+These different workloads
 do not establish a measured before/after memory reduction.
 
 Runtime review baseline: local main `69cba43`; this iteration aligns default

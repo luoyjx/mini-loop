@@ -8,7 +8,8 @@ before memory optimization and continued checks. This overrides the usual
 pre-commit ordering, with the validation limits preserved: focused Go/Python,
 Source and type audits passed; full Go was resource-interrupted; vet/race/full
 Python and remaining gates are pending. Local main remains `69cba43`, unmerged.
-Delivery evidence is committed as `7fad16d`. The goal is active again. The
+Delivery evidence is committed as `7fad16d`, with the budget fix and focused
+validation committed as `8a5eec4`. The
 test-only nested-build budget propagation fix passed two budget regressions
 and the native/polling real CLI reload tests at 15:07–15:09 UTC. Their sampled
 tree peaks were 48.16 and 403.91 MiB; the earlier 15:01 attempt was blocked
@@ -18,6 +19,14 @@ separates race from all-package coverage, but neither full workload has run. See
 [memory optimization record](docs/audits/go-low-memory-validation-2026-10-13.md)
 for the exact controls, immutable attempt and next checks. No measured memory
 savings or refreshed coverage is claimed.
+
+The third resumed goal turn did admit `go-full-resume-1` after 30 normal samples,
+but host pressure rose to 2 after about 68 s. The monitored stage ended after
+70.378 s with cleanup complete and a 277.06 MiB sampled peak. A build failure
+appeared during the stop window; no independent code-defect attribution is
+supported. Full acceptance remains resource-blocked across three consecutive
+goal turns, with no live validation handle. Stable external memory conditions
+are required to continue the pending gates; main remains `69cba43`.
 
 Once validation can continue, the next existing G4/G7 contract candidate is the
 known code-execution caller's `tool_id`: current Go rejects empty/missing/null

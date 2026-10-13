@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "recorded_utc": "2026-10-13T15:17:19.685310+00:00",
-  "status": "focused_memory_validation_passed_full_acceptance_resource_blocked",
+  "recorded_utc": "2026-10-13T15:30:05.728197+00:00",
+  "status": "full_validation_resource_interrupted_three_goal_turns",
   "source_commit": "6dc495614c3a55f18e0a999ec2e0120935beb636",
   "runtime_commit": "a9b1bf47b00ec8f967ddff896d4a13905694f2f2",
   "delivery_commit": "7fad16de6f588f282d5015415c33c1ef6dc159fe",
@@ -42,7 +42,7 @@
     ]
   },
   "runner_live_monitor_exercised": true,
-  "runner_cleanup_exercised": false,
+  "runner_cleanup_exercised": true,
   "resource_policy": {
     "gomaxprocs": 1,
     "gomemlimit": "256MiB soft target",
@@ -82,7 +82,8 @@
     "base_updated": false,
     "iteration_image_status_time": "2026-10-13T14:48:10Z",
     "canonical_sources_unchanged": true,
-    "focused_iteration_image_status_time": "2026-10-13T15:10:08Z"
+    "focused_iteration_image_status_time": "2026-10-13T15:10:08Z",
+    "blocked_iteration_image_status_time": "2026-10-13T15:24:36Z"
   },
   "artifacts": [
     {
@@ -249,6 +250,61 @@
       "path": "docs/audits/go-low-memory-focused-infographic-2026-10-13.prompt.txt",
       "sha256": "dbc8cabfc76ef84d25fdf179ace2b070cd781549ba419c021fdc563b73c8f61a",
       "bytes": 2015
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/blocked-audit-3/preflight.json",
+      "sha256": "df88dbf7f070967ecc3d6cf162072aad481383b1d020c878586b181991e4f2a6",
+      "bytes": 698
+    },
+    {
+      "path": "docs/audits/go-low-memory-blocked-infographic-2026-10-13.png",
+      "sha256": "606145cc5560c73bb0d1051ca2f953455f3bd4bb95859943b16950f877942e20",
+      "bytes": 1826801
+    },
+    {
+      "path": "docs/audits/go-low-memory-blocked-infographic-2026-10-13.prompt.txt",
+      "sha256": "c501c4b0be74fc6c367265c66d879dc2a38129dcca79952cccf8f777a81dc5f7",
+      "bytes": 1865
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/resources.json",
+      "sha256": "734dc9f2943fc064d2557c22c29cd75352aac9c2812ab3108d5f80d33d997fe4",
+      "bytes": 5112
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/stability.json",
+      "sha256": "dd3dbb6583b9458196d5d2dc63274e8d67a43fd53505529aab21c8a0b8b2f5c0",
+      "bytes": 2057
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/freeze.before.json",
+      "sha256": "fb7c0c7a6f9d261166301cea66e929e76ce5fba3d6e1aa3ecb3a2886dae2fd4b",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/freeze.after.json",
+      "sha256": "fb7c0c7a6f9d261166301cea66e929e76ce5fba3d6e1aa3ecb3a2886dae2fd4b",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/stdout.log",
+      "sha256": "ac0c41f4f590552490ed5c993bd8d32ed2054560f1d00b50c6c65892ea231ad7",
+      "bytes": 3820446
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/samples.jsonl",
+      "sha256": "cfa79059511f29b1188309576248bc6fb1f915cbe4a060b56c11d756933d4a95",
+      "bytes": 32337
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/pid-state.json",
+      "sha256": "a866369538e1b558102eb5fa7c325f097650cdef7f7c054845744f0fcc889467",
+      "bytes": 56
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full-resume-1/test-summary.json",
+      "sha256": "33e14e5873fdb0eea88fcc30a2a6f16233ef0346fea75e5ca9729d59214659f8",
+      "bytes": 1089
     }
   ],
   "continuation_attempts": [
@@ -452,11 +508,209 @@
       "inputs_unchanged": true,
       "reason": "host_memory_pressure_stability_preflight",
       "top_level_tests": []
+    },
+    {
+      "name": "go-full-resume-1",
+      "status": "resource_blocked",
+      "launched": true,
+      "command": [
+        "go",
+        "test",
+        "-parallel=1",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "recorded_utc": "2026-10-13T15:22:55.558804+00:00",
+      "completed_utc": "2026-10-13T15:24:36.189965+00:00",
+      "runner_exit_code": 75,
+      "exit_code": -15,
+      "reason": "host_memory_pressure",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "peak_rss_kib": 283712,
+      "peak_cpu_percent": 99.5,
+      "seconds": 70.378,
+      "cleanup": {
+        "errors": [],
+        "empty_confirmations": true,
+        "remaining_pids": []
+      },
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "test_summary": {
+        "top_level_results": {
+          "pass": 673,
+          "fail": 1
+        },
+        "package_results": [
+          {
+            "package": "github.com/luoyjx/mini-loop/go/agent",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/astcontext",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/audit",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/background",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/benchmark",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/cmd/miniloop",
+            "result": "fail"
+          }
+        ],
+        "failed_tests": [
+          {
+            "Time": "2026-10-13T23:24:33.266229+08:00",
+            "Package": "github.com/luoyjx/mini-loop/go/cmd/miniloop",
+            "Test": "TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv",
+            "Elapsed": 10.57
+          }
+        ],
+        "failure_interpretation": "Failure output overlaps resource-stop window; exact kill timestamps and builder stderr unavailable. Not an independent code-defect diagnosis."
+      },
+      "last_sample": {
+        "seconds": 67.594,
+        "rss_kib": 127168,
+        "cpu_percent": 5.6,
+        "host_pressure": 2,
+        "processes": [
+          {
+            "pid": 76488,
+            "parent": 76388,
+            "pgid": 76488,
+            "rss_kib": 32864,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:23:25 2026",
+            "comm": "go"
+          },
+          {
+            "pid": 77710,
+            "parent": 76488,
+            "pgid": 76488,
+            "rss_kib": 11168,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:22 2026",
+            "comm": "miniloop.test"
+          },
+          {
+            "pid": 77713,
+            "parent": 77710,
+            "pgid": 77713,
+            "rss_kib": 23472,
+            "cpu_percent": 5.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:22 2026",
+            "comm": "go"
+          },
+          {
+            "pid": 77801,
+            "parent": 77713,
+            "pgid": 77713,
+            "rss_kib": 7248,
+            "cpu_percent": 0.6,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:32 2026",
+            "comm": "cgo"
+          },
+          {
+            "pid": 77804,
+            "parent": 77801,
+            "pgid": 77713,
+            "rss_kib": 15920,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:33 2026",
+            "comm": "clang"
+          },
+          {
+            "pid": 77805,
+            "parent": 77804,
+            "pgid": 77713,
+            "rss_kib": 36496,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:33 2026",
+            "comm": "clang"
+          }
+        ]
+      },
+      "peak_sample": {
+        "seconds": 65.523,
+        "rss_kib": 283712,
+        "cpu_percent": 99.5,
+        "host_pressure": 1,
+        "processes": [
+          {
+            "pid": 76488,
+            "parent": 76388,
+            "pgid": 76488,
+            "rss_kib": 35024,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:23:25 2026",
+            "comm": "go"
+          },
+          {
+            "pid": 77710,
+            "parent": 76488,
+            "pgid": 76488,
+            "rss_kib": 11168,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:22 2026",
+            "comm": "miniloop.test"
+          },
+          {
+            "pid": 77713,
+            "parent": 77710,
+            "pgid": 77713,
+            "rss_kib": 23744,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:22 2026",
+            "comm": "go"
+          },
+          {
+            "pid": 77773,
+            "parent": 77713,
+            "pgid": 77713,
+            "rss_kib": 213776,
+            "cpu_percent": 99.5,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:24:28 2026",
+            "comm": "compile"
+          }
+        ]
+      },
+      "stop_window_interpretation": "First native-build failure output overlaps pressure-stop window by approximately 0.10 seconds; absent compiler stderr and exact signal timestamps prevent independent attribution."
     }
   ],
   "post_validation_documentation_changes": [
     "README.md",
     "go/README.md"
   ],
-  "current_go_python_test_source_matches_validated_inputs": true
+  "current_go_python_test_source_matches_validated_inputs": true,
+  "optimization_commit": "8a5eec4dc0e1f0f8a6731f65981f73a1c90f62af",
+  "blocked_audit_threshold_met": true,
+  "consecutive_goal_turns_with_same_full_validation_blocker": 3,
+  "live_validation_handles": false,
+  "new_implementation_changes_in_this_turn": false,
+  "blocked_audit_scope": "Stable external memory conditions required for complete validation; prior passing focused checks retained without substituting for acceptance.",
+  "latest_full_attempt_inputs_match_current": false,
+  "latest_full_attempt_post_validation_documentation_changes": [
+    "README.md"
+  ]
 }

@@ -14,8 +14,9 @@ at 14:48:10 UTC immediately returned memory-pressure level 2. A later one-shot
 observation returned normal level 1, but the monitored regression-test attempt at
 15:01:49 UTC failed its stability preflight with level 2 before launching any
 compiler or test process. The 1,769 frozen inputs were unchanged. Do not treat
-either interception as a test pass. The following continuation passed focused
-checks; complete validation remains blocked before launch.
+either interception as a test pass. The following continuations passed focused
+checks, then a full-stage attempt was interrupted by host pressure. Complete
+validation remains resource-blocked.
 
 ### Continuation at 15:07–15:10 UTC
 
@@ -42,6 +43,32 @@ per-process attribution unavailable in the old aggregate log. The old full-Go
 peak and new focused-reload peak have different workload/cache conditions;
 their small difference does not prove a memory reduction. No unrelated process
 was stopped to obtain these results.
+
+### Third resumed goal turn: full-stage interruption at 15:24 UTC
+
+The resource-budget fix and focused evidence are committed as `8a5eec4`.
+The worktree was clean at the next turn's start. Initial pressure was level 2;
+the 15:22:20 UTC observation returned 1, so the runner attempted a fresh full
+stage only after all 30 stability samples passed. `go-full-resume-1` then ran
+for 70.378 s including controlled cleanup. It was interrupted when pressure
+rose to 2, with a sampled peak of 277.06 MiB and peak CPU of 99.5%. The final
+pressure-triggering sample contained only 124.19 MiB of observed owned RSS.
+Cleanup recorded no errors and no remaining observed process identities.
+
+The partial stream contains 673 top-level passes and one native-reload build
+failure. That failure's output arrived at 15:24:33.235 UTC, approximately 0.10 s
+after the pressure-2 sample; polling then emitted `signal: terminated`. Exact
+signal timestamps and the builder's stderr were not retained, so this overlap
+does not independently establish a code defect or prove its precise cause.
+The full run is resource-blocked, not passed. Earlier focused passes remain
+valid for their own scope. No later gate or current coverage was produced.
+
+This is the third consecutive goal turn with the same full-validation resource
+blocker after the user's request to commit first and optimize memory. All task
+validation handles are terminal. No necessary independent implementation change
+was identified; completing acceptance requires stable external memory conditions.
+The goal is eligible for `blocked`, with the original migration scope preserved.
+No unrelated process was stopped. Local main remains `69cba43`.
 
 ## Current host evidence
 
@@ -146,3 +173,7 @@ The [focused-validation image](go-low-memory-focused-infographic-2026-10-13.png)
 records the subsequent two passing stages and the 15:10 full-suite preflight
 block. Its [exact prompt](go-low-memory-focused-infographic-2026-10-13.prompt.txt)
 retains the workload and measurement limits.
+
+The [interrupted full-validation image](go-low-memory-blocked-infographic-2026-10-13.png)
+marks this evidence-only continuation, with its
+[exact prompt](go-low-memory-blocked-infographic-2026-10-13.prompt.txt).

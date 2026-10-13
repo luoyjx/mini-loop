@@ -15,6 +15,14 @@ The new resource profile and separate race/coverage gates are recorded in the
 [memory optimization receipt](docs/audits/go-low-memory-validation-2026-10-13.json);
 neither current coverage nor measured savings is available.
 
+Budget fix and focused evidence are committed as `8a5eec4`. On the third resumed
+turn, `go-full-resume-1` passed the stability preflight but was interrupted by
+pressure level 2 after 70.378 s including cleanup (peak sampled tree RSS 277.06
+MiB). Partial results contain 673 passes and one build failure in the stop
+window; this is neither full acceptance nor an independently diagnosed code
+defect. Three consecutive goal turns share the resource blocker. No validation
+process remains active, no later gate ran, and main is unchanged.
+
 ## 2026-10-13 legacy recovery construction — resumed, not accepted
 
 Current state at **13:36 UTC**: **blocked**, following three consecutive resumed
