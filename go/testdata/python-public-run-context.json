@@ -1,0 +1,4187 @@
+{
+  "cases": [
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "default",
+      "messages": 4,
+      "mode": "identity",
+      "name": "default/identity",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "untrusted",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "untrusted",
+        "channel": "internal",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "api",
+        "parent_message_id": null,
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "untrusted",
+          "channel": "internal",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "api",
+          "parent_message_id": null,
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "default",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "default/new-clear",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "untrusted",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "untrusted",
+        "channel": "internal",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "api",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "untrusted",
+          "channel": "internal",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "api",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "default",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "default/new-grants",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "untrusted",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "untrusted",
+        "channel": "internal",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "api",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "untrusted",
+          "channel": "internal",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "api",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "default",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "default/derive-peer",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "default",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "default/derive-empty-actor",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "human",
+      "messages": 4,
+      "mode": "identity",
+      "name": "human-default/identity",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "human-default/new-clear",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "human-default/new-grants",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "human-default/derive-peer",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "human-default/derive-empty-actor",
+      "options": {},
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "human",
+      "messages": 4,
+      "mode": "identity",
+      "name": "human-empty-channel/identity",
+      "options": {
+        "channel": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "human-empty-channel/new-clear",
+      "options": {
+        "channel": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "human-empty-channel/new-grants",
+      "options": {
+        "channel": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "explicit_human",
+        "channel": "",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "channel": "",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "human-empty-channel/derive-peer",
+      "options": {
+        "channel": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "human-empty-channel/derive-empty-actor",
+      "options": {
+        "channel": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "human",
+      "messages": 4,
+      "mode": "identity",
+      "name": "human-empty-stamp/identity",
+      "options": {
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "human-empty-stamp/new-clear",
+      "options": {
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "human-empty-stamp/new-grants",
+      "options": {
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "human-empty-stamp/derive-peer",
+      "options": {
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "human-empty-stamp/derive-empty-actor",
+      "options": {
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "human",
+      "messages": 4,
+      "mode": "identity",
+      "name": "human-empty-provenance/identity",
+      "options": {
+        "channel": "",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "human-empty-provenance/new-clear",
+      "options": {
+        "channel": "",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "human-empty-provenance/new-grants",
+      "options": {
+        "channel": "",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "explicit_human",
+        "channel": "",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "channel": "",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "human-empty-provenance/derive-peer",
+      "options": {
+        "channel": "",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "human-empty-provenance/derive-empty-actor",
+      "options": {
+        "channel": "",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "human",
+      "messages": 4,
+      "mode": "identity",
+      "name": "human-empty-actor/identity",
+      "options": {
+        "actor_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "human-empty-actor/new-clear",
+      "options": {
+        "actor_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "human-empty-actor/new-grants",
+      "options": {
+        "actor_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "human-empty-actor/derive-peer",
+      "options": {
+        "actor_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "human-empty-actor/derive-empty-actor",
+      "options": {
+        "actor_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "trusted_local"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "trusted_local"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "human",
+      "messages": 4,
+      "mode": "identity",
+      "name": "human-unicode-grants/identity",
+      "options": {
+        "actor_id": "用户",
+        "approved_capabilities": [
+          "workflow.launch",
+          "",
+          "a",
+          "a",
+          "权限"
+        ],
+        "channel": " CLI ",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": "用户",
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch",
+          "权限"
+        ],
+        "authority": "explicit_human",
+        "channel": " CLI ",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "用户",
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch",
+            "权限"
+          ],
+          "authority": "explicit_human",
+          "channel": " CLI ",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "human-unicode-grants/new-clear",
+      "options": {
+        "actor_id": "用户",
+        "approved_capabilities": [
+          "workflow.launch",
+          "",
+          "a",
+          "a",
+          "权限"
+        ],
+        "channel": " CLI ",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": "用户",
+        "approved_capabilities": [],
+        "authority": "explicit_human",
+        "channel": " CLI ",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "用户",
+          "approved_capabilities": [],
+          "authority": "explicit_human",
+          "channel": " CLI ",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "human-unicode-grants/new-grants",
+      "options": {
+        "actor_id": "用户",
+        "approved_capabilities": [
+          "workflow.launch",
+          "",
+          "a",
+          "a",
+          "权限"
+        ],
+        "channel": " CLI ",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "explicit_human",
+      "snapshot": {
+        "actor_id": "用户",
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "explicit_human",
+        "channel": " CLI ",
+        "delegated_by": null,
+        "message_id": "self",
+        "origin": "explicit_human",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "用户",
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "explicit_human",
+          "channel": " CLI ",
+          "delegated_by": null,
+          "message_id": "self",
+          "origin": "explicit_human",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "human-unicode-grants/derive-peer",
+      "options": {
+        "actor_id": "用户",
+        "approved_capabilities": [
+          "workflow.launch",
+          "",
+          "a",
+          "a",
+          "权限"
+        ],
+        "channel": " CLI ",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "human",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "human-unicode-grants/derive-empty-actor",
+      "options": {
+        "actor_id": "用户",
+        "approved_capabilities": [
+          "workflow.launch",
+          "",
+          "a",
+          "a",
+          "权限"
+        ],
+        "channel": " CLI ",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "identity",
+      "name": "peer-default/identity",
+      "options": {
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": null,
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "peer-default/new-clear",
+      "options": {
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "peer-default/new-grants",
+      "options": {
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "peer-default/derive-peer",
+      "options": {
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "peer-default/derive-empty-actor",
+      "options": {
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "identity",
+      "name": "peer-empty-delegate/identity",
+      "options": {
+        "delegated_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": null,
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "peer-empty-delegate/new-clear",
+      "options": {
+        "delegated_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "peer-empty-delegate/new-grants",
+      "options": {
+        "delegated_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "peer-empty-delegate/derive-peer",
+      "options": {
+        "delegated_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "peer-empty-delegate/derive-empty-actor",
+      "options": {
+        "delegated_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "identity",
+      "name": "peer-empty-stamp/identity",
+      "options": {
+        "delegated_by": "lead",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": null,
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "peer-empty-stamp/new-clear",
+      "options": {
+        "delegated_by": "lead",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "peer-empty-stamp/new-grants",
+      "options": {
+        "delegated_by": "lead",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "peer-empty-stamp/derive-peer",
+      "options": {
+        "delegated_by": "lead",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "peer-empty-stamp/derive-empty-actor",
+      "options": {
+        "delegated_by": "lead",
+        "stamped_by": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": ""
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": ""
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": null,
+          "parent_present": false,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "identity",
+      "name": "peer-empty-actor/identity",
+      "options": {
+        "actor_id": "",
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": null,
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "peer-empty-actor/new-clear",
+      "options": {
+        "actor_id": "",
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "peer-empty-actor/new-grants",
+      "options": {
+        "actor_id": "",
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "peer-empty-actor/derive-peer",
+      "options": {
+        "actor_id": "",
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "peer-empty-actor/derive-empty-actor",
+      "options": {
+        "actor_id": "",
+        "delegated_by": "lead"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "identity",
+      "name": "peer-empty-parent/identity",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "peer-empty-parent/new-clear",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "peer-empty-parent/new-grants",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "peer-empty-parent/derive-peer",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "peer-empty-parent/derive-empty-actor",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": ""
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "prior-message",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "prior-message",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "identity",
+      "name": "peer-parent/identity",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": "prior-message"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "prior-message",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "prior-message",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "peer-parent/new-clear",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": "prior-message"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "peer-parent/new-grants",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": "prior-message"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "lead",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "peer-parent/derive-peer",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": "prior-message"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "peer-parent/derive-empty-actor",
+      "options": {
+        "delegated_by": "lead",
+        "parent_message_id": "prior-message"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "mini_loop"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "mini_loop"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "先前消息",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "先前消息",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": false,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "identity",
+      "name": "peer-unicode/identity",
+      "options": {
+        "actor_id": "子代理",
+        "delegated_by": "父代理",
+        "parent_message_id": "先前消息",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "子代理",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "父代理",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "先前消息",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "子代理",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "父代理",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "先前消息",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-clear",
+      "name": "peer-unicode/new-clear",
+      "options": {
+        "actor_id": "子代理",
+        "delegated_by": "父代理",
+        "parent_message_id": "先前消息",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "子代理",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "父代理",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "子代理",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "父代理",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": true,
+        "a": true,
+        "workflow.launch": true,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "new-grants",
+      "name": "peer-unicode/new-grants",
+      "options": {
+        "actor_id": "子代理",
+        "delegated_by": "父代理",
+        "parent_message_id": "先前消息",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "子代理",
+        "approved_capabilities": [
+          "",
+          "a",
+          "workflow.launch"
+        ],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "父代理",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "子代理",
+          "approved_capabilities": [
+            "",
+            "a",
+            "workflow.launch"
+          ],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "父代理",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-peer",
+      "name": "peer-unicode/derive-peer",
+      "options": {
+        "actor_id": "子代理",
+        "delegated_by": "父代理",
+        "parent_message_id": "先前消息",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "controller",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": null,
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "controller",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    },
+    {
+      "allows": {
+        "": false,
+        "a": false,
+        "workflow.launch": false,
+        "workflow.manage": false
+      },
+      "events": [
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_use"
+        },
+        {
+          "message_id": "self",
+          "parent_message_id": "base",
+          "parent_present": true,
+          "type": "tool_result"
+        }
+      ],
+      "fresh_message": true,
+      "kind": "peer",
+      "messages": 4,
+      "mode": "derive-empty-actor",
+      "name": "peer-unicode/derive-empty-actor",
+      "options": {
+        "actor_id": "子代理",
+        "delegated_by": "父代理",
+        "parent_message_id": "先前消息",
+        "stamped_by": "控制器"
+      },
+      "output": "done",
+      "requests": 2,
+      "result": "peer_agent",
+      "snapshot": {
+        "actor_id": "",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "",
+        "message_id": "self",
+        "origin": "peer_agent",
+        "parent_message_id": "base",
+        "stamped_by": "控制器"
+      },
+      "tool_contexts": [
+        {
+          "actor_id": "",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "",
+          "message_id": "self",
+          "origin": "peer_agent",
+          "parent_message_id": "base",
+          "stamped_by": "控制器"
+        }
+      ]
+    }
+  ],
+  "scope": [
+    "Actual public default/explicit_human/peer_agent constructors and both derivation methods with declared text/capability inputs.",
+    "Real Agent.run, registered readonly tool context, result and emitted correlation identity; generated UUIDs are normalized only.",
+    "Arbitrary direct dataclass overrides, non-text Python objects and all host/platform/exhaustion profiles remain separate.",
+    "Capability membership is not human authority; peer derivation drops all inherited approvals."
+  ]
+}
