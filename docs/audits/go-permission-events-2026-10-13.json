@@ -1,0 +1,1108 @@
+{
+  "date": "2026-10-13",
+  "baseline": "1b8e3e8",
+  "branch": "codex/go-permission-events",
+  "status": "validated_permission_slice_with_two_known_consumer_gaps",
+  "delivery": {
+    "source_commit": "34576e0f30b49c0067ae9433aaa53afeae7f1bbc",
+    "implementation_commit": "9a20803be88cc628b25ec16fc8f5fefcec23334a",
+    "integration_target": "local main, fast-forward only",
+    "push_requested": false,
+    "integration_evidence": "Git ancestry records the eventual integration; this receipt does not self-reference its containing commit."
+  },
+  "implementation": [
+    "Named per-evaluation permission publisher; actual decision time precedes later approval and handler effects.",
+    "Closed Session permission event, lower-case wire fields, value accessor, secret masking and stored allow/deny validation.",
+    "Readonly event reasons follow risk=<risk>, including risk=None; separate denial reply remains unchanged."
+  ],
+  "source_contract": {
+    "fixture": {
+      "path": "go/testdata/python-permission-events.json",
+      "sha256": "cccaf44ba280f01f6b9b859ae1c7708cc4d76c62dce1b304ba379dd0a2d29b07",
+      "bytes": 22076
+    },
+    "cases": 14,
+    "case_names": [
+      "readonly-read",
+      "readonly-exec",
+      "readonly-external",
+      "readonly-unclassified",
+      "immutable-auto",
+      "auto-external",
+      "interactive-allow",
+      "interactive-deny",
+      "auto-two-rules",
+      "interactive-two-allow",
+      "interactive-later-deny",
+      "approval-later-error",
+      "approval-later-cancel",
+      "masked-interactive"
+    ],
+    "source_sha256": {
+      "mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+      "mini_loop/approvals.py": "abb347fbe988d8b0500dc2d74b384578a9ca2b28fdd7237971a4f769383c13f5",
+      "mini_loop/fake_llm.py": "69bc93ea2d875c668681b3b219705129f4d4bba5d44ce713820fcc9e597414a9",
+      "mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+      "mini_loop/permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+      "mini_loop/registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "mini_loop/secrets.py": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+      "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+      "tools/permission_event_contracts.py": "919c058ba6aa267ea0cb594d1c5e1537543136d11e1869e258909ab91ef39042"
+    },
+    "scope": "Actual Python managed sessions, PermissionHook and ApprovalBroker, scripted provider and safe handlers. Native managed comparisons use a typed approval callback, not a complete Source/native broker-equivalence proof.",
+    "old_policy_profiles": 20,
+    "old_policy_events": 12,
+    "retained_baseline_failures": 8
+  },
+  "native_integration": [
+    "Actual authenticated HTTP/SSE, ordered permission publication and owner isolation.",
+    "Actual managed SQLite write, close/reopen, untrusted historical authority and physically masked SQL/trajectory JSONL.",
+    "Cancellation at first publication retains that decision and prevents second approval and handler.",
+    "Stored allow/deny positive controls and unknown-decision boundary rejection."
+  ],
+  "attempts": {
+    "source_capture": {
+      "name": "capture",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-c",
+        "import sys; sys.path.insert(0,\"python\"); from tools.permission_event_contracts import permission_event_contracts; from tools.export_go_contracts import _json_bytes; from pathlib import Path; d=permission_event_contracts(); Path(\"go/testdata/python-permission-events.json\").write_bytes(_json_bytes(d)); print(\"captured\",len(d[\"cases\"]),\"managed permission cases\")"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.211,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/capture.log",
+        "sha256": "0200f21c10cd9d57d9d9addc916f8e0cc75b7e31371e05a69bb031fe6508ff43",
+        "bytes": 37
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/capture.resources.jsonl",
+        "sha256": "3bfe0c4ac1cee9e0c54b658ffd6b8e85471e1c5fb0852986d1462cbc44f0eee1",
+        "bytes": 188
+      }
+    },
+    "source_focused": {
+      "name": "source-focused",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_permission_event_contracts.py"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.214,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/source-focused.log",
+        "sha256": "76af71df60bb5f93ea635e8763126ecf98e837672c9980e80aefde989b203765",
+        "bytes": 98
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/source-focused.resources.jsonl",
+        "sha256": "253636e375f0d2310c6ad16abe1b5532ec97b2108952ccb8fc175c49d140ba8d",
+        "bytes": 188
+      }
+    },
+    "baseline_expected_failures": {
+      "name": "before-policy",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-overlay=/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/before/overlay.json",
+        "./agent",
+        "-run",
+        "^TestNonTextBashCommandsMatchActualSourcePermissionProjection$"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 552704,
+      "peak_cpu_percent": 197.4,
+      "samples": 9,
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 8.448,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/before-policy.log",
+        "sha256": "b40a86b6c80dc2682194d4791f7a2787a950cce42d53f9283e03091b16dcf916",
+        "bytes": 2459
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/before-policy.resources.jsonl",
+        "sha256": "c94f6e985746857cdc7483d0fe9763a213e56119ac4fa6bc0f5a4f56bbb48012",
+        "bytes": 909
+      }
+    },
+    "initial_native_setup_failure": {
+      "name": "native-focused",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "./agent",
+        "-run",
+        "Test(ManagedPermissionEventsMatchActualSource|StoredPermissionRejectsUnknownDecisions|NonTextBashCommandsMatchActualSourcePermissionProjection)$"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 559728,
+      "peak_cpu_percent": 199.4,
+      "samples": 8,
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 7.418,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/native-focused.log",
+        "sha256": "73fd57d3b9ed4eb09e76da85b0b2d2ab3b1c932f6bfe3507cb0fc162935ab6fc",
+        "bytes": 3008
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/native-focused.resources.jsonl",
+        "sha256": "8e498c0b6bcd1c2c36ffe9287e08f48fbd7f9d447dc606b4e665e3fc4de576e5",
+        "bytes": 831
+      }
+    },
+    "initial_native_failure_reason": "Required Bash executor was absent from the new custom-catalog session test setup; corrected before successful validation.",
+    "native_focused_corrected": {
+      "name": "native-focused-2",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "./agent",
+        "-run",
+        "Test(ManagedPermissionEventsMatchActualSource|StoredPermissionRejectsUnknownDecisions|NonTextBashCommandsMatchActualSourcePermissionProjection)$"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 540672,
+      "peak_cpu_percent": 198.7,
+      "samples": 7,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.347,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/native-focused-2.log",
+        "sha256": "8c4ecca9a3ad4dfc0d625e0d351e8b030cfc843b8eddef63a1cca417fb56acf6",
+        "bytes": 49
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/native-focused-2.resources.jsonl",
+        "sha256": "e2636ced1776458c672c44521555c9ab37b4bb7670a6257c8e7668e1bdac1e6d",
+        "bytes": 721
+      }
+    },
+    "integration_focused": {
+      "name": "integration-focused",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "./agent",
+        "./httpapi",
+        "./sqlitestate",
+        "-run",
+        "Test(ManagedPermissionEventsMatchActualSource|StoredPermissionRejectsUnknownDecisions|NonTextBashCommandsMatchActualSourcePermissionProjection|ReadonlyPermissionEventCrossesActualHTTPSSE|RuntimePermissionSurvivesSQLiteReopenAndMaskedTrajectory)$"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 559104,
+      "peak_cpu_percent": 198.7,
+      "samples": 16,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 15.605,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/integration-focused.log",
+        "sha256": "46d78a18e76877d81672d5f7515aef30b8e26ba64d3b915184aa6732de00e030",
+        "bytes": 155
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/integration-focused.resources.jsonl",
+        "sha256": "8ed6c74e44cdcae9caf9b2790d17a1c5a109932b9ac738c8bcb14be3c01e06e4",
+        "bytes": 1678
+      }
+    },
+    "publication_cancellation": {
+      "name": "cancellation-focused",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "./agent",
+        "-run",
+        "^TestPermissionPublicationCancellationStopsLaterApprovalAndHandler$"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 542608,
+      "peak_cpu_percent": 199.5,
+      "samples": 8,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 7.352,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/cancellation-focused.log",
+        "sha256": "83d7ce0bdab004fa0b61f1ed737140e69b3f79f631f2f9d0552a99967ef10288",
+        "bytes": 49
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/cancellation-focused.resources.jsonl",
+        "sha256": "b6c6d7c6fc8b23949bab02211cd81d35f7649e172710a08d56fd18ae988617fd",
+        "bytes": 823
+      }
+    },
+    "baseline_overlay": {
+      "path": "var/go-permission-events-2026-10-13/before/overlay.json",
+      "sha256": "84eab8221ffc3b9e63fc635659f070f941a05e0447068b2d3cc899eb54798b5a",
+      "bytes": 1302
+    },
+    "baseline_overlay_sources": {
+      "path": "var/go-permission-events-2026-10-13/before/source-sha256.json",
+      "sha256": "1a81baadba8eaa19981d389ade7beee69977846de95c71476a31b6d41ba674a6",
+      "bytes": 663
+    }
+  },
+  "cohort": {
+    "frozen_inputs": {
+      "path": "var/go-permission-events-2026-10-13/freeze.json",
+      "sha256": "396913db8f81bfd141e8944ebaaee8433be25dc4ab1c350fc80abcf84ca0472b",
+      "bytes": 187580
+    },
+    "files": 1756,
+    "unchanged_at_completion_and_commit": true,
+    "stages": [
+      {
+        "name": "source-export",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check",
+          "--manifest",
+          "/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/source-manifest.json"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 404320,
+        "peak_cpu_percent": 95.3,
+        "samples": 97,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 98.873,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/source-export.log",
+          "sha256": "9397aa23c01f9962047169bbb094996e107a3f1206edc03f2622416695e4b53e",
+          "bytes": 79118
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/source-export.resources.jsonl",
+          "sha256": "96b419a8c3437e1d81a2c3a51c95776030b6a7ff1190e455873e9cd2e0c22b82",
+          "bytes": 9820
+        }
+      },
+      {
+        "name": "types-named",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 1152,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.216,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/types-named.log",
+          "sha256": "e4e68e167f6257d4d31669bfb3778327585913a27021fdd4683b8ed990117afc",
+          "bytes": 74
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/types-named.resources.jsonl",
+          "sha256": "38e6290e9d23da719a637c5c27a2618f863047a57a2d356d2f4af432c58d4b74",
+          "bytes": 188
+        }
+      },
+      {
+        "name": "types-public",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 62720,
+        "peak_cpu_percent": 22.2,
+        "samples": 3,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 2.243,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/types-public.log",
+          "sha256": "d2e8c1831a10c30277975222c3d91ea0ec02707e4f927c0dce03307e3ff2336b",
+          "bytes": 67
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/types-public.resources.jsonl",
+          "sha256": "c527f55db1e6c2945c1b2dcdb539a3a937cbb222cbcdc9c9885e10b02725ec00",
+          "bytes": 298
+        }
+      },
+      {
+        "name": "types-private",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 176,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.226,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/types-private.log",
+          "sha256": "713a5bb61689d9f3d93006e6e31864df6bcc5f4359180a5d52bcbb8cb145a3c2",
+          "bytes": 71
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/types-private.resources.jsonl",
+          "sha256": "7dc18637e7e75c6040d93f854f4951e63926356759a54fa8a26bc5e83d01a300",
+          "bytes": 188
+        }
+      },
+      {
+        "name": "types-variables",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 736,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.227,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/types-variables.log",
+          "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0",
+          "bytes": 66
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/types-variables.resources.jsonl",
+          "sha256": "09fe4b95e2485207e04777de649416e08719c5dad45407fc43d59ce9fdf88292",
+          "bytes": 187
+        }
+      },
+      {
+        "name": "go-full",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-count=1",
+          "-json",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 554336,
+        "peak_cpu_percent": 200.1,
+        "samples": 203,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 207.257,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/go-full.log",
+          "sha256": "9500b291466eb3a3934a21fda43302e1b9f8fe8c87b39c24b3d8ca482a366043",
+          "bytes": 11506729
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/go-full.resources.jsonl",
+          "sha256": "90931d7cd610ec24ec6012bac1a633b062b714b34b22f948e8a354f1d60167c6",
+          "bytes": 22457
+        }
+      },
+      {
+        "name": "go-vet",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 49440,
+        "peak_cpu_percent": 14.5,
+        "samples": 5,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 4.275,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/go-vet.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/go-vet.resources.jsonl",
+          "sha256": "615f9b3e4a467db20c91f60c237898f773e81dcdab2d98d2c5447304259e70df",
+          "bytes": 492
+        }
+      },
+      {
+        "name": "go-race",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-parallel=2",
+          "-count=1",
+          "-covermode=atomic",
+          "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/coverage.out",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 566000,
+        "peak_cpu_percent": 192.1,
+        "samples": 512,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 525.816,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/go-race.log",
+          "sha256": "f7a7a678b89b47e0ea13335c23a90d077cb9ab3d9870f77a3c5a88306620829e",
+          "bytes": 5927
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/go-race.resources.jsonl",
+          "sha256": "82ce22a347b4e410bfa0c86a4f4f4e0a791a20e89c03a6f6ec6445c32b98de1d",
+          "bytes": 55440
+        }
+      },
+      {
+        "name": "python-full",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "-m",
+          "pytest",
+          "-q"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 459744,
+        "peak_cpu_percent": 299.3,
+        "samples": 98,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 99.573,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/python-full.log",
+          "sha256": "1b4a47f2ee3e52e7a0037136e2959e0fe4ebf8d21a54f4f257bb47b4ffd2274b",
+          "bytes": 51508
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/python-full.resources.jsonl",
+          "sha256": "321fbd734d110f5694123bdea12880ba6653a9b4b2ccb5b23ea37608e1a8e387",
+          "bytes": 10087
+        }
+      },
+      {
+        "name": "invariants",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "python/tools/verify_invariants.py"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 256,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.242,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/invariants.log",
+          "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78",
+          "bytes": 62
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/invariants.resources.jsonl",
+          "sha256": "4a8dbb3c53b6ea52fe9678e2a46370f132972e245be0518fd0bf622e741b7c9a",
+          "bytes": 185
+        }
+      },
+      {
+        "name": "scans",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "python/tools/verify_scans.py"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 87424,
+        "peak_cpu_percent": 91.0,
+        "samples": 15,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 14.561,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/scans.log",
+          "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+          "bytes": 1663
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/scans.resources.jsonl",
+          "sha256": "7518d20fa0e7e09bd72d8e3f666cbb7059f4e67e9c67395b786d465344d5e10c",
+          "bytes": 1532
+        }
+      },
+      {
+        "name": "guard-readonly",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "python/tools/verify_guards.py",
+          "-k",
+          "readonly-mode-asks-instead-of-refusing"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 83456,
+        "peak_cpu_percent": 36.4,
+        "samples": 12,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 11.46,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/guard-readonly.log",
+          "sha256": "559b4859f723b97ba405ec4159d47ba38d62151218ca6a5b9d57f9d2f732d59a",
+          "bytes": 272
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/guard-readonly.resources.jsonl",
+          "sha256": "de60fe05ba325c3dbe27e25a64468175c43852dda95c609fb247534c75670020",
+          "bytes": 1208
+        }
+      },
+      {
+        "name": "guard-auto",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "python/tools/verify_guards.py",
+          "-k",
+          "auto-mode-widens-what-is-refused"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 336,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.214,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/guard-auto.log",
+          "sha256": "d57bf5ed08325b124bf9a74a4d78b7deb5a1990c48b1460c70e0ef0424702d64",
+          "bytes": 371
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/guard-auto.resources.jsonl",
+          "sha256": "26cd9309316b53df5c76bdc888db641ac8ec9b2a689a1d6fa0f455da5cb8fd16",
+          "bytes": 186
+        }
+      },
+      {
+        "name": "diff-check",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 224,
+        "peak_cpu_percent": 0.0,
+        "samples": 2,
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.249,
+        "log": {
+          "path": "var/go-permission-events-2026-10-13/diff-check.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "samples_file": {
+          "path": "var/go-permission-events-2026-10-13/diff-check.resources.jsonl",
+          "sha256": "4572cf3c73a28991d0fb85be1bda91aef5f8f867e3e90b8de0315070d5418287",
+          "bytes": 186
+        }
+      }
+    ]
+  },
+  "go_results": {
+    "packages": {
+      "pass": 49,
+      "skip": 2
+    },
+    "top_level_tests": {
+      "pass": 1417,
+      "skip": 6
+    }
+  },
+  "python_result": "2255 passed, 28 skipped, 96 warnings, 24 subtests passed in 98.06s",
+  "verifiers": {
+    "invariants": "77 modules",
+    "scans": "19 scanning guards",
+    "guards": "Two selected Source permission guards; valid baselines and caught mutants. Full unrelated mutation inventory not rerun."
+  },
+  "source_manifest": {
+    "path": "var/go-permission-events-2026-10-13/source-manifest.json",
+    "sha256": "dfd433603b0893e799c19604c1e93af5a5b927eb2e79f8f24c201abbaca23811",
+    "bytes": 36143,
+    "files": 254
+  },
+  "consumer_inventory": {
+    "initial_attempt": {
+      "name": "consumers",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/go-full.log",
+        "-require-results"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 0,
+      "peak_cpu_percent": 0,
+      "samples": 0,
+      "status": "resource_blocked",
+      "reason": "host_memory_pressure_before_launch",
+      "exit_code": null,
+      "seconds": 0
+    },
+    "stability_window": {
+      "path": "var/go-permission-events-2026-10-13/consumer-stability.json",
+      "sha256": "65aa2bdf688e5d4d10d5a63e78559ea3ed0c46acc1f322a9cb2824c0aba1ec8b",
+      "bytes": 2500
+    },
+    "resumed_attempt": {
+      "name": "consumers-resumed",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/go-full.log",
+        "-require-results"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 56816,
+      "peak_cpu_percent": 41.9,
+      "samples": 3,
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 2.242,
+      "log": {
+        "path": "var/go-permission-events-2026-10-13/consumers-resumed.log",
+        "sha256": "8335d18f56d936d1e92cbeb63b39963fe99cdaf0d7c94628f1143dce76b2702f",
+        "bytes": 325238
+      },
+      "samples_file": {
+        "path": "var/go-permission-events-2026-10-13/consumers-resumed.resources.jsonl",
+        "sha256": "bb1320a14dc8a59c5b06710572734b3f83b16a37e89162d03018f76e19b01aa4",
+        "bytes": 295
+      }
+    },
+    "fixtures": 255,
+    "statuses": {
+      "test_pass_observed": 253,
+      "unreferenced": 2
+    },
+    "unreferenced": [
+      "python-provider-idna.json",
+      "python-syntax-parser.json"
+    ],
+    "strict_exit_code": 1,
+    "strict_status": "not passed: both pre-existing native consumers remain absent",
+    "permission_fixture": {
+      "name": "python-permission-events.json",
+      "sha256": "cccaf44ba280f01f6b9b859ae1c7708cc4d76c62dce1b304ba379dd0a2d29b07",
+      "references": [
+        {
+          "file": "agent/permission_events_test.go",
+          "line": 102,
+          "function": "TestManagedPermissionEventsMatchActualSource"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestManagedPermissionEventsMatchActualSource",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "scope": "Observed passing tests are linked to literal fixture references/direct candidate callers; runtime reads and semantic assertions require separate evidence. The permission fixture is additionally verified by the explicit managed comparison. This inventory is not global semantic parity or Linux runtime acceptance."
+  },
+  "type_audits": {
+    "types-named": "Go type audit: 465 production files, 1475 package-level types, 0 findings",
+    "types-public": "Go public type audit: 51 packages, 1206 exported types, 0 findings",
+    "types-private": "Go private type audit: 51 packages, 280 private root types, 0 findings",
+    "types-variables": "Go variable audit: 51 packages, 172 package variables, 0 findings"
+  },
+  "coverage": {
+    "receipt": {
+      "path": "docs/audits/go-coverage-permission-events-2026-10-13.json",
+      "sha256": "24ec0a6607b3d6a8061e0f814715e6cc455a5349624e99bdca4ae3993dcfc518",
+      "bytes": 1850
+    },
+    "warning": "Current profile uses per-package instrumentation; prior -coverpkg=./... percentage is not directly comparable."
+  },
+  "resources": {
+    "runner": {
+      "path": "var/go-permission-events-2026-10-13/resource_watch.py",
+      "sha256": "eaec033e8e94955a108e9692453477ddccba408d9f1c2db4eea80970367c9336",
+      "bytes": 6657
+    },
+    "cohort_runner": {
+      "path": "var/go-permission-events-2026-10-13/cohort.py",
+      "sha256": "0da14caeabd3421c85cb46190c52db118724b1dda9e5cb82cdd24f5a86e0c1d0",
+      "bytes": 2869
+    },
+    "rss_budget_kib": 1048576,
+    "gomemlimit": "512MiB soft target, excludes any promise of hard CGO/child-process bounds",
+    "sample_period_seconds": 1,
+    "sample_limitations": "Short peaks can be missed; sampled stop policy is not a hard OS allocation limit.",
+    "peak_cohort_rss_kib": 566000,
+    "peak_cohort_cpu_percent": 299.3,
+    "python_over_250_percent_samples": [
+      {
+        "seconds": 42.952,
+        "cpu_percent": 290.6
+      },
+      {
+        "seconds": 43.979,
+        "cpu_percent": 297.2
+      },
+      {
+        "seconds": 47.053,
+        "cpu_percent": 299.3
+      }
+    ],
+    "consumer_prelaunch_pressure_stop_retained": true,
+    "retry_policy": "Only one resumed audit after 30 consecutive normal pressure samples; original prelaunch refusal retained.",
+    "unrelated_processes_terminated": false
+  },
+  "architecture": {
+    "canonical": "README.md",
+    "delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "9dbcdea718a0cf71228d924e784fa7e01d5cc62ba4a220d2ab8b66f73d46b31f",
+        "bytes": 152528
+      },
+      "artifact": {
+        "sha256": "e1d372269647e0497745376e6ce06da0338c184f6be97f121aedf33d58e1c4ae",
+        "bytes": 807204
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "correction_rounds": 2,
+    "visual_review": "skipped (rendered HTML unavailable)",
+    "visual_review_reason": "Browser automation was previously denied; open_in_codex returned queued, not rendered visual evidence. Separate iteration PNG was visually inspected.",
+    "failed_layout_attempts": [
+      {
+        "path": "var/go-permission-events-2026-10-13/archify-initial.log",
+        "sha256": "e69729fc040aeb2c0ddb1e2eff468ddd982db2eb3d755849506cad7a176f77f2",
+        "bytes": 2782
+      },
+      {
+        "path": "var/go-permission-events-2026-10-13/archify-final.log",
+        "sha256": "36c21fd12f16e1d3bbe9b47574744c941005e622318990cacb1a23d3cde94c5c",
+        "bytes": 2854
+      }
+    ],
+    "initial_success_before_prose_correction": {
+      "path": "var/go-permission-events-2026-10-13/archify-repair-2.log",
+      "sha256": "729414992a7be5d4d6b69f8d78acb4e9236b57988765dafca4f1b500080aa14c",
+      "bytes": 692
+    },
+    "base": {
+      "path": "docs/mini-loop-layered-architecture.png",
+      "sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+      "bytes": 1793371
+    },
+    "iteration_image": {
+      "path": "docs/audits/go-permission-events-infographic-2026-10-13.png",
+      "sha256": "4e7d8382d862b64963a71258a4783e24bc202a5c4b27869ee5152ed5590d3ec5",
+      "bytes": 1832425
+    },
+    "exact_prompt": {
+      "path": "docs/audits/go-permission-events-infographic-2026-10-13.prompt.txt",
+      "sha256": "fe59d6cbb5992a40c90455d91351e92180bb65c20d77bc4affa20ae9d0314b71",
+      "bytes": 2582
+    },
+    "image_tool": "built-in imagegen edit",
+    "image_visual_review": "passed: five layers, six capability backends, seven orchestrators, five evidence blocks and Session-to-Gate topology retained",
+    "components_added_or_removed": false
+  },
+  "remaining": [
+    "Legacy FALLBACK_MODEL_ID constructor selection and environment isolation.",
+    "Default CPython parser approval and 62-case native consumer.",
+    "Strict IDNA dependency approval and native consumers, including prior Unicode request-object differences.",
+    "Fixed-environment Linux runtime gates and all other original P0/P1/G0-G7 unaccepted finite rows."
+  ],
+  "post_cohort_checks": {
+    "receipt_artifact_hashes": "59 verified",
+    "local_delivery_links": "valid",
+    "frozen_inputs_unchanged": 1756,
+    "diff_check": "passed; rerun before final documentation commit"
+  }
+}

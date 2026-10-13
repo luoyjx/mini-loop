@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-13",
+  "baseline": "1b8e3e8",
+  "mode": "race+atomic, per-package instrumentation",
+  "profile_sha256": "4d925466bdc44a19a655811d053526b3f9231b3ab7b0c3dc85f80d254e8a4fa5",
+  "retained_profile": "var/go-permission-events-2026-10-13/coverage.out",
+  "raw_rows": 28598,
+  "unique_blocks": 26606,
+  "app": {
+    "covered": 32044,
+    "statements": 37577,
+    "percent": 85.27556750139713
+  },
+  "all": {
+    "covered": 32410,
+    "statements": 38092,
+    "percent": 85.08348209597816
+  },
+  "provider": {
+    "covered": 1453,
+    "statements": 1756,
+    "percent": 82.74487471526196
+  },
+  "gate": {
+    "name": "go-race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-parallel=2",
+      "-count=1",
+      "-covermode=atomic",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-permission-events-2026-10-13/coverage.out",
+      "./..."
+    ],
+    "limits": {
+      "rss_kib": 1048576,
+      "gomaxprocs": 2,
+      "gomemlimit": "512MiB",
+      "goflags": "-p=1",
+      "cpu_percent_sustained": 250,
+      "cpu_grace_seconds": 30,
+      "sample_seconds": 1.0
+    },
+    "peak_rss_kib": 566000,
+    "peak_cpu_percent": 192.1,
+    "samples": 512,
+    "status": "passed",
+    "exit_code": 0,
+    "seconds": 525.816
+  },
+  "method": "Union maximum hits over equal identical spans from one complete successful race profile. Instrumentation uses the default package scope, without -coverpkg=./...; cross-package hits from tests of other packages are not credited. App excludes tools/ and includes command mains. This differs from the earlier all-package instrumentation; do not report its difference as a regression.",
+  "scope": "Darwin Go statements only; not Python, native C, subprocess interiors, branches, other platforms or migration acceptance."
+}

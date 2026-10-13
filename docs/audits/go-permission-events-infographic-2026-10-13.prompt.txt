@@ -1,0 +1,14 @@
+Edit the attached canonical mini-loop layered architecture base image. Use built-in image editing. Produce one high-resolution landscape iteration infographic in the same navy/cyan/gold style. This is a faithful annotation of the existing base, not a redesign.
+
+Keep all five layers and every existing component visible, with their labels intact. Keep L1 entry/composition, L2 session/control, L3 execution, all six L4 capability backends and seven optional orchestrators, and all five L5 evidence blocks. Preserve the exact main topology: Session Agent exchanges with Model Provider; the tool-call line runs from Session over the Provider into ToolGate; never add a Provider-to-ToolGate edge. ToolGate remains the single before -> guard -> permission -> execute -> after -> result path. Tool effects go down to L4 and results return to Session. Optional features remain explicit and migration remains incomplete.
+
+Keep the title “mini-loop 整体分层架构”. Replace the subtitle with “本轮：权限事件即时发布 · Go 迁移验收仍在进行”. Apply a restrained gold highlight to L3 Session Agent and ToolGate, and to L5 SQLite session, trajectory / trace / audit, and operation contract audit. Add small legible numbered amber badges at these touched areas. Do not add or remove architecture components, and do not obscure original labels or arrows.
+
+Replace the right-hand boundary-explanation column with an iteration explanation panel titled “本轮改了哪里”. Use five concise, highly legible points:
+1. “决策当场发布” / “下一条规则或工具执行前，发布 permission 事件”
+2. “命名事件与脱敏” / “decision · rule · tool · reason” / “沿用 Session 身份与脱敏边界”
+3. “真实契约对照” / “14 个 Source 会话场景 + 20 个原有策略场景” / “修复 8 个 readonly 原因差异”
+4. “取消与持久化” / “已发布事件保留；取消阻止后续审批与执行” / “HTTP/SSE、SQLite 重开、轨迹脱敏”
+5. “受控验收” / “Go 并发 2 · Python 串行” / “任务树 RSS 预算 1 GiB · 监测系统压力”
+
+A compact footer beneath the panel should read “专项已通过；完整验收状态见交付记录” and “历史事件不恢复权限；迁移尚未完成”. Keep the mountain and landscape decoration subtle. Chinese text must be sharp, accurate and readable. Preserve the original base layout, hierarchy and component counts. No invented services, no completion claim and no claim that a soft Go memory target is a hard memory cap.

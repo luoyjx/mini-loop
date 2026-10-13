@@ -1,5 +1,39 @@
 # Go port plan
 
+## 2026-10-13 decision-time permission events — validated slice
+
+Source commit `34576e0` and implementation `9a20803` close the permission-event
+gap identified below. A named per-evaluation publisher emits decisions before
+later rules/approvals/effects; the closed Session variant preserves scope,
+masking, wire fields and untrusted historical decoding. Fourteen actual managed
+Source profiles match native decision order and results. Twenty existing policy
+profiles now assert all twelve events; the retained old implementation fails
+eight readonly reason assertions. Native HTTP/SSE, SQLite reopen, physical
+trajectory masking and cancellation-before-next-approval controls pass.
+
+[Delivery receipt](docs/audits/go-permission-events-2026-10-13.json): 1,756 frozen
+inputs stayed unchanged through Source export **254**, four type gates, complete
+ordinary Go/vet/race, Python **2255 passed / 28 skipped**, 77 module invariants,
+19 scan guards and two targeted permission mutation guards. Ordinary Go records
+49 passing packages, two without tests and 1,417 passing top-level tests.
+Consumer audit was first stopped before launch by host memory pressure. After
+30 normal samples, one resumed audit observed **253 / 255** passing candidates;
+strict exit **1** remains for IDNA and default parser, not a full consumer pass.
+Task-tree sampled RSS peaked at **552.7 MiB** under a **1 GiB** stop budget.
+
+[Current coverage](docs/audits/go-coverage-permission-events-2026-10-13.json) uses
+package-local race instrumentation: app **85.28%**, all Go **85.08%**, Provider
+**82.74%**. This scope omits cross-package hits and is not directly comparable
+to the prior `-coverpkg=./...` app 89.41%; no regression is inferred.
+README/JSON/generated HTML are aligned; Archify passes 9/9 with no warnings.
+Rendered HTML inspection remains unavailable after browser denial. The
+[base-derived iteration image](docs/audits/go-permission-events-infographic-2026-10-13.png)
+and exact prompt preserve all architecture components and highlight this slice.
+
+Legacy `FALLBACK_MODEL_ID` construction, default parser/IDNA approvals and native
+consumers, fixed-environment Linux acceptance and the other original P0/P1/G0–G7
+rows remain open. Local main integration is fast-forward only; no push.
+
 ## 2026-10-13 concrete permission-event and recovery-constructor gaps
 
 The [source review](docs/audits/go-port-remaining-boundaries-2026-10-13.md)
