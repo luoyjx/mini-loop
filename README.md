@@ -570,7 +570,18 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: implementation `833e16f`, native MCP ordered scalar-key mapping
+Runtime review baseline: based on local main `e4c5aff`, with the public/default
+scope inventory reviewed.157 Python root exports are indexed with52 name and99
+rename/composition candidates;6 names lack a public Go namespace binding identified,
+including4 standalone helpers. This is lookup inventory, not semantic equivalence.
+All12 README posture rows and s01–s20 labels link real Source tests; all49 Settings
+fields occur in the64-case fixture;44 OpenAPI operations and3 SDK producers are
+indexed. Current selected Go/Source configuration, feature and Provider checks
+pass. [Public scope inventory](GO_PUBLIC_SURFACE_INVENTORY.md) records pending public
+seams, default diagnostics approval and original P0/P1/G0–G7 limits. Runtime,
+defaults, authority, architecture components and base image are unchanged.
+
+Previous verified implementation review: implementation `833e16f`, native MCP ordered scalar-key mapping
 and Source fault-stage alignment.116 direct and116 actual journal profiles pass
 required assertions, including original88 differences and added nonfinite roots/
 values. Immutable named entries preserve first-key kind, Python numeric equality
@@ -3221,7 +3232,7 @@ Check the Python contract snapshot before extending the Go port:
 | What is the verified-loop adoption status? | [Verified loop design](docs/VERIFIED_LOOP_DESIGN.md) |
 | What remains before a broader agent platform? | [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md) |
 | What informed the token-efficiency design? | [Token-efficiency components](docs/TOKEN_EFFICIENCY_COMPONENTS.md) |
-| What is the Python-to-Go migration sequence and current parity? | [Go port plan](GO_PORT_PLAN.md), [parity matrix](GO_PARITY_MATRIX.md), and [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
+| What is the Python-to-Go migration sequence and current parity? | [Go port plan](GO_PORT_PLAN.md), [parity matrix](GO_PARITY_MATRIX.md), [public scope inventory](GO_PUBLIC_SURFACE_INVENTORY.md), and [provider scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Where are the source-level external studies? | [Research Atlas](research-site/README.md) |
 
 ### Go efficiency startup selection

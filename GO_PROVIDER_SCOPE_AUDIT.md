@@ -78,15 +78,23 @@ provider/公开入口/default/caller 范围与最终 G4/G7 仍待核对。
 
 ## 摘要
 
-当前复核基线：`3cd31be`；Anthropic SDK 0.107.1。Launcher 自动发现、完整 usage
-元数据与实际计量消费者、十二个 SDK content discriminator 已有实现和组合证据。
-初始 usage 缺口已补齐，不能继续作为待实现项；下文早期章节保留各自历史基线。
+当前复核基线：本地 main `e4c5aff`（2026-10-13），Anthropic SDK0.107.1。
+Launcher 凭据发现、完整 usage、十二个 content discriminator、container/
+stop_details 及 literal transport 均已有具名实现和组合证据。早期缺口不能继续
+作为当前待实现项；下文按日期保留各自历史基线。
 
-公开回复的 **`container` 与 `stop_details`** 已在 `3916f71` 补齐：具名闭合变体、
-direct/SSE 入口、不可变克隆与公开 JSON 对照全部 44 个真实 SDK 捕获通过。
-当前 Provider 扩展 wire 库存 12/14 匹配，2 项 dotted-I 必测失败；全量普通 Go
-也有 reload 时序失败。后续 gate 与历史结果见 authority 审计；分支尚未合入
-main，下文各章节保留历史基线，G4/G7 继续开放。
+旧摘要中的 dotted-I 两项差异已由 `2c71009` 修复；后续 owned literal targets
+由 `978b4fd` 实现。当前选定 Source/Go authority、请求对象、实际 HTTP Host/dial
+和 proxy/TLS 强断言通过。最新完整 Darwin Go/vet/race、Python2247/28skip、
+Source247、扫描/守卫门禁见 [当前验收](docs/audits/go-mcp-mapping-native-2026-10-13.json)；
+这是此前实现 cohort 的记录，本轮只刷新选定公开面检查，不声称新增全量门禁。
+
+实际生成路径仍为 direct transport、streaming transport、无 Agent 的 memory
+fallback 三处；SDK 支持但仓库未生成的选项不能被直接标成默认缺失功能。
+[公开面库存](GO_PUBLIC_SURFACE_INVENTORY.md) 索引157个根导出名、49配置字段和44个
+HTTP操作；名称/构造候选不证明语义等价。默认全功能 CLI 语法后端尚未批准，
+更广 IDNA、custom transport、provider字段/公共调用者、129个函数体观察点、
+历史时序失败、平台与性能/发布范围仍未验收；完整G4/G7保持开放。
 
 ## 实际请求生成路径
 

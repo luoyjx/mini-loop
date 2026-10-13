@@ -1,0 +1,5374 @@
+{
+  "date": "2026-10-13",
+  "baseline": "e4c5aff",
+  "source_scope": "Current root __all__ namespace, README posture/curriculum, Settings, Source feature bundle, OpenAPI operations and SDK producers. Name/alias matching is not semantic parity or completion.",
+  "source_public_exports": [
+    {
+      "public_name": "DecisionError",
+      "module": "decisions",
+      "name": "DecisionError",
+      "line": 54,
+      "packages": [
+        "decisions"
+      ],
+      "source_file": "python/mini_loop/decisions.py",
+      "source_sha256": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+      "definition_lines": [
+        26
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "decisions",
+          "name": "Error",
+          "kind": "type",
+          "file": "decisions/contracts.go",
+          "line": 31
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DecisionValidationError",
+      "module": "decisions",
+      "name": "DecisionValidationError",
+      "line": 54,
+      "packages": [
+        "decisions"
+      ],
+      "source_file": "python/mini_loop/decisions.py",
+      "source_sha256": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+      "definition_lines": [
+        30
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "decisions",
+          "name": "ValidationError",
+          "kind": "const",
+          "file": "decisions/contracts.go",
+          "line": 25
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DecisionProvider",
+      "module": "decisions",
+      "name": "DecisionProvider",
+      "line": 54,
+      "packages": [
+        "decisions"
+      ],
+      "source_file": "python/mini_loop/decisions.py",
+      "source_sha256": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+      "definition_lines": [
+        130
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "decisions",
+          "name": "Provider",
+          "kind": "type",
+          "file": "decisions/contracts.go",
+          "line": 680
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DecisionRequest",
+      "module": "decisions",
+      "name": "DecisionRequest",
+      "line": 54,
+      "packages": [
+        "decisions"
+      ],
+      "source_file": "python/mini_loop/decisions.py",
+      "source_sha256": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+      "definition_lines": [
+        76
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "decisions",
+          "name": "Request",
+          "kind": "type",
+          "file": "decisions/contracts.go",
+          "line": 184
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DecisionResult",
+      "module": "decisions",
+      "name": "DecisionResult",
+      "line": 54,
+      "packages": [
+        "decisions"
+      ],
+      "source_file": "python/mini_loop/decisions.py",
+      "source_sha256": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+      "definition_lines": [
+        117
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "decisions",
+          "name": "Result",
+          "kind": "type",
+          "file": "decisions/contracts.go",
+          "line": 456
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "JevDecisionProvider",
+      "module": "decisions",
+      "name": "JevDecisionProvider",
+      "line": 54,
+      "packages": [
+        "decisions"
+      ],
+      "source_file": "python/mini_loop/decisions.py",
+      "source_sha256": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+      "definition_lines": [
+        204
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "decisions",
+          "name": "JevProvider",
+          "kind": "type",
+          "file": "decisions/jev.go",
+          "line": 35
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "LLMDecisionProvider",
+      "module": "decision_llm",
+      "name": "LLMDecisionProvider",
+      "line": 58,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/decision_llm.py",
+      "source_sha256": "1dd32a082169f5cde6f928be3c653ff609e8d1c8bcf2a725dcd9aa85ca0b598f",
+      "definition_lines": [
+        152
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "LLMDecisionProvider",
+          "kind": "type",
+          "file": "agent/decision_llm.go",
+          "line": 35
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "validate_result",
+      "module": "decisions",
+      "name": "validate_result",
+      "line": 54,
+      "packages": [
+        "decisions"
+      ],
+      "source_file": "python/mini_loop/decisions.py",
+      "source_sha256": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+      "definition_lines": [
+        138
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "decisions",
+          "name": "ValidateResult",
+          "kind": "function",
+          "file": "decisions/contracts.go",
+          "line": 586
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_decisions",
+      "module": "decision_tools",
+      "name": "install_decisions",
+      "line": 59,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/decision_tools.py",
+      "source_sha256": "77a9d49ea5e88557200b650f56c70aeb4b30de92844472a0fedda6860528c2e0",
+      "definition_lines": [
+        70
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "RuntimeConfig",
+          "kind": "type",
+          "file": "agent/runtime.go",
+          "line": 64
+        },
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Agent",
+      "module": "agent",
+      "name": "Agent",
+      "line": 19,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/agent.py",
+      "source_sha256": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+      "definition_lines": [
+        520
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "Session",
+          "kind": "type",
+          "file": "agent/session.go",
+          "line": 44
+        },
+        {
+          "package": "agent",
+          "name": "NewRuntimeSession",
+          "kind": "function",
+          "file": "agent/runtime.go",
+          "line": 338
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "AgentSession",
+      "module": "session",
+      "name": "AgentSession",
+      "line": 91,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/session.py",
+      "source_sha256": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+      "definition_lines": [
+        100
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagedSession",
+          "kind": "type",
+          "file": "agent/managed_session.go",
+          "line": 119
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "SessionManager",
+      "module": "manager",
+      "name": "SessionManager",
+      "line": 61,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/manager.py",
+      "source_sha256": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+      "definition_lines": [
+        123
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "SessionManager",
+          "kind": "type",
+          "file": "agent/manager.go",
+          "line": 36
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Settings",
+      "module": "config",
+      "name": "Settings",
+      "line": 52,
+      "packages": [
+        "config",
+        "provider"
+      ],
+      "source_file": "python/mini_loop/config.py",
+      "source_sha256": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+      "definition_lines": [
+        84
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "config",
+          "name": "Settings",
+          "kind": "type",
+          "file": "config/settings.go",
+          "line": 57
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "load_settings",
+      "module": "config",
+      "name": "load_settings",
+      "line": 52,
+      "packages": [
+        "config",
+        "provider"
+      ],
+      "source_file": "python/mini_loop/config.py",
+      "source_sha256": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+      "definition_lines": [
+        450
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "config",
+          "name": "Load",
+          "kind": "function",
+          "file": "config/settings.go",
+          "line": 169
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "build_client",
+      "module": "config",
+      "name": "build_client",
+      "line": 52,
+      "packages": [
+        "config",
+        "provider"
+      ],
+      "source_file": "python/mini_loop/config.py",
+      "source_sha256": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+      "definition_lines": [
+        454
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "provider",
+          "name": "New",
+          "kind": "function",
+          "file": "provider/client.go",
+          "line": 144
+        },
+        {
+          "package": "launcher",
+          "name": "New",
+          "kind": "function",
+          "file": "launcher/app.go",
+          "line": 207
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "TrajectoryStore",
+      "module": "trajectory",
+      "name": "TrajectoryStore",
+      "line": 146,
+      "packages": [
+        "trajectory"
+      ],
+      "source_file": "python/mini_loop/trajectory.py",
+      "source_sha256": "27bf501f8869f6bf6533a555c3697bc5a657bc5fee5e0922e98fcee032cdbaa2",
+      "definition_lines": [
+        64
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "trajectory",
+          "name": "Store",
+          "kind": "type",
+          "file": "trajectory/store.go",
+          "line": 44
+        },
+        {
+          "package": "trajectory",
+          "name": "New",
+          "kind": "function",
+          "file": "trajectory/store.go",
+          "line": 88
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "TRAJECTORY_SCHEMA_VERSION",
+      "module": "trajectory",
+      "name": "SCHEMA_VERSION",
+      "line": 145,
+      "packages": [
+        "trajectory"
+      ],
+      "source_file": "python/mini_loop/trajectory.py",
+      "source_sha256": "27bf501f8869f6bf6533a555c3697bc5a657bc5fee5e0922e98fcee032cdbaa2",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [],
+      "binding_status": "no_public_namespace_binding_identified",
+      "parity_proven": false,
+      "remaining": "No public constant namespace binding identified; internal semantic values may exist. Do not label this a missing runtime implementation solely from declaration matching."
+    },
+    {
+      "public_name": "RunContext",
+      "module": "run_context",
+      "name": "RunContext",
+      "line": 83,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/run_context.py",
+      "source_sha256": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "definition_lines": [
+        21
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "RunContext",
+          "kind": "type",
+          "file": "agent/run_context.go",
+          "line": 28
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "EXPLICIT_HUMAN",
+      "module": "run_context",
+      "name": "EXPLICIT_HUMAN",
+      "line": 83,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/run_context.py",
+      "source_sha256": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "AuthorityExplicitHuman",
+          "kind": "const",
+          "file": "agent/run_context.go",
+          "line": 19
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "PEER_AGENT",
+      "module": "run_context",
+      "name": "PEER_AGENT",
+      "line": 83,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/run_context.py",
+      "source_sha256": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "AuthorityPeerAgent",
+          "kind": "const",
+          "file": "agent/run_context.go",
+          "line": 20
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "UNTRUSTED",
+      "module": "run_context",
+      "name": "UNTRUSTED",
+      "line": 83,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/run_context.py",
+      "source_sha256": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "AuthorityUntrusted",
+          "kind": "const",
+          "file": "agent/run_context.go",
+          "line": 18
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WORKFLOW_LAUNCH",
+      "module": "run_context",
+      "name": "WORKFLOW_LAUNCH",
+      "line": 83,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/run_context.py",
+      "source_sha256": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "CapabilityWorkflowLaunch",
+          "kind": "const",
+          "file": "agent/run_context.go",
+          "line": 21
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WORKFLOW_MANAGE",
+      "module": "run_context",
+      "name": "WORKFLOW_MANAGE",
+      "line": 83,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/run_context.py",
+      "source_sha256": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "CapabilityWorkflowManage",
+          "kind": "const",
+          "file": "agent/run_context.go",
+          "line": 22
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ActionRecord",
+      "module": "actions",
+      "name": "ActionRecord",
+      "line": 12,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/actions.py",
+      "source_sha256": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+      "definition_lines": [
+        58
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ActionRecord",
+          "kind": "type",
+          "file": "agent/actions.go",
+          "line": 45
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ActionJournalConflict",
+      "module": "actions",
+      "name": "ActionJournalConflict",
+      "line": 12,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/actions.py",
+      "source_sha256": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+      "definition_lines": [
+        42
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ActionJournalConflict",
+          "kind": "type",
+          "file": "agent/actions.go",
+          "line": 104
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "InMemoryActionJournal",
+      "module": "actions",
+      "name": "InMemoryActionJournal",
+      "line": 12,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/actions.py",
+      "source_sha256": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+      "definition_lines": [
+        100
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "InMemoryActionJournal",
+          "kind": "type",
+          "file": "agent/actions.go",
+          "line": 194
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DurableActionJournal",
+      "module": "actions",
+      "name": "DurableActionJournal",
+      "line": 12,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/actions.py",
+      "source_sha256": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+      "definition_lines": [
+        268
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "StoredActionJournal",
+          "kind": "type",
+          "file": "agent/actions.go",
+          "line": 319
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "UNKNOWN_RESULT",
+      "module": "actions",
+      "name": "UNKNOWN_RESULT",
+      "line": 12,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/actions.py",
+      "source_sha256": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [],
+      "binding_status": "no_public_namespace_binding_identified",
+      "parity_proven": false,
+      "remaining": "No public constant namespace binding identified; internal semantic values may exist. Do not label this a missing runtime implementation solely from declaration matching."
+    },
+    {
+      "public_name": "Tool",
+      "module": "registry",
+      "name": "Tool",
+      "line": 74,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/registry.py",
+      "source_sha256": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "definition_lines": [
+        98
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolDefinition",
+          "kind": "type",
+          "file": "agent/catalog.go",
+          "line": 99
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ToolRegistry",
+      "module": "registry",
+      "name": "ToolRegistry",
+      "line": 74,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/registry.py",
+      "source_sha256": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "definition_lines": [
+        214
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolCatalog",
+          "kind": "type",
+          "file": "agent/catalog.go",
+          "line": 189
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ToolCatalogSnapshot",
+      "module": "registry",
+      "name": "ToolCatalogSnapshot",
+      "line": 74,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/registry.py",
+      "source_sha256": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "definition_lines": [
+        193
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolCatalogSnapshot",
+          "kind": "type",
+          "file": "agent/request.go",
+          "line": 20
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ToolContext",
+      "module": "registry",
+      "name": "ToolContext",
+      "line": 74,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/registry.py",
+      "source_sha256": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "definition_lines": [
+        71
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolAuthority",
+          "kind": "type",
+          "file": "agent/catalog.go",
+          "line": 58
+        },
+        {
+          "package": "agent",
+          "name": "ToolCall",
+          "kind": "type",
+          "file": "agent/catalog.go",
+          "line": 79
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ToolCall",
+      "module": "registry",
+      "name": "ToolCall",
+      "line": 74,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/registry.py",
+      "source_sha256": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "definition_lines": [
+        62
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolCall",
+          "kind": "type",
+          "file": "agent/catalog.go",
+          "line": 79
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Hook",
+      "module": "registry",
+      "name": "Hook",
+      "line": 74,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/registry.py",
+      "source_sha256": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "definition_lines": [
+        425
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "BeforeHook",
+          "kind": "type",
+          "file": "agent/gate.go",
+          "line": 37
+        },
+        {
+          "package": "agent",
+          "name": "GuardHook",
+          "kind": "type",
+          "file": "agent/gate.go",
+          "line": 41
+        },
+        {
+          "package": "agent",
+          "name": "AfterHook",
+          "kind": "type",
+          "file": "agent/gate.go",
+          "line": 46
+        },
+        {
+          "package": "agent",
+          "name": "ResultObserver",
+          "kind": "type",
+          "file": "agent/gate.go",
+          "line": 50
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Hooks",
+      "module": "registry",
+      "name": "Hooks",
+      "line": 74,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/registry.py",
+      "source_sha256": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "definition_lines": [
+        474
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "GateHooks",
+          "kind": "type",
+          "file": "agent/gate.go",
+          "line": 94
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "PermissionHook",
+      "module": "permissions",
+      "name": "PermissionHook",
+      "line": 71,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/permissions.py",
+      "source_sha256": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+      "definition_lines": [
+        141
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolGate",
+          "kind": "type",
+          "file": "agent/gate.go",
+          "line": 101
+        },
+        {
+          "package": "agent",
+          "name": "PermissionPolicy",
+          "kind": "type",
+          "file": "agent/permission.go",
+          "line": 87
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "PermissionRule",
+      "module": "permissions",
+      "name": "PermissionRule",
+      "line": 71,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/permissions.py",
+      "source_sha256": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+      "definition_lines": [
+        23
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "PermissionRule",
+          "kind": "type",
+          "file": "agent/permission.go",
+          "line": 61
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "default_hooks",
+      "module": "permissions",
+      "name": "default_hooks",
+      "line": 71,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/permissions.py",
+      "source_sha256": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+      "definition_lines": [
+        212
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "NewToolGate",
+          "kind": "function",
+          "file": "agent/gate.go",
+          "line": 129
+        },
+        {
+          "package": "agent",
+          "name": "DefaultPermissionPolicy",
+          "kind": "function",
+          "file": "agent/permission.go",
+          "line": 138
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "TokenAuth",
+      "module": "auth",
+      "name": "TokenAuth",
+      "line": 34,
+      "packages": [
+        "httpapi"
+      ],
+      "source_file": "python/mini_loop/auth.py",
+      "source_sha256": "ef9551161abe07f65c1dab98e9a91d990c24e23ce8b6e2d61eeb811953998b01",
+      "definition_lines": [
+        90
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "httpapi",
+          "name": "TokenAuth",
+          "kind": "type",
+          "file": "httpapi/auth.go",
+          "line": 30
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "NullAuth",
+      "module": "auth",
+      "name": "NullAuth",
+      "line": 34,
+      "packages": [
+        "httpapi"
+      ],
+      "source_file": "python/mini_loop/auth.py",
+      "source_sha256": "ef9551161abe07f65c1dab98e9a91d990c24e23ce8b6e2d61eeb811953998b01",
+      "definition_lines": [
+        79
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "httpapi",
+          "name": "NullAuth",
+          "kind": "type",
+          "file": "httpapi/auth.go",
+          "line": 21
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Principal",
+      "module": "auth",
+      "name": "Principal",
+      "line": 34,
+      "packages": [
+        "httpapi"
+      ],
+      "source_file": "python/mini_loop/auth.py",
+      "source_sha256": "ef9551161abe07f65c1dab98e9a91d990c24e23ce8b6e2d61eeb811953998b01",
+      "definition_lines": [
+        57
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "httpapi",
+          "name": "Principal",
+          "kind": "type",
+          "file": "httpapi/auth.go",
+          "line": 13
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "load_auth",
+      "module": "auth",
+      "name": "load_auth",
+      "line": 34,
+      "packages": [
+        "httpapi"
+      ],
+      "source_file": "python/mini_loop/auth.py",
+      "source_sha256": "ef9551161abe07f65c1dab98e9a91d990c24e23ce8b6e2d61eeb811953998b01",
+      "definition_lines": [
+        124
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "httpapi",
+          "name": "AuthFromEnvironment",
+          "kind": "function",
+          "file": "httpapi/auth.go",
+          "line": 79
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "build_id",
+      "module": "identity",
+      "name": "build_id",
+      "line": 35,
+      "packages": [
+        "launcher"
+      ],
+      "source_file": "python/mini_loop/identity.py",
+      "source_sha256": "a18a4e703595095e317035aa6261b640890764e918cdd7ac8cf7ca30bc097913",
+      "definition_lines": [
+        40
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "launcher",
+          "name": "CurrentBuild",
+          "kind": "function",
+          "file": "launcher/app.go",
+          "line": 39
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "runtime_identity",
+      "module": "identity",
+      "name": "runtime_identity",
+      "line": 35,
+      "packages": [
+        "launcher"
+      ],
+      "source_file": "python/mini_loop/identity.py",
+      "source_sha256": "a18a4e703595095e317035aa6261b640890764e918cdd7ac8cf7ca30bc097913",
+      "definition_lines": [
+        180
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "launcher",
+          "name": "Inspect",
+          "kind": "function",
+          "file": "launcher/app.go",
+          "line": 109
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "audit",
+      "module": "audit",
+      "name": "audit",
+      "line": 36,
+      "packages": [
+        "audit"
+      ],
+      "source_file": "python/mini_loop/audit.py",
+      "source_sha256": "bc66eead3d48fc32a4af9d79614644f749748c3beff43622aa10500ca593146f",
+      "definition_lines": [
+        176
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "audit",
+          "name": "Check",
+          "kind": "type",
+          "file": "audit/remote.go",
+          "line": 23
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "render_audit",
+      "module": "audit",
+      "name": "render",
+      "line": 36,
+      "packages": [
+        "audit"
+      ],
+      "source_file": "python/mini_loop/audit.py",
+      "source_sha256": "bc66eead3d48fc32a4af9d79614644f749748c3beff43622aa10500ca593146f",
+      "definition_lines": [
+        493
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "audit",
+          "name": "Render",
+          "kind": "function",
+          "file": "audit/remote.go",
+          "line": 211
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Finding",
+      "module": "audit",
+      "name": "Finding",
+      "line": 36,
+      "packages": [
+        "audit"
+      ],
+      "source_file": "python/mini_loop/audit.py",
+      "source_sha256": "bc66eead3d48fc32a4af9d79614644f749748c3beff43622aa10500ca593146f",
+      "definition_lines": [
+        55
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "audit",
+          "name": "Finding",
+          "kind": "type",
+          "file": "audit/remote.go",
+          "line": 41
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Harness",
+      "module": "harness",
+      "name": "Harness",
+      "line": 60,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/harness.py",
+      "source_sha256": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+      "definition_lines": [
+        39
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "RuntimeConfig",
+          "kind": "type",
+          "file": "agent/runtime.go",
+          "line": 64
+        },
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Compactor",
+      "module": "compaction",
+      "name": "Compactor",
+      "line": 38,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/compaction.py",
+      "source_sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+      "definition_lines": [
+        266
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "Compactor",
+          "kind": "type",
+          "file": "agent/compaction.go",
+          "line": 78
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DefaultCompactor",
+      "module": "compaction",
+      "name": "DefaultCompactor",
+      "line": 38,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/compaction.py",
+      "source_sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+      "definition_lines": [
+        325
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "DefaultCompactor",
+          "kind": "type",
+          "file": "agent/compaction.go",
+          "line": 190
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "CachePolicy",
+      "module": "caching",
+      "name": "CachePolicy",
+      "line": 46,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/caching.py",
+      "source_sha256": "57b755434559336528fd7a2e23a78044abdd3692d1184bca8680470d26f0601f",
+      "definition_lines": [
+        97
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "CachePolicy",
+          "kind": "type",
+          "file": "agent/caching.go",
+          "line": 12
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DefaultCachePolicy",
+      "module": "caching",
+      "name": "DefaultCachePolicy",
+      "line": 46,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/caching.py",
+      "source_sha256": "57b755434559336528fd7a2e23a78044abdd3692d1184bca8680470d26f0601f",
+      "definition_lines": [
+        116
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "DefaultCachePolicy",
+          "kind": "type",
+          "file": "agent/caching.go",
+          "line": 31
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "NullCachePolicy",
+      "module": "caching",
+      "name": "NullCachePolicy",
+      "line": 46,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/caching.py",
+      "source_sha256": "57b755434559336528fd7a2e23a78044abdd3692d1184bca8680470d26f0601f",
+      "definition_lines": [
+        109
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "NullCachePolicy",
+          "kind": "type",
+          "file": "agent/caching.go",
+          "line": 15
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "runtime_facts",
+      "module": "prompts",
+      "name": "runtime_facts",
+      "line": 72,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/prompts.py",
+      "source_sha256": "4c7f4aaa9907d4e763df058117283b78c0d35738085697f3683cf88af62df74e",
+      "definition_lines": [
+        165
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "SystemContext",
+          "kind": "type",
+          "file": "agent/request.go",
+          "line": 107
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "runtime_facts_injector",
+      "module": "caching",
+      "name": "runtime_facts_injector",
+      "line": 46,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/caching.py",
+      "source_sha256": "57b755434559336528fd7a2e23a78044abdd3692d1184bca8680470d26f0601f",
+      "definition_lines": [
+        221
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "MessageInjector",
+          "kind": "type",
+          "file": "agent/extensions.go",
+          "line": 25
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "StuckDetector",
+      "module": "stuck",
+      "name": "StuckDetector",
+      "line": 100,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/stuck.py",
+      "source_sha256": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+      "definition_lines": [
+        133
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "StuckDetector",
+          "kind": "type",
+          "file": "agent/stuck.go",
+          "line": 96
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DefaultStuckDetector",
+      "module": "stuck",
+      "name": "DefaultStuckDetector",
+      "line": 100,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/stuck.py",
+      "source_sha256": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+      "definition_lines": [
+        148
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "DefaultStuckDetector",
+          "kind": "type",
+          "file": "agent/stuck.go",
+          "line": 105
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "NullStuckDetector",
+      "module": "stuck",
+      "name": "NullStuckDetector",
+      "line": 100,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/stuck.py",
+      "source_sha256": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+      "definition_lines": [
+        139
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "NullStuckDetector",
+          "kind": "type",
+          "file": "agent/stuck.go",
+          "line": 100
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "StuckSignal",
+      "module": "stuck",
+      "name": "StuckSignal",
+      "line": 100,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/stuck.py",
+      "source_sha256": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+      "definition_lines": [
+        99
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "StuckSignal",
+          "kind": "type",
+          "file": "agent/stuck.go",
+          "line": 63
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "StuckThresholds",
+      "module": "stuck",
+      "name": "StuckThresholds",
+      "line": 100,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/stuck.py",
+      "source_sha256": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+      "definition_lines": [
+        114
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "StuckThresholds",
+          "kind": "type",
+          "file": "agent/stuck.go",
+          "line": 81
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ToolStep",
+      "module": "stuck",
+      "name": "ToolStep",
+      "line": 100,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/stuck.py",
+      "source_sha256": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+      "definition_lines": [
+        65
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolStep",
+          "kind": "type",
+          "file": "agent/stuck.go",
+          "line": 37
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Sandbox",
+      "module": "sandbox",
+      "name": "Sandbox",
+      "line": 92,
+      "packages": [
+        "shell"
+      ],
+      "source_file": "python/mini_loop/sandbox.py",
+      "source_sha256": "d1b71fff2d04bfdeed5be600d8913fcc205a6f83de37fc98fce4eee299c0ecbe",
+      "definition_lines": [
+        98
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "shell",
+          "name": "Sandbox",
+          "kind": "type",
+          "file": "shell/executor.go",
+          "line": 31
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "SeatbeltSandbox",
+      "module": "sandbox",
+      "name": "SeatbeltSandbox",
+      "line": 92,
+      "packages": [
+        "shell"
+      ],
+      "source_file": "python/mini_loop/sandbox.py",
+      "source_sha256": "d1b71fff2d04bfdeed5be600d8913fcc205a6f83de37fc98fce4eee299c0ecbe",
+      "definition_lines": [
+        194
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "sandbox",
+          "name": "SeatbeltSandbox",
+          "kind": "type",
+          "file": "sandbox/sandbox.go",
+          "line": 31
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "NullSandbox",
+      "module": "sandbox",
+      "name": "NullSandbox",
+      "line": 92,
+      "packages": [
+        "shell"
+      ],
+      "source_file": "python/mini_loop/sandbox.py",
+      "source_sha256": "d1b71fff2d04bfdeed5be600d8913fcc205a6f83de37fc98fce4eee299c0ecbe",
+      "definition_lines": [
+        122
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "sandbox",
+          "name": "NullSandbox",
+          "kind": "type",
+          "file": "sandbox/sandbox.go",
+          "line": 32
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "default_sandbox",
+      "module": "sandbox",
+      "name": "default_sandbox",
+      "line": 92,
+      "packages": [
+        "shell"
+      ],
+      "source_file": "python/mini_loop/sandbox.py",
+      "source_sha256": "d1b71fff2d04bfdeed5be600d8913fcc205a6f83de37fc98fce4eee299c0ecbe",
+      "definition_lines": [
+        362
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "sandbox",
+          "name": "NewDefault",
+          "kind": "function",
+          "file": "sandbox/sandbox.go",
+          "line": 307
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "SecretRegistry",
+      "module": "secrets",
+      "name": "SecretRegistry",
+      "line": 93,
+      "packages": [
+        "secrets"
+      ],
+      "source_file": "python/mini_loop/secrets.py",
+      "source_sha256": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+      "definition_lines": [
+        160
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "secrets",
+          "name": "Registry",
+          "kind": "type",
+          "file": "secrets/registry.go",
+          "line": 57
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "NullSecretRegistry",
+      "module": "secrets",
+      "name": "NullSecretRegistry",
+      "line": 93,
+      "packages": [
+        "secrets"
+      ],
+      "source_file": "python/mini_loop/secrets.py",
+      "source_sha256": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+      "definition_lines": [
+        138
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "secrets",
+          "name": "Null",
+          "kind": "type",
+          "file": "secrets/registry.go",
+          "line": 267
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DEFAULT_SECRET_PATTERNS",
+      "module": "secrets",
+      "name": "DEFAULT_SECRET_PATTERNS",
+      "line": 93,
+      "packages": [
+        "secrets"
+      ],
+      "source_file": "python/mini_loop/secrets.py",
+      "source_sha256": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "secrets",
+          "name": "DefaultPatterns",
+          "kind": "function",
+          "file": "secrets/registry.go",
+          "line": 27
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "MASK",
+      "module": "secrets",
+      "name": "MASK",
+      "line": 93,
+      "packages": [
+        "secrets"
+      ],
+      "source_file": "python/mini_loop/secrets.py",
+      "source_sha256": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "secrets",
+          "name": "Mask",
+          "kind": "const",
+          "file": "secrets/registry.go",
+          "line": 20
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "StateStore",
+      "module": "storage",
+      "name": "StateStore",
+      "line": 111,
+      "packages": [
+        "agent",
+        "sqlitestate"
+      ],
+      "source_file": "python/mini_loop/storage.py",
+      "source_sha256": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+      "definition_lines": [
+        172
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "StateStore",
+          "kind": "type",
+          "file": "agent/state_store.go",
+          "line": 93
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "SQLiteStateStore",
+      "module": "storage",
+      "name": "SQLiteStateStore",
+      "line": 111,
+      "packages": [
+        "agent",
+        "sqlitestate"
+      ],
+      "source_file": "python/mini_loop/storage.py",
+      "source_sha256": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+      "definition_lines": [
+        306
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "sqlitestate",
+          "name": "Store",
+          "kind": "type",
+          "file": "sqlitestate/store.go",
+          "line": 47
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "NullStateStore",
+      "module": "storage",
+      "name": "NullStateStore",
+      "line": 111,
+      "packages": [
+        "agent",
+        "sqlitestate"
+      ],
+      "source_file": "python/mini_loop/storage.py",
+      "source_sha256": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+      "definition_lines": [
+        206
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "StateStore",
+          "kind": "type",
+          "file": "agent/state_store.go",
+          "line": 93
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "SessionRecord",
+      "module": "storage",
+      "name": "SessionRecord",
+      "line": 111,
+      "packages": [
+        "agent",
+        "sqlitestate"
+      ],
+      "source_file": "python/mini_loop/storage.py",
+      "source_sha256": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+      "definition_lines": [
+        93
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "SessionRecord",
+          "kind": "type",
+          "file": "agent/state_store.go",
+          "line": 13
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "StorageSchemaError",
+      "module": "storage",
+      "name": "StorageSchemaError",
+      "line": 111,
+      "packages": [
+        "agent",
+        "sqlitestate"
+      ],
+      "source_file": "python/mini_loop/storage.py",
+      "source_sha256": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+      "definition_lines": [
+        88
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "sqlitestate",
+          "name": "SchemaError",
+          "kind": "type",
+          "file": "sqlitestate/store.go",
+          "line": 30
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "STORAGE_SCHEMA_VERSION",
+      "module": "storage",
+      "name": "SCHEMA_VERSION",
+      "line": 108,
+      "packages": [
+        "agent",
+        "sqlitestate"
+      ],
+      "source_file": "python/mini_loop/storage.py",
+      "source_sha256": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "sqlitestate",
+          "name": "SchemaVersion",
+          "kind": "type",
+          "file": "sqlitestate/store.go",
+          "line": 22
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "UserResourceResolver",
+      "module": "user_resources",
+      "name": "UserResourceResolver",
+      "line": 147,
+      "packages": [
+        "userresources"
+      ],
+      "source_file": "python/mini_loop/user_resources.py",
+      "source_sha256": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549",
+      "definition_lines": [
+        181
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "userresources",
+          "name": "Resolver",
+          "kind": "type",
+          "file": "userresources/resolver.go",
+          "line": 30
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "UserResources",
+      "module": "user_resources",
+      "name": "UserResources",
+      "line": 147,
+      "packages": [
+        "userresources"
+      ],
+      "source_file": "python/mini_loop/user_resources.py",
+      "source_sha256": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549",
+      "definition_lines": [
+        134
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "userresources",
+          "name": "Resources",
+          "kind": "type",
+          "file": "userresources/resolver.go",
+          "line": 16
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "LayeredSkillLoader",
+      "module": "skills",
+      "name": "LayeredSkillLoader",
+      "line": 99,
+      "packages": [
+        "skills"
+      ],
+      "source_file": "python/mini_loop/skills.py",
+      "source_sha256": "33dd1717a5cb5c710a65edebecea00ef038e50dab3817a12080302b49b86c0c3",
+      "definition_lines": [
+        280
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "skills",
+          "name": "LayeredCatalog",
+          "kind": "type",
+          "file": "skills/layered.go",
+          "line": 16
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "SkillLoader",
+      "module": "skills",
+      "name": "SkillLoader",
+      "line": 99,
+      "packages": [
+        "skills"
+      ],
+      "source_file": "python/mini_loop/skills.py",
+      "source_sha256": "33dd1717a5cb5c710a65edebecea00ef038e50dab3817a12080302b49b86c0c3",
+      "definition_lines": [
+        90
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "skills",
+          "name": "Catalog",
+          "kind": "type",
+          "file": "skills/catalog.go",
+          "line": 52
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Toolset",
+      "module": "tools",
+      "name": "Toolset",
+      "line": 144,
+      "packages": [
+        "agent",
+        "shell"
+      ],
+      "source_file": "python/mini_loop/tools.py",
+      "source_sha256": "8d357c320fddeb93238622be0d6f5fdeb6e7804867ac507c82b2622dcdb22af7",
+      "definition_lines": [
+        355
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "workspace",
+          "name": "Files",
+          "kind": "type",
+          "file": "workspace/files.go",
+          "line": 26
+        },
+        {
+          "package": "shell",
+          "name": "Executor",
+          "kind": "type",
+          "file": "shell/executor.go",
+          "line": 43
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "CommandResult",
+      "module": "tools",
+      "name": "CommandResult",
+      "line": 144,
+      "packages": [
+        "agent",
+        "shell"
+      ],
+      "source_file": "python/mini_loop/tools.py",
+      "source_sha256": "8d357c320fddeb93238622be0d6f5fdeb6e7804867ac507c82b2622dcdb22af7",
+      "definition_lines": [
+        137
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "shell",
+          "name": "Result",
+          "kind": "type",
+          "file": "shell/result.go",
+          "line": 18
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "TodoManager",
+      "module": "agent",
+      "name": "TodoManager",
+      "line": 19,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/agent.py",
+      "source_sha256": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+      "definition_lines": [
+        461
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "TodoManager",
+          "kind": "type",
+          "file": "agent/todo.go",
+          "line": 17
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "default_registry",
+      "module": "builtins",
+      "name": "default_registry",
+      "line": 37,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/builtins.py",
+      "source_sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+      "definition_lines": [
+        249
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "NewWorkspaceToolCatalog",
+          "kind": "function",
+          "file": "agent/workspace.go",
+          "line": 67
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "explore_registry",
+      "module": "builtins",
+      "name": "explore_registry",
+      "line": 37,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/builtins.py",
+      "source_sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+      "definition_lines": [
+        262
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "CapabilityRoleToolPolicy",
+          "kind": "type",
+          "file": "agent/role_policy.go",
+          "line": 27
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "worker_registry",
+      "module": "builtins",
+      "name": "worker_registry",
+      "line": 37,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/builtins.py",
+      "source_sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+      "definition_lines": [
+        271
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "CapabilityRoleToolPolicy",
+          "kind": "type",
+          "file": "agent/role_policy.go",
+          "line": 27
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "full_registry",
+      "module": "builtins",
+      "name": "full_registry",
+      "line": 37,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/builtins.py",
+      "source_sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+      "definition_lines": [
+        275
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerConfig",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 120
+        },
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "default_injectors",
+      "module": "builtins",
+      "name": "default_injectors",
+      "line": 37,
+      "packages": [
+        "agent",
+        "protocol"
+      ],
+      "source_file": "python/mini_loop/builtins.py",
+      "source_sha256": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+      "definition_lines": [
+        358
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "RuntimeConfig",
+          "kind": "type",
+          "file": "agent/runtime.go",
+          "line": 64
+        },
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "default_system_builder",
+      "module": "prompts",
+      "name": "default_system_builder",
+      "line": 72,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/prompts.py",
+      "source_sha256": "4c7f4aaa9907d4e763df058117283b78c0d35738085697f3683cf88af62df74e",
+      "definition_lines": [
+        62
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "DefaultSystemBuilder",
+          "kind": "type",
+          "file": "agent/request.go",
+          "line": 116
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "sections_builder",
+      "module": "prompts",
+      "name": "sections_builder",
+      "line": 72,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/prompts.py",
+      "source_sha256": "4c7f4aaa9907d4e763df058117283b78c0d35738085697f3683cf88af62df74e",
+      "definition_lines": [
+        210
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "SystemBuilder",
+          "kind": "type",
+          "file": "agent/request.go",
+          "line": 113
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "estimate_tokens",
+      "module": "compaction",
+      "name": "estimate_tokens",
+      "line": 38,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/compaction.py",
+      "source_sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+      "definition_lines": [
+        21
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "EstimateTokens",
+          "kind": "function",
+          "file": "agent/metering.go",
+          "line": 8
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "microcompact",
+      "module": "compaction",
+      "name": "microcompact",
+      "line": 38,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/compaction.py",
+      "source_sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+      "definition_lines": [
+        67
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "MicroCompact",
+          "kind": "function",
+          "file": "agent/compaction.go",
+          "line": 125
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "snip_compact",
+      "module": "compaction",
+      "name": "snip_compact",
+      "line": 38,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/compaction.py",
+      "source_sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+      "definition_lines": [
+        39
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "SnipCompact",
+          "kind": "function",
+          "file": "agent/compaction.go",
+          "line": 93
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "tool_result_budget",
+      "module": "compaction",
+      "name": "tool_result_budget",
+      "line": 38,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/compaction.py",
+      "source_sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+      "definition_lines": [
+        160
+      ],
+      "python_kind": "function",
+      "go_candidates": [],
+      "binding_status": "no_public_namespace_binding_identified",
+      "parity_proven": false,
+      "remaining": "Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence."
+    },
+    {
+      "public_name": "AstContextConfig",
+      "module": "ast_context",
+      "name": "AstContextConfig",
+      "line": 20,
+      "packages": [
+        "astcontext",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/ast_context.py",
+      "source_sha256": "bb87b7103a7ca314d5f7fc8aaeb3778364a8637a8e5bbe7580e51288a91fa4f8",
+      "definition_lines": [
+        224
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "astcontext",
+          "name": "Config",
+          "kind": "type",
+          "file": "astcontext/contracts.go",
+          "line": 89
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "AstContextProbe",
+      "module": "ast_context",
+      "name": "AstContextProbe",
+      "line": 20,
+      "packages": [
+        "astcontext",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/ast_context.py",
+      "source_sha256": "bb87b7103a7ca314d5f7fc8aaeb3778364a8637a8e5bbe7580e51288a91fa4f8",
+      "definition_lines": [
+        269
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "astcontext",
+          "name": "Probe",
+          "kind": "type",
+          "file": "astcontext/contracts.go",
+          "line": 202
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "AstContextResult",
+      "module": "ast_context",
+      "name": "AstContextResult",
+      "line": 20,
+      "packages": [
+        "astcontext",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/ast_context.py",
+      "source_sha256": "bb87b7103a7ca314d5f7fc8aaeb3778364a8637a8e5bbe7580e51288a91fa4f8",
+      "definition_lines": [
+        293
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "astcontext",
+          "name": "Result",
+          "kind": "type",
+          "file": "astcontext/result.go",
+          "line": 78
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "AstOutlineAdapter",
+      "module": "ast_context",
+      "name": "AstOutlineAdapter",
+      "line": 20,
+      "packages": [
+        "astcontext",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/ast_context.py",
+      "source_sha256": "bb87b7103a7ca314d5f7fc8aaeb3778364a8637a8e5bbe7580e51288a91fa4f8",
+      "definition_lines": [
+        376
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "astcontext",
+          "name": "Adapter",
+          "kind": "type",
+          "file": "astcontext/process.go",
+          "line": 22
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_ast_context_tools",
+      "module": "ast_context",
+      "name": "install_ast_context_tools",
+      "line": 20,
+      "packages": [
+        "astcontext",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/ast_context.py",
+      "source_sha256": "bb87b7103a7ca314d5f7fc8aaeb3778364a8637a8e5bbe7580e51288a91fa4f8",
+      "definition_lines": [
+        1652
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "RuntimeConfig",
+          "kind": "type",
+          "file": "agent/runtime.go",
+          "line": 64
+        },
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ComponentDescriptor",
+      "module": "token_efficiency",
+      "name": "ComponentDescriptor",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        137
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Descriptor",
+          "kind": "type",
+          "file": "efficiency/descriptor.go",
+          "line": 34
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ComponentStage",
+      "module": "token_efficiency",
+      "name": "ComponentStage",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        34
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Stage",
+          "kind": "type",
+          "file": "efficiency/types.go",
+          "line": 12
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "Lossiness",
+      "module": "token_efficiency",
+      "name": "Lossiness",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        54
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Lossiness",
+          "kind": "type",
+          "file": "efficiency/types.go",
+          "line": 38
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "OptimizationMode",
+      "module": "token_efficiency",
+      "name": "OptimizationMode",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        40
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Mode",
+          "kind": "type",
+          "file": "efficiency/types.go",
+          "line": 20
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "OptimizationStatus",
+      "module": "token_efficiency",
+      "name": "OptimizationStatus",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        46
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Status",
+          "kind": "type",
+          "file": "efficiency/types.go",
+          "line": 28
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "OptimizationReceipt",
+      "module": "token_efficiency",
+      "name": "OptimizationReceipt",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        205
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Receipt",
+          "kind": "type",
+          "file": "efficiency/receipt.go",
+          "line": 35
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "MaskedObservation",
+      "module": "token_efficiency",
+      "name": "MaskedObservation",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        548
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "MaskedObservation",
+          "kind": "type",
+          "file": "efficiency/observation.go",
+          "line": 63
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "MaskedRawArtifactStore",
+      "module": "token_efficiency",
+      "name": "MaskedRawArtifactStore",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        351
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "RawStore",
+          "kind": "type",
+          "file": "efficiency/store.go",
+          "line": 131
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ObservationReducer",
+      "module": "token_efficiency",
+      "name": "ObservationReducer",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        585
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "ObservationReducer",
+          "kind": "type",
+          "file": "efficiency/observation.go",
+          "line": 142
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "RequestContext",
+      "module": "token_efficiency",
+      "name": "RequestContext",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        599
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "RequestContext",
+          "kind": "const",
+          "file": "efficiency/types.go",
+          "line": 16
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "RequestContextOptimizer",
+      "module": "token_efficiency",
+      "name": "RequestContextOptimizer",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        626
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "RequestOptimizer",
+          "kind": "type",
+          "file": "efficiency/request.go",
+          "line": 117
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ResponsePolicy",
+      "module": "token_efficiency",
+      "name": "ResponsePolicy",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        732
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "ResponsePolicy",
+          "kind": "const",
+          "file": "efficiency/types.go",
+          "line": 17
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "TokenEfficiencyRegistry",
+      "module": "token_efficiency",
+      "name": "TokenEfficiencyRegistry",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        870
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Registry",
+          "kind": "type",
+          "file": "efficiency/registry.go",
+          "line": 90
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "TokenEfficiencyRuntime",
+      "module": "token_efficiency",
+      "name": "TokenEfficiencyRuntime",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        1043
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "Runtime",
+          "kind": "type",
+          "file": "efficiency/registry.go",
+          "line": 168
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DeterministicLosslessReducer",
+      "module": "token_efficiency",
+      "name": "DeterministicLosslessReducer",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        2093
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "DeterministicLosslessReducer",
+          "kind": "type",
+          "file": "efficiency/reducers.go",
+          "line": 13
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ConciseResponsePolicy",
+      "module": "token_efficiency",
+      "name": "ConciseResponsePolicy",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        2206
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "ConciseResponsePlanner",
+          "kind": "type",
+          "file": "efficiency/response_policies.go",
+          "line": 46
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ConciseResponsePolicySettings",
+      "module": "token_efficiency",
+      "name": "ConciseResponsePolicySettings",
+      "line": 120,
+      "packages": [
+        "efficiency"
+      ],
+      "source_file": "python/mini_loop/token_efficiency.py",
+      "source_sha256": "d20f8ed3243f0724dcfca8ce45f109177cbf0ea8371f2c9ef87ad26502cc6acc",
+      "definition_lines": [
+        2188
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "efficiency",
+          "name": "StableResponseSettings",
+          "kind": "type",
+          "file": "efficiency/response_settings.go",
+          "line": 45
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_token_efficiency_tools",
+      "module": "token_tools",
+      "name": "install_token_efficiency_tools",
+      "line": 139,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/token_tools.py",
+      "source_sha256": "7dba4b0698dd621e8e028656f66843090368c6914d741030f3dd57041cecea65",
+      "definition_lines": [
+        58
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "InstallTokenArtifactTool",
+          "kind": "function",
+          "file": "agent/token_artifact.go",
+          "line": 57
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "RoleToolPolicy",
+      "module": "tool_policy",
+      "name": "RoleToolPolicy",
+      "line": 140,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/tool_policy.py",
+      "source_sha256": "289d4697d1bb546850e52d9f30f0aae637d2aba8a71a748832426fd15cdf42c1",
+      "definition_lines": [
+        34
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "RoleToolPolicy",
+          "kind": "type",
+          "file": "agent/role_policy.go",
+          "line": 23
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "CapabilityRoleToolPolicy",
+      "module": "tool_policy",
+      "name": "CapabilityRoleToolPolicy",
+      "line": 140,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/tool_policy.py",
+      "source_sha256": "289d4697d1bb546850e52d9f30f0aae637d2aba8a71a748832426fd15cdf42c1",
+      "definition_lines": [
+        41
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "CapabilityRoleToolPolicy",
+          "kind": "type",
+          "file": "agent/role_policy.go",
+          "line": 27
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DefaultRecovery",
+      "module": "recovery",
+      "name": "DefaultRecovery",
+      "line": 73,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/recovery.py",
+      "source_sha256": "bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca",
+      "definition_lines": [
+        236
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "DefaultRecovery",
+          "kind": "type",
+          "file": "agent/recovery.go",
+          "line": 71
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "DirectRecovery",
+      "module": "recovery",
+      "name": "DirectRecovery",
+      "line": 73,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/recovery.py",
+      "source_sha256": "bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca",
+      "definition_lines": [
+        204
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "DirectRecovery",
+          "kind": "type",
+          "file": "agent/recovery.go",
+          "line": 39
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "TaskStore",
+      "module": "tasks",
+      "name": "TaskStore",
+      "line": 118,
+      "packages": [
+        "tasks",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/tasks.py",
+      "source_sha256": "2b7ea02a822a3b91a404d62837cab04d274fb4236ba60af487a504af12b83c3a",
+      "definition_lines": [
+        64
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "tasks",
+          "name": "Store",
+          "kind": "type",
+          "file": "tasks/store.go",
+          "line": 63
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_tasks",
+      "module": "tasks",
+      "name": "install_tasks",
+      "line": 118,
+      "packages": [
+        "tasks",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/tasks.py",
+      "source_sha256": "2b7ea02a822a3b91a404d62837cab04d274fb4236ba60af487a504af12b83c3a",
+      "definition_lines": [
+        317
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "BackgroundManager",
+      "module": "background",
+      "name": "BackgroundManager",
+      "line": 27,
+      "packages": [
+        "background",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/background.py",
+      "source_sha256": "df94f83bd559402b2882c3bfc0c1ec81f988bb4bed388975538119a4c021fc51",
+      "definition_lines": [
+        99
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "background",
+          "name": "Manager",
+          "kind": "type",
+          "file": "background/manager.go",
+          "line": 101
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_background",
+      "module": "background",
+      "name": "install_background",
+      "line": 27,
+      "packages": [
+        "background",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/background.py",
+      "source_sha256": "df94f83bd559402b2882c3bfc0c1ec81f988bb4bed388975538119a4c021fc51",
+      "definition_lines": [
+        499
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "background_injector",
+      "module": "background",
+      "name": "background_injector",
+      "line": 27,
+      "packages": [
+        "background",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/background.py",
+      "source_sha256": "df94f83bd559402b2882c3bfc0c1ec81f988bb4bed388975538119a4c021fc51",
+      "definition_lines": [
+        442
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "MessageInjector",
+          "kind": "type",
+          "file": "agent/extensions.go",
+          "line": 25
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "is_slow_operation",
+      "module": "background",
+      "name": "is_slow_operation",
+      "line": 27,
+      "packages": [
+        "background",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/background.py",
+      "source_sha256": "df94f83bd559402b2882c3bfc0c1ec81f988bb4bed388975538119a4c021fc51",
+      "definition_lines": [
+        71
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "background",
+          "name": "IsSlowOperation",
+          "kind": "function",
+          "file": "background/manager.go",
+          "line": 379
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "should_run_background",
+      "module": "background",
+      "name": "should_run_background",
+      "line": 27,
+      "packages": [
+        "background",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/background.py",
+      "source_sha256": "df94f83bd559402b2882c3bfc0c1ec81f988bb4bed388975538119a4c021fc51",
+      "definition_lines": [
+        76
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "background",
+          "name": "ShouldRunBackground",
+          "kind": "function",
+          "file": "background/manager.go",
+          "line": 388
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "MemoryStore",
+      "module": "memory",
+      "name": "MemoryStore",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        162
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "memory",
+          "name": "Store",
+          "kind": "type",
+          "file": "memory/store.go",
+          "line": 26
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_memory",
+      "module": "memory",
+      "name": "install_memory",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        751
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "memory_system_builder",
+      "module": "memory",
+      "name": "memory_system_builder",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        456
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "SystemBuilder",
+          "kind": "type",
+          "file": "agent/request.go",
+          "line": 113
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "select_relevant_memories",
+      "module": "memory",
+      "name": "select_relevant_memories",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        590
+      ],
+      "python_kind": "function",
+      "go_candidates": [],
+      "binding_status": "no_public_namespace_binding_identified",
+      "parity_proven": false,
+      "remaining": "Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence."
+    },
+    {
+      "public_name": "prepare_memory_context",
+      "module": "memory",
+      "name": "prepare_memory_context",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        619
+      ],
+      "python_kind": "function",
+      "go_candidates": [],
+      "binding_status": "no_public_namespace_binding_identified",
+      "parity_proven": false,
+      "remaining": "Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence."
+    },
+    {
+      "public_name": "consolidate_memories",
+      "module": "memory",
+      "name": "consolidate_memories",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        666
+      ],
+      "python_kind": "function",
+      "go_candidates": [],
+      "binding_status": "no_public_namespace_binding_identified",
+      "parity_proven": false,
+      "remaining": "Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence."
+    },
+    {
+      "public_name": "CronScheduler",
+      "module": "cron",
+      "name": "CronScheduler",
+      "line": 53,
+      "packages": [
+        "cron",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/cron.py",
+      "source_sha256": "6a6e4edd21eb0608ca376dfa390074a87f6ee6ea6967d247dc8762ccd70bdb50",
+      "definition_lines": [
+        111
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "cron",
+          "name": "Scheduler",
+          "kind": "type",
+          "file": "cron/scheduler.go",
+          "line": 101
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_cron",
+      "module": "cron",
+      "name": "install_cron",
+      "line": 53,
+      "packages": [
+        "cron",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/cron.py",
+      "source_sha256": "6a6e4edd21eb0608ca376dfa390074a87f6ee6ea6967d247dc8762ccd70bdb50",
+      "definition_lines": [
+        491
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "MessageBus",
+      "module": "teams",
+      "name": "MessageBus",
+      "line": 119,
+      "packages": [
+        "teams",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/teams.py",
+      "source_sha256": "79a97f03f8172af8028bbe9ccb826fd98dcdcca6778f77c969f6ea0adb46183f",
+      "definition_lines": [
+        28
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "teams",
+          "name": "Bus",
+          "kind": "type",
+          "file": "teams/bus.go",
+          "line": 40
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "ProtocolState",
+      "module": "teams",
+      "name": "ProtocolState",
+      "line": 119,
+      "packages": [
+        "teams",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/teams.py",
+      "source_sha256": "79a97f03f8172af8028bbe9ccb826fd98dcdcca6778f77c969f6ea0adb46183f",
+      "definition_lines": [
+        17
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "teams",
+          "name": "ProtocolState",
+          "kind": "type",
+          "file": "teams/protocols.go",
+          "line": 32
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_teams",
+      "module": "teams",
+      "name": "install_teams",
+      "line": 119,
+      "packages": [
+        "teams",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/teams.py",
+      "source_sha256": "79a97f03f8172af8028bbe9ccb826fd98dcdcca6778f77c969f6ea0adb46183f",
+      "definition_lines": [
+        309
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "team_injector",
+      "module": "teams",
+      "name": "team_injector",
+      "line": 119,
+      "packages": [
+        "teams",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/teams.py",
+      "source_sha256": "79a97f03f8172af8028bbe9ccb826fd98dcdcca6778f77c969f6ea0adb46183f",
+      "definition_lines": [
+        262
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "MessageInjector",
+          "kind": "type",
+          "file": "agent/extensions.go",
+          "line": 25
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "worktree_workspace_factory",
+      "module": "worktrees",
+      "name": "worktree_workspace_factory",
+      "line": 148,
+      "packages": [
+        "worktrees",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/worktrees.py",
+      "source_sha256": "6a3e231545e0639ddfd1037bc7de79b49cd6fb6a6c6bf0ae028d486707c7b881",
+      "definition_lines": [
+        43
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "WorktreeWorkspaceFactory",
+          "kind": "type",
+          "file": "agent/worktree_factory.go",
+          "line": 16
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "remove_worktree",
+      "module": "worktrees",
+      "name": "remove_worktree",
+      "line": 148,
+      "packages": [
+        "worktrees",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/worktrees.py",
+      "source_sha256": "6a3e231545e0639ddfd1037bc7de79b49cd6fb6a6c6bf0ae028d486707c7b881",
+      "definition_lines": [
+        70
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "worktrees",
+          "name": "Remove",
+          "kind": "function",
+          "receiver": "Manager",
+          "file": "worktrees/worktrees.go",
+          "line": 218
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WorktreeManager",
+      "module": "worktrees",
+      "name": "WorktreeManager",
+      "line": 148,
+      "packages": [
+        "worktrees",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/worktrees.py",
+      "source_sha256": "6a3e231545e0639ddfd1037bc7de79b49cd6fb6a6c6bf0ae028d486707c7b881",
+      "definition_lines": [
+        83
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "worktrees",
+          "name": "Manager",
+          "kind": "type",
+          "file": "worktrees/worktrees.go",
+          "line": 58
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_worktrees",
+      "module": "worktrees",
+      "name": "install_worktrees",
+      "line": 148,
+      "packages": [
+        "worktrees",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/worktrees.py",
+      "source_sha256": "6a3e231545e0639ddfd1037bc7de79b49cd6fb6a6c6bf0ae028d486707c7b881",
+      "definition_lines": [
+        208
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "MCPClient",
+      "module": "mcp",
+      "name": "MCPClient",
+      "line": 62,
+      "packages": [
+        "mcp",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/mcp.py",
+      "source_sha256": "a1ee135a3bbc66a630ddef0f3a35abb3cf52113443ca47b65a55907a3cf5ed91",
+      "definition_lines": [
+        59
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "MCPClient",
+          "kind": "type",
+          "file": "agent/mcp_registry.go",
+          "line": 21
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "InProcessMCP",
+      "module": "mcp",
+      "name": "InProcessMCP",
+      "line": 62,
+      "packages": [
+        "mcp",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/mcp.py",
+      "source_sha256": "a1ee135a3bbc66a630ddef0f3a35abb3cf52113443ca47b65a55907a3cf5ed91",
+      "definition_lines": [
+        72
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "mcp",
+          "name": "InProcessClient",
+          "kind": "type",
+          "file": "mcp/inprocess.go",
+          "line": 26
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "StdioMCP",
+      "module": "mcp",
+      "name": "StdioMCP",
+      "line": 62,
+      "packages": [
+        "mcp",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/mcp.py",
+      "source_sha256": "a1ee135a3bbc66a630ddef0f3a35abb3cf52113443ca47b65a55907a3cf5ed91",
+      "definition_lines": [
+        101
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "mcp",
+          "name": "StdioClient",
+          "kind": "type",
+          "file": "mcp/stdio.go",
+          "line": 54
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_mcp",
+      "module": "mcp",
+      "name": "install_mcp",
+      "line": 62,
+      "packages": [
+        "mcp",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/mcp.py",
+      "source_sha256": "a1ee135a3bbc66a630ddef0f3a35abb3cf52113443ca47b65a55907a3cf5ed91",
+      "definition_lines": [
+        320
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "register_mcp",
+      "module": "mcp",
+      "name": "register_mcp",
+      "line": 62,
+      "packages": [
+        "mcp",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/mcp.py",
+      "source_sha256": "a1ee135a3bbc66a630ddef0f3a35abb3cf52113443ca47b65a55907a3cf5ed91",
+      "definition_lines": [
+        256
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "Register",
+          "kind": "function",
+          "receiver": "MCPRegistry",
+          "file": "agent/mcp_registry.go",
+          "line": 48
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WorkflowDefinition",
+      "module": "workflows",
+      "name": "WorkflowDefinition",
+      "line": 149,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/__init__.py",
+      "source_sha256": "b45ef2fc25f78ac61e97cf4d47ebff4ca953378f10056a7fa157984bb5811d34",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "workflows",
+          "name": "Definition",
+          "kind": "type",
+          "file": "workflows/definition.go",
+          "line": 65
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WorkflowNode",
+      "module": "workflows",
+      "name": "WorkflowNode",
+      "line": 149,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/__init__.py",
+      "source_sha256": "b45ef2fc25f78ac61e97cf4d47ebff4ca953378f10056a7fa157984bb5811d34",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "workflows",
+          "name": "Node",
+          "kind": "type",
+          "file": "workflows/definition.go",
+          "line": 36
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WorkflowRun",
+      "module": "workflows",
+      "name": "WorkflowRun",
+      "line": 149,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/__init__.py",
+      "source_sha256": "b45ef2fc25f78ac61e97cf4d47ebff4ca953378f10056a7fa157984bb5811d34",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "workflows",
+          "name": "WorkflowRun",
+          "kind": "type",
+          "file": "workflows/records.go",
+          "line": 29
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WorkflowEngine",
+      "module": "workflows",
+      "name": "WorkflowEngine",
+      "line": 149,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/__init__.py",
+      "source_sha256": "b45ef2fc25f78ac61e97cf4d47ebff4ca953378f10056a7fa157984bb5811d34",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "workflows",
+          "name": "WorkflowEngine",
+          "kind": "type",
+          "file": "workflows/engine.go",
+          "line": 120
+        }
+      ],
+      "binding_status": "name_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WorkflowService",
+      "module": "workflows.service",
+      "name": "WorkflowService",
+      "line": 157,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/service.py",
+      "source_sha256": "e5539b1cfcf9fdde01631feffe1af858ca42b58d78a05effbe97ec01aaa9c95c",
+      "definition_lines": [
+        66
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "WorkflowService",
+          "kind": "type",
+          "file": "agent/workflow_service.go",
+          "line": 113
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "WorkflowLaunchResult",
+      "module": "workflows.service",
+      "name": "WorkflowLaunchResult",
+      "line": 157,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/service.py",
+      "source_sha256": "e5539b1cfcf9fdde01631feffe1af858ca42b58d78a05effbe97ec01aaa9c95c",
+      "definition_lines": [
+        37
+      ],
+      "python_kind": "class",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "WorkflowLaunchResult",
+          "kind": "type",
+          "file": "agent/workflow_service.go",
+          "line": 69
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "FreshAgentRunner",
+      "module": "workflows",
+      "name": "FreshAgentRunner",
+      "line": 149,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/__init__.py",
+      "source_sha256": "b45ef2fc25f78ac61e97cf4d47ebff4ca953378f10056a7fa157984bb5811d34",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "FreshWorkflowRunner",
+          "kind": "type",
+          "file": "agent/workflow_runner.go",
+          "line": 47
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "InMemoryWorkflowStore",
+      "module": "workflows",
+      "name": "InMemoryWorkflowStore",
+      "line": 149,
+      "packages": [
+        "workflows"
+      ],
+      "source_file": "python/mini_loop/workflows/__init__.py",
+      "source_sha256": "b45ef2fc25f78ac61e97cf4d47ebff4ca953378f10056a7fa157984bb5811d34",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "workflows",
+          "name": "InMemoryStore",
+          "kind": "type",
+          "file": "workflows/store.go",
+          "line": 61
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    },
+    {
+      "public_name": "install_workflows",
+      "module": "workflows.tools",
+      "name": "install_workflows",
+      "line": 158,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/workflows/tools.py",
+      "source_sha256": "f7618e528672dfd3b9b5917679705c2d72be8bc3f8fc5338aa9c40489bbf3b90",
+      "definition_lines": [
+        104
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ManagerServices",
+          "kind": "type",
+          "file": "agent/manager_config.go",
+          "line": 54
+        },
+        {
+          "package": "launcher",
+          "name": "Options",
+          "kind": "type",
+          "file": "launcher/app.go",
+          "line": 115
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false
+    }
+  ],
+  "public_counts": {
+    "explicit_candidate_requires_semantic_review": 99,
+    "name_candidate_requires_semantic_review": 52,
+    "no_public_namespace_binding_identified": 6
+  },
+  "readme_capabilities": [
+    {
+      "capability": "Async agent loop, workspace tools, session isolation, REST/SSE console",
+      "source_default": "**On**",
+      "selector": "Core runtime",
+      "python_tests": [
+        "python/tests/test_transcript_contract.py",
+        "python/tests/test_two_tenant_isolation.py",
+        "python/tests/test_server.py"
+      ],
+      "go_test_candidates": [
+        "go/agent/runtime_test.go",
+        "go/httpapi/server_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof."
+    },
+    {
+      "capability": "Prompt caching and stuck detection",
+      "source_default": "**On**",
+      "selector": "Replace or disable through injected policies",
+      "python_tests": [
+        "python/tests/test_caching.py",
+        "python/tests/test_stuck.py"
+      ],
+      "go_test_candidates": [
+        "go/agent/loop_contract_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof."
+    },
+    {
+      "capability": "Local trajectory recording",
+      "source_default": "**On**",
+      "selector": "`MINILOOP_TRAJECTORIES=0` disables it",
+      "python_tests": [
+        "python/tests/test_trajectory.py",
+        "python/tests/test_trajectory_ownership.py"
+      ],
+      "go_test_candidates": [
+        "go/launcher/trajectory_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof."
+    },
+    {
+      "capability": "Comprehensive s09–s20 feature bundle",
+      "source_default": "**Off**",
+      "selector": "`MINILOOP_FEATURES=all` or `enable_features=True`",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "go_test_candidates": [
+        "go/agent/manager_features_test.go",
+        "go/launcher/features_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof.",
+      "known_gap": "Default full-feature CLI refuses without an injected diagnostics provider; CPython parser selection approval is still pending."
+    },
+    {
+      "capability": "HTTP authentication",
+      "source_default": "**Off on loopback**",
+      "selector": "Configure `MINILOOP_API_TOKEN` or `MINILOOP_API_TOKENS`; non-loopback startup without tokens is refused",
+      "python_tests": [
+        "python/tests/test_auth.py"
+      ],
+      "go_test_candidates": [
+        "go/httpapi/server_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof."
+    },
+    {
+      "capability": "Sandbox, secret registry, SQLite state",
+      "source_default": "**Null boundaries**",
+      "selector": "Inject/configure the protection needed by the deployment",
+      "python_tests": [
+        "python/tests/test_sandbox.py",
+        "python/tests/test_storage.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "go_test_candidates": [
+        "go/sandbox/contracts_test.go",
+        "go/sqlitestate/store_test.go",
+        "go/agent/gate_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof."
+    },
+    {
+      "capability": "Owner-scoped skills, memory, and personal-skill publication",
+      "source_default": "**Off**",
+      "selector": "Configure `MINILOOP_USER_RESOURCES_ROOT` and authenticated owners",
+      "python_tests": [
+        "python/tests/test_user_resource_lifecycle.py",
+        "python/tests/test_memory_tenant_isolation.py"
+      ],
+      "go_test_candidates": [
+        "go/userresources/resolver_test.go",
+        "go/launcher/memory_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof."
+    },
+    {
+      "capability": "Token-efficiency pipeline and semantic code tools",
+      "source_default": "**Off**",
+      "selector": "Explicit `shadow`/`enforce` and pinned `ast-outline` settings",
+      "python_tests": [
+        "python/tests/test_token_efficiency.py",
+        "python/tests/test_ast_context.py"
+      ],
+      "go_test_candidates": [
+        "go/efficiency/request_test.go",
+        "go/launcher/ast_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof."
+    },
+    {
+      "capability": "Guardian approval reviewer",
+      "source_default": "**Off**",
+      "selector": "`MINILOOP_GUARDIAN=1`; it may approve, deny, or defer, never widen authority",
+      "python_tests": [
+        "python/tests/test_guardian.py",
+        "python/tests/test_guardian_wiring.py"
+      ],
+      "go_test_candidates": [
+        "go/launcher/guardian_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof.",
+      "authority": "Explicit Guardian never grants owner/capability authority or bypasses final readonly denial."
+    },
+    {
+      "capability": "Typed decisions: choice, score, and noul",
+      "source_default": "**Off, including the full feature bundle**",
+      "selector": "`MINILOOP_DECISIONS=llm\\|jev` or explicit `install_decisions()`; judgments return data through the existing tool boundary",
+      "python_tests": [
+        "python/tests/test_decisions.py",
+        "python/tests/test_decision_replay.py"
+      ],
+      "go_test_candidates": [
+        "go/decisions/contracts_test.go",
+        "go/launcher/decisions_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof.",
+      "independent": "Full feature registry keeps decisions off unless explicitly selected."
+    },
+    {
+      "capability": "Declarative workflow MVP",
+      "source_default": "**Off, process-local**",
+      "selector": "Trusted Python construction with `enable_workflows=True`",
+      "python_tests": [
+        "python/tests/test_workflows.py",
+        "python/tests/test_workflow_routes.py"
+      ],
+      "go_test_candidates": [
+        "go/workflows/engine_test.go",
+        "go/launcher/workflows_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof.",
+      "independent": "Default server setting does not automatically install workflow tools; trusted composition/CLI flag selects them."
+    },
+    {
+      "capability": "Verified execute → verify → fold loop",
+      "source_default": "**Library-only**",
+      "selector": "Call `VerifiedLoopService` explicitly; no HTTP/tool surface",
+      "python_tests": [
+        "python/tests/test_verified_loop_service.py",
+        "python/tests/test_verified_shadow.py"
+      ],
+      "go_test_candidates": [
+        "go/verifiedloop/service_test.go"
+      ],
+      "missing_test_path_candidates": [],
+      "scope": "Test-file and capability index only; baseline full suites include these files, but this row is not a complete field/default/lifecycle semantic proof.",
+      "independent": "Library-only verified loop is separate from HTTP/model tools."
+    }
+  ],
+  "curriculum": [
+    {
+      "label": "s01",
+      "mechanism": "agent loop",
+      "python_tests": [
+        "python/tests/test_transcript_contract.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s11",
+      "mechanism": "error recovery",
+      "python_tests": [
+        "python/tests/test_recovery_backoff.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s02",
+      "mechanism": "bash/read/write/edit/glob",
+      "python_tests": [
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s12",
+      "mechanism": "task system",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s03",
+      "mechanism": "permissions",
+      "python_tests": [
+        "python/tests/test_permission_modes.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s13",
+      "mechanism": "background tasks",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s04",
+      "mechanism": "lifecycle hooks",
+      "python_tests": [
+        "python/tests/test_extension_contracts.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s14",
+      "mechanism": "durable cron",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s05",
+      "mechanism": "TodoWrite",
+      "python_tests": [
+        "python/tests/test_context_matches_tools.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s15–17",
+      "mechanism": "teams, protocols, autonomy",
+      "python_tests": [
+        "python/tests/test_team_tools.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s06",
+      "mechanism": "subagents",
+      "python_tests": [
+        "python/tests/test_subagent_provider.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s18",
+      "mechanism": "task-bound worktrees",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s07",
+      "mechanism": "agent and owner-scoped skills",
+      "python_tests": [
+        "python/tests/test_user_resource_lifecycle.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s19",
+      "mechanism": "MCP",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s08",
+      "mechanism": "four-layer compaction",
+      "python_tests": [
+        "python/tests/test_compaction_census.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s20",
+      "mechanism": "comprehensive registry",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s09",
+      "mechanism": "memory lifecycle",
+      "python_tests": [
+        "python/tests/test_features.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    },
+    {
+      "label": "s10",
+      "mechanism": "per-call runtime prompt",
+      "python_tests": [
+        "python/tests/test_context_matches_tools.py"
+      ],
+      "scope": "Source test index only, not complete parity proof."
+    }
+  ],
+  "settings": {
+    "fields": [
+      {
+        "name": "model",
+        "line": 87,
+        "annotation": "str"
+      },
+      {
+        "name": "base_url",
+        "line": 88,
+        "annotation": "str | None"
+      },
+      {
+        "name": "api_key",
+        "line": 89,
+        "annotation": "str | None"
+      },
+      {
+        "name": "max_tokens",
+        "line": 92,
+        "annotation": "int"
+      },
+      {
+        "name": "token_threshold",
+        "line": 95,
+        "annotation": "int"
+      },
+      {
+        "name": "token_efficiency_mode",
+        "line": 100,
+        "annotation": "str"
+      },
+      {
+        "name": "token_efficiency_response_style",
+        "line": 105,
+        "annotation": "str"
+      },
+      {
+        "name": "token_efficiency_persist_raw",
+        "line": 110,
+        "annotation": "bool"
+      },
+      {
+        "name": "token_efficiency_raw_min_bytes",
+        "line": 115,
+        "annotation": "int"
+      },
+      {
+        "name": "token_efficiency_artifact_ttl_seconds",
+        "line": 120,
+        "annotation": "float"
+      },
+      {
+        "name": "token_efficiency_max_artifact_bytes",
+        "line": 125,
+        "annotation": "int"
+      },
+      {
+        "name": "token_efficiency_max_total_bytes",
+        "line": 130,
+        "annotation": "int"
+      },
+      {
+        "name": "ast_outline_enabled",
+        "line": 138,
+        "annotation": "bool"
+      },
+      {
+        "name": "ast_outline_binary",
+        "line": 141,
+        "annotation": "str"
+      },
+      {
+        "name": "ast_outline_sha256",
+        "line": 146,
+        "annotation": "str | None"
+      },
+      {
+        "name": "ast_outline_timeout",
+        "line": 151,
+        "annotation": "float"
+      },
+      {
+        "name": "ast_outline_max_output_bytes",
+        "line": 154,
+        "annotation": "int"
+      },
+      {
+        "name": "max_concurrent_llm",
+        "line": 163,
+        "annotation": "int"
+      },
+      {
+        "name": "max_concurrent_tools",
+        "line": 167,
+        "annotation": "int"
+      },
+      {
+        "name": "max_turns",
+        "line": 172,
+        "annotation": "int"
+      },
+      {
+        "name": "subagent_max_rounds",
+        "line": 173,
+        "annotation": "int"
+      },
+      {
+        "name": "subagent_max_depth",
+        "line": 179,
+        "annotation": "int"
+      },
+      {
+        "name": "bash_timeout",
+        "line": 181,
+        "annotation": "int"
+      },
+      {
+        "name": "fallback_model",
+        "line": 188,
+        "annotation": "str | None"
+      },
+      {
+        "name": "rate_limit_per_minute",
+        "line": 197,
+        "annotation": "int"
+      },
+      {
+        "name": "approval_timeout",
+        "line": 203,
+        "annotation": "float"
+      },
+      {
+        "name": "workspace_root",
+        "line": 207,
+        "annotation": "Path"
+      },
+      {
+        "name": "bindable_roots",
+        "line": 219,
+        "annotation": "tuple[Path, ...]"
+      },
+      {
+        "name": "spill_dir",
+        "line": 228,
+        "annotation": "Path | None"
+      },
+      {
+        "name": "skills_dir",
+        "line": 235,
+        "annotation": "Path"
+      },
+      {
+        "name": "user_resources_root",
+        "line": 243,
+        "annotation": "Path | None"
+      },
+      {
+        "name": "memory_root",
+        "line": 250,
+        "annotation": "Path | None"
+      },
+      {
+        "name": "repo_root",
+        "line": 254,
+        "annotation": "Path | None"
+      },
+      {
+        "name": "trajectory_root",
+        "line": 261,
+        "annotation": "Path | None"
+      },
+      {
+        "name": "trajectory_enabled",
+        "line": 265,
+        "annotation": "bool"
+      },
+      {
+        "name": "trajectory_capture_content",
+        "line": 268,
+        "annotation": "bool"
+      },
+      {
+        "name": "team_idle_poll",
+        "line": 273,
+        "annotation": "float"
+      },
+      {
+        "name": "team_idle_timeout",
+        "line": 274,
+        "annotation": "float"
+      },
+      {
+        "name": "fake_llm",
+        "line": 278,
+        "annotation": "bool"
+      },
+      {
+        "name": "enable_features",
+        "line": 282,
+        "annotation": "bool"
+      },
+      {
+        "name": "guardian_enabled",
+        "line": 288,
+        "annotation": "bool"
+      },
+      {
+        "name": "decision_mode",
+        "line": 293,
+        "annotation": "str"
+      },
+      {
+        "name": "decision_model",
+        "line": 296,
+        "annotation": "str"
+      },
+      {
+        "name": "typesafe_api_key",
+        "line": 299,
+        "annotation": "str | None"
+      },
+      {
+        "name": "enable_workflows",
+        "line": 307,
+        "annotation": "bool"
+      },
+      {
+        "name": "workflow_max_concurrent_agents",
+        "line": 310,
+        "annotation": "int"
+      },
+      {
+        "name": "workflow_max_agents",
+        "line": 313,
+        "annotation": "int"
+      },
+      {
+        "name": "workflow_max_rounds",
+        "line": 316,
+        "annotation": "int"
+      },
+      {
+        "name": "workflow_wall_time_seconds",
+        "line": 319,
+        "annotation": "float"
+      }
+    ],
+    "source_fixture_fields": [
+      "api_key",
+      "approval_timeout",
+      "ast_outline_binary",
+      "ast_outline_enabled",
+      "ast_outline_max_output_bytes",
+      "ast_outline_sha256",
+      "ast_outline_timeout",
+      "base_url",
+      "bash_timeout",
+      "bindable_roots",
+      "decision_mode",
+      "decision_model",
+      "enable_features",
+      "enable_workflows",
+      "fake_llm",
+      "fallback_model",
+      "guardian_enabled",
+      "max_concurrent_llm",
+      "max_concurrent_tools",
+      "max_tokens",
+      "max_turns",
+      "memory_root",
+      "model",
+      "rate_limit_per_minute",
+      "repo_root",
+      "skills_dir",
+      "spill_dir",
+      "subagent_max_depth",
+      "subagent_max_rounds",
+      "team_idle_poll",
+      "team_idle_timeout",
+      "token_efficiency_artifact_ttl_seconds",
+      "token_efficiency_max_artifact_bytes",
+      "token_efficiency_max_total_bytes",
+      "token_efficiency_mode",
+      "token_efficiency_persist_raw",
+      "token_efficiency_raw_min_bytes",
+      "token_efficiency_response_style",
+      "token_threshold",
+      "trajectory_capture_content",
+      "trajectory_enabled",
+      "trajectory_root",
+      "typesafe_api_key",
+      "user_resources_root",
+      "workflow_max_agents",
+      "workflow_max_concurrent_agents",
+      "workflow_max_rounds",
+      "workflow_wall_time_seconds",
+      "workspace_root"
+    ],
+    "source_cases": 64,
+    "fixture": "go/testdata/python-configuration.json",
+    "fixture_sha256": "c1e82db5c07987b617c66090a8169e211291314c2014882930c9064411b38adc",
+    "missing_fields": []
+  },
+  "feature_bundle": {
+    "definitions": 57,
+    "registries": 14,
+    "manager_profiles": 8,
+    "fixture": "go/testdata/python-feature-bundle.json",
+    "fixture_sha256": "91edc27a19b7aa6e90c335f5f99c1ebd1bbc413aab057ff8aae020d58a8f99de"
+  },
+  "http": {
+    "source_openapi": "go/testdata/python-openapi.json",
+    "sha256": "63d12ddc33f6ea20b6cc8ee73fb7f63d47237bf1c7fb5049f96b14df6fdc19d9",
+    "paths": 40,
+    "operations": [
+      {
+        "method": "GET",
+        "path": "/"
+      },
+      {
+        "method": "POST",
+        "path": "/benchmark"
+      },
+      {
+        "method": "GET",
+        "path": "/healthz"
+      },
+      {
+        "method": "GET",
+        "path": "/improvements"
+      },
+      {
+        "method": "GET",
+        "path": "/self-audit"
+      },
+      {
+        "method": "GET",
+        "path": "/self-audit/bench-task-drafts"
+      },
+      {
+        "method": "GET",
+        "path": "/self-audit/suggestions"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions"
+      },
+      {
+        "method": "DELETE",
+        "path": "/sessions/{session_id}"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/approvals"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/approvals/{approval_id}"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/cancel"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/cron"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/cron"
+      },
+      {
+        "method": "DELETE",
+        "path": "/sessions/{session_id}/cron/{job_id}"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/cron/{job_id}/arm"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/events"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/fork"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/goal"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/memory"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/memory/{name}"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/messages"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/messages/stream"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/mode"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/personal-skills/preview"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/personal-skills/{draft_id}/commit"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/propose-improvement"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/skills"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/steer"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/tasks"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/team"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/trajectories"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/transcript"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/workflows"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/workflows"
+      },
+      {
+        "method": "GET",
+        "path": "/sessions/{session_id}/workflows/{run_id}"
+      },
+      {
+        "method": "POST",
+        "path": "/sessions/{session_id}/workflows/{run_id}/cancel"
+      },
+      {
+        "method": "GET",
+        "path": "/trajectories"
+      },
+      {
+        "method": "GET",
+        "path": "/trajectories/{trajectory_id}"
+      },
+      {
+        "method": "GET",
+        "path": "/trajectories/{trajectory_id}/export"
+      },
+      {
+        "method": "GET",
+        "path": "/trajectories/{trajectory_id}/view"
+      },
+      {
+        "method": "GET",
+        "path": "/ui"
+      }
+    ],
+    "limits": "44 method/path operations do not prove every response/error/event/default lifecycle; current native routing proof is separate."
+  },
+  "sdk_producers": [
+    {
+      "file": "python/mini_loop/transport.py",
+      "line": 66,
+      "method": "create",
+      "receiver": "agent.client.messages",
+      "keywords": [
+        "**kwargs"
+      ]
+    },
+    {
+      "file": "python/mini_loop/transport.py",
+      "line": 140,
+      "method": "stream",
+      "receiver": "agent.client.messages",
+      "keywords": [
+        "**kwargs"
+      ]
+    },
+    {
+      "file": "python/mini_loop/memory.py",
+      "line": 653,
+      "method": "create",
+      "receiver": "client.messages",
+      "keywords": [
+        "model",
+        "max_tokens",
+        "messages"
+      ]
+    }
+  ],
+  "source_hashes": {
+    "python/mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
+    "python/mini_loop/config.py": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+    "python/mini_loop/builtins.py": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+    "python/mini_loop/__main__.py": "7e6730669a2307c56a1a722ebb440cc5c968c3cb027050846692b4f93b759257",
+    "python/mini_loop/server.py": "d24e4a5371b48b0ab95c9f0b6cdf39f121f5684507e40c9426f066d5034cc479",
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/mini_loop/transport.py": "ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873",
+    "python/mini_loop/memory.py": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f"
+  },
+  "scans": {
+    "go_declarations": 4279,
+    "go_parser": "var/go-public-scope-2026-10-13/go_exports.go",
+    "go_parser_sha256": "980c6c3959998600a723b3142b558c11db6798f547185ee2b51343c5c2aa250d",
+    "go_index_sha256": "399d671d4cd7e56bbc7ffd8135c82890aaf334c727d167fd509c23152e42286f",
+    "collector": "var/go-public-scope-2026-10-13/collect.py",
+    "collector_sha256": "b372f7d16990ec5e9d6c149681fc8f83961959215f4502a0eb592f95c5de48ec",
+    "limits": "Go syntactic inventory includes inactive build-tag files; not compiler reachability, live assertions, cross-platform availability or semantic API equivalence."
+  },
+  "baseline_evidence": "docs/audits/go-mcp-mapping-native-2026-10-13.json",
+  "remaining": [
+    "Default full-feature CLI parser decision/implementation; missing parser consumer.",
+    "Public function/constant namespace mappings and exact operator signatures need semantic reconciliation.",
+    "Original P0/P1/G0-G7, broader provider/public/default/feature,129 body observations, historical temporal failures, platform/performance/release gates remain unproven."
+  ],
+  "public_gates": {
+    "log": "var/go-public-scope-2026-10-13/public-gates.log",
+    "root_tests": [
+      {
+        "package": "github.com/luoyjx/mini-loop/go/config",
+        "name": "TestActualPythonSettings"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/config",
+        "name": "TestActualSourceConfigImportPreparation"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/launcher",
+        "name": "TestInspectIsSideEffectFreeAndReportsUnavailableDefaults"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/launcher",
+        "name": "TestFullFeatureInspectionResolvesExplicitBackendWithoutEffects"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/launcher",
+        "name": "TestFullFeatureLauncherHTTPPublishesSourceCatalogueAndRepositoryBinding"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestCapturedASCIIAuthorityRequestsMatchSDK"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestCapturedAuthorityHTTPWireMatchesSDK"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestFederationLiteralAdmissionPhaseAndRedirectIsolation"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestASTManagerInheritanceAndAuthorityBinding"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestCatchupDetachedMaskedProjectionNeverInstallsHumanAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestModeRefreshesAfterBeforeHookWithoutChangingCallerAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestCronGateRewriteMaskReplayAndForeignAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestDiagnosticsRebindsExecutionWorkspaceAndRefusesForeignAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestObservationLiveRunRecoversMaskedAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestRequestProjectionLiveRunKeepsCachedPrefixAndAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestManagerFullFeaturesSelectsSourceCataloguesAndOverrides"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestManagerFullFeaturesMissingParserFailsBeforeWorkspaceEffects"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestManagerSkillPreviewAuthorityAndLedger"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestMemoryCaptureCallbackAuthorityFailures"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestMemoryExtractionAuthorityFailuresRemainErrors"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestMemoryToolsMaskDiskArgumentsAndRejectForeignAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestNonfiniteBashEventArchiveRetainsObservationWithoutAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestSharedSnapshotCannotModifyLiveRunAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestHTTPPostMemoryProfileStaysOutsideAuthorityAndDelegation"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestManagedCronLazyRestorationRequiresNewArmAndFreshAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestEventRecordingMasksCallerMetadataWithoutChangingAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestSelectedTeamChildRebindsGuardWithoutParentManagerAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestWholeUsageSourceSnapshotsMaskCloneArchiveAndAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/agent",
+        "name": "TestFileHandlerRejectsDifferentWorkspaceAuthority"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "name": "TestRoutingMatchesActualSource"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "name": "TestOneAdmittedPrincipalFlowsIntoTurnWithoutHumanAuthority"
+      }
+    ],
+    "scope": "Fresh selected assertions only; not a new full-suite or semantic export equivalence claim."
+  },
+  "provider_gates": {
+    "log": "var/go-public-scope-2026-10-13/provider-gates.log",
+    "root_tests": [
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestCapturedASCIIAuthorityRequestsMatchSDK"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestCapturedAuthorityHTTPWireMatchesSDK"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestTargetTransportOwnsWireCloneAndProxySelection"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestTargetTransportProxyFailurePreventsDial"
+      },
+      {
+        "package": "github.com/luoyjx/mini-loop/go/provider",
+        "name": "TestCapturedProxyTLSWireMatchesSDK"
+      }
+    ],
+    "scope": "Fresh selected assertions only; not a new full-suite or semantic export equivalence claim."
+  },
+  "python_focused": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "python/tests/test_features.py",
+      "python/tests/test_provider_authority_wire_contracts.py"
+    ],
+    "exit_code": 0,
+    "result": "22 passed in 1.74s",
+    "log": "var/go-public-scope-2026-10-13/python-focused.log",
+    "sandbox_failure": "var/go-public-scope-2026-10-13/python-focused-sandbox.log",
+    "scope": "Same assertions retried only after correcting denied loopback bind; no Source/code/threshold changes."
+  },
+  "implementation_unchanged": {
+    "baseline": "e4c5aff",
+    "receipt": "docs/audits/go-mcp-mapping-native-2026-10-13.json",
+    "checked_owned_programs": 25,
+    "git_program_diff": [],
+    "new_full_suite": false,
+    "retained_coverage": "docs/audits/go-coverage-mcp-mapping-native-2026-10-13.json"
+  },
+  "architecture": {
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "base_changed": false,
+    "components_added_or_removed": false,
+    "iteration": "docs/audits/go-public-scope-infographic-2026-10-13.png",
+    "iteration_sha256": "24dbcf8f1b6d6ec27226dedfa58180c209c0bb99af97dc400632dc33c8caf18f",
+    "prompt": "docs/audits/go-public-scope-infographic-2026-10-13.prompt.txt",
+    "prompt_sha256": "18a7e11fb6472d723b38a7a776fb8c86ee2dfebb1cc0279098c254af56263f30",
+    "visual_review": "Exact five headings and six/seven/five cards; highlights only L1 public entry and L5 contractaudit. Clear Session/Provider bidirectional route, Session-to-Gate above Provider, Gate-to-L4 and results-to-Session; no Provider-to-Gate. No runtime/semantic completion claim.",
+    "html_delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "09c740c5268fc04e2ae8c0a226ea853d62f766a5e71c4dbac2d2177c5416d7cb",
+        "bytes": 147205
+      },
+      "artifact": {
+        "sha256": "c9acecf73a7ea261fe7275f8211e4bd1e6c1c29eda3ed6f08fe00edb20e3e74f",
+        "bytes": 801358
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "html_visual_review": "No fresh rendered-browser acceptance; structural/geometry checks separate."
+  },
+  "log_hashes": {
+    "public-gates.log": {
+      "path": "var/go-public-scope-2026-10-13/public-gates.log",
+      "sha256": "378a7f56bed699abdf6d4c27fb023f09c5572da7d511db4aa227a048f660d06a",
+      "bytes": 284818
+    },
+    "provider-gates.log": {
+      "path": "var/go-public-scope-2026-10-13/provider-gates.log",
+      "sha256": "4e53361d12875476f54e05a3c3dac685ba023369ba09505b3113b362e4845cbb",
+      "bytes": 96540
+    },
+    "python-focused.log": {
+      "path": "var/go-public-scope-2026-10-13/python-focused.log",
+      "sha256": "8fe25d3133275c6a258e953ae41945c66915551fd5437ca003c5025e3208bf6d",
+      "bytes": 99
+    },
+    "python-focused-sandbox.log": {
+      "path": "var/go-public-scope-2026-10-13/python-focused-sandbox.log",
+      "sha256": "fd78a3b981dbc6ef39ff8c1c6600526a7f38931f174508d1b856cefeaa76bd10",
+      "bytes": 6745
+    }
+  }
+}
