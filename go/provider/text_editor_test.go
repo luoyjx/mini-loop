@@ -107,7 +107,8 @@ func TestStreamClientCallerValidationRemainsSelected(t *testing.T) {
 		{`"opaque"`, false},
 		{`{"type":"future_metadata"}`, false},
 		{`{"type":"direct","tool_id":"unexpected"}`, true},
-		{`{"type":"code_execution_20260120"}`, false},
+		{`{"type":"code_execution_20260120"}`, true},
+		{`{"type":null,"tool_id":"parent"}`, false},
 	} {
 		state := streamAssembly{started: true}
 		raw := `{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"client","name":"bash","input":{"command":"true"},"caller":` + row.caller + `}}`

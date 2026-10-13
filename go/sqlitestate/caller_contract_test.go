@@ -26,7 +26,7 @@ func TestDeclaredCallerSourceMetadataSurvivesSQLiteReopen(t *testing.T) {
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 48 {
+	if len(fixture.Cases) != 160 {
 		t.Fatal("Source caller inventory changed")
 	}
 	ctx := context.Background()

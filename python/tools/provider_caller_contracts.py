@@ -23,14 +23,35 @@ def provider_caller_contracts() -> dict:
             ("code-2025-extension", {"caller": {"type": "code_execution_20250825", "tool_id": "parent", "future": {"secret-key": "secret-value"}}}),
             ("code-2026-extension", {"caller": {"type": "code_execution_20260120", "tool_id": "parent", "future": None}}),
         ]
-        profiles = []
-        for kind, fields in [
+        blocks = [
             ("tool_use", {"id": "client", "name": "bash", "input": {"command": "true"}}),
             ("server_tool_use", {"id": "server", "name": "web_search", "input": {}}),
             ("web_search_tool_result", {"tool_use_id": "search", "content": {"type": "web_search_tool_result_error", "error_code": "unavailable"}}),
             ("web_fetch_tool_result", {"tool_use_id": "fetch", "content": {"type": "web_fetch_tool_result_error", "error_code": "unavailable"}}),
-        ]:
+        ]
+        profiles = []
+        for kind, fields in blocks:
             profiles.extend((kind + "/" + label, {"type": kind, **fields, **caller}) for label, caller in callers)
+        caller_ids = [
+            ("empty", {"tool_id": ""}),
+            ("missing", {}),
+            ("null", {"tool_id": None}),
+            ("numeric-513", {"tool_id": 513}),
+            ("bool-true", {"tool_id": True}),
+            ("list", {"tool_id": [None, "secret-value", 513]}),
+            ("object", {"tool_id": {"secret-key": "secret-value"}}),
+        ]
+        for kind, fields in blocks:
+            for tag, caller_type in [
+                ("code-2025", "code_execution_20250825"),
+                ("code-2026", "code_execution_20260120"),
+            ]:
+                for label, caller_fields in caller_ids:
+                    profiles.append((kind + "/" + tag + "-tool-id-" + label, {
+                        "type": kind,
+                        **fields,
+                        "caller": {"type": caller_type, **caller_fields},
+                    }))
         for name, fields in profiles:
             for mode in ("direct", "stream"):
                 content = [fields, {"type": "text", "text": "ready"}]

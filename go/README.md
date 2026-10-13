@@ -3283,12 +3283,16 @@ alignment, defaults/public entry points and complete migration acceptance remain
 ### Declared provider caller extensions
 
 ToolCaller retains three named discriminators: direct, code_execution_20250825
-and code_execution_20260120. SDK-declared fields remain typed; unknown members
-are an immutable closed JSON extension object. Direct caller tool_id is unknown
-metadata and does not become typed ToolID. Code-execution callers still require
-a nonempty string ID. Unknown kinds and malformed known fields remain refused
-pending their separate Source contract audit. The extension decoder is atomic.
-Forty-eight SDK 0.107.1 direct/SSE recipes cover absent/null callers and extensions
+and code_execution_20260120. Known code caller IDs use SDKMetadataText,
+a named immutable finite JSON observation: empty text, missing/null, number,
+boolean, list and object values match the fixed SDK. Missing IDs normalize to
+null. ToolID() remains a string projection; ToolIDMetadata() exposes detached
+closed values. CodeExecutionToolCaller still requires nonempty text for explicit
+construction. Unknown members remain immutable extensions. Direct caller tool_id
+stays extension metadata and does not become typed ToolID. Unknown kinds and
+malformed discriminators are refused; failed decoding preserves the receiver.
+The 160 SDK 0.107.1 direct/SSE captures preserve the original 48 cases and cover
+seven additional tool_id profiles for both known code caller tags
 in client/server tool-use and web-search/web-fetch results. Forwarding and SQLite
 close/reopen preserve them. Masks cover extension keys/values without changing
 original messages. Nested historical callers follow archival bounds; network

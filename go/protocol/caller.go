@@ -17,10 +17,11 @@ const (
 )
 
 // ToolCaller is the closed provider caller union for tool-use and server-result blocks.
-// The fake provider leaves it absent; server-side tool callers carry a tool ID.
+// The fake provider leaves it absent. SDK caller IDs are inert observations;
+// the enclosing tool-use ID remains the execution identity.
 type ToolCaller struct {
 	kind   CallerKind
-	toolID string
+	toolID SDKMetadataText
 	extra  jsonvalue.Value
 }
 
@@ -30,7 +31,10 @@ func CodeExecutionToolCaller(kind CallerKind, toolID string) (ToolCaller, error)
 	if kind != CallerCodeExecution2025 && kind != CallerCodeExecution2026 {
 		return ToolCaller{}, fmt.Errorf("not a code execution caller kind: %q", kind)
 	}
-	caller := ToolCaller{kind: kind, toolID: toolID}
+	if toolID == "" {
+		return ToolCaller{}, errors.New("code execution caller requires a tool ID")
+	}
+	caller := ToolCaller{kind: kind, toolID: MetadataText(toolID)}
 	if err := caller.Validate(); err != nil {
 		return ToolCaller{}, err
 	}
@@ -38,17 +42,27 @@ func CodeExecutionToolCaller(kind CallerKind, toolID string) (ToolCaller, error)
 }
 
 func (caller ToolCaller) Kind() CallerKind { return caller.kind }
-func (caller ToolCaller) ToolID() string   { return caller.toolID }
+
+// ToolID returns the text projection, or an empty string for non-text metadata.
+func (caller ToolCaller) ToolID() string {
+	if text, ok := caller.toolID.Text(); ok {
+		return text
+	}
+	return ""
+}
+
+// ToolIDMetadata retains the SDK's finite nullable and non-text observations.
+func (caller ToolCaller) ToolIDMetadata() SDKMetadataText { return caller.toolID }
 
 func (caller ToolCaller) Validate() error {
 	switch caller.kind {
 	case CallerDirect:
-		if caller.toolID != "" {
+		if caller.toolID.Observation().Kind() != jsonvalue.Null {
 			return errors.New("direct caller cannot carry a tool ID")
 		}
 	case CallerCodeExecution2025, CallerCodeExecution2026:
-		if caller.toolID == "" {
-			return errors.New("code execution caller requires a tool ID")
+		if _, err := caller.toolID.MarshalJSON(); err != nil {
+			return fmt.Errorf("invalid code execution caller tool ID: %w", err)
 		}
 	default:
 		return fmt.Errorf("unsupported caller kind %q", caller.kind)
@@ -66,8 +80,8 @@ func (caller ToolCaller) MarshalJSON() ([]byte, error) {
 		}{Type: caller.kind}, caller.extra)
 	}
 	return marshalMetadataObject(struct {
-		Type   CallerKind `json:"type"`
-		ToolID string     `json:"tool_id"`
+		Type   CallerKind      `json:"type"`
+		ToolID SDKMetadataText `json:"tool_id"`
 	}{Type: caller.kind, ToolID: caller.toolID}, caller.extra)
 }
 
@@ -102,17 +116,19 @@ func decodeToolCaller(data []byte, bounded bool) (ToolCaller, error) {
 		next = ToolCaller{kind: *wire.Type, extra: extra}
 	case CallerCodeExecution2025, CallerCodeExecution2026:
 		var wire struct {
-			Type   *CallerKind `json:"type"`
-			ToolID *string     `json:"tool_id"`
+			Type *CallerKind `json:"type"`
 		}
-		_, extra, err := decodeMetadataObject(data, &wire, []string{"type", "tool_id"}, bounded)
+		value, extra, err := decodeMetadataObject(data, &wire, []string{"type", "tool_id"}, bounded)
 		if err != nil {
 			return ToolCaller{}, err
 		}
-		if wire.Type == nil || wire.ToolID == nil {
-			return ToolCaller{}, errors.New("code execution caller requires type and tool_id")
+		if wire.Type == nil {
+			return ToolCaller{}, errors.New("code execution caller requires type")
 		}
-		next = ToolCaller{kind: *wire.Type, toolID: *wire.ToolID, extra: extra}
+		// Missing IDs normalize to null in the fixed SDK. Read the immutable
+		// object directly so archival decoding does not reapply the wire cap.
+		toolID, _ := value.Lookup("tool_id")
+		next = ToolCaller{kind: *wire.Type, toolID: SDKMetadataText{value: toolID}, extra: extra}
 	default:
 		return ToolCaller{}, fmt.Errorf("unsupported caller kind %q", tag.Type)
 	}
