@@ -157,6 +157,9 @@ type ToolInput struct {
 	readTokenArtifact ReadTokenArtifactInput
 	connectMCP        ConnectMCPInput
 	mcpArguments      jsonvalue.Value
+	// Model ingress retains finite roots until whole-batch dict preparation.
+	// Explicit caller MCP arguments remain object-only.
+	mcpModel          bool
 	workflow          WorkflowInput
 	workflowReference WorkflowReferenceInput
 	returnArtifact    jsonvalue.Value
@@ -521,7 +524,7 @@ func (input ToolInput) Validate() error {
 		return input.validateAST()
 	}
 	if IsMCPToolName(input.name) {
-		if input.mcpArguments.Kind() != jsonvalue.Object {
+		if !input.mcpModel && input.mcpArguments.Kind() != jsonvalue.Object {
 			return errors.New("MCP arguments must be an object")
 		}
 		_, err := input.mcpArguments.MarshalJSON()

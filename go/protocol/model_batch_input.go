@@ -43,11 +43,18 @@ func (failure ModelBatchInputFailure) Error() string {
 	}
 }
 
-// ForModelBatch copies the observed shell arguments as Source dict(input or {}).
+// ForModelBatch copies observed shell/MCP arguments as Source dict(input or {}).
 // The original assistant block remains unchanged. Non-string mapping-key
 // profiles remain explicit rather than entering a string-key domain object.
 func (input ToolInput) ForModelBatch() (ToolInput, error) {
 	rejected := input.bashRejected
+	if input.mcpModel && input.mcpArguments.Kind() != jsonvalue.Object {
+		value, err := rejectedBashArguments(input.mcpArguments)
+		if err != nil {
+			return ToolInput{}, err
+		}
+		rejected = &value
+	}
 	if input.backgroundModel != nil {
 		rejected = input.backgroundModel.rejected
 	}

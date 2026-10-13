@@ -1,0 +1,1097 @@
+{
+  "cases": [
+    {
+      "batch": false,
+      "calls": [
+        {
+          "x": 1
+        }
+      ],
+      "error": null,
+      "input_json": "{\"x\": 1}",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/object",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"x\":1}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "{}",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-object",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "null",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/null",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "false",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/false",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'bool' object is not iterable"
+      },
+      "input_json": "true",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/true",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'bool' object is not iterable"
+      },
+      "input_json": "true",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/true/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "0",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/zero",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "input_json": "7",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "input_json": "-2",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "0.0",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/float-zero",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "-0.0",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/negative-zero",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "1.25",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/float",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "\"\"",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-text",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 1; 2 is required"
+      },
+      "input_json": "\"x\"",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 1; 2 is required"
+      },
+      "input_json": "\"abc\"",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/long-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [
+        {}
+      ],
+      "error": null,
+      "input_json": "[]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-array",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {
+          "name": "World"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"name\", \"World\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/pair-array",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"name\":\"World\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": true,
+      "calls": [
+        {
+          "first": 1
+        },
+        {
+          "name": "World"
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"name\", \"World\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/pair-array/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"first\":1}"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"name\":\"World\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result",
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {
+          "x": 2
+        }
+      ],
+      "error": null,
+      "input_json": "[[\"x\", 1], [\"x\", 2]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/repeated-pairs",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"x\":2}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {
+          "a": "b",
+          "c": "d"
+        }
+      ],
+      "error": null,
+      "input_json": "[\"ab\", \"cd\"]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/text-pairs",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"a\":\"b\",\"c\":\"d\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [
+        {
+          "用": "户"
+        }
+      ],
+      "error": null,
+      "input_json": "[\"用户\"]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/unicode-pair",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "{\"用\":\"户\"}"
+        }
+      ],
+      "trace": [
+        "before",
+        "handler",
+        "after",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "cannot convert dictionary update sequence element #0 to a sequence"
+      },
+      "input_json": "[1]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "cannot convert dictionary update sequence element #0 to a sequence"
+      },
+      "input_json": "[1]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/integer-row/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 0; 2 is required"
+      },
+      "input_json": "[[]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/empty-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 1; 2 is required"
+      },
+      "input_json": "[[\"x\"]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/short-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 3; 2 is required"
+      },
+      "input_json": "[[\"x\", 1, 2]]",
+      "mode": "auto",
+      "model_input_unchanged": true,
+      "name": "auto/long-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "{\"x\": 1}",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/object",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "{}",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-object",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "null",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/null",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "false",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/false",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'bool' object is not iterable"
+      },
+      "input_json": "true",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/true",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'bool' object is not iterable"
+      },
+      "input_json": "true",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/true/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "0",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/zero",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "input_json": "7",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "input_json": "-2",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "0.0",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/float-zero",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "-0.0",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/negative-zero",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "input_json": "1.25",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/float",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "\"\"",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-text",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 1; 2 is required"
+      },
+      "input_json": "\"x\"",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 1; 2 is required"
+      },
+      "input_json": "\"abc\"",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/long-text",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-array",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"name\", \"World\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/pair-array",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"name\", \"World\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/pair-array/batch",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result",
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[[\"x\", 1], [\"x\", 2]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/repeated-pairs",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[\"ab\", \"cd\"]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/text-pairs",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": null,
+      "input_json": "[\"用户\"]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/unicode-pair",
+      "output": "done",
+      "requests": 2,
+      "results": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: external)"
+        }
+      ],
+      "trace": [
+        "before",
+        "result"
+      ]
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "cannot convert dictionary update sequence element #0 to a sequence"
+      },
+      "input_json": "[1]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": true,
+      "calls": [],
+      "error": {
+        "kind": "TypeError",
+        "message": "cannot convert dictionary update sequence element #0 to a sequence"
+      },
+      "input_json": "[1]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/integer-row/batch",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 0; 2 is required"
+      },
+      "input_json": "[[]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/empty-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 1; 2 is required"
+      },
+      "input_json": "[[\"x\"]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/short-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    },
+    {
+      "batch": false,
+      "calls": [],
+      "error": {
+        "kind": "ValueError",
+        "message": "dictionary update sequence element #0 has length 3; 2 is required"
+      },
+      "input_json": "[[\"x\", 1, 2]]",
+      "mode": "readonly",
+      "model_input_unchanged": true,
+      "name": "readonly/long-row",
+      "output": null,
+      "requests": 1,
+      "results": [],
+      "trace": []
+    }
+  ],
+  "limits": [
+    "Actual finite MCP roots in Source model loop; no non-string pair keys/nonfinite root profile claimed.",
+    "All batch arguments are copied before effects. MCP readonly hint never lowers external risk.",
+    "Original assistant model input remains unchanged while execution receives the prepared object."
+  ]
+}

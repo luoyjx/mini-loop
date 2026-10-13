@@ -48,7 +48,19 @@ func MCPToolInput(name ToolName, arguments jsonvalue.Value) (ToolInput, error) {
 	return input, input.Validate()
 }
 func (input ToolInput) MCP() (MCPInput, bool) {
-	return MCPInput{input.mcpArguments}, IsMCPToolName(input.name)
+	return MCPInput{input.mcpArguments}, IsMCPToolName(input.name) && input.mcpArguments.Kind() == jsonvalue.Object
+}
+
+func decodeModelMCPInput(name ToolName, data []byte) (ToolInput, error) {
+	if len(data) > MaxWireBytes {
+		return ToolInput{}, errors.New("MCP model input exceeds wire bound")
+	}
+	arguments, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return ToolInput{}, err
+	}
+	input := ToolInput{name: name, mcpArguments: arguments, mcpModel: true}
+	return input, input.Validate()
 }
 func decodeMCPInput(name ToolName, data []byte) (ToolInput, error) {
 	arguments, err := jsonvalue.Decode(string(data))

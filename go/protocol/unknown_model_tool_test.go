@@ -88,12 +88,17 @@ func TestUnknownModelToolFallbackDoesNotHideKnownDecoderErrors(t *testing.T) {
 		Name  ToolName
 		Input string
 	}{
-		{ToolReadFile, `{"path":17}`}, {ToolTodoWrite, `{"items":"invalid"}`}, {"mcp__missing__tool", `null`},
+		{ToolReadFile, `{"path":17}`}, {ToolTodoWrite, `{"items":"invalid"}`}, {"mcp__missing__tool", `NaN`},
 		{"missing-tool", `NaN`}, {"missing-tool", `{"nested":Infinity}`}, {"missing-tool", `{broken`},
 	} {
 		if _, err := DecodeModelToolInput(row.Name, []byte(row.Input)); err == nil {
 			t.Fatal("known decoder or finite observation failure was hidden", row)
 		}
+	}
+	// Source preserves a model null until batch preparation turns it into an
+	// empty object. Explicit MCP calls still require object-shaped arguments.
+	if _, err := DecodeToolInput("mcp__missing__tool", []byte(`null`)); err == nil {
+		t.Fatal("explicit MCP decoder accepted a non-object root")
 	}
 	input, err := DecodeModelToolInput("missing-tool", []byte(`{}`))
 	if err != nil {

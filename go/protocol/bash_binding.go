@@ -59,6 +59,9 @@ func (input ToolInput) BashBindingFailure() (BashBindingFailure, bool) {
 // model replies. Strict explicit admission continues to use DecodeToolInput.
 // Known fields stay typed; only unrecognized parameters enter immutable extras.
 func DecodeModelToolInput(name ToolName, data []byte) (ToolInput, error) {
+	if IsMCPToolName(name) {
+		return decodeModelMCPInput(name, data)
+	}
 	if name == ToolBackgroundRun {
 		return decodeModelBackgroundInput(data)
 	}

@@ -313,7 +313,7 @@
       "id": "goSession",
       "type": "backend",
       "label": "Go Session / managed handle",
-      "sublabel": "prepare all inputs → ordered groups / events",
+      "sublabel": "prepare shell/MCP roots → ordered groups/events",
       "pos": [
         850,
         1180
@@ -1605,6 +1605,7 @@
       "dot": "cyan",
       "title": "Concurrency",
       "items": [
+        "Finite MCP model roots remain closed observations until whole-batch Source dict preparation. Falsey roots become {}, pair arrays become string-key objects, malformed truthy roots fail before any prior effect. Explicit caller MCP input and callable arguments remain objects; readOnlyHint never lowers external risk.52 actual Source auto/readonly/root/batch cases match failures, hooks/arguments/results and original assistant history. Direct/SSE/clone/mask/identity/archive and four native SQLite reopen/owner-restore profiles preserve originals under current permissions without effect replay. Legacy/non-string-key/wider root scope remains; no new service/default/authority.",
         "Session dispatch stamps fixed ToolExecutionScope label/depth for custom callback lineage. It contains no Agent/business-state pointer and never grants capabilities or selects owner/permission/depth quota.18 actual Source fresh child role/capability/risk profiles compare selected full schemas, fresh request history, workspace/mode, cleared-human peer context and results. Role policy retains typed adapters; filtered/unknown and Explore write denials remain. Restoring old dispatch in a diagnostic overlay fails all18 required scope comparisons; no runtime guard is weakened.",
         "Custom ExtensionToolSchema metadata is immediately lowered into immutable finite JSON, sorted for catalogue identity and cloned without caller buffers. It preserves refs, mixed enums, structured const, conditionals, patterns and fractional bounds.16 actual Source profiles/32 managed owner sessions match catalogue fingerprint/model schema/results;16 native SQLite event reopen/explicit restore cases preserve metadata under current owner/permission binding. Metadata is not schema validation, ref resolution, callback registration or authority. Non-object Source metadata emission is not model-server acceptance; built-in/MCP decoder boundaries stay strict.",
         "Go explicitly registered custom tools bind a concrete ExtensionInput codec and handler inside the existing ToolGate. Before/guard/permission/journal admission precede decode and validation. Schema-only registration still refuses observations. Original closed model inputs remain in transcripts/action identity; replay bypasses callbacks and checks current permission. Fourteen actual Source outcomes match; thirteen traces match, while readonly-write Source before-hook refusal versus native guard-before-permission is retained. No default custom registration or new process/service.",
