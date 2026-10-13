@@ -8,7 +8,6 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"math"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -119,18 +118,18 @@ func eventCursor(value string) agent.EventSequence {
 }
 
 func (s *Server) observe(w http.ResponseWriter, r *http.Request) {
+	envelope := false
+	if value := selectScalarQuery(r.URL.Query(), "envelope"); value.Present {
+		var issue *scalarQueryIssue
+		envelope, issue = scalarQueryBoolean("envelope", value.Text)
+		if issue != nil {
+			writeJSON(s, w, 422, scalarQueryError{Detail: []scalarQueryIssue{*issue}})
+			return
+		}
+	}
 	session, ok := s.require(w, r)
 	if !ok {
 		return
-	}
-	envelope := false
-	if value := r.URL.Query().Get("envelope"); value != "" {
-		var err error
-		envelope, err = strconv.ParseBool(value)
-		if err != nil {
-			writeJSON(s, w, 422, ErrorResponse{"invalid envelope"})
-			return
-		}
 	}
 	cursor := eventCursor(r.Header.Get("Last-Event-ID"))
 	subscription := session.Subscribe(true)

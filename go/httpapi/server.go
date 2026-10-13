@@ -120,8 +120,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if !publicPath(r.URL.Path) {
 		header := r.Header.Get("Authorization")
 		if header == "" && eventPath(r.URL.Path) {
-			if token := r.URL.Query().Get("access_token"); token != "" {
-				header = "Bearer " + token
+			if token := selectScalarQuery(r.URL.Query(), "access_token"); token.Text != "" {
+				header = "Bearer " + token.Text
 			}
 		}
 		var ok bool

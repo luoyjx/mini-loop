@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "status": "final_validation_pending",
+  "baseline": "7a295d9",
+  "branch": "codex/go-http-query-selection",
+  "full_port_acceptance": false,
+  "raw_evidence_root": "var/go-http-query-selection-2026-10-14",
+  "source": {
+    "versions": {
+      "fastapi": "0.136.3",
+      "httpx": "0.28.1",
+      "pydantic": "2.13.4",
+      "python": "3.11.3",
+      "sse-starlette": "3.4.4",
+      "starlette": "1.2.1"
+    },
+    "cases": 99,
+    "scope": "Actual create_app middleware and FastAPI scalar validation, TokenAuth, real SessionManager/FakeAsyncAnthropic, SQLite epochs and TrajectoryStore, with an isolated environment. Two status events are genuinely emitted per session; GET event requests use Last-Event-ID: 1 and the direct ASGI client disconnects after durable catchup frame 2. This fixture makes no claim about missing-cursor/live-backlog behavior. Seeds contain actual SQLite.load_events records and TrajectoryStore.stream_raw text. Only generated IDs/workspace paths and seed timestamps are normalized; no route or query parser is replaced, no model turn or external network/shell runs.",
+    "source_sha256": {
+      "AgentSession.emit": "d3a4c6af56d646fbb8a20fb9cf336182f875ca9b79a2468962dd6bba40e24f8a",
+      "AgentSession.subscribe": "ea1b992f3a0cd2de26cefd1955593c84c50275783ee59fab1ee60c910c673432",
+      "ImmutableMultiDict.__init__": "98a087393d4cbd728ae1c20f3912b25511589fff64e17b8fb4fc38fbb70b545c",
+      "QueryParams.__init__": "f1dfaccb4755cab7d5925c23a616a1e7439e3922e6ee65cc7b54e1613d655eb8",
+      "SQLiteStateStore.append_messages": "ede70c630a32a97fbfc1e0959a9846982421d630b6d62bbd2450b97166cd3d9d",
+      "SQLiteStateStore.load_events": "20e2a9a3b6f4018ea845602be3c1083852c8a89bcbbfb016e6b6e9b5c93fb8a4",
+      "SessionManager.create": "97852ca756f67e556f38e4261703e6a5bf8cf962eafa3b6068acab27fc18dcd1",
+      "TokenAuth.authenticate": "7d68681667ba4ac8f06ada7fd114c5f98402eb5e6731b17aad877a49ce317e38",
+      "TrajectoryStore.list": "ed7ad4d4881e1ae5da4d57f44bea1733e85575aa1c9876b814912877247b1078",
+      "TrajectoryStore.stream_raw": "f51f898ec266ea93e2930a815200e7b5641b638bdce351087839865b2fd9caeb",
+      "create_app": "c1a3acbbabf1f30c6f9705e5dd8ec94bed460be1e9929841932fb66e55c88574",
+      "credential": "5adf0ed91a6e4a32210d71c53af291871fc72c89a620e507705ae79403ec33e0",
+      "principal": "b79989f96210dc642f23c2f0065a7386ec52512611c552074c906fd4bec63aec",
+      "require": "65b2aa2d44024820932b768001bd64972c700cee748b8a1f9a5dab211fada742",
+      "routes": "d3564ed51475cb02a16d03c5130bb686df70e64f7cdb697193131d7d69348705"
+    }
+  },
+  "stages": {
+    "python-query-focused": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_http_query_selection_contracts.py"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 1.418,
+      "peak_rss_kib": 192
+    },
+    "go-source-query-fixed": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./httpapi",
+        "-run",
+        "^TestHTTPScalarQuerySelectionMatchesActualPython$"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 4.522,
+      "peak_rss_kib": 297360
+    },
+    "go-full-coverage": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-http-query-selection-2026-10-14/go-full-coverage/coverage.out",
+        "./..."
+      ],
+      "exit_code": 1,
+      "inputs_unchanged": true,
+      "seconds": 455.238,
+      "peak_rss_kib": 416256
+    },
+    "ast-deadline-isolated": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=2",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "./astcontext",
+        "-run",
+        "^TestDeadlineIncludesExitedChildDescendantPipes$"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 10.955,
+      "peak_rss_kib": 107504
+    }
+  },
+  "architecture": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "542b486702169658485b29d8301766d73f8955027a4683e88eb24a0a7938ee1d",
+      "bytes": 155913
+    },
+    "artifact": {
+      "sha256": "1a3c2e9573aa763238de71956b330c3c3d8b6ae868c2eae441c5df7d0af18149",
+      "bytes": 810661
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "integration": {
+    "state": "checkpoint_before_complete_gate",
+    "main_merge": "pending",
+    "remote_push": "not_performed"
+  }
+}

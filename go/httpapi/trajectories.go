@@ -28,24 +28,18 @@ func (s *Server) ownsTrajectory(caller Principal, row agent.TrajectorySummary) b
 	return s.manager.RememberedOwners()[row.Session] == caller.ID
 }
 func trajectoryLimit(w http.ResponseWriter, r *http.Request, s *Server) (int, bool) {
-	limit := 100
-	if value, ok := r.URL.Query()["limit"]; ok {
-		parsed, err := strconv.Atoi(value[0])
-		if err != nil {
-			writeJSON(s, w, 422, ErrorResponse{"invalid limit"})
-			return 0, false
-		}
-		limit = parsed
-	}
-	if limit < 1 {
-		limit = 1
-	}
-	if limit > 500 {
-		limit = 500
+	limit, issue := scalarQueryLimit(r.URL.Query())
+	if issue != nil {
+		writeJSON(s, w, 422, scalarQueryError{Detail: []scalarQueryIssue{*issue}})
+		return 0, false
 	}
 	return limit, true
 }
 func (s *Server) listTrajectories(w http.ResponseWriter, r *http.Request) {
+	limit, ok := trajectoryLimit(w, r, s)
+	if !ok {
+		return
+	}
 	var session *agent.SessionID
 	if r.PathValue("session_id") != "" {
 		if _, ok := s.require(w, r); !ok {
@@ -53,20 +47,16 @@ func (s *Server) listTrajectories(w http.ResponseWriter, r *http.Request) {
 		}
 		id := agent.SessionID(r.PathValue("session_id"))
 		session = &id
-	} else if value, ok := r.URL.Query()["session_id"]; ok {
-		id := agent.SessionID(value[0])
+	} else if value := selectScalarQuery(r.URL.Query(), "session_id"); value.Present {
+		id := agent.SessionID(value.Text)
 		if _, err := s.manager.Get(principal(r.Context()).ID, id); err != nil {
-			writeJSON(s, w, 404, ErrorResponse{"No such session"})
+			writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("No session '%s'", id)})
 			return
 		}
 		session = &id
 	}
 	store := s.trajectoryStore(w)
 	if store == nil {
-		return
-	}
-	limit, ok := trajectoryLimit(w, r, s)
-	if !ok {
 		return
 	}
 	rows, err := store.List(agent.TrajectoryQuery{Session: session, Limit: limit})
@@ -132,8 +122,8 @@ func (s *Server) trajectoryDocument(w http.ResponseWriter, r *http.Request, expo
 	}
 	format := "json"
 	if export {
-		if value, ok := r.URL.Query()["format"]; ok {
-			format = value[0]
+		if value := selectScalarQuery(r.URL.Query(), "format"); value.Present {
+			format = value.Text
 		}
 		if format != "json" && format != "jsonl" {
 			writeJSON(s, w, 400, ErrorResponse{"format must be 'json' or 'jsonl'"})

@@ -570,14 +570,23 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `ac4d603`. The SDK caller-observation iteration
+Current runtime review baseline: `7a295d9`. The HTTP scalar-query iteration
+selects the last repeated parameter and distinguishes an empty value from
+absence. Named integer/boolean parsing preserves the captured FastAPI conversion and
+422 fields, with validation before owner/store lookup. Header credentials retain
+precedence; query tokens remain confined to `/events` paths, and a request's
+principal is cached once. The 99 actual Source cases include native SQLite
+epoch/trajectory reads and explicit durable SSE cursor/cleanup controls.
+[Current iteration evidence](docs/audits/go-http-query-selection-2026-10-14.md).
+
+Previous review baseline: `ac4d603`. The SDK caller-observation iteration
 retains unknown or malformed discriminator values, scalar/list roots and
 nonfinite metadata in a named immutable `SDKCallerObservation`. The pinned
 SDK's construction defaults are applied only at provider admission; historical
 decode preserves stored values. A safe tool can execute before a nonfinite
 caller causes the next model request's finite encoder to fail. The enclosing
 tool-use ID remains execution identity. Current validation and measured coverage
-are recorded in the
+were recorded in the
 [iteration receipt](docs/audits/go-sdk-caller-observations-2026-10-14.md).
 
 Previous validation review baseline: `f913d20`. The current memory-efficiency iteration
@@ -989,7 +998,7 @@ flowchart LR
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>ordinary / inherited child listener · actual bind guard · signal shutdown"]
         GoReload["Optional Go development reload parent<br/>cwd native / forced-polling observer · readonly native build<br/>owned compiler workspace<br/>retained TCP socket · stop / join / replace<br/>SDK: owned Observer or StatReload · bounded handoff<br/>build-failure recovery · child artifact / observer cleanup"]
         GoObserverSDK["Explicit Go observer SDK · captured typed profile<br/>macOS / CGO serial FSEvents queue · Linux inotify · PollWatcher<br/>captured roots / recognized native changes<br/>lexical filtered batches · duplicates deduplicated<br/>cancel retains unread events · Close joins/releases<br/>leased compiler workspace exclusion · kernel loss retained<br/>CLI captured environment / host selection"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>owned ordered path / method / slash selection<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>owned routes / last scalar query / typed validation<br/>embedded protected OpenAPI / Swagger / ReDoc / OAuth redirect<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>trusted POST / SSE memory profile selection<br/>explicit transcript-search / diagnostics selection"]
         GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
         GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]

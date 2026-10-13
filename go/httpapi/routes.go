@@ -5,7 +5,6 @@ import (
 	"github.com/luoyjx/mini-loop/go/agent"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -109,14 +108,10 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	writeJSON(s, w, 200, info(session.Info()))
 }
 func (s *Server) list(w http.ResponseWriter, r *http.Request) {
-	limit := 100
-	if value := r.URL.Query().Get("limit"); value != "" {
-		v, err := strconv.Atoi(value)
-		if err != nil {
-			writeJSON(s, w, 422, ErrorResponse{"invalid limit"})
-			return
-		}
-		limit = v
+	limit, issue := scalarQueryLimit(r.URL.Query())
+	if issue != nil {
+		writeJSON(s, w, 422, scalarQueryError{Detail: []scalarQueryIssue{*issue}})
+		return
 	}
 	rows := s.manager.ListRecent(principal(r.Context()).ID, limit)
 	result := make([]SessionInfo, 0, len(rows))
