@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-13",
+  "baseline": "115f147",
+  "mode": "race+atomic",
+  "profile_sha256": "35b623f65eb477e61c141c8ac62906e574a46ec3679bd0a1b60f595473efce76",
+  "raw_rows": 1302434,
+  "unique_blocks": 26579,
+  "method": "Union maximum hits over identical spans; equal statement counts required. App excludes tools/ only; command mains included.",
+  "app": {
+    "covered": 33553,
+    "statements": 37538,
+    "percent": 89.38409078800149
+  },
+  "all": {
+    "covered": 33919,
+    "statements": 38053,
+    "percent": 89.13620476703545
+  },
+  "provider": {
+    "covered": 1518,
+    "statements": 1756,
+    "percent": 86.44646924829158
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/verified/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 527.115
+  },
+  "retained_profile": "var/go-public-helper-text-2026-10-13/verified/coverage.out",
+  "scope": "Darwin statements only; excludes native C/subprocess interiors, Python, branches and other profiles; not full migration acceptance.",
+  "provider_previous_percent": 86.67425968109339,
+  "provider_observed_delta_statements": -4,
+  "provider_delta_evidence": "var/go-public-helper-text-2026-10-13/provider-coverage-delta.json",
+  "implementation_commit": "9b2ac88bdd5044a34b015286a858aee4cb99649f"
+}

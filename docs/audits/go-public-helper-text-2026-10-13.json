@@ -1,0 +1,962 @@
+{
+  "date": "2026-10-13",
+  "baseline": "115f147",
+  "branch": "codex/go-public-helper-text",
+  "scope": "Public spill raw UTF-8 preflight, directory/clock/mask ordering and Source code-point result IDs; not all public/filesystem/platform migration closure.",
+  "source_profiles": 25,
+  "source_ast_loop_profiles": 8,
+  "failed_cohort": {
+    "worker_pid": 53182,
+    "child_pid": 58489,
+    "stage": "race",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/coverage.out",
+      "./..."
+    ],
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "status": "stopped_after_ordinary_failure",
+    "started_utc": "2026-10-13T05:23:01.941908+00:00",
+    "stop_reason": "Ordinary five AST expectations fail at corrected Source raw-text preflight; retain this cohort and investigate actual Source Agent loop before edits.",
+    "stopped_stage": "race"
+  },
+  "case_names": [
+    "plain/default",
+    "plain/spill",
+    "unicode/positive",
+    "unicode/negative",
+    "unicode/budget-exact",
+    "id/empty",
+    "id/unicode",
+    "id/high-surrogate",
+    "id/surrogate-pair-literal",
+    "id/character-cap",
+    "older-invalid-ignored",
+    "directory-blocked",
+    "mask-fault-first",
+    "mask-fault-second",
+    "mask-invalid-first",
+    "mask-invalid-second",
+    "text/high/0",
+    "text/high/200000",
+    "text/low/0",
+    "text/low/200000",
+    "text/literal-pair/0",
+    "text/literal-pair/200000",
+    "text/later/0",
+    "text/later/200000",
+    "mask-can-not-rescue-raw"
+  ],
+  "source_files": {
+    "python/mini_loop/compaction.py": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+    "python/mini_loop/storage.py": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159",
+    "python/mini_loop/stuck.py": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/tools/ast_text_contracts.py": "79099429402d36e7d2a3fd72f622568781e4366b6c12ca74ff76775e6033c9b9",
+    "python/tools/public_budget_text_contracts.py": "91824df149e322cea570680b70d4921f25441b272cc2bc48044e5e5e949f9031"
+  },
+  "fixture_hashes": {
+    "go/testdata/python-public-budget-text.json": "f91f22f5cf7cdcaf1cfd4bc166a8288f832a7c9b33c4aa7c9f712c937138a75f",
+    "go/testdata/python-public-helpers.json": "eee00e831946ad2f6cb9c2ef6639866d2babe1895af4f916a0d1c50b824746a2",
+    "go/testdata/python-ast-text.json": "6f1480f3bd9b959b2c45e1983a93a2227d224b385da84a49b5d5a30ed3709806"
+  },
+  "original_failure": {
+    "profiles": 25,
+    "failed": 22,
+    "command": [
+      "go",
+      "test",
+      "./agent",
+      "-run",
+      "TestPublicBudgetTextMatchesSourceEncodingAndEffects",
+      "-count=1"
+    ],
+    "exit_code": 1,
+    "log": "var/go-public-helper-text-2026-10-13/native-before.log",
+    "original_fixture": "var/go-public-helper-text-2026-10-13/initial-source-fixture.json",
+    "original_fixture_sha256": "dfb04b69f84d01a7d6a382f88708b918ebc3ef3745edae51dcb884ef2fbc86ff",
+    "probes": [
+      "var/go-public-helper-text-2026-10-13/source-probe.log",
+      "var/go-public-helper-text-2026-10-13/native-probe.log"
+    ]
+  },
+  "capture_history": [
+    "First Source equality comparison exposed an unnormalized temporary path in FileExistsError. Normalize only that root path.",
+    "After implementation, two adjacent literal-surrogate cases exposed expected-output JSON normalization into an emoji. Preserve original separate JSON pieces for unchanged messages. Every25 case, exact content/ID comparison and required assertion retained; failed logs and initial fixture kept."
+  ],
+  "boundaries": {
+    "raw": "All original text targets of the newest selected batch must encode before budget/directory/clock/mask. Existing protocol.ErrResultUTF8 reused; masked text cannot rescue invalid original. Older invalid batches remain unselected.",
+    "directory": "New trusted Files.EnsureDirectory creates beneath the immutable root before clock/mask, with existing pre/post resolve/makeParents/error handling. Context cancellation and outside symlink refused. No new model tool, path/owner override, OS confinement or cross-process symlink fencing.",
+    "hash": "Actual8 Source AST Agent profiles: result event emitted, raw UTF-8 hash failure, no result/history append, no second provider request. Existing direct Tool/SDK fields retained. Cancellation/other recovery retain repair.",
+    "effects": "Directory remains on callback/output-encoding failure; first successful files remain on later fault; caller/result messages remain unchanged until all writes succeed. Mask panics propagate to caller; no new best-effort catch.",
+    "id": "Existing immutable jsonvalue.TextPrefix helper counts native/legacy code points, maps one non-ASCII/surrogate point to one underscore and caps at100; no raw JSON/open business-state/domain any added.",
+    "remaining": "Arbitrary filesystem roots/umasks/custom callbacks/host/metadata/runtime/platform and original P0/P1/G0-G7 scope remains unproven."
+  },
+  "gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/verified/source-manifest.json"
+      ],
+      "exit_code": 0,
+      "seconds": 115.429
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "./agent",
+        "./workspace",
+        "./astcontext",
+        "./provider",
+        "-run",
+        "TestPublic|TestEnsureDirectory|TestASTModelTool|TestAST.*Text|Test.*StepHash|Test.*Cancellation|TestCancel|TestCompaction|TestFileEffects|TestAtomic|TestCancelledAtomic",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 6.001
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_export_diagnostics.py",
+        "python/tests/test_go_public_helpers.py",
+        "python/tests/test_go_public_budget_text.py",
+        "python/tests/test_extensions.py",
+        "python/tests/test_extension_contracts.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "exit_code": 0,
+      "seconds": 4.658
+    },
+    {
+      "name": "types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.833
+    },
+    {
+      "name": "public-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "exit_code": 0,
+      "seconds": 1.093
+    },
+    {
+      "name": "private-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "exit_code": 0,
+      "seconds": 0.699
+    },
+    {
+      "name": "variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "seconds": 0.684
+    },
+    {
+      "name": "collector-tests",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/verified/compiler-collector",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.658
+    },
+    {
+      "name": "body-inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/verified/compiler-collector",
+      "command": [
+        "go",
+        "run",
+        ".",
+        "/Users/yanjixiong/github/mini-loop/go"
+      ],
+      "exit_code": 0,
+      "seconds": 1.198
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 221.343
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/verified/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/verified/ordinary.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "seconds": 0.961
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.934
+    },
+    {
+      "name": "race",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/verified/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 527.115
+    },
+    {
+      "name": "python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 100.848
+    },
+    {
+      "name": "invariants",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.133
+    },
+    {
+      "name": "scans",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "seconds": 8.041
+    },
+    {
+      "name": "guards-memory",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "memory"
+      ],
+      "exit_code": 0,
+      "seconds": 16.822
+    },
+    {
+      "name": "guards-budget",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "budget-spill"
+      ],
+      "exit_code": 0,
+      "seconds": 1.128
+    },
+    {
+      "name": "guards-spill-mask",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "spill-is-unmasked"
+      ],
+      "exit_code": 0,
+      "seconds": 0.937
+    },
+    {
+      "name": "diff",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.047
+    }
+  ],
+  "frozen_inputs": {
+    "count": 1706,
+    "path": "var/go-public-helper-text-2026-10-13/verified/frozen.json",
+    "sha256": "b75678ddfbb0f3ab4590271ae5f3e5b1c91bb8daf0d1eef7cf577aeadcaa3276",
+    "changes_during_gates": []
+  },
+  "implementation_hashes": {
+    "go/agent/result_budget.go": "414ab561ebc3a1b51a9fd0fdf13eb5b4a51a5f1678ad54349388d3d0d64e1633",
+    "go/agent/compaction.go": "77d599558c04054d6c8c40f2466ab619b96f5c58be95069a8ba0a6d289bf130f",
+    "go/agent/stuck.go": "fff0462608a619ab55670c51345f8f8ecaba2af94d0441af0970e80d3c26e14c",
+    "go/agent/scheduling.go": "5b90f81a0026693f419df81b715252f39ba6c7831234d5080ca53f049c3c4abb",
+    "go/agent/ast_text_test.go": "784b49f1f10c3bdc1e628b43ff700cea942582f4669b36c381c9a583bbc1f767",
+    "go/agent/public_budget_text_test.go": "d01465ae9b5fcb9f7c7090f1dc0e780a5b2e0128319fc985e5adf624474bc029",
+    "go/workspace/files.go": "3de6d78bcd1c7f1d437585606825aea8b3a68b54921b28adc144fd6ad96bbab2",
+    "go/workspace/directory_test.go": "2df13ae454abae8a121afd812609b3f52435ddc30a461bfe296204f4b4fb8010",
+    "python/tools/public_budget_text_contracts.py": "91824df149e322cea570680b70d4921f25441b272cc2bc48044e5e5e949f9031",
+    "python/tools/ast_text_contracts.py": "79099429402d36e7d2a3fd72f622568781e4366b6c12ca74ff76775e6033c9b9",
+    "python/tests/test_go_public_budget_text.py": "8014238972b57f3b949dda666b3767aadeac46a015b1253ed136a99525eb8a9f",
+    "python/tools/export_go_contracts.py": "38ef148c350f2911feda29dddaeaa0721839cd754cf354551992e08bf34d874a",
+    "go/testdata/python-public-budget-text.json": "f91f22f5cf7cdcaf1cfd4bc166a8288f832a7c9b33c4aa7c9f712c937138a75f"
+  },
+  "source_manifest": {
+    "files": 249,
+    "path": "var/go-public-helper-text-2026-10-13/verified/source-manifest.json",
+    "sha256": "12c2435ce50935a7449ba39bace67adfa1ae9e5d0f5b1739e0bfc16e21aaf13c"
+  },
+  "type_audits": {
+    "types": "Go type audit: 465 production files, 1472 package-level types, 0 findings",
+    "public-types": "Go public type audit: 51 packages, 1205 exported types, 0 findings",
+    "private-types": "Go private type audit: 51 packages, 278 private root types, 0 findings",
+    "variables": "Go variable audit: 51 packages, 172 package variables, 0 findings"
+  },
+  "body_inventory": {
+    "packages": 51,
+    "declarations": 22278,
+    "open_observations": 130,
+    "path": "var/go-public-helper-text-2026-10-13/verified/body-inventory.log",
+    "sha256": "18cf12dcb2334dfb36c881280e0f887227e7cf84b653d23130e665a76e07568b",
+    "limitations": "Compiler observations do not prove caller/escape/interprocedural/runtime/generic/foreign/other-profile closure."
+  },
+  "consumer_inventory": {
+    "files": 250,
+    "counts": {
+      "test_pass_observed": 249,
+      "unreferenced": 1
+    },
+    "public_text_fixture": {
+      "name": "python-public-budget-text.json",
+      "sha256": "f91f22f5cf7cdcaf1cfd4bc166a8288f832a7c9b33c4aa7c9f712c937138a75f",
+      "references": [
+        {
+          "file": "agent/public_budget_text_test.go",
+          "line": 95,
+          "function": "TestPublicBudgetTextMatchesSourceEncodingAndEffects"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestPublicBudgetTextMatchesSourceEncodingAndEffects",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "ast_fixture": {
+      "name": "python-ast-text.json",
+      "sha256": "6f1480f3bd9b959b2c45e1983a93a2227d224b385da84a49b5d5a30ed3709806",
+      "references": [
+        {
+          "file": "agent/ast_text_test.go",
+          "line": 43,
+          "function": "TestASTModelToolMatchesSourceTextAndLoopFailureStage"
+        },
+        {
+          "file": "astcontext/text_test.go",
+          "line": 27,
+          "function": "TestASTTextProjectionAndStrictBytesMatchSourceTool"
+        },
+        {
+          "file": "provider/ast_text_test.go",
+          "line": 27,
+          "function": "TestASTResultTextSourceSDKEncodingBoundary"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestASTModelToolMatchesSourceTextAndLoopFailureStage",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/astcontext",
+          "name": "TestASTTextProjectionAndStrictBytesMatchSourceTool",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "name": "TestASTResultTextSourceSDKEncodingBoundary",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "previous_public_fixture": {
+      "name": "python-public-helpers.json",
+      "sha256": "eee00e831946ad2f6cb9c2ef6639866d2babe1895af4f916a0d1c50b824746a2",
+      "references": [
+        {
+          "file": "agent/public_helpers_test.go",
+          "line": 62,
+          "function": "readPublicHelpers"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestPublicMemoryHelpersSourceContracts",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestPublicToolResultBudgetSourceContracts",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "parser": {
+      "name": "python-syntax-parser.json",
+      "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+      "references": [],
+      "candidate_callers": [],
+      "status": "unreferenced",
+      "producer_scope": "current_export"
+    },
+    "limitations": [
+      "Active go list profile only; Source freshness must be checked independently.",
+      "Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.",
+      "Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.",
+      "A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement."
+    ]
+  },
+  "python_result": "2250 passed, 28 skipped, 96 warnings, 24 subtests passed in 100.26s (0:01:40)",
+  "scans": "harness\n  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\n  pins       test_identity.py::test_the_build_id_covers_the_package_source\n  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double\n  pins       test_spawn_sites.py::test_every_spawn_site_is_classified\n  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries\n  pins       test_write_sites.py::test_every_write_site_is_classified\n  pins       test_write_sites.py::test_the_classification_has_no_dead_entries\n\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.\n",
+  "guards": {
+    "guards-memory": "e caller reads another's)\n  caught    scopedmemory-classification-not-enforced  (r137: the completeness guard flags any public MemoryStore method not classified owner-sensitive-or-harmless, so a new one cannot ride __getattr__ unscoped the way replace_all did)\n  caught    memory-tool-builds-its-own-raw-store  (r118: a memory tool that builds its own unscoped MemoryStore is caught by the seam scan, not only by a per-tool behavioural test)\n  caught    round-exhaustion-skips-memory  (r228: memory is captured on every healthy turn endpoint, not just the happy path; the round-exhausted turn did the most work and is where learned facts matter most)\n  caught    memory-capture-failure-kills-the-turn  (r228: end-of-turn memory extraction is best-effort; a memory failure must not turn an already-finished turn into a failed one)\n\nall 18 guards are load-bearing (passing baseline, failed test call).\n",
+    "guards-budget": "verifying 1 guard(s) with unmodified baselines\n\n  caught    budget-spill-mutates-in-place  (r122: tool_result_budget replaces the message object so the rewrite detector sees it and the store mirrors the spill; editing the block in place leaves a restart with the un-budgeted transcript)\n\nall 1 guards are load-bearing (passing baseline, failed test call).\n",
+    "guards-spill-mask": "verifying 1 guard(s) with unmodified baselines\n\n  caught    spill-is-unmasked  (r27: context spilled to the workspace carries no credential)\n\nall 1 guards are load-bearing (passing baseline, failed test call).\n"
+  },
+  "logs": {
+    "source": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/source.log",
+      "sha256": "b795462e18335d1cff388cce66cf3ab5078527a1df8049f5333f56e7a4026c78",
+      "bytes": 79118
+    },
+    "focused-go": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/focused-go.log",
+      "sha256": "6f49cd0a5f496787b2dd1696c7de000027cfdbc628a7081cbe5641aef97d669f",
+      "bytes": 208
+    },
+    "focused-python": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/focused-python.log",
+      "sha256": "0a0ffa88b1517cfb70b4274b30b7e72ce88dd088f66f4ebee5e98e097f8eb46f",
+      "bytes": 99
+    },
+    "types": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/types.log",
+      "sha256": "ba26d7a49c21e58f583205da99e6ead91f235087b2d896e2b4a629a9f75087f2",
+      "bytes": 74
+    },
+    "public-types": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/public-types.log",
+      "sha256": "632aca892f5d9dd4eab9a0f05fbaa9c39ad0ddef01e9d03dba825f16f2d82ac4",
+      "bytes": 67
+    },
+    "private-types": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/private-types.log",
+      "sha256": "a00eb8192a3c7db75f419be08c3fb1b6597ba1c3c3ab09317924dde27946fd1e",
+      "bytes": 71
+    },
+    "variables": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/variables.log",
+      "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0",
+      "bytes": 66
+    },
+    "collector-tests": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/collector-tests.log",
+      "sha256": "ee3489d42de5088b78b538f0c17403212a4b86b081e9a4d35420895aa7765e8c",
+      "bytes": 36
+    },
+    "body-inventory": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/body-inventory.log",
+      "sha256": "18cf12dcb2334dfb36c881280e0f887227e7cf84b653d23130e665a76e07568b",
+      "bytes": 55518
+    },
+    "ordinary": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/ordinary.log",
+      "sha256": "5743640ce5ea6b459b0fb786ecbde5e1992eb7cc47654230411982d84d22e458",
+      "bytes": 11331194
+    },
+    "inventory": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/inventory.log",
+      "sha256": "64fd3de72eab39a0b71e78350b33ed401f570a16bdef92d200b5ea08e470bb17",
+      "bytes": 321166
+    },
+    "vet": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "race": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/race.log",
+      "sha256": "e3d6504fc691270159d860bc7399deaf2cde3987f695ff47cba5c47b24996b7a",
+      "bytes": 6327
+    },
+    "python": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/python.log",
+      "sha256": "31edeaa0a39201b05c4094ae4f9426b09fbf44c88b055036d187e70730964af0",
+      "bytes": 51429
+    },
+    "invariants": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/invariants.log",
+      "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78",
+      "bytes": 62
+    },
+    "scans": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "bytes": 1663
+    },
+    "guards-memory": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/guards-memory.log",
+      "sha256": "767acda8ff4af13d2a300af52a949cbc2c46913ea6ba8ab86d6a93c2e354d2f7",
+      "bytes": 2749
+    },
+    "guards-budget": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/guards-budget.log",
+      "sha256": "2a31c42ed735e7432269276bffccddc046af2c90903733cf398523e143243577",
+      "bytes": 356
+    },
+    "guards-spill-mask": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/guards-spill-mask.log",
+      "sha256": "95710791ad2f3e0cb1f4a93a6ec51cdd8455a9ed9416505a4a801b51f30758ad",
+      "bytes": 210
+    },
+    "diff": {
+      "path": "var/go-public-helper-text-2026-10-13/verified/diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "source-probe": {
+      "path": "var/go-public-helper-text-2026-10-13/source-probe.log",
+      "sha256": "448ee1a09836f8f304ea03eb370172469aba2e032629c81f442c6ba922728a64",
+      "bytes": 298
+    },
+    "native-probe": {
+      "path": "var/go-public-helper-text-2026-10-13/native-probe.log",
+      "sha256": "09305edad9a52e807e5ac58e6ebc5e0e28e0ec443ae64fdef35d0db49dbf287d",
+      "bytes": 255
+    },
+    "source-capture": {
+      "path": "var/go-public-helper-text-2026-10-13/source-capture.log",
+      "sha256": "1b54cf1e73a61b9b8c6ffc824de2b49f2bd30ea63ea1b5fba1856111b2de9726",
+      "bytes": 90
+    },
+    "native-before": {
+      "path": "var/go-public-helper-text-2026-10-13/native-before.log",
+      "sha256": "c4357fa4445532aedaf0e0e7dd697b82edca73d6ad51dcd7495228a31e03f623",
+      "bytes": 5317
+    },
+    "source-focused": {
+      "path": "var/go-public-helper-text-2026-10-13/source-focused.log",
+      "sha256": "7851fa04c423fb8ca07183c720581528221e5ca90b6e2e1bac7d8307155ef287",
+      "bytes": 1462
+    },
+    "native-focused": {
+      "path": "var/go-public-helper-text-2026-10-13/native-focused.log",
+      "sha256": "05a51c3e672a66a4da4e6ce6a8be4d9285c7bc730a35117f28ceba553d2ec455",
+      "bytes": 547
+    },
+    "source-capture-corrected": {
+      "path": "var/go-public-helper-text-2026-10-13/source-capture-corrected.log",
+      "sha256": "b67119910653c0dd15282f4f6e13ef0867a11792a93016b5c8c5cc5106d27a02",
+      "bytes": 19
+    },
+    "source-focused-corrected": {
+      "path": "var/go-public-helper-text-2026-10-13/source-focused-corrected.log",
+      "sha256": "3c82e1d3305214e6527e81a3191d87bd710aba47bc834df9a486aeefacb40faf",
+      "bytes": 98
+    },
+    "native-focused-corrected": {
+      "path": "var/go-public-helper-text-2026-10-13/native-focused-corrected.log",
+      "sha256": "5910b29024245e3643f85de88e811656a4eb59efd3c98c026d0473f1241cabfa",
+      "bytes": 102
+    },
+    "source-ast-loop": {
+      "path": "var/go-public-helper-text-2026-10-13/source-ast-loop.log",
+      "sha256": "59cebea323dadd21bcfe561779254a769cc8cea65e035e9fdb0e33df5f4f537f",
+      "bytes": 1145
+    },
+    "source-ast-loop-diagnostic": {
+      "path": "var/go-public-helper-text-2026-10-13/source-ast-loop-diagnostic.log",
+      "sha256": "fdb73fda42e24073021bb8aa8842f71f74a3682b7d4fcb96ca895b868a073284",
+      "bytes": 1535
+    },
+    "source-ast-loop-corrected": {
+      "path": "var/go-public-helper-text-2026-10-13/source-ast-loop-corrected.log",
+      "sha256": "892c1fd04d73a82ae2dab9599590b4e70c41f1505d1aae8eeab1b29bbe02d194",
+      "bytes": 7429
+    },
+    "ast-loop-focused": {
+      "path": "var/go-public-helper-text-2026-10-13/ast-loop-focused.log",
+      "sha256": "9d9cefaada9b004803b7ddc48e10f7a877f49c495428c545c676d57b79eecd90",
+      "bytes": 1341
+    },
+    "ast-stage-diagnostic": {
+      "path": "var/go-public-helper-text-2026-10-13/ast-stage-diagnostic.log",
+      "sha256": "f1ba94e625a6caee38bbfbbef00a0ac24ad90d8eae873af91d5d2b1b59e409c6",
+      "bytes": 614
+    },
+    "ast-loop-focused-corrected": {
+      "path": "var/go-public-helper-text-2026-10-13/ast-loop-focused-corrected.log",
+      "sha256": "633e18057e5282512ee5acad24baf82fb7c3766c3f9d187f7dfff5841ae27116",
+      "bytes": 208
+    },
+    "source-loop-tests": {
+      "path": "var/go-public-helper-text-2026-10-13/source-loop-tests.log",
+      "sha256": "cc591aad89f5953691668ae9521e615616ded26f2a837eb84d6aa717b0c28a0f",
+      "bytes": 98
+    }
+  },
+  "architecture": {
+    "tool": "built-in imagegen",
+    "source_image": "/Users/yanjixiong/.codex/generated_images/01a0fb06-f8fc-7e13-b9ed-450a10fb167c/exec-914021a9-d941-4669-bd14-9b5d18c788a3.png",
+    "saved_image": "docs/audits/go-public-helper-text-infographic-2026-10-13.png",
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "image_sha256": "9c79b6d0ad5a12820a9563a75d5a44de54f4cc47ecc99cbca23b6eceeeb8f75d",
+    "prompt": "docs/audits/go-public-helper-text-infographic-2026-10-13.prompt.txt",
+    "inspection": "Final generated pixels inspected: five exact layer headings, six backend/seven orchestration/five evidence cards retained. Context raw UTF-8/step-hash and Files directory primitive highlighted. Source result event before failed hash, no result/history or second request is described;25 public budget+8 actual Agent cases shown. Session/Provider bidirectional and above-provider tool call routes, Gate/L4 and result/Session arrows remain clear, no Provider/Gate arrow. No new components/default/model tools; base unchanged; cancellation repair retained. No rendered-browser acceptance.",
+    "html_delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "6a47ef12ec87e05fc9f6a110ccab3172caa9555ae13961adf9db18fb81598b27",
+        "bytes": 148505
+      },
+      "artifact": {
+        "sha256": "8120b9aefcd4185a613ff7b489e0a236f348345a6f4a8959d642b120e4161db2",
+        "bytes": 802744
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "base_changed": false,
+    "components_added_or_removed": false
+  },
+  "coverage_receipt": "docs/audits/go-coverage-public-helper-text-2026-10-13.json",
+  "historical_failure": "Previous unchanged MemoryStore scaling and SQLite/background/watcher/Python timing failures remain unexplained. This is a distinct substantive frozen cohort, no threshold relaxation or retry-to-green/root-cause claim.",
+  "skipped": [
+    "No new dependency, paid provider, remote fetch/push, Linux full-suite refresh or rendered-browser acceptance."
+  ],
+  "failed_cohort_gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/source-manifest.json"
+      ],
+      "exit_code": 0,
+      "seconds": 112.372
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "./agent",
+        "./workspace",
+        "-run",
+        "TestPublic|TestEnsureDirectory|TestCompaction|TestFileEffects|TestAtomic|TestCancelledAtomic",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 3.209
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_export_diagnostics.py",
+        "python/tests/test_go_public_helpers.py",
+        "python/tests/test_go_public_budget_text.py",
+        "python/tests/test_extensions.py",
+        "python/tests/test_extension_contracts.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.755
+    },
+    {
+      "name": "types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.579
+    },
+    {
+      "name": "public-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "exit_code": 0,
+      "seconds": 1.913
+    },
+    {
+      "name": "private-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "exit_code": 0,
+      "seconds": 0.686
+    },
+    {
+      "name": "variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "seconds": 0.669
+    },
+    {
+      "name": "collector-tests",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.652
+    },
+    {
+      "name": "body-inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "run",
+        ".",
+        "/Users/yanjixiong/github/mini-loop/go"
+      ],
+      "exit_code": 0,
+      "seconds": 1.132
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "exit_code": 1,
+      "seconds": 223.291
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helper-text-2026-10-13/ordinary.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "seconds": 0.96
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 1.173
+    }
+  ],
+  "failed_cohort_frozen_sha256": "ca68286171fb825e58d51c833afdb11bc61753c4136ed2c82f157f58f1516243",
+  "failed_cohort_ordinary_log": {
+    "path": "var/go-public-helper-text-2026-10-13/ordinary.log",
+    "sha256": "879fee84a3e15cf38f3b672b4a924f25f5d48ce4f27fcaa3d6ac7decb41e3f6f"
+  },
+  "source_ast_direct_fields_unchanged": true,
+  "remaining": "Default CPython diagnostics approval and wider provider/IDNA/transport/public/default/feature/host/filesystem/platform/performance/release and original P0/P1/G0-G7 acceptance remain open. Goal active.",
+  "provider_coverage_delta": {
+    "before_covered": 1522,
+    "after_covered": 1518,
+    "loss": [
+      {
+        "span": "github.com/luoyjx/mini-loop/go/provider/client.go:90.69,93.9",
+        "statements": 3,
+        "before_hits": 1,
+        "after_hits": 0
+      },
+      {
+        "span": "github.com/luoyjx/mini-loop/go/provider/client.go:94.20,95.19",
+        "statements": 1,
+        "before_hits": 1,
+        "after_hits": 0
+      },
+      {
+        "span": "github.com/luoyjx/mini-loop/go/provider/client.go:259.49,261.4",
+        "statements": 1,
+        "before_hits": 1,
+        "after_hits": 0
+      }
+    ],
+    "gain": [
+      {
+        "span": "github.com/luoyjx/mini-loop/go/provider/client.go:296.22,298.3",
+        "statements": 1
+      }
+    ],
+    "source_changed": false,
+    "source_unchanged_verified": "git diff --numstat -- go/provider produced no changes.",
+    "scope": "Observed coverage change in unchanged retry-wait/cancellation branches; no causal timing fix or implementation regression conclusion. No optional rerun to raise percentage."
+  },
+  "implementation_commit": "9b2ac88bdd5044a34b015286a858aee4cb99649f",
+  "source_prerequisite_commit": "11f896b1c8e617bf790ce95b8e2b63d6f2df554d",
+  "post_gate_updates": "Only root plan/parity/public inventory evidence and audit/image receipts updated after terminal gates; frozen program/README/EXTENDING/graph bytes unchanged."
+}

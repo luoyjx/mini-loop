@@ -1,0 +1,20 @@
+Edit the referenced base architecture image into this iteration's highlight image. Preserve the entire original composition, dark blue/cyan style, crisp Chinese text, all components, exact layer order and every connection. Main title remains "mini-loop 整体分层架构". Subtitle becomes "本轮：Go 文本编码 · 预算与步骤哈希". Keep the exact headings "L1 入口与组合层", "L2 会话与控制层", "L3 推理与执行层", "L4 能力与编排层", "L5 状态与证据层".
+
+Only highlight two existing areas:
+① Thin amber outline around the L3 "Session Agent 循环 / Context" card. Add a small clear badge "原文 UTF-8 预检 / 步骤哈希".
+② Thin amber outline and numbered marker on the existing L4 "文件" backend card. Keep the original label visible; annotate "Files 目录原语" only if it fits without obscuring nearby cards. Do not add a component. Do not highlight SQLite, memory, MCP, ToolGate or other modules as changed.
+
+The right sidebar title becomes "本轮改动说明". Its six numbered statements are:
+1. "预算预检：原文 UTF-8 先于目录 / 掩码"
+2. "目录创建 → 时钟 → 掩码 → 写盘"
+3. "Files.EnsureDirectory 保持工作区边界"
+4. "结果 ID 按 Source 字符清理，最多 100 字符"
+5. "25 个预算 + 8 个 Agent 回路；哈希失败不追加消息"
+6. "迁移验收仍进行；默认诊断后端待批准"
+
+Add small legible footnote: "本轮无组件增删，基础图不变。已有文件可保留；哈希错误不伪造结果，取消修复保留。目录原语不等于 OS 隔离或跨进程围栏。"
+
+Critical invariants: Preserve clear bidirectional Session/Context ↔ Model Provider arrows with both arrowheads visible. Session → ToolGate tool call route passes ABOVE Model Provider and never enters Provider. ToolGate → L4 is the permission-guarded model execution route; L4 result returns to Session. There must be NO Provider → ToolGate arrow. Ensure every required route is visible and no badge hides arrows. Public spill helpers and the directory primitive are explicit trusted library composition, not new model tools and not permission bypasses.
+
+Keep exactly six L4 backend cards: 文件, Shell, AST, Diagnostics, MCP, 自定义工具（显式注册）. Keep exactly seven orchestration cards: 后台, Cron, Tasks, Teams, Workflow, Decision, Worktree. Keep all five L5 evidence cards including operator contractaudit. Preserve optional/deployment-selected labels, all original ToolGate stage labels and the truthful in-progress status. No new service, default, dependency, success/coverage percentage or full-suite pass badge. Do not crop, redesign, remove cards or change components.
+The Context highlight includes the existing Session loop's step hashing. Explain, if space permits, that the tool result event is emitted before hash failure, while the result batch/history and second model call do not occur. This does not change ToolGate or AST backend implementation; no additional component highlight.
