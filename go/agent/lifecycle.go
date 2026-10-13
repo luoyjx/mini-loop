@@ -508,7 +508,10 @@ func (s *Session) dispatchToolAnnounced(ctx context.Context, run RunContext, use
 	started := time.Now()
 	outcome, err := s.gate.dispatchProjected(ctx, ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone(), Scope: ToolExecutionScope{Label: s.label, Depth: s.depth}}, call, func(v ActionReconciliation) {
 		s.events.append(SessionEvent{kind: EventReconcile, reconcile: ReconcileEvent{use.Input.Name(), v.ActionID, v.Verdict, v.Verifiable}})
-	}, s.guardianApprover(run), sessionObservationProjector{s, span})
+	}, s.guardianApprover(run), sessionObservationProjector{s, span}, func(event PermissionEvent) error {
+		s.events.append(SessionEvent{kind: EventPermission, permission: event})
+		return stateRunError(ctx)
+	})
 	if err != nil {
 		return outcome, err
 	}

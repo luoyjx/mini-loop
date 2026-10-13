@@ -12,6 +12,13 @@ type eventSystemBlock struct {
 	Cache *protocol.CacheControl `json:"cache_control"`
 }
 
+type permissionEventJSON struct {
+	Decision PermissionEventDecision `json:"decision"`
+	Rule     string                  `json:"rule"`
+	Tool     protocol.ToolName       `json:"tool"`
+	Reason   string                  `json:"reason"`
+}
+
 type eventHeader struct {
 	*TrajectoryStamp
 	*TrajectoryTerminal
@@ -294,6 +301,8 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		}{v.Name, v.ActionID, v.Verdict, v.Verifiable})
 	case EventRecovery:
 		return marshalEvent(h, e.recovery)
+	case EventPermission:
+		return marshalEvent(h, permissionEventJSON(e.permission))
 	case EventSubagentStart:
 		v := e.subagent
 		return marshalEvent(h, struct {

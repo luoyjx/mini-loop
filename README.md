@@ -570,7 +570,17 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: local main `66f3645`; this iteration captures the
+Runtime review baseline: `1b8e3e8`; this iteration publishes named permission
+decisions at their actual policy decision points, before later rules or tool
+effects. Session event scope, masking, live publication and historical codecs
+carry the four decision fields without granting authority from stored events.
+Fourteen actual Python managed-session profiles now match native decision order,
+identity, tool outcomes and masking, including a later approval error/cancel.
+All twenty existing hook profiles now assert their permission-event fields;
+the eight original readonly reason differences are repaired. Full-suite and
+integration validation for this implementation are recorded with its delivery.
+
+Previous runtime review baseline: local main `66f3645`; that iteration captures the
 provider hostname boundary before native IDNA implementation. The existing
 Unicode direct/SSE request-object probes still differ from Source; existing
 ASCII request and actual HTTP Host contracts pass. The Source corpus records
@@ -1033,6 +1043,7 @@ flowchart LR
         GoSession -. injected state / leases / restore / catch-up / epochs .-> GoActions
         GoGate -. replay / search / settle .-> GoActions
         GoGate -. permission ask .-> GoApprovals
+        GoGate -. decision-time masked permission events .-> GoSession
         GoResources -. textual question .-> GoApprovals
         GoApprovals -. scoped approval events .-> GoSession
         GoApprovals -. explicit / owned Guardian review .-> GoChildren

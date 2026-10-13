@@ -486,6 +486,13 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 		v, err := storedPayload[RecoveryEvent](data)
 		event.recovery = v
 		return event, err
+	case EventPermission:
+		v, err := storedPayload[permissionEventJSON](data)
+		if err == nil && v.Decision != PermissionAllow && v.Decision != PermissionDeny {
+			err = errors.New("invalid stored permission decision")
+		}
+		event.permission = PermissionEvent(v)
+		return event, err
 	case EventSubagentStart, EventSubagentEnd, EventSubagentRefused:
 		v, err := storedPayload[struct {
 			Role    AgentRole `json:"role"`

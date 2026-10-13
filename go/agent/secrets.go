@@ -17,12 +17,21 @@ func maskedText(masker TextMasker, value string) string {
 	}
 	return masker.MaskText(value)
 }
+
+func maskedPermissionEvent(masker TextMasker, event PermissionEvent) PermissionEvent {
+	event.Rule = maskedText(masker, event.Rule)
+	event.Tool = protocol.ToolName(maskedText(masker, string(event.Tool)))
+	event.Reason = maskedText(masker, event.Reason)
+	return event
+}
+
 func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 	event = event.clone()
 	if masker == nil {
 		return event
 	}
 	mask := masker.MaskText
+	event.permission = maskedPermissionEvent(masker, event.permission)
 	event.optimizationError.Error = mask(event.optimizationError.Error)
 	event.optimizationError.ParentSpanID = SpanID(mask(string(event.optimizationError.ParentSpanID)))
 	if event.kind == EventOptimizationReceipt {

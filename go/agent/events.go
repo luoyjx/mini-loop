@@ -18,6 +18,7 @@ type SessionEventKind string
 const EventTodo SessionEventKind = "todo"
 const EventCompact SessionEventKind = "compact"
 const EventError SessionEventKind = "error"
+const EventPermission SessionEventKind = "permission"
 
 type RunErrorKind string
 
@@ -107,6 +108,7 @@ type SessionEvent struct {
 	subagent            SubagentEvent
 	runError            RunErrorEvent
 	approval            ApprovalEvent
+	permission          PermissionEvent
 	stuck               StuckEvent
 	modelStart          ModelStartEvent
 	modelEnd            ModelEndEvent
@@ -147,6 +149,9 @@ func (sink sessionApprovalSink) EmitApproval(_ context.Context, event ApprovalEv
 }
 
 func (event SessionEvent) Kind() SessionEventKind { return event.kind }
+func (event SessionEvent) Permission() (PermissionEvent, bool) {
+	return event.permission, event.kind == EventPermission
+}
 func (event SessionEvent) RunError() (RunErrorEvent, bool) {
 	return event.runError, event.kind == EventError
 }

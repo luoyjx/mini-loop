@@ -4641,6 +4641,7 @@
         <path data-edge-from="goApprovals" data-edge-to="goChildren" data-edge-key="52" data-edge-id="goGuardianReview" data-composition-points="2200,1018;2410,1018;2410,1700;1535,1700;1535,1616" d="M 2200 1018 L 2402 1018 Q 2410 1018 2410 1026 L 2410 1692 Q 2410 1700 2402 1700 L 1543 1700 Q 1535 1700 1535 1692 L 1535 1616" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goContractInputs" data-edge-to="goContractAudit" data-edge-key="53" data-edge-id="goContractRead" data-composition-points="650,1858;990,1858" d="M 650 1858 L 990 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goContractAudit" data-edge-to="goContractEvidence" data-edge-key="54" data-edge-id="goContractRecord" data-composition-points="1310,1858;1650,1858" d="M 1310 1858 L 1650 1858" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goGate" data-edge-to="goSession" data-edge-label="permission events" data-edge-key="55" data-edge-id="goPermissionEvents" data-composition-points="1370,1218;1180,1218" d="M 1370 1218 L 1180 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5258,6 +5259,10 @@
 
 
 
+        <g data-detail="context" data-edge-from="goGate" data-edge-to="goSession" data-edge-label="permission events" data-edge-key="55" data-edge-id="goPermissionEvents">
+          <rect x="1194.2" y="1168" width="91.6" height="14" rx="3" class="c-mask"/>
+          <text x="1240" y="1178" class="t-messagebus" font-size="8" text-anchor="middle">permission events</text>
+        </g>
 
         <!-- Legend -->
         <g data-legend-bridge>
@@ -5497,6 +5502,7 @@
           <h3>Trust</h3>
         </div>
         <ul>
+          <li>&bull; Go ToolGate publishes named permission decisions at the actual decision point, before later rules or effects. Session scope/masking and the closed JSON/stored-event variant preserve decision, rule, tool and reason; archival events never grant authority. Fourteen actual managed Source profiles cover readonly, auto, interactive approval/refusal, multiple rules, later approval error/cancel and masked tool identity. All twenty existing policy fixture rows now compare event fields; the new managed corpus additionally pins risk=None. Full implementation validation is recorded separately; no gate bypass, new service or default is introduced.</li>
           <li>&bull; Authority is stamped before resources are resolved</li>
           <li>&bull; Only authenticated HTTP user/final turns enter preview</li>
           <li>&bull; Preview cannot publish; commit is a separate caller action</li>

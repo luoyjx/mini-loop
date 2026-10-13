@@ -45,6 +45,10 @@ type PermissionEvent struct {
 	Reason   string
 }
 
+// A publisher belongs to one evaluation, never to the shared policy. A failed
+// publication stops later decisions and effects; already published decisions stand.
+type permissionEventPublisher func(PermissionEvent) error
+
 type ApprovalRequest struct {
 	Authority ToolAuthority
 	Call      ToolCall
@@ -162,11 +166,11 @@ func DefaultPermissionPolicy(approver Approver) *PermissionPolicy {
 }
 
 func (policy *PermissionPolicy) Evaluate(ctx context.Context, authority ToolAuthority, call ToolCall, risk ToolRisk, exists bool) (PermissionOutcome, error) {
-	return policy.evaluateWithApprover(ctx, authority, call, risk, exists, nil)
+	return policy.evaluateWithApprover(ctx, authority, call, risk, exists, nil, nil)
 }
 
 // A turn can bind its immutable current-parent review without mutating a shared policy.
-func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, authority ToolAuthority, call ToolCall, risk ToolRisk, exists bool, approver Approver) (PermissionOutcome, error) {
+func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, authority ToolAuthority, call ToolCall, risk ToolRisk, exists bool, approver Approver, publish permissionEventPublisher) (PermissionOutcome, error) {
 	if approver == nil {
 		approver = policy.approver
 	}
@@ -174,12 +178,21 @@ func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, author
 		return PermissionOutcome{}, err
 	}
 	var outcome PermissionOutcome
+	emit := func(event PermissionEvent) error {
+		outcome.events = append(outcome.events, event)
+		if publish != nil {
+			return publish(event)
+		}
+		return nil
+	}
 	if command, ok := call.Input.ShellCommand(); ok {
 		for _, pattern := range policy.denyCommands {
 			if strings.Contains(command, pattern) {
 				outcome.denied = true
 				outcome.message = fmt.Sprintf("Permission denied: '%s' is blocked", pattern)
-				outcome.events = append(outcome.events, PermissionEvent{PermissionDeny, "immutable-deny-list", call.Name(), pattern})
+				if err := emit(PermissionEvent{PermissionDeny, "immutable-deny-list", call.Name(), pattern}); err != nil {
+					return PermissionOutcome{}, err
+				}
 				return outcome, nil
 			}
 		}
@@ -187,7 +200,13 @@ func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, author
 	if authority.Mode == ModeReadonly && exists && risk != RiskRead {
 		outcome.denied = true
 		outcome.message = fmt.Sprintf("Permission denied: this session is read-only (tool risk: %s)", risk)
-		outcome.events = append(outcome.events, PermissionEvent{PermissionDeny, "readonly-mode", call.Name(), string(risk)})
+		reason := "risk=" + string(risk)
+		if risk == RiskUnclassified {
+			reason = "risk=None"
+		}
+		if err := emit(PermissionEvent{PermissionDeny, "readonly-mode", call.Name(), reason}); err != nil {
+			return PermissionOutcome{}, err
+		}
 		return outcome, nil
 	}
 	for _, rule := range policy.rules {
@@ -195,7 +214,9 @@ func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, author
 			continue
 		}
 		if rule.action == RuleAsk && authority.Mode == ModeAuto {
-			outcome.events = append(outcome.events, PermissionEvent{PermissionAllow, rule.name, call.Name(), "auto mode"})
+			if err := emit(PermissionEvent{PermissionAllow, rule.name, call.Name(), "auto mode"}); err != nil {
+				return PermissionOutcome{}, err
+			}
 			continue
 		}
 		allowed := false
@@ -207,7 +228,9 @@ func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, author
 			}
 		}
 		if allowed {
-			outcome.events = append(outcome.events, PermissionEvent{PermissionAllow, rule.name, call.Name(), rule.message})
+			if err := emit(PermissionEvent{PermissionAllow, rule.name, call.Name(), rule.message}); err != nil {
+				return PermissionOutcome{}, err
+			}
 			continue
 		}
 		outcome.denied = true
@@ -215,7 +238,9 @@ func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, author
 		if rule.action == RuleAsk && approver == nil {
 			outcome.message += " (approval required)"
 		}
-		outcome.events = append(outcome.events, PermissionEvent{PermissionDeny, rule.name, call.Name(), rule.message})
+		if err := emit(PermissionEvent{PermissionDeny, rule.name, call.Name(), rule.message}); err != nil {
+			return PermissionOutcome{}, err
+		}
 		return outcome, nil
 	}
 	return outcome, nil

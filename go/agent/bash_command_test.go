@@ -141,6 +141,7 @@ func TestNonTextBashCommandsMatchActualSourcePermissionProjection(t *testing.T) 
 			Mode   PermissionMode
 			Input  string `json:"input_json"`
 			Output *string
+			Events []PermissionEvent
 		}
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
@@ -161,6 +162,15 @@ func TestNonTextBashCommandsMatchActualSourcePermissionProjection(t *testing.T) 
 			}
 			if out.Denied() != (row.Output != nil) || row.Output != nil && out.Message() != *row.Output {
 				t.Fatal("Source str(command) permission result changed", out.Message(), row.Output)
+			}
+			events := out.Events()
+			if len(events) != len(row.Events) {
+				t.Fatalf("Source permission event count: got %d, want %d", len(events), len(row.Events))
+			}
+			for i, event := range events {
+				if event != row.Events[i] {
+					t.Fatalf("Source permission event %d: got %+v, want %+v", i, event, row.Events[i])
+				}
 			}
 		})
 	}

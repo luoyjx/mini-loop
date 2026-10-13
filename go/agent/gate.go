@@ -171,8 +171,7 @@ func notifyObserver(observer ResultObserver, ctx context.Context, authority Tool
 
 func (gate *ToolGate) observe(ctx context.Context, authority ToolAuthority, call ToolCall, outcome ToolOutcome) ToolOutcome {
 	for i := range outcome.events {
-		outcome.events[i].Reason = maskedText(gate.secrets, outcome.events[i].Reason)
-		outcome.events[i].Rule = maskedText(gate.secrets, outcome.events[i].Rule)
+		outcome.events[i] = maskedPermissionEvent(gate.secrets, outcome.events[i])
 	}
 	outcome.ActionID = authority.ActionID
 	outcome.inputHash, _ = InputStepHash(call.Input)
@@ -199,10 +198,10 @@ type toolOutcomeProjector interface {
 }
 
 func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation), approver Approver) (returned ToolOutcome, dispatchError error) {
-	return gate.dispatchProjected(ctx, authority, call, reconciled, approver, nil)
+	return gate.dispatchProjected(ctx, authority, call, reconciled, approver, nil, nil)
 }
 
-func (gate *ToolGate) dispatchProjected(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation), approver Approver, projector toolOutcomeProjector) (returned ToolOutcome, dispatchError error) {
+func (gate *ToolGate) dispatchProjected(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation), approver Approver, projector toolOutcomeProjector, permissionPublisher permissionEventPublisher) (returned ToolOutcome, dispatchError error) {
 	if err := authority.Validate(); err != nil {
 		return ToolOutcome{}, err
 	}
@@ -288,7 +287,7 @@ func (gate *ToolGate) dispatchProjected(ctx context.Context, authority ToolAutho
 	if gate.modeSource != nil {
 		authority.Mode = gate.modeSource.CurrentMode()
 	}
-	permission, err := gate.policy.evaluateWithApprover(ctx, authority, call, risk, exists, approver)
+	permission, err := gate.policy.evaluateWithApprover(ctx, authority, call, risk, exists, approver, permissionPublisher)
 	if ctx.Err() != nil {
 		return ToolOutcome{}, ctx.Err()
 	}

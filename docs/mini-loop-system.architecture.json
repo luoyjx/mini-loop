@@ -1598,6 +1598,17 @@
       "from": "goContractAudit",
       "to": "goContractEvidence",
       "variant": "dashed"
+    },
+    {
+      "id": "goPermissionEvents",
+      "from": "goGate",
+      "to": "goSession",
+      "variant": "dashed",
+      "label": "permission events",
+      "labelAt": [
+        1240,
+        1178
+      ]
     }
   ],
   "cards": [
@@ -1623,6 +1634,7 @@
       "dot": "rose",
       "title": "Trust",
       "items": [
+        "Go ToolGate publishes named permission decisions at the actual decision point, before later rules or effects. Session scope/masking and the closed JSON/stored-event variant preserve decision, rule, tool and reason; archival events never grant authority. Fourteen actual managed Source profiles cover readonly, auto, interactive approval/refusal, multiple rules, later approval error/cancel and masked tool identity. All twenty existing policy fixture rows now compare event fields; the new managed corpus additionally pins risk=None. Full implementation validation is recorded separately; no gate bypass, new service or default is introduced.",
         "Authority is stamped before resources are resolved",
         "Only authenticated HTTP user/final turns enter preview",
         "Preview cannot publish; commit is a separate caller action",
