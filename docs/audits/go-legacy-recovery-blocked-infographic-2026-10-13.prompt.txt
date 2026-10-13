@@ -1,0 +1,8 @@
+Edit the supplied mini-loop layered architecture base diagram into a final resource-blocked checkpoint infographic. Preserve the complete dark landscape architecture, all five layers, six L4 capability backends, seven L4 orchestration boxes, five L5 evidence/state blocks, all labels and exact connectors. Preserve Session↔Provider and the separate Session→ToolGate line ABOVE the Provider, Gate→L4, and results→Session. Add or remove no runtime component. Do not highlight runtime code as newly changed: this checkpoint has no code change. Place a thin amber outline only around the existing L5 操作契约审计 block, with a small caption “验证流程检查 · 运行时代码未变”.
+Replace only the right-hand article with the heading “当前：资源阻塞” and five readable numbered Chinese notes:
+1 “1,766 个输入哈希一致；代码未变”
+2 “连续三轮内存压力为警告级别 2（末次 12:13 UTC）”
+3 “未启动测试或编译；完整验收仍待执行”
+4 “代码与审计入口已保存；待安全验证”
+5 “待验证修改留在分支；main = 69cba43”
+Below the notes add a small amber-bordered box: “串行 · 并发 2 · RSS 停止预算 1 GiB · Go 软目标 512 MiB”. Add one final small line: “自动续跑已停止；压力恢复后可继续”. Retain the top mini-loop overall layered architecture heading and Python/Go incomplete-migration subtitle. Footer: “2026-10-13 · resource-blocked checkpoint · 无新增/删除组件”. Make all Chinese text legible and leave all boxes/arrows unobscured. Do not claim tests passed, migration complete, memory usage is hard-capped, or code was merged.

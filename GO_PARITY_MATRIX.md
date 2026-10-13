@@ -1,5 +1,89 @@
 # Python to Go parity matrix
 
+## 2026-10-13 runtime committed before memory optimization
+
+At the user's explicit request, runtime/API/architecture commit `a9b1bf4`
+follows Source commit `6dc4956` before full validation. This changes delivery
+status, not parity acceptance: full Go/vet/race/Python and integration remain
+pending. Main is still `69cba43`; no merge or push occurred. The active task now
+addresses memory efficiency while preserving the complete validation scope.
+
+## 2026-10-13 legacy recovery construction — resumed, not accepted
+
+Current state at **13:36 UTC**: **blocked**, following three consecutive resumed
+turns with the same host-memory-pressure condition. The current read-only query
+returned level 2; automatic approval rejected the recovery command before it ran.
+No new test/build started. The resumed consumer/coverage/receipt wrappers are
+prepared and statically reviewed, but their entry points and all remaining gates
+are unexecuted. Progress requires stable normal pressure and approval to resume;
+this is not completed migration or Go parity acceptance.
+
+The four Source contract files are now committed as **`6dc4956`**, following
+their passing focused Python and complete Source export checks. The runtime
+implementation remains uncommitted and unaccepted; local main is still
+`69cba43`. This Source-only commit does not establish Go parity or full validation.
+
+Earlier preflight at **13:17 UTC** returned pressure level 2 immediately and
+started no test/build child. All 1,766 frozen inputs are unchanged; the new
+cohort records five reused passing stages, zero new stages and incomplete
+acceptance. This is the second consecutive resource-blocked turn since the
+user resumed the then-active goal.
+
+### Resumed validation beginning at 12:53 UTC
+
+The goal is **active** after the user's resumption. Thirty consecutive level-1
+host-pressure samples admitted focused validation: Python 1 passed; the first
+Go attempt exposed the workflow test's `go/jsonvalue` import error, then the
+corrected `go/internal/jsonvalue` import passed focused Agent/config/Launcher/
+benchmark tests. The failed compile attempt is retained. Source export passed
+255 files. Four type audits passed with zero findings: named 465 files / 1,475
+types; public 51 packages / 1,206 types; private 51 / 280; variables 51 / 172.
+
+Full Go was resource-interrupted after **88.789s** at host pressure level 2:
+exit **-15**, peak sampled owned-tree RSS **419,424 KiB**, peak CPU **186.2%**,
+`remaining_pids=[]`. Its 687 top-level test passes and one signal-terminated test
+do not establish a full-suite result. Vet, race, coverage, full Python,
+invariants, scans and consumer inventory have not started. This is the first
+resource interruption in the fresh blocking audit; the goal is not marked
+blocked. No commit or merge has occurred, and G4/default parity remains
+unaccepted. [Receipt](docs/audits/go-legacy-recovery-2026-10-13.json).
+
+### Earlier implementation and preflight history — through 12:13 UTC
+
+The [31 actual Source observations](go/testdata/python-legacy-recovery.json)
+cover nine constructor, eleven Agent, six real run and five two-session Manager
+profiles. The old Recovery overlay fails twelve initial cases; the initial
+native consumer passed before the later Manager/workflow extension. Source
+default policies capture legacy per Agent construction; explicit policies and
+Task-child inheritance remain shared. A 513-byte legacy model traverses the
+actual retry and next-turn request paths unchanged.
+
+Go was updated to carry detached default configuration through Runtime/Manager/
+workflow construction, modern precedence, explicit-environment isolation and per-session
+legacy capture. At that checkpoint, the extended code and new Manager/workflow
+tests had **not yet been compiled or executed**. Refreshed Python testing was
+refused before launch by host memory pressure; a later stability window still
+observed warning level 2.
+Full gates and coverage were pending; G4/default parity had not been accepted.
+No commit/merge/push of the slice had occurred; local main was `69cba43`.
+Resumption required the retained serial resource limits.
+[Receipt](docs/audits/go-legacy-recovery-2026-10-13.json).
+
+README/JSON/generated HTML and the base-derived iteration image describe the
+prepared change. Archify 9/9 is structural evidence; rendered HTML inspection
+remains unavailable. Parser/IDNA approval and native consumption, Linux and all
+other original unaccepted P0/P1/G0–G7 rows remain open.
+
+12:05 UTC resumption: 1,766 input hashes were unchanged; memory pressure was still
+level 2 before dispatch. No test/compiler was launched. The missing independent bounded
+consumer-audit dispatch was prepared; its strict result and actual candidate
+records still required review after fresh full gates. No acceptance state changed.
+
+12:13 UTC: the same pressure-level-2 condition had recurred for three consecutive
+goal turns. The goal tool then recorded **blocked**, not complete. No tests/builds
+were launched at that checkpoint. The later user resumption and partial
+validation above supersede that goal status; full acceptance remains pending.
+
 ## 2026-10-13 decision-time permission events — validated slice
 
 Source commit `34576e0` and implementation `9a20803` close the permission-event

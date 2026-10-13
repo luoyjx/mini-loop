@@ -1,0 +1,1353 @@
+{
+  "date": "2026-10-13",
+  "baseline": "69cba43",
+  "branch": "codex/go-legacy-recovery-default",
+  "status": "runtime_committed_by_explicit_user_request_full_validation_pending",
+  "delivery": {
+    "committed": true,
+    "merged": false,
+    "push": false,
+    "local_main": "69cba43",
+    "rule": "User explicitly requested committing code before memory optimization and continued validation. Full Go/vet/race/Python and merge gates remain pending; no failed or interrupted gate is marked passed.",
+    "source_commit": "6dc495614c3a55f18e0a999ec2e0120935beb636",
+    "source_contract_committed": true,
+    "runtime_committed": true,
+    "committed_scope": "Source and Go runtime/API/architecture implementation committed. Delivery evidence is a separate documentation commit.",
+    "implementation_commit": "a9b1bf47b00ec8f967ddff896d4a13905694f2f2",
+    "validation_complete": false
+  },
+  "implementation": [
+    "Recovery captures nonempty explicit/modern model first, otherwise legacy at construction; preserve whitespace and long model names.",
+    "Explicit environment maps capture legacy input including empty/absent; Load(nil) defers legacy lookup. Public Settings snapshots retain only modern fallback.",
+    "Manager default configuration is detached and used when each session is constructed; explicit injected policies and child inheritance stay shared.",
+    "Workflow defaults are detached through service/runner/attempt boundaries and selected per worker; explicit policies still take precedence."
+  ],
+  "source_contract": {
+    "fixture": {
+      "path": "go/testdata/python-legacy-recovery.json",
+      "sha256": "2ea8f482376e564c5e6342db9f4c89df77c3d74d45b67b512ad5247b603b3abc",
+      "bytes": 32233
+    },
+    "counts": {
+      "constructors": 9,
+      "agents": 11,
+      "runs": 6,
+      "managers": 5
+    },
+    "source_sha256": {
+      "mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
+      "mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+      "mini_loop/caching.py": "57b755434559336528fd7a2e23a78044abdd3692d1184bca8680470d26f0601f",
+      "mini_loop/config.py": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+      "mini_loop/fake_llm.py": "69bc93ea2d875c668681b3b219705129f4d4bba5d44ce713820fcc9e597414a9",
+      "mini_loop/harness.py": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+      "mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+      "mini_loop/recovery.py": "bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca",
+      "mini_loop/run_context.py": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+      "mini_loop/transport.py": "ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873",
+      "tools/legacy_recovery_contracts.py": "1c9d35a681518c16ee2492417c7a57e0a86ec659fc25978ee5705cce0e9ed969"
+    },
+    "scope": [
+      "Public actual DefaultRecovery, Settings and Agent constructors; environment is isolated and restored for each construction phase.",
+      "Settings captures MINILOOP_FALLBACK_MODEL at Settings construction; actual DefaultRecovery selection occurs at Recovery construction, including the default Agent path.",
+      "Actual Agent.run and DefaultRecovery.run use FakeAsyncAnthropic with three status-529 failures then success; a second real turn observes persistent model selection. DirectRecovery is the explicit no-retry control.",
+      "Only asyncio.sleep is replaced with a recorded no-wait awaitable and random.random returns zero jitter. Real backoff_delay, selection, retry, state updates and event emission are unchanged; no live network or shell execution.",
+      "Run message IDs are explicitly supplied as turn-1/turn-2; actual recovery event fields and order are retained without error or model normalization.",
+      "Explicit 512-character and legacy 513-character models are passed unchanged; the latter also traverses the actual retry/fallback request path. Agent error events are captured separately from exceptions escaping Agent.run.",
+      "Actual SessionManager.create constructs two real Agents in distinct environment phases. Default policies capture legacy per Agent, modern Settings remain fixed, and explicitly injected Recovery instances remain shared. Only object identity is reduced to boolean observations; no manager or Agent construction is replaced."
+    ],
+    "initial_observations_unchanged": "Original 9 constructors / 11 Agents / 6 run scenarios are byte-equivalent as parsed JSON after adding five real Manager cases."
+  },
+  "baseline_probe": {
+    "evidence": {
+      "path": "var/go-legacy-recovery-2026-10-13/baseline-evidence.json",
+      "sha256": "c763892fe151ab90de669f62634a5f1d4fb98fdd199cbe22c258316e5748b4e3",
+      "bytes": 1160
+    },
+    "observed_failures": 12,
+    "scope": "Old recovery.go overlay against the initial Source constructor/Agent/run consumer. Not a complete baseline tree run."
+  },
+  "attempts": [
+    {
+      "name": "architecture",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "node",
+        "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-system.architecture.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 272,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.214
+    },
+    {
+      "name": "baseline-source-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "-parallel=2",
+        "-overlay=/Users/yanjixiong/github/mini-loop/var/go-legacy-recovery-2026-10-13/baseline-overlay.json",
+        "./agent",
+        "-run",
+        "^TestLegacyRecoveryMatchesActualSourceConstructorsAgentsAndTurns$"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 541872,
+      "peak_cpu_percent": 200.1,
+      "samples": 8,
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 7.413
+    },
+    {
+      "name": "focused-agent",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "-parallel=2",
+        "./agent",
+        "-run",
+        "LegacyRecovery|DefaultRecoveryLegacy|RecoveryMatchesActualPython|RecoveryConfiguration"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 552816,
+      "peak_cpu_percent": 204.4,
+      "samples": 7,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.387
+    },
+    {
+      "name": "focused-integration",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "-parallel=2",
+        "./config",
+        "./launcher",
+        "./benchmark",
+        "-run",
+        "LegacyRecovery|LegacyFallback"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 208304,
+      "peak_cpu_percent": 146.89999999999998,
+      "samples": 7,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.371
+    },
+    {
+      "name": "focused-python-managers",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_legacy_recovery_contracts.py"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 0,
+      "peak_cpu_percent": 0,
+      "samples": 0,
+      "status": "resource_blocked",
+      "reason": "host_memory_pressure_before_launch",
+      "exit_code": null,
+      "seconds": 0
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_legacy_recovery_contracts.py"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.228
+    },
+    {
+      "name": "source-capture-managers",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "var/go-legacy-recovery-2026-10-13/capture_source.py"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.235
+    },
+    {
+      "name": "source-capture",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "var/go-legacy-recovery-2026-10-13/capture_source.py"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 672,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.221
+    },
+    {
+      "name": "focused-python-managers-resumed",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_legacy_recovery_contracts.py"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.233
+    },
+    {
+      "name": "focused-final-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "-parallel=2",
+        "./agent",
+        "./config",
+        "./launcher",
+        "./benchmark",
+        "-run",
+        "LegacyRecovery|LegacyFallback|RecoveryMatchesActualPython|RecoveryConfiguration"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 148512,
+      "peak_cpu_percent": 76.60000000000001,
+      "samples": 8,
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 7.429
+    },
+    {
+      "name": "focused-final-go-fixed-import",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "-parallel=2",
+        "./agent",
+        "./config",
+        "./launcher",
+        "./benchmark",
+        "-run",
+        "LegacyRecovery|LegacyFallback|RecoveryMatchesActualPython|RecoveryConfiguration"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 540928,
+      "peak_cpu_percent": 200.8,
+      "samples": 9,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 8.403
+    },
+    {
+      "name": "source-export",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-legacy-recovery-2026-10-13/source-manifest.json"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 400656,
+      "peak_cpu_percent": 94.4,
+      "samples": 95,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 97.316
+    },
+    {
+      "name": "types-named",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 1152,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.253
+    },
+    {
+      "name": "types-public",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 30176,
+      "peak_cpu_percent": 0.7999999999999999,
+      "samples": 3,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.256
+    },
+    {
+      "name": "types-private",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 42912,
+      "peak_cpu_percent": 4.3999999999999995,
+      "samples": 3,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.27
+    },
+    {
+      "name": "types-variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 1152,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.211
+    },
+    {
+      "name": "go-full",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "limits": {
+        "rss_kib": 1048576,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 419424,
+      "peak_cpu_percent": 186.2,
+      "samples": 86,
+      "status": "resource_blocked",
+      "reason": "host_memory_pressure",
+      "remaining_pids": [],
+      "exit_code": -15,
+      "seconds": 88.789
+    }
+  ],
+  "current_validation": {
+    "source_capture": "31 actual Source profiles: 9 constructors, 11 Agents, 6 runs, 5 Managers.",
+    "focused_python": {
+      "passed": 1,
+      "pytest_seconds": 0.15,
+      "attempt": "focused-python-managers-resumed"
+    },
+    "focused_go": {
+      "packages": [
+        "agent",
+        "config",
+        "launcher",
+        "benchmark"
+      ],
+      "attempt": "focused-final-go-fixed-import",
+      "result": "passed",
+      "earlier_setup_failure": "go/jsonvalue import corrected to go/internal/jsonvalue in workflow test; failed log retained"
+    },
+    "source_export": {
+      "files": 255,
+      "status": "passed",
+      "manifest": {
+        "path": "var/go-legacy-recovery-2026-10-13/source-manifest.json",
+        "sha256": "4629898f0b0c71e2b586b7574b9fc2bfa6a21193d76a14dc339b679158e4b0dc",
+        "bytes": 36284
+      }
+    },
+    "types": {
+      "findings": 0,
+      "production_files": 465,
+      "named_types": 1475,
+      "packages": 51,
+      "public_types": 1206,
+      "private_root_types": 280,
+      "package_variables": 172
+    },
+    "full_go": {
+      "status": "resource_blocked",
+      "reason": "host_memory_pressure",
+      "attempt": {
+        "name": "go-full",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-count=1",
+          "-json",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 419424,
+        "peak_cpu_percent": 186.2,
+        "samples": 86,
+        "status": "resource_blocked",
+        "reason": "host_memory_pressure",
+        "remaining_pids": [],
+        "exit_code": -15,
+        "seconds": 88.789
+      },
+      "partial_top_level_records": {
+        "passed": 687,
+        "failed": 1
+      },
+      "failure": "TestLocalAuditNativeBinaryMatchesSource: signal: terminated during monitor stop; partial output is not full acceptance or a demonstrated code logic regression."
+    },
+    "unrun": [
+      "Completed full Go suite",
+      "go vet ./...",
+      "Full Go race and coverage",
+      "Full Python tests",
+      "Module invariants",
+      "Scan guards",
+      "Independent contract consumer inventory"
+    ],
+    "coverage": "No current refresh. Earlier permission-events package-local app85.28/all85.08/provider82.74 used different instrumentation from the planned all-package run.",
+    "whitespace": "git diff --check and staged checks passed before implementation commit; remaining runtime gates are not complete.",
+    "latest_preflight": {
+      "label": "resumed_run_3_read_only_pressure_and_denied_launch",
+      "evidence": {
+        "path": "var/go-legacy-recovery-2026-10-13/resume-3-blocked-audit.json",
+        "sha256": "363086b912296b21f33f1b096354664d191eb7345810fef349d02e25e85249b2",
+        "bytes": 1573
+      },
+      "read_only_pressure": {
+        "command": [
+          "/usr/sbin/sysctl",
+          "-n",
+          "kern.memorystatus_vm_pressure_level"
+        ],
+        "exit_code": 0,
+        "host_pressure": 2
+      },
+      "resume_execution": {
+        "command": [
+          ".venv/bin/python",
+          "var/go-legacy-recovery-2026-10-13/resume_cohort_2.py"
+        ],
+        "executed": false,
+        "rejected_by": "automatic_approval_review",
+        "reason": "\u4e3b\u673a\u5185\u5b58\u538b\u529b\u5df2\u8fde\u7eed\u963b\u585e\u6062\u590d\u5c1d\u8bd5\uff1b\u7528\u6237\u660e\u786e\u8981\u6c42\u540c\u4e00\u963b\u585e\u518d\u6b21\u51fa\u73b0\u540e\u505c\u6b62\u81ea\u52a8\u91cd\u8bd5\uff0c\u800c\u8be5\u547d\u4ee4\u4f1a\u518d\u6b21\u542f\u52a8\u6062\u590d\u6d41\u7a0b\u3002",
+        "new_output_directory_exists": false
+      },
+      "consecutive_blocked_turns_since_resume": 3,
+      "input_hashes_unchanged": 1766,
+      "test_or_compiler_launched": false,
+      "prepared_runner": {
+        "path": "var/go-legacy-recovery-2026-10-13/resume_cohort_2.py",
+        "sha256": "3e228a8f7d26472fa7a2de13c7836c4bf97af811b5069afa20327c33a385ee2e",
+        "bytes": 13588
+      }
+    }
+  },
+  "pending_inputs": {
+    "manifest": {
+      "path": "var/go-legacy-recovery-2026-10-13/pending-freeze.json",
+      "sha256": "14e8eea99c1c03b422e1515161dfc340a0b0175b041b8c8589196a746513e4d0",
+      "bytes": 188709
+    },
+    "files": 1766,
+    "meaning": "Historical pre-compilation snapshot. One workflow test import was corrected before the current freeze.json; this manifest no longer represents current validation inputs."
+  },
+  "resources": {
+    "runner": {
+      "path": "var/go-legacy-recovery-2026-10-13/resource_watch.py",
+      "sha256": "eaec033e8e94955a108e9692453477ddccba408d9f1c2db4eea80970367c9336",
+      "bytes": 6657
+    },
+    "prepared_cohort": {
+      "path": "var/go-legacy-recovery-2026-10-13/cohort.py",
+      "sha256": "b88be7df226456b226b665fd957b900c9439dcf7e480ab6ed4cd60efa095662f",
+      "bytes": 2673
+    },
+    "rss_budget_kib": 1048576,
+    "gomaxprocs": 2,
+    "goflags": "-p=1",
+    "test_parallel": 2,
+    "gomemlimit": "512MiB soft target",
+    "serial_heavy_stages": true,
+    "nice": 10,
+    "cpu_stop": "above 250% sustained30s",
+    "sample_period_seconds": 1,
+    "peak_sampled_rss_kib": 552816,
+    "limitation": "Sampled RSS is not an OS hard cap or a guaranteed instantaneous peak. No unrelated processes were stopped."
+  },
+  "architecture": {
+    "canonical": "README.md",
+    "delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "8a55a6d2fe2e9abc488c0a0a13e82db586687c218b737ce3e341b834a8b69b70",
+        "bytes": 153599
+      },
+      "artifact": {
+        "sha256": "52031fcd57ad7795f48c85591d6c34a91a9f7fa51b33b9e86e9ff7ed9238532b",
+        "bytes": 808290
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "base": {
+      "path": "docs/mini-loop-layered-architecture.png",
+      "sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+      "bytes": 1793371
+    },
+    "image": {
+      "path": "docs/audits/go-legacy-recovery-infographic-2026-10-13.png",
+      "sha256": "e81509e2841eaa2f3ee23c3cb3ba8777b994f988d90db8ad891cc5efd015656a",
+      "bytes": 1803574
+    },
+    "prompt": {
+      "path": "docs/audits/go-legacy-recovery-infographic-2026-10-13.prompt.txt",
+      "sha256": "dedb31889ac1c8dcee958379b3adf1d50df2f61304e13565a34b2c89bd220aa2",
+      "bytes": 2399
+    },
+    "visual_check": "Generated iteration image inspected: five layers, six capability backends, seven orchestrators, five state/evidence blocks; Session/Provider and Session/Gate routing retained. Highlighted existing Launcher, Manager, Session and Workflow boxes.",
+    "html_visual_check": "Not performed; prior browser denial remains in force. Archify structural/composition checks pass9/9 with zero warnings.",
+    "base_changed": false,
+    "resumed_checkpoint": {
+      "image": {
+        "path": "docs/audits/go-legacy-recovery-resumed-infographic-2026-10-13.png",
+        "sha256": "9fffeaa51d475afc96a132cf571dc855d7ec87511f953286f6b286eab0c7b9cd",
+        "bytes": 1810287
+      },
+      "prompt": {
+        "path": "docs/audits/go-legacy-recovery-resumed-infographic-2026-10-13.prompt.txt",
+        "sha256": "6b955334ed2749e97a170488b98fa3ad2144d9666de4f1406df66ab559e442d1",
+        "bytes": 2388
+      },
+      "visual_check": "Inspected generated image: five layers, six backends, seven orchestrators and five state/evidence blocks retained; existing Launcher/Manager/Session/Workflow highlighted magenta, contract audit amber; original routing preserved."
+    },
+    "source_commit_checkpoint": {
+      "image": {
+        "path": "docs/audits/go-legacy-recovery-source-commit-infographic-2026-10-13.png",
+        "sha256": "d1a5f3a2a44f7dca9b317e469f50491c1c0cb8b480a4daea723eb65e1ba84dc5",
+        "bytes": 1794892
+      },
+      "prompt": {
+        "path": "docs/audits/go-legacy-recovery-source-commit-infographic-2026-10-13.prompt.txt",
+        "sha256": "49279999b5b71387b825403e274787f679d7d8ea68ad51c0b7a5c8d4a57046d1",
+        "bytes": 1792
+      },
+      "visual_check": "Inspected: five layers, six backends, seven orchestrators, five L5 blocks and separate original routes retained. Source commit green audit highlight; pending runtime boxes magenta. Source-only commit and unmerged runtime clearly distinguished."
+    },
+    "resumed_blocked_checkpoint": {
+      "image": {
+        "path": "docs/audits/go-legacy-recovery-resumed-blocked-infographic-2026-10-13.png",
+        "sha256": "b93f797a9f1aea4d9bd55d3f201736e6052ba745c3bff7f9c482f9365ad07c88",
+        "bytes": 1855369
+      },
+      "prompt": {
+        "path": "docs/audits/go-legacy-recovery-resumed-blocked-infographic-2026-10-13.prompt.txt",
+        "sha256": "6f440afea512156baee48df741bb0e4845ab72d89911ad1dceb8f9e981410404",
+        "bytes": 1900
+      },
+      "visual_check": "Inspected generated image: all five layers, six backends, seven orchestrators, five L5 blocks and original Session/Provider/ToolGate routes retained. Source commit and pending runtime separately labeled; third block and rejected test launch accurately shown."
+    }
+  },
+  "remaining": [
+    "Complete memory-aware full validation before local main integration; current implementation was committed early at explicit user request.",
+    "Default parser and IDNA dependency approvals/native consumers remain pending.",
+    "Fixed-environment Linux acceptance and the remaining original P0/P1/G0-G7 criteria remain open."
+  ],
+  "resume_attempts": [
+    {
+      "date_utc": "2026-10-13T12:05:08Z",
+      "input_hashes_unchanged": 1766,
+      "stability": {
+        "recorded_utc": "2026-10-13T12:05:08.428694+00:00",
+        "required_normal_samples": 30,
+        "sample_period_seconds": 1,
+        "samples": [
+          {
+            "seconds": 0.003,
+            "host_pressure": 2
+          }
+        ],
+        "stable": false,
+        "note": "Read-only host pressure preflight; no tests or builds were launched."
+      },
+      "static_review": "No definite new type/field/lifecycle defect identified. Current code remains uncompiled and untested.",
+      "new_validation_preparation": "Separate bounded consumer audit runner requires current passing Source export and full Go logs plus unchanged frozen inputs; it retains strict nonzero status and candidate-only proof limits. Runner prepared, not executed.",
+      "consumer_runner": {
+        "path": "var/go-legacy-recovery-2026-10-13/consumer.py",
+        "sha256": "a2bb0ac9bc3f2ae7d811d35182bc6f8e4b678c36927907e5e362a8f24fee84b4",
+        "bytes": 2088
+      },
+      "checkpoint_image": {
+        "path": "docs/audits/go-legacy-recovery-validation-infographic-2026-10-13.png",
+        "sha256": "fe5d04c565f5bdfbc3f435869c1c5f41c097728eb65f7247c3711c50a7eb4802",
+        "bytes": 1780170
+      },
+      "checkpoint_prompt": {
+        "path": "docs/audits/go-legacy-recovery-validation-infographic-2026-10-13.prompt.txt",
+        "sha256": "9097084a6b44229a77c3e0c7f029a90a9b922bae8688aa4e7a8828e26fc1c072",
+        "bytes": 1673
+      },
+      "image_review": "Five layers, six capability backends, seven orchestrators and five L5 blocks preserved. Existing audit box highlighted as validation-only; no runtime topology change."
+    },
+    {
+      "date_utc": "2026-10-13T12:13:04Z",
+      "input_hashes_unchanged": 1766,
+      "stability": {
+        "recorded_utc": "2026-10-13T12:13:04.981447+00:00",
+        "required_normal_samples": 30,
+        "sample_period_seconds": 1,
+        "samples": [
+          {
+            "seconds": 0.003,
+            "host_pressure": 2
+          }
+        ],
+        "stable": false,
+        "note": "Read-only host pressure preflight; no tests or builds were launched."
+      },
+      "static_review": "Independent review found no further definite code fix available without compilation/execution. Final Manager/workflow implementation remains unverified.",
+      "test_or_compiler_launched": false
+    },
+    {
+      "label": "resumed_run_1",
+      "stability": {
+        "recorded_utc": "2026-10-13T12:53:05.331063+00:00",
+        "required_normal_samples": 30,
+        "sample_period_seconds": 1,
+        "samples": [
+          {
+            "seconds": 0.003,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 1.022,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 2.037,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 3.044,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 4.052,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 5.062,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 6.079,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 7.091,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 8.106,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 9.121,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 10.138,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 11.146,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 12.157,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 13.176,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 14.194,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 15.212,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 16.22,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 17.232,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 18.248,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 19.263,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 20.28,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 21.296,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 22.315,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 23.332,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 24.345,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 25.361,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 26.379,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 27.396,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 28.412,
+            "host_pressure": 1
+          },
+          {
+            "seconds": 29.426,
+            "host_pressure": 1
+          }
+        ],
+        "stable": true,
+        "note": "Read-only host pressure preflight; no tests or builds were launched."
+      },
+      "goal_status": "active",
+      "consecutive_blocked_turns_since_resume": 1,
+      "frozen_inputs": {
+        "path": "var/go-legacy-recovery-2026-10-13/freeze.json",
+        "sha256": "4ee8d1b47dd66cfa25176041577b59fb4be86d74c92f7283fc4859eca5198d82",
+        "bytes": 188709
+      },
+      "files": 1766,
+      "input_hashes_unchanged": true,
+      "cohort": {
+        "path": "var/go-legacy-recovery-2026-10-13/cohort.json",
+        "sha256": "39577ccccae76b46f41ac152992042e2b8cb394d7c50874635ab4496900a973f",
+        "bytes": 4033
+      },
+      "attempts": [
+        "focused-python-managers-resumed",
+        "focused-final-go",
+        "focused-final-go-fixed-import",
+        "source-export",
+        "types-named",
+        "types-public",
+        "types-private",
+        "types-variables",
+        "go-full"
+      ],
+      "interruption": {
+        "name": "go-full",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-parallel=2",
+          "-count=1",
+          "-json",
+          "./..."
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 419424,
+        "peak_cpu_percent": 186.2,
+        "samples": 86,
+        "status": "resource_blocked",
+        "reason": "host_memory_pressure",
+        "remaining_pids": [],
+        "exit_code": -15,
+        "seconds": 88.789
+      },
+      "checkpoint_image": {
+        "path": "docs/audits/go-legacy-recovery-resumed-infographic-2026-10-13.png",
+        "sha256": "9fffeaa51d475afc96a132cf571dc855d7ec87511f953286f6b286eab0c7b9cd",
+        "bytes": 1810287
+      },
+      "checkpoint_prompt": {
+        "path": "docs/audits/go-legacy-recovery-resumed-infographic-2026-10-13.prompt.txt",
+        "sha256": "6b955334ed2749e97a170488b98fa3ad2144d9666de4f1406df66ab559e442d1",
+        "bytes": 2388
+      },
+      "image_review": "Inspected generated image: five layers, six backends, seven orchestrators and five state/evidence blocks retained; existing Launcher/Manager/Session/Workflow highlighted magenta, contract audit amber; original routing preserved."
+    },
+    {
+      "label": "resumed_run_2_preflight",
+      "goal_status": "active",
+      "consecutive_blocked_turns_since_resume": 2,
+      "cohort": {
+        "path": "var/go-legacy-recovery-2026-10-13/resumed-cohort-1/cohort.json",
+        "sha256": "59b3425c447f21e89e136d0d92bcf5b1cfa120994fdca114c653a8aed51dc43c",
+        "bytes": 15390
+      },
+      "stability": {
+        "recorded_utc": "2026-10-13T13:17:25.034389+00:00",
+        "required_normal_samples": 30,
+        "sample_period_seconds": 1,
+        "samples": [
+          {
+            "seconds": 0.003,
+            "host_pressure": 2
+          }
+        ],
+        "stable": false,
+        "note": "Read-only host pressure preflight; no tests or builds launch before all 30 samples are normal."
+      },
+      "new_stages": 0,
+      "reused_passing_stages": [
+        "source-export",
+        "types-named",
+        "types-public",
+        "types-private",
+        "types-variables"
+      ],
+      "input_hashes_unchanged": 1766,
+      "test_or_compiler_launched": false,
+      "checkpoint_image": {
+        "path": "docs/audits/go-legacy-recovery-preflight-1317-infographic-2026-10-13.png",
+        "sha256": "83736ed0ea8f44680544854d8ad16eb23a69fc873041154dc5377b851f41c699",
+        "bytes": 1779259
+      },
+      "checkpoint_prompt": {
+        "path": "docs/audits/go-legacy-recovery-preflight-1317-infographic-2026-10-13.prompt.txt",
+        "sha256": "7490b51cead933fc4788f09f1adcb6497c8d0debd23fb6b4f9fa45e6e7a99d81",
+        "bytes": 2173
+      },
+      "image_review": "Five original layers, six backends, seven orchestrators and five L5 blocks retained. Session/provider and gated tools remain separate. Only existing code boxes and audit box highlighted; prior passes labeled as retained evidence."
+    },
+    {
+      "label": "resumed_run_3_read_only_pressure_and_denied_launch",
+      "evidence": {
+        "path": "var/go-legacy-recovery-2026-10-13/resume-3-blocked-audit.json",
+        "sha256": "363086b912296b21f33f1b096354664d191eb7345810fef349d02e25e85249b2",
+        "bytes": 1573
+      },
+      "read_only_pressure": {
+        "command": [
+          "/usr/sbin/sysctl",
+          "-n",
+          "kern.memorystatus_vm_pressure_level"
+        ],
+        "exit_code": 0,
+        "host_pressure": 2
+      },
+      "resume_execution": {
+        "command": [
+          ".venv/bin/python",
+          "var/go-legacy-recovery-2026-10-13/resume_cohort_2.py"
+        ],
+        "executed": false,
+        "rejected_by": "automatic_approval_review",
+        "reason": "\u4e3b\u673a\u5185\u5b58\u538b\u529b\u5df2\u8fde\u7eed\u963b\u585e\u6062\u590d\u5c1d\u8bd5\uff1b\u7528\u6237\u660e\u786e\u8981\u6c42\u540c\u4e00\u963b\u585e\u518d\u6b21\u51fa\u73b0\u540e\u505c\u6b62\u81ea\u52a8\u91cd\u8bd5\uff0c\u800c\u8be5\u547d\u4ee4\u4f1a\u518d\u6b21\u542f\u52a8\u6062\u590d\u6d41\u7a0b\u3002",
+        "new_output_directory_exists": false
+      },
+      "consecutive_blocked_turns_since_resume": 3,
+      "input_hashes_unchanged": 1766,
+      "test_or_compiler_launched": false,
+      "prepared_runner": {
+        "path": "var/go-legacy-recovery-2026-10-13/resume_cohort_2.py",
+        "sha256": "3e228a8f7d26472fa7a2de13c7836c4bf97af811b5069afa20327c33a385ee2e",
+        "bytes": 13588
+      }
+    }
+  ],
+  "goal_status": "active",
+  "blocked_audit": {
+    "condition": "Host memory pressure remains warning level2, preventing required heavy validation. The third attempted launch was denied by automatic approval review and did not execute.",
+    "consecutive_goal_turns": 3,
+    "scope": "Fresh audit after user resumed the formerly blocked goal.",
+    "observations": [
+      {
+        "turn": 1,
+        "evidence": {
+          "path": "var/go-legacy-recovery-2026-10-13/go-full.resources.json",
+          "sha256": "8bb521ebab455f21779ba41eea3e68b8720d8f01b535c3fc8dfbee1ac34d2ad1",
+          "bytes": 585
+        },
+        "reason": "host_memory_pressure during full ordinary Go",
+        "remaining_pids": []
+      },
+      {
+        "turn": 2,
+        "evidence": {
+          "path": "var/go-legacy-recovery-2026-10-13/resumed-cohort-1/preflight-stability.json",
+          "sha256": "11d1f7011c6c9488e7c42feea68f43c2c72997e2a3f20c97e7556e1bbc1b3a77",
+          "bytes": 328
+        },
+        "host_pressure": 2,
+        "launched": false
+      },
+      {
+        "turn": 3,
+        "evidence": {
+          "path": "var/go-legacy-recovery-2026-10-13/resume-3-blocked-audit.json",
+          "sha256": "363086b912296b21f33f1b096354664d191eb7345810fef349d02e25e85249b2",
+          "bytes": 1573
+        },
+        "host_pressure": 2,
+        "launched": false
+      }
+    ],
+    "independent_review": "New resumed wrappers resolve the old single-directory limitation. No definite remaining necessary static fix identified; mandatory execution still needs changed host conditions.",
+    "goal_tool": {
+      "path": "var/go-legacy-recovery-2026-10-13/resume-3-goal-status.json",
+      "sha256": "e51242aee8f76ac3eddf7bc250ff868510e89a0535cbe730f49e1b382243de82",
+      "bytes": 649
+    },
+    "status_confirmed_by_goal_tool": "blocked",
+    "complete": false,
+    "next_action": "After stable normal host pressure and renewed approval, resume controlled validation; preserve old attempts. No automatic retry or workaround for the rejection.",
+    "previous_receipt": {
+      "path": "var/go-legacy-recovery-2026-10-13/receipt-before-resumed-blocked-3.json",
+      "sha256": "99749988f4a8a0a4b658f4a2891c706aa46a940c654d079ef49ac46a7a628c61",
+      "bytes": 44013
+    },
+    "historical": true,
+    "superseded_by": "User resumed on 2026-10-13 with explicit instruction to commit code first, optimize memory, then continue."
+  },
+  "validation_history": [
+    {
+      "label": "before user resumed goal",
+      "validation": {
+        "source_capture": "31 actual Source observations captured successfully, including five two-session Manager profiles.",
+        "prior_focused_scope": "Initial Python 1 test and native Agent/config/Launcher/benchmark selected tests passed before deferred Manager/workflow configuration was added. They do not validate the final code.",
+        "blocked_attempt": "focused-python-managers refused before launch on host memory pressure.",
+        "stability": {
+          "recorded_utc": "2026-10-13T11:58:36.248917+00:00",
+          "required_normal_samples": 30,
+          "sample_period_seconds": 1,
+          "samples": [
+            {
+              "seconds": 0.003,
+              "host_pressure": 2
+            }
+          ],
+          "stable": false,
+          "note": "Read-only host pressure preflight; no tests or builds were launched."
+        },
+        "unrun": [
+          "Current Go compilation and focused tests",
+          "Refreshed focused Python assertion",
+          "Full Source export check",
+          "Four native type audits",
+          "Full Go tests, vet, race and coverage",
+          "Full Python tests",
+          "Module invariants, scan guards and consumer inventory"
+        ],
+        "whitespace": "git diff --check passed after edits; recheck at delivery.",
+        "coverage": "No current refresh; prior verified permission-events package-local app85.28/all85.08/provider82.74 is a different scope from all-package coverage."
+      },
+      "receipt": {
+        "path": "var/go-legacy-recovery-2026-10-13/receipt-before-resumed-partial.json",
+        "sha256": "fe8a96ff0b46e0ec94c277d88e11368e9a2acb0dd7f11e2a9f06db024c7ce5b5",
+        "bytes": 20168
+      }
+    }
+  ],
+  "current_inputs": {
+    "manifest": {
+      "path": "var/go-legacy-recovery-2026-10-13/freeze.json",
+      "sha256": "4ee8d1b47dd66cfa25176041577b59fb4be86d74c92f7283fc4859eca5198d82",
+      "bytes": 188709
+    },
+    "files": 1766,
+    "unchanged": true,
+    "meaning": "Frozen validation inputs for the legacy recovery implementation committed as a9b1bf4. Subsequent memory-efficiency test edits use separate evidence and require fresh relevant checks."
+  },
+  "prepared_followup_helpers": {
+    "executed": false,
+    "files": [
+      {
+        "path": "var/go-legacy-recovery-2026-10-13/resume_cohort.py",
+        "sha256": "ac14cce7f22d19bb8bc25e51dd039aa763c9f3cfd54d198686f6cde6fbe16900",
+        "bytes": 13588
+      },
+      {
+        "path": "var/go-legacy-recovery-2026-10-13/write_validated_receipt.py",
+        "sha256": "d43c0c41ff093fac5656327a29434f024960292dc354cfb7516301a076e525fa",
+        "bytes": 34757
+      }
+    ],
+    "limits": "Original helpers retain their single-directory behavior. New resumed wrappers are separately recorded; they remain unexecuted and require a complete passing resumed cohort."
+  },
+  "source_commit_evidence": {
+    "commit": "6dc495614c3a55f18e0a999ec2e0120935beb636",
+    "files": [
+      {
+        "path": "python/tools/legacy_recovery_contracts.py",
+        "sha256": "1c9d35a681518c16ee2492417c7a57e0a86ec659fc25978ee5705cce0e9ed969",
+        "bytes": 15282
+      },
+      {
+        "path": "python/tests/test_legacy_recovery_contracts.py",
+        "sha256": "3559f5047b8bcfcefb116f58845059b69f378f5002a94949b63134bbfc9d6cde",
+        "bytes": 5674
+      },
+      {
+        "path": "python/tools/export_go_contracts.py",
+        "sha256": "ffb00a01374e3b4a29160772650cbfefc685fd92bbcd26609c0769b7f3bbb13c",
+        "bytes": 713825
+      },
+      {
+        "path": "go/testdata/python-legacy-recovery.json",
+        "sha256": "2ea8f482376e564c5e6342db9f4c89df77c3d74d45b67b512ad5247b603b3abc",
+        "bytes": 32233
+      }
+    ],
+    "gates": [
+      "focused-python-managers-resumed",
+      "source-export"
+    ],
+    "scope": "Source capture, its assertions, exporter registration and JSON fixture only. No Go runtime code committed. No main integration or push."
+  },
+  "resumed_downstream_helpers": {
+    "files": [
+      {
+        "path": "var/go-legacy-recovery-2026-10-13/resume_evidence.py",
+        "sha256": "d3dca941940d750963d14e811267159f8af6f9a2131b617e0d5fc6813d0d3171",
+        "bytes": 8839
+      },
+      {
+        "path": "var/go-legacy-recovery-2026-10-13/consumer_resumed.py",
+        "sha256": "0acb40ab16d8410abef15488b4e2d1fa3bf95b571e42158419a055bcd48190e9",
+        "bytes": 2963
+      },
+      {
+        "path": "var/go-legacy-recovery-2026-10-13/coverage_summary_resumed.py",
+        "sha256": "1c8f55d3310b3af41c19fc044a94442b9eed81fd53718df22c34064f9e6a94a0",
+        "bytes": 4219
+      },
+      {
+        "path": "var/go-legacy-recovery-2026-10-13/write_validated_receipt_resumed.py",
+        "sha256": "b737ef4dbfe9e5629d465a3c74b9ebe7f5e5182e7241c0281dc87cfa2597f8af",
+        "bytes": 19003
+      }
+    ],
+    "entry_points_executed": false,
+    "validation": "Independent static review plus all four final files parsed using ast.parse; no imports, test/build/consumer execution or receipt write.",
+    "interface": "Explicit --cohort-dir required. Current resumed-cohort-1 is incomplete and must be rejected. Five reused and seven new gates keep separate execution labels and original paths; historical attempts are identified by resource-record path."
+  },
+  "blocked_audit_history": [
+    {
+      "condition": "Host memory pressure warning level2 prevents safely starting the required validation.",
+      "consecutive_goal_turns": 3,
+      "observations": [
+        {
+          "recorded_utc": "2026-10-13T11:58:36.248917+00:00",
+          "required_normal_samples": 30,
+          "sample_period_seconds": 1,
+          "samples": [
+            {
+              "seconds": 0.003,
+              "host_pressure": 2
+            }
+          ],
+          "stable": false,
+          "note": "Read-only host pressure preflight; no tests or builds were launched."
+        },
+        {
+          "recorded_utc": "2026-10-13T12:05:08.428694+00:00",
+          "required_normal_samples": 30,
+          "sample_period_seconds": 1,
+          "samples": [
+            {
+              "seconds": 0.003,
+              "host_pressure": 2
+            }
+          ],
+          "stable": false,
+          "note": "Read-only host pressure preflight; no tests or builds were launched."
+        },
+        {
+          "recorded_utc": "2026-10-13T12:13:04.981447+00:00",
+          "required_normal_samples": 30,
+          "sample_period_seconds": 1,
+          "samples": [
+            {
+              "seconds": 0.003,
+              "host_pressure": 2
+            }
+          ],
+          "stable": false,
+          "note": "Read-only host pressure preflight; no tests or builds were launched."
+        }
+      ],
+      "status_confirmed_by_goal_tool": "blocked",
+      "complete": false,
+      "next_action": "When the host can sustain normal memory pressure, resume the goal; run focused gates, frozen full cohort and independent consumer audit before committing and ff-only local main integration.",
+      "process_evidence": "All current preflight commands returned terminal exit75 before launching any test/build child. Historical state.json PIDs are not evidence of a live job.",
+      "closing_image": {
+        "path": "docs/audits/go-legacy-recovery-blocked-infographic-2026-10-13.png",
+        "sha256": "dfdafe6a66758b9754298c1ae226562f70e4e42763486f210721791b7fe2aaf1",
+        "bytes": 1785448
+      },
+      "closing_prompt": {
+        "path": "docs/audits/go-legacy-recovery-blocked-infographic-2026-10-13.prompt.txt",
+        "sha256": "e0499f0e1bd799e3f51f9568a087a16665cdae4f21a9e7b61f7ac6d5cf11f76f",
+        "bytes": 1679
+      },
+      "image_review": "Full architecture counts and original gated-tool routes retained; only validation audit block highlighted, with timestamped warning and blocked status.",
+      "historical": true,
+      "superseded_by": "User resumed goal; a fresh blocked audit begins with resumed_run_1."
+    }
+  ]
+}

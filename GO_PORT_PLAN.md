@@ -1,5 +1,115 @@
 # Go port plan
 
+## 2026-10-13 commit before memory optimization — explicit user instruction
+
+Source contracts are committed as `6dc4956`; runtime/API/architecture changes
+are now committed as `a9b1bf4`. The user explicitly requested code commitment
+before memory optimization and continued checks. This overrides the usual
+pre-commit ordering, with the validation limits preserved: focused Go/Python,
+Source and type audits passed; full Go was resource-interrupted; vet/race/full
+Python and remaining gates are pending. Local main remains `69cba43`, unmerged.
+The goal is active again. Investigate the task's nested-build budget propagation
+and separate race from all-package coverage before another bounded attempt.
+
+## 2026-10-13 legacy recovery construction — resumed, full validation pending
+
+At **13:36 UTC**, read-only host pressure was still level 2. Automatic approval
+review rejected the recovery command before execution; no second resumed cohort
+directory or test/build child was created. This is the third consecutive resource
+block after the user's resumption. Independent review confirmed the new resumed
+consumer/coverage/receipt tools already cover their required directory mapping;
+no definite remaining static repair was identified. The goal tool now reports
+**blocked**, not complete, and automatic continuation has stopped. Recovery needs
+stable normal pressure and renewed approval to start the controlled validation.
+
+Source-only commit **`6dc4956`** now contains the capture helper, its focused
+test, exporter registration and 31-profile JSON fixture. Focused Python and
+the full 255-file Source export check had passed on these unchanged files.
+Go runtime changes remain uncommitted: full Go, vet and race are required before
+their commit. Local main remains `69cba43`; nothing was merged or pushed.
+
+Earlier preflight at **13:17 UTC**: warning pressure level 2 on the first sample;
+no test or compiler launched. The new `resumed-cohort-1` preserves five reused
+passing stages, zero newly executed stages and `required_complete=false`.
+All 1,766 frozen input hashes remain unchanged. This is the second consecutive
+resource-blocked turn after the user resumed the goal; its state was then active.
+
+### Resumed validation beginning at 12:53 UTC
+
+The user resumed the goal; its current state is **active**. After 30 consecutive
+normal host-pressure samples (level 1), focused Python passed (1 test). The first
+focused Go attempt failed to compile the workflow test because it imported
+`go/jsonvalue`; changing that import to `go/internal/jsonvalue` allowed the
+Agent, config, Launcher and benchmark focused tests to pass. Both attempts are
+retained. Full Source export passed for 255 files. All four type audits report
+zero findings: 465 production files / 1,475 named types; 51 packages / 1,206
+public types; 51 packages / 280 private roots; 51 packages / 172 variables.
+
+The full Go stage was then stopped by the resource monitor after **88.789s**
+when host memory pressure rose to level 2. Its exit code is **-15**, peak sampled
+owned-tree RSS **419,424 KiB**, peak CPU **186.2%**, and `remaining_pids=[]`.
+The partial log contains 687 top-level test passes and one signal-terminated
+test; these are partial observations, not a completed full-suite result or an
+assertion-failure verdict. Vet, race, coverage, full Python, invariants, scans
+and the independent consumer audit have not started.
+
+This is the first resource interruption in the new blocking audit after the
+user's resumption; it does **not** put the goal back into blocked status. The
+slice remains unaccepted and uncommitted, with no merge or push. Preserve the
+completed stage evidence and the interrupted log before any later validation.
+[Evidence and attempts](docs/audits/go-legacy-recovery-2026-10-13.json).
+
+### Earlier implementation and preflight history — through 12:13 UTC
+
+Branch `codex/go-legacy-recovery-default` is based on local main `69cba43`.
+The prepared implementation captures legacy `FALLBACK_MODEL_ID` at Recovery
+construction, after modern/explicit precedence, and isolates explicit Go
+environment maps. Actual Source also accepts a 513-byte model unchanged.
+Nine constructor, eleven Agent, six run and five two-session Manager profiles
+are captured. The retained old Recovery overlay fails twelve of the initial
+constructor/Agent/run cases. Their initial new-code comparison passed.
+
+Independent review then identified the delayed Manager boundary: default
+Source policies are constructed for each Agent, while injected policies and
+Task children share their existing policy. Go was updated to carry detached default
+configuration through Manager, Runtime and workflow construction; each default
+session/worker selects at construction. Factory handoff also detaches the
+configuration so custom worker factories cannot mutate the shared template.
+New native tests were added for these paths. At that checkpoint, the extended
+implementation had **not yet been compiled or tested**; the earlier focused
+passes preceded this extension.
+
+The refreshed Python focused test was refused before launch by host memory
+pressure; the later stability window stopped immediately at warning level 2.
+No full test/build retry was launched. At that checkpoint, full Source,
+Go/vet/race, Python, type/invariant/scan/consumer and coverage gates were pending.
+**No commit, merge or push of this slice had occurred**; local main was `69cba43`.
+The next action was to preserve the uncommitted code and resume the prepared
+serial cohort only after stable normal host pressure. Original acceptance
+criteria and dependency approvals were unchanged.
+[Evidence and exact attempts](docs/audits/go-legacy-recovery-2026-10-13.json),
+[scope and next gates](docs/audits/go-legacy-recovery-2026-10-13.md).
+
+Canonical README/JSON/generated HTML are aligned; Archify passes 9/9 with zero
+warnings, while rendered HTML inspection remains unavailable. The base-derived
+iteration image highlights Launcher, Manager, Session and Workflow without
+adding or removing architecture components; the exact prompt is retained.
+
+Resumption at 12:05 UTC: all 1,766 pending input hashes were unchanged;
+the first host-pressure sample was still warning level 2, so no test/compiler
+started. Static review found the separately required consumer audit missing from
+the prepared dispatch. Its bounded standalone runner was saved with evidence;
+it requires current passing Source/full-Go reports, preserves strict nonzero
+status and does not confuse candidate links with semantic assertions. It had not
+been executed at that checkpoint. The image records this validation-only change.
+
+At 12:13 UTC the third consecutive goal-turn preflight still read pressure
+level 2. No test/build child started, all 1,766 input hashes were unchanged,
+and independent static review found no further definite fix. At that checkpoint
+the goal was marked **blocked**, not complete; automatic continuation stopped
+pending improved host conditions. The user has since resumed it, as recorded
+above.
+
 ## 2026-10-13 decision-time permission events — validated slice
 
 Source commit `34576e0` and implementation `9a20803` close the permission-event
