@@ -272,7 +272,13 @@ Go custom tools can explicitly bind a concrete `ExtensionInput`,
 journal admission before decoding or validation. Provider input stays an inert,
 immutable observation in transcripts and action identity; the named application
 payload exists only at execution. Schema-only registrations retain their missing
-decoder refusal. No custom tool is installed by default. Custom schema metadata can use
+decoder refusal. No custom tool is installed by default. Tool callbacks receive a fixed
+`ToolAuthority.Scope` with the current Session label/depth. Session dispatch stamps
+this informational lineage; it cannot grant capabilities, select an owner or bypass
+role/depth policy. Eighteen actual Source child role/capability/risk profiles compare
+complete selected schemas, fresh requests, fixed scope, peer context and results.
+Custom codecs/handlers survive role selection; filtered tools remain unavailable,
+Explore still refuses writes, and human approvals do not enter peer context. Custom schema metadata can use
 `protocol.ExtensionToolSchema` to retain all finite JSON fields, including refs,
 numeric enums and fractional bounds. This immutable observation does not resolve
 refs or validate arguments. Thirty-two actual managed Source owner sessions compare
@@ -552,28 +558,24 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: implementation `c92fe51`, based on local main `82cc93d`, with full finite custom
-schema metadata preservation. `ExtensionToolSchema` retains
-complete closed metadata; known built-in/MCP schemas keep their existing decoders.
-Sixteen Source schema profiles /32 managed owner sessions compare snapshots,
-fingerprints, model request tools and results. Sixteen native SQLite close/reopen/
-restore cases retain catalogue events, fresh typed execution and owner/current-
-permission boundaries. Prior native decoding refused the actual Source ref schema;
-that error is retained. An initial Unicode comparison setup mistake is retained
-separately. Frozen1677 inputs pass Source243/manifest, focused Go/Python, four type audits,
-collector tests/body inventory, ordinary Go/vet/race+atomic, full Python,19 scans,
-6 selected guard checks and diff. Python2244 passed,28 skipped,96 warnings,
-24 subtests in103.77s. Parser consumer inspection remains exit1. Established audits
-report462 production files/1459 named/1195 public/275 private roots/172 variables,
-zero findings; body inventory retains129 observations at51 packages/22096
-declarations. Darwin race statements: app89.34% (33280/37250),
-all Go89.09% (33646/37765), Provider86.67% (1522/1756).
-[Current receipt](docs/audits/go-extension-schema-preservation-2026-10-13.json);
-[coverage](docs/audits/go-coverage-extension-schema-preservation-2026-10-13.json).
-Schema metadata is not a
-validator, reference resolver, callback registration or authority. Default parser,
-broader IDNA, historical temporal/other-platform/public scope and original complete
-migration acceptance remain open.
+Runtime review baseline: based on local main `85a4f80`, with typed tool execution
+scope. ToolAuthority carries only fixed informational label/depth,
+stamped by Session dispatch. Eighteen actual Source Explore/worker/general-purpose
+capability/risk profiles compare fresh child requests, schemas, callback scope,
+peer provenance and outcomes. Custom handlers remain bound after catalogue pruning;
+unknown/filtered and readonly refusals retain their paths. An overlay restoring old
+Session dispatch fails all18 required comparisons; logs remain separate from the
+corrected contract-reader setup. Frozen1680 inputs pass Source244/manifest, focused Go/Python, four type audits,
+collector tests/body inventory, complete Go ordinary/vet/race+atomic, full Python,
+19 scans,6 selected guards and diff. Python2244 passed,28 skipped,96 warnings,
+24 subtests in88.35s. Consumer inspection exits1 for the unreferenced parser only.
+Audits:462 production files/1460 named types/1196 public/275 private roots/172
+variables,zero findings. Body51 packages/22096 declarations/129 observations.
+Darwin statements:app89.36% (33285/37250), all Go89.11% (33651/37765),
+Provider86.67% (1522/1756). Scope is neither an
+input nor authority, and contains no mutable Agent or business-state pointer.
+Default syntax/IDNA approvals, broader lifecycle/platform/public/type/temporal scope
+and full original migration acceptance remain open.
 
 
 Timing evidence review after `f9d4f61`: [four paired post-spawn timing scenarios and Python workload profile](docs/audits/go-timing-boundaries-2026-10-12.json) retain the original ordinary Go/Python failures. Runtime and thresholds are unchanged; injected delays establish a timing boundary, not the missing original failure cause. The [diagnostic iteration image](docs/audits/go-timing-boundaries-infographic-2026-10-12.png) highlights observations on the existing base without adding or deleting components.
@@ -805,7 +807,7 @@ flowchart LR
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
-        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>explicit typed extension codec / handler<br/>callback panic diagnostics: type only"]
+        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>explicit typed extension codec / handler<br/>Session-stamped informational label / depth<br/>callback panic diagnostics: type only"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · named wait policies · orphan ledger"]

@@ -1,0 +1,1006 @@
+{
+  "cases": [
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "Explore/read",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>explore",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>explore/1/readonly:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>explore",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "read",
+      "role": "Explore",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [
+        "workspace.write"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "Explore/write",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>explore",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "write",
+      "role": "Explore",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [
+        "repo.read",
+        "workspace.write"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "Explore/mixed",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>explore",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "read",
+      "role": "Explore",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "Explore/unclassified",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>explore",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "read",
+      "role": "Explore",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [
+        "custom.unknown"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "Explore/foreign",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>explore",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "read",
+      "role": "Explore",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "Explore/read-cap-write-risk",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>explore",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": true,
+          "failed": false,
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "write",
+      "role": "Explore",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "worker/read",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>worker/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "read",
+      "role": "worker",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [
+        "workspace.write"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "worker/write",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>worker/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "write",
+      "role": "worker",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [
+        "repo.read",
+        "workspace.write"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "worker/mixed",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>worker/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "read",
+      "role": "worker",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "worker/unclassified",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "read",
+      "role": "worker",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [
+        "custom.unknown"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "worker/foreign",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "read",
+      "role": "worker",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "worker/read-cap-write-risk",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>worker/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>worker",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "write",
+      "role": "worker",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "general-purpose/read",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>general-purpose/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "read",
+      "role": "general-purpose",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [
+        "workspace.write"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "general-purpose/write",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>general-purpose/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "write",
+      "role": "general-purpose",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [
+        "repo.read",
+        "workspace.write"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "general-purpose/mixed",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>general-purpose/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "read",
+      "role": "general-purpose",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    },
+    {
+      "capabilities": [],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "general-purpose/unclassified",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "read",
+      "role": "general-purpose",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [
+        "custom.unknown"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "general-purpose/foreign",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "output": "Unknown tool: greet"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [],
+      "risk": "read",
+      "role": "general-purpose",
+      "summary": "child done",
+      "tools_json": "[]"
+    },
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "name": "general-purpose/read-cap-write-risk",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "output": "main>general-purpose/1/interactive:Hello, World!"
+        }
+      ],
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>general-purpose",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "risk": "write",
+      "role": "general-purpose",
+      "summary": "child done",
+      "tools_json": "[{\"description\":\"Typed child tool\",\"input_schema\":{\"properties\":{\"name\":{\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"},\"name\":\"greet\"}]"
+    }
+  ],
+  "limits": [
+    "Actual Source fresh child loops and default capability policy, not name-only inheritance checks.",
+    "Captured fixed execution label/depth/workspace and peer provenance; arbitrary mutable Agent state API is separate.",
+    "Source child state omits parent private_marker; Go execution scope adds no business-state pointer or authority."
+  ],
+  "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\", \"pattern\": \"^[A-Z]\"}}, \"required\": [\"name\"]}"
+}

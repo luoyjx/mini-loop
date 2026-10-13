@@ -254,6 +254,14 @@ inputs remain closed observations; application payloads do not enter transcripts
 cache identity, snapshots or action logs. Replay reads the settled result without
 decoding or executing again and rechecks current permissions.
 
+`ToolAuthority.Scope` is a fixed `ToolExecutionScope{Label, Depth}` populated by
+Session dispatch for both top-level and delegated tool callbacks. It exposes the
+Source callback's Agent label/depth without a mutable Agent pointer. A direct gate
+caller may leave it empty; it is informational and never controls capability,
+owner, permission or quota decisions. Role filtering preserves the explicitly
+registered adapter, while fresh children bind current workspace/mode/peer context.
+The parent business state and human approvals are not exposed through this scope.
+
 Pass the resulting immutable `ToolDefinition` through `NewToolCatalog` to the
 existing `RuntimeConfig.Tools` or manager catalogue. Registration installs no
 process-wide codec and grants no capability. Operator callbacks must honor

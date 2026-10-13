@@ -48,6 +48,13 @@ type ToolTraits struct {
 	Capabilities []Capability
 }
 
+// ToolExecutionScope is informational lineage for trusted tool callbacks. It
+// never supplies capabilities, selects an owner or changes a depth quota.
+type ToolExecutionScope struct {
+	Label string
+	Depth int
+}
+
 type ToolAuthority struct {
 	SessionID  SessionID
 	OwnerID    OwnerID
@@ -56,6 +63,7 @@ type ToolAuthority struct {
 	RunContext RunContext
 	ActionID   ActionID
 	ToolUseID  string
+	Scope      ToolExecutionScope
 }
 
 func (authority ToolAuthority) Validate() error {
