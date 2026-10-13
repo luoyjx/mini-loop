@@ -570,7 +570,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: implementation based on branch `6087e29` / main `778315e`, native MCP ordered scalar-key mapping
+Runtime review baseline: implementation `833e16f`, native MCP ordered scalar-key mapping
 and Source fault-stage alignment.116 direct and116 actual journal profiles pass
 required assertions, including original88 differences and added nonfinite roots/
 values. Immutable named entries preserve first-key kind, Python numeric equality

@@ -1,5 +1,63 @@
 # Go port plan
 
+## 2026-10-13 native MCP ordered scalar keys and staged faults
+
+Reviewed **2026-10-13**: implementation `833e16f`, native MCP ordered scalar-key mapping
+and Source fault-stage alignment.116 direct and116 actual journal profiles pass
+required assertions, including original88 differences and added nonfinite roots/
+values. Immutable named entries preserve first-key kind, Python numeric equality
+and last-value replacement. Unhashable keys fail batch preparation; non-text
+keyword binding fails after permission, sorted query faults precede result
+observers even without an active reducer. Explicit/callable MCP objects stay
+finite; external risk unchanged. Direct/SSE, clone/mask/archive and seven real
+SQLite close/reopen/owner-restore profiles preserve original roots, event stages,
+current authority and fresh leases without external-effect replay.
+Frozen1695 inputs pass Source247/manifest, focused Go/Python, four type gates,
+collector/body inventory, ordinary Go/vet/race+atomic, full Python,19 scans,
+6 guards and diff. Consumer inspection exits1 only for the absent syntax-parser
+consumer. [Current receipt](docs/audits/go-mcp-mapping-native-2026-10-13.json).
+Previous full Python memory-scaling failure remains retained without a runtime/
+threshold fix or cause claim; this new implementation cohort is separate.
+Broader mapping/NaN-identity/caller/transport and original P0/P1/G0-G7 stay open.
+
+
+Full Python: 2247 passed, 28 skipped, 96 warnings, 24 subtests passed in 93.36s (0:01:33)
+Types:463 files/1465 named types,1198 public types,278 private roots,172 variables;
+four established audits report zero findings. Body inventory:51 packages/
+22207 declarations/129 observations; wider data-flow/caller/escape/generic/
+foreign/other-profile proof remains open. Consumer inventory:248 fixtures,
+including one separate Linux capture; both mapping recipes have required native
+consumer passes, the parser remains unreferenced.
+
+The initial mapping implementation retained24 mixed-key differences because
+query construction was skipped with a nil reducer. Source constructs that query
+before result observers regardless of active reduction; native now does too.
+Stronger SQLite status/event assertions exposed NaN-key ToolUse event loss during
+generic masking. The recording path masks keys in their original kind, archives
+MCP legacy observations and masks surrounding metadata without reclassifying keys.
+Both faults and isolated constructor/import/epoch/build setup errors remain logged.
+Model NaN negative guards were contradicted by actual Source captures; explicit
+caller NaN/null refusal and malformed model syntax checks remain required.
+
+The canonical Mermaid/control explanation and JSON→generated HTML are synchronized;
+Archify9 structural/geometry checks pass. No rendered-browser acceptance claimed.
+No components added/deleted, so the base remains unchanged. Built-in imagegen
+highlights Session/Gate/MCP/SQLite and records current changes/limits beside it.
+
+Passing-race statement coverage: app **89.38% (33496/37478)**,
+all Go **89.13% (33862/37993)**, Provider **86.67% (1522/1756)**.
+[Current coverage](docs/audits/go-coverage-mcp-mapping-native-2026-10-13.json).
+Darwin statements only; native C/subprocess interiors, Python, branches and other
+profiles excluded. Original migration acceptance and historical temporal
+reliability remain open.
+
+
+[Iteration image](docs/audits/go-mcp-mapping-native-infographic-2026-10-13.png);
+[exact prompt](docs/audits/go-mcp-mapping-native-infographic-2026-10-13.prompt.txt).
+No Python runtime-package, new dependency, paid-provider or remote fetch/push work.
+Pending default CPython/IDNA choices,129 body observations, wider public/default/
+feature/platform/performance/release and historical temporal failures remain open.
+
 ## 2026-10-13 MCP mapping-key Source prerequisite
 
 Reviewed **2026-10-13**: Source prerequisite `d477f53`; Go programs remain unchanged.
@@ -8072,24 +8130,23 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-13**: Source prerequisite `d477f53`; Go programs remain unchanged.
-Actual Agent.run/register_mcp captures25 key profiles × auto/readonly × single/batch:
-100 required Source observations. Existing52-root fixture bytes are unchanged.
-Current native required comparison fails88/100;12 text-key profiles pass. Hashable
-non-text keys reach binding after auto permission, unhashable keys fail whole-batch
-preparation, and mixed-key ordering faults can happen near result recording after
-earlier effects. Readonly blocks invocation but does not prevent every later
-comparison fault. These are open native defects, not accepted adaptations.
-Frozen1689 inputs pass Source246/manifest,
-11 focused Python tests, ordinary Go/vet,19 scans and diff. Full Python fails the
-unchanged memory-scaling cost guard: 0.25ms/1.55ms at100/800 records exceeds4×.
-2245 tests pass,28 skip; no threshold or runtime fix. Main integration is held.
-Two later wall/CPU/GC histories do not reproduce that failure and prove no cause.
-Consumer inspection exits1 with two absent consumers: native syntax parser and new mapping
-keys. The read-only overlay comparison is retained separately from normal gates.
-[Current Source receipt](docs/audits/go-mcp-mapping-keys-source-2026-10-13.json).
-Latest race/coverage and type/body receipts remain at the previous unchanged Go
-programs; no fresh race, type or body closure is claimed by this Source slice.
+Reviewed **2026-10-13**: implementation `833e16f`, native MCP ordered scalar-key mapping
+and Source fault-stage alignment.116 direct and116 actual journal profiles pass
+required assertions, including original88 differences and added nonfinite roots/
+values. Immutable named entries preserve first-key kind, Python numeric equality
+and last-value replacement. Unhashable keys fail batch preparation; non-text
+keyword binding fails after permission, sorted query faults precede result
+observers even without an active reducer. Explicit/callable MCP objects stay
+finite; external risk unchanged. Direct/SSE, clone/mask/archive and seven real
+SQLite close/reopen/owner-restore profiles preserve original roots, event stages,
+current authority and fresh leases without external-effect replay.
+Frozen1695 inputs pass Source247/manifest, focused Go/Python, four type gates,
+collector/body inventory, ordinary Go/vet/race+atomic, full Python,19 scans,
+6 guards and diff. Consumer inspection exits1 only for the absent syntax-parser
+consumer. [Current receipt](docs/audits/go-mcp-mapping-native-2026-10-13.json).
+Previous full Python memory-scaling failure remains retained without a runtime/
+threshold fix or cause claim; this new implementation cohort is separate.
+Broader mapping/NaN-identity/caller/transport and original P0/P1/G0-G7 stay open.
 
 Previous verified Go implementation checkpoint:
 
@@ -8138,13 +8195,12 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Retained passing-race statement coverage (unchanged Go programs; not refreshed): app **89.40% (33313/37264)**,
-all Go **89.15% (33679/37779)**, Provider **86.67% (1522/1756)**.
-[Current coverage](docs/audits/go-coverage-mcp-model-roots-2026-10-13.json).
+Passing-race statement coverage: app **89.38% (33496/37478)**,
+all Go **89.13% (33862/37993)**, Provider **86.67% (1522/1756)**.
+[Current coverage](docs/audits/go-coverage-mcp-mapping-native-2026-10-13.json).
 Darwin statements only; native C/subprocess interiors, Python, branches and other
-profiles excluded. Sixteen validation stages pass; native parser consumer
-inspection remains incomplete. Original migration acceptance and historical
-temporal reliability stay open.
+profiles excluded. Original migration acceptance and historical temporal
+reliability remain open.
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -8156,14 +8212,14 @@ work-package acceptance.
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies129 open boundary observations at51 packages/22104 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies129 open boundary observations at51 packages/22207 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes246 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet pass on current frozen inputs; current Python scaling gate fails; previous race passes on unchanged Go programs;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes247 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass on current frozen inputs; prior scaling failure remains retained;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 

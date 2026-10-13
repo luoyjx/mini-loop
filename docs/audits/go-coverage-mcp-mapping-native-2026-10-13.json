@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-13",
+  "baseline": "6087e29",
+  "mode": "race+atomic",
+  "profile_sha256": "0962142ed20762a3929aa51b3eabf631a8432c5a54f80aec76ab440e14e75240",
+  "raw_rows": 1299984,
+  "unique_blocks": 26529,
+  "method": "Union maximum hits over identical spans; equal statement counts required. App excludes tools/ only; command mains included.",
+  "app": {
+    "covered": 33496,
+    "statements": 37478,
+    "percent": 89.37510005870111
+  },
+  "all": {
+    "covered": 33862,
+    "statements": 37993,
+    "percent": 89.12694443713316
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-mcp-mapping-native-2026-10-13/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 540.288
+  },
+  "retained_profile": "var/go-mcp-mapping-native-2026-10-13/coverage.out",
+  "scope": "Darwin statements only; excludes native C/subprocess interiors, Python, branches and other profiles; not full migration acceptance.",
+  "implementation_commit": "833e16fa1345c46963c2bb5c7ad01a1700fa38f8"
+}
