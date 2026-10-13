@@ -1,0 +1,988 @@
+{
+  "agents": [
+    {
+      "after_environment": {},
+      "after_selected": null,
+      "agent_environment": {},
+      "explicit_fallback": null,
+      "name": "default",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": null,
+      "settings_environment": {},
+      "settings_fallback": null
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "after_selected": "legacy",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "explicit_fallback": null,
+      "name": "legacy-only",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": "legacy",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "settings_fallback": null
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "after_selected": "modern",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "explicit_fallback": null,
+      "name": "modern-priority",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": "modern",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "settings_fallback": "modern"
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": ""
+      },
+      "after_selected": "legacy",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": ""
+      },
+      "explicit_fallback": null,
+      "name": "modern-empty",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": "legacy",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": ""
+      },
+      "settings_fallback": null
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": " \t "
+      },
+      "after_selected": " \t ",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": " \t "
+      },
+      "explicit_fallback": null,
+      "name": "modern-whitespace",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": " \t ",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": " \t "
+      },
+      "settings_fallback": " \t "
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "after"
+      },
+      "after_selected": "after",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "after"
+      },
+      "explicit_fallback": null,
+      "name": "legacy-between-settings-agent",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": "after",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "before"
+      },
+      "settings_fallback": null
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "after"
+      },
+      "after_selected": "before",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "after"
+      },
+      "explicit_fallback": null,
+      "name": "modern-between-settings-agent",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": "before",
+      "settings_environment": {
+        "MINILOOP_FALLBACK_MODEL": "before"
+      },
+      "settings_fallback": "before"
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "after"
+      },
+      "after_selected": "before",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "before"
+      },
+      "explicit_fallback": null,
+      "name": "legacy-after-agent",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "default",
+      "selected": "before",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "before"
+      },
+      "settings_fallback": null
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "after_selected": null,
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "explicit_fallback": null,
+      "name": "explicit-direct",
+      "recovery_class": "DirectRecovery",
+      "recovery_kind": "direct",
+      "selected": null,
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "settings_fallback": "modern"
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "after_selected": "explicit",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "explicit_fallback": "explicit",
+      "name": "explicit-recovery",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "explicit",
+      "selected": "explicit",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "settings_fallback": "modern"
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "after_selected": "legacy",
+      "agent_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "explicit_fallback": "",
+      "name": "explicit-recovery-empty",
+      "recovery_class": "DefaultRecovery",
+      "recovery_kind": "explicit",
+      "selected": "legacy",
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "settings_fallback": "modern"
+    }
+  ],
+  "constructors": [
+    {
+      "after_environment": {},
+      "after_selected": null,
+      "environment": {},
+      "explicit_fallback": null,
+      "name": "absent",
+      "selected": null
+    },
+    {
+      "after_environment": {},
+      "after_selected": null,
+      "environment": {
+        "FALLBACK_MODEL_ID": ""
+      },
+      "explicit_fallback": null,
+      "name": "empty",
+      "selected": null
+    },
+    {
+      "after_environment": {},
+      "after_selected": " \t ",
+      "environment": {
+        "FALLBACK_MODEL_ID": " \t "
+      },
+      "explicit_fallback": null,
+      "name": "whitespace",
+      "selected": " \t "
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "after_selected": "explicit",
+      "environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "explicit_fallback": "explicit",
+      "name": "explicit-priority",
+      "selected": "explicit"
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "after_selected": "legacy",
+      "environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "explicit_fallback": "",
+      "name": "explicit-empty",
+      "selected": "legacy"
+    },
+    {
+      "after_environment": {},
+      "after_selected": null,
+      "environment": {
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "explicit_fallback": null,
+      "name": "modern-ignored",
+      "selected": null
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "after"
+      },
+      "after_selected": "before",
+      "environment": {
+        "FALLBACK_MODEL_ID": "before"
+      },
+      "explicit_fallback": null,
+      "name": "capture-stable",
+      "selected": "before"
+    },
+    {
+      "after_environment": {},
+      "after_selected": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+      "environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "explicit_fallback": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+      "name": "explicit-512",
+      "selected": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+    },
+    {
+      "after_environment": {},
+      "after_selected": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+      "environment": {
+        "FALLBACK_MODEL_ID": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+      },
+      "explicit_fallback": null,
+      "name": "legacy-513",
+      "selected": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+    }
+  ],
+  "managers": [
+    {
+      "explicit_fallback": null,
+      "first": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "first"
+      },
+      "first_after_second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "first"
+      },
+      "first_environment": {
+        "FALLBACK_MODEL_ID": "first"
+      },
+      "first_uses_injected": false,
+      "manager_environment": {
+        "FALLBACK_MODEL_ID": "at-manager"
+      },
+      "manager_recovery_class": null,
+      "name": "default-changing",
+      "recovery_kind": "default",
+      "second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "second"
+      },
+      "second_environment": {
+        "FALLBACK_MODEL_ID": "second"
+      },
+      "second_uses_injected": false,
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "at-settings"
+      },
+      "settings_fallback": null,
+      "shared_recovery": false
+    },
+    {
+      "explicit_fallback": null,
+      "first": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "fixed-modern"
+      },
+      "first_after_second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "fixed-modern"
+      },
+      "first_environment": {
+        "FALLBACK_MODEL_ID": "first",
+        "MINILOOP_FALLBACK_MODEL": "first-modern"
+      },
+      "first_uses_injected": false,
+      "manager_environment": {
+        "FALLBACK_MODEL_ID": "at-manager",
+        "MINILOOP_FALLBACK_MODEL": "manager-modern"
+      },
+      "manager_recovery_class": null,
+      "name": "modern-fixed",
+      "recovery_kind": "default",
+      "second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "fixed-modern"
+      },
+      "second_environment": {
+        "FALLBACK_MODEL_ID": "second",
+        "MINILOOP_FALLBACK_MODEL": "second-modern"
+      },
+      "second_uses_injected": false,
+      "settings_environment": {
+        "MINILOOP_FALLBACK_MODEL": "fixed-modern"
+      },
+      "settings_fallback": "fixed-modern",
+      "shared_recovery": false
+    },
+    {
+      "explicit_fallback": null,
+      "first": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "captured-policy"
+      },
+      "first_after_second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "captured-policy"
+      },
+      "first_environment": {
+        "FALLBACK_MODEL_ID": "first"
+      },
+      "first_uses_injected": true,
+      "manager_environment": {
+        "FALLBACK_MODEL_ID": "captured-policy"
+      },
+      "manager_recovery_class": "DefaultRecovery",
+      "name": "explicit-shared",
+      "recovery_kind": "explicit",
+      "second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "captured-policy"
+      },
+      "second_environment": {
+        "FALLBACK_MODEL_ID": "second"
+      },
+      "second_uses_injected": true,
+      "settings_environment": {},
+      "settings_fallback": null,
+      "shared_recovery": true
+    },
+    {
+      "explicit_fallback": null,
+      "first": {
+        "recovery_class": "DirectRecovery",
+        "selected": null
+      },
+      "first_after_second": {
+        "recovery_class": "DirectRecovery",
+        "selected": null
+      },
+      "first_environment": {
+        "FALLBACK_MODEL_ID": "first"
+      },
+      "first_uses_injected": true,
+      "manager_environment": {
+        "FALLBACK_MODEL_ID": "at-manager"
+      },
+      "manager_recovery_class": "DirectRecovery",
+      "name": "direct-shared",
+      "recovery_kind": "direct",
+      "second": {
+        "recovery_class": "DirectRecovery",
+        "selected": null
+      },
+      "second_environment": {
+        "FALLBACK_MODEL_ID": "second"
+      },
+      "second_uses_injected": true,
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "settings_fallback": "modern",
+      "shared_recovery": true
+    },
+    {
+      "explicit_fallback": null,
+      "first": {
+        "recovery_class": "DefaultRecovery",
+        "selected": null
+      },
+      "first_after_second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": null
+      },
+      "first_environment": {
+        "FALLBACK_MODEL_ID": ""
+      },
+      "first_uses_injected": false,
+      "manager_environment": {
+        "FALLBACK_MODEL_ID": ""
+      },
+      "manager_recovery_class": null,
+      "name": "empty-then-value",
+      "recovery_kind": "default",
+      "second": {
+        "recovery_class": "DefaultRecovery",
+        "selected": "later"
+      },
+      "second_environment": {
+        "FALLBACK_MODEL_ID": "later"
+      },
+      "second_uses_injected": false,
+      "settings_environment": {
+        "FALLBACK_MODEL_ID": ""
+      },
+      "settings_fallback": null,
+      "shared_recovery": false
+    }
+  ],
+  "runs": [
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "error_events": [],
+      "errors": [
+        null,
+        null
+      ],
+      "events": [
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 1,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 2,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "fallback_model",
+          "agent": "main",
+          "depth": 0,
+          "message_id": "turn-1",
+          "model": "legacy",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 3,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        }
+      ],
+      "model_after_turns": [
+        "legacy",
+        "legacy"
+      ],
+      "name": "legacy-only",
+      "outputs": [
+        "done",
+        "done"
+      ],
+      "recovery_kind": "default",
+      "requests": [
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "legacy",
+          "turn": 1
+        },
+        {
+          "model": "legacy",
+          "turn": 2
+        }
+      ],
+      "selected": "legacy",
+      "settings_fallback": null,
+      "turn_count": 2,
+      "waits": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "environment": {
+        "FALLBACK_MODEL_ID": "legacy",
+        "MINILOOP_FALLBACK_MODEL": "modern"
+      },
+      "error_events": [],
+      "errors": [
+        null,
+        null
+      ],
+      "events": [
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 1,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 2,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "fallback_model",
+          "agent": "main",
+          "depth": 0,
+          "message_id": "turn-1",
+          "model": "modern",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 3,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        }
+      ],
+      "model_after_turns": [
+        "modern",
+        "modern"
+      ],
+      "name": "modern-priority",
+      "outputs": [
+        "done",
+        "done"
+      ],
+      "recovery_kind": "default",
+      "requests": [
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "modern",
+          "turn": 1
+        },
+        {
+          "model": "modern",
+          "turn": 2
+        }
+      ],
+      "selected": "modern",
+      "settings_fallback": "modern",
+      "turn_count": 2,
+      "waits": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "after_environment": {},
+      "environment": {},
+      "error_events": [],
+      "errors": [
+        null,
+        null
+      ],
+      "events": [
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 1,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 2,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 3,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        }
+      ],
+      "model_after_turns": [
+        null,
+        null
+      ],
+      "name": "no-fallback",
+      "outputs": [
+        "done",
+        "done"
+      ],
+      "recovery_kind": "default",
+      "requests": [
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 2
+        }
+      ],
+      "selected": null,
+      "settings_fallback": null,
+      "turn_count": 2,
+      "waits": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "after"
+      },
+      "environment": {
+        "FALLBACK_MODEL_ID": "before"
+      },
+      "error_events": [],
+      "errors": [
+        null,
+        null
+      ],
+      "events": [
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 1,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 2,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "fallback_model",
+          "agent": "main",
+          "depth": 0,
+          "message_id": "turn-1",
+          "model": "before",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 3,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        }
+      ],
+      "model_after_turns": [
+        "before",
+        "before"
+      ],
+      "name": "captured-before-turn",
+      "outputs": [
+        "done",
+        "done"
+      ],
+      "recovery_kind": "default",
+      "requests": [
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "before",
+          "turn": 1
+        },
+        {
+          "model": "before",
+          "turn": 2
+        }
+      ],
+      "selected": "before",
+      "settings_fallback": null,
+      "turn_count": 2,
+      "waits": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "after_environment": {},
+      "environment": {
+        "FALLBACK_MODEL_ID": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+      },
+      "error_events": [],
+      "errors": [
+        null,
+        null
+      ],
+      "events": [
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 1,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 2,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        },
+        {
+          "action": "fallback_model",
+          "agent": "main",
+          "depth": 0,
+          "message_id": "turn-1",
+          "model": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+          "type": "recovery"
+        },
+        {
+          "action": "retry",
+          "agent": "main",
+          "attempt": 3,
+          "depth": 0,
+          "error": "Overloaded",
+          "message_id": "turn-1",
+          "type": "recovery"
+        }
+      ],
+      "model_after_turns": [
+        "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+        "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+      ],
+      "name": "legacy-long-513",
+      "outputs": [
+        "done",
+        "done"
+      ],
+      "recovery_kind": "default",
+      "requests": [
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "primary",
+          "turn": 1
+        },
+        {
+          "model": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+          "turn": 1
+        },
+        {
+          "model": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+          "turn": 2
+        }
+      ],
+      "selected": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+      "settings_fallback": null,
+      "turn_count": 2,
+      "waits": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "after_environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "environment": {
+        "FALLBACK_MODEL_ID": "legacy"
+      },
+      "error_events": [
+        {
+          "agent": "main",
+          "depth": 0,
+          "error": "Overloaded: fixture overloaded",
+          "message_id": "turn-1",
+          "type": "error"
+        }
+      ],
+      "errors": [
+        null
+      ],
+      "events": [],
+      "model_after_turns": [
+        null
+      ],
+      "name": "explicit-direct",
+      "outputs": [
+        "[Error] Overloaded: fixture overloaded"
+      ],
+      "recovery_kind": "direct",
+      "requests": [
+        {
+          "model": "primary",
+          "turn": 1
+        }
+      ],
+      "selected": null,
+      "settings_fallback": null,
+      "turn_count": 1,
+      "waits": []
+    }
+  ],
+  "scope": [
+    "Public actual DefaultRecovery, Settings and Agent constructors; environment is isolated and restored for each construction phase.",
+    "Settings captures MINILOOP_FALLBACK_MODEL at Settings construction; actual DefaultRecovery selection occurs at Recovery construction, including the default Agent path.",
+    "Actual Agent.run and DefaultRecovery.run use FakeAsyncAnthropic with three status-529 failures then success; a second real turn observes persistent model selection. DirectRecovery is the explicit no-retry control.",
+    "Only asyncio.sleep is replaced with a recorded no-wait awaitable and random.random returns zero jitter. Real backoff_delay, selection, retry, state updates and event emission are unchanged; no live network or shell execution.",
+    "Run message IDs are explicitly supplied as turn-1/turn-2; actual recovery event fields and order are retained without error or model normalization.",
+    "Explicit 512-character and legacy 513-character models are passed unchanged; the latter also traverses the actual retry/fallback request path. Agent error events are captured separately from exceptions escaping Agent.run.",
+    "Actual SessionManager.create constructs two real Agents in distinct environment phases. Default policies capture legacy per Agent, modern Settings remain fixed, and explicitly injected Recovery instances remain shared. Only object identity is reduced to boolean observations; no manager or Agent construction is replaced."
+  ],
+  "source_sha256": {
+    "mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
+    "mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "mini_loop/caching.py": "57b755434559336528fd7a2e23a78044abdd3692d1184bca8680470d26f0601f",
+    "mini_loop/config.py": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+    "mini_loop/fake_llm.py": "69bc93ea2d875c668681b3b219705129f4d4bba5d44ce713820fcc9e597414a9",
+    "mini_loop/harness.py": "66cb03878cb7b5a4cdd28417afed8873550af21bebbb45f353e99abbe12b4490",
+    "mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "mini_loop/recovery.py": "bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca",
+    "mini_loop/run_context.py": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+    "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "mini_loop/transport.py": "ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873",
+    "tools/legacy_recovery_contracts.py": "1c9d35a681518c16ee2492417c7a57e0a86ec659fc25978ee5705cce0e9ed969"
+  }
+}
