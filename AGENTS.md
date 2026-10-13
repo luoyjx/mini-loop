@@ -38,6 +38,16 @@ overrides them.
 
 ## Validation
 
+- Control CPU and memory during validation. Run heavy tests, builds and audits
+  one at a time; use `GOMAXPROCS=2`, `GOFLAGS=-p=1` (preserve other flags),
+  `go test -parallel=2`, and serial pytest without xdist by default.
+- Lower validation priority with `nice -n 10`. Set a conservative `GOMEMLIMIT`
+  and monitor task-owned process-tree RSS plus system memory pressure; Go's
+  memory target is soft and does not cap CGO, race or child-process memory.
+  Choose the total RSS budget from current host capacity before a heavy run.
+- Stop the owned validation process tree when its resource budget is exceeded
+  or host memory pressure rises. Preserve logs and report resource-blocked
+  checks explicitly; do not overlap retries or terminate unrelated processes.
 - Run the narrowest relevant tests while iterating and
   `.venv/bin/python -m pytest -q` before merging or pushing implementation work.
 - Run `.venv/bin/python python/tools/verify_invariants.py` after Python package-module changes.

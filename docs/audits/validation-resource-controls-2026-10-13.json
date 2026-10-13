@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-13",
+  "request": "Bound CPU and memory during tests to preserve host responsiveness.",
+  "host": {
+    "memory_bytes": 17179869184,
+    "logical_cpus": 10
+  },
+  "policy": "Heavy stages serial; nice 10; GOMAXPROCS=2; GOFLAGS=-p=1; go test -parallel=2; serial pytest; GOMEMLIMIT=512MiB soft target. Sample process-tree RSS and host pressure every second; stop whole cohort at 3GiB RSS, non-normal memory pressure, or sustained CPU above 250% for 30s.",
+  "limitations": [
+    "Sampled guard is not a kernel-enforced hard resource cap.",
+    "Go memory target is per process and excludes parts of native/race/child memory.",
+    "RSS sums may double-count shared memory; conservative stop only.",
+    "Only owned processes are terminated; no unrelated process-name matching."
+  ],
+  "guard": {
+    "path": "var/go-batch-step-boundary-2026-10-13/resource_watch.py",
+    "sha256": "eaec033e8e94955a108e9692453477ddccba408d9f1c2db4eea80970367c9336"
+  },
+  "smoke": [
+    {
+      "name": "watch-pass",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-c",
+        "print(\"guard smoke pass\")"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 0.2
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0.0,
+      "samples": 1,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.199
+    },
+    {
+      "name": "watch-stop",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-c",
+        "import subprocess,sys,time; subprocess.Popen([sys.executable,\"-c\",\"import time; memory=bytearray(64*1024*1024); time.sleep(20)\"],start_new_session=True); time.sleep(20)"
+      ],
+      "limits": {
+        "rss_kib": 49152,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 0.2
+      },
+      "peak_rss_kib": 86288,
+      "peak_cpu_percent": 7.2,
+      "samples": 2,
+      "status": "resource_blocked",
+      "reason": "owned_tree_rss_budget",
+      "remaining_pids": [],
+      "exit_code": -15,
+      "seconds": 1.487
+    }
+  ],
+  "focused": [
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_batch_step_boundary.py",
+        "python/tests/test_go_public_helpers.py",
+        "python/tests/test_go_public_budget_text.py",
+        "python/tests/test_go_export_diagnostics.py"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 134704,
+      "peak_cpu_percent": 74.3,
+      "samples": 5,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 4.3
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "./agent",
+        "-run",
+        "TestMixedBatchStepAdmissionMatchesActualSource|TestASTModelTool|TestScheduling|TestParallel|TestCancel|Test.*Stuck|Test.*StepHash|TestTypedExtension",
+        "-count=1"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 537440,
+      "peak_cpu_percent": 198.6,
+      "samples": 8,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 7.4
+    },
+    {
+      "name": "cancel-review-before",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "./agent",
+        "-run",
+        "TestCancelledBatchHashFailureRetainsCancellationRepair",
+        "-count=1"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 541440,
+      "peak_cpu_percent": 198.9,
+      "samples": 8,
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 7.385
+    },
+    {
+      "name": "cancel-review-after",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "./agent",
+        "-run",
+        "TestCancelledBatchHashFailureRetainsCancellationRepair",
+        "-count=1"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 541376,
+      "peak_cpu_percent": 199.9,
+      "samples": 7,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.348
+    }
+  ],
+  "first_cohort": {
+    "gates": [
+      {
+        "name": "source",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check",
+          "--manifest",
+          "/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/verified/source-manifest.json"
+        ],
+        "limits": {
+          "rss_kib": 3145728,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 410384,
+        "peak_cpu_percent": 94.0,
+        "samples": 30,
+        "status": "resource_blocked",
+        "reason": "host_memory_pressure",
+        "remaining_pids": [],
+        "exit_code": -15,
+        "seconds": 30.991
+      }
+    ],
+    "frozen_inputs": 1711,
+    "unchanged_at_terminal": true
+  },
+  "outcome": "Resource guard stopped Source export check when host pressure reached warning. No test-pass claim; no remaining owned PIDs; subsequent stages were not started.",
+  "evidence_directory": "var/go-batch-step-boundary-2026-10-13"
+}
