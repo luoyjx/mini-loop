@@ -570,7 +570,16 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: local main `82b14bf`; this iteration reviews the
+Runtime review baseline: local main `66f3645`; this iteration captures the
+provider hostname boundary before native IDNA implementation. The existing
+Unicode direct/SSE request-object probes still differ from Source; existing
+ASCII request and actual HTTP Host contracts pass. The Source corpus records
+original-host ASCII selection, Unicode lower/IDNA ordering and invalid-host
+rejection, with exact installed library and Unicode-data versions. The native
+consumer and proposed fixed dependencies await approval and implementation.
+This is contract evidence; runtime topology, authority and defaults are unchanged.
+
+Previous runtime review baseline: local main `82b14bf`; that iteration reviews the
 Python/Go fake-HTTP performance instrument and the original acceptance index.
 Its isolated server environments explicitly retain conservative CPU/thread
 settings and a soft Go memory target, and the report records these settings.

@@ -1,0 +1,1842 @@
+{
+  "cases": [
+    {
+      "base_url": "https://bücher.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "unicode-host",
+      "profile": "unicode",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "unicode-host",
+      "profile": "unicode",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://xn--bcher-kva.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://xn--bcher-kva.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "punycode-host",
+      "profile": "ascii",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://xn--bcher-kva.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://xn--bcher-kva.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "punycode-host",
+      "profile": "ascii",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://_srv.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://_srv.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://_srv.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ascii-underscore",
+      "profile": "ascii-bypass",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://_srv.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://_srv.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://_srv.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ascii-underscore",
+      "profile": "ascii-bypass",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://xn--a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Codepoint U+0080 at position 1 of '\\x80' not allowed",
+        "type": "InvalidCodepoint"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://xn--a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ascii-malformed-alabel",
+      "profile": "ascii-bypass",
+      "stage": "request"
+    },
+    {
+      "base_url": "https://xn--a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Codepoint U+0080 at position 1 of '\\x80' not allowed",
+        "type": "InvalidCodepoint"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://xn--a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ascii-malformed-alabel",
+      "profile": "ascii-bypass",
+      "stage": "request"
+    },
+    {
+      "base_url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ascii-long-label",
+      "profile": "ascii-bypass",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ascii-long-label",
+      "profile": "ascii-bypass",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://BÜCHER.INVALID/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://BÜCHER.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-unicode-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://BÜCHER.INVALID/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://BÜCHER.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-unicode-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://FAẞ.INVALID/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--fa-hia.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://FAẞ.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "uppercase-sharp-s-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://FAẞ.INVALID/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--fa-hia.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://FAẞ.INVALID/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "uppercase-sharp-s-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://İ.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--i-9bb.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://İ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "dotted-i-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://İ.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--i-9bb.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://İ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "dotted-i-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ΟΣ.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--0xai.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ΟΣ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "greek-across-dot-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ΟΣ.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--0xai.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ΟΣ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "greek-across-dot-host",
+      "profile": "lower-order",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://K.-bad.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'K.-bad.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://K.-bad.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "lower-becomes-ascii-with-invalid-label",
+      "profile": "lower-order",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://K.-bad.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'K.-bad.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://K.-bad.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "lower-becomes-ascii-with-invalid-label",
+      "profile": "lower-order",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://é.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--9ca.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "nfc-composed",
+      "profile": "nfc",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://é.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--9ca.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "nfc-composed",
+      "profile": "nfc",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://é.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'é.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "nfc-decomposed",
+      "profile": "nfc",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://é.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'é.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "nfc-decomposed",
+      "profile": "nfc",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://́a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '́a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://́a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "leading-combining",
+      "profile": "leading-combining",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://́a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '́a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://́a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "leading-combining",
+      "profile": "leading-combining",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://bücher。invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher。invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "ideographic-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher。invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher。invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "ideographic-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher．invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher．invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "fullwidth-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher．invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher．invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "fullwidth-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher｡invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher｡invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "halfwidth-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher｡invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher｡invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "halfwidth-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher。/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva./tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher。/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "trailing-unicode-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher。/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--bcher-kva./tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher。/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "trailing-unicode-dot",
+      "profile": "separator",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://bücher..invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'bücher..invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher..invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "empty-unicode-label",
+      "profile": "separator",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://bücher..invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'bücher..invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher..invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "empty-unicode-label",
+      "profile": "separator",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.xn--9ca.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "label-63-with-unicode",
+      "profile": "length",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.xn--9ca.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "label-63-with-unicode",
+      "profile": "length",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "label-64-with-unicode",
+      "profile": "length",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.é.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "label-64-with-unicode",
+      "profile": "length",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://ب‌ب.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--ngba799q.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ب‌ب.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "zwnj-joining-context",
+      "profile": "contextj",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ب‌ب.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--ngba799q.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ب‌ب.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "zwnj-joining-context",
+      "profile": "contextj",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ا‌ب.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'ا\\u200cب.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا‌ب.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "zwnj-nonjoining-context",
+      "profile": "contextj",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://ا‌ب.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'ا\\u200cب.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا‌ب.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "zwnj-nonjoining-context",
+      "profile": "contextj",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://क्‍ष.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--11b2ezcw70k.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://क्‍ष.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "zwj-virama-context",
+      "profile": "contextj",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://क्‍ष.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--11b2ezcw70k.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://क्‍ष.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "zwj-virama-context",
+      "profile": "contextj",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://a‍b.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a\\u200db.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a‍b.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "zwj-without-virama",
+      "profile": "contextj",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://a‍b.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a\\u200db.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a‍b.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "zwj-without-virama",
+      "profile": "contextj",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://l·l.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--ll-0ea.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://l·l.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "middle-dot-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://l·l.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--ll-0ea.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://l·l.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "middle-dot-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://a·a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a·a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a·a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "middle-dot-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://a·a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a·a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a·a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "middle-dot-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://͵α.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--wva4j.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://͵α.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "greek-numeral-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://͵α.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--wva4j.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://͵α.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "greek-numeral-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://͵a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '͵a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://͵a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "greek-numeral-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://͵a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '͵a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://͵a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "greek-numeral-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://א׳.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--4db4e.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://א׳.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "hebrew-punctuation-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://א׳.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--4db4e.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://א׳.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "hebrew-punctuation-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://a׳.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a׳.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a׳.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "hebrew-punctuation-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://a׳.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a׳.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a׳.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "hebrew-punctuation-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://カ・ナ.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--lck2c6g.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://カ・ナ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "katakana-middle-dot-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://カ・ナ.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--lck2c6g.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://カ・ナ.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "katakana-middle-dot-context",
+      "profile": "contexto",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://a・a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a・a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a・a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "katakana-middle-dot-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://a・a.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'a・a.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://a・a.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "katakana-middle-dot-outside-context",
+      "profile": "contexto",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://ا١.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--mgb0j.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا١.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "arabic-indic-digits",
+      "profile": "contexto-digits",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ا١.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--mgb0j.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا١.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "arabic-indic-digits",
+      "profile": "contexto-digits",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ا۱.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--mgb81b.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا۱.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "extended-arabic-indic-digits",
+      "profile": "contexto-digits",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ا۱.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--mgb81b.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا۱.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "extended-arabic-indic-digits",
+      "profile": "contexto-digits",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://ا١۱.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'ا١۱.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا١۱.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "mixed-arabic-digit-sets",
+      "profile": "contexto-digits",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://ا١۱.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'ا١۱.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://ا١۱.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "mixed-arabic-digit-sets",
+      "profile": "contexto-digits",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://123.א.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://123.xn--4db.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://123.א.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "numeric-label-before-rtl",
+      "profile": "labelwise-bidi",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://123.א.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://123.xn--4db.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://123.א.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "numeric-label-before-rtl",
+      "profile": "labelwise-bidi",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://א1.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--1-zhc.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://א1.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "rtl-with-european-digit",
+      "profile": "bidi",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://א1.invalid/tenant",
+      "calls": [
+        {
+          "api_key": "fixture-key",
+          "authorization": null,
+          "method": "POST",
+          "raw_path": "/tenant/v1/messages",
+          "url": "https://xn--1-zhc.invalid/tenant/v1/messages"
+        }
+      ],
+      "error": null,
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://א1.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "rtl-with-european-digit",
+      "profile": "bidi",
+      "stage": "complete",
+      "text": "ok"
+    },
+    {
+      "base_url": "https://א1١.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'א1١.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://א1١.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "rtl-mixed-numeral-directions",
+      "profile": "bidi",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://א1١.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'א1١.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://א1١.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "rtl-mixed-numeral-directions",
+      "profile": "bidi",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://אa.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'אa.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://אa.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "rtl-mixed-latin",
+      "profile": "bidi",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://אa.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'אa.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://אa.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "rtl-mixed-latin",
+      "profile": "bidi",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://☃.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '☃.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://☃.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "disallowed-snowman",
+      "profile": "disallowed",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://☃.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '☃.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://☃.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "disallowed-snowman",
+      "profile": "disallowed",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://bücher._srv.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'bücher._srv.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher._srv.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "unicode-with-ascii-underscore",
+      "profile": "ascii-bypass",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://bücher._srv.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: 'bücher._srv.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://bücher._srv.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "unicode-with-ascii-underscore",
+      "profile": "ascii-bypass",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://𑼄.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '\\U00011f04.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://𑼄.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "direct",
+      "name": "newer-unicode-table-codepoint",
+      "profile": "unicode-version",
+      "stage": "constructor"
+    },
+    {
+      "base_url": "https://𑼄.invalid/tenant",
+      "calls": [],
+      "error": {
+        "text": "Invalid IDNA hostname: '\\U00011f04.invalid'",
+        "type": "InvalidURL"
+      },
+      "identity": {
+        "credential": "<set>",
+        "endpoint": "https://𑼄.invalid/tenant",
+        "name": "anthropic-compatible",
+        "wire": "anthropic"
+      },
+      "mode": "stream",
+      "name": "newer-unicode-table-codepoint",
+      "profile": "unicode-version",
+      "stage": "constructor"
+    }
+  ],
+  "httpx_version": "0.28.1",
+  "idna_table_unicode_version": "17.0.0",
+  "idna_version": "3.18",
+  "message": {
+    "content": [
+      {
+        "text": "ok",
+        "type": "text"
+      }
+    ],
+    "id": "fixture",
+    "model": "fixture-model",
+    "role": "assistant",
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "type": "message",
+    "usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    }
+  },
+  "python_implementation": "CPython",
+  "python_version": "3.11.3",
+  "scope": "Actual provider/SDK direct and SSE request objects via MockTransport; no live network or wire-host claim.",
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "anthropic/_base_client.py": "a6a53bd97f9cfe4ec55231791dd77961dc3a65da8b37799bb36e54c7e7e19d7e",
+    "httpx/_urlparse.py": "640987e3b38d7e4c6bae3f8f3d88467a21e36fa0232824be00d58837838bfca6",
+    "idna/core.py": "49f3abd713b73e8134443631edb31c8809e38b28c93db3f0ffddc007921460ec",
+    "idna/idnadata.py": "01ffa6a3c5819a48402ba4f25ca3901fcf0e5f49903432ad74bed45ad429a699",
+    "idna/intranges.py": "838f6c70b4a4a89b4084b98e3836bb8551eb8928e66fad2d893b04a287097412",
+    "mini_loop/providers.py": "19b2aaade7606e8ddea10dd2ce9b1ea274326937184d908c356353915a18d597",
+    "tools/provider_endpoint_contracts.py": "3f3a5c75eefabd1fdee211b5fa2688a4cb3435d7246d017d4adbbe03c76e24fd",
+    "tools/provider_idna_contracts.py": "192d8a52ed25e4c4c70f554437c55e61e267cc6dfc65fd1bd306b2bb5047d5c7",
+    "tools/provider_url_contracts.py": "e11c51c6d291a512dc640d2ca2bbf1b631f42f053a41ff941484e9881bc354fe"
+  },
+  "sse": "event: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"fixture\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"fixture-model\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}}\n\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"text\", \"text\": \"ok\"}}\n\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"end_turn\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 1}}\n\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\n",
+  "unicode_version": "14.0.0"
+}

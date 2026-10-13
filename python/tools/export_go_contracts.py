@@ -6733,6 +6733,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.http_routing_contracts import http_routing_contracts
     from tools.provider_endpoint_contracts import provider_endpoint_contracts
     from tools.provider_url_contracts import provider_url_contracts
+    from tools.provider_idna_contracts import provider_idna_contracts
     from tools.provider_authority_wire_contracts import provider_authority_wire_contracts
     from tools.provider_transport_wire_contracts import provider_transport_wire_contracts
     from tools.json_text_span_contracts import json_text_span_contracts
@@ -7134,6 +7135,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-http-routing.json": _json_bytes(http_routing_contracts()),
         "python-provider-endpoint.json": _json_bytes(provider_endpoint_contracts()),
         "python-provider-url.json": _json_bytes(provider_url_contracts()),
+        "python-provider-idna.json": _json_bytes(provider_idna_contracts()),
         "python-provider-authority-wire.json": _json_bytes(provider_authority_wire_contracts()),
         "python-provider-transport-wire.json": _json_bytes(provider_transport_wire_contracts()),
         "python-json-text-spans.json": _json_bytes(json_text_span_contracts()),
