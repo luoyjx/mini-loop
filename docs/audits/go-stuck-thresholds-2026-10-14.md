@@ -141,8 +141,8 @@ L5 evidence. Five layers and six boundary notes remain present; no architecture
 component was added or removed, so the base image/prompt remain unchanged.
 The exact edit prompt is retained beside the iteration image.
 
-Implementation and evidence are ready for a runtime commit, followed by a
-separate local-main integration record. The next planned work is the original
+Runtime `3a1e44c8d8b3865320bc33a17c5f39b8de3f12b8` is committed and fast-forwarded
+into local main. Final evidence is a separate documentation commit. The next planned work is the original
 required-row closure audit: capability/default rows, settings, HTTP operations,
 SDK producers, public seams and feature profiles, with concrete Source/native
 assertions instead of treating association counts as completion.

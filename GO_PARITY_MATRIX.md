@@ -1,5 +1,119 @@
 # Python to Go parity matrix
 
+## 2026-10-14 public stuck-threshold integer boundaries — finite validation complete
+
+Iteration baseline `6ea2fd2`, branch `codex/go-stuck-thresholds`; runtime
+`3a1e44c` is committed and fast-forwarded into local main. Actual Source fixture
+`go/testdata/python-stuck-thresholds.json` is 295,781 bytes and contains:
+
+| Observation scope | Actual captured result |
+| --- | --- |
+| Public constructor/inspect | 61 cases: 27 no signal, 26 signals, eight `IndexError` faults; zero constructor errors |
+| Bare Agent | 12 real loops, including fault and subsequent-user-request observations |
+| AgentSession | Two real fault/two-turn loops with status, events and history |
+
+The earlier four-case disable-rule proposal now covers all six host-integer
+fields, explicit all-zero configuration, positive/negative controls and
+precedence. Native code accepts these integer values and uses an explicit
+configured flag so the zero-value detector keeps defaults while configured
+zeros remain zeros. Repeat windows use Source `steps[-n:]` semantics and avoid
+minimum-integer negation overflow. A named `StuckInspectionError` preserves
+`IndexError` class/message; initial built-in faults retain the Source point
+before tool-result history append. Ordinary custom detector errors still retain
+paired results. Managed error formatting gives only this named fault its Source
+class prefix. No authority, default, child-policy or 20-step window change is
+claimed; arbitrary Python object types and integers outside the host range are
+outside this slice.
+The error type is a marker rather than authenticated origin: custom callers
+returning the same marker also select the Source fault timing.
+
+Baseline `6ea2fd2` direct public-API comparison completed in 14.841 seconds:
+**29 matches / 32 mismatches of 61**. It did not run the full baseline Agent-loop
+comparison. The first attempt remains resource-blocked for process priority;
+its stdout also records a bad module import, corrected to the repository's
+actual GitHub module in the successful probe. Focused Python passed **21 tests**
+(one new plus 20 existing) in a 1.430-second monitored stage. Architecture passed
+nine checks in 1.432 seconds; iteration image and exact prompt are
+`docs/audits/go-stuck-thresholds-infographic-2026-10-14.png` and its `.prompt.txt`.
+
+Final focused Go passed **11 top-level tests / 98 subtests** in 18.262 seconds,
+with a sampled tree RSS peak of 543,632 KiB. All 61 direct cases, the 12 bare
+Agent initial turns and two managed initial-fault terminal-outcome projections
+match. Earlier failed consumer attempts retain the wrong module path,
+ToolInput decoder issue and assumed guard-error prefix in sequence.
+
+Complete Go/atomic passed **51 packages**, 1,457 top-level tests / six skips and
+11,669 subtests / one skip in 366.654 seconds. Statement coverage is app
+**89.4869971% (33963/37953)**, all Go **89.2404076% (34329/38468)** and provider
+**86.2068966% (1575/1827)**; sampled tree RSS / CPU peaks were 611,952 KiB / 200%.
+Fresh complete race passed **49 packages / two skipped**, 1,457 top-level tests /
+six skips and 11,669 subtests / one skip in 536.253 seconds. Sampled tree RSS /
+CPU peaks were 557,152 KiB / 178.5%. Six Darwin linker `malformed LC_DYSYMTAB`
+warnings are retained; no race reports occurred. Vet passed in 5.543 seconds.
+
+Source export verified **259 current fixtures** in 106.015 seconds. Full Python
+passed **2,269 tests / 28 skips**, with 104 warnings and 24 subtests; pytest
+98.07 seconds / monitored stage 99.552 seconds, sampled tree RSS 341,104 KiB /
+CPU 298.8%. Invariants checked **77 modules** and all **19 scans** are anchored.
+Three selected mutation guards—stuck halt stop rule, Agent transcript guard and
+fake accepting any transcript—each caught its mutant. Four type audits have
+**zero findings**: syntax 468 files / 1,487 types; public 51 packages / 1,214
+exported types; private 284 roots; variables 172.
+
+**Finite integer-threshold validation is complete; full-port acceptance remains
+open.** Consumer inventory still **failed, exit 1**, with 258/260
+`test_pass_observed` associations and IDNA/parser unreferenced. Associations
+alone do not prove semantic parity. All 14 later gate freezes match Go/atomic's
+**1,795 inputs** and current frozen inputs remain unchanged. Final serial gates
+had no budget stops or observed owned-process leftovers; pressure observations
+were 1/2. Earlier priority-blocked baseline and failed consumer attempts remain.
+The committed receipt is [go-stuck-thresholds-2026-10-14.json](docs/audits/go-stuck-thresholds-2026-10-14.json).
+Runtime `3a1e44c` is integrated into local main. Final evidence is a separate
+documentation commit; remote refs, push and CI remain unrefreshed. Validation used
+GOMAXPROCS 2, preserved GOFLAGS plus `-p=1`, test parallelism 2, nice 10,
+GOMEMLIMIT 512 MiB soft target and a sampled owned-tree RSS budget of 1.5 GiB.
+Sampled RSS may miss fast descendants or double-count shared pages; these are
+not hard memory bounds. No resource-blocked gate is recorded as passing.
+
+Post-fault next-request equivalence remains **open**: Source attempts the fake
+provider's `messages.create` once (one rejected attempt, zero accepted calls), catches
+`InvalidTranscript` into output and AgentSession ends idle/done. Native first
+rejects compactor output with `compactor transcript: ...`, before the later
+explicit model-request guard, makes zero provider attempts and returns an
+error/status error. Source managed terminal events
+also omit identity fields present in native headers; that difference is not
+accepted here. The two managed Source captures use NullStateStore, so they do
+not prove SQLite durability or restart behavior. Historical blanket
+invalid-threshold adaptation is superseded
+for captured host-integer constructor values, with unrelated cache-policy
+validation unchanged. Full G0–G7, IDNA approval/native adoption, default parser,
+fixed-image Linux gates and the actual escaped lone-surrogate SDK caller/
+next-request probe remain open.
+
+### Next: original required-row closure audit
+
+Reconcile the original [P0/P1/G0–G7 requirements](GO_PORT_PLAN.md#work-packages)
+against **12 capability/default rows, 49 settings, 44 HTTP operations, three
+actual SDK producers, 157 public exports grouped by seam, and 57 feature
+definitions / 14 registry profiles / eight manager profiles**. Each required
+row needs one explicit outcome—**verified, concrete mismatch, dependency blocked,
+or platform unverified**—and authoritative Source recipes, native assertions,
+default/lifecycle scope and receipt/code references. Candidate associations are
+not semantic proof.
+
+P0 inventory and P1 relocation are completed under existing authoritative
+history. Use the [public inventory](GO_PUBLIC_SURFACE_INVENTORY.md),
+[namespace overlay](docs/audits/go-public-helpers-namespace-2026-10-13.json),
+final type gates and [130 disposed body observations](docs/audits/go-body-boundary-dispositions-2026-10-13.json)
+for finite G0 closure; arbitrary Python objects, foreign error graphs and
+unbounded combinations are not new requirements. Reconcile the historical
+[permission/recovery remaining-boundaries snapshot](docs/audits/go-port-remaining-boundaries-2026-10-13.md)
+with the later [permission delivery](docs/audits/go-permission-events-2026-10-13.json)
+and [integrated recovery validation](docs/audits/go-progress-validation-2026-10-14.json)
+instead of reopening delivered implementation. The host-integer stuck post-fault
+gap remains explicit; IDNA/default-parser decisions and Linux evidence retain
+their distinct dependency/platform categories. The full objective is unchanged.
+
 ## 2026-10-14 raw HTTP query decoding and authentication faults
 
 Iteration baseline `51bdcc0`, branch `codex/go-http-query-wire`: **24 actual ASGI-byte
@@ -156,17 +270,20 @@ limit. Preserve durable-cursor SSE, owner and disconnect controls. No actual
 capture or implementation is claimed yet. ASGI bytes do not prove Uvicorn/proxy
 admission; this candidate is not a vulnerability or complete wire-parity claim.
 
-### Next finite candidate: public stuck-threshold disable controls
+### Historical proposal: public stuck-threshold disable controls
 
 Static review of public `StuckThresholds` construction and Source `inspect`
 shows negative `unproductive_tool` and `alternating` values reach the `<= 0`
 and `< 4` rule-disable branches respectively; Go `NewStuckDetector` rejects
 them. These two values cannot be covered by a blanket invalid-configuration
-adaptation claim. Plan four actual public Source observations—negative disable
-and positive trigger for each rule—along the existing `loop_contract_test`
-consumer, with unchanged default controls and precedence. This candidate is
-not yet captured, implemented or accepted. The escaped lone-surrogate SDK
-caller/next-request probe remains open separately.
+adaptation claim. This historical four-case proposal is superseded by the
+[active integer-boundary slice](#2026-10-14-public-stuck-threshold-integer-boundaries--finite-validation-complete):
+61 direct actual Source cases plus real Agent/AgentSession loops are captured;
+native focused and finite validation pass for the stated initial-turn scope;
+post-fault next-request equivalence remains open.
+Unchanged default controls and precedence
+remain required. The escaped lone-surrogate SDK caller/next-request probe
+remains open separately.
 
 ## 2026-10-14 SDK caller observations — validation complete
 
@@ -1629,7 +1746,27 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-13
 
-Current pointer, **2026-10-14**: runtime `1e9fb10` is on local main;
+Current pointer, **2026-10-14**: runtime `3a1e44c` is committed and integrated
+into local main; implementation branch `codex/go-stuck-thresholds`. The
+[public stuck-threshold integer-boundary slice](#2026-10-14-public-stuck-threshold-integer-boundaries--finite-validation-complete)
+captures 61 direct cases, 12 actual Agent loops and two AgentSession fault/
+two-turn loops. Baseline direct comparison has 29 matches / 32 mismatches;
+focused Python 21, architecture nine checks and native focused 11 top-level /
+98 subtests pass. Complete Go/atomic (51 packages), fresh full race (49 passed /
+two skipped), vet, Source 259, Python 2,269 / 28 skips, invariants 77, scans 19,
+three selected mutation guards and four zero-finding type audits pass. All 14
+later gate freezes match the same 1,795 inputs; finite validation is complete.
+Consumer inventory remains failed at 258/260 observed passing associations,
+with IDNA/parser unreferenced. Coverage is app 89.4869971%, all Go 89.2404076%
+and provider 86.2068966%.
+Initial built-in
+fault timing is implemented; subsequent-request handling and managed terminal
+identity differences remain open. Full migration acceptance is not claimed.
+Next is the [original required-row closure audit](#next-original-required-row-closure-audit)
+across the finite public/default/feature inventory; P0/P1 completion remains
+recorded and original G0–G7 requirements remain authoritative.
+
+Previous completed checkpoint: runtime `1e9fb10` is on local main;
 implementation branch `codex/go-http-query-wire`. The
 [raw query/authentication-fault slice](#2026-10-14-raw-http-query-decoding-and-authentication-faults)
 has 24 actual ASGI-byte Source observations; the previous 99 encoded cases are
@@ -6647,7 +6784,7 @@ Unicode casing tables are generated separately by
 | Optional user resources | `user_resources.py`, `memory.py`, `skill_capture.py`; `tests/test_user_resource_lifecycle.py` | Owner snapshots and bounded publication | Canonical fields, exact private directories, layered catalogues, scoped Markdown memory, immutable owner snapshots and operator create-only publication are implemented as typed libraries. Snapshot 63 compares 16 actual Python publication scenarios and 27 calls; explicit trusted manager/runtime snapshot binding is implemented; explicit owner memory tools, automatic selection/extraction/consolidation and contained source-endpoint capture are implemented; snapshots 68/69 compare origins, owner isolation and actual endpoint calls. Shared manager Memory fallback now binds exact admitted owners across create/fork/ordinary and scheduled restoration; native tests reopen Markdown files and preserve resource-resolver precedence. Launcher/configuration roots and individual memory tool/auto selection are now implemented; snapshot 70 compares seven actual source constructor cases. Trusted successful-turn skill capture is now implemented; typed candidate parsing and preview business flow are implemented; standalone native-session model binding is implemented; manager binding and HTTP publication remain pending. |
 | Optional typed decisions | `decisions.py`, `decision_tools.py`, `decision_llm.py`; `tests/test_decisions.py`, `test_decision_tools.py`, `test_decision_llm.py`, `test_decision_replay.py` | Explicit choice/score/noul judgments, actual model/usage, default-off and no execution authority | The go/decisions operator library has closed JSON Value variants and named Request/Question/Answer/Result/TokenUsage/Provider contracts. Snapshots detach every mutable surface. Strict request/result validation preserves IDs, full distributions, maximum choice, weighted score/legend, noul probability and optional whole usage. Fixed-endpoint Jev transport disables redirects, ignores proxies for owned clients, closes response bodies, bounds total deadlines/read bytes/retries and sanitizes transport feedback. Borrowed transports stay caller-owned; concurrent calls are tested. Snapshot 53 compares 28 actual source requests, 22 results, four UTF-8 bounds and 21 offline HTTP cases, including retry-after clamp/fallback, non-retried status, malformed/duplicate payload and transport faults. Native tests additionally cover local TLS, cancellation/read caps and exact large-integer legend equality. Go counts are signed64; nonstandard JSON/duplicate local keys and excessive wire nesting fail closed. Canonical map order is not exact source insertion order. Explicit RuntimeConfig/ManagerServices DecisionTools now installs the closed external-risk tool; backend injection alone leaves it off. State and member names are masked/revalidated before custom/Jev or fresh isolated LLM queries. Shared model limits, complete-response checks before recovery, typed decision/custom-model metadata and private trajectory inputs are implemented. Snapshot 54 compares 31 actual Python LLM recipes and eight gate outcomes. Native tests cover child/manager composition, fallback/parent isolation, timeout/cancellation/panic, recording projections and exact >4 KiB result replay under current guards. Default-off remains. Launcher/environment activation now selects llm/jev, with explicit backend precedence and credential-free offline inspection. Snapshot 55 compares actual source maximum-byte memory/SQLite-reopen replay, aggregate shedding and Unicode bounds/reconciliation; native common-gate replay and recreated stored adapters match result hashes/retention. Snapshot 56 compares cooperative cancellation, journal cancellation and permit release, and pins a source escaped-model negative case. Go masks result structures before escaping; full managed tests inspect decoded live/SSE, sink callbacks, private trajectories, stored events/messages and action results. This deliberately closes the source escaped-output masking gap. Native SQL/restart and live-provider audit remain pending. Native replies require complete model/usage, surrogate refusal occurs earlier, unknown backend failures normalize to RuntimeError and derived floats use 1e-12 tolerance. No paid service or native SQL decision evidence is claimed. |
 | Configuration and standalone startup | `config.py`, `__main__.py`, `server.py`, `skills.py`; configuration/startup tests | Named settings, loud validation, explicit service wiring, bind guard, shutdown and redacted diagnostics | `go/config` has all 49 source fields; 64 real Python outcomes compare accepted values and rejected configurations. Go has explicit int/duration bounds and pure SDK loading without dotenv discovery or Python Settings workspace mkdir. Compiled commands now discover dotenv once from cwd/ancestors using Source frozen-program origin, publish prepared effects for child inheritance, and report disabled/enabled discovery; ordinary Python config-module origin remains an explicit SDK selection. No reload follows. `launcher.New` wires supported services, `App.Serve` owns TCP listener/shutdown, and cmd/miniloop handles SIGINT/SIGTERM. Default trajectory recording is active; its configured root failure refuses startup. Enabled unavailable services still refuse activation. The private spill root is now best-effort constructed by default; an empty path disables it, and root failure retains startup. Builtin skill bytes/descriptions/load match Python. `--dump-config` reports settings-and-availability without runtime/probe, redacts credential fields and URL secrets, and includes Go VCS build info; it is not full effective posture. Local HTTP provider and real shell timeout tests prove option wiring. Positive subnanosecond durations and nonfinite values refuse; fake-delay validation also runs for a real provider. Public console/UI shells are implemented; missing optional services and full posture remain G3/G5/G6. |
-| Audit and extension seams | `config.py`, `harness.py`, `identity.py`, `audit.py`, `EXTENDING.md`; `tests/test_extension_contracts.py`, `test_effective_posture.py` | Explicit constructor dependencies, truthful default posture and credential-free reporting | Typed UserPromptHook and named MessageInjector seams receive detached history/todo/authority views; full injector batches validate before append, before runtime facts and compaction. Optional typed ApprovalReviewer and ApprovalRedactor seams, default CachePolicy/StuckDetector, typed StopHook continuation and optional ordered EventSink are implemented. Sink faults/panics are contained; callbacks may inspect Info/events but cannot recursively emit or block on live Messages. Historical constructor validation rejects cache strides and detector thresholds; the 2026-10-14 static review identifies negative unproductive_tool/alternating values as Source rule-disable controls requiring actual capture, not established invalid-configuration adaptations. Other captured configured cases match Python. Reviewer faults/invalid verdicts abstain; remembered human grants precede review, and readonly/final denial stays authoritative. Guardian implementation, full effective-posture reporting and future provider/SQLite/optional-feature sink masking remain pending. The typed go/secrets Registry preserves named injection APIs, lazy cached values, retry/reporting, ANSI matching, Unicode casing and the default Null posture; 15 mask recipes, four environments and ten typed previews match actual Python. Runtime integration tests cover journal-before-observer order, raw execution arguments, masked model results, scoped shared-broker registries, compaction artifacts and child event isolation. The real shell consumes the selected environment and masks full/split streams before projection. Runtime registries bind independent credential configurations without mutating a shared executor. |
+| Audit and extension seams | `config.py`, `harness.py`, `identity.py`, `audit.py`, `EXTENDING.md`; `tests/test_extension_contracts.py`, `test_effective_posture.py` | Explicit constructor dependencies, truthful default posture and credential-free reporting | Typed UserPromptHook and named MessageInjector seams receive detached history/todo/authority views; full injector batches validate before append, before runtime facts and compaction. Optional typed ApprovalReviewer and ApprovalRedactor seams, default CachePolicy/StuckDetector, typed StopHook continuation and optional ordered EventSink are implemented. Sink faults/panics are contained; callbacks may inspect Info/events but cannot recursively emit or block on live Messages. Historical constructor validation rejected cache strides and detector thresholds. The 2026-10-14 active stuck-threshold slice supersedes that detector adaptation for host integers: 61 direct actual Source cases and Agent/AgentSession loops are captured; all six constructor fields, configured zero and slice faults are implemented; native direct and initial-turn comparisons and finite validation pass; post-fault next-request equivalence remains open. Cache-stride validation is unchanged. Other captured configured cases match Python. Reviewer faults/invalid verdicts abstain; remembered human grants precede review, and readonly/final denial stays authoritative. Guardian implementation, full effective-posture reporting and future provider/SQLite/optional-feature sink masking remain pending. The typed go/secrets Registry preserves named injection APIs, lazy cached values, retry/reporting, ANSI matching, Unicode casing and the default Null posture; 15 mask recipes, four environments and ten typed previews match actual Python. Runtime integration tests cover journal-before-observer order, raw execution arguments, masked model results, scoped shared-broker registries, compaction artifacts and child event isolation. The real shell consumes the selected environment and masks full/split streams before projection. Runtime registries bind independent credential configurations without mutating a shared executor. |
 
 Snapshot 48 invokes the actual Python events endpoint iterator over SQLite/Null
 for 17 window/header cases, including subscription-before-read and a concurrent

@@ -1,5 +1,132 @@
 # Go port plan
 
+## 2026-10-14 public stuck-threshold integer boundaries — finite validation complete
+
+Iteration branch `codex/go-stuck-thresholds` started from local main `6ea2fd2`.
+Runtime `3a1e44c` is committed and fast-forwarded into local main. This finite
+G4/G7 slice does not establish completed migration acceptance.
+
+Actual Source capture now contains **61 direct constructor/inspect cases**
+(27 no-signal results, 26 signals, eight `IndexError` faults and zero constructor
+errors), **12 real Agent loops**, and **two AgentSession fault/two-turn loops**.
+The fixture is `go/testdata/python-stuck-thresholds.json` (295,781 bytes).
+These observations expand the earlier four-case disable-rule proposal to all
+six integer fields, explicit zero, negative values, positive controls, rule
+precedence, nudges and observed failure timing. They do not establish parity
+for arbitrary Python object types or integers outside the native host range.
+
+Native implementation accepts all six host-integer fields. A configured flag
+distinguishes explicit all-zero thresholds from the native zero-value detector,
+which retains defaults. Repeat rules follow Python `steps[-n:]`, including
+zero selecting the whole window, negative slice starts and empty-window
+`IndexError`, without negating the minimum native integer. A named
+`StuckInspectionError` retains the Source class/message. Initial built-in
+inspection faults preserve Source timing: handler/result events and the step
+ledger have occurred, but tool results have not entered history. Ordinary custom
+detector errors retain their paired-result protection. Managed error formatting
+uses the Source `IndexError` prefix for this named fault only. Defaults,
+authority, child policy inheritance and the 20-step per-turn window are unchanged.
+The named error is a marker, not authenticated detector origin: a custom caller
+returning that same type selects its Source timing too.
+
+Validation evidence:
+
+- Isolated baseline `6ea2fd2`, using the actual current public API: **29 direct
+  matches / 32 mismatches out of 61**, in 14.841 seconds. This is not a baseline
+  comparison of the full Agent loops. The first baseline attempt remains
+  resource-blocked for process priority and also contains a bad module import;
+  the corrected probe uses the repository's actual GitHub module path.
+- Focused Python: **21 passed** (one new test plus 20 existing tests), monitored
+  stage 1.430 seconds.
+- Architecture generation: **nine checks passed**, 1.432 seconds. The iteration
+  image and exact prompt are
+  `docs/audits/go-stuck-thresholds-infographic-2026-10-14.png` and its `.prompt.txt`.
+- Final focused Go: **11 top-level tests / 98 subtests passed**, 18.262 seconds,
+  sampled tree RSS peak 543,632 KiB. All 61 direct cases match; the 12 bare Agent
+  initial turns and two managed initial-fault terminal-outcome projections match.
+  Earlier consumer attempts with a wrong module path, then a ToolInput decoder
+  issue, then an assumed guard-error prefix remain retained as failed attempts.
+- Complete Go/atomic: **51 packages passed**, 1,457 top-level passes / six skips,
+  11,669 subtest passes / one skip, 366.654 seconds. Statement coverage is app
+  **89.4869971% (33963/37953)**, all Go **89.2404076% (34329/38468)** and provider
+  **86.2068966% (1575/1827)**. Sampled tree RSS peaked at 611,952 KiB and CPU at 200%.
+- Fresh complete race: **49 packages passed / two skipped**, 1,457 top-level
+  passes / six skips and 11,669 subtest passes / one skip, 536.253 seconds.
+  Sampled tree RSS peaked at 557,152 KiB and CPU at 178.5%. Six Darwin linker
+  `malformed LC_DYSYMTAB` warnings remain in the raw logs; no race reports occurred.
+- Vet passed in **5.543 seconds**.
+- Source export verified **259 current fixtures**, 106.015 seconds.
+- Full Python passed **2,269 tests / 28 skips**, with 104 warnings and 24
+  subtests; pytest 98.07 seconds, monitored stage 99.552 seconds. Sampled tree
+  RSS peaked at 341,104 KiB and CPU at 298.8%.
+- Invariants checked **77 modules**; all **19 scans** are anchored. Three selected
+  mutation guards—stuck halt stop rule, Agent transcript guard and fake accepting
+  any transcript—each caught the intended mutation.
+- Four type audits reported **zero findings**: syntax 468 production files /
+  1,487 types; public 51 packages / 1,214 exported types; private 284 roots;
+  variables 172.
+
+**Finite integer-threshold validation is complete; full migration acceptance
+remains open.** Consumer inventory remains **failed, exit 1**: 258/260 candidate
+associations have `test_pass_observed`; IDNA and the default parser are
+unreferenced. Those associations do not prove complete semantic parity.
+All 14 later gate freezes match the Go/atomic baseline of **1,795 inputs**, and
+the current frozen inputs are unchanged. The final serial cohort had no budget
+stops or observed owned-process leftovers; observed pressure values were 1/2.
+The earlier baseline priority block and failed consumer attempts remain retained.
+Runs were serial under the monitored resource profile: GOMAXPROCS 2,
+GOFLAGS preserving existing flags plus `-p=1`, test parallelism 2, nice 10,
+GOMEMLIMIT 512 MiB as a soft target and sampled owned-tree RSS budget 1.5 GiB.
+The committed receipt is [go-stuck-thresholds-2026-10-14.json](docs/audits/go-stuck-thresholds-2026-10-14.json). Sampled
+RSS can miss fast descendants or double-count shared pages; it is not a hard
+memory bound. Runtime `3a1e44c` is integrated into local main; final evidence is
+a separate documentation commit. Remote refs, push and CI remain unrefreshed.
+
+**Observed boundary still open:** after the initial built-in fault, Source
+attempts the fake provider's `messages.create` once (one rejected attempt,
+zero accepted calls),
+catches `InvalidTranscript` as output and lets AgentSession become idle and
+emit done. Native first rejects the compactor output with
+`compactor transcript: ...`, before the later explicit model-request guard and without a provider
+attempt; it returns an error and leaves the managed status at error.
+Complete next-request equivalence is not claimed. Source managed terminal events
+omit identity fields that native
+event headers retain; that difference is also unclaimed. The two managed Source
+captures use NullStateStore and do not establish SQLite durability or restart
+behavior. The historical blanket
+invalid-threshold adaptation is superseded for these host-integer constructor
+values; cache-policy validation and unrelated adaptations are unchanged.
+IDNA approval/native adoption, default parser, the SDK escaped lone-surrogate
+caller/next-request probe, fixed-environment Linux gates and the original full
+G0–G7 acceptance criteria remain open.
+
+### Next: original required-row closure audit
+
+The next priority is the original [P0/P1/G0–G7 requirements](#work-packages),
+using the finite inputs already recorded: **12 capability/default rows,
+49 settings, 44 HTTP operations, three actual SDK producers, 157 public exports
+grouped by seam, and 57 feature definitions / 14 registry profiles / eight
+manager profiles**. Each required row must receive a disposition—**verified,
+concrete mismatch, dependency blocked, or platform unverified**—with its actual
+Source recipe, native assertions, default/lifecycle scope and authoritative
+receipt or code evidence. Candidate names and passing-test associations alone
+cannot establish semantic completion.
+
+P0 inventory and P1 relocation are complete under their existing acceptance
+history. The [public inventory](GO_PUBLIC_SURFACE_INVENTORY.md), its
+[namespace overlay](docs/audits/go-public-helpers-namespace-2026-10-13.json),
+current type gates and [130 reviewed body dispositions](docs/audits/go-body-boundary-dispositions-2026-10-13.json)
+are evidence to reconcile for G0 closure; do not expand this task to arbitrary
+Python objects, foreign error graphs or unbounded feature combinations.
+The older [remaining-boundaries snapshot](docs/audits/go-port-remaining-boundaries-2026-10-13.md)
+still lists permission events and legacy recovery before their later delivery;
+reconcile it against the [permission receipt](docs/audits/go-permission-events-2026-10-13.json)
+and [subsequent integrated validation](docs/audits/go-progress-validation-2026-10-14.json)
+instead of treating those historical descriptions as current missing code.
+Keep the host-integer stuck post-fault gap above explicit. IDNA/default-parser
+decisions and Linux platform evidence retain their separate blocking categories;
+the original full objective is unchanged.
+
 ## 2026-10-14 raw HTTP query decoding and authentication faults
 
 Iteration started from local main baseline `51bdcc0` on branch
@@ -169,7 +296,7 @@ These profiles are not yet captured or implemented. This is a finite decoding
 candidate, not a security-vulnerability or complete wire-parity claim; an ASGI
 byte capture would not prove Uvicorn or proxy admission of the same request.
 
-### Next finite candidate: public stuck-threshold disable controls
+### Historical proposal: public stuck-threshold disable controls
 
 Static source review identifies a concrete public-constructor difference:
 `StuckThresholds.unproductive_tool < 0` reaches Source's `<= 0` disabled-rule
@@ -178,11 +305,13 @@ branch, and `alternating < 0` reaches its `< 4` disabled-rule branch. Go's
 of negative detector thresholds as an invalid-configuration adaptation is too
 broad for these two controls.
 
-The stuck-threshold slice should capture four cases through the public Source constructor
-and `inspect`: one negative disable and one positive trigger for each rule,
-then extend the existing `loop_contract_test` consumer. Retain default-threshold
-controls and other rule precedence. This is a static candidate only: no new
-actual Source capture, native implementation or parity acceptance is claimed.
+This historical proposal requested four public constructor/inspect cases: one
+negative disable and one positive trigger for each rule. It is superseded by
+the [active integer-boundary slice](#2026-10-14-public-stuck-threshold-integer-boundaries--finite-validation-complete),
+which has captured 61 direct cases plus actual Agent/AgentSession loops. Native
+focused comparison and finite validation pass within the stated initial-turn
+scope; post-fault equivalence remains open in that entry. Default controls and rule
+precedence remain required.
 The SDK escaped lone-surrogate caller/next-request probe remains independently
 open.
 
@@ -8992,7 +9121,27 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Current pointer, **2026-10-14**: runtime `1e9fb10` is on local main.
+Current pointer, **2026-10-14**: runtime `3a1e44c` is committed and integrated
+into local main; implementation branch `codex/go-stuck-thresholds`. The
+[public stuck-threshold integer-boundary slice](#2026-10-14-public-stuck-threshold-integer-boundaries--finite-validation-complete)
+has 61 direct Source cases, 12 actual Agent loops and two AgentSession fault/
+two-turn loops. Baseline direct comparison matches 29 and differs on 32;
+focused Python 21, architecture nine checks and native focused 11 top-level /
+98 subtests pass. Complete Go/atomic (51 packages), fresh full race (49 passed /
+two skipped), vet, Source 259, Python 2,269 / 28 skips, invariants 77, scans 19,
+three selected mutation guards and four zero-finding type audits pass. All 14
+later gate freezes match the same 1,795 inputs. Consumer inventory remains
+failed at 258/260 observed passing associations, with IDNA/parser unreferenced.
+Finite validation is complete. Coverage is app 89.4869971%, all Go 89.2404076%
+and provider 86.2068966%. Initial built-in
+fault timing is implemented, while subsequent request handling and managed
+terminal identity differences remain explicit open boundaries. Original G0–G7
+criteria are unchanged; no full migration acceptance is claimed.
+The [next required-row closure audit](#next-original-required-row-closure-audit)
+will reconcile original requirements against existing evidence across the finite
+public/default/feature inventory, preserving P0/P1 completion and explicit gaps.
+
+Previous completed checkpoint: runtime `1e9fb10` is on local main.
 Implementation branch `codex/go-http-query-wire` delivers
 [raw query decoding and typed authentication faults](#2026-10-14-raw-http-query-decoding-and-authentication-faults).
 Source capture has 24 actual ASGI-byte cases and the old 99-case fixture is
@@ -9980,12 +10129,16 @@ open; the full G0-G7 goal remains active.
   empty string continues). Hooks receive detached context snapshots; they must
   not recursively enter the locked session. Children inherit policies/hooks,
   while their ledger and nudge budget remain fresh. Null policies and custom
-  valid thresholds are tested. Go constructors reject invalid thresholds and
-  cache strides more strictly than Python's invalid-configuration behavior.
-  **2026-10-14 clarification:** this historical adaptation label does not settle
-  negative `unproductive_tool` or `alternating` values, which statically reach
-  Source rule-disable branches. Their public constructor/inspect comparison is
-  the [next finite candidate](#next-finite-candidate-public-stuck-threshold-disable-controls).
+  valid thresholds are tested. Historical Go constructors rejected detector
+  thresholds and cache strides more strictly than Python.
+  **2026-10-14 clarification:** the detector-threshold adaptation is superseded
+  for host integers by the
+  [active integer-boundary slice](#2026-10-14-public-stuck-threshold-integer-boundaries--finite-validation-complete):
+  all six constructor fields are accepted, with explicit-zero and Source slice
+  fault timing represented. Native focused passes for direct and initial-turn
+  comparisons; finite validation is complete and post-fault next-request
+  equivalence remains open as recorded there. Cache-stride validation is
+  unchanged.
 - Differential hashes exposed an actual decoder mismatch: absent optional
   fields and explicit JSON null had been merged. Closed flags now retain the
   distinction for Bash, read, task and skill inputs through cloning, masking,

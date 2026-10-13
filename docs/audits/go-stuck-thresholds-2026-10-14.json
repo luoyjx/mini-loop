@@ -2370,9 +2370,14 @@
     "consumer_audit": "failed_exit_1_258_of_260"
   },
   "local_integration": {
-    "status": "pending_runtime_commit",
+    "status": "runtime_fast_forwarded_on_local_main",
+    "method": "git merge --ff-only codex/go-stuck-thresholds",
+    "previous_main": "6ea2fd264846697150e3bcc2691a690f9f160a7b",
+    "main_runtime_commit": "3a1e44c8d8b3865320bc33a17c5f39b8de3f12b8",
+    "delivery_commit": "separate documentation commit containing this receipt; self hash intentionally omitted",
     "remote_refreshed": false,
     "pushed": false
   },
-  "next_work": "Original required-row closure audit; keep full G0-G7 criteria and observed post-fault caller/identity gaps open."
+  "next_work": "Original required-row closure audit; keep full G0-G7 criteria and observed post-fault caller/identity gaps open.",
+  "runtime_commit": "3a1e44c8d8b3865320bc33a17c5f39b8de3f12b8"
 }
