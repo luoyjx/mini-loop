@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
-	"sort"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -225,63 +224,12 @@ func safeResultID(value string) string {
 }
 
 func (compactor DefaultCompactor) budget(ctx context.Context, value CompactionContext) (CompactionResult, error) {
-	result := CompactionResult{Messages: append([]protocol.Message(nil), value.Messages...)}
-	index := -1
-	for i := len(value.Messages) - 1; i >= 0; i-- {
-		if value.Messages[i].Role == protocol.RoleUser && hasBlock(value.Messages[i], protocol.BlockToolResult) {
-			index = i
-			break
-		}
+	budget, err := ToolResultBudget(ctx, ToolResultBudgetContext{Messages: value.Messages, Files: value.Files, Secrets: value.Secrets, Now: compactor.timestamp}, ToolResultBudgetOptions{MaxBytes: compactor.ResultBudget, PreviewChars: compactor.PreviewChars})
+	result := CompactionResult{Messages: budget.Messages}
+	if err == nil && budget.Persisted > 0 {
+		result.Events = []CompactionEvent{{kind: CompactBudget, count: budget.Persisted}}
 	}
-	if index < 0 {
-		return result, nil
-	}
-	blocks, _ := value.Messages[index].Content.Blocks()
-	type target struct {
-		index    int
-		original protocol.ToolResultBlock
-		weight   int
-	}
-	var targets []target
-	total := 0
-	for i, block := range blocks {
-		if output, ok := block.ToolResult(); ok {
-			total += len(output.Content)
-			targets = append(targets, target{i, output, utf8.RuneCountInString(output.Content)})
-		}
-	}
-	if total <= compactor.ResultBudget {
-		return result, nil
-	}
-	sort.SliceStable(targets, func(i, j int) bool { return targets[i].weight > targets[j].weight })
-	persisted := 0
-	for _, target := range targets {
-		if total <= compactor.ResultBudget {
-			break
-		}
-		if err := ctx.Err(); err != nil {
-			return result, err
-		}
-		path := filepath.Join(".task_outputs", "tool-results", fmt.Sprintf("%s-%d.txt", safeResultID(target.original.ToolUseID), compactor.timestamp()))
-		resolved, err := value.Files.Resolve(path)
-		if err != nil {
-			return result, err
-		}
-		if _, err := value.Files.Write(ctx, protocol.WriteFileInput{Path: path, Content: maskedText(value.Secrets, target.original.Content)}); err != nil {
-			return result, err
-		}
-		runes := []rune(target.original.Content)
-		preview := string(runes[:min(len(runes), compactor.PreviewChars)])
-		replacement := fmt.Sprintf("<persisted-output path=\"%s\" bytes=\"%d\">\n%s\n</persisted-output>", resolved, len(target.original.Content), preview)
-		blocks[target.index] = protocol.NewToolResult(target.original.ToolUseID, replacement, target.original.IsError)
-		total += len(replacement) - len(target.original.Content)
-		result.Messages[index].Content = protocol.BlockContent(blocks...)
-		persisted++
-	}
-	if persisted > 0 {
-		result.Events = append(result.Events, CompactionEvent{kind: CompactBudget, count: persisted})
-	}
-	return result, nil
+	return result, err
 }
 
 func (compactor DefaultCompactor) MaybeCompact(ctx context.Context, value CompactionContext) (CompactionResult, error) {

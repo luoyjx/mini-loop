@@ -2,47 +2,62 @@
 
 ## Current evidence — 2026-10-13
 
-Review baseline: local main `e4c5aff`. This inventory preserves original P0/P1/G0–G7.
-It enumerates157 root Python exports,12 README posture rows,18 curriculum labels
-covering s01–s20,49 Settings fields,44 OpenAPI operations and3 SDK producers.
-Name and composition candidates are lookup pointers; they prove no semantic parity.
+Review baseline: local main `3269424`; original P0/P1/G0–G7 scope is preserved.
+The root namespace inventory remains157 exports:52 name candidates and105
+explicit rename/composition candidates after resolving the previous six lookup
+omissions. Namespace lookup is not full semantic parity. The original machine
+inventory is retained; the [public helper overlay](docs/audits/go-public-helpers-namespace-2026-10-13.json)
+records six exact current declarations and the bounded proof scope.
 
-Source `__all__` has52 name candidates,99 explicit renamed/composition candidates,
-and6 public names without a Go namespace binding identified. Four are standalone
-helpers; two are constants. Runtime/internal behavior may already exist.
+41 actual public memory-helper Source profiles and20 result-budget profiles now
+compare typed public Go calls from an external test package. Exact constants,
+defaults, zero/negative slicing and thresholds, request text/budgets/purposes,
+load events, unchanged transcripts, stored origins, foreign owners and partial
+write effects are covered. `agent.TrajectorySchema` already existed; the previous
+lookup omitted its alias. `agent.UnknownResult` exposes the existing exact text.
+Typed helper inputs have no arbitrary state map or untyped payload.
 
-The64 Source configuration cases include all49 fields; current selected Go gates
-and full-feature catalogue publication pass. Default full-feature CLI still refuses
-without an injected diagnostics provider; the proposed CPython backend decision
-is unapproved. SQLite driver approval does not approve it.
+The twelve README posture rows, s01–s20 curriculum,49 Settings fields,44 HTTP
+operations and three SDK producers retain the previous audit's limits. The full
+feature CLI's default diagnostics backend still awaits explicit approval. The
+SQLite driver approval does not approve that backend. Broader provider IDNA/
+custom transport, body observations, temporal/platform/performance/release and
+original final acceptance remain unproven.
 
-Provider host/request/real HTTP/proxy-TLS checks pass at this baseline. The old
-dotted-I discrepancy was repaired by2c71009; literal targets by978b4fd. Earlier
-failed snapshots remain historical receipts. Broader IDNA/custom transport,
-129 body observations, historical timing, other platforms and release scope remain open.
+Frozen verification: 1701 inputs unchanged across20 stages;
+19 pass and the consumer inventory exits1 only for the unreferenced default
+parser fixture. Fresh Source248 files; consumer inventory249 including the
+separate Linux fixture has248 observed passing candidate tests. Go full/vet/
+race+atomic pass; Source2248 passed,28 skipped,96 warnings and24 subtests in90.14s.
+All19 scans,18 memory guards,one budget-spill andone spill-masking guard pass.
+Types465 production files/1472 named,1205 public/278 private roots/172 variables,
+zero findings. Body51 packages/22268 declarations/130 open observations; the new
+recover observation is transient and discarded, not domain state. Darwin app
+statements89.40% (33534/37511), all Go89.15%
+(33900/38026), Provider86.67%
+(1522/1756). No branch/C/subprocess/Python/all-platform coverage claim.
+Built-in imagegen iteration saved with exact prompt; base unchanged. Archify9/9,
+zero errors/warnings; no new rendered-browser review. Historical temporal failures
+remain unexplained, with no thresholds relaxed; this is a distinct frozen cohort.
 
-This audit changes no runtime/default/dependency. Source tests initially hit a
-sandbox loopback-bind refusal; the same22 assertions pass with local listening
-permitted, without code or fixture changes. No fresh full-suite/coverage claim.
+[Original inventory](docs/audits/go-public-default-inventory-2026-10-13.json);
+[public helper evidence](docs/audits/go-public-helpers-2026-10-13.json).
 
-[Machine inventory](docs/audits/go-public-default-inventory-2026-10-13.json).
+## Resolved public bindings and their limits
 
-## Namespace bindings that still need a decision
-
-| Public Python name | Kind | Current gap |
+| Public Python name | Public Go counterpart | Current evidence |
 |---|---|---|
-| `TRAJECTORY_SCHEMA_VERSION` | constant_or_imported_value | No public constant namespace binding identified; internal semantic values may exist. Do not label this a missing runtime implementation solely from declaration matching. |
-| `UNKNOWN_RESULT` | constant_or_imported_value | No public constant namespace binding identified; internal semantic values may exist. Do not label this a missing runtime implementation solely from declaration matching. |
-| `tool_result_budget` | function | Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence. |
-| `select_relevant_memories` | function | Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence. |
-| `prepare_memory_context` | function | Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence. |
-| `consolidate_memories` | function | Runtime adoption exists, but no public standalone Go callable was identified; verify whether an operator counterpart is required and provide typed composition/effect evidence. |
+| `TRAJECTORY_SCHEMA_VERSION` | `agent.TrajectorySchema` | Exact Source value; existing writer uses the same public constant. |
+| `UNKNOWN_RESULT` | `agent.UnknownResult` | Exact Source value; existing recovery paths retain the same internal alias. |
+| `tool_result_budget` | `agent.ToolResultBudget` | Detached typed messages, bound workspace, explicit defaults, masked disk writes and all-or-original transcript replacement. |
+| `select_relevant_memories` | `agent.SelectRelevantMemories` | Explicit bound store/model callback; Source index rules and slicing; initial-list/fallback faults propagate. |
+| `prepare_memory_context` | `agent.PrepareMemoryContext` | Explicit enablement and typed load sender; no transcript or automatic-capture mutation. |
+| `consolidate_memories` | `agent.ConsolidateMemories` | Explicit caller store and threshold; preserved origins, Source containment and no replacement rollback. |
 
-Next: inspect the exact Source call signature, owner, effect and callback contracts
-for each helper and define a typed Go public seam with required Source comparisons.
-Constant value equivalents need exact-value evidence; a state enum/type name is not
-a replacement for a public exported constant. Existing runtime integration evidence
-does not prove the absent public invocation shape.
+The native context requires a bound store/workspace and typed callbacks. Caller
+callback/store lifetime, serialization and lifecycle locking remain explicit.
+Arbitrary Python agents, malformed dictionaries, unusual host stacks and broader
+public namespace behavior are not certified by these61 bounded profiles.
 
 ## README capability and test index
 
@@ -86,7 +101,7 @@ backend is the known default CLI gap.
 | `load_settings` | `config` | `config.Load` | Rename/composition candidate; semantic review required |
 | `build_client` | `config` | `launcher.New`, `provider.New` | Rename/composition candidate; semantic review required |
 | `TrajectoryStore` | `trajectory` | `trajectory.New`, `trajectory.Store` | Rename/composition candidate; semantic review required |
-| `TRAJECTORY_SCHEMA_VERSION` | `trajectory` | — | No namespace binding identified |
+| `TRAJECTORY_SCHEMA_VERSION` | `trajectory` | `agent.TrajectorySchema` | Explicit candidate; bounded public helper evidence |
 | `RunContext` | `run_context` | `agent.RunContext` | Name candidate; semantic review required |
 | `EXPLICIT_HUMAN` | `run_context` | `agent.AuthorityExplicitHuman` | Rename/composition candidate; semantic review required |
 | `PEER_AGENT` | `run_context` | `agent.AuthorityPeerAgent` | Rename/composition candidate; semantic review required |
@@ -97,7 +112,7 @@ backend is the known default CLI gap.
 | `ActionJournalConflict` | `actions` | `agent.ActionJournalConflict` | Name candidate; semantic review required |
 | `InMemoryActionJournal` | `actions` | `agent.InMemoryActionJournal` | Name candidate; semantic review required |
 | `DurableActionJournal` | `actions` | `agent.StoredActionJournal` | Rename/composition candidate; semantic review required |
-| `UNKNOWN_RESULT` | `actions` | — | No namespace binding identified |
+| `UNKNOWN_RESULT` | `actions` | `agent.UnknownResult` | Explicit candidate; bounded public helper evidence |
 | `Tool` | `registry` | `agent.ToolDefinition` | Rename/composition candidate; semantic review required |
 | `ToolRegistry` | `registry` | `agent.ToolCatalog` | Rename/composition candidate; semantic review required |
 | `ToolCatalogSnapshot` | `registry` | `agent.ToolCatalogSnapshot` | Name candidate; semantic review required |
@@ -162,7 +177,7 @@ backend is the known default CLI gap.
 | `estimate_tokens` | `compaction` | `agent.EstimateTokens` | Name candidate; semantic review required |
 | `microcompact` | `compaction` | `agent.MicroCompact` | Name candidate; semantic review required |
 | `snip_compact` | `compaction` | `agent.SnipCompact` | Name candidate; semantic review required |
-| `tool_result_budget` | `compaction` | — | No namespace binding identified |
+| `tool_result_budget` | `compaction` | `agent.ToolResultBudget` | Explicit candidate; bounded public helper evidence |
 | `AstContextConfig` | `ast_context` | `astcontext.Config` | Rename/composition candidate; semantic review required |
 | `AstContextProbe` | `ast_context` | `astcontext.Probe` | Rename/composition candidate; semantic review required |
 | `AstContextResult` | `ast_context` | `astcontext.Result` | Rename/composition candidate; semantic review required |
@@ -200,9 +215,9 @@ backend is the known default CLI gap.
 | `MemoryStore` | `memory` | `memory.Store` | Rename/composition candidate; semantic review required |
 | `install_memory` | `memory` | `agent.ManagerServices`, `launcher.Options` | Rename/composition candidate; semantic review required |
 | `memory_system_builder` | `memory` | `agent.SystemBuilder` | Rename/composition candidate; semantic review required |
-| `select_relevant_memories` | `memory` | — | No namespace binding identified |
-| `prepare_memory_context` | `memory` | — | No namespace binding identified |
-| `consolidate_memories` | `memory` | — | No namespace binding identified |
+| `select_relevant_memories` | `memory` | `agent.SelectRelevantMemories` | Explicit candidate; bounded public helper evidence |
+| `prepare_memory_context` | `memory` | `agent.PrepareMemoryContext` | Explicit candidate; bounded public helper evidence |
+| `consolidate_memories` | `memory` | `agent.ConsolidateMemories` | Explicit candidate; bounded public helper evidence |
 | `CronScheduler` | `cron` | `cron.Scheduler` | Rename/composition candidate; semantic review required |
 | `install_cron` | `cron` | `agent.ManagerServices`, `launcher.Options` | Rename/composition candidate; semantic review required |
 | `MessageBus` | `teams` | `teams.Bus` | Rename/composition candidate; semantic review required |

@@ -55,27 +55,19 @@ func (s *Session) consolidateMemories(ctx context.Context) (int, error) {
 }
 
 func (s *Session) consolidateMemoriesInScope(ctx context.Context, scope memoryReplyScope) (int, error) {
-	// Source List is outside its best-effort block, so failure reaches capture.
-	records, err := s.memory.List(ctx)
-	if err != nil {
-		return 0, err
-	}
-	if len(records) < 10 {
-		return 0, nil
-	}
-	return s.consolidateMemoryRecords(ctx, records, scope)
+	return consolidateMemoriesInScope(ctx, s.memoryQueryContext(), DefaultMemoryConsolidationThreshold, scope)
 }
 
 // Source's List occurs before its exception handler. Keep that read in the
 // caller so listing faults still reach the outer capture diagnostic boundary.
-func (s *Session) consolidateMemoryRecords(ctx context.Context, records []memory.Record, scope memoryReplyScope) (count int, err error) {
+func consolidateMemoryRecords(ctx context.Context, value MemoryQueryContext, records []memory.Record, scope memoryReplyScope) (count int, err error) {
 	defer recoverMemoryFailure(ctx, &count, &err)
 	body, err := protocol.PythonJSON(records, false, false)
 	if err != nil {
 		return 0, memoryExtractionFailure(ctx, err)
 	}
 	prompt := "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n" + body
-	reply, err := s.completeSideModel(ctx, protocol.ModelRequest{Model: s.model, MaxTokens: 2500, Purpose: protocol.PurposeMemoryConsolidation,
+	reply, err := value.Create(ctx, protocol.ModelRequest{Model: value.Model, MaxTokens: 2500, Purpose: protocol.PurposeMemoryConsolidation,
 		Messages: []protocol.Message{{Role: protocol.RoleUser, Content: protocol.PlainContent(prompt)}}})
 	if err != nil {
 		return 0, memoryExtractionFailure(ctx, err)
@@ -110,7 +102,7 @@ func (s *Session) consolidateMemoryRecords(ctx context.Context, records []memory
 	if len(inputs) == 0 {
 		return 0, nil
 	}
-	if err := s.memory.ReplaceAll(ctx, inputs, memory.Consolidated); err != nil {
+	if err := value.Store.ReplaceAll(ctx, inputs, memory.Consolidated); err != nil {
 		return 0, memoryExtractionFailure(ctx, err)
 	}
 	if err := stateRunError(ctx); err != nil {

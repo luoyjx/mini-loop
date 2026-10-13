@@ -4676,3 +4676,52 @@ or untrusted snapshot can choose the rule. Other/custom interpreter stacks are
 not claimed. Source capture runs in an independent script process so exporter
 frames do not shift the measured boundaries; failed producers cannot publish an
 empty substitute fixture. Python runtime modules remain unchanged.
+
+## Go public memory and result-budget helpers
+
+`agent.MemoryQueryContext` binds one `memory.ScopedStore`, an explicit model and
+`MemoryRequest` callback. The callback receives only a closed ModelRequest and
+returns a closed ModelReply/error. It owns provider recovery/cache/limiter/event
+policy; the helper acquires no Session pointer or live transcript. Runtime callers
+bind the existing side-query path under their existing turn/lifecycle ownership.
+Standalone callers own callback/store lifetime and concurrent serialization.
+
+`SelectRelevantMemories(ctx, queryContext, query, maxItems)` is callable with
+memory tools disabled. `DefaultMemorySelectionLimit` is5. Zero and negative limits
+follow Source `[:maxItems]` slicing; valid indices followed by an empty slice do
+not trigger lexical fallback. Boolean indices, duplicate ordering, nonfinite
+float ignoring and whole-reply syntax preflight share the runtime parser. The
+public direct parsing profile is982 total containers; existing private caller
+profiles remain fixed. Listing and fallback failures propagate, ordinary query
+errors/panics fall back, and native cancellation/state-authority loss remain errors.
+
+`PrepareMemoryContext(ctx, MemoryContext{Query, Enabled, Send}, text)` applies only
+the supplied remember/recall/memory_auto enablement. Disabled calls acquire no
+store/model/sender. Selected references cause a typed memory/load event before
+returning the prefixed text; sender errors propagate. It never changes a transcript.
+A bound store must be constructed explicitly (Python lazily creates its store).
+
+`ConsolidateMemories(ctx, queryContext, threshold)` operates on the explicit caller
+store even when automatic memory is off. `DefaultMemoryConsolidationThreshold`
+is10; zero/negative thresholds preserve Source behavior, including an empty-store
+request at zero. Initial listing is outside containment. Model/parse/write faults
+return zero, except native cancellation/state authority errors. Exact raw identities
+preserve origins before conversion; replacement has partial effects and no rollback.
+It does not acquire WithLifecycle: callers selecting a multi-operation lifecycle
+must retain their existing outer lock. The default runtime still uses ten records.
+
+`ToolResultBudget(ctx, ToolResultBudgetContext{Messages, Files, Secrets, Now}, options)`
+returns detached Messages and Persisted count. `DefaultToolResultBudgetOptions()`
+returns200000 bytes/2000 preview characters; explicit zero/negative options are
+preserved. Only the latest user result batch is selected; stable character-length
+sorting and UTF-8 byte accounting follow Source. `Files` supplies a guarded bound
+workspace; optional Now returns Unix milliseconds. Full writes are masked while
+previews keep Source text. A later failure leaves earlier files but returns original
+messages; success replaces the message/content without editing the caller's values.
+The standalone function invokes no model, snip, micro or summary stage. The default
+compactor retains its existing validated nonnegative configuration.
+
+`UnknownResult` exports the exact recovery text. `TrajectorySchema` already exports
+`mini-loop.trajectory.v1`. The61 captured public helper profiles do not cover
+arbitrary legacy Python agent/dict shapes, custom callbacks/host stacks, branch
+coverage or all platforms; they do not authorize a default diagnostics backend.

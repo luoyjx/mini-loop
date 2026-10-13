@@ -1,0 +1,196 @@
+{
+  "date": "2026-10-13",
+  "baseline": "3269424",
+  "bindings": [
+    {
+      "public_name": "TRAJECTORY_SCHEMA_VERSION",
+      "module": "trajectory",
+      "name": "SCHEMA_VERSION",
+      "line": 145,
+      "packages": [
+        "trajectory"
+      ],
+      "source_file": "python/mini_loop/trajectory.py",
+      "source_sha256": "27bf501f8869f6bf6533a555c3697bc5a657bc5fee5e0922e98fcee032cdbaa2",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "TrajectorySchema",
+          "kind": "const",
+          "file": "agent/trajectory.go",
+          "line": 16
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false,
+      "remaining": "Public invocation now covered by the bounded Source helper fixture. Arbitrary legacy argument/host/caller/runtime/platform scope is not proven."
+    },
+    {
+      "public_name": "UNKNOWN_RESULT",
+      "module": "actions",
+      "name": "UNKNOWN_RESULT",
+      "line": 12,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/actions.py",
+      "source_sha256": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+      "definition_lines": [],
+      "python_kind": "constant_or_imported_value",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "UnknownResult",
+          "kind": "const",
+          "file": "agent/session.go",
+          "line": 34
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false,
+      "remaining": "Public invocation now covered by the bounded Source helper fixture. Arbitrary legacy argument/host/caller/runtime/platform scope is not proven."
+    },
+    {
+      "public_name": "tool_result_budget",
+      "module": "compaction",
+      "name": "tool_result_budget",
+      "line": 38,
+      "packages": [
+        "agent"
+      ],
+      "source_file": "python/mini_loop/compaction.py",
+      "source_sha256": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+      "definition_lines": [
+        160
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ToolResultBudget",
+          "kind": "function",
+          "file": "agent/result_budget.go",
+          "line": 42
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false,
+      "remaining": "Public invocation now covered by the bounded Source helper fixture. Arbitrary legacy argument/host/caller/runtime/platform scope is not proven."
+    },
+    {
+      "public_name": "select_relevant_memories",
+      "module": "memory",
+      "name": "select_relevant_memories",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        590
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "SelectRelevantMemories",
+          "kind": "function",
+          "file": "agent/public_memory.go",
+          "line": 42
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false,
+      "remaining": "Public invocation now covered by the bounded Source helper fixture. Arbitrary legacy argument/host/caller/runtime/platform scope is not proven."
+    },
+    {
+      "public_name": "prepare_memory_context",
+      "module": "memory",
+      "name": "prepare_memory_context",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        619
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "PrepareMemoryContext",
+          "kind": "function",
+          "file": "agent/public_memory.go",
+          "line": 107
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false,
+      "remaining": "Public invocation now covered by the bounded Source helper fixture. Arbitrary legacy argument/host/caller/runtime/platform scope is not proven."
+    },
+    {
+      "public_name": "consolidate_memories",
+      "module": "memory",
+      "name": "consolidate_memories",
+      "line": 63,
+      "packages": [
+        "memory",
+        "agent"
+      ],
+      "source_file": "python/mini_loop/memory.py",
+      "source_sha256": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+      "definition_lines": [
+        666
+      ],
+      "python_kind": "function",
+      "go_candidates": [
+        {
+          "package": "agent",
+          "name": "ConsolidateMemories",
+          "kind": "function",
+          "file": "agent/public_memory.go",
+          "line": 139
+        }
+      ],
+      "binding_status": "explicit_candidate_requires_semantic_review",
+      "parity_proven": false,
+      "remaining": "Public invocation now covered by the bounded Source helper fixture. Arbitrary legacy argument/host/caller/runtime/platform scope is not proven."
+    }
+  ],
+  "previous_inventory": "docs/audits/go-public-default-inventory-2026-10-13.json",
+  "public_counts": {
+    "name_candidate_requires_semantic_review": 52,
+    "explicit_candidate_requires_semantic_review": 105,
+    "no_public_namespace_binding_identified": 0
+  },
+  "source_fixture": "go/testdata/python-public-helpers.json",
+  "source_sha256": "eee00e831946ad2f6cb9c2ef6639866d2babe1895af4f916a0d1c50b824746a2",
+  "source_memory_cases": 41,
+  "source_budget_cases": 20,
+  "go_public_tests": [
+    "TestPublicMemoryHelpersSourceContracts",
+    "TestPublicToolResultBudgetSourceContracts"
+  ],
+  "go_guard_tests": [
+    "TestPublicMemoryHelpersAuthorityAndCallbackBoundaries",
+    "TestPublicSelectionZeroSliceDoesNotFallBack",
+    "TestPublicBudgetPreservesWorkspaceBoundary"
+  ],
+  "go_index_sha256": "ae0202d948ab70560f1bc67a6e93a76b2e3c723eeacbdd9abb6c31d43c7737f4",
+  "limits": [
+    "157 namespaces remain lookup candidates, not complete semantic migration proof.",
+    "Previous six missing namespace pointers resolved; TrajectorySchema was already public and the old inventory omitted its alias.",
+    "Native public contexts require explicit owner-bound store/workspace and closed typed callbacks; Python accepts arbitrary legacy agent/dict objects.",
+    "Native context cancellation/persistence authority errors escape; ordinary side-query errors/panics use Source containment.",
+    "Native write-fault control uses cancellation on the second attempt: same partial disk effects and unchanged transcript, different error class.",
+    "Explicit helper calls do not acquire lifecycle locks or mutate Session history. Callers own callback/store lifetime and serialization.",
+    "Default CPython diagnostics approval, broader provider/IDNA/transport/body/platform/performance/release and original P0/P1/G0-G7 acceptance remain open."
+  ]
+}

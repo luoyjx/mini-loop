@@ -388,7 +388,7 @@
       "id": "goContext",
       "type": "backend",
       "label": "Go Context Pipeline",
-      "sublabel": "schemas / skills / memory / cache / plan",
+      "sublabel": "public helpers / schemas / memory / cache / plan",
       "pos": [
         850,
         1360
@@ -397,7 +397,7 @@
         330,
         76
       ],
-      "tag": "exact custom metadata / typed execution separate"
+      "tag": "typed callbacks / owner-bound store + workspace"
     },
     {
       "id": "goActions",
@@ -1655,6 +1655,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Typed public helper composition: ToolResultBudget, SelectRelevantMemories, PrepareMemoryContext and ConsolidateMemories use explicit bound workspace/store and closed callbacks.61 Source profiles compare public effects. Zero/negative slicing/thresholds, origins and failure stages remain; no new default, service or authority. Runtime Context and capture share the cores. Exact UnknownResult and existing TrajectorySchema are public. Broader public/host/platform acceptance remains open.",
         "Explicit contractaudit CLI maps Source fixture hashes and active Go literal/direct-function candidate test links to root test terminal actions. This operator produces repo inspection evidence, grants no runtime authority and cannot certify actual reads or semantic parity. Separate Linux captures remain distinct; default Python parser and final G7 inventory remain open.",
         "Operator go/tools/typeaudit now has compiler-resolved private roots, separate from its public closure and all-platform syntax modes. Active source/CGO files resolve imported aliases and generic arguments even for private roots unreachable from exported API. Foreign named capabilities remain opaque; package variables, function-local types, bodies, runtime flow and inactive compiler profiles remain outside this mode. No runtime component/default/owner/authority changed.",
         "Go HTTP serves embedded OpenAPI, Swagger UI, ReDoc and OAuth redirect resources after the common body cap and one authentication admission. GET/HEAD, method refusals and default slash redirects match 36 Source HTTP captures. Schema covers the same 40 business paths; no session reads, execution authority or runtime Python dependency. Source external library references and the existing CSP are retained; external-library browser rendering and custom ASGI root-path mounts are not claimed. Business paths use owned named route segments and ordered methods after admission, preserving first-route 405 Allow and recognized-path 307 redirects. The fully decoded path is matched without dot/empty-segment cleaning or escaped-slash parameter matching. All 168 actual Source routing captures are required native assertions; no Manager effect occurs on routing refusals or redirects.",

@@ -1,5 +1,45 @@
 # Go port plan
 
+## 2026-10-13 typed public helper composition
+
+Branch `codex/go-public-helpers`, review baseline3269424. Preserve original P0/P1/
+G0–G7 scope. The six previous namespace lookup omissions have explicit counterparts:
+four typed helper functions, exported UnknownResult and the already-public
+TrajectorySchema. Source41 memory/20 budget profiles and exact constants feed
+external Go public-call tests. They cover defaults, zero/negative limits/previews/
+thresholds, side queries/events, initial/fallback faults, owner isolation, origins,
+masked partial writes and unchanged caller transcripts. Native cancellation,
+persistence-authority and workspace-boundary controls remain separate evidence.
+
+The runtime Context/capture/default-compactor delegates to the same cores; no new
+service, dependency, default, role, owner or authority. Public store/workspace and
+callbacks are explicit caller composition. Ordinary callback containment and
+initial-list/fallback errors retain Source order. Budget replacement now waits
+until all writes finish; successful earlier files remain on a later failure.
+
+Frozen verification: 1701 inputs unchanged across20 stages;
+19 pass and the consumer inventory exits1 only for the unreferenced default
+parser fixture. Fresh Source248 files; consumer inventory249 including the
+separate Linux fixture has248 observed passing candidate tests. Go full/vet/
+race+atomic pass; Source2248 passed,28 skipped,96 warnings and24 subtests in90.14s.
+All19 scans,18 memory guards,one budget-spill andone spill-masking guard pass.
+Types465 production files/1472 named,1205 public/278 private roots/172 variables,
+zero findings. Body51 packages/22268 declarations/130 open observations; the new
+recover observation is transient and discarded, not domain state. Darwin app
+statements89.40% (33534/37511), all Go89.15%
+(33900/38026), Provider86.67%
+(1522/1756). No branch/C/subprocess/Python/all-platform coverage claim.
+Built-in imagegen iteration saved with exact prompt; base unchanged. Archify9/9,
+zero errors/warnings; no new rendered-browser review. Historical temporal failures
+remain unexplained, with no thresholds relaxed; this is a distinct frozen cohort.
+
+[Public matrix](GO_PUBLIC_SURFACE_INVENTORY.md);
+[namespace overlay](docs/audits/go-public-helpers-namespace-2026-10-13.json);
+[delivery receipt](docs/audits/go-public-helpers-2026-10-13.json);
+[iteration image](docs/audits/go-public-helpers-infographic-2026-10-13.png);
+[exact prompt](docs/audits/go-public-helpers-infographic-2026-10-13.prompt.txt).
+
+
 ## 2026-10-13 public namespace and default scope inventory
 
 Audit `4684918`, review baseline `e4c5aff`, branch `codex/go-public-scope-audit`. Original P0/P1/G0–G7

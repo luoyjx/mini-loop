@@ -28,9 +28,11 @@ type Provider interface {
 }
 
 const (
-	maxResumptions    = 8
-	refusalNotice     = "[the model declined to answer this request and returned no content]"
-	unknownToolResult = "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first."
+	maxResumptions = 8
+	refusalNotice  = "[the model declined to answer this request and returned no content]"
+	// UnknownResult is the Source recovery notice for a dispatched effect with no recorded outcome.
+	UnknownResult     = "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first."
+	unknownToolResult = UnknownResult
 )
 
 // BashExecutor is deliberately narrow. Future tools must have their own typed

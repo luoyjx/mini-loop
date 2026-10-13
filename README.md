@@ -570,16 +570,25 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: audit `4684918`, based on local main `e4c5aff`, with the public/default
-scope inventory reviewed.157 Python root exports are indexed with52 name and99
-rename/composition candidates;6 names lack a public Go namespace binding identified,
-including4 standalone helpers. This is lookup inventory, not semantic equivalence.
-All12 README posture rows and s01–s20 labels link real Source tests; all49 Settings
-fields occur in the64-case fixture;44 OpenAPI operations and3 SDK producers are
-indexed. Current selected Go/Source configuration, feature and Provider checks
-pass. [Public scope inventory](GO_PUBLIC_SURFACE_INVENTORY.md) records pending public
-seams, default diagnostics approval and original P0/P1/G0–G7 limits. Runtime,
-defaults, authority, architecture components and base image are unchanged.
+Runtime review baseline: local main `3269424`; this iteration reviews typed public
+helper composition. Go now exports `ToolResultBudget`, `SelectRelevantMemories`,
+`PrepareMemoryContext`, `ConsolidateMemories` and the exact `UnknownResult` text.
+The existing `TrajectorySchema` constant is also matched to Source.61 direct
+Source public-helper cases compare external Go callers, request/effect boundaries,
+zero/negative parameters, origins and owner isolation. Runtime context/capture
+reuse the same core and retain trusted caller parsing profiles. Initial memory
+List and lexical fallback faults escape; ordinary side-query faults are contained.
+Budget spill keeps earlier file writes but applies transcript replacement only
+after all writes succeed. Public callbacks are explicit caller composition;
+they cannot infer live Session history or execution authority.
+
+[Public helper inventory](GO_PUBLIC_SURFACE_INVENTORY.md) and
+[typed composition seam](EXTENDING.md#go-public-memory-and-result-budget-helpers)
+record defaults, lifetime and admission limits. Components and routes are unchanged;
+README Mermaid and interactive JSON now label the public helper seam inside the
+existing Context pipeline. The base image remains unchanged; the iteration image
+highlights L1 composition, L3 Context and L5 files. Full frozen validation is
+recorded separately in the delivery receipt; final migration acceptance remains open.
 
 Previous verified implementation review: implementation `833e16f`, native MCP ordered scalar-key mapping
 and Source fault-stage alignment.116 direct and116 actual journal profiles pass
@@ -836,7 +845,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
+        GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
