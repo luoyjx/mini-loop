@@ -31,6 +31,13 @@ def test_environment_cannot_inherit_provider_credentials_or_features(instrument,
     monkeypatch.setenv("ANTHROPIC_API_KEY", "should-not-inherit")
     monkeypatch.setenv("MINILOOP_FEATURES", "1")
     monkeypatch.setenv("MINILOOP_RELOAD", "1")
+    monkeypatch.setenv("GOMAXPROCS", "128")
+    monkeypatch.setenv("GOMEMLIMIT", "16GiB")
+    monkeypatch.setenv("GOFLAGS", "-p=128")
+    monkeypatch.setenv("OMP_NUM_THREADS", "128")
+    monkeypatch.setenv("OPENBLAS_NUM_THREADS", "128")
+    monkeypatch.setenv("MKL_NUM_THREADS", "128")
+    monkeypatch.setenv("NUMEXPR_NUM_THREADS", "128")
     environment = instrument.isolated_environment(tmp_path, 12345)
     assert "ANTHROPIC_API_KEY" not in environment
     assert "MINILOOP_FEATURES" not in environment
@@ -39,6 +46,11 @@ def test_environment_cannot_inherit_provider_credentials_or_features(instrument,
     assert environment["MINILOOP_FAKE_DELAY"] == "0"
     assert environment["HOME"] == str(tmp_path)
     assert environment["PYTHON_DOTENV_DISABLED"] == "1"
+    assert environment["GOMAXPROCS"] == "2"
+    assert environment["GOMEMLIMIT"] == "512MiB"
+    assert environment["GOFLAGS"] == "-p=1"
+    for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+        assert environment[name] == "1"
 
 
 def test_successful_text_without_shell_effect_cannot_count_as_a_turn(instrument, monkeypatch, tmp_path):

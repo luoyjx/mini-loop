@@ -3,6 +3,9 @@
 Build Go separately, then run with this repository's venv Python and --go-binary.
 Latencies include client JSON/HTTP work. RSS is a post-workload server sample,
 not peak memory or descendants. This does not benchmark streaming or persistence.
+Isolated servers use the fixed resource environment reported with the results.
+Run the instrument under an owned-process and host-pressure monitor as well:
+GOMEMLIMIT is a soft Go target, not a cap on native or descendant memory.
 """
 from __future__ import annotations
 
@@ -25,8 +28,14 @@ import sys
 import tempfile
 import time
 from typing import Iterator
+from types import MappingProxyType
 
 ROOT = Path(__file__).resolve().parents[2]
+RESOURCE_ENVIRONMENT = MappingProxyType({
+    "GOMAXPROCS": "2", "GOMEMLIMIT": "512MiB", "GOFLAGS": "-p=1",
+    "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1", "NUMEXPR_NUM_THREADS": "1",
+})
 
 
 @dataclass(frozen=True)
@@ -67,7 +76,8 @@ def request(client: http.client.HTTPConnection, method: str, path: str,
 
 
 def isolated_environment(directory: Path, port: int) -> dict[str, str]:
-    return {"PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+    return {**RESOURCE_ENVIRONMENT,
+            "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
             "HOME": str(directory), "TMPDIR": str(directory),
             "PYTHONPATH": str(ROOT / "python"), "PYTHON_DOTENV_DISABLED": "1",
             "HOST": "127.0.0.1", "PORT": str(port),
@@ -208,10 +218,13 @@ def main(argv: list[str] | None = None) -> int:
                               for metric in ("startup", "health", "create", "turn", "delete")}
     report = {"schema_version": 1, "recorded_utc": datetime.now(timezone.utc).isoformat(),
               "code_baseline": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+              "instrument_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "host": {"system": platform.system(), "machine": platform.machine(), "release": platform.release()},
               "python": sys.version, "go_build": subprocess.check_output(["go", "version", "-m", str(binary)], text=True),
               "go_binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
               "parameters": {"pairs": args.pairs, "health_samples": args.health_samples, "turns": args.turns, "warmup_turns": 2},
+              "resource_environment": dict(RESOURCE_ENVIRONMENT),
+              "resource_scope": "Fixed child environment, independent of inherited limits. Go memory target is soft; parent process-tree/host-pressure monitoring remains required. Not a hard CPU/RSS cap.",
               "scope": "serial persistent HTTP; default fake; zero provider delay; real Bash with verified file effect; fresh sessions; prebuilt Go; nearest-rank p95; RSS after workload, not peak/descendants; startup includes readiness polling; no SSE/SQLite/concurrency/provider benchmark",
               "summary": summaries, "runs": [asdict(r) for r in runs]}
     args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -570,7 +570,15 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: local main `fabe9bd`; this iteration reviews explicit
+Runtime review baseline: local main `82b14bf`; this iteration reviews the
+Python/Go fake-HTTP performance instrument and the original acceptance index.
+Its isolated server environments explicitly retain conservative CPU/thread
+settings and a soft Go memory target, and the report records these settings.
+The surrounding validation process still monitors task-owned RSS and host
+pressure. These are test-workflow controls, not runtime service defaults or
+OS hard caps. The existing Mermaid topology and interactive map stay unchanged.
+
+Previous runtime review baseline: local main `fabe9bd`; that iteration reviews explicit
 role profiles and child catalogue isolation. A retained before-change probe
 selects `read_file` in Source for the dotted-I role while the old Go policy
 selects another role's `write_file`. Role lookup now uses the existing Python
