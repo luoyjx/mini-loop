@@ -232,6 +232,15 @@ application input type implementing `Validate() error`:
 - `ExtensionInputCodec[T].DecodeExtensionInput(ctx, protocol.ToolInput) (T, error)`
 - `ExtensionToolHandler[T].ExecuteExtensionTool(ctx, agent.ToolAuthority, T) (string, error)`
 
+`protocol.ExtensionToolSchema(name, description, schemaJSON)` preserves the
+complete finite Source metadata language, including `$defs/$ref`, mixed enums,
+structured constants, conditionals, patterns and fractional bounds. The byte
+argument is decoded immediately into immutable closed values and sorted for
+snapshot identity. Its existing projection bound is16 MiB; malformed, nonfinite
+or non-scalar Unicode metadata is refused. No `RawMessage` or open map is stored.
+Schema refs are never fetched or resolved. Source can emit non-object metadata;
+retaining that value is not evidence that a model server accepts it.
+
 The codec can obtain argument JSON with `ToolInput.MarshalJSON()` and decode it
 into its concrete type. Schema properties are descriptive; the codec and
 `Validate` must enforce application semantics. The schema name must not have a

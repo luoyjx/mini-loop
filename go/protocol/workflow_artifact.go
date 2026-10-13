@@ -79,7 +79,20 @@ func (schema *ToolSchema) UnmarshalJSON(data []byte) error {
 	}
 	type ordinary ToolSchema
 	var decoded ordinary
-	if err := json.Unmarshal(data, &decoded); err != nil {
+	err := json.Unmarshal(data, &decoded)
+	if extensionSchemaName(wire.Name) && (err != nil || ToolSchema(decoded).Validate() != nil) {
+		encoded, encodeErr := wire.InputSchema.MarshalJSON()
+		if encodeErr != nil {
+			return encodeErr
+		}
+		value, schemaErr := ExtensionToolSchema(wire.Name, wire.Description, encoded)
+		if schemaErr != nil {
+			return schemaErr
+		}
+		*schema = value
+		return nil
+	}
+	if err != nil {
 		return err
 	}
 	*schema = ToolSchema(decoded)

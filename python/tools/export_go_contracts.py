@@ -6738,6 +6738,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.json_text_span_contracts import json_text_span_contracts
     from tools.memory_selection_profiles import memory_selection_profiles
     from tools.extension_tool_contracts import extension_tool_contracts
+    from tools.extension_schema_contracts import extension_schema_contracts
     from tools.provider_web_search_contracts import provider_web_search_contracts
     from tools.provider_web_fetch_contracts import provider_web_fetch_contracts
     from tools.provider_code_execution_contracts import provider_code_execution_contracts
@@ -7130,6 +7131,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-json-text-spans.json": _json_bytes(json_text_span_contracts()),
         "python-memory-selection-profiles.json": _json_bytes(memory_selection_profiles()),
         "python-extension-tools.json": _json_bytes(extension_tool_contracts()),
+        "python-extension-schemas.json": _json_bytes(extension_schema_contracts()),
         "python-provider-web-search.json": _json_bytes(provider_web_search_contracts()),
         "python-provider-web-fetch.json": _json_bytes(provider_web_fetch_contracts()),
         "python-provider-code-execution.json": _json_bytes(provider_code_execution_contracts()),

@@ -1,0 +1,521 @@
+{
+  "cases": [
+    {
+      "name": "basic",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "b494ace59745466c4cea34603c59c2765c2138e0eb127f559b7f612cf2bdf42c",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "b494ace59745466c4cea34603c59c2765c2138e0eb127f559b7f612cf2bdf42c",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "references",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"choice\": {\"$ref\": \"#/$defs/choice\"}}, \"$defs\": {\"choice\": {\"enum\": [1, true, null]}}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "290db901a48d29560060c7fc03b268685e49bad9439a4d354a51f7e016474c91",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"$defs\":{\"choice\":{\"enum\":[1,true,null]}},\"properties\":{\"choice\":{\"$ref\":\"#/$defs/choice\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"$defs\":{\"choice\":{\"enum\":[1,true,null]}},\"properties\":{\"choice\":{\"$ref\":\"#/$defs/choice\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "290db901a48d29560060c7fc03b268685e49bad9439a4d354a51f7e016474c91",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"$defs\":{\"choice\":{\"enum\":[1,true,null]}},\"properties\":{\"choice\":{\"$ref\":\"#/$defs/choice\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"$defs\":{\"choice\":{\"enum\":[1,true,null]}},\"properties\":{\"choice\":{\"$ref\":\"#/$defs/choice\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "numeric-enum",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"choice\": {\"enum\": [1, 1.5, true, null]}}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "b54fda0291ce3db7748e69d4ae56e738fb349f92ed383db9a94c3a5ea2096694",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"choice\":{\"enum\":[1,1.5,true,null]},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"choice\":{\"enum\":[1,1.5,true,null]},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "b54fda0291ce3db7748e69d4ae56e738fb349f92ed383db9a94c3a5ea2096694",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"choice\":{\"enum\":[1,1.5,true,null]},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"choice\":{\"enum\":[1,1.5,true,null]},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "structured-const",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"constant\": {\"const\": {\"a\": [1, false]}}}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "2a10097c509b63de1876da415b1628adb1f93cfdc0ebbcdf1b1de0a56bb84f0b",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"constant\":{\"const\":{\"a\":[1,false]}},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"constant\":{\"const\":{\"a\":[1,false]}},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "2a10097c509b63de1876da415b1628adb1f93cfdc0ebbcdf1b1de0a56bb84f0b",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"constant\":{\"const\":{\"a\":[1,false]}},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"constant\":{\"const\":{\"a\":[1,false]}},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "fractional-bounds",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"count\": {\"type\": \"number\", \"minimum\": 0.5, \"maximum\": 2.5, \"multipleOf\": 0.25}}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "4a9c2347fb58fb417cb0923c00193001110d5dc0f4663cbb079605532a0874b2",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"count\":{\"maximum\":2.5,\"minimum\":0.5,\"multipleOf\":0.25,\"type\":\"number\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"count\":{\"maximum\":2.5,\"minimum\":0.5,\"multipleOf\":0.25,\"type\":\"number\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "4a9c2347fb58fb417cb0923c00193001110d5dc0f4663cbb079605532a0874b2",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"count\":{\"maximum\":2.5,\"minimum\":0.5,\"multipleOf\":0.25,\"type\":\"number\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"count\":{\"maximum\":2.5,\"minimum\":0.5,\"multipleOf\":0.25,\"type\":\"number\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "pattern-format",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\", \"pattern\": \"^[A-Z]\", \"format\": \"custom\", \"examples\": [\"World\", \"用户\"]}}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "6e122c40618a052f3a80e0c2544b092f4bdff02cd8fc59b27efe05f2b8141494",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"examples\":[\"World\",\"用户\"],\"format\":\"custom\",\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"examples\":[\"World\",\"用户\"],\"format\":\"custom\",\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "6e122c40618a052f3a80e0c2544b092f4bdff02cd8fc59b27efe05f2b8141494",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"examples\":[\"World\",\"用户\"],\"format\":\"custom\",\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"name\":{\"examples\":[\"World\",\"用户\"],\"format\":\"custom\",\"pattern\":\"^[A-Z]\",\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "conditional",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}}, \"if\": {\"required\": [\"name\"]}, \"then\": {\"minProperties\": 1}, \"else\": false}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "c7160d89d680bd9afd813f2019ef1680ae39319a6b97e34ac3763f4019c0de13",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"else\":false,\"if\":{\"required\":[\"name\"]},\"properties\":{\"name\":{\"type\":\"string\"}},\"then\":{\"minProperties\":1},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"else\":false,\"if\":{\"required\":[\"name\"]},\"properties\":{\"name\":{\"type\":\"string\"}},\"then\":{\"minProperties\":1},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "c7160d89d680bd9afd813f2019ef1680ae39319a6b97e34ac3763f4019c0de13",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"else\":false,\"if\":{\"required\":[\"name\"]},\"properties\":{\"name\":{\"type\":\"string\"}},\"then\":{\"minProperties\":1},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"else\":false,\"if\":{\"required\":[\"name\"]},\"properties\":{\"name\":{\"type\":\"string\"}},\"then\":{\"minProperties\":1},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "boolean-property",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"ignored\": false}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "7c0e43344afbb4461991710648a15cce20f5f7a37ff5531f49e3bba9637e19f9",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":false,\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":false,\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "7c0e43344afbb4461991710648a15cce20f5f7a37ff5531f49e3bba9637e19f9",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":false,\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":false,\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "array-without-items",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{\"type\": \"object\", \"properties\": {\"name\": {\"type\": \"string\"}, \"ignored\": {\"type\": \"array\"}}}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "83225ccd79dd411e33a40bad49058911498ad15cda6a4cf999dc7514ca34b787",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":{\"type\":\"array\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":{\"type\":\"array\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "83225ccd79dd411e33a40bad49058911498ad15cda6a4cf999dc7514ca34b787",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":{\"type\":\"array\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{\"properties\":{\"ignored\":{\"type\":\"array\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "empty-schema",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "{}",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "b41228c748dc2d53fb57297323af83f2fc37831e454e81ad5c2c85f55ccf363d",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{},\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "b41228c748dc2d53fb57297323af83f2fc37831e454e81ad5c2c85f55ccf363d",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{},\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":{},\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "root-true",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "true",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "c00233b8db82d33530da84bfaa1a045331548c0a10ef5a4887f084f1b3852ee9",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":true,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":true,\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "c00233b8db82d33530da84bfaa1a045331548c0a10ef5a4887f084f1b3852ee9",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":true,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":true,\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "root-false",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "false",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "5b19903a1e5fd736de9939f7fe0bb4d04b5e681308500debc6273700a8147b64",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":false,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":false,\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "5b19903a1e5fd736de9939f7fe0bb4d04b5e681308500debc6273700a8147b64",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":false,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":false,\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "root-null",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "null",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "d5cba903fab965a4763533abdc343cc9080a317caba616e8fc06d5c96e17fc05",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":null,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":null,\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "d5cba903fab965a4763533abdc343cc9080a317caba616e8fc06d5c96e17fc05",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":null,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":null,\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "root-array",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "[\"inert\", {\"key\": 1}]",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "506509a804983e33e86824afefcc3ce8bc8be2afa859207f4fa7ef0f4c4edebe",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":[\"inert\",{\"key\":1}],\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":[\"inert\",{\"key\":1}],\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "506509a804983e33e86824afefcc3ce8bc8be2afa859207f4fa7ef0f4c4edebe",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":[\"inert\",{\"key\":1}],\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":[\"inert\",{\"key\":1}],\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "root-text",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "\"metadata only\"",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "22cc66069c2bd2a6b1bdfd23b47ff3fc122314301b753c1f72160be5f185d4bc",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":\"metadata only\",\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":\"metadata only\",\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "22cc66069c2bd2a6b1bdfd23b47ff3fc122314301b753c1f72160be5f185d4bc",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":\"metadata only\",\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":\"metadata only\",\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    },
+    {
+      "name": "root-number",
+      "received": [
+        "alice",
+        "bob"
+      ],
+      "schema_json": "1.25",
+      "separate_registries": true,
+      "sessions": [
+        {
+          "fingerprint": "19561681187d774a4bc84462037c743574900bddc444e1d4d6eda133b31197bd",
+          "output": "alice:Hello, World!",
+          "owner": "alice",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":1.25,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":1.25,\"name\":\"greet\"}]"
+        },
+        {
+          "fingerprint": "19561681187d774a4bc84462037c743574900bddc444e1d4d6eda133b31197bd",
+          "output": "bob:Hello, World!",
+          "owner": "bob",
+          "paired": true,
+          "private_registry": true,
+          "request_tools_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":1.25,\"name\":\"greet\"}]",
+          "snapshot_json": "[{\"description\":\"Unicode schema 描述\",\"input_schema\":1.25,\"name\":\"greet\"}]"
+        }
+      ],
+      "template_names": [
+        "greet"
+      ]
+    }
+  ],
+  "limits": [
+    "Actual offline Source model requests; schema metadata is not validated or resolved by ToolRegistry.",
+    "Finite schema values only. Server acceptance of non-object metadata is not claimed.",
+    "Two manager owners execute a registered named handler; exact schema preservation grants no new authority."
+  ]
+}

@@ -272,7 +272,14 @@ Go custom tools can explicitly bind a concrete `ExtensionInput`,
 journal admission before decoding or validation. Provider input stays an inert,
 immutable observation in transcripts and action identity; the named application
 payload exists only at execution. Schema-only registrations retain their missing
-decoder refusal. No custom tool is installed by default. Source readonly-write
+decoder refusal. No custom tool is installed by default. Custom schema metadata can use
+`protocol.ExtensionToolSchema` to retain all finite JSON fields, including refs,
+numeric enums and fractional bounds. This immutable observation does not resolve
+refs or validate arguments. Thirty-two actual managed Source owner sessions compare
+schema snapshots, fingerprints, model requests and typed effects across16 shapes;
+non-object schema preservation does not imply model-server acceptance. Native
+SQLite close/reopen retains catalogue events and explicit restoration rebinds the
+operator catalogue under current interactive permission, with foreign-owner refusal. Source readonly-write
 refusal happens in its default before hook; the native gate retains guard-before-
 permission ordering. This timing difference remains explicit.
 
@@ -545,25 +552,25 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: implementation `38b76a6`, based on local main `59767dc`, with the explicit typed
-custom-tool input seam. Fourteen actual Python registered-tool
-cases compare results, fault flags and handler effects; thirteen also compare
-exact callback traces. The readonly-write scheduling adaptation is recorded
-separately. Cancellation, callback panic containment, reserved-name refusal,
-journal replay/current permission and a model-driven session are checked.
-Frozen1671 inputs pass Source242/manifest, focused Go/Python, four type audits,
-collector tests, complete ordinary Go/vet/race+atomic, full Python,19 scans,
-6 selected guard checks and diff. Python2244 passed,28 skipped. Consumer inspection
-exits1 only for the unreferenced native parser fixture. Darwin race statements:
-app89.32% (33244/37217), all Go89.08% (33610/37732), Provider86.67% (1522/1756).
-The full-body inventory records129 open observations, including one new transient
-recover value; established domain/public/private/variable audits report zero
-findings. The interrupted race has no acceptance exit; its preserved output is
-separate from the completed replacement on identical frozen inputs.
-[Current receipt](docs/audits/go-extension-input-codecs-2026-10-13.json);
-[coverage](docs/audits/go-coverage-extension-input-codecs-2026-10-13.json).
-Default diagnostics, broader IDNA, historical timing failures, other platform
-acceptance and the original complete migration scope remain open.
+Runtime review baseline: based on local main `82cc93d`, with full finite custom
+schema metadata preservation. `ExtensionToolSchema` retains
+complete closed metadata; known built-in/MCP schemas keep their existing decoders.
+Sixteen Source schema profiles /32 managed owner sessions compare snapshots,
+fingerprints, model request tools and results. Sixteen native SQLite close/reopen/
+restore cases retain catalogue events, fresh typed execution and owner/current-
+permission boundaries. Prior native decoding refused the actual Source ref schema;
+that error is retained. An initial Unicode comparison setup mistake is retained
+separately. Frozen1677 inputs pass Source243/manifest, focused Go/Python, four type audits,
+collector tests/body inventory, ordinary Go/vet/race+atomic, full Python,19 scans,
+6 selected guard checks and diff. Python2244 passed,28 skipped,96 warnings,
+24 subtests in103.77s. Parser consumer inspection remains exit1. Established audits
+report462 production files/1459 named/1195 public/275 private roots/172 variables,
+zero findings; body inventory retains129 observations at51 packages/22096
+declarations. Darwin race statements: app89.34% (33280/37250),
+all Go89.09% (33646/37765), Provider86.67% (1522/1756). Schema metadata is not a
+validator, reference resolver, callback registration or authority. Default parser,
+broader IDNA, historical temporal/other-platform/public scope and original complete
+migration acceptance remain open.
 
 
 Timing evidence review after `f9d4f61`: [four paired post-spawn timing scenarios and Python workload profile](docs/audits/go-timing-boundaries-2026-10-12.json) retain the original ordinary Go/Python failures. Runtime and thresholds are unchanged; injected delays establish a timing boundary, not the missing original failure cause. The [diagnostic iteration image](docs/audits/go-timing-boundaries-infographic-2026-10-12.png) highlights observations on the existing base without adding or deleting components.
@@ -780,7 +787,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call input copy before effects · ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
+        GoContext["Context pipeline<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]

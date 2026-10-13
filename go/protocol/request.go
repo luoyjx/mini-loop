@@ -76,24 +76,27 @@ type InputSchema struct {
 	mcpSchema *jsonvalue.Value
 	// The workflow and MCP variants carry exact immutable schema projections.
 	workflowSchema *jsonvalue.Value
-	Additional     *SchemaAdditional `json:"additionalProperties,omitempty"`
-	Const          *string           `json:"const,omitempty"`
-	Default        *jsonvalue.Value  `json:"default,omitempty"`
-	Description    string            `json:"description,omitempty"`
-	Enum           []string          `json:"enum,omitempty"`
-	Items          *InputSchema      `json:"items,omitempty"`
-	MaxItems       *int              `json:"maxItems,omitempty"`
-	MaxLength      *int              `json:"maxLength,omitempty"`
-	MaxProperties  *int              `json:"maxProperties,omitempty"`
-	Maximum        *int              `json:"maximum,omitempty"`
-	MinItems       *int              `json:"minItems,omitempty"`
-	MinProperties  *int              `json:"minProperties,omitempty"`
-	Minimum        *int              `json:"minimum,omitempty"`
-	OneOf          []InputSchema     `json:"oneOf,omitempty"`
-	Properties     *SchemaProperties `json:"properties,omitempty"`
-	Required       []string          `json:"required,omitempty"`
-	Type           SchemaType        `json:"type,omitempty"`
-	Types          []SchemaType      `json:"-"`
+	// Explicit custom schema metadata is closed and inert; execution still needs
+	// a registered concrete input codec after the common gate.
+	extensionSchema *jsonvalue.Value
+	Additional      *SchemaAdditional `json:"additionalProperties,omitempty"`
+	Const           *string           `json:"const,omitempty"`
+	Default         *jsonvalue.Value  `json:"default,omitempty"`
+	Description     string            `json:"description,omitempty"`
+	Enum            []string          `json:"enum,omitempty"`
+	Items           *InputSchema      `json:"items,omitempty"`
+	MaxItems        *int              `json:"maxItems,omitempty"`
+	MaxLength       *int              `json:"maxLength,omitempty"`
+	MaxProperties   *int              `json:"maxProperties,omitempty"`
+	Maximum         *int              `json:"maximum,omitempty"`
+	MinItems        *int              `json:"minItems,omitempty"`
+	MinProperties   *int              `json:"minProperties,omitempty"`
+	Minimum         *int              `json:"minimum,omitempty"`
+	OneOf           []InputSchema     `json:"oneOf,omitempty"`
+	Properties      *SchemaProperties `json:"properties,omitempty"`
+	Required        []string          `json:"required,omitempty"`
+	Type            SchemaType        `json:"type,omitempty"`
+	Types           []SchemaType      `json:"-"`
 }
 type schemaTypeWire struct {
 	single   SchemaType
@@ -113,6 +116,9 @@ func (v *schemaTypeWire) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, &v.single)
 }
 func (schema InputSchema) MarshalJSON() ([]byte, error) {
+	if schema.extensionSchema != nil {
+		return schema.extensionSchema.MarshalJSON()
+	}
 	if schema.mcpSchema != nil {
 		return schema.mcpSchema.MarshalJSON()
 	}
@@ -161,6 +167,10 @@ func (schema *InputSchema) UnmarshalJSON(b []byte) error {
 	return nil
 }
 func (schema InputSchema) Clone() InputSchema {
+	if schema.extensionSchema != nil {
+		value := *schema.extensionSchema
+		return InputSchema{extensionSchema: &value}
+	}
 	if schema.mcpSchema != nil {
 		value := *schema.mcpSchema
 		return InputSchema{mcpSchema: &value}
@@ -222,6 +232,10 @@ func (schema InputSchema) Clone() InputSchema {
 }
 func (schema InputSchema) Validate() error { return schema.validate(0) }
 func (schema InputSchema) validate(depth int) error {
+	if schema.extensionSchema != nil {
+		_, err := schema.extensionSchema.MarshalJSON()
+		return err
+	}
 	if schema.mcpSchema != nil {
 		_, err := schema.mcpSchema.MarshalJSON()
 		return err
@@ -356,6 +370,9 @@ func (schema ToolSchema) Clone() ToolSchema {
 	return schema
 }
 func (schema ToolSchema) Validate() error {
+	if schema.InputSchema.extensionSchema != nil && !extensionSchemaName(schema.Name) {
+		return errors.New("extension schema requires a name without a native input decoder")
+	}
 	if schema.InputSchema.mcpSchema != nil && !IsMCPToolName(schema.Name) {
 		return errors.New("external MCP schema requires an MCP tool name")
 	}
