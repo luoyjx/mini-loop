@@ -1,0 +1,19 @@
+Edit the referenced image as the architecture base and preserve its full five-layer composition, dark blue/cyan style, clean Chinese typography, every architecture component and all existing connection routes. This is an iteration highlight image, not a redesign of the base. Main title stays "mini-loop 整体分层架构". Subtitle becomes "本轮：Go 公共辅助函数 · 强类型入口与 Source 契约对照". Keep the exact five headings: "L1 入口与组合层", "L2 会话与控制层", "L3 推理与执行层", "L4 能力与编排层", "L5 状态与证据层".
+
+Highlight only three existing areas with thin amber outlines and small numbered markers:
+① L1 CLI / HTTP / SSE / 浏览器 composition card: add a compact badge "公开 Go 辅助入口".
+② L3 Session Agent 循环 / Context card: add compact badge "Memory / ResultBudget 强类型公共调用".
+③ L5 owner skills / Markdown memory card and the adjacent file-evidence area: add compact badge "owner 绑定 · 掩码写盘 · 消息替换". These are annotations on existing parts, not new components.
+
+Replace the right sidebar heading with "本轮改动说明" and use six concise items:
+1. "公开 4 个辅助函数；2 个常量精确值对照"
+2. "强类型上下文：store / workspace 与具名回调"
+3. "保留默认值、零 / 负参数与失败阶段"
+4. "掩码写盘；后续失败不改消息，已有文件保留"
+5. "61 个 Source 对照用例；取消、owner 与路径守卫"
+6. "完整迁移验收仍进行；默认诊断后端待批准"
+
+Place a small readable footnote: "本轮无组件增删；基础图保持不变。调用方负责回调与 store 生命周期。"
+Keep every L4 card: exactly six backend cards 文件, Shell, AST, Diagnostics, MCP, 自定义工具（显式注册）; exactly seven optional orchestration cards 后台, Cron, Tasks, Teams, Workflow, Decision, Worktree. Keep exactly five L5 cards, including operator contractaudit. Preserve optional/deployment-selected labels and the truthful in-progress status.
+
+Critical route invariants: Session/Context and Model Provider have explicit arrows in BOTH directions; the Session → ToolGate tool-call route goes ABOVE Model Provider without entering it; ToolGate → L4 is the execution path; L4 result returns to Session; there must be NO Model Provider → ToolGate arrow. Keep the visible ToolGate stages and all owner/authorization boundaries. Do not imply public helper callbacks are model tools or bypass ToolGate. Do not add services, defaults, paid backend acceptance, green full-migration completion, percentages or test-suite pass badges. Do not crop, omit cards, change the layer ordering, or lose arrowheads. Make the Chinese annotations crisp and legible.

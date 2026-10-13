@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-13",
+  "baseline": "3269424",
+  "mode": "race+atomic",
+  "profile_sha256": "75c9c79b88098cdd2711c02b5a029635efc3e164649699252d190d88a558b9ed",
+  "raw_rows": 1301405,
+  "unique_blocks": 26558,
+  "method": "Union maximum hits over identical spans; equal statement counts required. App excludes tools/ only; command mains included.",
+  "app": {
+    "covered": 33534,
+    "statements": 37511,
+    "percent": 89.39777665218203
+  },
+  "all": {
+    "covered": 33900,
+    "statements": 38026,
+    "percent": 89.14952926944721
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-public-helpers-2026-10-13/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 565.271
+  },
+  "retained_profile": "var/go-public-helpers-2026-10-13/coverage.out",
+  "scope": "Darwin statements only; excludes native C/subprocess interiors, Python, branches and other profiles; not full migration acceptance.",
+  "implementation_commit": "1619400b142ec0194760005dd8f2561dc79745e0"
+}

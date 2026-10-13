@@ -1,0 +1,675 @@
+{
+  "date": "2026-10-13",
+  "baseline": "3269424",
+  "branch": "codex/go-public-helpers",
+  "scope": "Typed public memory/result-budget helper composition and exact constants with bounded public Source invocation/effect evidence; not full public migration closure.",
+  "source_profiles": {
+    "memory": 41,
+    "budget": 20,
+    "total": 61
+  },
+  "case_names": {
+    "memory": [
+      "select/None/False",
+      "select/None/True",
+      "select/0/False",
+      "select/0/True",
+      "select/1/False",
+      "select/1/True",
+      "select/2/False",
+      "select/2/True",
+      "select/5/False",
+      "select/5/True",
+      "select/-1/False",
+      "select/-1/True",
+      "select/-3/False",
+      "select/-3/True",
+      "select/-20/False",
+      "select/-20/True",
+      "select/list-fault",
+      "select/fallback-fault",
+      "consolidate/list-fault",
+      "select/tools-off",
+      "select/empty",
+      "select/fault",
+      "select/malformed",
+      "select/unicode-tail",
+      "select/nonfinite",
+      "prepare/default",
+      "prepare/disabled",
+      "prepare/tools-off",
+      "prepare/empty",
+      "prepare/no-hit",
+      "prepare/send-fault",
+      "consolidate/None",
+      "consolidate/0",
+      "consolidate/2",
+      "consolidate/3",
+      "consolidate/4",
+      "consolidate/-1",
+      "consolidate/empty-zero",
+      "consolidate/fault",
+      "consolidate/unhashable",
+      "consolidate/no-names"
+    ],
+    "budget": [
+      "budget/default",
+      "budget/empty",
+      "budget/newest-only",
+      "budget/write-fault",
+      "budget/0/0",
+      "budget/0/2",
+      "budget/0/-1",
+      "budget/0/-1000",
+      "budget/0/5000",
+      "budget/300/0",
+      "budget/300/2",
+      "budget/300/-1",
+      "budget/300/-1000",
+      "budget/300/5000",
+      "budget/-1/0",
+      "budget/-1/2",
+      "budget/-1/-1",
+      "budget/-1/-1000",
+      "budget/-1/5000",
+      "budget/stable-character-sort"
+    ]
+  },
+  "constants": {
+    "trajectory_schema": "mini-loop.trajectory.v1",
+    "unknown_result": "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first."
+  },
+  "namespace_overlay": "docs/audits/go-public-helpers-namespace-2026-10-13.json",
+  "source_files": {
+    "python/mini_loop/memory.py": "39f463b9ed848a5ac21195c9ac0505cf3f4ade9c0ba659b079fe8aefa71eb38f",
+    "python/mini_loop/compaction.py": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/mini_loop/trajectory.py": "27bf501f8869f6bf6533a555c3697bc5a657bc5fee5e0922e98fcee032cdbaa2",
+    "python/mini_loop/actions.py": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+    "python/tools/public_helper_contracts.py": "f1c13aace2183dd6ff2b9c8bc908d978e4fe297e2e0b1728875dda197ea02bc7"
+  },
+  "fixture_hashes": {
+    "go/testdata/python-public-helpers.json": "eee00e831946ad2f6cb9c2ef6639866d2babe1895af4f916a0d1c50b824746a2"
+  },
+  "boundaries": {
+    "public": "MemoryQueryContext/MemoryContext use explicit owner-bound stores and named closed request/load callbacks. No Agent pointer, arbitrary business-state map, RawMessage or domain any. Runtime binds its existing side-model/event paths under existing ownership.",
+    "selection": "Source defaults and zero/negative slicing; booleans, duplicate order and whole JSON syntax profile retained. Valid selection sliced to empty never invokes lexical fallback. Initial-list and fallback faults escape; ordinary query error/panic falls back.",
+    "preparation": "Explicit enabled selection only; a typed load sender runs before prefix return. No live transcript mutation/capture or implicit provider/store acquisition.",
+    "consolidation": "Explicit caller store/threshold independent of auto-tools. Initial listing outside best effort; origins preserve raw identity, replacement has partial effects/no rollback. No added lifecycle acquisition; runtime keeps its outer lifecycle.",
+    "budget": "Source 200000-byte/2000-character defaults, negative preview slicing, stable character sort and UTF-8 byte accounting. Masked disk writes and raw previews retained. Later write failure retains files but original caller/result transcript; no unrelated compaction stage/model.",
+    "authority": "Native cancellation/state authority errors escape; workspace symlink escape rejected. Public callbacks/store lifetimes and serialization are caller-owned. No model/role/owner/default dependency grant."
+  },
+  "setup_and_comparison_history": [
+    "Initial internal test had an unused import; initial public test used a nonexistent ModelPurpose name. Both compile errors retained separately.",
+    "First public comparison had32 memory mismatches because capture used llm_request rather than actual model_start purposes, and16 budget mismatches from unresolved macOS temp aliases. Source purpose capture and test path normalization repaired; all original58 rows/assertions retained.",
+    "Three initial-list/fallback Source fault profiles added for61 total. Native disk-fault control cancels at the second write: same partial files and unchanged transcript, different native error class."
+  ],
+  "gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helpers-2026-10-13/source-manifest.json"
+      ],
+      "exit_code": 0,
+      "seconds": 95.788
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "./agent",
+        "./protocol",
+        "./provider",
+        "./sqlitestate",
+        "-run",
+        "TestPublic|TestMemory|TestCompaction",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 34.874
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_export_diagnostics.py",
+        "python/tests/test_go_public_helpers.py",
+        "python/tests/test_extensions.py",
+        "python/tests/test_extension_contracts.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.874
+    },
+    {
+      "name": "types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.732
+    },
+    {
+      "name": "public-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "exit_code": 0,
+      "seconds": 0.879
+    },
+    {
+      "name": "private-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "exit_code": 0,
+      "seconds": 0.707
+    },
+    {
+      "name": "variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "seconds": 0.725
+    },
+    {
+      "name": "collector-tests",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-public-helpers-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.74
+    },
+    {
+      "name": "body-inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-public-helpers-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "run",
+        ".",
+        "/Users/yanjixiong/github/mini-loop/go"
+      ],
+      "exit_code": 0,
+      "seconds": 1.202
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 228.165
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helpers-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-public-helpers-2026-10-13/ordinary.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "seconds": 0.939
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 3.116
+    },
+    {
+      "name": "race",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-public-helpers-2026-10-13/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 565.271
+    },
+    {
+      "name": "python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 90.72
+    },
+    {
+      "name": "invariants",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.133
+    },
+    {
+      "name": "scans",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "seconds": 8.023
+    },
+    {
+      "name": "guards-memory",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "memory"
+      ],
+      "exit_code": 0,
+      "seconds": 15.613
+    },
+    {
+      "name": "guards-budget",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "budget-spill"
+      ],
+      "exit_code": 0,
+      "seconds": 0.903
+    },
+    {
+      "name": "guards-spill-mask",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "spill-is-unmasked"
+      ],
+      "exit_code": 0,
+      "seconds": 0.931
+    },
+    {
+      "name": "diff",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.05
+    }
+  ],
+  "frozen_inputs": {
+    "count": 1701,
+    "path": "var/go-public-helpers-2026-10-13/frozen.json",
+    "sha256": "a700f9d21a9bc5fc0e609ede1f930d5378db6c7ed174215fd8d646708fac90f9",
+    "changes_during_gates": []
+  },
+  "implementation_hashes": {
+    "go/agent/public_memory.go": "1761d739133f146897b20c9cb32042e0a35a963eeb24ebb85dd062ba588999fc",
+    "go/agent/result_budget.go": "9d270d3c1645411450e2d5645e6dc0991afe9972bbe5c72f546cb32e6d1aee30",
+    "go/agent/public_helpers_test.go": "cee81ea7bed7c2cedad0fa8d531c8b3dbc427bf0e4371c3803b94d7c85b5fd1e",
+    "go/agent/memory_context.go": "b1369be161be80b098b686f91ad0ec6c08688009d2dd1b369f10e971d2d5455a",
+    "go/agent/memory_capture.go": "2fb4d65cb8197d2ef6539d2a825e18998f0b4beae9f0e1d852e6fecfd60c51d6",
+    "go/agent/compaction.go": "f75892ee9716fac33e0e26a5b222418c0faf5540076c3ba0a5ecccf7b478f862",
+    "go/agent/session.go": "bb48dbff3fcc0519830348e55f502ea7181faf71e685a86851cbec8d549ebe00",
+    "python/tools/public_helper_contracts.py": "f1c13aace2183dd6ff2b9c8bc908d978e4fe297e2e0b1728875dda197ea02bc7",
+    "python/tests/test_go_public_helpers.py": "1b25fa95aca1c229e5aea12736216e92b373ea763cae071cccf2d54479daa05b",
+    "python/tools/export_go_contracts.py": "fb17c8af84700e2e28ed4ac7b3551d38415325fcfea48345adbc8af0f1809331",
+    "go/testdata/python-public-helpers.json": "eee00e831946ad2f6cb9c2ef6639866d2babe1895af4f916a0d1c50b824746a2"
+  },
+  "source_manifest": {
+    "files": 248,
+    "path": "var/go-public-helpers-2026-10-13/source-manifest.json",
+    "sha256": "fddea217c88d6d648add54836044b7fc60fd0734f71f350c00720818d1410fdf"
+  },
+  "type_audits": {
+    "types": "Go type audit: 465 production files, 1472 package-level types, 0 findings",
+    "public-types": "Go public type audit: 51 packages, 1205 exported types, 0 findings",
+    "private-types": "Go private type audit: 51 packages, 278 private root types, 0 findings",
+    "variables": "Go variable audit: 51 packages, 172 package variables, 0 findings"
+  },
+  "body_inventory": {
+    "packages": 51,
+    "declarations": 22268,
+    "open_observations": 130,
+    "path": "var/go-public-helpers-2026-10-13/body-inventory.log",
+    "sha256": "e4be557ac437b75fcf4b03ed688f4232ef30c50a0ab97d968fc3f818177080cf",
+    "new_observation": "public_memory.go local recover() value is inspected only as error and discarded; no domain persistence or arbitrary object retention.",
+    "limitations": "Compiler observations do not prove caller/escape/interprocedural/runtime/generic/foreign/other-profile closure."
+  },
+  "consumer_inventory": {
+    "files": 249,
+    "counts": {
+      "test_pass_observed": 248,
+      "unreferenced": 1
+    },
+    "public_fixture": {
+      "name": "python-public-helpers.json",
+      "sha256": "eee00e831946ad2f6cb9c2ef6639866d2babe1895af4f916a0d1c50b824746a2",
+      "references": [
+        {
+          "file": "agent/public_helpers_test.go",
+          "line": 62,
+          "function": "readPublicHelpers"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestPublicMemoryHelpersSourceContracts",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestPublicToolResultBudgetSourceContracts",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "parser": {
+      "name": "python-syntax-parser.json",
+      "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+      "references": [],
+      "candidate_callers": [],
+      "status": "unreferenced",
+      "producer_scope": "current_export"
+    },
+    "limitations": [
+      "Active go list profile only; Source freshness must be checked independently.",
+      "Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.",
+      "Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.",
+      "A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement."
+    ]
+  },
+  "python_result": "2248 passed, 28 skipped, 96 warnings, 24 subtests passed in 90.14s (0:01:30)",
+  "scans": "harness\n  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\n  pins       test_identity.py::test_the_build_id_covers_the_package_source\n  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double\n  pins       test_spawn_sites.py::test_every_spawn_site_is_classified\n  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries\n  pins       test_write_sites.py::test_every_write_site_is_classified\n  pins       test_write_sites.py::test_the_classification_has_no_dead_entries\n\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.\n",
+  "guards": {
+    "guards-memory": "e caller reads another's)\n  caught    scopedmemory-classification-not-enforced  (r137: the completeness guard flags any public MemoryStore method not classified owner-sensitive-or-harmless, so a new one cannot ride __getattr__ unscoped the way replace_all did)\n  caught    memory-tool-builds-its-own-raw-store  (r118: a memory tool that builds its own unscoped MemoryStore is caught by the seam scan, not only by a per-tool behavioural test)\n  caught    round-exhaustion-skips-memory  (r228: memory is captured on every healthy turn endpoint, not just the happy path; the round-exhausted turn did the most work and is where learned facts matter most)\n  caught    memory-capture-failure-kills-the-turn  (r228: end-of-turn memory extraction is best-effort; a memory failure must not turn an already-finished turn into a failed one)\n\nall 18 guards are load-bearing (passing baseline, failed test call).\n",
+    "guards-budget": "verifying 1 guard(s) with unmodified baselines\n\n  caught    budget-spill-mutates-in-place  (r122: tool_result_budget replaces the message object so the rewrite detector sees it and the store mirrors the spill; editing the block in place leaves a restart with the un-budgeted transcript)\n\nall 1 guards are load-bearing (passing baseline, failed test call).\n",
+    "guards-spill-mask": "verifying 1 guard(s) with unmodified baselines\n\n  caught    spill-is-unmasked  (r27: context spilled to the workspace carries no credential)\n\nall 1 guards are load-bearing (passing baseline, failed test call).\n"
+  },
+  "logs": {
+    "source": {
+      "path": "var/go-public-helpers-2026-10-13/source.log",
+      "sha256": "88bdc7cc22c75f42c153b435d18999bc70b49506ee9c98fd684caa432cae36e2",
+      "bytes": 80377
+    },
+    "focused-go": {
+      "path": "var/go-public-helpers-2026-10-13/focused-go.log",
+      "sha256": "c42155a4499cc04cfb444c3a7d58ba9ad316ffa549dd34598f38d756fb1bc690",
+      "bytes": 227
+    },
+    "focused-python": {
+      "path": "var/go-public-helpers-2026-10-13/focused-python.log",
+      "sha256": "5504ab11c583197986d572900fdb3a83061f8dd37ee91ec7014a2ff696616637",
+      "bytes": 99
+    },
+    "types": {
+      "path": "var/go-public-helpers-2026-10-13/types.log",
+      "sha256": "ba26d7a49c21e58f583205da99e6ead91f235087b2d896e2b4a629a9f75087f2",
+      "bytes": 74
+    },
+    "public-types": {
+      "path": "var/go-public-helpers-2026-10-13/public-types.log",
+      "sha256": "632aca892f5d9dd4eab9a0f05fbaa9c39ad0ddef01e9d03dba825f16f2d82ac4",
+      "bytes": 67
+    },
+    "private-types": {
+      "path": "var/go-public-helpers-2026-10-13/private-types.log",
+      "sha256": "a00eb8192a3c7db75f419be08c3fb1b6597ba1c3c3ab09317924dde27946fd1e",
+      "bytes": 71
+    },
+    "variables": {
+      "path": "var/go-public-helpers-2026-10-13/variables.log",
+      "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0",
+      "bytes": 66
+    },
+    "collector-tests": {
+      "path": "var/go-public-helpers-2026-10-13/collector-tests.log",
+      "sha256": "016f9b79456d535b3e5ed1b0e171cd5068d9c3389c973ea868fa2e9a34107601",
+      "bytes": 36
+    },
+    "body-inventory": {
+      "path": "var/go-public-helpers-2026-10-13/body-inventory.log",
+      "sha256": "e4be557ac437b75fcf4b03ed688f4232ef30c50a0ab97d968fc3f818177080cf",
+      "bytes": 55518
+    },
+    "ordinary": {
+      "path": "var/go-public-helpers-2026-10-13/ordinary.log",
+      "sha256": "75482b2f6839f2f643a64087a6b399912ffd1a6928fc626639868896776e4018",
+      "bytes": 11307205
+    },
+    "inventory": {
+      "path": "var/go-public-helpers-2026-10-13/inventory.log",
+      "sha256": "1c572932a290a60361c503100435070a568263579b63978fb25982efbca5c113",
+      "bytes": 320305
+    },
+    "vet": {
+      "path": "var/go-public-helpers-2026-10-13/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "race": {
+      "path": "var/go-public-helpers-2026-10-13/race.log",
+      "sha256": "36772f35f9579d38e45e4a8600dff4dc2f102f5cd43abf6ae426124084dc58a1",
+      "bytes": 6328
+    },
+    "python": {
+      "path": "var/go-public-helpers-2026-10-13/python.log",
+      "sha256": "2c24e0f6fd7bd3ae1af81733aabb636cc756e18638c8a1c847aee06e97b59575",
+      "bytes": 51428
+    },
+    "invariants": {
+      "path": "var/go-public-helpers-2026-10-13/invariants.log",
+      "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78",
+      "bytes": 62
+    },
+    "scans": {
+      "path": "var/go-public-helpers-2026-10-13/scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "bytes": 1663
+    },
+    "guards-memory": {
+      "path": "var/go-public-helpers-2026-10-13/guards-memory.log",
+      "sha256": "767acda8ff4af13d2a300af52a949cbc2c46913ea6ba8ab86d6a93c2e354d2f7",
+      "bytes": 2749
+    },
+    "guards-budget": {
+      "path": "var/go-public-helpers-2026-10-13/guards-budget.log",
+      "sha256": "2a31c42ed735e7432269276bffccddc046af2c90903733cf398523e143243577",
+      "bytes": 356
+    },
+    "guards-spill-mask": {
+      "path": "var/go-public-helpers-2026-10-13/guards-spill-mask.log",
+      "sha256": "95710791ad2f3e0cb1f4a93a6ec51cdd8455a9ed9416505a4a801b51f30758ad",
+      "bytes": 210
+    },
+    "diff": {
+      "path": "var/go-public-helpers-2026-10-13/diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "initial-focused": {
+      "path": "var/go-public-helpers-2026-10-13/initial-focused.log",
+      "sha256": "b1d0246716f4f77fab40a1911806bcc107fc3520085d09b82a0e2e9ba81b1cec",
+      "bytes": 237
+    },
+    "focused-internals": {
+      "path": "var/go-public-helpers-2026-10-13/focused-internals.log",
+      "sha256": "ebbb42121868b4c38003c63c2f85d2c0a8447dd7e458aaa5bdaed3d341b7e421",
+      "bytes": 50
+    },
+    "public-comparison-initial": {
+      "path": "var/go-public-helpers-2026-10-13/public-comparison-initial.log",
+      "sha256": "2ef6042f126134e90c006914da524878dd0f20db318af48dd4ba398d38d95e8b",
+      "bytes": 288
+    },
+    "public-comparison": {
+      "path": "var/go-public-helpers-2026-10-13/public-comparison.log",
+      "sha256": "e8d47e6d3453f300154a30d72887fe9dd8275881feb38f2fa9582684cd10dd90",
+      "bytes": 49805
+    },
+    "public-comparison-corrected": {
+      "path": "var/go-public-helpers-2026-10-13/public-comparison-corrected.log",
+      "sha256": "044563d446f87ab7cb7c3932a323be9d86df96e26bfdfca1a1c2d1f4cf42371d",
+      "bytes": 49
+    },
+    "public-comparison-final": {
+      "path": "var/go-public-helpers-2026-10-13/public-comparison-final.log",
+      "sha256": "f50b81b35055cdc529df0e9c88bf6878c9e9c2752655ccde146fe53496f9b246",
+      "bytes": 49
+    },
+    "focused-public-controls": {
+      "path": "var/go-public-helpers-2026-10-13/focused-public-controls.log",
+      "sha256": "f69541a05abd524ad0182047c84aa961e3f47a447e274a07d13ca509efc8e90d",
+      "bytes": 50
+    },
+    "source-tests": {
+      "path": "var/go-public-helpers-2026-10-13/source-tests.log",
+      "sha256": "33b662fdd3508192388779035d895f2d57122672755940fd2356172dbe21537b",
+      "bytes": 98
+    },
+    "source-tests-final": {
+      "path": "var/go-public-helpers-2026-10-13/source-tests-final.log",
+      "sha256": "3b4ad3097d7020cd8b172384869bd1db1102ffc4c9316bde31fef1b3bcacf9c6",
+      "bytes": 98
+    },
+    "source-capture": {
+      "path": "var/go-public-helpers-2026-10-13/source-capture.log",
+      "sha256": "191fdf12714682abf34a3299b63abe77118c294400aca334787e8f1ea53763cf",
+      "bytes": 73
+    },
+    "source-capture-corrected": {
+      "path": "var/go-public-helpers-2026-10-13/source-capture-corrected.log",
+      "sha256": "79d694fca6163831d3a9e9c435acfe39940a0f9f1b8f7da598fa1c2a4b155df7",
+      "bytes": 27
+    },
+    "source-capture-final": {
+      "path": "var/go-public-helpers-2026-10-13/source-capture-final.log",
+      "sha256": "7425010115f39459b7627e689813dda635282228dfbb4b1e74584c29a1626318",
+      "bytes": 27
+    }
+  },
+  "architecture": {
+    "tool": "built-in imagegen",
+    "source_image": "/Users/yanjixiong/.codex/generated_images/01a0fb06-f8fc-7e13-b9ed-450a10fb167c/exec-b19a3af3-7c0c-40fa-8832-96cd4bcacdd5.png",
+    "saved_image": "docs/audits/go-public-helpers-infographic-2026-10-13.png",
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "image_sha256": "573cfc818ff138208d1536c2d31dedcd32978d5b03dd2e876ead344baa371d66",
+    "prompt": "docs/audits/go-public-helpers-infographic-2026-10-13.prompt.txt",
+    "inspection": "Reviewed generated pixels: five layers, six backend cards, seven orchestration cards, five evidence cards; Session/Provider bidirectional arrows, above-provider Session/ToolGate route, Gate/L4 and L4/Session results retained. Highlights L1 public composition, L3 Context, L5 owner files. No Provider/ToolGate route. No component addition/deletion; base unchanged. No new rendered-browser acceptance.",
+    "html_delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "79b90fabea144f1c62bd54b6a10c9960ff7e5b40e22f4676de5a2e375598c637",
+        "bytes": 147710
+      },
+      "artifact": {
+        "sha256": "0cd2521b34386442fd56367ba2333624201316f72946c122d1735df753cc9745",
+        "bytes": 801900
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "base_changed": false,
+    "components_added_or_removed": false
+  },
+  "coverage_receipt": "docs/audits/go-coverage-public-helpers-2026-10-13.json",
+  "historical_failure": "Previous unchanged Python MemoryStore scaling failed0.25/1.55ms at100/800 records. Prior SQLite deadlines/background/watcher/Python40-turn timing failures remain unexplained. This is a distinct frozen implementation cohort; no threshold relaxation or claimed temporal root-cause fix.",
+  "skipped": [
+    "No new dependency, paid provider, remote fetch/push, Linux full-suite refresh or rendered-browser acceptance."
+  ],
+  "remaining": "Default CPython diagnostics approval and wider provider/IDNA/transport/public/default/feature/host/platform/performance/release and original P0/P1/G0-G7 acceptance remain open. Goal active.",
+  "implementation_commit": "1619400b142ec0194760005dd8f2561dc79745e0",
+  "source_prerequisite_commit": "cbaac0bf9bd679ddade187cc35e6a9865ccddd97",
+  "post_gate_updates": "Only root plan/parity/public-inventory evidence paragraphs and audit/image receipts were updated after all gates ended; frozen program/README/EXTENDING/graph inputs remain identical."
+}
