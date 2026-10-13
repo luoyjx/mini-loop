@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-13",
+  "baseline": "82cc93d",
+  "mode": "race+atomic",
+  "profile_sha256": "0c5541c005816ca2e64e34322c8a23e0acc10ef8425a46770f598de36757357d",
+  "raw_rows": 1291703,
+  "unique_blocks": 26360,
+  "method": "Union maximum hits over identical spans; equal statement counts required. App excludes tools/ only; command mains included.",
+  "app": {
+    "covered": 33280,
+    "statements": 37250,
+    "percent": 89.34228187919463
+  },
+  "all": {
+    "covered": 33646,
+    "statements": 37765,
+    "percent": 89.09307559909969
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-extension-schema-preservation-2026-10-13/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 541.927
+  },
+  "retained_profile": "var/go-extension-schema-preservation-2026-10-13/coverage.out",
+  "scope": "Darwin statements only; no native C, subprocess interiors, Python, branches or other profiles. Not full migration acceptance.",
+  "implementation_commit": "c92fe51cc27e871aab3aee8e4075964aaed342f3"
+}

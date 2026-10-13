@@ -1,0 +1,553 @@
+{
+  "date": "2026-10-13",
+  "baseline": "82cc93d",
+  "branch": "codex/go-extension-schema-preservation",
+  "scope": "Complete finite custom schema metadata preservation through model requests and native SQLite catalogue events; named execution codec stays separate. Not server acceptance of non-object schema, arbitrary handler coercion or complete migration.",
+  "source_profiles": 16,
+  "managed_owner_sessions": 32,
+  "native_sqlite_reopen_profiles": 16,
+  "case_names": [
+    "basic",
+    "references",
+    "numeric-enum",
+    "structured-const",
+    "fractional-bounds",
+    "pattern-format",
+    "conditional",
+    "boolean-property",
+    "array-without-items",
+    "empty-schema",
+    "root-true",
+    "root-false",
+    "root-null",
+    "root-array",
+    "root-text",
+    "root-number"
+  ],
+  "source_files": {
+    "python/mini_loop/registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+    "python/mini_loop/manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/mini_loop/fake_llm.py": "69bc93ea2d875c668681b3b219705129f4d4bba5d44ce713820fcc9e597414a9",
+    "python/tools/extension_schema_contracts.py": "3d6985f8a33adec5dee03b4761055f8f7b945ae20bbb64ccba1d55b00ed2a143"
+  },
+  "source_fixture_sha256": "3d1db611b1b4ae198640324c736748f81006b55702a21a154a219cc0d86380bb",
+  "source_manifest": {
+    "path": "var/go-extension-schema-preservation-2026-10-13/source-manifest.json",
+    "sha256": "4944a8dcaa4010050365f3b6c2c76cad2147974d03867afb794cf0458c6004d6",
+    "current_files": 243
+  },
+  "baseline_failure": {
+    "input": "Actual Source registered schema with refs/mixed enum/fractional bounds from source-pilot.json",
+    "source_pilot_path": "var/go-extension-schema-preservation-2026-10-13/source-pilot.json",
+    "source_pilot_sha256": "fdb6c810d0a71ea923da5b9a869df48a1c25952c2c187be1f316815a108c02e2",
+    "native_exit": 1,
+    "native_output": "json: unknown field \"$ref\"\nexit status 1\n",
+    "diagnostic_program_sha256": "cfd900184306d0e6b2b9d2831251e01b893d2711d3dfb50c36f4cf8c65353b83"
+  },
+  "setup_diagnostics": [
+    "Native pilot initially used a root-relative output path from go cwd; no program ran. Corrected-path baseline is retained separately.",
+    "Initial managed test compared ASCII-escaped raw jsonvalue JSON against unescaped Unicode canonical JSON. Snapshot/fingerprint already matched; comparison now normalizes both decoded trees with the same UTF-8 compact representation. Missing template_names field tag was also repaired. No production wire change or Source expectation relaxation."
+  ],
+  "boundaries": {
+    "schema": "ExtensionToolSchema decodes caller bytes immediately into immutable closed finite Value, recursively sorts keys and retains all Source metadata shapes; sixteen MiB existing projection bound. No RawMessage/open map stored.",
+    "execution": "Schema metadata neither validates arguments nor resolves refs/registers handlers/grants authority. NewTypedExtensionTool concrete codec/Validate/common permission/journal remain authoritative. Schema-only registrations still refuse execution.",
+    "known_names": "Built-in and MCP schema parsers retain strict native selection; custom metadata cannot downgrade known decoder names. Unmarshal restores exact custom metadata only for names without native input decoders when ordinary schema decoding/validation cannot represent it.",
+    "ownership": "Two published manager catalogues are independent; typed handler sees correct owner. Snapshot DTO mutation and caller byte mutation do not alter model metadata or fingerprints.",
+    "archive": "Sixteen actual SQLite close/reopen catalogue event schemas/fingerprints match Source. Explicit restore rebinds current operator catalogue, refuses foreign owner, retains interactive policy and confirms fresh lease before new typed call.",
+    "limits": "Finite source metadata only; valid schema semantics/server acceptance, other root/range/depth/stack/resource profiles and operator callback lifetimes remain separate."
+  },
+  "gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-extension-schema-preservation-2026-10-13/source-manifest.json"
+      ],
+      "exit_code": 0,
+      "seconds": 98.317
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "./agent",
+        "./protocol",
+        "./sqlitestate",
+        "-run",
+        "TestExtensionSchema|TestTypedExtension|TestRequestCatalogAndSystemMatchPython",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 3.892
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_export_diagnostics.py",
+        "python/tests/test_extensions.py",
+        "python/tests/test_extension_contracts.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.8
+    },
+    {
+      "name": "types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.594
+    },
+    {
+      "name": "public-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "exit_code": 0,
+      "seconds": 0.756
+    },
+    {
+      "name": "private-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "exit_code": 0,
+      "seconds": 0.85
+    },
+    {
+      "name": "variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "seconds": 0.727
+    },
+    {
+      "name": "collector-tests",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-extension-schema-preservation-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.729
+    },
+    {
+      "name": "body-inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-extension-schema-preservation-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "run",
+        ".",
+        "/Users/yanjixiong/github/mini-loop/go"
+      ],
+      "exit_code": 0,
+      "seconds": 1.166
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 242.915
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-extension-schema-preservation-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-extension-schema-preservation-2026-10-13/ordinary.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "seconds": 0.924
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 1.16
+    },
+    {
+      "name": "race",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-extension-schema-preservation-2026-10-13/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 541.927
+    },
+    {
+      "name": "python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 104.4
+    },
+    {
+      "name": "scans",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "seconds": 8.211
+    },
+    {
+      "name": "guards-tool",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "guard"
+      ],
+      "exit_code": 0,
+      "seconds": 4.972
+    },
+    {
+      "name": "diff",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.032
+    }
+  ],
+  "frozen_inputs": {
+    "count": 1677,
+    "path": "var/go-extension-schema-preservation-2026-10-13/frozen.json",
+    "sha256": "4a360da65eb80befb07996de6307ccc30b0ca4e17cac50fb57c77b2fe50224b9",
+    "changes_during_gates": []
+  },
+  "implementation_hashes": {
+    "go/protocol/extension_schema.go": "537eef9e4a5e15c2d4a3424d70d4e3d6842141ba33af7f470c19d3ea86c68ea7",
+    "go/protocol/extension_schema_test.go": "53d53bd94388c76bd1994a9a64aaa2fbce506a2c4c9ce55a60e3dcec53ca6fa6",
+    "go/protocol/request.go": "42938fa0e8e3c3ee1c314cb10c31fb91938d621b007886a8b7c0868f1fc1d120",
+    "go/protocol/workflow_artifact.go": "ee99fb948a284eb134c2b2b0628e7733fafd6b55c9704c3034a0867e00a9be76",
+    "go/agent/extension_schema_test.go": "61998529f0aabcf3807e08b3abd162f02958d195fc5e2e6ad49475cc6fd60767",
+    "go/sqlitestate/extension_schema_test.go": "41a8563f6de15a9acce79b50304d343ababba53b3dc8f5ed384b0ea0bc850fbf",
+    "python/tools/extension_schema_contracts.py": "3d6985f8a33adec5dee03b4761055f8f7b945ae20bbb64ccba1d55b00ed2a143",
+    "python/tools/export_go_contracts.py": "632e1cc0cba510730d5a3ab417acd395abbd95475b77eefc19f00e4f92229e09",
+    "go/testdata/python-extension-schemas.json": "3d1db611b1b4ae198640324c736748f81006b55702a21a154a219cc0d86380bb"
+  },
+  "type_audits": {
+    "types": "Go type audit: 462 production files, 1459 package-level types, 0 findings",
+    "public-types": "Go public type audit: 51 packages, 1195 exported types, 0 findings",
+    "private-types": "Go private type audit: 51 packages, 275 private root types, 0 findings",
+    "variables": "Go variable audit: 51 packages, 172 package variables, 0 findings"
+  },
+  "body_inventory": {
+    "packages": 51,
+    "declarations": 22096,
+    "open_observations": 129,
+    "path": "var/go-extension-schema-preservation-2026-10-13/body-inventory.log",
+    "sha256": "1820be8686dda782f301e5b81188fc5b51f9843909e74afd400157f3b565384a",
+    "limitations": "No interprocedural/escape/runtime/foreign/generic/other-profile closure from this compiler observation inventory."
+  },
+  "consumer_inventory": {
+    "packages": 51,
+    "files": 244,
+    "counts": {
+      "test_pass_observed": 243,
+      "unreferenced": 1
+    },
+    "new_fixture": {
+      "name": "python-extension-schemas.json",
+      "sha256": "3d1db611b1b4ae198640324c736748f81006b55702a21a154a219cc0d86380bb",
+      "references": [
+        {
+          "file": "agent/extension_schema_test.go",
+          "line": 34,
+          "function": "TestExtensionSchemasMatchSourceManagedRequests"
+        },
+        {
+          "file": "sqlitestate/extension_schema_test.go",
+          "line": 41,
+          "function": "TestExtensionSchemaNativeSQLiteReopenAndOwnedRestore"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestExtensionSchemasMatchSourceManagedRequests",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+          "name": "TestExtensionSchemaNativeSQLiteReopenAndOwnedRestore",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "parser": {
+      "name": "python-syntax-parser.json",
+      "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+      "references": [],
+      "candidate_callers": [],
+      "status": "unreferenced",
+      "producer_scope": "current_export"
+    },
+    "limitations": [
+      "Active go list profile only; Source freshness must be checked independently.",
+      "Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.",
+      "Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.",
+      "A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement."
+    ]
+  },
+  "python_result": "2244 passed, 28 skipped, 96 warnings, 24 subtests passed in 103.77s (0:01:43)",
+  "scans": "harness\n  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\n  pins       test_identity.py::test_the_build_id_covers_the_package_source\n  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double\n  pins       test_spawn_sites.py::test_every_spawn_site_is_classified\n  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries\n  pins       test_write_sites.py::test_every_write_site_is_classified\n  pins       test_write_sites.py::test_the_classification_has_no_dead_entries\n\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.\n",
+  "guards": " request; skipping it silently retires the model-visible-means-logged rule)\n  caught    transcript-guard-checks-count-not-content  (r190: the transcript invariant verifies content, not only count: a flushed row mutated in place would let the model see text the durable record never held)\n  caught    guardian-guesses-when-it-cannot-parse  (r216: an undecidable guardian reply falls to the human (the stricter answerer), never to an assumed approval)\n  caught    guardian-cannot-be-turned-on  (r221: default-off must mean opt-in, not unreachable: the guardian flag actually binds a reviewer, or the feature is dead code with tests)\n\nall 6 guards are load-bearing (passing baseline, failed test call).\n",
+  "logs": {
+    "source": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/source.log",
+      "sha256": "044660f415104e95e5fddda63178e44aabaa6215183534febfae6087cc9f4e49",
+      "bytes": 79118
+    },
+    "focused-go": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/focused-go.log",
+      "sha256": "d144c0c27b30c5eb39ae76466dce94e8e9af76f8c4030fabbc2e8f521e8b3e67",
+      "bytes": 156
+    },
+    "focused-python": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/focused-python.log",
+      "sha256": "9047f93c49aca69ec5a661e302739f699ea28a7aaec6b996f9fba631dc9bd90d",
+      "bytes": 99
+    },
+    "types": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/types.log",
+      "sha256": "f7c34c7b182777be0bf553b321c6a178a2a75d9b95d69b2506179d526536fedc",
+      "bytes": 74
+    },
+    "public-types": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/public-types.log",
+      "sha256": "62687c7e2f8439461b48c80e53b66c61cb493bc4d7a2789c6bf3135a949b3bf7",
+      "bytes": 67
+    },
+    "private-types": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/private-types.log",
+      "sha256": "315d2205d27509f727f4530c8b0aa408f122d22b9cd19f610df619a1e8755134",
+      "bytes": 71
+    },
+    "variables": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/variables.log",
+      "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0",
+      "bytes": 66
+    },
+    "collector-tests": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/collector-tests.log",
+      "sha256": "412459583069dc48f55ea5682934782d4fc5320103430620e390bf9b17d53d0e",
+      "bytes": 36
+    },
+    "body-inventory": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/body-inventory.log",
+      "sha256": "1820be8686dda782f301e5b81188fc5b51f9843909e74afd400157f3b565384a",
+      "bytes": 55192
+    },
+    "ordinary": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/ordinary.log",
+      "sha256": "6713b245450661d40af8d8ba06483b45b820a9cd5454908f62ebc5b34200ce46",
+      "bytes": 10599836
+    },
+    "inventory": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/inventory.log",
+      "sha256": "b7005cbb7ec13c0b1aa43522fb0d1afa42d398c27dc441e45058fb93e2b05e10",
+      "bytes": 313432
+    },
+    "vet": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "race": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/race.log",
+      "sha256": "4fef9ac7b077303dc0764d691f7e1f68b7f2fd05511d9f2683767928ebb027da",
+      "bytes": 6327
+    },
+    "python": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/python.log",
+      "sha256": "cfdbe0d0f7a928afe7d268c44c2b2366333726ce855f44adaf9eeef1db7c958a",
+      "bytes": 51429
+    },
+    "scans": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "bytes": 1663
+    },
+    "guards-tool": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/guards-tool.log",
+      "sha256": "30af31247f5eb40fe5d697b62f27e7f41494d33c3a7e1b0772d849aea4ba0e4f",
+      "bytes": 1195
+    },
+    "diff": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "native-before": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/native-before.log",
+      "sha256": "af7bad567f6d6328d421b83624edc4e3759e6e45d1ae1b390e02c19cebfe5013",
+      "bytes": 41
+    },
+    "native-after-pilot": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/native-after-pilot.log",
+      "sha256": "d6a8ab2c1af873bf766cdb85204605529b8c5f94dcba10fbb1e6fbf3b6355ff7",
+      "bytes": 33
+    },
+    "native-pilot-setup": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/native-pilot-setup.log",
+      "sha256": "29357de562760a78f186ec2baa82792d167cea6316e864e4577ab128c5671098",
+      "bytes": 106
+    },
+    "focused-initial": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/focused-initial.log",
+      "sha256": "4fc73109469a9e2d6daed7d6d9d3350cd6889351d32430faf88b777abc5252e9",
+      "bytes": 7278
+    },
+    "focused": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/focused.log",
+      "sha256": "dae65991143df1d77ea40b465215ec0ae2525205a8c4243268e7e8087126e919",
+      "bytes": 101
+    },
+    "sqlite-focused": {
+      "path": "var/go-extension-schema-preservation-2026-10-13/sqlite-focused.log",
+      "sha256": "cb34afbaa177f2f2c975fbe2bd3efb4c18387a6108819bd9a762ccd616219324",
+      "bytes": 55
+    }
+  },
+  "runner": {
+    "path": "var/go-extension-schema-preservation-2026-10-13/run.py",
+    "sha256": "75904ef6a2a3b6f9c234e231d2647740ab9d235760bef9821fc7585b0e57df78"
+  },
+  "architecture": {
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "base_changed": false,
+    "components_added_or_removed": false,
+    "iteration": "docs/audits/go-extension-schema-preservation-infographic-2026-10-13.png",
+    "iteration_sha256": "73073a8f0d3a87e2f912da8c113b5bb333d11ece6149eb6685ca5e8c302bd21d",
+    "prompt": "docs/audits/go-extension-schema-preservation-infographic-2026-10-13.prompt.txt",
+    "prompt_sha256": "5840438f93aca45e37834d8a1b13e635cf0410cbbda29af88508236283df14fc",
+    "visual_review": "Exact five layers, six L4 backend/seven orchestration/five L5 cards; clear Session/Provider double-headed arrow, Session-to-Gate above Provider, Gate-to-L4 and L4-result-to-Session; no Provider-to-Gate. Highlighted only L2 catalogue/L3 context/L4 custom card.",
+    "html_delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "048949fb61d10dc82b6106cdf9df03e1307a5c517dc119f3d6cec13a38956c3e",
+        "bytes": 145612
+      },
+      "artifact": {
+        "sha256": "f19c407dd38e77b31db4d1fea93965dc3d06137901b13f6b3f2f8ea4f427508b",
+        "bytes": 799712
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "html_visual_review": "No rendered browser acceptance;9 showcase checks do not replace it."
+  },
+  "coverage_receipt": "docs/audits/go-coverage-extension-schema-preservation-2026-10-13.json",
+  "remaining": [
+    "Default CPython syntax backend and broader IDNA approvals remain pending.",
+    "Prior readonly-write scheduling adaptation and wider callback/coercion/lifetime/parallel profiles remain.",
+    "129 body observations, provider/public/default/feature inventory, historical temporal failures and non-Darwin/release/performance scope remain under original P0/P1/G0-G7 acceptance.",
+    "Non-object metadata server acceptance and other finite/legacy/range/depth/caller/resource profiles remain separate."
+  ],
+  "skipped": [
+    "No Python runtime package-module changes; package invariant gate not required.",
+    "No new dependency, paid model call, remote fetch/push or Linux full gate."
+  ],
+  "integration_plan": "Two logical commits then local main ff-only after necessary gates; original goal remains active.",
+  "post_gate_documentation_only_updates": [
+    "README.md"
+  ],
+  "post_gate_readme_sha256": "562001e4e6595649cfb56bbdb0bfa1aa216b5da1ed261cc2435e55103e200d89",
+  "implementation_commit": "c92fe51cc27e871aab3aee8e4075964aaed342f3"
+}

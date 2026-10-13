@@ -552,7 +552,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: based on local main `82cc93d`, with full finite custom
+Runtime review baseline: implementation `c92fe51`, based on local main `82cc93d`, with full finite custom
 schema metadata preservation. `ExtensionToolSchema` retains
 complete closed metadata; known built-in/MCP schemas keep their existing decoders.
 Sixteen Source schema profiles /32 managed owner sessions compare snapshots,
@@ -567,7 +567,10 @@ collector tests/body inventory, ordinary Go/vet/race+atomic, full Python,19 scan
 report462 production files/1459 named/1195 public/275 private roots/172 variables,
 zero findings; body inventory retains129 observations at51 packages/22096
 declarations. Darwin race statements: app89.34% (33280/37250),
-all Go89.09% (33646/37765), Provider86.67% (1522/1756). Schema metadata is not a
+all Go89.09% (33646/37765), Provider86.67% (1522/1756).
+[Current receipt](docs/audits/go-extension-schema-preservation-2026-10-13.json);
+[coverage](docs/audits/go-coverage-extension-schema-preservation-2026-10-13.json).
+Schema metadata is not a
 validator, reference resolver, callback registration or authority. Default parser,
 broader IDNA, historical temporal/other-platform/public scope and original complete
 migration acceptance remain open.
