@@ -1,5 +1,23 @@
 # Python to Go parity matrix
 
+## 2026-10-13 concrete event/default review — implementation pending
+
+[Reviewed at `3449dc1`](docs/audits/go-port-remaining-boundaries-2026-10-13.md):
+Go retains permission decisions in tool outcomes but has no Session permission
+event variant/publication. Existing Source fixtures contain 20 permission rows
+and 12 events; the native consumer ignores event fields, including eight
+readonly `risk=exec` reasons (Go retains `exec`). Recovery construction also
+omits the documented legacy `FALLBACK_MODEL_ID` selection. These are static
+source/fixture findings under G2/G3/G5 and G4, not newly executed failure results.
+Required next work is decision-time publication plus live/masked/stored event
+parity, followed by constructor/default precedence with environment isolation.
+
+The full-Python resumption and subsequent stability window were both refused
+before launching tests because host memory pressure rose. No new full suite,
+coverage or main integration is claimed. Runtime, dependencies, canonical
+topology and original acceptance scope are unchanged; the review records the
+new evidence and a built-in imagegen iteration.
+
 ## 2026-10-13 Provider IDNA Source prerequisite — not native acceptance
 
 On `codex/go-provider-idna-boundary` from main `66f3645`, the new

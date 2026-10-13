@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "baseline": "3449dc151b4560fb06aa15eda2713d91a255d161",
+  "main": "66f36452d67580b33c43461b13c960bce4250c83",
+  "branch": "codex/go-provider-idna-boundary",
+  "kind": "static_source_and_existing_fixture_review",
+  "runtime_changes": false,
+  "new_paired_execution": false,
+  "permission_fixture": {
+    "profiles": 20,
+    "events": 12,
+    "event_rules": {
+      "readonly-mode": 8,
+      "immutable-deny-list": 4
+    },
+    "readonly_reason": "risk=exec",
+    "current_go_reason": "exec",
+    "consumer_asserts_event_fields": false,
+    "source_capture_scope": "actual PermissionHook with replacement Agent._send; not managed Session/SSE/restart"
+  },
+  "permission_gap": {
+    "decision_outcome_exists": true,
+    "session_event_variant_exists": false,
+    "production_session_publisher_found": false,
+    "required_next": "typed decision-time publisher, codecs/mask/stored decode, managed Source parity and persistence/SSE evidence",
+    "permission_bypass_claim": false
+  },
+  "fallback_gap": {
+    "source_constructor": "fallback_model or os.getenv(\"FALLBACK_MODEL_ID\") or None",
+    "go_constructor": "cfg.FallbackModel only",
+    "documentation": "python/.env.example:16",
+    "settings_snapshot_change_required": false,
+    "constraints": [
+      "explicit nonempty settings wins",
+      "empty value falls back; whitespace remains a value",
+      "constructor-time selection",
+      "explicit environment-map isolation",
+      "explicit Recovery replacement remains authoritative"
+    ],
+    "runtime_failure_observed_this_iteration": false
+  },
+  "validation": {
+    "first_pressure_read": 1,
+    "host_memory_bytes": 17179869184,
+    "resumed_gates": [
+      {
+        "name": "python",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q"
+        ],
+        "limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "peak_rss_kib": 0,
+        "peak_cpu_percent": 0,
+        "samples": 0,
+        "status": "resource_blocked",
+        "reason": "host_memory_pressure_before_launch",
+        "exit_code": null,
+        "seconds": 0
+      }
+    ],
+    "later_pressure_read": 1,
+    "stability_window_requested_seconds": 45,
+    "stability_samples": [
+      {
+        "sample": 0,
+        "utc": "2026-10-13T10:18:05.666841+00:00",
+        "pressure": 2
+      }
+    ],
+    "stability_exit_code": 75,
+    "pytest_child_started": false,
+    "original_frozen_inputs_unchanged": 1748,
+    "pending": [
+      "full Python",
+      "invariants",
+      "scans",
+      "Archify regeneration"
+    ],
+    "new_go_full_vet_race_or_coverage": false,
+    "merge_performed": false
+  },
+  "source_sha256": {
+    "python/mini_loop/permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+    "python/mini_loop/registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "python/mini_loop/recovery.py": "bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca",
+    "python/mini_loop/config.py": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+    "python/.env.example": "e4591b9141be650a58159a168f47751f7c8b6188ef76db646199cedd47355a20",
+    "python/tools/provider_bash_command_contracts.py": "abf35baae5b873f4a6ebbd7f12a199e4310ef70bb5cc0228f9933cc4c90d6751",
+    "go/testdata/python-provider-bash-command.json": "d0034368434ba7e877cf0aecfc30ca757733225f2b4bbe40dc4aca867d0a7080",
+    "go/agent/permission.go": "0c9f827fa78e8e7fc21e220a38dd045f64ca4f3e3d4d3b451a7309b5f2f4650e",
+    "go/agent/gate.go": "8a690830b04c9c7ecdc88edd979488f8c8b6b4c0582ef6f5c09cf24b5e14cff0",
+    "go/agent/lifecycle.go": "552bd453cac2d621cde2496e5ca16d627e15b436371b39e1b59c5056f4697195",
+    "go/agent/events.go": "cee5606e22a3359b27a66f4c94887503b0a91771d63d4bdd66e6f63e2ea2db85",
+    "go/agent/event_json.go": "4215f709b3945125c0c640980c4cbbd67b29303c3d610cff751c1368b05dee9e",
+    "go/agent/stored_event.go": "abf49fe58ff1ec3588e3228c070be0ab8cf5c0da30e2d3907023a4d675b6ae42",
+    "go/agent/secrets.go": "03e75ea6dbb5d52e18dcf15546143001224c4581055cee0a3a0527a180195dc3",
+    "go/agent/efficiency_observation.go": "e44f94e7e80c4cd671cbd7da233baab77146bbf35e4c2f39e82da7d74d338ad4",
+    "go/agent/manager.go": "ee79e1a474022db9f226a4d9d4a956974aaecb884fb345ceb3b4165457f32c3d",
+    "go/agent/bash_command_test.go": "b90becb020aee25a645df79cf2add771ef0a855cd880ef8bf53b0654fa90d436",
+    "go/agent/recovery.go": "d573a9df6264ca6b6da869be27e8845872f213b3624ce4ebf03f97354f13f568",
+    "go/agent/session.go": "bb48dbff3fcc0519830348e55f502ea7181faf71e685a86851cbec8d549ebe00",
+    "go/config/settings.go": "3a619158efc282cca0ffd94fec6b4b613c8fbcf805a9a3c46b49ca28cebfac53",
+    "go/launcher/app.go": "e421786d8dc3c9cb2b67bfd28e21437bdb43b8e540a8cc2546d194e9fd95f75e",
+    "go/README.md": "08aeb9aa0bcb38d00ad469b6ec593656b8f40389b01fbcdbe3bf35eaa30de245",
+    "README.md": "af5447fee55246a27ded4c6f275d0aaf356607e4d10028621069c42b2b078f59",
+    "docs/mini-loop-layered-architecture.png": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "docs/mini-loop-system.architecture.json": "a63567e3502636b1d42d953369b708f673ab44aef4933596a6a431b3b6000461",
+    "docs/mini-loop-system.architecture.html": "dbdcf55b107041bc7f56779f1fd5f9030a47ec60ebed9a8123db14ef5b6a9fec"
+  },
+  "validation_evidence_sha256": {
+    "var/go-provider-idna-boundary-2026-10-13/complete_validation.py": "3ba86667925551c204da90ce31f530529678a667e17e4be123a86dfbfb0fbb49",
+    "var/go-provider-idna-boundary-2026-10-13/resumed-validation/gates.json": "fd0b9892d288ad4aa27b0bb1b2e6a43b869519144ceb68982534bb4080c631d2",
+    "var/go-provider-idna-boundary-2026-10-13/resumed-validation/frozen.json": "2e7d5a8b61d6f19ccd790058624630915addefcbb7998bbf82d1f26fdabb1e23",
+    "var/go-provider-idna-boundary-2026-10-13/resumed-validation/python.resources.json": "98be8dc02bf40396116a3dea22ee11632e4fcd82f3833310c5c98a3fc09bc6a1",
+    "var/go-provider-idna-boundary-2026-10-13/stable_validation.py": "929f35fe448ab598cb84f6c3d7329df904c7a263b214f064fdce509787576f75",
+    "var/go-provider-idna-boundary-2026-10-13/stable-pressure.json": "590a570c3aa8f5185c4eca44ea38f3490541805b3d0099b85143c388fdb52431"
+  },
+  "scope": "Original P0/P1/G0-G7 remains; concrete gaps are G2/G3/G5 event parity and G4 default recovery, not new acceptance criteria. No dependency added.",
+  "iteration_image": {
+    "generator": "built-in imagegen edit",
+    "base": "docs/mini-loop-layered-architecture.png",
+    "image": "docs/audits/go-port-remaining-boundaries-infographic-2026-10-13.png",
+    "prompt": "docs/audits/go-port-remaining-boundaries-infographic-2026-10-13.prompt.txt",
+    "visual_review": "Inspected generated image: five layers, six backends, seven orchestration items and five evidence blocks retained; Session tool-call route stays above Provider; pending findings and no-runtime-change/no-new-coverage labels are visible.",
+    "base_and_topology_changed": false
+  },
+  "artifact_sha256": {
+    "base": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "image": "6fd8785e8f9e571cf201545e271f435ed793a461535add84f9acce86136bf56c",
+    "prompt": "40e2d8c2b348c302866834449e00c02556b833a99221d098f7d164570c7777bf"
+  },
+  "lightweight_checks": {
+    "git_diff_check": "passed",
+    "markdown_outline": "passed",
+    "existing_fixture_inventory": "20 profiles / 12 events / 8 readonly / 4 immutable deny",
+    "independent_source_review": "no required corrections",
+    "note": "Read-only document/fixture checks; no runtime test or new paired execution."
+  }
+}

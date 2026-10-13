@@ -1,5 +1,24 @@
 # Go port plan
 
+## 2026-10-13 concrete permission-event and recovery-constructor gaps
+
+The [source review](docs/audits/go-port-remaining-boundaries-2026-10-13.md)
+at `3449dc1` identifies two finite remaining behaviors: named permission
+decisions are retained by the Go gate but never published as Session events,
+and default recovery construction omits documented `FALLBACK_MODEL_ID` fallback.
+The existing 20-profile Source permission fixture contains 12 events; the Go
+consumer does not decode those fields, including eight `risk=exec` reasons.
+These are original G2/G3/G5 event and G4 default-construction requirements.
+Prioritize decision-time event publication, masking/codecs and actual managed
+Source comparisons. Neither fix nor a new paired runtime test is delivered here.
+
+A fresh full-Python attempt was refused before launch by host memory pressure;
+a separate 45-second stability check stopped at its first warning sample.
+No test child started, no heavy retry followed, and main remains `66f3645`.
+Original P0/P1/G0–G7 scope, pending dependency approvals and remaining gates
+are unchanged. Exact evidence, the base-derived iteration image and prompt are
+saved with the review; runtime and canonical architecture topology are unchanged.
+
 ## 2026-10-13 Provider IDNA Source prerequisite
 
 Branch `codex/go-provider-idna-boundary`, based on main `66f3645`. The new

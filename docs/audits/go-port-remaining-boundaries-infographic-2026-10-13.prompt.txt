@@ -1,0 +1,17 @@
+Edit the provided canonical mini-loop layered architecture base image. Preserve its landscape layout, deep navy/cyan/purple/gold palette, all five layers, all existing components and ALL existing arrows. This iteration records a source audit and resource preflight refusal; NO runtime code has changed. Do not add or delete architecture components or imply either bug is fixed.
+Title: mini-loop 整体分层架构
+Subtitle: 本轮：定位两处行为缺口 · 修复与全量校验待完成
+Preserve L1 入口与组合层, L2 会话与控制层, L3 推理与执行层, L4 能力与编排层, L5 状态与证据层.
+Mandatory topology: Session Agent Context exchanges requests and responses with Model Provider using the existing double arrow. The tool-call arrow goes from Session across ABOVE Provider into ToolGate. NEVER draw Provider→ToolGate. ToolGate points to L4 and tool results return to Session. Keep the optional orchestration dashed edge.
+Retain exactly six L4 backends: 文件, Shell, AST, Diagnostics, MCP, 自定义工具. Retain seven orchestration items: 后台, Cron, Tasks, Teams, Workflow, Decision, Worktree. Retain all five L5 blocks.
+Highlight the existing L3 ToolGate card with a thin amber outline and a small tag “事件接线待补齐”. Highlight the existing L3 Session Agent 循环 / Context card with “恢复默认值待对齐”. Highlight only the existing L5 operator contract audit card with “本轮新增审计证据”. Do not draw new dataflow edges or claim changed authority.
+Replace the right column with six concise readable points under “本轮证据与待办”:
+1. Go 权限事件仅保留在工具结果；尚未发布到 Session / SSE / 记录链
+2. 既有 20 条 Source 权限场景含 12 条事件；Go 对照尚未断言事件字段
+3. readonly 原因：Source 为 risk=exec；Go 为 exec
+4. Python 支持 FALLBACK_MODEL_ID；Go 恢复构造尚未接入
+5. 内存压力波动：校验启动前被拦截；pytest 未启动
+6. 下一步：先补权限事件；依赖审批与完整迁移验收仍待完成
+Footer: 仅源码与既有契约审计 · 未修改运行时代码 · 未合入 main · 无新增覆盖率
+Small resource note: 重型校验串行 / Go 并发 2 / 软内存目标 512 MiB / RSS 采样预算 1 GiB / 压力异常即停
+Keep Chinese typography legible, generous spacing, restrained background scenery. Preserve every existing block and truthful default/optional labels. Do not invent pass results, live test failures, completed fixes, permission bypasses, new components or hard memory guarantees.
