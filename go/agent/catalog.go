@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/shell"
 )
@@ -162,16 +163,20 @@ func NewToolDefinitionWithSchema(schema protocol.ToolSchema, traits ToolTraits, 
 		return ToolDefinition{}, errors.New("tool definition requires name, valid risk, matching readonly claim, and handler")
 	}
 	seen := make(map[Capability]bool, len(traits.Capabilities))
+	capabilities := make([]Capability, 0, len(traits.Capabilities))
 	for _, capability := range traits.Capabilities {
-		if capability == "" || seen[capability] {
-			return ToolDefinition{}, errors.New("tool capabilities must be non-empty and unique")
+		if pytext.Strip(string(capability)) == "" {
+			return ToolDefinition{}, fmt.Errorf("Tool '%s' capabilities must be non-empty strings", name)
 		}
-		seen[capability] = true
+		if !seen[capability] {
+			capabilities = append(capabilities, capability)
+			seen[capability] = true
+		}
 	}
 	return ToolDefinition{
 		name: name, risk: traits.Risk, readonly: traits.Readonly,
 		parallelSafe: traits.ParallelSafe,
-		capabilities: append([]Capability(nil), traits.Capabilities...), handler: handler, schema: schema.Clone(),
+		capabilities: capabilities, handler: handler, schema: schema.Clone(),
 	}, nil
 }
 

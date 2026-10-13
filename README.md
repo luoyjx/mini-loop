@@ -570,8 +570,36 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: local main `2ca0266`; this iteration reviews the public
-Go RunContext constructors and provenance observed by a real session. Seventy
+Runtime review baseline: local main `fabe9bd`; this iteration reviews explicit
+role profiles and child catalogue isolation. A retained before-change probe
+selects `read_file` in Source for the dotted-I role while the old Go policy
+selects another role's `write_file`. Role lookup now uses the existing Python
+Unicode strip/lower helpers, preserving dotted-I expansion and contextual final
+sigma instead of merging distinct caller-defined roles.
+
+Ordered profiles first apply raw-key replacement at the key's original position,
+then normalize role keys with last-value-wins collisions. Explicit empty role and
+policy capability values are accepted. Tool registration still refuses empty or
+all-Python-whitespace capability names; valid duplicates collapse while names
+retain their literal spelling and first occurrence order. A tool is delegated
+only when its complete nonempty capability set fits the selected role.
+Child labels lowercase the original role without stripping its whitespace;
+normalized Explore aliases still select readonly mode.
+
+The bounded Source capture records 34 selection cases, seven real
+`_run_subagent`/`InProcessSubagents` child recipes and six invalid capability
+registrations. It observes selected schemas/traits, effects, results, raw child
+labels and peer provenance with inherited human approvals cleared. Required slice gates now pass across retained validation segments, including
+full Go/vet/race/Python. Two earlier host-pressure stops remain recorded; fresh
+coverage uses only the complete successful race output. Full migration acceptance
+remains open. [Retained cohort evidence](docs/audits/go-role-policy-profiles-2026-10-13.json). Explicit caller-defined roles
+do not widen the model task enum, readonly policy, depth quota or trust boundary.
+README Mermaid and the interactive JSON annotate existing Session/ToolGate
+components; topology and the architecture base image remain unchanged.
+[Role policy seam](EXTENDING.md#go-explicit-role-policy-profiles).
+
+Previous verified review: local main `2ca0266`, public Go RunContext constructors
+and provenance observed by a real session. Seventy
 actual Source `Agent.run` profiles combine 14 default/human/peer contexts with
 five message/peer derivations. They capture optional versus explicit-empty text,
 capability membership, tool contexts, emitted correlation identities and fresh
@@ -906,7 +934,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -922,7 +950,7 @@ flowchart LR
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
-        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>explicit typed extension codec / handler<br/>Session-stamped informational label / depth<br/>callback panic diagnostics: type only"]
+        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>literal capability subset · duplicates collapse · blank names refused<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>finite journal fingerprints; begin failure skips after<br/>text refusals · fault flags<br/>explicit typed extension codec / handler<br/>Session-stamped informational label / depth<br/>callback panic diagnostics: type only"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · named wait policies · orphan ledger"]

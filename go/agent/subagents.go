@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strings"
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/efficiency"
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/userresources"
@@ -258,7 +258,7 @@ func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunCon
 	if err != nil {
 		return nil, RunContext{}, err
 	}
-	child.label, child.depth = parent.label+">"+strings.ToLower(string(request.Role)), parent.depth+1
+	child.label, child.depth = parent.label+">"+pytext.Lower(string(request.Role)), parent.depth+1
 	child.tokenEfficiency = tokenEfficiency
 	child.observationRaw = parent.observationRaw.clone()
 	// Source children get fresh session state; the parent's concise opt-in and

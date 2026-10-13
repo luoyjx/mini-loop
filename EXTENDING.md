@@ -4839,3 +4839,48 @@ and fresh coverage are recorded separately under that iteration's `verified` dir
 Direct Python dataclass overrides, non-text Python inputs and broader host,
 platform or exhaustion behavior are outside this captured slice. No component,
 permission, trust boundary, dependency or feature default changes.
+
+## Go explicit role policy profiles
+
+`NewCapabilityRoleToolPolicy` treats `[]RoleCapabilityProfile` as an ordered
+mapping supplied by a trusted caller. Repeating an exact raw role replaces its
+value at that raw key's first position. Only then are keys normalized with
+Python-compatible strip/lower; later normalized collisions win. For example,
+`[(Role, read), (role, write), (Role, exec)]` first becomes
+`[(Role, exec), (role, write)]`, so lookup of `role` selects `write`.
+Normalizing each input row before resolving raw duplicates would select `exec`
+and change authority. The constructor copies the selected capability sets.
+
+The existing `internal/pytext` helpers retain Python Unicode behavior, including
+`İ` → `i̇` and contextual `ΟΣ` → `ος`. Role selection strips surrounding Python
+whitespace and lowercases; capability names are exact set members and are never
+stripped or lowercased. Empty role keys and empty capability values in a policy
+profile are permitted. An empty profile mapping has no fallback role, and an
+unknown role returns the Source-compatible repr in its diagnostic.
+
+Tool definitions have a separate registration boundary. A capability name that
+is empty or entirely Python whitespace is rejected, including mixtures of valid
+and invalid entries. Duplicate valid names are deduplicated, preserving their
+first occurrence order in the native detached accessor. Nonempty names with
+leading/trailing whitespace remain literal. A tool with no declared capabilities
+is never inherited; every capability of a mixed-capability tool must be allowed.
+Selection preserves the parent's catalogue order, schemas, handlers and traits.
+
+`InProcessSubagents` uses normalized role lookup and normalized Explore detection,
+but its child label is the parent label plus `>` plus Python lowercase of the
+original role, without stripping. Thus padded Explore aliases remain readonly
+and their informational labels retain whitespace. Fresh child state does not
+inherit the parent's auto mode or private state. Peer context retains lineage
+while clearing inherited human approvals. Labels do not confer capabilities.
+Explicit SDK callers can use their registered profile names; the model task
+enum, readonly enforcement, depth admission and trust boundaries are unchanged.
+
+The Source capture records 34 public selection cases, seven actual child
+recipes and six rejected tool registrations. The retained before logs show a
+Source read catalogue incorrectly becoming a Go write catalogue for dotted-I.
+Required slice gates now pass across retained validation segments, including
+full Go/vet/race/Python. The two earlier host-pressure stops remain recorded;
+fresh coverage uses only the complete successful race profile. The
+[validation receipt](docs/audits/go-role-policy-profiles-2026-10-13.json). These bounded text/list profiles
+do not certify arbitrary Python objects, custom mappings, concurrent mutation
+or all host/resource behavior. No dependency, component or default is added.

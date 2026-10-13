@@ -3,7 +3,6 @@ package agent
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/luoyjx/mini-loop/go/internal/pytext"
 )
@@ -17,7 +16,7 @@ const (
 )
 
 func normalizedRole(role AgentRole) AgentRole {
-	return AgentRole(strings.ToLower(pytext.Strip(string(role))))
+	return AgentRole(pytext.Lower(pytext.Strip(string(role))))
 }
 
 type RoleToolPolicy interface {
@@ -32,18 +31,25 @@ type RoleCapabilityProfile struct {
 	Capabilities []Capability
 }
 
+// Profiles describe an ordered mapping. An exact duplicate role replaces its
+// value at the first insertion position before normalized role collisions are
+// resolved. Capabilities are literal set members, including explicit empty text.
 func NewCapabilityRoleToolPolicy(profiles []RoleCapabilityProfile) (*CapabilityRoleToolPolicy, error) {
 	result := &CapabilityRoleToolPolicy{profiles: make(map[AgentRole]map[Capability]bool, len(profiles))}
+	positions := make(map[AgentRole]int, len(profiles))
+	ordered := make([]RoleCapabilityProfile, 0, len(profiles))
 	for _, profile := range profiles {
-		key := normalizedRole(profile.Role)
-		if key == "" {
-			return nil, errors.New("role requires a name")
+		if position, exists := positions[profile.Role]; exists {
+			ordered[position] = profile
+		} else {
+			positions[profile.Role] = len(ordered)
+			ordered = append(ordered, profile)
 		}
+	}
+	for _, profile := range ordered {
+		key := normalizedRole(profile.Role)
 		allowed := make(map[Capability]bool, len(profile.Capabilities))
 		for _, capability := range profile.Capabilities {
-			if capability == "" {
-				return nil, errors.New("role capability requires a name")
-			}
 			allowed[capability] = true
 		}
 		result.profiles[key] = allowed
@@ -62,7 +68,7 @@ func (policy *CapabilityRoleToolPolicy) Select(role AgentRole, parent *ToolCatal
 	}
 	allowed, exists := policy.profiles[normalizedRole(role)]
 	if !exists {
-		return nil, fmt.Errorf("unknown agent role: %q", role)
+		return nil, fmt.Errorf("unknown agent role: %s", pytext.Repr(string(role)))
 	}
 	var selected []ToolDefinition
 	for _, definition := range parent.ordered {
