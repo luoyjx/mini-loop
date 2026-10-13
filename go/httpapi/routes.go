@@ -108,7 +108,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	writeJSON(s, w, 200, info(session.Info()))
 }
 func (s *Server) list(w http.ResponseWriter, r *http.Request) {
-	limit, issue := scalarQueryLimit(r.URL.Query())
+	limit, issue := scalarQueryLimit(admittedQueries(r.Context()).Limit)
 	if issue != nil {
 		writeJSON(s, w, 422, scalarQueryError{Detail: []scalarQueryIssue{*issue}})
 		return

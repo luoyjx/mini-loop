@@ -119,7 +119,7 @@ func eventCursor(value string) agent.EventSequence {
 
 func (s *Server) observe(w http.ResponseWriter, r *http.Request) {
 	envelope := false
-	if value := selectScalarQuery(r.URL.Query(), "envelope"); value.Present {
+	if value := admittedQueries(r.Context()).Envelope; value.Present {
 		var issue *scalarQueryIssue
 		envelope, issue = scalarQueryBoolean("envelope", value.Text)
 		if issue != nil {

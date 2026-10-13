@@ -7,12 +7,32 @@ import (
 
 type principalKey struct{}
 
-func withPrincipal(ctx context.Context, p Principal) context.Context {
-	return context.WithValue(ctx, principalKey{}, p)
+type requestAdmission struct {
+	Principal Principal
+	Queries   scalarQueryParameters
+}
+
+func withAdmission(ctx context.Context, p Principal, query scalarQueryParameters) context.Context {
+	// Clear the fallback bearer before carrying query observations into handlers.
+	query.AccessToken = scalarQueryValue{}
+	if !query.Limit.Present && !query.Envelope.Present && !query.SessionID.Present && !query.Format.Present && !query.Epoch.Present {
+		return context.WithValue(ctx, principalKey{}, p)
+	}
+	return context.WithValue(ctx, principalKey{}, requestAdmission{Principal: p, Queries: query})
 }
 func principal(ctx context.Context) Principal {
-	p, _ := ctx.Value(principalKey{}).(Principal)
-	return p
+	switch admission := ctx.Value(principalKey{}).(type) {
+	case Principal:
+		return admission
+	case requestAdmission:
+		return admission.Principal
+	default:
+		return Principal{}
+	}
+}
+func admittedQueries(ctx context.Context) scalarQueryParameters {
+	admission, _ := ctx.Value(principalKey{}).(requestAdmission)
+	return admission.Queries
 }
 
 type ErrorResponse struct {

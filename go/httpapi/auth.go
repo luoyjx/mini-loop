@@ -18,6 +18,50 @@ type Authenticator interface {
 	Authenticate(string) (Principal, bool)
 	Configured() bool
 }
+
+type AuthenticationDisposition string
+
+const (
+	AuthenticationAccepted AuthenticationDisposition = "accepted"
+	AuthenticationRejected AuthenticationDisposition = "rejected"
+	AuthenticationFailed   AuthenticationDisposition = "failed"
+)
+
+type AuthenticationExceptionClass string
+
+const AuthenticationTypeError AuthenticationExceptionClass = "TypeError"
+
+type AuthenticationFailure struct {
+	ExceptionClass AuthenticationExceptionClass
+	Message        string
+}
+
+// AuthenticationResult preserves a caller's distinction between a rejected
+// credential and a failed authentication operation.
+type AuthenticationResult struct {
+	Principal   Principal
+	Disposition AuthenticationDisposition
+	Failure     *AuthenticationFailure
+}
+
+// ResultAuthenticator adds fault observations to the compatibility bool seam.
+// The HTTP entry selects one method and resolves exactly one caller per request.
+type ResultAuthenticator interface {
+	Authenticator
+	AuthenticateResult(string) AuthenticationResult
+}
+
+func resolveAuthentication(auth Authenticator, header string) AuthenticationResult {
+	if observed, ok := auth.(ResultAuthenticator); ok {
+		return observed.AuthenticateResult(header)
+	}
+	caller, ok := auth.Authenticate(header)
+	if ok {
+		return AuthenticationResult{Principal: caller, Disposition: AuthenticationAccepted}
+	}
+	return AuthenticationResult{Disposition: AuthenticationRejected}
+}
+
 type NullAuth struct{}
 
 func (NullAuth) Authenticate(string) (Principal, bool) { return Principal{"anonymous", true}, true }
@@ -52,17 +96,42 @@ func NewTokenAuth(bindings []TokenBinding) (*TokenAuth, error) {
 }
 func (auth *TokenAuth) Configured() bool { return true }
 func (auth *TokenAuth) Authenticate(header string) (Principal, bool) {
+	result := auth.AuthenticateResult(header)
+	return result.Principal, result.Disposition == AuthenticationAccepted
+}
+
+func (auth *TokenAuth) AuthenticateResult(header string) AuthenticationResult {
 	scheme, presented, ok := strings.Cut(header, " ")
 	if !ok || !strings.EqualFold(scheme, "bearer") || presented == "" {
-		return Principal{}, false
+		return AuthenticationResult{Disposition: AuthenticationRejected}
 	}
 	var id agent.OwnerID
 	for _, b := range auth.bindings {
+		// CPython's string compare_digest rejects non-ASCII on either side.
+		// Keep this at comparison, including after an earlier matching binding.
+		if !asciiCredential(b.Token) || !asciiCredential(presented) {
+			return AuthenticationResult{Disposition: AuthenticationFailed, Failure: &AuthenticationFailure{
+				ExceptionClass: AuthenticationTypeError,
+				Message:        "comparing strings with non-ASCII characters is not supported",
+			}}
+		}
 		if subtle.ConstantTimeCompare([]byte(b.Token), []byte(presented)) == 1 {
 			id = b.Principal
 		}
 	}
-	return Principal{ID: id}, id != ""
+	if id == "" {
+		return AuthenticationResult{Disposition: AuthenticationRejected}
+	}
+	return AuthenticationResult{Principal: Principal{ID: id}, Disposition: AuthenticationAccepted}
+}
+
+func asciiCredential(value string) bool {
+	for index := 0; index < len(value); index++ {
+		if value[index] >= 0x80 {
+			return false
+		}
+	}
+	return true
 }
 func (auth *TokenAuth) Principals() []agent.OwnerID {
 	set := make(map[agent.OwnerID]bool)

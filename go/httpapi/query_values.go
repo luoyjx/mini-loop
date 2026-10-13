@@ -2,26 +2,12 @@ package httpapi
 
 import (
 	"math/big"
-	"net/url"
 	"strings"
 )
 
 type scalarQueryValue struct {
 	Text    string
 	Present bool
-}
-
-// Starlette's scalar QueryParams lookup selects the last repeated value.
-// A present empty value still reaches validation; only absence selects defaults.
-func selectScalarQuery(query url.Values, name string) scalarQueryValue {
-	values, present := query[name]
-	if !present {
-		return scalarQueryValue{}
-	}
-	if len(values) == 0 {
-		return scalarQueryValue{Present: true}
-	}
-	return scalarQueryValue{Text: values[len(values)-1], Present: true}
 }
 
 type scalarQueryErrorKind string
@@ -111,8 +97,7 @@ func scalarQueryInteger(name, raw string) (*big.Int, *scalarQueryIssue) {
 	return number, nil
 }
 
-func scalarQueryLimit(query url.Values) (int, *scalarQueryIssue) {
-	value := selectScalarQuery(query, "limit")
+func scalarQueryLimit(value scalarQueryValue) (int, *scalarQueryIssue) {
 	if !value.Present {
 		return 100, nil
 	}

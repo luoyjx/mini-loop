@@ -1,0 +1,1396 @@
+{
+  "cases": [
+    {
+      "authorization": null,
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/percent-last",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d25",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "authorization": null,
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/bad-escape-last",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d254747",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "authorization": null,
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/semicolon-last",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d6261643b7461696c",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "authorization": null,
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/encoded-semicolon-last",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d6261642533427461696c",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "authorization": null,
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/escaped-percent-last",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d253235",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "authorization": null,
+      "body_json": null,
+      "body_kind": "text",
+      "body_text": "Internal Server Error",
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/utf8-valid-last",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d254534254238254144",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-type": "text/plain; charset=utf-8"
+      },
+      "source_fault": {
+        "exception_class": "TypeError",
+        "message": "comparing strings with non-ASCII characters is not supported",
+        "stage": "after_response_start"
+      },
+      "status": 500
+    },
+    {
+      "authorization": null,
+      "body_json": null,
+      "body_kind": "text",
+      "body_text": "Internal Server Error",
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/utf8-truncated-last",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d254532253832",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-type": "text/plain; charset=utf-8"
+      },
+      "source_fault": {
+        "exception_class": "TypeError",
+        "message": "comparing strings with non-ASCII characters is not supported",
+        "stage": "after_response_start"
+      },
+      "status": 500
+    },
+    {
+      "authorization": null,
+      "body_json": null,
+      "body_kind": "sse",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [
+        {
+          "data": {
+            "agent": "main",
+            "depth": 0,
+            "seq": 2,
+            "session": "alice_old",
+            "status": "idle",
+            "transcript_epoch": 1,
+            "ts": 1100.25,
+            "type": "status"
+          },
+          "event": "status",
+          "id": "2"
+        }
+      ],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/percent-first",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d25266163636573735f746f6b656e3d746f6b656e2d61",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "cache-control": "no-store",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/event-stream; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-accel-buffering": "no",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 200
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": null,
+      "body_kind": "sse",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [
+        {
+          "data": {
+            "agent": "main",
+            "depth": 0,
+            "seq": 2,
+            "session": "alice_old",
+            "status": "idle",
+            "transcript_epoch": 1,
+            "ts": 1100.25,
+            "type": "status"
+          },
+          "event": "status",
+          "id": "2"
+        }
+      ],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/header-valid",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61266163636573735f746f6b656e3d25",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "cache-control": "no-store",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/event-stream; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-accel-buffering": "no",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 200
+    },
+    {
+      "authorization": "Bearer invalid",
+      "body_json": {
+        "detail": "a bearer token is required"
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/header-invalid",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d61",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "www-authenticate": "Bearer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 401
+    },
+    {
+      "authorization": null,
+      "body_json": null,
+      "body_kind": "sse",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [
+        {
+          "data": {
+            "agent": "main",
+            "depth": 0,
+            "seq": 2,
+            "session": "alice_old",
+            "status": "idle",
+            "transcript_epoch": 1,
+            "ts": 1100.25,
+            "type": "status"
+          },
+          "event": "status",
+          "id": "2"
+        }
+      ],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/encoded-key",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "616363657373253546746f6b656e3d746f6b656e2d61",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "cache-control": "no-store",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/event-stream; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-accel-buffering": "no",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 200
+    },
+    {
+      "authorization": null,
+      "body_json": {
+        "detail": "No session 'alice_old'"
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "auth",
+      "method": "GET",
+      "name": "auth/foreign",
+      "path": "/sessions/{alice_old}/events",
+      "query": [],
+      "raw_query_hex": "6163636573735f746f6b656e3d746f6b656e2d622669676e6f7265643d25",
+      "request_headers": [
+        {
+          "name": "Last-Event-ID",
+          "value": "1"
+        }
+      ],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 404
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "%",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/percent-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d25",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "%GG",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/bad-escape-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d254747",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "bad;tail",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/semicolon-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d6261643b7461696c",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "bad;tail",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/encoded-semicolon-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d6261642533427461696c",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "%",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/escaped-percent-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d253235",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "中",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/utf8-valid-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d254534254238254144",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "�",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/utf8-truncated-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d254532253832",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "�",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/utf8-invalid-percent-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d254646",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "ä¸­",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/valid-literal-utf8-last",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743de4b8ad",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": [
+        {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 1002.0,
+          "forked_from": null,
+          "id": "alice_new",
+          "message_count": 0,
+          "model": "fixture-model",
+          "pending_steering": 0,
+          "permission_mode": "readonly",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "<workspace>/sessions/alice_new",
+          "workspace_bound": false
+        },
+        {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 1000.0,
+          "forked_from": null,
+          "id": "alice_old",
+          "message_count": 0,
+          "model": "fixture-model",
+          "pending_steering": 0,
+          "permission_mode": "readonly",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "<workspace>/sessions/alice_old",
+          "workspace_bound": false
+        }
+      ],
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/percent-first",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d25266c696d69743d32",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 200
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": [
+        {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 1002.0,
+          "forked_from": null,
+          "id": "alice_new",
+          "message_count": 0,
+          "model": "fixture-model",
+          "pending_steering": 0,
+          "permission_mode": "readonly",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "<workspace>/sessions/alice_new",
+          "workspace_bound": false
+        },
+        {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 1000.0,
+          "forked_from": null,
+          "id": "alice_old",
+          "message_count": 0,
+          "model": "fixture-model",
+          "pending_steering": 0,
+          "permission_mode": "readonly",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "<workspace>/sessions/alice_old",
+          "workspace_bound": false
+        }
+      ],
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/encoded-key",
+      "path": "/sessions",
+      "query": [],
+      "raw_query_hex": "6c696d69743d31266c2536396d69743d32",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 200
+    },
+    {
+      "authorization": "Bearer token-a",
+      "body_json": {
+        "detail": [
+          {
+            "input": "%",
+            "loc": [
+              "query",
+              "limit"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "body_kind": "json",
+      "body_text": null,
+      "effects": {
+        "after": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        },
+        "before": {
+          "events": 6,
+          "sessions": 3,
+          "subscribers": 0,
+          "trajectory_files": 3
+        }
+      },
+      "events": [],
+      "group": "limit",
+      "method": "GET",
+      "name": "limit/foreign-invalid",
+      "path": "/sessions/{bob}/trajectories",
+      "query": [],
+      "raw_query_hex": "6c696d69743d32266c696d69743d25",
+      "request_headers": [],
+      "response_headers": {
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "application/json",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY"
+      },
+      "status": 422
+    }
+  ],
+  "scope": "Actual create_app middleware, TokenAuth, Starlette QueryParams/urllib.parse and FastAPI scalar validation with raw_query_hex decoded directly into ASGI scope query_string. Real SessionManager/FakeAsyncAnthropic, SQLite epochs/events and TrajectoryStore use an isolated environment. Successful SSE requests explicitly use Last-Event-ID: 1 and disconnect after durable catchup sequence 2; no new missing-cursor/live-backlog claim. Seeds are actual stored events and trajectory JSONL. Only generated identities/workspace paths and seed timestamps are normalized. No route/parser is replaced and no model turn, shell or external network runs. Invalid UTF-8 is exercised after percent decoding; raw invalid UTF-8 rejected earlier by URL construction is outside this corpus. ASGI byte observations do not prove Uvicorn/proxy admission or complete HTTP wire parity.",
+  "seeds": {
+    "events": [
+      {
+        "event": {
+          "agent": "main",
+          "depth": 0,
+          "seq": 1,
+          "session": "alice_old",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "ts": 1100.0,
+          "type": "status"
+        },
+        "session": "alice_old"
+      },
+      {
+        "event": {
+          "agent": "main",
+          "depth": 0,
+          "seq": 2,
+          "session": "alice_old",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "ts": 1100.25,
+          "type": "status"
+        },
+        "session": "alice_old"
+      },
+      {
+        "event": {
+          "agent": "main",
+          "depth": 0,
+          "seq": 1,
+          "session": "bob",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "ts": 1101.0,
+          "type": "status"
+        },
+        "session": "bob"
+      },
+      {
+        "event": {
+          "agent": "main",
+          "depth": 0,
+          "seq": 2,
+          "session": "bob",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "ts": 1101.25,
+          "type": "status"
+        },
+        "session": "bob"
+      },
+      {
+        "event": {
+          "agent": "main",
+          "depth": 0,
+          "seq": 1,
+          "session": "alice_new",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "ts": 1102.0,
+          "type": "status"
+        },
+        "session": "alice_new"
+      },
+      {
+        "event": {
+          "agent": "main",
+          "depth": 0,
+          "seq": 2,
+          "session": "alice_new",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "ts": 1102.25,
+          "type": "status"
+        },
+        "session": "alice_new"
+      }
+    ],
+    "sessions": [
+      {
+        "created_at": 1000.0,
+        "id": "alice_old",
+        "key": "alice_old",
+        "owner": "alice"
+      },
+      {
+        "created_at": 1001.0,
+        "id": "bob",
+        "key": "bob",
+        "owner": "bob"
+      },
+      {
+        "created_at": 1002.0,
+        "id": "alice_new",
+        "key": "alice_new",
+        "owner": "alice"
+      }
+    ],
+    "trajectories": [
+      {
+        "id": "trace_alice_old",
+        "key": "trace_alice_old",
+        "owner": "alice",
+        "raw_jsonl": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"trace_alice_old\",\"trace_id\":\"trace_alice_old\",\"group_id\":\"alice_old\",\"session\":\"alice_old\",\"owner\":\"alice\",\"run_index\":1,\"started_at\":1200.0,\"input\":\"trace_alice_old\",\"metadata\":{\"model\":\"fixture-model\"}}\n{\"type\":\"status\",\"status\":\"idle\",\"seq\":1,\"ts\":1200.25,\"session\":\"alice_old\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"trace_alice_old\",\"trace_id\":\"trace_alice_old\",\"group_id\":\"alice_old\",\"session\":\"alice_old\",\"owner\":\"alice\",\"status\":\"completed\",\"ended_at\":1200.5,\"duration_ms\":500.0,\"output\":\"done\",\"error\":null,\"metrics\":{\"event_count\":1,\"model_calls\":0,\"tool_calls\":0,\"tool_errors\":0,\"errors\":0}}\n",
+        "run_index": 1,
+        "session": "alice_old"
+      },
+      {
+        "id": "trace_bob",
+        "key": "trace_bob",
+        "owner": "bob",
+        "raw_jsonl": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"trace_bob\",\"trace_id\":\"trace_bob\",\"group_id\":\"bob\",\"session\":\"bob\",\"owner\":\"bob\",\"run_index\":2,\"started_at\":1201.0,\"input\":\"trace_bob\",\"metadata\":{\"model\":\"fixture-model\"}}\n{\"type\":\"status\",\"status\":\"idle\",\"seq\":1,\"ts\":1201.25,\"session\":\"bob\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"trace_bob\",\"trace_id\":\"trace_bob\",\"group_id\":\"bob\",\"session\":\"bob\",\"owner\":\"bob\",\"status\":\"completed\",\"ended_at\":1201.5,\"duration_ms\":500.0,\"output\":\"done\",\"error\":null,\"metrics\":{\"event_count\":1,\"model_calls\":0,\"tool_calls\":0,\"tool_errors\":0,\"errors\":0}}\n",
+        "run_index": 2,
+        "session": "bob"
+      },
+      {
+        "id": "trace_alice_new",
+        "key": "trace_alice_new",
+        "owner": "alice",
+        "raw_jsonl": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"trace_alice_new\",\"trace_id\":\"trace_alice_new\",\"group_id\":\"alice_old\",\"session\":\"alice_old\",\"owner\":\"alice\",\"run_index\":3,\"started_at\":1202.0,\"input\":\"trace_alice_new\",\"metadata\":{\"model\":\"fixture-model\"}}\n{\"type\":\"status\",\"status\":\"idle\",\"seq\":1,\"ts\":1202.25,\"session\":\"alice_old\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"trace_alice_new\",\"trace_id\":\"trace_alice_new\",\"group_id\":\"alice_old\",\"session\":\"alice_old\",\"owner\":\"alice\",\"status\":\"completed\",\"ended_at\":1202.5,\"duration_ms\":500.0,\"output\":\"done\",\"error\":null,\"metrics\":{\"event_count\":1,\"model_calls\":0,\"tool_calls\":0,\"tool_errors\":0,\"errors\":0}}\n",
+        "run_index": 3,
+        "session": "alice_old"
+      }
+    ],
+    "transcript_epochs": [
+      {
+        "epoch": 1,
+        "messages": [
+          {
+            "content": "epoch 1",
+            "role": "user"
+          }
+        ]
+      },
+      {
+        "epoch": 2,
+        "messages": [
+          {
+            "content": "epoch 2",
+            "role": "user"
+          }
+        ]
+      }
+    ]
+  },
+  "source_sha256": {
+    "AgentSession.emit": "d3a4c6af56d646fbb8a20fb9cf336182f875ca9b79a2468962dd6bba40e24f8a",
+    "AgentSession.subscribe": "ea1b992f3a0cd2de26cefd1955593c84c50275783ee59fab1ee60c910c673432",
+    "HTTPConnection.query_params": "e6228f39eb4ae357a601489119c3c7d2ece1631a197557d897985ed46a7f680f",
+    "ImmutableMultiDict.__init__": "98a087393d4cbd728ae1c20f3912b25511589fff64e17b8fb4fc38fbb70b545c",
+    "QueryParams.__init__": "f1dfaccb4755cab7d5925c23a616a1e7439e3922e6ee65cc7b54e1613d655eb8",
+    "SQLiteStateStore.append_messages": "ede70c630a32a97fbfc1e0959a9846982421d630b6d62bbd2450b97166cd3d9d",
+    "SQLiteStateStore.load_events": "20e2a9a3b6f4018ea845602be3c1083852c8a89bcbbfb016e6b6e9b5c93fb8a4",
+    "SessionManager.create": "97852ca756f67e556f38e4261703e6a5bf8cf962eafa3b6068acab27fc18dcd1",
+    "TokenAuth.authenticate": "7d68681667ba4ac8f06ada7fd114c5f98402eb5e6731b17aad877a49ce317e38",
+    "TrajectoryStore.list": "ed7ad4d4881e1ae5da4d57f44bea1733e85575aa1c9876b814912877247b1078",
+    "TrajectoryStore.stream_raw": "f51f898ec266ea93e2930a815200e7b5641b638bdce351087839865b2fd9caeb",
+    "URL.__init__": "21fadc2c229d9f1e59d91f319cd369a41e858522b238a9b4ad991491ac4b0a7b",
+    "capture_helper": "eb1de185c8088711f99872f0e6d61fbcac81b9092a95987a41ed1e0b8ded7e99",
+    "create_app": "c1a3acbbabf1f30c6f9705e5dd8ec94bed460be1e9929841932fb66e55c88574",
+    "credential": "5adf0ed91a6e4a32210d71c53af291871fc72c89a620e507705ae79403ec33e0",
+    "principal": "b79989f96210dc642f23c2f0065a7386ec52512611c552074c906fd4bec63aec",
+    "request_helper": "278142def368c0647049ead6198aa3f0fa8f2f0eb75d56797d8aa7ac82391c95",
+    "require": "65b2aa2d44024820932b768001bd64972c700cee748b8a1f9a5dab211fada742",
+    "routes": "d3564ed51475cb02a16d03c5130bb686df70e64f7cdb697193131d7d69348705",
+    "urllib.parse.parse_qsl": "ed312d563bb0c7546ba92588c39568a5ae39fe024ab1b55f0e1fd7f4ae21959c",
+    "urllib.parse.unquote": "5753f7e3d6e76e948a676087933b4dc9efc7e5925e03508233d5b19074a09e92",
+    "urllib.parse.unquote_to_bytes": "7b84d54aaeddc840961e2250f37968f40122b7fb3c9f3fe7f4bd4033c101f294"
+  },
+  "versions": {
+    "fastapi": "0.136.3",
+    "httpx": "0.28.1",
+    "pydantic": "2.13.4",
+    "python": "3.11.3",
+    "sse-starlette": "3.4.4",
+    "starlette": "1.2.1"
+  }
+}

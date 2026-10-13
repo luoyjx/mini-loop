@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "status": "final_validation_pending",
+  "baseline": "51bdcc0",
+  "branch": "codex/go-http-query-wire",
+  "full_port_acceptance": false,
+  "raw_evidence_root": "var/go-http-query-wire-2026-10-14",
+  "source": {
+    "versions": {
+      "fastapi": "0.136.3",
+      "httpx": "0.28.1",
+      "pydantic": "2.13.4",
+      "python": "3.11.3",
+      "sse-starlette": "3.4.4",
+      "starlette": "1.2.1"
+    },
+    "cases": 24,
+    "scope": "Actual create_app middleware, TokenAuth, Starlette QueryParams/urllib.parse and FastAPI scalar validation with raw_query_hex decoded directly into ASGI scope query_string. Real SessionManager/FakeAsyncAnthropic, SQLite epochs/events and TrajectoryStore use an isolated environment. Successful SSE requests explicitly use Last-Event-ID: 1 and disconnect after durable catchup sequence 2; no new missing-cursor/live-backlog claim. Seeds are actual stored events and trajectory JSONL. Only generated identities/workspace paths and seed timestamps are normalized. No route/parser is replaced and no model turn, shell or external network runs. Invalid UTF-8 is exercised after percent decoding; raw invalid UTF-8 rejected earlier by URL construction is outside this corpus. ASGI byte observations do not prove Uvicorn/proxy admission or complete HTTP wire parity.",
+    "source_sha256": {
+      "AgentSession.emit": "d3a4c6af56d646fbb8a20fb9cf336182f875ca9b79a2468962dd6bba40e24f8a",
+      "AgentSession.subscribe": "ea1b992f3a0cd2de26cefd1955593c84c50275783ee59fab1ee60c910c673432",
+      "HTTPConnection.query_params": "e6228f39eb4ae357a601489119c3c7d2ece1631a197557d897985ed46a7f680f",
+      "ImmutableMultiDict.__init__": "98a087393d4cbd728ae1c20f3912b25511589fff64e17b8fb4fc38fbb70b545c",
+      "QueryParams.__init__": "f1dfaccb4755cab7d5925c23a616a1e7439e3922e6ee65cc7b54e1613d655eb8",
+      "SQLiteStateStore.append_messages": "ede70c630a32a97fbfc1e0959a9846982421d630b6d62bbd2450b97166cd3d9d",
+      "SQLiteStateStore.load_events": "20e2a9a3b6f4018ea845602be3c1083852c8a89bcbbfb016e6b6e9b5c93fb8a4",
+      "SessionManager.create": "97852ca756f67e556f38e4261703e6a5bf8cf962eafa3b6068acab27fc18dcd1",
+      "TokenAuth.authenticate": "7d68681667ba4ac8f06ada7fd114c5f98402eb5e6731b17aad877a49ce317e38",
+      "TrajectoryStore.list": "ed7ad4d4881e1ae5da4d57f44bea1733e85575aa1c9876b814912877247b1078",
+      "TrajectoryStore.stream_raw": "f51f898ec266ea93e2930a815200e7b5641b638bdce351087839865b2fd9caeb",
+      "URL.__init__": "21fadc2c229d9f1e59d91f319cd369a41e858522b238a9b4ad991491ac4b0a7b",
+      "capture_helper": "eb1de185c8088711f99872f0e6d61fbcac81b9092a95987a41ed1e0b8ded7e99",
+      "create_app": "c1a3acbbabf1f30c6f9705e5dd8ec94bed460be1e9929841932fb66e55c88574",
+      "credential": "5adf0ed91a6e4a32210d71c53af291871fc72c89a620e507705ae79403ec33e0",
+      "principal": "b79989f96210dc642f23c2f0065a7386ec52512611c552074c906fd4bec63aec",
+      "request_helper": "278142def368c0647049ead6198aa3f0fa8f2f0eb75d56797d8aa7ac82391c95",
+      "require": "65b2aa2d44024820932b768001bd64972c700cee748b8a1f9a5dab211fada742",
+      "routes": "d3564ed51475cb02a16d03c5130bb686df70e64f7cdb697193131d7d69348705",
+      "urllib.parse.parse_qsl": "ed312d563bb0c7546ba92588c39568a5ae39fe024ab1b55f0e1fd7f4ae21959c",
+      "urllib.parse.unquote": "5753f7e3d6e76e948a676087933b4dc9efc7e5925e03508233d5b19074a09e92",
+      "urllib.parse.unquote_to_bytes": "7b84d54aaeddc840961e2250f37968f40122b7fb3c9f3fe7f4bd4033c101f294"
+    },
+    "old_99_byte_identical": true
+  },
+  "stages": {
+    "source-capture": {
+      "status": "failed",
+      "command": [
+        ".venv/bin/python",
+        "var/go-http-query-wire-2026-10-14/capture.py"
+      ],
+      "exit_code": 1,
+      "inputs_unchanged": true,
+      "seconds": 1.38,
+      "peak_rss_kib": 256
+    },
+    "source-capture-faults": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "var/go-http-query-wire-2026-10-14/capture.py"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 1.416,
+      "peak_rss_kib": 256
+    },
+    "python-query-focused": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_http_query_selection_contracts.py",
+        "python/tests/test_http_query_wire_contracts.py"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 2.468,
+      "peak_rss_kib": 72672
+    },
+    "go-query-focused": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./httpapi",
+        "-run",
+        "^Test(HTTP(RawQueryWire|ScalarQuerySelection)MatchesActualPython|AuthenticationResultAdmitsOnePrincipalOverTCP|AdmissionCachesQueriesWithoutBearer|TokenAuthenticationDoesNotAcceptBeforeLaterUnicodeBinding)$"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 6.895,
+      "peak_rss_kib": 335632
+    },
+    "go-http-final": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./httpapi"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 27.84,
+      "peak_rss_kib": 189824
+    },
+    "query-allocation-benchmark": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkHTTPQueryAdmission$",
+        "-benchmem",
+        "-benchtime=200ms",
+        "-count=3",
+        "./httpapi"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 9.612,
+      "peak_rss_kib": 222128
+    },
+    "query-allocation-final": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkHTTPQueryAdmission$",
+        "-benchmem",
+        "-benchtime=200ms",
+        "-count=3",
+        "./httpapi"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 10.663,
+      "peak_rss_kib": 320064
+    },
+    "architecture": {
+      "status": "passed",
+      "command": [
+        "node",
+        "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-system.architecture.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "exit_code": 0,
+      "inputs_unchanged": true,
+      "seconds": 1.331,
+      "peak_rss_kib": 176
+    }
+  },
+  "architecture": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "7140905dfd90d3794af3aaa9add9deaf3826315ad19cfcdfc98d868b6fe1d24d",
+      "bytes": 157118
+    },
+    "artifact": {
+      "sha256": "22c5f487abc4b3552dbfc53184f0182a2513df5985fb8aa618a83e52c15e28c6",
+      "bytes": 811866
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "integration": {
+    "state": "checkpoint_before_complete_gate",
+    "main_merge": "pending",
+    "remote_push": false
+  }
+}

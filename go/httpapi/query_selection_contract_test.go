@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -62,20 +61,22 @@ type querySelectionEffectPair struct {
 }
 
 type querySelectionCase struct {
-	Name            string                   `json:"name"`
-	Group           string                   `json:"group"`
-	Method          string                   `json:"method"`
-	Path            string                   `json:"path"`
-	Query           []querySelectionPair     `json:"query"`
-	Authorization   *string                  `json:"authorization"`
-	RequestHeaders  []querySelectionPair     `json:"request_headers"`
-	Status          int                      `json:"status"`
-	ResponseHeaders querySelectionHeaders    `json:"response_headers"`
-	BodyKind        string                   `json:"body_kind"`
-	BodyJSON        jsonvalue.Value          `json:"body_json"`
-	BodyText        *string                  `json:"body_text"`
-	Events          []querySelectionFrame    `json:"events"`
-	Effects         querySelectionEffectPair `json:"effects"`
+	Name            string                    `json:"name"`
+	Group           string                    `json:"group"`
+	Method          string                    `json:"method"`
+	Path            string                    `json:"path"`
+	Query           []querySelectionPair      `json:"query"`
+	RawQueryHex     *string                   `json:"raw_query_hex"`
+	SourceFault     *queryContractSourceFault `json:"source_fault"`
+	Authorization   *string                   `json:"authorization"`
+	RequestHeaders  []querySelectionPair      `json:"request_headers"`
+	Status          int                       `json:"status"`
+	ResponseHeaders querySelectionHeaders     `json:"response_headers"`
+	BodyKind        string                    `json:"body_kind"`
+	BodyJSON        jsonvalue.Value           `json:"body_json"`
+	BodyText        *string                   `json:"body_text"`
+	Events          []querySelectionFrame     `json:"events"`
+	Effects         querySelectionEffectPair  `json:"effects"`
 }
 
 type querySelectionSessionSeed struct {
@@ -375,6 +376,11 @@ func TestHTTPScalarQuerySelectionMatchesActualPython(t *testing.T) {
 	if len(fixture.Cases) != 99 || len(fixture.Seeds.Sessions) != 3 || len(fixture.Seeds.Trajectories) != 3 || len(fixture.Seeds.TranscriptEpochs) != 2 || len(fixture.Seeds.Events) != 6 {
 		t.Fatal("Source query selection inventory changed")
 	}
+	for _, row := range fixture.Cases {
+		if row.RawQueryHex != nil || row.SourceFault != nil {
+			t.Fatal("encoded selection corpus unexpectedly contains raw query or fault metadata", row.Name)
+		}
+	}
 	groups := []querySelectionGroupCount{{"auth", 15}, {"sessions", 18}, {"session-trajectories", 12}, {"trajectories", 11}, {"envelope", 17}, {"trajectory-session", 8}, {"format", 9}, {"epoch", 9}}
 	for _, group := range groups {
 		count := 0
@@ -391,6 +397,16 @@ func TestHTTPScalarQuerySelectionMatchesActualPython(t *testing.T) {
 		if count != group.Count {
 			t.Fatalf("Source group %s has %d cases, want %d", group.Group, count, group.Count)
 		}
+	}
+	runHTTPQueryContracts(t, fixture)
+}
+
+// Both corpora use the same actual manager, durable records and HTTP server.
+// Their entry tests separately pin the encoded-value and raw-byte inventories.
+func runHTTPQueryContracts(t *testing.T, fixture querySelectionFixture) {
+	t.Helper()
+	if len(fixture.Seeds.Sessions) != 3 || len(fixture.Seeds.Trajectories) != 3 || len(fixture.Seeds.TranscriptEpochs) != 2 || len(fixture.Seeds.Events) != 6 {
+		t.Fatal("Source query seed inventory changed")
 	}
 
 	root := t.TempDir()
@@ -491,7 +507,12 @@ func TestHTTPScalarQuerySelectionMatchesActualPython(t *testing.T) {
 		}
 	}
 
-	server := httptest.NewServer(testServer(t, Config{Manager: manager, Auth: tokenAuth(t), PingInterval: time.Hour}))
+	handler := testServer(t, Config{Manager: manager, Auth: tokenAuth(t), PingInterval: time.Hour})
+	requests := make(chan queryContractWireRequest, 1)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requests <- queryContractWireRequest{RawQuery: r.URL.RawQuery, RequestURI: r.RequestURI}
+		handler.ServeHTTP(w, r)
+	}))
 	defer server.Close()
 	client := server.Client()
 	client.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
@@ -503,20 +524,14 @@ func TestHTTPScalarQuerySelectionMatchesActualPython(t *testing.T) {
 				t.Fatalf("effects before = %+v; Source = %+v", before, row.Effects.Before)
 			}
 			reads := store.reads()
-			query := make([]string, 0, len(row.Query))
-			for _, pair := range row.Query {
-				query = append(query, url.QueryEscape(pair.Name)+"="+url.QueryEscape(querySelectionResolve(pair.Value, identities)))
-			}
 			path := querySelectionResolve(row.Path, identities)
-			if len(query) != 0 {
-				path += "?" + strings.Join(query, "&")
-			}
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			defer cancel()
 			req, err := http.NewRequestWithContext(ctx, row.Method, server.URL+path, nil)
 			if err != nil {
 				t.Fatal(err)
 			}
+			req.URL.RawQuery = queryContractRawQuery(t, row, identities)
 			req.Host = "fixture"
 			if row.Authorization != nil {
 				req.Header.Set("Authorization", *row.Authorization)
@@ -540,7 +555,18 @@ func TestHTTPScalarQuerySelectionMatchesActualPython(t *testing.T) {
 					return true
 				})
 			}()
+			select {
+			case observed := <-requests:
+				if observed.RawQuery != req.URL.RawQuery || observed.RequestURI != req.URL.RequestURI() {
+					t.Fatalf("HTTP transport changed query bytes: got %x / %q; want %x / %q", observed.RawQuery, observed.RequestURI, req.URL.RawQuery, req.URL.RequestURI())
+				}
+			default:
+				t.Fatal("request did not reach the actual HTTP handler")
+			}
 			if response.StatusCode != row.Status {
+				if strings.HasPrefix(response.Header.Get("Content-Type"), "text/event-stream") {
+					t.Fatalf("status %d with live SSE; Source %d", response.StatusCode, row.Status)
+				}
 				body, _ := io.ReadAll(io.LimitReader(response.Body, 4096))
 				t.Fatalf("status %d; Source %d; body %s", response.StatusCode, row.Status, body)
 			}

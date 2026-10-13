@@ -117,7 +117,10 @@ async def _request(app, recipe, replacements):
         return value
 
     path = resolve(recipe["path"])
-    query = urlencode([(item["name"], resolve(item["value"])) for item in recipe["query"]])
+    if "raw_query_hex" in recipe:
+        query = bytes.fromhex(recipe["raw_query_hex"])
+    else:
+        query = urlencode([(item["name"], resolve(item["value"])) for item in recipe["query"]]).encode("ascii")
     headers = [(b"host", b"fixture")]
     if recipe["authorization"] is not None:
         headers.append((b"authorization", recipe["authorization"].encode("ascii")))
@@ -125,7 +128,7 @@ async def _request(app, recipe, replacements):
                    for item in recipe["request_headers"])
     scope = {"type": "http", "asgi": {"version": "3.0", "spec_version": "2.3"},
              "http_version": "1.1", "method": recipe["method"], "scheme": "http",
-             "path": path, "raw_path": path.encode("utf-8"), "query_string": query.encode("ascii"),
+             "path": path, "raw_path": path.encode("utf-8"), "query_string": query,
              "root_path": "", "headers": headers, "client": ("127.0.0.1", 12345),
              "server": ("fixture", 80)}
     disconnected = asyncio.Event()
@@ -157,7 +160,20 @@ async def _request(app, recipe, replacements):
     # The stream is genuinely infinite; only the test client disconnects after
     # its one durable catchup frame after cursor 1. Timeout/cancellation is a
     # capture failure; this fixture makes no missing-cursor/live-backlog claim.
-    await asyncio.wait_for(app(scope, receive, send), timeout=5)
+    try:
+        await asyncio.wait_for(app(scope, receive, send), timeout=5)
+    except TimeoutError:
+        raise
+    except Exception as error:
+        # Starlette's error middleware can send an actual 500 response and
+        # then re-raise the original application fault. Raw-query observations
+        # retain both outcomes; ordinary recipes keep their existing behavior.
+        if "raw_query_hex" not in recipe or observed["status"] is None:
+            raise
+        observed["source_fault"] = {
+            "exception_class": type(error).__name__, "message": str(error),
+            "stage": "after_response_start",
+        }
     if observed["status"] is None:
         raise AssertionError("ASGI request produced no response")
     return observed
@@ -203,12 +219,15 @@ def _response(observed, identities, root):
         kind, body_json = "json", json.loads(text)
     else:
         kind, body_text = "text", text
-    return _normalise({"status": observed["status"], "response_headers": headers,
-                       "body_kind": kind, "body_json": body_json, "body_text": body_text,
-                       "events": events}, identities, root)
+    response = {"status": observed["status"], "response_headers": headers,
+                "body_kind": kind, "body_json": body_json, "body_text": body_text,
+                "events": events}
+    if "source_fault" in observed:
+        response["source_fault"] = observed["source_fault"]
+    return _normalise(response, identities, root)
 
 
-async def _capture(root):
+async def _capture(root, recipes=None):
     state = SQLiteStateStore(root / "state.db")
     trajectories = TrajectoryStore(root / "trajectories")
     settings = Settings(fake_llm=True, model="fixture-model", workspace_root=root / "sessions",
@@ -264,7 +283,7 @@ async def _capture(root):
                         "trajectory_files": len(list(trajectories.root.glob("traj_*.jsonl")))}
 
             cases = []
-            for recipe in _recipes():
+            for recipe in _recipes() if recipes is None else recipes:
                 before = effects()
                 observed = await _request(app, recipe, replacements)
                 after = effects()

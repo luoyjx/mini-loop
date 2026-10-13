@@ -1,5 +1,32 @@
 # Hardening notes
 
+## Go raw-query decoding and authentication fault observations — 2026-10-14
+
+The actual Source raw-query corpus includes malformed percent text, semicolons,
+percent-decoded invalid UTF-8 and literal valid UTF-8. Source retains malformed
+query items; the standard Go decoder dropped them. Owned scalar decoding keeps
+last-value presence in six named fields, reusing the captured maximal-subpart
+UTF-8 decoder. Unknown values and overwritten values are not materialized.
+The authenticated request caches handler selections and clears its fallback
+bearer; requests without retained handler parameters keep the small principal
+context. Principal and query-bearing admission are the two named context values.
+
+Two actual non-ASCII token observations fail inside CPython's string
+`compare_digest`. The outer ASGI middleware emits a plain 500 and then propagates
+TypeError. Native `AuthenticationResult` distinguishes that operation fault from
+a rejected token. The HTTP entry selects exactly one typed or legacy method;
+failed results cannot admit a carried Principal. The compatibility bool method
+cannot expose the named fault; full public-auth reconciliation remains separate.
+
+The new corpus preserves actual responses and fault provenance, including the
+absence of middleware security headers on this outer 500. Native TCP compares
+wire status, headers and body; ASGI exception provenance is not a TCP observation.
+The earlier 99 valid-encoding captures remain byte-identical. Raw invalid UTF-8
+URL-construction faults, Uvicorn/proxy admission and wider custom-auth failures
+remain separate required evidence. See the current
+[iteration record](audits/go-http-query-wire-2026-10-14.md) for exact gates,
+retained failures and measured allocation scope.
+
 Why the modules under `mini_loop/` that are not part of the `learn-claude-code`
 curriculum exist, what each of them was fixing, and what now prevents the same
 mistake from coming back.

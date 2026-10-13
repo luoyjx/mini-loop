@@ -117,23 +117,42 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("X-Frame-Options", "DENY")
 	w.Header().Set("Referrer-Policy", "no-referrer")
 	caller := Principal{}
+	queries := scalarQueryParameters{}
+	queryParsed := false
 	if !publicPath(r.URL.Path) {
 		header := r.Header.Get("Authorization")
 		if header == "" && eventPath(r.URL.Path) {
-			if token := selectScalarQuery(r.URL.Query(), "access_token"); token.Text != "" {
+			queries = parseScalarQuery(r.URL.RawQuery)
+			queryParsed = true
+			if token := queries.AccessToken; token.Text != "" {
 				header = "Bearer " + token.Text
 			}
 		}
-		var ok bool
-		caller, ok = s.auth.Authenticate(header)
-		if !ok || caller.ID == "" {
+		result := resolveAuthentication(s.auth, header)
+		if result.Disposition == AuthenticationFailed {
+			// Source's outer error response is emitted after these middleware
+			// return paths fail, so their security headers are absent on this 500.
+			w.Header().Del("Content-Security-Policy")
+			w.Header().Del("X-Content-Type-Options")
+			w.Header().Del("X-Frame-Options")
+			w.Header().Del("Referrer-Policy")
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			w.WriteHeader(http.StatusInternalServerError)
+			io.WriteString(w, "Internal Server Error")
+			return
+		}
+		caller = result.Principal
+		if result.Disposition != AuthenticationAccepted || caller.ID == "" {
 			w.Header().Set("WWW-Authenticate", "Bearer")
 			writeJSON(s, w, 401, ErrorResponse{"a bearer token is required"})
 			return
 		}
 	}
 	// One admitted identity is carried through the handler; never authenticate twice.
-	r = r.WithContext(withPrincipal(r.Context(), caller))
+	if !queryParsed {
+		queries = parseScalarQuery(r.URL.RawQuery)
+	}
+	r = r.WithContext(withAdmission(r.Context(), caller, queries))
 	if s.serveDocumentation(w, r) {
 		return
 	}

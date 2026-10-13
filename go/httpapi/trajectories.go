@@ -28,7 +28,7 @@ func (s *Server) ownsTrajectory(caller Principal, row agent.TrajectorySummary) b
 	return s.manager.RememberedOwners()[row.Session] == caller.ID
 }
 func trajectoryLimit(w http.ResponseWriter, r *http.Request, s *Server) (int, bool) {
-	limit, issue := scalarQueryLimit(r.URL.Query())
+	limit, issue := scalarQueryLimit(admittedQueries(r.Context()).Limit)
 	if issue != nil {
 		writeJSON(s, w, 422, scalarQueryError{Detail: []scalarQueryIssue{*issue}})
 		return 0, false
@@ -47,7 +47,7 @@ func (s *Server) listTrajectories(w http.ResponseWriter, r *http.Request) {
 		}
 		id := agent.SessionID(r.PathValue("session_id"))
 		session = &id
-	} else if value := selectScalarQuery(r.URL.Query(), "session_id"); value.Present {
+	} else if value := admittedQueries(r.Context()).SessionID; value.Present {
 		id := agent.SessionID(value.Text)
 		if _, err := s.manager.Get(principal(r.Context()).ID, id); err != nil {
 			writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("No session '%s'", id)})
@@ -122,7 +122,7 @@ func (s *Server) trajectoryDocument(w http.ResponseWriter, r *http.Request, expo
 	}
 	format := "json"
 	if export {
-		if value := selectScalarQuery(r.URL.Query(), "format"); value.Present {
+		if value := admittedQueries(r.Context()).Format; value.Present {
 			format = value.Text
 		}
 		if format != "json" && format != "jsonl" {

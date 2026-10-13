@@ -3,13 +3,11 @@ package httpapi
 import (
 	"errors"
 	"net/http"
-	"net/url"
 
 	"github.com/luoyjx/mini-loop/go/agent"
 )
 
-func transcriptSelection(query url.Values) (agent.TranscriptSelection, *scalarQueryIssue) {
-	value := selectScalarQuery(query, "epoch")
+func transcriptSelection(value scalarQueryValue) (agent.TranscriptSelection, *scalarQueryIssue) {
 	if !value.Present {
 		return agent.TranscriptSelection{}, nil
 	}
@@ -21,7 +19,7 @@ func transcriptSelection(query url.Values) (agent.TranscriptSelection, *scalarQu
 }
 
 func (s *Server) transcript(w http.ResponseWriter, r *http.Request) {
-	selection, issue := transcriptSelection(r.URL.Query())
+	selection, issue := transcriptSelection(admittedQueries(r.Context()).Epoch)
 	if issue != nil {
 		writeJSON(s, w, 422, scalarQueryError{Detail: []scalarQueryIssue{*issue}})
 		return

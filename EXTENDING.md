@@ -83,7 +83,19 @@ The Go handler accepts `httpapi.Authenticator` with named `Principal` results.
 Its `Authenticate` and `Configured` methods must be safe for concurrent requests.
 Authentication runs once at admission; handlers reuse that principal for ownership
 and the untrusted HTTP stamp. `TokenAuth` supports detached owner bindings;
-`AuthFromEnvironment` resolves only token configuration. The embedding application
+`AuthFromEnvironment` resolves only token configuration. For Source fault observations, an authenticator may additionally implement
+`ResultAuthenticator.AuthenticateResult`, returning a named
+`AuthenticationResult` with accepted, rejected or failed disposition. The HTTP
+entry selects one method per request. `TokenAuth` implements this typed path;
+its legacy bool method projects accepted/rejected and cannot expose a fault.
+The default non-ASCII string-comparison failure is observed at comparison,
+producing the captured plain 500 response instead of a normal 401 rejection.
+Configured token construction is unchanged. Admitted request context carries
+one principal and six named scalar selections with the fallback token cleared;
+handler validations and owner checks read those cached observations. Requests
+without retained handler parameters use the original small principal context.
+
+The embedding application
 must invoke `RefuseOpenBind` before listening. The standalone Go launcher owns
 that check, additionally checks the actual listener, and refuses blank hosts.
 
