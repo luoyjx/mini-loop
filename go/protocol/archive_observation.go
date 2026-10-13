@@ -150,14 +150,23 @@ func decodeLegacyObservedBlock(data []byte) (Block, error) {
 	}
 	kind, _ := value.Lookup("type")
 	kindText, _ := kind.Text()
-	if kindText != string(BlockToolUse) && kindText != string(BlockServerToolUse) {
-		return Block{}, errors.New("legacy input requires a named tool observation block")
+	toolInput := kindText == string(BlockToolUse) || kindText == string(BlockServerToolUse)
+	callerKind := toolInput || kindText == string(BlockWebSearchToolResult) || kindText == string(BlockWebFetchToolResult)
+	if !callerKind {
+		return Block{}, errors.New("legacy metadata requires a named observation block")
 	}
-	input, present := value.Lookup("input")
-	if !present {
-		return Block{}, errors.New("tool observation requires input")
+	metadata := value
+	input, inputPresent := value.Lookup("input")
+	if toolInput {
+		if !inputPresent {
+			return Block{}, errors.New("tool observation requires input")
+		}
+		metadata = replaceObservationField(metadata, "input", jsonvalue.NullValue())
 	}
-	metadata := replaceObservationField(value, "input", jsonvalue.NullValue())
+	callerValue, callerPresent := value.Lookup("caller")
+	if callerPresent {
+		metadata = replaceObservationField(metadata, "caller", jsonvalue.NullValue())
+	}
 	finite, err := metadata.MarshalJSON()
 	if err != nil {
 		return Block{}, err
@@ -166,22 +175,30 @@ func decodeLegacyObservedBlock(data []byte) (Block, error) {
 	if err != nil {
 		return Block{}, err
 	}
-	original, err := input.MarshalLegacyUTF8()
-	if err != nil {
-		return Block{}, err
+	if toolInput {
+		original, err := input.MarshalLegacyUTF8()
+		if err != nil {
+			return Block{}, err
+		}
+		if block.kind == BlockToolUse {
+			observed, err := DecodeModelToolInput(block.toolUse.Name, original)
+			if err != nil {
+				return Block{}, err
+			}
+			block.toolUse.Input = observed
+		} else {
+			observed, err := decodeSDKServerToolInput(original, false)
+			if err != nil {
+				return Block{}, err
+			}
+			block.serverTool.Input = observed
+		}
 	}
-	if block.kind == BlockToolUse {
-		observed, err := DecodeModelToolInput(block.toolUse.Name, original)
-		if err != nil {
-			return Block{}, err
-		}
-		block.toolUse.Input = observed
-	} else {
-		observed, err := decodeSDKServerToolInput(original, false)
-		if err != nil {
-			return Block{}, err
-		}
-		block.serverTool.Input = observed
+	if callerPresent && callerValue.Kind() != jsonvalue.Null {
+		// Archived SDK construction is already complete. Preserve sparse
+		// dictionaries and list elements without another round of defaults.
+		observation := SDKCallerObservation{value: callerValue}
+		block.setCaller(&ToolCaller{sdkObservation: &observation}, true)
 	}
 	return block, block.Validate()
 }

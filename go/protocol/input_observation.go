@@ -137,6 +137,20 @@ func (block Block) observationValue() (jsonvalue.Value, error) {
 	if err := block.Validate(); err != nil {
 		return jsonvalue.Value{}, err
 	}
+	// Strip caller before finite encoding, then restore its exact observation.
+	// This preserves SDK legacy metadata without widening ordinary wire JSON.
+	caller, callerPresent := block.callerMetadata()
+	var observedCaller jsonvalue.Value
+	if caller != nil {
+		var err error
+		observedCaller, err = caller.observationValue()
+		if err != nil {
+			return jsonvalue.Value{}, err
+		}
+		copies, _ := BlockContent(block).Clone().Blocks()
+		block = copies[0]
+		block.setCaller(nil, callerPresent)
+	}
 	var data []byte
 	var observed jsonvalue.Value
 	var err error
@@ -185,6 +199,9 @@ func (block Block) observationValue() (jsonvalue.Value, error) {
 	}
 	if block.kind == BlockToolUse || block.kind == BlockServerToolUse {
 		value = replaceObservationField(value, "input", observed)
+	}
+	if caller != nil {
+		value = replaceObservationField(value, "caller", observedCaller)
 	}
 	return value, nil
 }

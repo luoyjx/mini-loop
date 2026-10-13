@@ -56,6 +56,25 @@ func decodeReply(data []byte) (protocol.ModelReply, error) {
 	return reply.Clone(), nil
 }
 func decodeBlock(raw []byte) (protocol.Block, error) {
+	finite, observations, err := prepareSDKBlock(raw)
+	if err != nil {
+		return protocol.Block{}, err
+	}
+	block, err := decodeFiniteSDKBlock(finite)
+	if err != nil {
+		return protocol.Block{}, err
+	}
+	block, err = observations.restore(block)
+	if err != nil {
+		return protocol.Block{}, err
+	}
+	if err := checkSDKBlockSize(block); err != nil {
+		return protocol.Block{}, err
+	}
+	return block, nil
+}
+
+func decodeFiniteSDKBlock(raw []byte) (protocol.Block, error) {
 	var wire struct {
 		Type      protocol.BlockKind `json:"type"`
 		Text      *string            `json:"text"`

@@ -133,8 +133,18 @@ func TestStreamingMatchesActualSDKAndPythonTransport(t *testing.T) {
 				// Older captures project core usage; materialize the SDK nullable fields.
 				expectedReply := spec.Reply.Clone()
 				expectedReply.Usage = expectedReply.Usage.WithSDKDefaults()
-				if !reflect.DeepEqual(reply, expectedReply) {
-					t.Fatalf("reply differs: %#v / %#v", reply, *spec.Reply)
+				// The SDK observation and explicit finite caller variants can
+				// represent the same reply. Compare their complete public JSON.
+				actualJSON, err := json.Marshal(reply)
+				if err != nil {
+					t.Fatal(err)
+				}
+				expectedJSON, err := json.Marshal(expectedReply)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if callerObservationCanonical(t, string(actualJSON)) != callerObservationCanonical(t, string(expectedJSON)) {
+					t.Fatalf("reply differs: %s / %s", actualJSON, expectedJSON)
 				}
 			} else {
 				var failure *Failure

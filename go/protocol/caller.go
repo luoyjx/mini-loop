@@ -14,15 +14,17 @@ const (
 	CallerDirect            CallerKind = "direct"
 	CallerCodeExecution2025 CallerKind = "code_execution_20250825"
 	CallerCodeExecution2026 CallerKind = "code_execution_20260120"
+	CallerObserved          CallerKind = "sdk_observation"
 )
 
 // ToolCaller is the closed provider caller union for tool-use and server-result blocks.
 // The fake provider leaves it absent. SDK caller IDs are inert observations;
 // the enclosing tool-use ID remains the execution identity.
 type ToolCaller struct {
-	kind   CallerKind
-	toolID SDKMetadataText
-	extra  jsonvalue.Value
+	kind           CallerKind
+	toolID         SDKMetadataText
+	extra          jsonvalue.Value
+	sdkObservation *SDKCallerObservation
 }
 
 func DirectToolCaller() ToolCaller { return ToolCaller{kind: CallerDirect} }
@@ -41,20 +43,61 @@ func CodeExecutionToolCaller(kind CallerKind, toolID string) (ToolCaller, error)
 	return caller, nil
 }
 
-func (caller ToolCaller) Kind() CallerKind { return caller.kind }
+func (caller ToolCaller) Kind() CallerKind {
+	if caller.sdkObservation != nil {
+		typeValue, _ := caller.sdkObservation.value.Lookup("type")
+		tag, isText := typeValue.Text()
+		if isText {
+			switch CallerKind(tag) {
+			case CallerDirect, CallerCodeExecution2025, CallerCodeExecution2026:
+				return CallerKind(tag)
+			}
+		}
+		return CallerObserved
+	}
+	return caller.kind
+}
 
 // ToolID returns the text projection, or an empty string for non-text metadata.
 func (caller ToolCaller) ToolID() string {
-	if text, ok := caller.toolID.Text(); ok {
+	if text, ok := caller.ToolIDMetadata().Text(); ok {
 		return text
 	}
 	return ""
 }
 
-// ToolIDMetadata retains the SDK's finite nullable and non-text observations.
-func (caller ToolCaller) ToolIDMetadata() SDKMetadataText { return caller.toolID }
+// ToolIDMetadata retains nullable, non-text and legacy numeric SDK observations.
+func (caller ToolCaller) ToolIDMetadata() SDKMetadataText {
+	if caller.sdkObservation != nil {
+		if caller.Kind() == CallerCodeExecution2025 || caller.Kind() == CallerCodeExecution2026 {
+			value, _ := caller.sdkObservation.value.Lookup("tool_id")
+			return SDKMetadataText{value: value}
+		}
+		return SDKMetadataText{}
+	}
+	return caller.toolID
+}
+
+func (caller ToolCaller) SDKObservation() (SDKCallerObservation, bool) {
+	if caller.sdkObservation == nil {
+		return SDKCallerObservation{}, false
+	}
+	return *caller.sdkObservation, true
+}
+
+func (caller ToolCaller) TypeMetadata() SDKMetadataText {
+	if caller.sdkObservation != nil {
+		value, _ := caller.sdkObservation.value.Lookup("type")
+		return SDKMetadataText{value: value}
+	}
+	return MetadataText(string(caller.kind))
+}
 
 func (caller ToolCaller) Validate() error {
+	if caller.sdkObservation != nil {
+		_, err := caller.sdkObservation.LegacyJSON()
+		return err
+	}
 	switch caller.kind {
 	case CallerDirect:
 		if caller.toolID.Observation().Kind() != jsonvalue.Null {
@@ -73,6 +116,9 @@ func (caller ToolCaller) Validate() error {
 func (caller ToolCaller) MarshalJSON() ([]byte, error) {
 	if err := caller.Validate(); err != nil {
 		return nil, err
+	}
+	if caller.sdkObservation != nil {
+		return caller.sdkObservation.MarshalJSON()
 	}
 	if caller.kind == CallerDirect {
 		return marshalMetadataObject(struct {
@@ -94,6 +140,20 @@ func (caller *ToolCaller) UnmarshalJSON(data []byte) error {
 }
 
 func decodeToolCaller(data []byte, bounded bool) (ToolCaller, error) {
+	if !bounded {
+		return decodeObservedToolCaller(data, false, false)
+	}
+	if len(data) > MaxWireBytes {
+		return ToolCaller{}, errors.New("metadata JSON exceeds wire bound")
+	}
+	// Explicit JSON admission remains finite, including unknown extension fields.
+	value, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return ToolCaller{}, err
+	}
+	if _, err := value.MarshalJSON(); err != nil {
+		return ToolCaller{}, err
+	}
 	var tag struct {
 		Type CallerKind `json:"type"`
 	}

@@ -91,7 +91,7 @@ func TestTextEditorResultMatchesSDKDirectAndStream(t *testing.T) {
 	}
 }
 
-func TestStreamClientCallerValidationRemainsSelected(t *testing.T) {
+func TestStreamClientCallerObservationAdmission(t *testing.T) {
 	client, err := New(Config{APIKey: "fixture-key"})
 	if err != nil {
 		t.Fatal(err)
@@ -104,11 +104,13 @@ func TestStreamClientCallerValidationRemainsSelected(t *testing.T) {
 		{`{"type":"direct"}`, true},
 		{`{"type":"code_execution_20250825","tool_id":"parent"}`, true},
 		{`{"type":"code_execution_20260120","tool_id":"parent"}`, true},
-		{`"opaque"`, false},
-		{`{"type":"future_metadata"}`, false},
+		{`"opaque"`, true},
+		{`{"type":"future_metadata"}`, true},
 		{`{"type":"direct","tool_id":"unexpected"}`, true},
 		{`{"type":"code_execution_20260120"}`, true},
-		{`{"type":null,"tool_id":"parent"}`, false},
+		{`{"type":null,"tool_id":"parent"}`, true},
+		{`"\ud800"`, false},
+		{`{"type":"\ud800"}`, false},
 	} {
 		state := streamAssembly{started: true}
 		raw := `{"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"client","name":"bash","input":{"command":"true"},"caller":` + row.caller + `}}`

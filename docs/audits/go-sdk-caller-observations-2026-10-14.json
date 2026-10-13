@@ -1,0 +1,2577 @@
+{
+  "schema_version": 1,
+  "baseline": "ac4d603a9d96291dd698aad8f0730df15be3c191",
+  "branch": "codex/go-sdk-caller-observations",
+  "full_port_acceptance": false,
+  "raw_evidence_root": "var/go-sdk-caller-observations-2026-10-14",
+  "stages": {
+    "before-native-check": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./provider",
+        "-run",
+        "^TestSDKCallerObservationSourceBeforeNative$"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 9.652,
+      "peak_rss_kib": 213376,
+      "peak_cpu_percent": 177.3,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1267,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:54:42.721548+00:00",
+      "completed_utc": "2026-10-13T17:54:52.433444+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/freeze.after.json",
+          "bytes": 216649,
+          "sha256": "2a048603b420d6ee82ef4f966cd135b6f2c1381c5ceb4587714847d78675c585"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/freeze.before.json",
+          "bytes": 216649,
+          "sha256": "2a048603b420d6ee82ef4f966cd135b6f2c1381c5ceb4587714847d78675c585"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/pid-state.json",
+          "bytes": 56,
+          "sha256": "3fc0385f1af583014a06e347681470115d47d1e80b7d06ec4ff75af7c32cdb88"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/resources.json",
+          "bytes": 3184,
+          "sha256": "7ea25056096e657931f8486b1f2b7e3877857210c3540eb4385b5c78df7a55b4"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/samples.jsonl",
+          "bytes": 4653,
+          "sha256": "fd06a28cde48fa82c6725ee6b3d59f78675b5c7dbef14ffb4e80dc6494c18db6"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/stability.json",
+          "bytes": 537,
+          "sha256": "7a5e58737b933f5e84821042daae520957478074f59c4932748db091cba2a7e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-check/stdout.log",
+          "bytes": 314180,
+          "sha256": "768892c067b1a4ba334c7a99d3e0e266e74b1f80ad5ddc43ab48dbd482d81c6a"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 1
+        },
+        "top_level_tests": {
+          "fail": 1
+        },
+        "subtests": {
+          "fail": 224
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "before-native-nested": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./provider",
+        "-run",
+        "^TestSDKCallerObservationSourceBeforeNative$"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 2.403,
+      "peak_rss_kib": 153296,
+      "peak_cpu_percent": 23.5,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1267,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:20:39.605554+00:00",
+      "completed_utc": "2026-10-13T18:20:42.064886+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/freeze.after.json",
+          "bytes": 216649,
+          "sha256": "36963766ae758392ffe7c1e8a9f36b616b0fd53efd32a1443e87e19e228e7fa7"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/freeze.before.json",
+          "bytes": 216649,
+          "sha256": "36963766ae758392ffe7c1e8a9f36b616b0fd53efd32a1443e87e19e228e7fa7"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/pid-state.json",
+          "bytes": 56,
+          "sha256": "d12c073119f5a0a6b8a429c73b2cda57bec894fe79046e622b1c231ca826ffff"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/resources.json",
+          "bytes": 2707,
+          "sha256": "9c12188f84846e4d579b3b140cab2e5fed337021b20cadf57b5bcc1780819f80"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/samples.jsonl",
+          "bytes": 1215,
+          "sha256": "93373819d82a39ecd6ce3798fdf4a3188f5452c8ad283edb85ace5494f1b3960"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/stability.json",
+          "bytes": 536,
+          "sha256": "fc6145abe6a1a679b21b4b64d3310b4945aabb45c10ff8640071371c3eb50280"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/before-native-nested/stdout.log",
+          "bytes": 314198,
+          "sha256": "1cb7db064e9d8d2a04d27d88d6813e9c8bc648aba869c7130af8f21a46cf42d0"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 1
+        },
+        "top_level_tests": {
+          "fail": 1
+        },
+        "subtests": {
+          "fail": 224
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "consumers": {
+      "status": "failed",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-manifest",
+        "../var/go-sdk-caller-observations-2026-10-14/source-manifest.json",
+        "-results",
+        "../var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/stdout.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 2.387,
+      "peak_rss_kib": 54432,
+      "peak_cpu_percent": 39.7,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:54:21.727445+00:00",
+      "completed_utc": "2026-10-13T18:54:24.195345+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/pid-state.json",
+          "bytes": 56,
+          "sha256": "c0a62f21dc0951e389bf1ff5f9d4bb8ed8700d7afff81564f4dc7872a09d0b13"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/resources.json",
+          "bytes": 3178,
+          "sha256": "ce3432cd66dcf316172fbc7a9b501664daec343488aaf9317a16e2d53b90121d"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/samples.jsonl",
+          "bytes": 1454,
+          "sha256": "aa9ebb4972d03dbb89c5ce0c65fcf304d26c03b9858729af30262125f5e11ab1"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/stability.json",
+          "bytes": 535,
+          "sha256": "2fc308ccb5f4a1fefa2143b1054f37d050ae318374c97f625de408df42dc9e7c"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/consumers/stdout.log",
+          "bytes": 329850,
+          "sha256": "87d51f3770b4bcfc8b93ef0ee23181841a946270a49e1d7b9c804934208448a3"
+        }
+      ]
+    },
+    "go-caller-boundaries": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./protocol",
+        "./provider",
+        "./agent",
+        "./sqlitestate",
+        "-run",
+        "Caller|Nonfinite|ObservedWire|Malformed|Oversized|Sanitizer"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 18.0,
+      "peak_rss_kib": 539088,
+      "peak_cpu_percent": 197.8,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:27:45.560092+00:00",
+      "completed_utc": "2026-10-13T18:28:03.803846+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "736693742cdbd7d5d076b25cadb9881ec6ab0078ad7717e8955e529392afe52b"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "736693742cdbd7d5d076b25cadb9881ec6ab0078ad7717e8955e529392afe52b"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/pid-state.json",
+          "bytes": 56,
+          "sha256": "52d0cc912f3aa1af17bc5a8defa7ebf14b01bd6729e23eb9a1cb6e1f3fd11b36"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/resources.json",
+          "bytes": 3575,
+          "sha256": "27e109cbb6b37cd16956c91aef38782814c30752ae81bbc7daca7a292e62124d"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/samples.jsonl",
+          "bytes": 8976,
+          "sha256": "20b3bb26e939ce76ad87df8ddb46cf61062712aebb03bcce759d61c81f9041d1"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/stability.json",
+          "bytes": 537,
+          "sha256": "ef45aa9bea2bb8c52531cbfbc11de903c23337b6e17147259bb0d8928c18cb9c"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-boundaries/stdout.log",
+          "bytes": 1391952,
+          "sha256": "cabf84444ba2324abe5b4dc392b7f74d1ac85c00e8b3279f45319f8a82614777"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 4
+        },
+        "top_level_tests": {
+          "pass": 64
+        },
+        "subtests": {
+          "pass": 1256
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-caller-integration": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./protocol",
+        "./provider",
+        "./agent",
+        "./sqlitestate",
+        "-run",
+        "Caller|Nonfinite|ObservedWire|Malformed|Oversized"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 28.561,
+      "peak_rss_kib": 548384,
+      "peak_cpu_percent": 198.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1778,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:23:50.896856+00:00",
+      "completed_utc": "2026-10-13T18:24:19.712418+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/freeze.after.json",
+          "bytes": 190132,
+          "sha256": "e23042c9f48e220790b1be0d328953a53764f2c4032fb7f275dd4a8adc570db2"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/freeze.before.json",
+          "bytes": 190132,
+          "sha256": "e23042c9f48e220790b1be0d328953a53764f2c4032fb7f275dd4a8adc570db2"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/pid-state.json",
+          "bytes": 56,
+          "sha256": "a25d8a15af4d864ef367d47a85afc2898c4c4cb70f0f5f0165da0e78263fb688"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/resources.json",
+          "bytes": 4188,
+          "sha256": "5f2c85ebf934ba9022a722615b3c7d5423e4db4cc485da9eb0ee88c80242f146"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/samples.jsonl",
+          "bytes": 14420,
+          "sha256": "86ecf843d115a6b57271f8ea702a0fa4fcf3975769bb415c29cf21be4acd83bc"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/stability.json",
+          "bytes": 537,
+          "sha256": "abbf56f4f509a6f654566553e8e6a6978c5a85052fe515d6b6d9128afd26c73f"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration/stdout.log",
+          "bytes": 1376534,
+          "sha256": "3dd502d58bb22d718865fbc75a1a4a9b31e6e3ecf2513ef30d9564dbbdb216e2"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 3,
+          "fail": 1
+        },
+        "top_level_tests": {
+          "pass": 61,
+          "fail": 1
+        },
+        "subtests": {
+          "pass": 1242
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-caller-integration-fixed": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./protocol",
+        "./provider",
+        "./agent",
+        "./sqlitestate",
+        "-run",
+        "Caller|Nonfinite|ObservedWire|Malformed|Oversized"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 12.949,
+      "peak_rss_kib": 151184,
+      "peak_cpu_percent": 155.6,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1778,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:25:06.520081+00:00",
+      "completed_utc": "2026-10-13T18:25:19.655249+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/freeze.after.json",
+          "bytes": 190132,
+          "sha256": "d221caa00e6b5bb34d14b88d8fc90c26078e766684d93d3e325d1a8dda62341f"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/freeze.before.json",
+          "bytes": 190132,
+          "sha256": "d221caa00e6b5bb34d14b88d8fc90c26078e766684d93d3e325d1a8dda62341f"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/pid-state.json",
+          "bytes": 56,
+          "sha256": "63a99268a6dc7ffff49b63372e0a8e5519166e6c582fdcc1302219c5d3ac4f17"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/resources.json",
+          "bytes": 3327,
+          "sha256": "a8c3919e8419a0e73fa11a3c96a3b71e198ac8e4a8dac4a390067592d2d01fa6"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/samples.jsonl",
+          "bytes": 6383,
+          "sha256": "efb75c5682a0000f73897d0bb5245add4ccae70b19a8fb404e1405029bab36f3"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/stability.json",
+          "bytes": 537,
+          "sha256": "dc261ebf762ccd083017d9b6af0a9b93b3cd8c2dd772dafa74174b919d04f8ad"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-caller-integration-fixed/stdout.log",
+          "bytes": 1376126,
+          "sha256": "dca4aff2978464dbbcfe99d5299ac4cde274ba64a2d6bad8ac709b76770b2352"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 4
+        },
+        "top_level_tests": {
+          "pass": 62
+        },
+        "subtests": {
+          "pass": 1242
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-finite-input-fixed": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./provider",
+        "./launcher"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 12.699,
+      "peak_rss_kib": 220272,
+      "peak_cpu_percent": 97.6,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:36:16.856787+00:00",
+      "completed_utc": "2026-10-13T18:36:29.637884+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/pid-state.json",
+          "bytes": 56,
+          "sha256": "69129e8bb00fe176d74fc51a34d5753bf07bde5d8775064651f52b3e7c6eba32"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/resources.json",
+          "bytes": 3663,
+          "sha256": "edf6fdcb0fbc8cc6ce641db7c1a185795d403ec0b849cac8cbaf8b635293e3c2"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/samples.jsonl",
+          "bytes": 7689,
+          "sha256": "78c60aeb6f116bef2836cad2a534c0a9072d7c785fc5ac3a2baa8c88d33e0dfd"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/stability.json",
+          "bytes": 537,
+          "sha256": "6ebefddbd55fffc3df268617cce798981331d4db3d568236a404461797d1cc2a"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-fixed/stdout.log",
+          "bytes": 2657414,
+          "sha256": "cbcc9c7f55858d010932c7fa9def514641feae0b720840c71cb76dbeb251c46e"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 2
+        },
+        "top_level_tests": {
+          "pass": 134,
+          "skip": 3
+        },
+        "subtests": {
+          "pass": 2490,
+          "skip": 1
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-finite-input-regression": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./provider",
+        "./launcher"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 13.761,
+      "peak_rss_kib": 148400,
+      "peak_cpu_percent": 142.9,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:34:22.510612+00:00",
+      "completed_utc": "2026-10-13T18:34:36.349837+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "c72d1647b5abd40644715fe0b7c04b9b9bf3a5be3221512b9bef3a27299d2ed0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "c72d1647b5abd40644715fe0b7c04b9b9bf3a5be3221512b9bef3a27299d2ed0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/pid-state.json",
+          "bytes": 56,
+          "sha256": "edb184e503245b3cb48fa69dc243c78cddd112b47533134543a79155c8a89ee5"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/resources.json",
+          "bytes": 3748,
+          "sha256": "2d43fafef6faf2bb51275d45b9e677202b1eff7d2faa5b2c547e55b6afd4fb76"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/samples.jsonl",
+          "bytes": 8398,
+          "sha256": "ae7434cb7d0544acd2f0d948e70031fea057a3b9871302bc2c7ba4feb78c6fcd"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/stability.json",
+          "bytes": 537,
+          "sha256": "4bc15c55359cbe43e4f5990443583a3eae611a648664e4510bb3362e9f5181d6"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-finite-input-regression/stdout.log",
+          "bytes": 2727713,
+          "sha256": "56c05687c0119eb0ac861dc0c7059c7a234a13cc22fa3d2b8237997fd97bd7b4"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 1,
+          "pass": 1
+        },
+        "top_level_tests": {
+          "pass": 133,
+          "skip": 3,
+          "fail": 1
+        },
+        "subtests": {
+          "pass": 2484,
+          "fail": 6,
+          "skip": 1
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-full-coverage": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-sdk-caller-observations-2026-10-14/go-full-coverage/coverage.out",
+        "./..."
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 311.505,
+      "peak_rss_kib": 616656,
+      "peak_cpu_percent": 199.9,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:28:25.576203+00:00",
+      "completed_utc": "2026-10-13T18:33:37.339231+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/coverage.out",
+          "bytes": 91704834,
+          "sha256": "e6d514945d24d1a3f4f15d17dc9b2374e5a2763c22bc4c7934e42a2ad9df77cf"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "736693742cdbd7d5d076b25cadb9881ec6ab0078ad7717e8955e529392afe52b"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "736693742cdbd7d5d076b25cadb9881ec6ab0078ad7717e8955e529392afe52b"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/pid-state.json",
+          "bytes": 56,
+          "sha256": "bb246da4b32aec49329580efccf5928873c11bdd23c80478b992ec7da19e965a"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/resources.json",
+          "bytes": 16686,
+          "sha256": "dbe07e6d0b01f1b0d8e75ac9bb9e867b68c4abc3a51da5b90c98f5416ce72e94"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/samples.jsonl",
+          "bytes": 176132,
+          "sha256": "4de3bb8456d1d2eb5fc6c3137661f04507b328b008d2d2accb652ba829d20cb0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/stability.json",
+          "bytes": 537,
+          "sha256": "b12853900e1f8e2a9190e788b4ef8d160d5ba66a9d4d69feed249e3859d5f4e2"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage/stdout.log",
+          "bytes": 12401396,
+          "sha256": "b232a9268d16dc175a941617dba35a0f54d6456b1d5928d95fbc0d4482071282"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 49,
+          "fail": 2
+        },
+        "top_level_tests": {
+          "pass": 1430,
+          "skip": 6,
+          "fail": 18
+        },
+        "subtests": {
+          "pass": 11428,
+          "fail": 39,
+          "skip": 1
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-full-coverage-final": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 216.69,
+      "peak_rss_kib": 422976,
+      "peak_cpu_percent": 188.9,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:43:12.019489+00:00",
+      "completed_utc": "2026-10-13T18:46:48.947529+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/coverage.out",
+          "bytes": 91717338,
+          "sha256": "6a05b2effdbb15a1d05e0ca05ff6b54f02dbfb8e25e17d19e3622abd46b608f8"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/pid-state.json",
+          "bytes": 56,
+          "sha256": "768e93d789022307fa3cee71529b1ad1ee66fc0bdbb2e3b670367de3e27648aa"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/resources.json",
+          "bytes": 15360,
+          "sha256": "390f24e2a0e2a097589c7b9d71c0b993ed3d50cdd7a2fc350ea3377e8a30841c"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/samples.jsonl",
+          "bytes": 140191,
+          "sha256": "7716c69f5902001c883cfe9d1e65b97d0c9895d61dc4cd4d6868f8a39c91780d"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/stability.json",
+          "bytes": 536,
+          "sha256": "bb86b73684c28de975dbfbc5ef358990e6d509541129b52a1b230e79b9aa9281"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/stdout.log",
+          "bytes": 12293805,
+          "sha256": "f9fe52ee9be371a9a7088d5eb59d981ca69453613d4885bcd205d8870b9f788a"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 51
+        },
+        "top_level_tests": {
+          "pass": 1448,
+          "skip": 6
+        },
+        "subtests": {
+          "pass": 11467,
+          "skip": 1
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-full-coverage-fixed": {
+      "status": "resource_blocked",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/coverage.out",
+        "./..."
+      ],
+      "exit_code": -15,
+      "runner_exit_code": 75,
+      "seconds": 143.503,
+      "peak_rss_kib": 591952,
+      "peak_cpu_percent": 199.8,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:37:04.772516+00:00",
+      "completed_utc": "2026-10-13T18:39:28.568250+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/coverage.out",
+          "bytes": 41195768,
+          "sha256": "84ffc41fb5c92bab1cb7f02fd4f052aca24e80b61c1061c1b483c3bcba8d8f3a"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/pid-state.json",
+          "bytes": 56,
+          "sha256": "6541e525bbeb45bf6a535c168d0d827153a45e6c4216b67d2858a1f4d5471be1"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/resources.json",
+          "bytes": 12442,
+          "sha256": "cb22e07dd6d4bce23cbba39fb1c6c0caec728dff463481dc242dc08ffe301ada"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/samples.jsonl",
+          "bytes": 86474,
+          "sha256": "fcb431dd131db6a236070221b4c9083c314185034d41ade13d2ce8a8daa8e627"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/signals.jsonl",
+          "bytes": 2023,
+          "sha256": "e00890adfa36c1a751e003d62aa63200e54c2b286d2c437f85e1d0d51b619e2f"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/stability.json",
+          "bytes": 537,
+          "sha256": "a14487c2c29de81d4f965505f16b1def7c4768d3eafb018c2b6b5d91bcc25528"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-fixed/stdout.log",
+          "bytes": 6856519,
+          "sha256": "729e798314c943802f58dd8c476e983690e268bc64121c7246492b09a99dc795"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 23,
+          "fail": 1
+        },
+        "top_level_tests": {
+          "pass": 965,
+          "skip": 2
+        },
+        "subtests": {
+          "pass": 6332,
+          "skip": 1
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-protocol-caller": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./protocol",
+        "-run",
+        "Caller|Nonfinite|ObservedWire"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 1.365,
+      "peak_rss_kib": 1152,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 420,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:06:36.324400+00:00",
+      "completed_utc": "2026-10-13T18:06:37.729121+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/freeze.after.json",
+          "bytes": 46194,
+          "sha256": "2b3e6e1dad2527e41be9b045e7be53159b6fa2cd7f952266c1d52783a671c695"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/freeze.before.json",
+          "bytes": 46194,
+          "sha256": "2b3e6e1dad2527e41be9b045e7be53159b6fa2cd7f952266c1d52783a671c695"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/pid-state.json",
+          "bytes": 56,
+          "sha256": "a57cc946a895b83627dc65cdab80ccd2e544b92da9c40bcec106e4f48b99ff69"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/resources.json",
+          "bytes": 2573,
+          "sha256": "99da2e079b7e19a79e844a0d5a4146c83bf1a7ff69f6abf3e7f340b6b8188e6f"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/samples.jsonl",
+          "bytes": 704,
+          "sha256": "16db3ebf52540e669e1f49b3e29e5da759996015ef923fd5e8e083e4f4594c20"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/stability.json",
+          "bytes": 536,
+          "sha256": "edd601c2c23206b415b252f35bf6d3236ec71c2788de791eda5a64261396ae58"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller/stdout.log",
+          "bytes": 573,
+          "sha256": "5ab9b1b76b2813f0d47e264a366624564584cd3557382cfcd8fd3a80b0ea77fc"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 1
+        },
+        "top_level_tests": {},
+        "subtests": {},
+        "plain_diagnostics": [
+          "# github.com/luoyjx/mini-loop/go/protocol [github.com/luoyjx/mini-loop/go/protocol.test]",
+          "protocol/caller_observation_test.go:54:47: undefined: Bash"
+        ]
+      }
+    },
+    "go-protocol-caller-fixed": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./protocol",
+        "-run",
+        "Caller|Nonfinite|ObservedWire"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 4.472,
+      "peak_rss_kib": 178848,
+      "peak_cpu_percent": 125.3,
+      "inputs_unchanged": true,
+      "frozen_inputs": 446,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:08:19.632613+00:00",
+      "completed_utc": "2026-10-13T18:08:24.142802+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/freeze.after.json",
+          "bytes": 48800,
+          "sha256": "b2a01362f9363399296631213df53ba42ff3a24d90ef548a2285b52804720124"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/freeze.before.json",
+          "bytes": 48800,
+          "sha256": "b2a01362f9363399296631213df53ba42ff3a24d90ef548a2285b52804720124"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/pid-state.json",
+          "bytes": 56,
+          "sha256": "705785470e21476fbb4083043dd092d2e2b0ce897d8a58f9f2a85dc59ba5e0b7"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/resources.json",
+          "bytes": 2842,
+          "sha256": "87459bcc79a13a5b7d5f88d9d6037a0710ee793d8e047032bbb1f4b305418d21"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/samples.jsonl",
+          "bytes": 2242,
+          "sha256": "9cb057a56193a07edf572cf51de0c7ef159c6a1812a35999232b9f242d89d923"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/stability.json",
+          "bytes": 537,
+          "sha256": "bed9edf0b929d50c653f4542eddcba1f1a5f2191547f61e20e51b3ba705e92e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-protocol-caller-fixed/stdout.log",
+          "bytes": 252189,
+          "sha256": "624cd6b9108e5ba8acdd9cb38603b084dd882bf2bce0107787e483c15edd6a87"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 1
+        },
+        "top_level_tests": {
+          "pass": 21
+        },
+        "subtests": {
+          "pass": 226
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-vet": {
+      "status": "passed",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 9.59,
+      "peak_rss_kib": 544032,
+      "peak_cpu_percent": 198.5,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:41:41.477307+00:00",
+      "completed_utc": "2026-10-13T18:41:51.221827+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/pid-state.json",
+          "bytes": 56,
+          "sha256": "2f878d890dbbc6adc343fb1ff51e30d4f235f4428017cc833a7edea8372a01fb"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/resources.json",
+          "bytes": 2792,
+          "sha256": "7963f54a9f9c07594a3cbf427afa612071febf815ca3e72347e0401108d203b5"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/samples.jsonl",
+          "bytes": 4752,
+          "sha256": "da07872b175ea9699ced696bc76f636095c7ab513ec60d5d9263cd7c79f60d76"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/stability.json",
+          "bytes": 537,
+          "sha256": "e1327963a7c19d3220633a721149a9ed343003cf42bbad5f1ffa278559bb134f"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/go-vet/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "invariants": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.388,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:52:13.820399+00:00",
+      "completed_utc": "2026-10-13T18:52:15.289981+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/pid-state.json",
+          "bytes": 56,
+          "sha256": "465fc2166a264c39b3fedf826778b872cd3a92483ad0520e8c8e592fa8a40557"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/resources.json",
+          "bytes": 2610,
+          "sha256": "8e15f440c6826c05c27696c646d8750d1df3bab2f16e41f02d4d7364e7e2c1f0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/samples.jsonl",
+          "bytes": 738,
+          "sha256": "28350f06ef6dff528fa344c2cd105ef3184c07c9dc3f226fc6b837c20b2f993b"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/stability.json",
+          "bytes": 537,
+          "sha256": "89eb36bc7e847f9524449d8676a45b472edb0d7e68237e7a958b09ae41f2cf28"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/invariants/stdout.log",
+          "bytes": 62,
+          "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+        }
+      ]
+    },
+    "python-caller-focused": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_provider_caller_observation_contracts.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.355,
+      "peak_rss_kib": 77040,
+      "peak_cpu_percent": 82.9,
+      "inputs_unchanged": true,
+      "frozen_inputs": 500,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:03:09.893163+00:00",
+      "completed_utc": "2026-10-13T18:03:11.275880+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/freeze.after.json",
+          "bytes": 55920,
+          "sha256": "7f040872963a4600f7b924426057fcd877bfb28fb7b2bdd94dfe9633e2036e03"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/freeze.before.json",
+          "bytes": 55920,
+          "sha256": "7f040872963a4600f7b924426057fcd877bfb28fb7b2bdd94dfe9633e2036e03"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/pid-state.json",
+          "bytes": 56,
+          "sha256": "5e15aaedf84d883231cab0de2e0a39040a911e2f1a05818a682ad0270c5e466a"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/resources.json",
+          "bytes": 2471,
+          "sha256": "6e4f9beb6e8b75d79470a385c2a73e1eb20af278b2481735ab4dc6e19187d2e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/samples.jsonl",
+          "bytes": 716,
+          "sha256": "46eb569a0a8ff97925b903cd652babebb9bcf8e9f8a1b671b98252cdc1287605"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/stability.json",
+          "bytes": 537,
+          "sha256": "66ed6ce47d7b069df27261f257c5e2dec611a63dc606a0f3bb72be5f31d03a97"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-focused/stdout.log",
+          "bytes": 98,
+          "sha256": "20a13ad4b34409de2f55808835ad5c4e627977339b4feeeb2094ff79f04738f7"
+        }
+      ]
+    },
+    "python-caller-nested": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_provider_caller_observation_contracts.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.355,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 500,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:19:25.825412+00:00",
+      "completed_utc": "2026-10-13T18:19:27.207415+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/freeze.after.json",
+          "bytes": 55920,
+          "sha256": "6fcaeb625d3ecb3358d9bcd01604a6383ad9b6436e8943aaa672a3f95f6fbec9"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/freeze.before.json",
+          "bytes": 55920,
+          "sha256": "6fcaeb625d3ecb3358d9bcd01604a6383ad9b6436e8943aaa672a3f95f6fbec9"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/pid-state.json",
+          "bytes": 56,
+          "sha256": "2b0656305f487cfa11505ff7ecb5c2489d64262cde3410c0f29b0d51183ffe9b"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/resources.json",
+          "bytes": 2465,
+          "sha256": "1eb87d6eafcdbe70131a21d899124d9600cb6015e4ec33b2d53321906f088e01"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/samples.jsonl",
+          "bytes": 706,
+          "sha256": "0b8eadf3e6cc17f44c5fbc095487728207eb92d2fab3e1de96febd1a59295b51"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/stability.json",
+          "bytes": 537,
+          "sha256": "605658bed0f81ceb9c3f5d5e1861778f87de3338dad269812c68c4633bd07f58"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-caller-nested/stdout.log",
+          "bytes": 98,
+          "sha256": "190978ccb7fded13c33c0b8e36942d66da7067836936105aefe1605d7a8279ff"
+        }
+      ]
+    },
+    "python-full": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 100.262,
+      "peak_rss_kib": 448352,
+      "peak_cpu_percent": 299.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:50:28.990161+00:00",
+      "completed_utc": "2026-10-13T18:52:09.545879+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/pid-state.json",
+          "bytes": 56,
+          "sha256": "c8f8998147b6ccbf216c15f0310a10c3c28f5e2fad1365f2b554d8e8ddba751e"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/resources.json",
+          "bytes": 6558,
+          "sha256": "1210d286a0e3f40a162a6e5e5a8bc80c96837c8a85db161162dbafa395f44722"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/samples.jsonl",
+          "bytes": 47883,
+          "sha256": "c1b82360feb8d3cd69d57c6960bd43b02fc869f6ce7184e4653a85bfc7871095"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/stability.json",
+          "bytes": 537,
+          "sha256": "9df34b9afbff8d231a37a1276a5f3f346f7b257f083959287def8eb1191d5fb6"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/python-full/stdout.log",
+          "bytes": 60257,
+          "sha256": "d63534f327dc6305ff1ae039f4c9bea04d36cce15df88d40d296e04c2819273b"
+        }
+      ]
+    },
+    "scans": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 11.823,
+      "peak_rss_kib": 86976,
+      "peak_cpu_percent": 76.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:52:19.588450+00:00",
+      "completed_utc": "2026-10-13T18:52:31.706208+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/pid-state.json",
+          "bytes": 56,
+          "sha256": "f57d7c9ff3536a3ea9cb6efca49f369e5aa1f930ef91429a9efe0815097a645f"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/resources.json",
+          "bytes": 3156,
+          "sha256": "ea7e74737fceeb0169d5caa04537550043e2163e5fcfb60280da4ff5e739cb95"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/samples.jsonl",
+          "bytes": 6390,
+          "sha256": "e9f8fbbab46d7c3e018b01d7a8e471dfb556d7063048557b527b4b9688206bd9"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/stability.json",
+          "bytes": 537,
+          "sha256": "b552afc8dc8207e02d4296add41308a44725ab221c9e705c7a153be7778941ca"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/scans/stdout.log",
+          "bytes": 1663,
+          "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+        }
+      ]
+    },
+    "source-capture": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "var/go-sdk-caller-observations-2026-10-14/capture.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.327,
+      "peak_rss_kib": 176,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 500,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:49:55.785039+00:00",
+      "completed_utc": "2026-10-13T17:49:57.138321+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/freeze.after.json",
+          "bytes": 55920,
+          "sha256": "0c2fee5bf0e46a8a88d63bc65fa99fa0e9bc19ff44f4c6b7b4cca811a16c1f09"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/freeze.before.json",
+          "bytes": 55920,
+          "sha256": "0c2fee5bf0e46a8a88d63bc65fa99fa0e9bc19ff44f4c6b7b4cca811a16c1f09"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/pid-state.json",
+          "bytes": 56,
+          "sha256": "49bf956f730cbf5c2fed4f90dbf28c70ce2b39856ae183116e7fa2d8c713db6a"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/resources.json",
+          "bytes": 2379,
+          "sha256": "4d1e88b4ec47ecca3f7b7d0389c97678c4d6a6eb3484d0d71b793ac70a7ab71a"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/samples.jsonl",
+          "bytes": 707,
+          "sha256": "33c003e0cdc11ff4a523718f8075aea43f9a93710c2427a1dab83c4381d7b533"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/stability.json",
+          "bytes": 536,
+          "sha256": "9104eb7218f8c659fd214a427dd8cb40c36f42c86096aa7e938d04c41b97895e"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture/stdout.log",
+          "bytes": 108,
+          "sha256": "0450a117cec81fd2162d6ea513df73d5f541f4094d8bcc7caf066dacb7523b42"
+        }
+      ]
+    },
+    "source-capture-nested": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "var/go-sdk-caller-observations-2026-10-14/capture.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.344,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 500,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:16:21.422904+00:00",
+      "completed_utc": "2026-10-13T18:16:22.795546+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/freeze.after.json",
+          "bytes": 55920,
+          "sha256": "6fcaeb625d3ecb3358d9bcd01604a6383ad9b6436e8943aaa672a3f95f6fbec9"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/freeze.before.json",
+          "bytes": 55920,
+          "sha256": "6fcaeb625d3ecb3358d9bcd01604a6383ad9b6436e8943aaa672a3f95f6fbec9"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/pid-state.json",
+          "bytes": 56,
+          "sha256": "5936c8f4c81c740ea0585efbf435ceafe48f6745a9a76b2180b82c91cfa00976"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/resources.json",
+          "bytes": 2386,
+          "sha256": "c5d527ca9b7b0ef90eed212a4905e9a4a6e24ccc153f981917af6724def4c070"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/samples.jsonl",
+          "bytes": 705,
+          "sha256": "94f58abc4a3a5d057f7890441217cfc38d1bc9caa1875b3e9355e16d3b506bf2"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/stability.json",
+          "bytes": 537,
+          "sha256": "e649dfa271d70f41399e0f3e72cbd64e4989b52850148ca404ff983f3061b242"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-capture-nested/stdout.log",
+          "bytes": 108,
+          "sha256": "0450a117cec81fd2162d6ea513df73d5f541f4094d8bcc7caf066dacb7523b42"
+        }
+      ]
+    },
+    "source-export": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "var/go-sdk-caller-observations-2026-10-14/source-manifest.json",
+        "--diagnostics-dir",
+        "var/go-sdk-caller-observations-2026-10-14/export-drift"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 97.375,
+      "peak_rss_kib": 343952,
+      "peak_cpu_percent": 110.7,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:47:45.048136+00:00",
+      "completed_utc": "2026-10-13T18:49:22.637634+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/pid-state.json",
+          "bytes": 56,
+          "sha256": "0a60555021ac5bba2ff91421b03c10cc49ac2e2404a8d7491fe01eabcefc550e"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/resources.json",
+          "bytes": 5219,
+          "sha256": "b23064be5e3a3e341e42c1cf59ec29540217f02e1a9843d74da82971f9efc4c6"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/samples.jsonl",
+          "bytes": 40722,
+          "sha256": "5eb6015a8ffa6af54bc9832a5881d50bcb0898b1f58bc121347ae0826348e944"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/stability.json",
+          "bytes": 537,
+          "sha256": "c3ec81ee3661b7fe4b8e4574846918ea20030a21526409577daaa3319ab598fa"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/source-export/stdout.log",
+          "bytes": 86954,
+          "sha256": "1671b8e3a34a551d9b442e93b7f58f951f19e810a46f0f98266663c36e00ab6b"
+        }
+      ]
+    },
+    "type-private": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-private"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.361,
+      "peak_rss_kib": 1152,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:52:48.574321+00:00",
+      "completed_utc": "2026-10-13T18:52:50.017819+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/pid-state.json",
+          "bytes": 56,
+          "sha256": "8151ffa0a04e60603574ca117aa6cb6f70cf02f0f3dd933bd0b8f22c46c7e005"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/resources.json",
+          "bytes": 2607,
+          "sha256": "e48f7fb64f87193e594a08023fd754121fd62d86d0113b0946aa4460c7b6816c"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/samples.jsonl",
+          "bytes": 735,
+          "sha256": "08b7b5ebcfe5f30bea75fefc32a46cad65cc2fe0e5e697d4df56bb1afb84c779"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/stability.json",
+          "bytes": 537,
+          "sha256": "66d0c85a43055fa8302c719f0755889ef076cad0e571ece6293359629dda18f3"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-private/stdout.log",
+          "bytes": 71,
+          "sha256": "e41c101f51f5e3d1f675b7c05ccefa58f585ba719aa6de397b2d20c3c0d007df"
+        }
+      ]
+    },
+    "type-public": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-public"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.361,
+      "peak_rss_kib": 1152,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:52:42.843475+00:00",
+      "completed_utc": "2026-10-13T18:52:44.293692+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/pid-state.json",
+          "bytes": 56,
+          "sha256": "03138c78dd0576006738fc7d549b99c1e60770923551a5ab7262b070c09f7365"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/resources.json",
+          "bytes": 2606,
+          "sha256": "d2a016c79ea8506f1486b744525121be2748e7ec8226332c173fedb146e0ed42"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/samples.jsonl",
+          "bytes": 736,
+          "sha256": "e988c6e774c78af048d7ecf9c97e99775b123ec39df273e5a604e0850e46cecf"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/stability.json",
+          "bytes": 537,
+          "sha256": "d699f5eac1b402c7c49e0ce48b6a73ec1b519874f27dfec5f79ecba94838f3ae"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-public/stdout.log",
+          "bytes": 67,
+          "sha256": "61a58ebc251f7ade43f4aa47ca91c76599389ca5b5776f87ac50e6a76e116312"
+        }
+      ]
+    },
+    "type-syntax": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 2.438,
+      "peak_rss_kib": 20560,
+      "peak_cpu_percent": 3.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:52:36.005193+00:00",
+      "completed_utc": "2026-10-13T18:52:38.531503+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/pid-state.json",
+          "bytes": 56,
+          "sha256": "2910c3e1a336ff4b8bad3a207a15921cf76caf7f1bb5e50853d81529f87d99f6"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/resources.json",
+          "bytes": 2658,
+          "sha256": "7a2616cd64008fe5c2efa9f6de0ad7184c73f95c64166ad28b1ceaae07dd4416"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/samples.jsonl",
+          "bytes": 1277,
+          "sha256": "dcfd94c188f7cb249064aec7c90070c77099b35a133957749537a1d9333f4356"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/stability.json",
+          "bytes": 537,
+          "sha256": "3cf340183862fbbd0985deaad0e3f7105436b37e3f57e70b58062e1905e042f0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-syntax/stdout.log",
+          "bytes": 74,
+          "sha256": "6195043e862bdcc6dc8829d31b6634dd1ea394f18bdd5c838d9a828d5e88aae3"
+        }
+      ]
+    },
+    "type-variables": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.375,
+      "peak_rss_kib": 592,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1779,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T18:52:54.346910+00:00",
+      "completed_utc": "2026-10-13T18:52:55.803315+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/freeze.after.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/freeze.before.json",
+          "bytes": 190253,
+          "sha256": "d65d6db3c3706982d9faf669020fae49fab6f90a40c55b6a9ee9485f38bfb6e0"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/pid-state.json",
+          "bytes": 56,
+          "sha256": "69b1632b2fe4f8f329555d17bcb7c9ea0b4193455ab4e0c871a92c756af88e9c"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/resources.json",
+          "bytes": 2616,
+          "sha256": "63cdee0cfe76c3b71058a0faacc2417bf8b6ea048d669cda5e46e33e626feceb"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/samples.jsonl",
+          "bytes": 734,
+          "sha256": "2fb4db606131c0b8ea12e4bf7295448a049454dd4fb6b84cbae8f775e0ac1b25"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/stability.json",
+          "bytes": 537,
+          "sha256": "c32fc44758428c06627d05f3618d6ac0743d1dc9ed3283a795e06ae9156fa34b"
+        },
+        {
+          "path": "var/go-sdk-caller-observations-2026-10-14/type-variables/stdout.log",
+          "bytes": 66,
+          "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Sampled RSS can miss fast descendants; short-stage values are not actual peaks.",
+    "Atomic statement coverage does not measure branches, Python, C or subprocess interiors.",
+    "Current race was not rerun: the prior full race pass applies to f913d20.",
+    "Consumer candidate links are not a semantic parity certificate."
+  ],
+  "source": {
+    "sdk_version": "0.107.1",
+    "pydantic_version": "2.13.4",
+    "httpx_version": "0.28.1",
+    "cases": 224,
+    "forward_cases": 8,
+    "agent_runs": 3,
+    "source_sha256": {
+      "Agent._exec_tool": "1ff165a44e92072e06d01838b6b3fc547df04a5ad3a9b30e99c90324bc22fb88",
+      "Agent._exec_tool_batch": "081881ec716502bc6934216ff007cc5bfb9b0ba05e54fbf3dc319146e3c29949",
+      "Agent._loop": "8d8f5f98f3fc925a7622189e5ac951d8c5d5615bb1c256c3842d6782094a55c8",
+      "Agent.run": "c15129fa4d7065a4f243f8491ea630786e9c4e380d2570421a142d335eb523d3",
+      "HTTPX.encode_json": "30372895d631a8b5200f61f3cad175aa09b48db43be3b717291d7ef9f93f658e",
+      "SDK.BaseModel.construct": "4e81750a609288866b47d76a86e37e87f8cf19ea49fb6c291e306bb99264ca20",
+      "SDK._construct_field": "07cf48334b85f0fbc5be5085b7b156f22ff27b9e8e1d45b9b76c335dc52bf9c2",
+      "SDK.accumulate_event": "9337d2e1a23a642804af52ff9b8365dd9c11c1093b6a75db396129e2c3300098",
+      "SDK.construct_type": "44ce6c3ca70b630356142d5daee33d57d37903f2a1bfec38a3f33ea9c7630b37",
+      "Tool.run": "1b83461c5fa2a0aabf4daf74fd9eb42a1752b94fc6d59f250b2e7170cb6bb897",
+      "_content_payload": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505",
+      "_tool_action_id": "5a555a6f7c13f198c77372cffd2ac88a3d9602bccd0d7ec7bc18cd26c9adb566"
+    },
+    "sdk_schema_sha256": {
+      "DirectCaller": "d2c7c88d8463d8bf43b38c90c693ca0f34ca9a8d470860032563ca3827e955c1",
+      "ParsedMessage": "a0c3f591482e9a21c4397032f1b433c87a693840e7e1ca09b8231218e15c3a21",
+      "ServerToolCaller": "0869fe8eb9f48459d3c805fab5dc12f6bec855d979c4b5e0fdc79c4f15868812",
+      "ServerToolCaller20260120": "35687094ddf616fdd9e93cf6fccf4d1990f2c0273323d86582a59e2cb33824e4",
+      "ServerToolUseBlock": "6d4f8eae05b07fe821c808eb181f29148467968bb08990fa535b703f128363eb",
+      "ToolUseBlock": "4582cdfc9fcc15eda328f30272c5cc2da62fcadbbd87f4b5edb07065639c8918",
+      "WebFetchToolResultBlock": "46fdaba555abcc401661c2ed46e4704f05601bbe01163266a366f77e34176a48",
+      "WebSearchToolResultBlock": "eb4d106c713507265463fd515e2ad37e46144faaae09f9507f3dc8936df28b64"
+    },
+    "fixture": {
+      "path": "go/testdata/python-provider-caller-observations.json",
+      "bytes": 503568,
+      "sha256": "faf429cdf39ff6f11baedadf0aa925266714f477e8557526a054fe2b42784870"
+    },
+    "capture": {
+      "path": "var/go-sdk-caller-observations-2026-10-14/captured-source.json",
+      "bytes": 503568,
+      "sha256": "faf429cdf39ff6f11baedadf0aa925266714f477e8557526a054fe2b42784870"
+    },
+    "manifest": {
+      "path": "var/go-sdk-caller-observations-2026-10-14/source-manifest.json",
+      "bytes": 36438,
+      "sha256": "d9d8f8b1fd70655092cc667b2e483df4fcc2a3b56fca2e316430d0d469746e0f"
+    }
+  },
+  "before_native": {
+    "baseline": "ac4d603a9d96291dd698aad8f0730df15be3c191",
+    "fixture": {
+      "path": "var/go-sdk-caller-observations-2026-10-14/before-native/workspace/go/testdata/python-provider-caller-observations.json",
+      "bytes": 503568,
+      "sha256": "faf429cdf39ff6f11baedadf0aa925266714f477e8557526a054fe2b42784870"
+    },
+    "probe": {
+      "path": "var/go-sdk-caller-observations-2026-10-14/before-native/workspace/go/provider/caller_observation_before_test.go",
+      "bytes": 1468,
+      "sha256": "83fb1c5fb9917b519d543501777642474c329f384b7c5295f53f4b3b00810d0d"
+    },
+    "test_results": {
+      "packages": {
+        "fail": 1
+      },
+      "top_level_tests": {
+        "fail": 1
+      },
+      "subtests": {
+        "fail": 224
+      },
+      "plain_diagnostics": []
+    }
+  },
+  "prior_160_fixture": {
+    "path": "go/testdata/python-provider-caller.json",
+    "bytes": 417888,
+    "sha256": "5c8e8d0063373ee964582c9f71c38ee0bde4b7a48ddf93b7903286827e38d10f",
+    "unchanged_from_baseline": true
+  },
+  "consumer_inventory": {
+    "statuses": {
+      "test_pass_observed": 255,
+      "unreferenced": 2
+    },
+    "missing": [
+      "python-provider-idna.json",
+      "python-syntax-parser.json"
+    ],
+    "diagnostics": "2 fixtures lack a candidate caller with an observed passing test result\nexit status 1",
+    "manifest_sha256": "d9d8f8b1fd70655092cc667b2e483df4fcc2a3b56fca2e316430d0d469746e0f",
+    "results_sha256": "f9fe52ee9be371a9a7088d5eb59d981ca69453613d4885bcd205d8870b9f788a"
+  },
+  "complete_gate_input_equality": {
+    "go-vet": true,
+    "source-export": true,
+    "python-full": true,
+    "scans": true,
+    "type-syntax": true,
+    "type-public": true,
+    "type-private": true,
+    "type-variables": true,
+    "invariants": true,
+    "consumers": true
+  },
+  "coverage": {
+    "profile": {
+      "path": "var/go-sdk-caller-observations-2026-10-14/go-full-coverage-final/coverage.out",
+      "bytes": 91717338,
+      "sha256": "6a05b2effdbb15a1d05e0ca05ff6b54f02dbfb8e25e17d19e3622abd46b608f8"
+    },
+    "rows": 1312577,
+    "unique_spans": 26786,
+    "all_go": {
+      "covered": 34184,
+      "statements": 38336,
+      "percent": 89.16944908180301
+    },
+    "application": {
+      "covered": 33818,
+      "statements": 37821,
+      "percent": 89.41593294730441
+    },
+    "provider": {
+      "covered": 1575,
+      "statements": 1827,
+      "percent": 86.20689655172414
+    }
+  },
+  "architecture": {
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "specification": {
+      "sha256": "1af183c1149d2de1d5e0d636facd7700827179caee0c1cf0d5d52f7b2170abb6",
+      "bytes": 154805
+    },
+    "artifact": {
+      "sha256": "2e3589d0eab9bba9e741d00686841c5517db756e785bf9d332c940d86434938b",
+      "bytes": 809511
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    },
+    "rendered_html_visual_review": "unavailable: earlier localhost browser review denied"
+  },
+  "image": [
+    {
+      "path": "docs/audits/go-sdk-caller-observations-infographic-2026-10-14.png",
+      "bytes": 1865676,
+      "sha256": "27a181b0a68404f97428a7eff45fe651d4bd1e739bd555585d18f85283712eae"
+    },
+    {
+      "path": "docs/audits/go-sdk-caller-observations-infographic-2026-10-14.prompt.txt",
+      "bytes": 2759,
+      "sha256": "5dbf584705d13c75f662ba4b8a1cebfea282c6035d140a161e4c04f8966f63d2"
+    }
+  ],
+  "evidence_tools": [
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/run.py",
+      "bytes": 6806,
+      "sha256": "9922c72aff463517a7afc8ae26598be2e06431847af29bf25f822cb1ff260b0e"
+    },
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/run-source.py",
+      "bytes": 6517,
+      "sha256": "a26075338ee97c1347f5efa10be83a5e8a259dfbe5681de421c184e50d3c2b9f"
+    },
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/run-protocol.py",
+      "bytes": 6597,
+      "sha256": "da3268e6766b086edbdf501e535570d6cb44fd0f744b5e9f81da2a011f5dd8e4"
+    },
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/run-before.py",
+      "bytes": 6774,
+      "sha256": "6f1c12332223eac4a35becca36c4ed526e93166f8741874bf772dbba4194aeca"
+    },
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/resource_watch.py",
+      "bytes": 17037,
+      "sha256": "d2112faf728651ad3de4994ef456d4b65d5058447b3df24c43b6dfb1e58165ed"
+    },
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/resource_watch.pre-zombie-fix.py",
+      "bytes": 16940,
+      "sha256": "76f6c9df8c71c9cde61e2e1ad35bf101f08caab83bf37893d1fd07ade6a56b3a"
+    },
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/capture.py",
+      "bytes": 662,
+      "sha256": "aac61529e4afb7c9b7092fd290788f815f6b18b064211fc054196636761b2bd9"
+    },
+    {
+      "path": "var/go-sdk-caller-observations-2026-10-14/summarize.py",
+      "bytes": 7137,
+      "sha256": "ad52637133798198abf8de4abcb05cdaf4b53dc9a21235e18a47d176a981518f"
+    }
+  ],
+  "validation_summary": {
+    "go_packages_passed": 51,
+    "go_top_level_passed": 1448,
+    "go_top_level_skipped": 6,
+    "python_passed": 2259,
+    "python_skipped": 28,
+    "python_warnings": 104,
+    "python_subtests_passed": 24,
+    "source_files_current": 256,
+    "invariant_modules": 77,
+    "scan_guards": 19,
+    "type_findings": 0,
+    "consumer_candidates_passed": 255,
+    "consumer_inventory_total": 257
+  },
+  "resource_monitor_correction": {
+    "blocked_stage": "go-full-coverage-fixed",
+    "reason": "owned_process_priority_not_lowered",
+    "observed_process": {
+      "pid": 46679,
+      "comm": "(mcp.test)",
+      "rss_kib": 0,
+      "cpu_percent": 0,
+      "nice": 0
+    },
+    "correction": "Record ps stat and exempt Z-state processes only from runnable-priority guard; CPU/RSS/pressure limits unchanged.",
+    "original_helper_sha256": "76f6c9df8c71c9cde61e2e1ad35bf101f08caab83bf37893d1fd07ade6a56b3a",
+    "updated_helper_sha256": "d2112faf728651ad3de4994ef456d4b65d5058447b3df24c43b6dfb1e58165ed"
+  },
+  "environment_limitations": {
+    "linux_full_validation": "not run: Docker daemon unavailable; prior pinned Linux receipt is historical only",
+    "orb_inspection": "read-only-intended CLI attempted VM startup and timed out; not repeated",
+    "remote": "not refreshed or pushed",
+    "guards": "Python guarded runtime and mutation anchors unchanged; verify_guards not rerun",
+    "race": "current slice not rerun; prior full race applies only to f913d20"
+  },
+  "image_generation": {
+    "tool": "built-in image_gen.imagegen",
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_unchanged": true,
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "initial_image": "/Users/yanjixiong/.codex/generated_images/01a0fb06-f8fc-7e13-b9ed-450a10fb167c/exec-efd5d202-e30e-4eee-9579-0f4eb3ea97c8.png",
+    "selected_image": "/Users/yanjixiong/.codex/generated_images/01a0fb06-f8fc-7e13-b9ed-450a10fb167c/exec-f5c8022d-0deb-45f3-9824-8884f6083619.png",
+    "visual_review": "224 count and finite encoder marker corrected; all five base layers retained; final inspected inline"
+  }
+}

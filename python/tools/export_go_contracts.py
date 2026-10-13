@@ -6758,6 +6758,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.provider_tool_search_contracts import provider_tool_search_contracts
     from tools.provider_server_tool_contracts import provider_server_tool_contracts
     from tools.provider_caller_contracts import provider_caller_contracts
+    from tools.provider_caller_observation_contracts import provider_caller_observation_contracts
     from tools.provider_partial_input_contracts import provider_partial_input_contracts
     from tools.provider_partial_json_contracts import provider_partial_json_contracts
     from tools.provider_tool_input_consumer_contracts import provider_tool_input_consumer_contracts
@@ -7163,6 +7164,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider-tool-search.json": _json_bytes(provider_tool_search_contracts()),
         "python-provider-server-tool.json": _json_bytes(provider_server_tool_contracts()),
         "python-provider-caller.json": _json_bytes(provider_caller_contracts()),
+        "python-provider-caller-observations.json": _json_bytes(provider_caller_observation_contracts()),
         "python-provider-partial-input.json": _json_bytes(provider_partial_input_contracts()),
         "python-provider-partial-json.json": _json_bytes(provider_partial_json_contracts()),
         "python-provider-tool-input-consumer.json": _json_bytes(provider_tool_input_consumer_contracts(scratch)),

@@ -1,0 +1,23 @@
+Initial built-in imagegen edit prompt (base image):
+
+Edit target: the supplied mini-loop layered architecture base image. Preserve its five layers, component positions, visual style, Chinese typography, relationships and overall architecture. No components were added or removed; this is an iteration overlay, not a replacement base.
+Title: mini-loop 本轮迭代 · SDK caller 观察值
+Subtitle: 2026-10-14 · Python 基准与独立 Go 实现 · 完整迁移验收仍在进行
+Highlight Model Provider in L3 with cyan and the history/SQLite and contract audit evidence in L5 with violet. Draw an understated dotted observation path from Provider to L5 labelled caller 元数据保留. Add small numbered markers at provider decoding, finite request encoding, and history recovery, without hiding original architecture.
+Use a right sidebar with these exact short labels and readable explanatory text:
+1 SDK 实际构造行为
+224 组 direct / SSE：未知 type、标量与列表、NaN / Infinity；保持 SDK 默认值。
+2 先执行，再编码
+8 组真实 SDK 转发 + 3 组真实 Agent：安全工具先执行，非有限 caller 在下一请求编码失败。
+3 历史与 SQLite
+完整 caller 观察值经过克隆、遮罩、归档和数据库重开保留。
+4 身份与权限不变
+执行身份使用外层 tool-use ID；caller 元数据不授予 owner、工具或权限。
+5 有限网络 JSON
+标准请求和事件保持有限 JSON；历史观察值使用独立归档表示。
+Footer: 本轮无新增依赖或架构组件 · 固定 SDK 0.107.1 / Pydantic 2.13.4 · 验证结果见旁边的交付文章
+Do not show a full migration acceptance badge or invent a test result, coverage number or performance claim. Keep the rest of the base structure visible and faithful. Render as a polished landscape Chinese engineering infographic with clear hierarchy and generous text spacing. Opaque background.
+
+Correction prompt (initial iteration image):
+
+Edit target: the supplied iteration infographic. Preserve all five architecture layers, component content, colors, sidebar and composition. Correct the sidebar item 1 count: it must read exactly “224 组 direct / SSE：未知 type、标量与列表、NaN / Infinity；保持 SDK 默认值。” The current image incorrectly says 24. Also move the small marker “2 有限请求编码” from layer L4 to beside the Model Provider box in L3: finite model request encoding belongs to Provider, not the optional tool backend layer. Route the violet dotted “caller 元数据保留” observation line outside component cards to L5; do not run it through the MCP backend card or imply an MCP relationship. Keep marker 3 on SQLite. Do not change any other words or architecture elements. Opaque background.

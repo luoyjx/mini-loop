@@ -1,11 +1,90 @@
 package provider
 
 import (
-	"encoding/json"
 	"errors"
+
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
+
+// Only these SDK observations may contain legacy numbers. The remaining block
+// fields still pass the ordinary finite JSON decoder and its named variants.
+type sdkBlockObservations struct {
+	input         jsonvalue.Value
+	inputPresent  bool
+	caller        jsonvalue.Value
+	callerPresent bool
+}
+
+func prepareSDKBlock(data []byte) ([]byte, sdkBlockObservations, error) {
+	var observations sdkBlockObservations
+	if len(data) > protocol.MaxWireBytes {
+		return nil, observations, errors.New("SDK block exceeds wire bound")
+	}
+	value, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return nil, observations, err
+	}
+	kind, _ := value.Lookup("type")
+	name, _ := kind.Text()
+	switch protocol.BlockKind(name) {
+	case protocol.BlockToolUse, protocol.BlockServerToolUse:
+		if input, present := value.Lookup("input"); present {
+			// Finite inputs must reach their original named decoder. Several
+			// tool schemas require an object before observation restoration.
+			if _, encodeErr := input.MarshalUTF8(); errors.Is(encodeErr, jsonvalue.ErrNonfinite) {
+				observations.input, observations.inputPresent = input, true
+				value = replaceSDKField(value, "input", jsonvalue.NullValue())
+			} else if encodeErr != nil {
+				return nil, observations, encodeErr
+			}
+		}
+		fallthrough
+	case protocol.BlockWebSearchToolResult, protocol.BlockWebFetchToolResult:
+		observations.caller, observations.callerPresent = value.Lookup("caller")
+		if observations.callerPresent {
+			value = replaceSDKField(value, "caller", jsonvalue.NullValue())
+		}
+	}
+	finite, err := value.MarshalUTF8()
+	return finite, observations, err
+}
+
+func (observations sdkBlockObservations) restore(block protocol.Block) (protocol.Block, error) {
+	var err error
+	if observations.inputPresent {
+		data, encodeErr := observations.input.MarshalLegacyUTF8()
+		if encodeErr != nil {
+			return protocol.Block{}, encodeErr
+		}
+		block, err = block.WithSDKObservedInput(data)
+		if err != nil {
+			return protocol.Block{}, err
+		}
+	}
+	if observations.callerPresent {
+		data, encodeErr := observations.caller.MarshalLegacyUTF8()
+		if encodeErr != nil {
+			return protocol.Block{}, encodeErr
+		}
+		block, err = block.WithSDKObservedCaller(data)
+		if err != nil {
+			return protocol.Block{}, err
+		}
+	}
+	return block, nil
+}
+
+func checkSDKBlockSize(block protocol.Block) error {
+	data, err := block.MarshalObservationJSON()
+	if err != nil {
+		return err
+	}
+	if len(data) > protocol.MaxWireBytes {
+		return errors.New("normalized SDK block exceeds protocol limit")
+	}
+	return nil
+}
 
 func replaceSDKField(value jsonvalue.Value, key string, replacement jsonvalue.Value) jsonvalue.Value {
 	fields := make([]jsonvalue.Field, 0, len(value.Keys()))
@@ -51,36 +130,5 @@ func decodeLegacySDKReply(data []byte) (protocol.ModelReply, error) {
 	return reply, reply.Validate()
 }
 func decodeLegacySDKBlock(data []byte) (protocol.Block, error) {
-	if json.Valid(data) {
-		return decodeBlock(data)
-	}
-	if len(data) > protocol.MaxWireBytes {
-		return protocol.Block{}, errors.New("SDK block exceeds wire bound")
-	}
-	value, err := jsonvalue.Decode(string(data))
-	if err != nil {
-		return protocol.Block{}, err
-	}
-	kind, _ := value.Lookup("type")
-	name, _ := kind.Text()
-	if name != string(protocol.BlockToolUse) && name != string(protocol.BlockServerToolUse) {
-		return protocol.Block{}, errors.New("nonfinite SDK input requires a tool observation")
-	}
-	input, present := value.Lookup("input")
-	if !present {
-		return protocol.Block{}, errors.New("tool observation requires input")
-	}
-	finite, err := replaceSDKField(value, "input", jsonvalue.NullValue()).MarshalJSON()
-	if err != nil {
-		return protocol.Block{}, err
-	}
-	block, err := decodeBlock(finite)
-	if err != nil {
-		return protocol.Block{}, err
-	}
-	original, err := input.MarshalLegacyUTF8()
-	if err != nil {
-		return protocol.Block{}, err
-	}
-	return block.WithSDKObservedInput(original)
+	return decodeBlock(data)
 }

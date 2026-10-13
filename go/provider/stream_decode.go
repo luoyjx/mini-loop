@@ -171,6 +171,32 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 	default:
 		return nil // SDK ignores unknown SSE event names.
 	}
+	var observations sdkBlockObservations
+	if event == "content_block_start" {
+		value, err := jsonvalue.Decode(string(data))
+		if err != nil {
+			return badStream("malformed event JSON")
+		}
+		if rawBlock, present := value.Lookup("content_block"); present {
+			raw, err := rawBlock.MarshalLegacyUTF8()
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			finite, captured, err := prepareSDKBlock(raw)
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			observations = captured
+			block, err := jsonvalue.Decode(string(finite))
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			data, err = replaceSDKField(value, "content_block", block).MarshalUTF8()
+			if err != nil {
+				return badStream("malformed event JSON")
+			}
+		}
+	}
 	var wire struct {
 		Type    string          `json:"type"`
 		Index   *int            `json:"index"`
@@ -434,11 +460,16 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			b.signature = *block.Signature
 		case protocol.BlockToolUse:
 			var caller *protocol.ToolCaller
-			if len(block.Caller) > 0 && string(block.Caller) != "null" {
-				caller = &protocol.ToolCaller{}
-				if json.Unmarshal(block.Caller, caller) != nil {
+			if observations.callerPresent && observations.caller.Kind() != jsonvalue.Null {
+				data, err := observations.caller.MarshalLegacyUTF8()
+				if err != nil {
+					return badStream(c.clean(err.Error(), 500))
+				}
+				decoded, err := protocol.DecodeSDKToolCaller(data)
+				if err != nil {
 					return badStream("malformed starting block")
 				}
+				caller = &decoded
 			}
 			if block.ID == nil || block.Name == nil || len(block.Input) == 0 {
 				return badStream("tool fields missing")
@@ -449,6 +480,26 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			b.caller = caller
 		default:
 			return badStream("unsupported content block")
+		}
+		if observations.inputPresent {
+			input, err := observations.input.MarshalLegacyUTF8()
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			b.input = input
+		}
+		if observations.callerPresent && block.Type != protocol.BlockToolUse {
+			caller, err := observations.caller.MarshalLegacyUTF8()
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			b.block, err = b.block.WithSDKObservedCaller(caller)
+			if err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
+			if err := checkSDKBlockSize(b.block); err != nil {
+				return badStream(c.clean(err.Error(), 500))
+			}
 		}
 		s.blocks = append(s.blocks, b)
 		return nil
@@ -494,6 +545,9 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 			b.block = protocol.NewToolUseWithCaller(b.id, input, b.caller)
 		}
 		if err := b.block.Validate(); err != nil {
+			return badStream(c.clean(err.Error(), 500))
+		}
+		if err := checkSDKBlockSize(b.block); err != nil {
 			return badStream(c.clean(err.Error(), 500))
 		}
 		b.stopped = true

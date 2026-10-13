@@ -570,14 +570,15 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `0b83339`. The caller-ID iteration preserves
-known code-execution caller IDs as finite immutable `SDKMetadataText`
-observations. Empty, missing/null and non-text SDK IDs survive direct/SSE,
-forwarding, masking and history; missing IDs normalize to null. The enclosing
-tool-use ID remains execution identity. The previous validation baseline is
-`f913d20`; its coverage percentages below apply to that delivered slice.
-Current caller validation is recorded in the
-[iteration receipt](docs/audits/go-caller-id-observations-2026-10-14.md).
+Current runtime review baseline: `ac4d603`. The SDK caller-observation iteration
+retains unknown or malformed discriminator values, scalar/list roots and
+nonfinite metadata in a named immutable `SDKCallerObservation`. The pinned
+SDK's construction defaults are applied only at provider admission; historical
+decode preserves stored values. A safe tool can execute before a nonfinite
+caller causes the next model request's finite encoder to fail. The enclosing
+tool-use ID remains execution identity. Current validation and measured coverage
+are recorded in the
+[iteration receipt](docs/audits/go-sdk-caller-observations-2026-10-14.md).
 
 Previous validation review baseline: `f913d20`. The current memory-efficiency iteration
 keeps this architecture unchanged. Isolated CLI tests now pass the outer Go
@@ -994,7 +995,7 @@ flowchart LR
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / Python Unicode hostname casing and default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + inert caller ID observations / extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata / whole-usage projections / delta faults · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>captured SDK raw paths / literal dot normalization / Python Unicode hostname casing and default ports<br/>literal path: private standard Transport clone / proxy policy once / route-specific wire URL clone / owned idle pool<br/>HTTP proxy absolute-form · direct / HTTPS origin-form · standard CONNECT / TLS<br/>captured / injected credentials · automatic profile / OAuth / federation<br/>RAM token cache · best-effort private profile file cache<br/>request auth before HTTP / retry · typed replies + inert SDK caller roots / defaults / nonfinite metadata / extensions + server tool-use inputs + container-upload + server search results / tool references / fetched documents / code / Bash / editor replies + citations + usage schema · SSE · UTF-8 tool-result wire · named usage observations / metering · SDK usage metadata / whole-usage projections / delta faults · per-delta partial input · named nonfinite SDK snapshots / legacy archives / finite HTTP encoding · inert unknown-model calls · deferred Bash and background binding failures / named shell root observations / named Bash option projections / nonfinite Bash/background command observations / masked Bash and background display projections · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1635,8 +1636,17 @@ requires nonempty text. All 160 fixed-SDK direct/SSE captures cover four block
 kinds and both code caller tags, retaining the original 48 cases unchanged.
 Caller metadata is masked with keys and values, cloned without mutation, and
 retained through archival decode and SQLite reopen. Network decoding remains
-bounded; historical callers follow the parent archival policy. Unknown caller
-kinds and malformed discriminators remain refused. Observations never replace
+bounded; historical callers follow the parent archival policy. Provider admission
+also retains unknown/missing/null/non-text discriminator values, scalar/list
+caller roots and NaN/Infinity in an immutable named `SDKCallerObservation`.
+Another 224 pinned SDK direct/SSE captures cover these profiles. List mapping
+elements receive the SDK's first-branch `type: null` default without adding a
+missing code caller ID. Historical decoding never reapplies these defaults.
+Legacy history, masking and SQLite reopen preserve the complete observation;
+ordinary network JSON remains finite. Eight real SDK forwarding cases and three
+actual Source Agent runs establish that a safe tool executes before a nonfinite
+caller fails next-request encoding, with no second transport request. Strict
+public caller decoding still refuses unknown roots. Observations never replace
 the enclosing tool-use ID or grant tool, owner or permission authority.
 The SDK's 12 declared ContentBlock kinds are represented; complete provider and
 default-path parity still require the remaining field/consumer audit.
