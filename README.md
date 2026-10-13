@@ -567,7 +567,7 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: based on local main `6cb887e`, with finite MCP model-root
+Runtime review baseline: implementation `48f7b85`, based on main `6cb887e`, with finite MCP model-root
 observations and whole-batch preparation. Fifty-two actual Source profiles and
 four native SQLite reopen/owner-restore cases pass;48 original failures retained.
 The first full cohort exposed one obsolete model-null assertion; its failed log

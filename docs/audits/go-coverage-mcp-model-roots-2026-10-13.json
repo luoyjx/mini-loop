@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-13",
+  "baseline": "6cb887e",
+  "mode": "race+atomic",
+  "profile_sha256": "b607e5fa86dec5445a37adf76da9c2ec50d9a26ec03ff847e08e9660a66eda79",
+  "raw_rows": 1292242,
+  "unique_blocks": 26371,
+  "method": "Union maximum hits over identical spans; equal statement counts required. App excludes tools/ only; command mains included.",
+  "app": {
+    "covered": 33313,
+    "statements": 37264,
+    "percent": 89.39727350794332
+  },
+  "all": {
+    "covered": 33679,
+    "statements": 37779,
+    "percent": 89.14740993673735
+  },
+  "provider": {
+    "covered": 1522,
+    "statements": 1756,
+    "percent": 86.67425968109339
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/coverage.out",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 486.513
+  },
+  "retained_profile": "var/go-mcp-model-roots-2026-10-13/coverage.out",
+  "scope": "Darwin statements only; no native C, subprocess interiors, Python, branches or other profiles. Not full migration acceptance.",
+  "implementation_commit": "48f7b85575ada23f2b9950440b3627055959b3b5"
+}

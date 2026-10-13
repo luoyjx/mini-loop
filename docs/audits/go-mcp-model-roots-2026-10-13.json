@@ -1,0 +1,796 @@
+{
+  "date": "2026-10-13",
+  "baseline": "6cb887e",
+  "branch": "codex/go-mcp-model-roots",
+  "scope": "Finite MCP model observations and whole-batch Python dict preparation before effects; explicit MCP inputs remain object-only. Not complete root or migration acceptance.",
+  "source_profiles": 52,
+  "case_names": [
+    "auto/object",
+    "auto/empty-object",
+    "auto/null",
+    "auto/false",
+    "auto/true",
+    "auto/true/batch",
+    "auto/zero",
+    "auto/integer",
+    "auto/negative",
+    "auto/float-zero",
+    "auto/negative-zero",
+    "auto/float",
+    "auto/empty-text",
+    "auto/text",
+    "auto/long-text",
+    "auto/empty-array",
+    "auto/pair-array",
+    "auto/pair-array/batch",
+    "auto/repeated-pairs",
+    "auto/text-pairs",
+    "auto/unicode-pair",
+    "auto/integer-row",
+    "auto/integer-row/batch",
+    "auto/empty-row",
+    "auto/short-row",
+    "auto/long-row",
+    "readonly/object",
+    "readonly/empty-object",
+    "readonly/null",
+    "readonly/false",
+    "readonly/true",
+    "readonly/true/batch",
+    "readonly/zero",
+    "readonly/integer",
+    "readonly/negative",
+    "readonly/float-zero",
+    "readonly/negative-zero",
+    "readonly/float",
+    "readonly/empty-text",
+    "readonly/text",
+    "readonly/long-text",
+    "readonly/empty-array",
+    "readonly/pair-array",
+    "readonly/pair-array/batch",
+    "readonly/repeated-pairs",
+    "readonly/text-pairs",
+    "readonly/unicode-pair",
+    "readonly/integer-row",
+    "readonly/integer-row/batch",
+    "readonly/empty-row",
+    "readonly/short-row",
+    "readonly/long-row"
+  ],
+  "source_files": {
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/mini_loop/mcp.py": "a1ee135a3bbc66a630ddef0f3a35abb3cf52113443ca47b65a55907a3cf5ed91",
+    "python/mini_loop/permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+    "python/tools/mcp_model_root_contracts.py": "d147e842641bf3fac5e8d9e32a080c49c89527cbaea8bc8b909d0f763713042c"
+  },
+  "source_fixture_sha256": "7b81a5884105194bcddb73fc8b423e566436dc9b516babcd50a07fb0cd13e646",
+  "source_manifest": {
+    "path": "var/go-mcp-model-roots-2026-10-13/source-manifest.json",
+    "sha256": "e8b18feae38763a4853dc536ba2c119f1b558ad133793d77122a05907c0561c0",
+    "current_files": 245
+  },
+  "initial_failure": {
+    "description": "Original native decoder rejects model roots prematurely. Forty-eight of the52 actual Source root/mode/batch comparisons fail before adoption; original expectations retained.",
+    "failure_count": 48,
+    "log": "var/go-mcp-model-roots-2026-10-13/native-before.log"
+  },
+  "setup_diagnostic": "Initial new test used nonexistent NewMCPRegistry constructor. Corrected to existing zero-value MCPRegistry. This compile failure is not semantic evidence.",
+  "prior_failed_cohort": {
+    "gates": [
+      {
+        "name": "source",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check",
+          "--manifest",
+          "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/source-manifest.json"
+        ],
+        "exit_code": 0,
+        "seconds": 152.957
+      },
+      {
+        "name": "focused-go",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "./agent",
+          "./protocol",
+          "./provider",
+          "./sqlitestate",
+          "-run",
+          "TestMCPModelRoots|TestMCPGate|TestMCPRegistration|TestNonfiniteManaged",
+          "-count=1"
+        ],
+        "exit_code": 0,
+        "seconds": 5.175
+      },
+      {
+        "name": "focused-python",
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "python/tests/test_go_export_diagnostics.py",
+          "python/tests/test_extensions.py",
+          "python/tests/test_extension_contracts.py",
+          "python/tests/test_tool_pipeline.py"
+        ],
+        "exit_code": 0,
+        "seconds": 0.86
+      },
+      {
+        "name": "types",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "exit_code": 0,
+        "seconds": 0.577
+      },
+      {
+        "name": "public-types",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "exit_code": 0,
+        "seconds": 0.816
+      },
+      {
+        "name": "private-types",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "exit_code": 0,
+        "seconds": 0.692
+      },
+      {
+        "name": "variables",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "exit_code": 0,
+        "seconds": 0.715
+      },
+      {
+        "name": "collector-tests",
+        "cwd": "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/compiler-collector",
+        "command": [
+          "go",
+          "test",
+          "-count=1",
+          "./..."
+        ],
+        "exit_code": 0,
+        "seconds": 0.736
+      },
+      {
+        "name": "body-inventory",
+        "cwd": "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/compiler-collector",
+        "command": [
+          "go",
+          "run",
+          ".",
+          "/Users/yanjixiong/github/mini-loop/go"
+        ],
+        "exit_code": 0,
+        "seconds": 1.185
+      },
+      {
+        "name": "ordinary",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "test",
+          "-json",
+          "-p=1",
+          "-count=1",
+          "-timeout=300s",
+          "./..."
+        ],
+        "exit_code": 1,
+        "seconds": 195.274
+      },
+      {
+        "name": "inventory",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "run",
+          "./tools/contractaudit",
+          "-root",
+          ".",
+          "-manifest",
+          "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/source-manifest.json",
+          "-results",
+          "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/ordinary.log",
+          "-require-results"
+        ],
+        "exit_code": 1,
+        "seconds": 0.976
+      },
+      {
+        "name": "vet",
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "command": [
+          "go",
+          "vet",
+          "./..."
+        ],
+        "exit_code": 0,
+        "seconds": 1.103
+      }
+    ],
+    "frozen_sha256": "4ecd2bc031d181b53d34aa05111ba0b40ea524e2b3d9e546cfb7b10ff1c52c7e",
+    "ordinary_log": "var/go-mcp-model-roots-2026-10-13/failed-cohort/ordinary.log",
+    "ordinary_sha256": "1f617340e76a54e0bb91e8e0ed4d60911d44f635d531d26ca37c9b3d07ccbfcd",
+    "reason": "An existing unknown-model test asserted that MCP null must fail at model ingress. Actual Agent.run Source evidence requires retaining null and preparing an empty object before gate execution. Replaced that model negative with MCP NaN rejection and added explicit DecodeToolInput null refusal. New52-case evidence is unchanged.",
+    "interruption": {
+      "reason": "Ordinary test exposed obsolete MCP null-model rejection assertion; stop unchanged failed cohort before repairing guard with actual Source evidence.",
+      "state": {
+        "worker_pid": 78100,
+        "child_pid": 85681,
+        "stage": "race",
+        "command": [
+          "go",
+          "test",
+          "-race",
+          "-p=1",
+          "-count=1",
+          "-timeout=300s",
+          "-covermode=atomic",
+          "-coverpkg=./...",
+          "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/coverage.out",
+          "./..."
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "status": "running",
+        "started_utc": "2026-10-13T01:43:57.766896+00:00"
+      },
+      "signal": "SIGTERM verified owned process group 78100"
+    },
+    "partial_race": "Stopped verified owned process group before editing; partial race profile supplies no accepted coverage. Final cohort is separately frozen with unchanged thresholds, fixtures, permissions and runtime implementation."
+  },
+  "boundaries": {
+    "model": "Private mcpModel tag retains closed immutable finite roots. MCP() grants no callable arguments for non-object observations. Explicit DecodeToolInput/MCPToolInput remain object-only.",
+    "batch": "Existing named preparation failure/root projections reused. Falsey becomes{}, string-key pair/text rows become detached objects, duplicate last wins; all calls prepared before any gate or handler effect. Source failure classes/messages and original assistant history compare.",
+    "risk": "MCP stays external risk even when annotations claim readOnlyHint. Readonly denials/hooks/results remain actual Source comparisons; no authority added.",
+    "recovery": "Four real native SQLite close/reopen/explicit owner-restore profiles retain original model roots, foreign-owner refusal, current interactive authority and fresh lease; no completed MCP effect replay. Connection remains borrowed/operator owned.",
+    "limits": "Nonfinite roots, non-string pair keys, wider roots/caller/remote/lifetime profiles remain open. No new connection ownership, schema validator, external-effect fencing or default installed tool."
+  },
+  "gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/source-manifest.json"
+      ],
+      "exit_code": 0,
+      "seconds": 94.988
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "./agent",
+        "./protocol",
+        "./provider",
+        "./sqlitestate",
+        "-run",
+        "TestMCPModelRoots|TestMCPGate|TestMCPRegistration|TestNonfiniteManaged",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 2.137
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_export_diagnostics.py",
+        "python/tests/test_extensions.py",
+        "python/tests/test_extension_contracts.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.673
+    },
+    {
+      "name": "types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.593
+    },
+    {
+      "name": "public-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "exit_code": 0,
+      "seconds": 0.642
+    },
+    {
+      "name": "private-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "exit_code": 0,
+      "seconds": 0.721
+    },
+    {
+      "name": "variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "seconds": 0.71
+    },
+    {
+      "name": "collector-tests",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 0.621
+    },
+    {
+      "name": "body-inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/compiler-collector",
+      "command": [
+        "go",
+        "run",
+        ".",
+        "/Users/yanjixiong/github/mini-loop/go"
+      ],
+      "exit_code": 0,
+      "seconds": 1.151
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 201.337
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/ordinary.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "seconds": 1.021
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 1.001
+    },
+    {
+      "name": "race",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-mcp-model-roots-2026-10-13/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "seconds": 486.513
+    },
+    {
+      "name": "python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 92.276
+    },
+    {
+      "name": "scans",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "seconds": 9.577
+    },
+    {
+      "name": "guards-tool",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "guard"
+      ],
+      "exit_code": 0,
+      "seconds": 5.208
+    },
+    {
+      "name": "diff",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.051
+    }
+  ],
+  "frozen_inputs": {
+    "count": 1686,
+    "path": "var/go-mcp-model-roots-2026-10-13/frozen.json",
+    "sha256": "583631ed5b4857773dbe1a1c2bece40717ff8b9f88d14aec38d0f6986730b939",
+    "changes_during_gates": []
+  },
+  "implementation_hashes": {
+    "go/protocol/bash_binding.go": "d54a3c798e60c9afdabcd3d5ff188a92574d44fac3c7d38aba2528298f22c99e",
+    "go/protocol/mcp_tools.go": "f6185f92507142abda80d45bed428f1a364f27dbb393b97cb9d4c8e648ded105",
+    "go/protocol/model_batch_input.go": "45486ca8bf4e8693de533eae3ba698a2cec3399e6579a78903323b394318131b",
+    "go/protocol/tool_input.go": "eea8b1bf02c573ca760db96f542068911870772230fe90ce705dd64394ef6242",
+    "go/protocol/unknown_model_tool_test.go": "8720967064c76f3d5bdf540c7b1d27c9819061d81526bbbe5a6912624e5fa241",
+    "go/protocol/mcp_model_roots_test.go": "357c48a5f7282b59ce561f0f742af0ad7f44b6db92100b95499cda9e5c2e69d8",
+    "go/agent/mcp_model_roots_test.go": "5c26e03ef9a2a554dacaf5d4da15a996a56c7e53c284e70b9f3cd8f0c585775c",
+    "go/provider/mcp_model_roots_test.go": "0f31ac376032feb02ce41e504d9e3e4ce7a9d9984f98f787e1ffd4ac549bd6ab",
+    "go/sqlitestate/mcp_model_roots_test.go": "2a9319288ede7be49a8565aefa699a47003d97c6d53737b1b1cf10dd2edd6fe2",
+    "python/tools/mcp_model_root_contracts.py": "d147e842641bf3fac5e8d9e32a080c49c89527cbaea8bc8b909d0f763713042c",
+    "python/tools/export_go_contracts.py": "772e994154a02c266400c0b1ef3e7bec58413ca6fc80e83e2adb3030eaf057f5",
+    "go/testdata/python-mcp-model-roots.json": "7b81a5884105194bcddb73fc8b423e566436dc9b516babcd50a07fb0cd13e646"
+  },
+  "type_audits": {
+    "types": "Go type audit: 462 production files, 1460 package-level types, 0 findings",
+    "public-types": "Go public type audit: 51 packages, 1196 exported types, 0 findings",
+    "private-types": "Go private type audit: 51 packages, 275 private root types, 0 findings",
+    "variables": "Go variable audit: 51 packages, 172 package variables, 0 findings"
+  },
+  "body_inventory": {
+    "packages": 51,
+    "declarations": 22104,
+    "open_observations": 129,
+    "path": "var/go-mcp-model-roots-2026-10-13/body-inventory.log",
+    "sha256": "b29314c5f14ada053b167b2c2d41dfc95c035ab7677b71c764cfd7bc6704cf8e",
+    "limitations": "Compiler observations do not prove interprocedural/caller/escape/runtime/generic/foreign/other-profile closure."
+  },
+  "consumer_inventory": {
+    "packages": 51,
+    "files": 246,
+    "counts": {
+      "test_pass_observed": 245,
+      "unreferenced": 1
+    },
+    "new_fixture": {
+      "name": "python-mcp-model-roots.json",
+      "sha256": "7b81a5884105194bcddb73fc8b423e566436dc9b516babcd50a07fb0cd13e646",
+      "references": [
+        {
+          "file": "agent/mcp_model_roots_test.go",
+          "line": 45,
+          "function": "TestMCPModelRootsMatchActualSourceBatchAndGate"
+        },
+        {
+          "file": "protocol/mcp_model_roots_test.go",
+          "line": 13,
+          "function": "TestMCPModelRootsPreserveHistoryIdentityAndExplicitBoundary"
+        },
+        {
+          "file": "provider/mcp_model_roots_test.go",
+          "line": 16,
+          "function": "TestMCPModelRootsSurviveDirectAndStreamReplies"
+        },
+        {
+          "file": "sqlitestate/mcp_model_roots_test.go",
+          "line": 32,
+          "function": "TestMCPModelRootsNativeSQLiteReopenAndCurrentPermission"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestMCPModelRootsMatchActualSourceBatchAndGate",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/protocol",
+          "name": "TestMCPModelRootsPreserveHistoryIdentityAndExplicitBoundary",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/provider",
+          "name": "TestMCPModelRootsSurviveDirectAndStreamReplies",
+          "action": "pass"
+        },
+        {
+          "package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+          "name": "TestMCPModelRootsNativeSQLiteReopenAndCurrentPermission",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "parser": {
+      "name": "python-syntax-parser.json",
+      "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+      "references": [],
+      "candidate_callers": [],
+      "status": "unreferenced",
+      "producer_scope": "current_export"
+    },
+    "limitations": [
+      "Active go list profile only; Source freshness must be checked independently.",
+      "Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.",
+      "Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.",
+      "A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement."
+    ]
+  },
+  "python_result": "2244 passed, 28 skipped, 96 warnings, 24 subtests passed in 91.66s (0:01:31)",
+  "scans": "harness\n  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\n  pins       test_identity.py::test_the_build_id_covers_the_package_source\n  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double\n  pins       test_spawn_sites.py::test_every_spawn_site_is_classified\n  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries\n  pins       test_write_sites.py::test_every_write_site_is_classified\n  pins       test_write_sites.py::test_the_classification_has_no_dead_entries\n\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.\n",
+  "guards": " request; skipping it silently retires the model-visible-means-logged rule)\n  caught    transcript-guard-checks-count-not-content  (r190: the transcript invariant verifies content, not only count: a flushed row mutated in place would let the model see text the durable record never held)\n  caught    guardian-guesses-when-it-cannot-parse  (r216: an undecidable guardian reply falls to the human (the stricter answerer), never to an assumed approval)\n  caught    guardian-cannot-be-turned-on  (r221: default-off must mean opt-in, not unreachable: the guardian flag actually binds a reviewer, or the feature is dead code with tests)\n\nall 6 guards are load-bearing (passing baseline, failed test call).\n",
+  "logs": {
+    "source": {
+      "path": "var/go-mcp-model-roots-2026-10-13/source.log",
+      "sha256": "5a6e94d039d49197e9084923cb31fdfb24e931d8deaedc2b604a8c36a1db738a",
+      "bytes": 79118
+    },
+    "focused-go": {
+      "path": "var/go-mcp-model-roots-2026-10-13/focused-go.log",
+      "sha256": "9f527614a557d251cb27de9fe7e28c3197e5b195238ca8fe671b61088c7293d4",
+      "bytes": 208
+    },
+    "focused-python": {
+      "path": "var/go-mcp-model-roots-2026-10-13/focused-python.log",
+      "sha256": "99ddbbc44105f9ea135b1e3c813b4e5786c765d706e01dd8a4cc140b4553c283",
+      "bytes": 99
+    },
+    "types": {
+      "path": "var/go-mcp-model-roots-2026-10-13/types.log",
+      "sha256": "bd167f995436382abad20de8cc316039e2728440031854c09a7566455bed19ac",
+      "bytes": 74
+    },
+    "public-types": {
+      "path": "var/go-mcp-model-roots-2026-10-13/public-types.log",
+      "sha256": "b332128883352a2289f94507af7a346b867cc12bce300a26e3bfe5d0f5679500",
+      "bytes": 67
+    },
+    "private-types": {
+      "path": "var/go-mcp-model-roots-2026-10-13/private-types.log",
+      "sha256": "315d2205d27509f727f4530c8b0aa408f122d22b9cd19f610df619a1e8755134",
+      "bytes": 71
+    },
+    "variables": {
+      "path": "var/go-mcp-model-roots-2026-10-13/variables.log",
+      "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0",
+      "bytes": 66
+    },
+    "collector-tests": {
+      "path": "var/go-mcp-model-roots-2026-10-13/collector-tests.log",
+      "sha256": "690010f35e461749de06527ba84ecf4060d3d37704432f5a18088a6b4681f400",
+      "bytes": 36
+    },
+    "body-inventory": {
+      "path": "var/go-mcp-model-roots-2026-10-13/body-inventory.log",
+      "sha256": "b29314c5f14ada053b167b2c2d41dfc95c035ab7677b71c764cfd7bc6704cf8e",
+      "bytes": 55192
+    },
+    "ordinary": {
+      "path": "var/go-mcp-model-roots-2026-10-13/ordinary.log",
+      "sha256": "c6468712c5e67c24bfd093901c7e092c72ab540129019686e233825dfd4b2e20",
+      "bytes": 10776970
+    },
+    "inventory": {
+      "path": "var/go-mcp-model-roots-2026-10-13/inventory.log",
+      "sha256": "d07066d9137f087ff6a9921586090636aa84ea518f8ad73e2df32ef48044722c",
+      "bytes": 316365
+    },
+    "vet": {
+      "path": "var/go-mcp-model-roots-2026-10-13/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "race": {
+      "path": "var/go-mcp-model-roots-2026-10-13/race.log",
+      "sha256": "345c18e397c44777653fc86f60a49490ff8588dd6c29a08ad7b255996f4a4ecc",
+      "bytes": 6326
+    },
+    "python": {
+      "path": "var/go-mcp-model-roots-2026-10-13/python.log",
+      "sha256": "1fd49640ac650372a8070ac4c8e48f55fbea12d90decb978beeee559b561f2d4",
+      "bytes": 51428
+    },
+    "scans": {
+      "path": "var/go-mcp-model-roots-2026-10-13/scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+      "bytes": 1663
+    },
+    "guards-tool": {
+      "path": "var/go-mcp-model-roots-2026-10-13/guards-tool.log",
+      "sha256": "30af31247f5eb40fe5d697b62f27e7f41494d33c3a7e1b0772d849aea4ba0e4f",
+      "bytes": 1195
+    },
+    "diff": {
+      "path": "var/go-mcp-model-roots-2026-10-13/diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "native-build-setup": {
+      "path": "var/go-mcp-model-roots-2026-10-13/native-build-setup.log",
+      "sha256": "da0d5fef94d1f697a8082604d35985995424ece1aa6f9a9ca7ee406d50f00630",
+      "bytes": 208
+    },
+    "native-before": {
+      "path": "var/go-mcp-model-roots-2026-10-13/native-before.log",
+      "sha256": "7790594a920facf51a3d1f02119344384d8f2eca64458f6b708c3dd063f84d75",
+      "bytes": 10512
+    },
+    "focused": {
+      "path": "var/go-mcp-model-roots-2026-10-13/focused.log",
+      "sha256": "2c24c17d95b787da6522e1a31ce0a45185e8e3ef33bb99be687d9f40244ce4c9",
+      "bytes": 49
+    },
+    "wire-focused": {
+      "path": "var/go-mcp-model-roots-2026-10-13/wire-focused.log",
+      "sha256": "a9a6d21b6b1c13fc7eeaeb4c3d181147970b730abb7d83e7f3df35f12e0286a0",
+      "bytes": 153
+    },
+    "sqlite-focused": {
+      "path": "var/go-mcp-model-roots-2026-10-13/sqlite-focused.log",
+      "sha256": "e7d49779bee99fd86973052567bd659643be93c76e6001df479ad8de72bbadf8",
+      "bytes": 55
+    }
+  },
+  "runner": {
+    "path": "var/go-mcp-model-roots-2026-10-13/run.py",
+    "sha256": "c2be68c32fab807e027111829653733ef3ea5d0f010426427a0b09798276275b"
+  },
+  "architecture": {
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "base_changed": false,
+    "components_added_or_removed": false,
+    "iteration": "docs/audits/go-mcp-model-roots-infographic-2026-10-13.png",
+    "iteration_sha256": "35bf265e200b44eac5107a398d61ef66b37cc0a9cc2ad3f9d736ad0856350c61",
+    "prompt": "docs/audits/go-mcp-model-roots-infographic-2026-10-13.prompt.txt",
+    "prompt_sha256": "5d6d65118ab8e122b23ff9bcfba76b2b6dd6936d93f685653dda3081aa4fdc4b",
+    "visual_review": "Exact five layers; six backend/seven orchestration/five evidence cards. Clear Session/Provider double-headed route; Session-to-Gate above Provider; Gate-to-L4; L4-result-to-Session. No Provider-to-Gate. Only Session/Provider/MCP highlighted. Base unchanged.",
+    "html_delivery": {
+      "schemaVersion": 1,
+      "ok": true,
+      "command": "deliver",
+      "type": "architecture",
+      "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+      "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+      "specification": {
+        "sha256": "002736eb8cc010d5c9e1eca6e9d86a8457bac34a3eb73532b5d23d012ee3d56f",
+        "bytes": 146894
+      },
+      "artifact": {
+        "sha256": "95e927307b3fbdc87c87824b591e9a91351a62c71ecd54df112638d0ca208090",
+        "bytes": 801041
+      },
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "html_visual_review": "Nine structural/geometry showcase checks pass; no new rendered browser acceptance."
+  },
+  "coverage_receipt": "docs/audits/go-coverage-mcp-model-roots-2026-10-13.json",
+  "remaining": [
+    "Default CPython syntax backend and broader IDNA approvals remain pending.",
+    "Nonfinite/non-string-key/wider MCP root and callback lifetime profiles remain separate.",
+    "129 body observations, provider/public/default/feature/platform/performance/release scope and historical temporal failures remain open under original P0/P1/G0-G7."
+  ],
+  "skipped": [
+    "No Python runtime package-module changes; invariant gate not required.",
+    "No new dependency, paid model call, remote fetch/push or Linux full gates."
+  ],
+  "integration_plan": "Two logical commits then local main ff-only after required gates; original goal remains active.",
+  "implementation_commit": "48f7b85575ada23f2b9950440b3627055959b3b5",
+  "post_gate_document_updates": "README verified results and actual implementation SHA; plan/current parity indices and saved evidence only. All frozen Go/Python programs unchanged."
+}

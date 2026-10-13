@@ -1,5 +1,49 @@
 # Go port plan
 
+## 2026-10-13 finite MCP model roots and whole-batch preparation
+
+Implementation `48f7b85`, based on main `6cb887e`, branch
+`codex/go-mcp-model-roots`. Actual Python Agent.run + register_mcp captures23
+finite roots in auto/readonly, plus three two-call batches per mode:52 required
+profiles. Falsey roots become objects; string-key pair/text rows use Source
+dict preparation; invalid truthy roots fail before any earlier batch effect.
+The original assistant input remains unchanged. Native model ingress keeps a
+private tag with existing closed immutable values; explicit arguments and the
+callable MCP accessor remain object-only. External risk stays unchanged even
+with readOnlyHint; no new grant, connection ownership or default installed tool.
+
+Direct/SSE, canonical identity, detached clones, masking and archive codecs
+retain roots. Four real SQLite close/reopen/owner-restore profiles retain history,
+foreign-owner refusal, current interactive mode and fresh leases; no completed
+external effect replay.48 original native failures and the initial constructor
+compile typo are retained separately. The first full ordinary cohort exposed an
+obsolete model MCP-null negative; actual Source evidence justified replacing it
+with NaN rejection plus explicit null refusal. The partial race was stopped with
+verified owned process identities before editing; it supplies no accepted coverage.
+
+Frozen1686 inputs pass all16 required validation stages; the separate consumer
+inventory exits1 only for the unreferenced native syntax-parser fixture. Source
+exporter compares245 files, consumer inventory includes246 with the separate
+Linux capture. Four type gates:462 files/1460 named types,1196 public types,
+275 private roots,172 variables;zero findings. Body inventory:51 packages/
+22104 declarations/129 observations; caller/escape/interprocedural/generic/
+foreign/other-profile/runtime flow remains unproven. Full Python: 2244 passed, 28 skipped, 96 warnings, 24 subtests passed in 91.66s (0:01:31)
+Darwin race statements:app89.40% (33313/37264), all Go89.15% (33679/37779), Provider86.67% (1522/1756).
+
+README canonical map/boundary and JSON→generated HTML updated;9 structural/
+geometry checks pass, no rendered browser acceptance. No components added or
+removed, so the base image stays unchanged. Built-in imagegen edits that base
+to highlight Session/Provider/MCP and describe this iteration beside it.
+
+[Full receipt](docs/audits/go-mcp-model-roots-2026-10-13.json);
+[coverage](docs/audits/go-coverage-mcp-model-roots-2026-10-13.json);
+[iteration image](docs/audits/go-mcp-model-roots-infographic-2026-10-13.png);
+[exact prompt](docs/audits/go-mcp-model-roots-infographic-2026-10-13.prompt.txt).
+Nonfinite/non-string-key/wider MCP roots and callbacks, pending default syntax/
+IDNA decisions, original public/default/platform/type/performance/release scope
+and historical temporal failures remain open. No new dependency, paid provider,
+remote fetch/push, Linux full gate or Python runtime-package change.
+
 ## 2026-10-13 fixed tool execution scope and custom child inheritance
 
 Implementation `be59a60`, based on local main `85a4f80`, branch
@@ -7980,15 +8024,21 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-13**: implementation `be59a60`, based on main `85a4f80`,
-adds fixed Session-stamped callback scope. Eighteen Source custom child capability/
-risk profiles compare schema, fresh history, lineage/workspace/mode/peer context,
-results and denials. Frozen1680 inputs pass Source244/manifest, focused Go/Python,
-four type audits, collector tests/body inventory, ordinary Go/vet/race+atomic,
-Python2244 passed/28 skipped,19 scans,6 guards and diff. Parser consumer inspection
-remains exit1. [Current receipt](docs/audits/go-extension-subagents-2026-10-13.json).
-Scope grants no authority; original acceptance, arbitrary mutable state and wider
-callback/platform/type/temporal/public profiles and dependency decisions remain open.
+Reviewed **2026-10-13**: implementation `48f7b85`, based on main `6cb887e`,
+adds finite MCP model roots and whole-batch Source `dict(input or {})` preparation.
+Fifty-two actual Source root/batch/auto/readonly profiles compare arguments,
+failure classes/messages, hooks/results, history and external-risk refusal;
+48 original native failures retained. Direct/SSE, clone/mask/archive and four
+native SQLite reopen/owner-restore profiles preserve original roots and current
+authority without replaying effects. Explicit MCP arguments stay object-only.
+Frozen1686 inputs pass Source245/manifest, focused Go/Python, four type audits,
+collector tests/body inventory, ordinary Go/vet/race+atomic, full Python,
+19 scans,6 guards and diff. Parser consumer inspection remains exit1.
+[Current receipt](docs/audits/go-mcp-model-roots-2026-10-13.json).
+The initial full cohort's obsolete MCP-null negative and interrupted race remain
+retained; actual Source evidence justified model/explicit boundary assertions.
+Nonfinite/non-string-key/wider roots, original P0/P1/G0-G7 and dependency decisions
+remain open. No connection, risk, authority, default or new dependency changes.
 
 The prior Source/test diagnostic slice exposed76 premature metadata decoder
 rejections and24 completed differences. Those original156 cases, expanded to191
@@ -8019,12 +8069,13 @@ filesystem glob Source capture remains open, and Docker availability was not
 refreshed this iteration. SQLite512KiB restart retains its original budget proof;
 that does not establish power-loss durability or external-effect fencing.
 
-Passing-race statement coverage: app **89.36% (33285/37250)**,
-all Go **89.11% (33651/37765)**, Provider **86.67% (1522/1756)**.
-[Current coverage](docs/audits/go-coverage-extension-subagents-2026-10-13.json). Darwin statements only; native C/subprocess
-interiors, Python, branches and other profiles excluded. Sixteen validation stages
-pass; native parser consumer inspection remains incomplete. Original migration
-acceptance and historical temporal reliability stay open.
+Passing-race statement coverage: app **89.40% (33313/37264)**,
+all Go **89.15% (33679/37779)**, Provider **86.67% (1522/1756)**.
+[Current coverage](docs/audits/go-coverage-mcp-model-roots-2026-10-13.json).
+Darwin statements only; native C/subprocess interiors, Python, branches and other
+profiles excluded. Sixteen validation stages pass; native parser consumer
+inspection remains incomplete. Original migration acceptance and historical
+temporal reliability stay open.
 
 The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
 private/foreign/inactive/runtime data-flow audit, performance and rendered
@@ -8036,14 +8087,14 @@ work-package acceptance.
 | --- | --- | --- |
 | P0 | Source contract inventory, HTTP inventory and generated Source recipes in `go/testdata/` | Reconcile the final inventory against current Python public entry points and defaults in G7 |
 | P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies129 open boundary observations at51 packages/22096 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
+| G0 | Named protocol/domain types, closed tool inputs/results/events, explicit services and archival decoders | Package-level syntax, public/private-root and package-variable compiler audits pass; current full-body inventory identifies129 open boundary observations at51 packages/22104 declarations; RawMessage caller/escape/generic use, foreign internals, other profiles and runtime data-flow review remain; transient fixture/wire parsing is a distinct boundary |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |
 | G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Current exporter comparison passes244 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass in the current1680-input cohort;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
+| G7 | Current exporter comparison passes245 files; owned literal transport has224 request-object/40 HTTP/24 proxy-TLS assertions; all168 business-routing requests have required native evidence; ordinary/vet/race and full Python pass in the current1686-input cohort;300 caller-profile cases and28 memory-selection cases match;191 metadata-shape cases/214 stages and86 whole-usage cases/48 stages have required projected-value/stage/fault-message assertions and mask/archive/SQLite proof | Broader public-entry/default/type audit, performance scope and final release gates remain; native observer timing and default diagnostics decision remain open; goal remains incomplete |
 
 ### Confirmed open implementation items
 
