@@ -1,0 +1,1877 @@
+{
+  "schema_version": 2,
+  "recorded_utc": "2026-10-13T16:22:21.961774+00:00",
+  "previous_receipt": {
+    "path": "var/go-progress-validation-2026-10-13/receipt.json",
+    "sha256": "bf436df287354e2fadc686237f38462f4838c69613b93d63b4012a19a839377a",
+    "bytes": 64809
+  },
+  "previous_receipt_tool": {
+    "path": "var/go-progress-validation-2026-10-13/receipt.py",
+    "sha256": "44700a427a0fc1bde805423a7c71089d1a881ce0af5f05b9d7400ce58f160d39",
+    "bytes": 19498
+  },
+  "revision_reason": "Retain and classify the reviewed race linker diagnostic pairs instead of requiring a purely JSON stream. Original receipt, tool and raw logs are preserved; no validation stage is rerun.",
+  "status": "scoped_gates_incomplete",
+  "scoped_gates_complete": false,
+  "full_port_acceptance": false,
+  "scope_note": "Eight explicit current stages plus five limited historical Source/type stages. No claim that every Go migration work package or unsupported boundary is complete.",
+  "stages": [
+    {
+      "name": "go-full",
+      "execution": "current_profile_stage",
+      "status": "passed",
+      "eligible_pass": true,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/resources.json",
+          "sha256": "d7d449b33a41d44f850ce563602025f0c236e2f041dfeb50294fc62335c65073",
+          "bytes": 14489
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/stdout.log",
+          "sha256": "174e8c2af11d4544c8e67f539163cb08a5a8e619a00768aef825cea0882ba92f",
+          "bytes": 11589757
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/samples.jsonl",
+          "sha256": "c34fa00e2ecede2c76dfe68599a4682ad2e42884411d5df985ee4c611d4a6b23",
+          "bytes": 128989
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/stability.json",
+          "sha256": "6cc30c913754c53bbd27265edd33da379842dcef7e0e6d50fde648be96708039",
+          "bytes": 536
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-full/pid-state.json",
+          "sha256": "e2ed8f38d39bc7b87545bf4f5f6579e3ea3c7dc26a45b12745ee02caf00c0861",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "requested_command": [
+        "go",
+        "test",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "recorded_utc": "2026-10-13T15:49:17.157099+00:00",
+      "started_utc": "2026-10-13T15:49:21.525820+00:00",
+      "completed_utc": "2026-10-13T15:52:54.710435+00:00",
+      "seconds": 212.945,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 450624,
+      "peak_cpu_percent": 172.1,
+      "samples": 207,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 207,
+        "peak_rss_kib": 450624,
+        "peak_cpu_percent": 172.1,
+        "max_observed_processes": 7,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "package_results": {
+          "github.com/luoyjx/mini-loop/go/agent": "pass",
+          "github.com/luoyjx/mini-loop/go/astcontext": "pass",
+          "github.com/luoyjx/mini-loop/go/audit": "pass",
+          "github.com/luoyjx/mini-loop/go/background": "pass",
+          "github.com/luoyjx/mini-loop/go/benchmark": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/miniloop": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/miniloop-audit": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/traceview": "pass",
+          "github.com/luoyjx/mini-loop/go/config": "pass",
+          "github.com/luoyjx/mini-loop/go/cron": "pass",
+          "github.com/luoyjx/mini-loop/go/decisions": "pass",
+          "github.com/luoyjx/mini-loop/go/diagnostics": "pass",
+          "github.com/luoyjx/mini-loop/go/dotenv": "pass",
+          "github.com/luoyjx/mini-loop/go/durable": "pass",
+          "github.com/luoyjx/mini-loop/go/efficiency": "pass",
+          "github.com/luoyjx/mini-loop/go/httpapi": "pass",
+          "github.com/luoyjx/mini-loop/go/improvement": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/commandenv": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/fnmatch": "skip",
+          "github.com/luoyjx/mini-loop/go/internal/jsonsyntax": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/jsonvalue": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/pytext": "pass",
+          "github.com/luoyjx/mini-loop/go/launcher": "pass",
+          "github.com/luoyjx/mini-loop/go/mcp": "pass",
+          "github.com/luoyjx/mini-loop/go/memory": "pass",
+          "github.com/luoyjx/mini-loop/go/problems": "pass",
+          "github.com/luoyjx/mini-loop/go/protocol": "pass",
+          "github.com/luoyjx/mini-loop/go/provider": "pass",
+          "github.com/luoyjx/mini-loop/go/reload": "pass",
+          "github.com/luoyjx/mini-loop/go/runmeta": "pass",
+          "github.com/luoyjx/mini-loop/go/runtimeconfig": "skip",
+          "github.com/luoyjx/mini-loop/go/sandbox": "pass",
+          "github.com/luoyjx/mini-loop/go/secrets": "pass",
+          "github.com/luoyjx/mini-loop/go/selfaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/selfimprove": "pass",
+          "github.com/luoyjx/mini-loop/go/sessionquery": "pass",
+          "github.com/luoyjx/mini-loop/go/shell": "pass",
+          "github.com/luoyjx/mini-loop/go/skills": "pass",
+          "github.com/luoyjx/mini-loop/go/spill": "pass",
+          "github.com/luoyjx/mini-loop/go/sqlitestate": "pass",
+          "github.com/luoyjx/mini-loop/go/tasks": "pass",
+          "github.com/luoyjx/mini-loop/go/teams": "pass",
+          "github.com/luoyjx/mini-loop/go/tools/contractaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/tools/typeaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/traceview": "pass",
+          "github.com/luoyjx/mini-loop/go/trajectory": "pass",
+          "github.com/luoyjx/mini-loop/go/userresources": "pass",
+          "github.com/luoyjx/mini-loop/go/verifiedloop": "pass",
+          "github.com/luoyjx/mini-loop/go/workflows": "pass",
+          "github.com/luoyjx/mini-loop/go/workspace": "pass",
+          "github.com/luoyjx/mini-loop/go/worktrees": "pass"
+        },
+        "package_counts": {
+          "pass": 49,
+          "skip": 2
+        },
+        "top_level_test_counts": {
+          "pass": 1433,
+          "skip": 6
+        },
+        "non_json_lines": 0,
+        "non_json_diagnostics": [],
+        "reviewed_diagnostic_pairs": [],
+        "unreviewed_non_json_diagnostics": [],
+        "diagnostic_policy": "Only the six reviewed passing race packages may have adjacent package-header and exact reviewed LC_DYSYMTAB warning pairs. No other non-JSON diagnostic is accepted. Raw text and log hash are retained.",
+        "failed_top_level_tests": []
+      },
+      "full_scope_verified": true
+    },
+    {
+      "name": "go-vet",
+      "execution": "current_profile_stage",
+      "status": "passed",
+      "eligible_pass": true,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/resources.json",
+          "sha256": "a22a27a5ee4e1335879a92d8ccbe52fc803a1f1688f06d21adce779695edc783",
+          "bytes": 2792
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/samples.jsonl",
+          "sha256": "f8095e3271952b8d193d8400f1937298e18e962f83bc81acb22445663c746642",
+          "bytes": 4665
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/stability.json",
+          "sha256": "04e0cf7f34d3f81ae60e9704d74822ea6dfe8202959eb99271b402198b087181",
+          "bytes": 537
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-vet/pid-state.json",
+          "sha256": "4617fc3d11ff3f98ca7ee2fba708ce148d53a43d3eba8e77a4501ba78dafa26f",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "requested_command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "recorded_utc": "2026-10-13T15:53:53.230670+00:00",
+      "started_utc": "2026-10-13T15:53:57.636865+00:00",
+      "completed_utc": "2026-10-13T15:54:07.330421+00:00",
+      "seconds": 9.61,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 561504,
+      "peak_cpu_percent": 200.3,
+      "samples": 10,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 10,
+        "peak_rss_kib": 561504,
+        "peak_cpu_percent": 200.3,
+        "max_observed_processes": 2,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "tail": []
+      }
+    },
+    {
+      "name": "python-full",
+      "execution": "current_profile_stage",
+      "status": "passed",
+      "eligible_pass": true,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/resources.json",
+          "sha256": "dea5b9082ab16793adf7af7141cafb90b07311008d7654a3dda2301e27638714",
+          "bytes": 7022
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/stdout.log",
+          "sha256": "fb4867fdb8b10cbf97ba94f206596ec3e39a42055c503bfcdeb4e936442d355c",
+          "bytes": 51508
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/samples.jsonl",
+          "sha256": "0499d598143c0693f38be8051d041e4711a126b5bb28418831152e089e934b5f",
+          "bytes": 45220
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/stability.json",
+          "sha256": "7deee0bd4294e115fa330ef257c6612d42bc3aee89d9df128dffd8c7a3010b96",
+          "bytes": 537
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/python-full/pid-state.json",
+          "sha256": "85a0efd0b00160af900a84bdd88f0730579e9f6f3b71ec87f446bb5025b8899f",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "requested_command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "recorded_utc": "2026-10-13T15:54:41.680892+00:00",
+      "started_utc": "2026-10-13T15:54:46.055256+00:00",
+      "completed_utc": "2026-10-13T15:56:23.600387+00:00",
+      "seconds": 97.294,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 446384,
+      "peak_cpu_percent": 296.0,
+      "samples": 95,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 95,
+        "peak_rss_kib": 446384,
+        "peak_cpu_percent": 296.0,
+        "max_observed_processes": 6,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "tail": [
+          "python/tests/test_provider_whole_usage_contracts.py::test_actual_sdk_whole_usage_projection_and_stream_failure_phase",
+          "  /Users/yanjixiong/github/mini-loop/.venv/lib/python3.11/site-packages/pydantic/main.py:475: UserWarning: Pydantic serializer warnings:",
+          "    PydanticSerializationUnexpectedValue(Expected `Usage` - serialized value may not be as expected [field_name='usage', input_value=[Usage(cache_creation=Cac...0'), service_tier=None)], input_type=list])",
+          "    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='ephemeral_1h_input_tokens', input_value='100000000000000000000000...00000000000000000000000', input_type=str])",
+          "    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='ephemeral_5m_input_tokens', input_value='100000000000000000000000...00000000000000000000000', input_type=str])",
+          "    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='thinking_tokens', input_value='100000000000000000000000...00000000000000000000000', input_type=str])",
+          "    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='web_fetch_requests', input_value='100000000000000000000000...00000000000000000000000', input_type=str])",
+          "    PydanticSerializationUnexpectedValue(Expected `int` - serialized value may not be as expected [field_name='web_search_requests', input_value='100000000000000000000000...00000000000000000000000', input_type=str])",
+          "    return self.__pydantic_serializer__.to_python(",
+          "",
+          "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+          "2256 passed, 28 skipped, 96 warnings, 24 subtests passed in 96.04s (0:01:36)"
+        ],
+        "pytest_summary": "2256 passed, 28 skipped, 96 warnings, 24 subtests passed in 96.04s (0:01:36)",
+        "pytest_counts": {
+          "passed": 2256,
+          "skipped": 28,
+          "warnings": 96,
+          "subtests passed": 24
+        }
+      }
+    },
+    {
+      "name": "invariants",
+      "execution": "current_profile_stage",
+      "status": "passed",
+      "eligible_pass": true,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/resources.json",
+          "sha256": "a3427bded3d11b865e429835d62c23a90e80abd53a63d38639207dfdbada4d1d",
+          "bytes": 2681
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/stdout.log",
+          "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78",
+          "bytes": 62
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/samples.jsonl",
+          "sha256": "469539ef94d9d82c20a086a583ee2a6e61eb3c84777b4c14662445b733211b16",
+          "bytes": 707
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/stability.json",
+          "sha256": "8f92f2b7d8b7a5f43c0dbd043e5fe3f759dd0e1fa44dd05b0400484850f30f6a",
+          "bytes": 537
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/invariants/pid-state.json",
+          "sha256": "45ca2cd3d3343025a53e6ac22848a2ccca2a6dd05cd3bbfadaab6b8336ad58eb",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "requested_command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "recorded_utc": "2026-10-13T15:57:43.522254+00:00",
+      "started_utc": "2026-10-13T15:57:47.912225+00:00",
+      "completed_utc": "2026-10-13T15:57:49.307488+00:00",
+      "seconds": 1.327,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 736,
+      "peak_cpu_percent": 0,
+      "samples": 2,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 2,
+        "peak_rss_kib": 736,
+        "peak_cpu_percent": 0,
+        "max_observed_processes": 1,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "tail": [
+          "77 modules checked",
+          "every module states its invariant posture."
+        ]
+      }
+    },
+    {
+      "name": "scans",
+      "execution": "current_profile_stage",
+      "status": "passed",
+      "eligible_pass": true,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/resources.json",
+          "sha256": "7aefde6abe3352992c6e67f6b8306d5380f28c5699bcb3876cac90cc297ea621",
+          "bytes": 3225
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/stdout.log",
+          "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f",
+          "bytes": 1663
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/samples.jsonl",
+          "sha256": "f1438bf7d301658fde3a1a710be6327c9b570c1477a6184f94b5d070d23beaa7",
+          "bytes": 4997
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/stability.json",
+          "sha256": "9504e7c9fff3c5006ebfc97e9fda218bece2bc3754cd66911d76d97975b0c952",
+          "bytes": 537
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/scans/pid-state.json",
+          "sha256": "6fe8d63d35b689ab5081aed56e9d57b60fce2e0efcb9f2681ba373aee7e480b5",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "requested_command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "recorded_utc": "2026-10-13T15:58:33.059713+00:00",
+      "started_utc": "2026-10-13T15:58:37.414293+00:00",
+      "completed_utc": "2026-10-13T15:58:47.038392+00:00",
+      "seconds": 9.546,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 86208,
+      "peak_cpu_percent": 96.3,
+      "samples": 10,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 10,
+        "peak_rss_kib": 86208,
+        "peak_cpu_percent": 96.3,
+        "max_observed_processes": 3,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "tail": [
+          "  green-blind test_entry_points.py::test_only_sessionless_callers_bypass_the_session",
+          "  pins       test_harness.py::test_the_guard_actually_finds_the_construction_sites",
+          "  green-blind test_harness.py::test_every_agent_construction_goes_through_a_harness",
+          "  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand",
+          "  pins       test_identity.py::test_the_build_id_covers_the_package_source",
+          "  pins       test_provider_surface.py::test_every_client_method_the_package_calls_exists_on_the_double",
+          "  pins       test_spawn_sites.py::test_every_spawn_site_is_classified",
+          "  pins       test_spawn_sites.py::test_the_classification_has_no_dead_entries",
+          "  pins       test_write_sites.py::test_every_write_site_is_classified",
+          "  pins       test_write_sites.py::test_the_classification_has_no_dead_entries",
+          "",
+          "all 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied."
+        ]
+      }
+    },
+    {
+      "name": "consumers",
+      "execution": "current_profile_stage",
+      "status": "failed",
+      "eligible_pass": false,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/resources.json",
+          "sha256": "4057c94da2681dc6fe55942f7a96823a90eb9c4b7e61ba2fc3dc47d34112acee",
+          "bytes": 3374
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/stdout.log",
+          "sha256": "cdfe5130418989d4f0d1401362711cb90e11068da43fda8039c999a395cbba08",
+          "bytes": 327148
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/samples.jsonl",
+          "sha256": "51cfab9a1d10e3b5c534d901dbf6459a392cab5030cbcd6746d011722436bb38",
+          "bytes": 1531
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/stability.json",
+          "sha256": "84e79b629612d2639964aa4c9825217c3777ca1c4696113077f425f1a8d66d65",
+          "bytes": 537
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/consumers/pid-state.json",
+          "sha256": "d2bfbc4b1987d610a5336fa0991839709e7ba6d7a892ac08e17a623a27b2635e",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-legacy-recovery-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-progress-validation-2026-10-13/go-full/stdout.log",
+        "-require-results"
+      ],
+      "requested_command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-legacy-recovery-2026-10-13/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-progress-validation-2026-10-13/go-full/stdout.log",
+        "-require-results"
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "recorded_utc": "2026-10-13T15:59:29.939794+00:00",
+      "started_utc": "2026-10-13T15:59:34.316495+00:00",
+      "completed_utc": "2026-10-13T15:59:36.740273+00:00",
+      "seconds": 2.346,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 50912,
+      "peak_cpu_percent": 47.4,
+      "samples": 3,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 3,
+        "peak_rss_kib": 50912,
+        "peak_cpu_percent": 47.4,
+        "max_observed_processes": 4,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "tail": [
+          "      \"producer_scope\": \"current_export\"",
+          "    }",
+          "  ],",
+          "  \"limitations\": [",
+          "    \"Active go list profile only; Source freshness must be checked independently.\",",
+          "    \"Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.\",",
+          "    \"Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.\",",
+          "    \"A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement.\"",
+          "  ]",
+          "}",
+          "2 fixtures lack a candidate caller with an observed passing test result",
+          "exit status 1"
+        ]
+      }
+    },
+    {
+      "name": "go-race",
+      "execution": "current_profile_stage",
+      "status": "passed",
+      "eligible_pass": true,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/resources.json",
+          "sha256": "8d78a3751263a0c84d7aaa471472681ee9c56d98de9263d1998d95f448df70dd",
+          "bytes": 19650
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/stdout.log",
+          "sha256": "8349325830bbb55c118cda6b591f693c3c75851d89a552d01312756e26ee8731",
+          "bytes": 11596931
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/samples.jsonl",
+          "sha256": "7596a50a79c68b3fac9713804ede8d9b200cb4e7d0663d689aa04b282c39bc10",
+          "bytes": 243846
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/stability.json",
+          "sha256": "29c3262e3f886379363b954646512152987b76c2ac2acaa88f7234c3b2d1440e",
+          "bytes": 536
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-race/pid-state.json",
+          "sha256": "8cf289662f540fb011f19206bb82394c8460037b46822f067dca5ec910be3e93",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-race",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "requested_command": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "recorded_utc": "2026-10-13T16:01:19.733718+00:00",
+      "started_utc": "2026-10-13T16:01:24.239439+00:00",
+      "completed_utc": "2026-10-13T16:08:38.098123+00:00",
+      "seconds": 433.551,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 538192,
+      "peak_cpu_percent": 190.8,
+      "samples": 419,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 419,
+        "peak_rss_kib": 538192,
+        "peak_cpu_percent": 190.8,
+        "max_observed_processes": 7,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "package_results": {
+          "github.com/luoyjx/mini-loop/go/agent": "pass",
+          "github.com/luoyjx/mini-loop/go/astcontext": "pass",
+          "github.com/luoyjx/mini-loop/go/audit": "pass",
+          "github.com/luoyjx/mini-loop/go/background": "pass",
+          "github.com/luoyjx/mini-loop/go/benchmark": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/miniloop": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/miniloop-audit": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/traceview": "pass",
+          "github.com/luoyjx/mini-loop/go/config": "pass",
+          "github.com/luoyjx/mini-loop/go/cron": "pass",
+          "github.com/luoyjx/mini-loop/go/decisions": "pass",
+          "github.com/luoyjx/mini-loop/go/diagnostics": "pass",
+          "github.com/luoyjx/mini-loop/go/dotenv": "pass",
+          "github.com/luoyjx/mini-loop/go/durable": "pass",
+          "github.com/luoyjx/mini-loop/go/efficiency": "pass",
+          "github.com/luoyjx/mini-loop/go/httpapi": "pass",
+          "github.com/luoyjx/mini-loop/go/improvement": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/commandenv": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/fnmatch": "skip",
+          "github.com/luoyjx/mini-loop/go/internal/jsonsyntax": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/jsonvalue": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/pytext": "pass",
+          "github.com/luoyjx/mini-loop/go/launcher": "pass",
+          "github.com/luoyjx/mini-loop/go/mcp": "pass",
+          "github.com/luoyjx/mini-loop/go/memory": "pass",
+          "github.com/luoyjx/mini-loop/go/problems": "pass",
+          "github.com/luoyjx/mini-loop/go/protocol": "pass",
+          "github.com/luoyjx/mini-loop/go/provider": "pass",
+          "github.com/luoyjx/mini-loop/go/reload": "pass",
+          "github.com/luoyjx/mini-loop/go/runmeta": "pass",
+          "github.com/luoyjx/mini-loop/go/runtimeconfig": "skip",
+          "github.com/luoyjx/mini-loop/go/sandbox": "pass",
+          "github.com/luoyjx/mini-loop/go/secrets": "pass",
+          "github.com/luoyjx/mini-loop/go/selfaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/selfimprove": "pass",
+          "github.com/luoyjx/mini-loop/go/sessionquery": "pass",
+          "github.com/luoyjx/mini-loop/go/shell": "pass",
+          "github.com/luoyjx/mini-loop/go/skills": "pass",
+          "github.com/luoyjx/mini-loop/go/spill": "pass",
+          "github.com/luoyjx/mini-loop/go/sqlitestate": "pass",
+          "github.com/luoyjx/mini-loop/go/tasks": "pass",
+          "github.com/luoyjx/mini-loop/go/teams": "pass",
+          "github.com/luoyjx/mini-loop/go/tools/contractaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/tools/typeaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/traceview": "pass",
+          "github.com/luoyjx/mini-loop/go/trajectory": "pass",
+          "github.com/luoyjx/mini-loop/go/userresources": "pass",
+          "github.com/luoyjx/mini-loop/go/verifiedloop": "pass",
+          "github.com/luoyjx/mini-loop/go/workflows": "pass",
+          "github.com/luoyjx/mini-loop/go/workspace": "pass",
+          "github.com/luoyjx/mini-loop/go/worktrees": "pass"
+        },
+        "package_counts": {
+          "pass": 49,
+          "skip": 2
+        },
+        "top_level_test_counts": {
+          "pass": 1433,
+          "skip": 6
+        },
+        "non_json_lines": 12,
+        "non_json_diagnostics": [
+          {
+            "line": 15169,
+            "text": "# github.com/luoyjx/mini-loop/go/audit.test"
+          },
+          {
+            "line": 15170,
+            "text": "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-2377235478/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626"
+          },
+          {
+            "line": 16119,
+            "text": "# github.com/luoyjx/mini-loop/go/cmd/miniloop.test"
+          },
+          {
+            "line": 16120,
+            "text": "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-2410955653/000013.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626"
+          },
+          {
+            "line": 19860,
+            "text": "# github.com/luoyjx/mini-loop/go/httpapi.test"
+          },
+          {
+            "line": 19861,
+            "text": "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-1711054329/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626"
+          },
+          {
+            "line": 28596,
+            "text": "# github.com/luoyjx/mini-loop/go/launcher.test"
+          },
+          {
+            "line": 28597,
+            "text": "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-309143091/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626"
+          },
+          {
+            "line": 40446,
+            "text": "# github.com/luoyjx/mini-loop/go/reload.test"
+          },
+          {
+            "line": 40447,
+            "text": "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-3169398514/000013.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626"
+          },
+          {
+            "line": 41893,
+            "text": "# github.com/luoyjx/mini-loop/go/sqlitestate.test"
+          },
+          {
+            "line": 41894,
+            "text": "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-2316225183/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626"
+          }
+        ],
+        "reviewed_diagnostic_pairs": [
+          {
+            "package": "github.com/luoyjx/mini-loop/go/audit",
+            "header_line": 15169,
+            "warning_line": 15170,
+            "classification": "reviewed_LC_DYSYMTAB_linker_warning"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/cmd/miniloop",
+            "header_line": 16119,
+            "warning_line": 16120,
+            "classification": "reviewed_LC_DYSYMTAB_linker_warning"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/httpapi",
+            "header_line": 19860,
+            "warning_line": 19861,
+            "classification": "reviewed_LC_DYSYMTAB_linker_warning"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/launcher",
+            "header_line": 28596,
+            "warning_line": 28597,
+            "classification": "reviewed_LC_DYSYMTAB_linker_warning"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/reload",
+            "header_line": 40446,
+            "warning_line": 40447,
+            "classification": "reviewed_LC_DYSYMTAB_linker_warning"
+          },
+          {
+            "package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+            "header_line": 41893,
+            "warning_line": 41894,
+            "classification": "reviewed_LC_DYSYMTAB_linker_warning"
+          }
+        ],
+        "unreviewed_non_json_diagnostics": [],
+        "diagnostic_policy": "Only the six reviewed passing race packages may have adjacent package-header and exact reviewed LC_DYSYMTAB warning pairs. No other non-JSON diagnostic is accepted. Raw text and log hash are retained.",
+        "failed_top_level_tests": []
+      },
+      "full_scope_verified": true
+    },
+    {
+      "name": "go-coverage",
+      "execution": "current_profile_stage",
+      "status": "passed",
+      "eligible_pass": true,
+      "evidence": [
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/resources.json",
+          "sha256": "c8291581c3888d61da52ca080b5e62f153aa159a2057d75ae1efa915d94188d3",
+          "bytes": 16677
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/freeze.before.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/freeze.after.json",
+          "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+          "bytes": 189059
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/stdout.log",
+          "sha256": "c3f6aa94fdc4714557a21232db6e8041550b5d108dfa698c1c3d964761d4ab7d",
+          "bytes": 11600318
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/samples.jsonl",
+          "sha256": "bad55bf7a02af771579c2f72f1b751afcd352debb643e1f74c3b2623aaa0af97",
+          "bytes": 147934
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/stability.json",
+          "sha256": "187870e5bc5d01277561a89cc4a225a16fafaae117de30a8a8e31fec0ca11aa1",
+          "bytes": 536
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/signals.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "var/go-progress-validation-2026-10-13/go-coverage/pid-state.json",
+          "sha256": "e421983a1262daa95d5435d5042cb8247a622c1c8c7aca9d40420db939e94bf0",
+          "bytes": 56
+        }
+      ],
+      "evidence_errors": [],
+      "launched": true,
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-progress-validation-2026-10-13/go-coverage/coverage.out",
+        "./..."
+      ],
+      "requested_command": [
+        "go",
+        "test",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-progress-validation-2026-10-13/go-coverage/coverage.out",
+        "./..."
+      ],
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "recorded_utc": "2026-10-13T16:11:10.048227+00:00",
+      "started_utc": "2026-10-13T16:11:14.469214+00:00",
+      "completed_utc": "2026-10-13T16:15:26.815091+00:00",
+      "seconds": 252.05,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "planned_resource_policy": {
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB soft target",
+        "gogc": 75,
+        "goflags_append": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "allowed_preflight_samples": 5
+      },
+      "peak_rss_kib": 592128,
+      "peak_cpu_percent": 201.8,
+      "samples": 244,
+      "remaining_pids": [],
+      "empty_confirmations": true,
+      "signal_events": [],
+      "rss_scope": "Spawned stage and observed descendants; the monitoring Python process is excluded.",
+      "limitations": "RSS and ps %CPU are sampled; shared pages may be counted more than once. GOMEMLIMIT is soft and does not cap CGO, race or children. Workload children can override inherited Go environment defaults. lstart is second-resolution and check-to-signal has a race. Fast descendants may escape between snapshots. Empty confirmation means no observed owned identity remains; it is not proof against unobserved escape.",
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "freeze": {
+        "count": 1769,
+        "before_after_equal": true,
+        "changes_during_stage": [],
+        "differences_from_go_full": []
+      },
+      "observed_resources": {
+        "samples": 244,
+        "peak_rss_kib": 592128,
+        "peak_cpu_percent": 201.8,
+        "max_observed_processes": 7,
+        "observed_pressure_values": [
+          2
+        ],
+        "observed_nice_values": [
+          10
+        ]
+      },
+      "output": {
+        "package_results": {
+          "github.com/luoyjx/mini-loop/go/agent": "pass",
+          "github.com/luoyjx/mini-loop/go/astcontext": "pass",
+          "github.com/luoyjx/mini-loop/go/audit": "pass",
+          "github.com/luoyjx/mini-loop/go/background": "pass",
+          "github.com/luoyjx/mini-loop/go/benchmark": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/miniloop": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/miniloop-audit": "pass",
+          "github.com/luoyjx/mini-loop/go/cmd/traceview": "pass",
+          "github.com/luoyjx/mini-loop/go/config": "pass",
+          "github.com/luoyjx/mini-loop/go/cron": "pass",
+          "github.com/luoyjx/mini-loop/go/decisions": "pass",
+          "github.com/luoyjx/mini-loop/go/diagnostics": "pass",
+          "github.com/luoyjx/mini-loop/go/dotenv": "pass",
+          "github.com/luoyjx/mini-loop/go/durable": "pass",
+          "github.com/luoyjx/mini-loop/go/efficiency": "pass",
+          "github.com/luoyjx/mini-loop/go/httpapi": "pass",
+          "github.com/luoyjx/mini-loop/go/improvement": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/commandenv": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/fnmatch": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/jsonsyntax": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/jsonvalue": "pass",
+          "github.com/luoyjx/mini-loop/go/internal/pytext": "pass",
+          "github.com/luoyjx/mini-loop/go/launcher": "pass",
+          "github.com/luoyjx/mini-loop/go/mcp": "pass",
+          "github.com/luoyjx/mini-loop/go/memory": "pass",
+          "github.com/luoyjx/mini-loop/go/problems": "pass",
+          "github.com/luoyjx/mini-loop/go/protocol": "pass",
+          "github.com/luoyjx/mini-loop/go/provider": "pass",
+          "github.com/luoyjx/mini-loop/go/reload": "pass",
+          "github.com/luoyjx/mini-loop/go/runmeta": "pass",
+          "github.com/luoyjx/mini-loop/go/runtimeconfig": "pass",
+          "github.com/luoyjx/mini-loop/go/sandbox": "pass",
+          "github.com/luoyjx/mini-loop/go/secrets": "pass",
+          "github.com/luoyjx/mini-loop/go/selfaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/selfimprove": "pass",
+          "github.com/luoyjx/mini-loop/go/sessionquery": "pass",
+          "github.com/luoyjx/mini-loop/go/shell": "pass",
+          "github.com/luoyjx/mini-loop/go/skills": "pass",
+          "github.com/luoyjx/mini-loop/go/spill": "pass",
+          "github.com/luoyjx/mini-loop/go/sqlitestate": "pass",
+          "github.com/luoyjx/mini-loop/go/tasks": "pass",
+          "github.com/luoyjx/mini-loop/go/teams": "pass",
+          "github.com/luoyjx/mini-loop/go/tools/contractaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/tools/typeaudit": "pass",
+          "github.com/luoyjx/mini-loop/go/traceview": "pass",
+          "github.com/luoyjx/mini-loop/go/trajectory": "pass",
+          "github.com/luoyjx/mini-loop/go/userresources": "pass",
+          "github.com/luoyjx/mini-loop/go/verifiedloop": "pass",
+          "github.com/luoyjx/mini-loop/go/workflows": "pass",
+          "github.com/luoyjx/mini-loop/go/workspace": "pass",
+          "github.com/luoyjx/mini-loop/go/worktrees": "pass"
+        },
+        "package_counts": {
+          "pass": 51
+        },
+        "top_level_test_counts": {
+          "pass": 1433,
+          "skip": 6
+        },
+        "non_json_lines": 0,
+        "non_json_diagnostics": [],
+        "reviewed_diagnostic_pairs": [],
+        "unreviewed_non_json_diagnostics": [],
+        "diagnostic_policy": "Only the six reviewed passing race packages may have adjacent package-header and exact reviewed LC_DYSYMTAB warning pairs. No other non-JSON diagnostic is accepted. Raw text and log hash are retained.",
+        "failed_top_level_tests": []
+      },
+      "full_scope_verified": true
+    }
+  ],
+  "historical_reuse": {
+    "eligible": true,
+    "execution": "five_historical_stages_not_rerun",
+    "errors": [],
+    "proof": {
+      "path": "var/go-progress-validation-2026-10-13/reused-evidence.json",
+      "sha256": "df9fbe85adf06736764cd5e08f696f2d83ea4f5f72898fb8060cb70457b6a927",
+      "bytes": 12268
+    },
+    "purpose": "Scoped reuse review of five historical passing Source/type stages after CLI test resource-budget changes; not a rerun and not acceptance of the current full suite.",
+    "stages": [
+      {
+        "name": "source-export",
+        "execution": "reused_historical_pass_not_rerun",
+        "passed": true,
+        "matches_old_cohort_row": true,
+        "command": [
+          "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+          "python/tools/export_go_contracts.py",
+          "--check",
+          "--manifest",
+          "/Users/yanjixiong/github/mini-loop/var/go-legacy-recovery-2026-10-13/source-manifest.json"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop",
+        "recorded_limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "evidence": [
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/source-export.resources.json",
+            "sha256": "1338099db24963ea6f6ac43a0c533a6279e60c301c8372605c587aef2901b863",
+            "bytes": 664
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/source-export.log",
+            "sha256": "9aaf5837d4a53599a3ccab7f41000d13f98d686537026378db0def94e81f02c9",
+            "bytes": 79178
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/source-export.resources.jsonl",
+            "sha256": "efa720a6317280c1dd6154bbd04f94c5b7c4f5fb9110303c26ae0a7d86df99a1",
+            "bytes": 9630
+          }
+        ]
+      },
+      {
+        "name": "types-named",
+        "execution": "reused_historical_pass_not_rerun",
+        "passed": true,
+        "matches_old_cohort_row": true,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          "."
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "evidence": [
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-named.resources.json",
+            "sha256": "7e477ca21967a71029631b2f6858b85d18d46103eda28c1eac9f8dc1865151c2",
+            "bytes": 496
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-named.log",
+            "sha256": "e4e68e167f6257d4d31669bfb3778327585913a27021fdd4683b8ed990117afc",
+            "bytes": 74
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-named.resources.jsonl",
+            "sha256": "6e077f991ee1700e65d3229458144b8c8f508823c16ec04934705a5f8f2e8af2",
+            "bytes": 188
+          }
+        ]
+      },
+      {
+        "name": "types-public",
+        "execution": "reused_historical_pass_not_rerun",
+        "passed": true,
+        "matches_old_cohort_row": true,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-public"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "evidence": [
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-public.resources.json",
+            "sha256": "2054557e6171169e15fe7110e835b1e7c01cbbd380f1f1a84ec106bf0b154b05",
+            "bytes": 528
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-public.log",
+            "sha256": "d2e8c1831a10c30277975222c3d91ea0ec02707e4f927c0dce03307e3ff2336b",
+            "bytes": 67
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-public.resources.jsonl",
+            "sha256": "c57d5f4fb89173f4a5bab8f320ed4b54fab36515fa3f5beab5cfd4576e9b7bcc",
+            "bytes": 289
+          }
+        ]
+      },
+      {
+        "name": "types-private",
+        "execution": "reused_historical_pass_not_rerun",
+        "passed": true,
+        "matches_old_cohort_row": true,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-private"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "evidence": [
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-private.resources.json",
+            "sha256": "cfa1dc443cabca9fa4559439a9598a6b4099ce338b4ec0c2af1fa7f60bbf0813",
+            "bytes": 529
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-private.log",
+            "sha256": "713a5bb61689d9f3d93006e6e31864df6bcc5f4359180a5d52bcbb8cb145a3c2",
+            "bytes": 71
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-private.resources.jsonl",
+            "sha256": "493dab03a17e8fbdafdc0f1b517577bbcd9957f2f2585a1edcd6031639ff5446",
+            "bytes": 291
+          }
+        ]
+      },
+      {
+        "name": "types-variables",
+        "execution": "reused_historical_pass_not_rerun",
+        "passed": true,
+        "matches_old_cohort_row": true,
+        "command": [
+          "go",
+          "run",
+          "./tools/typeaudit",
+          "-root",
+          ".",
+          "-variables"
+        ],
+        "cwd": "/Users/yanjixiong/github/mini-loop/go",
+        "recorded_limits": {
+          "rss_kib": 1048576,
+          "gomaxprocs": 2,
+          "gomemlimit": "512MiB",
+          "goflags": "-p=1",
+          "cpu_percent_sustained": 250,
+          "cpu_grace_seconds": 30,
+          "sample_seconds": 1.0
+        },
+        "evidence": [
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-variables.resources.json",
+            "sha256": "2c48f7d99ba47aede1a680219ec9a4a70a100f9cfb3bb7d947472d3f66b6a7ff",
+            "bytes": 518
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-variables.log",
+            "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0",
+            "bytes": 66
+          },
+          {
+            "path": "var/go-legacy-recovery-2026-10-13/types-variables.resources.jsonl",
+            "sha256": "59292a9af7057dc372125b9908d9ed4a647f00028d2f398df0fda0c5680e509c",
+            "bytes": 189
+          }
+        ]
+      }
+    ],
+    "scope_comparisons": [
+      {
+        "name": "all_python_repository_inputs",
+        "old_files": 497,
+        "current_files": 497,
+        "unchanged": true,
+        "differences": []
+      },
+      {
+        "name": "all_source_fixtures",
+        "old_files": 258,
+        "current_files": 258,
+        "unchanged": true,
+        "differences": []
+      },
+      {
+        "name": "all_production_go_source",
+        "old_files": 465,
+        "current_files": 465,
+        "unchanged": true,
+        "differences": []
+      },
+      {
+        "name": "go_non_test_non_documentation_support_inputs",
+        "old_files": 739,
+        "current_files": 739,
+        "unchanged": true,
+        "differences": []
+      }
+    ],
+    "limits": [
+      "The entire historical freeze is not unchanged: both README files and three CLI test files differ or are newly added.",
+      "The two base-image artifacts are newly included in freeze scope; no old artifact equality is asserted.",
+      "Historical budgets and invocation profiles are preserved as recorded; this is not five new runs under the progress runner.",
+      "Compiler-based type results remain limited to their recorded Darwin/CGO/toolchain profile; this check does not compile or certify another platform, foreign library update, or toolchain change.",
+      "Python interpreter/installed dependency files outside the frozen repository scope are not rehashed by this check.",
+      "Current ordinary Go/vet/race/coverage/Python/invariant/scan/consumer results must be evaluated separately; historical Source/type reuse does not establish their success.",
+      "The active full-Go stage still must verify its end-of-stage freeze; this receipt is a read-time comparison."
+    ],
+    "counts": {
+      "old_frozen_inputs": 1766,
+      "new_frozen_inputs": 1769,
+      "current_enumerated_inputs": 1769,
+      "common_unchanged": 1762
+    },
+    "source_manifest": {
+      "artifact": {
+        "path": "var/go-legacy-recovery-2026-10-13/source-manifest.json",
+        "sha256": "4629898f0b0c71e2b586b7574b9fc2bfa6a21193d76a14dc339b679158e4b0dc",
+        "bytes": 36284
+      },
+      "files": 255,
+      "producer_matches_current": true,
+      "fixture_mismatches": []
+    }
+  },
+  "coverage": {
+    "status": "available",
+    "all": {
+      "covered": 34010,
+      "statements": 38137,
+      "percent": 89.17848808243963
+    },
+    "app": {
+      "covered": 33644,
+      "statements": 37622,
+      "percent": 89.426399447132
+    },
+    "provider": {
+      "covered": 1524,
+      "statements": 1756,
+      "percent": 86.78815489749431
+    },
+    "profile": {
+      "path": "var/go-progress-validation-2026-10-13/go-coverage/coverage.out",
+      "sha256": "5936e2d95f2466560b4cd357643676669205d954a1c7c87f86b4857a6f266ba0",
+      "bytes": 91164335
+    },
+    "raw_rows": 1305178,
+    "unique_spans": 26635,
+    "method": "Stream one complete passing atomic profile; identical spans count once, covered if any duplicate has hits. All includes tools; app excludes /tools/ and includes CLI; provider is /provider/ only.",
+    "scope": "Go statements only; excludes Python, native C, subprocess interiors, branches, other platforms and migration acceptance."
+  },
+  "frozen_inputs": {
+    "baseline": {
+      "path": "var/go-progress-validation-2026-10-13/go-full/freeze.before.json",
+      "sha256": "19ec1a2a1fd7300bdc2d855b45f789ba6f3ffa5847a65c826332a5dfa7d3edb0",
+      "bytes": 189059
+    },
+    "baseline_count": 1769,
+    "current_count": 1769,
+    "current_source_matches": true,
+    "all_current_inputs_match": true,
+    "exact_current_differences": []
+  },
+  "receipt_tool": {
+    "path": "var/go-progress-validation-2026-10-13/receipt-v2.py",
+    "sha256": "3c34a3acd759330f283a6b361df70e3d4c469f47cd2aebba799c788345d29305",
+    "bytes": 22397
+  },
+  "limitations": [
+    "This script runs no tests, builds, audits or host monitoring.",
+    "A failed consumer inventory remains failed and does not suppress unrelated stage evidence.",
+    "Resource observations are sampled and cleanup only confirms observed process identities."
+  ],
+  "integration": {
+    "recorded_utc": "2026-10-13T16:23:56.763184+00:00",
+    "method": "local fast-forward",
+    "previous_main": "69cba4328345aec64dc81933c438d2072287f4b4",
+    "integrated_runtime_tip": "f913d2097ab029b819a562168906aa02cf8d4d9d",
+    "branch": "main",
+    "source_branch": "codex/go-legacy-recovery-default",
+    "pushed": false,
+    "remote_refreshed": false,
+    "known_unrelated_consumer_gaps": [
+      "python-provider-idna.json",
+      "python-syntax-parser.json"
+    ],
+    "prior_user_authorization": "\u4ee3\u7801\u5408\u5230\u4e3b\u5206\u652f"
+  },
+  "consumer_summary": {
+    "fixtures": 256,
+    "observed_pass": 254,
+    "missing": [
+      {
+        "name": "python-provider-idna.json",
+        "status": "unreferenced",
+        "producer_scope": "current_export"
+      },
+      {
+        "name": "python-syntax-parser.json",
+        "status": "unreferenced",
+        "producer_scope": "current_export"
+      }
+    ],
+    "legacy": [
+      {
+        "name": "python-legacy-recovery.json",
+        "status": "test_pass_observed"
+      }
+    ],
+    "trailing_diagnostic": "2 fixtures lack a candidate caller with an observed passing test result\nexit status 1",
+    "inventory_scope": "candidate test-result association only; not full semantic parity"
+  },
+  "profile": {
+    "user_instruction": "\u653e\u5bbd\u9650\u5236\uff0c\u4f18\u5148\u63a8\u8fdb\u5de5\u4f5c\u8fdb\u5ea6",
+    "base_commit": "f913d2097ab029b819a562168906aa02cf8d4d9d",
+    "previous_evidence": "docs/audits/go-low-memory-validation-2026-10-13.json",
+    "profile": {
+      "gomaxprocs": 2,
+      "go_build_parallel": 1,
+      "go_test_parallel": 2,
+      "gomemlimit_soft": "512MiB",
+      "gogc": 75,
+      "rss_tree_stop_mib": 1536,
+      "cpu_stop_percent": 300,
+      "cpu_sustain_seconds": 45,
+      "allowed_observed_pressure_values": [
+        1,
+        2
+      ],
+      "initial_samples": 5,
+      "nice": 10,
+      "stage_wall_seconds": 1800
+    },
+    "runner_hashes": {
+      "run.py": "9922c72aff463517a7afc8ae26598be2e06431847af29bf25f822cb1ff260b0e",
+      "resource_watch.py": "76f6c9df8c71c9cde61e2e1ad35bf101f08caab83bf37893d1fd07ade6a56b3a"
+    }
+  },
+  "extra_evidence": [
+    {
+      "path": "var/go-progress-validation-2026-10-13/receipt-v2.json",
+      "sha256": "0deb71592e7ff79e493c4d1779b0e0186cda3860611e434dbb8af7ed61b38764",
+      "bytes": 70366
+    },
+    {
+      "path": "var/go-progress-validation-2026-10-13/integration.json",
+      "sha256": "56180786039d0cc299c4d7aef665492df738ef6a61f9e2b0e68e3b3952d864e1",
+      "bytes": 532
+    },
+    {
+      "path": "var/go-progress-validation-2026-10-13/coverage-tool-total/resources.json",
+      "sha256": "f8fed83708f49e421ebf732f3049ad3576d2aebe05893b300e5840cc471c4244",
+      "bytes": 2783
+    },
+    {
+      "path": "var/go-progress-validation-2026-10-13/coverage-tool-total/stdout.log",
+      "sha256": "d54b8de82bb5502ab333152ba16d55a1945b473ff60e63b33b7ea0540a4956db",
+      "bytes": 284979
+    }
+  ],
+  "official_cover_total_percent": 89.2,
+  "post_validation_documentation": {
+    "recorded_utc": "2026-10-13T16:29:36.276837+00:00",
+    "exact_frozen_differences": [
+      "README.md",
+      "go/README.md"
+    ],
+    "runtime_python_fixtures_and_go_tests_unchanged": true
+  },
+  "architecture_iteration": {
+    "topology_changed": false,
+    "base_updated": false,
+    "image": {
+      "path": "docs/audits/go-progress-validation-infographic-2026-10-14.png",
+      "sha256": "3ccf756d9a6434f51067da517d3d71031094f524e7d9a2a37f688d04be931ba2",
+      "bytes": 1814587
+    },
+    "exact_prompt": {
+      "path": "docs/audits/go-progress-validation-infographic-2026-10-14.prompt.txt",
+      "sha256": "5e702209b4464af3e81316f017f6465d0d4e23a503488f335c48066b381ec3ef",
+      "bytes": 2237
+    }
+  }
+}

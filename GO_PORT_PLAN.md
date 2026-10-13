@@ -1,5 +1,22 @@
 # Go port plan
 
+## 2026-10-14 relaxed validation profile and local main integration
+
+The user explicitly requested wider limits and faster progress. A serial profile
+with Go concurrency 2, soft memory target 512 MiB and sampled tree RSS budget
+1.5 GiB admitted observed pressure values 1/2. Full Go, vet, full race, full
+Python, invariants, scans and separate all-package atomic coverage passed.
+Current statement coverage is app 89.43%, all Go 89.18%, provider 86.79%.
+The Source/type evidence was reused only after current-input hash verification.
+
+Local main was fast-forwarded `69cba43` → `f913d20` under the earlier explicit
+merge instruction; the tested recovery and CLI-budget changes are integrated.
+No remote push occurred. Consumer inventory remains failed for the two unchanged
+IDNA/parser prerequisites (254/256 candidate pass associations), so complete
+Go-port acceptance is still open. The next finite caller-ID contract candidate
+and original P0/P1/G0–G7 scope remain authoritative.
+[Delivery and exact evidence](docs/audits/go-progress-validation-2026-10-14.md).
+
 ## 2026-10-13 commit before memory optimization — explicit user instruction
 
 Source contracts are committed as `6dc4956`; runtime/API/architecture changes

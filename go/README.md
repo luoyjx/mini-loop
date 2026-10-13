@@ -1550,6 +1550,15 @@ See the [resource evidence](../docs/audits/go-low-memory-validation-2026-10-13.m
 for the passing budget/reload checks and blocked full-suite preflight; these
 workloads do not prove a before/after memory reduction.
 
+The user subsequently authorized a wider validation profile: Go concurrency 2,
+512 MiB soft runtime target, 1.5 GiB sampled tree-RSS budget and observed pressure
+values 1/2 admitted, with nice 10 and critical/unknown-pressure stop protection.
+Full Go/vet/race/Python and separate all-package atomic coverage then passed;
+current coverage is app 89.43%, all Go 89.18%, provider 86.79%. This profile is a
+local validation choice. The
+[delivery record](../docs/audits/go-progress-validation-2026-10-14.md) retains
+its exact limits and the two remaining consumer prerequisites.
+
 See [the plan](../GO_PORT_PLAN.md) and [parity matrix](../GO_PARITY_MATRIX.md)
 for remaining work. Do not treat a compiling package as runtime parity.
 

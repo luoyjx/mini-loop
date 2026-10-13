@@ -1,5 +1,19 @@
 # Python to Go parity matrix
 
+## 2026-10-14 full checks passed under the relaxed profile
+
+Ordinary Go/vet/full race/Python/invariants/scans and complete all-package
+atomic coverage passed on the recovery and CLI-budget delivery. Coverage:
+application 89.43%, all Go 89.18%, provider 86.79%. Local main integrated the five
+commits through `f913d20` by fast-forward; no push occurred.
+
+The consumer gate still reports the two baseline prerequisites
+`python-provider-idna.json` and `python-syntax-parser.json` as unreferenced;
+254/256 fixture inventories have observed candidate passing tests. This is
+current validation evidence for the delivered slice, with full migration
+acceptance still incomplete. Six race linker warnings and skipped tests are
+retained in the [receipt](docs/audits/go-progress-validation-2026-10-14.json).
+
 ## 2026-10-13 runtime committed before memory optimization
 
 At the user's explicit request, runtime/API/architecture commit `a9b1bf4`
