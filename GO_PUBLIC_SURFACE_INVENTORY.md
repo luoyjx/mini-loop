@@ -1,5 +1,37 @@
 # Go public surface inventory
 
+## Current inventory acceptance — 2026-10-13
+
+Review baseline: accepted main `82b14bf`. **Original P0 inventory acceptance is
+satisfied**: all 12 README capability/default rows have Python-test mappings;
+the inventory includes 49 Settings fields, 44 HTTP operations, three SDK
+producers and the captured SQLite schema (`go/testdata/python-sqlite-schema.sql`).
+The 157 public exports now have 52 name matches and 105 explicit
+rename/composition candidates, with zero missing namespace bindings. The
+[helper overlay](docs/audits/go-public-helpers-namespace-2026-10-13.json) resolves
+the six former lookup omissions. Candidate mapping is not full semantic proof;
+behavioral acceptance stays in G1–G7 and the [current matrix](GO_PARITY_MATRIX.md#current-acceptance-index--2026-10-13).
+
+The accepted [role-policy receipt](docs/audits/go-role-policy-profiles-2026-10-13.json)
+records zero findings across 465 production files / 1473 named types, 1206 public
+roots, 278 private roots and 172 package variables. Its body inventory contains
+51 packages / 22288 declarations / 130 observations. The
+[individual boundary dispositions](docs/audits/go-body-boundary-dispositions-2026-10-13.json)
+have owner review: no open dynamic representation was found retained in
+repository-owned domain/service fields in the recorded Darwin profile. Error
+wrapper propagation, panic rethrow, request-local SSE wire buffers and three
+generated CGO declarations remain explicit. This does not declare all G0
+complete or prove arbitrary error internals, total memory bounds or other platforms.
+
+The [new resource-budget receipt](docs/audits/go-performance-resource-budget-2026-10-13.json)
+and [three-pair fake-HTTP report](docs/benchmarks/go-port-fake-http-resource-budget-2026-10-13.json)
+add performance and Python/tooling evidence. Go/vet/race/coverage were not rerun;
+accepted Darwin coverage remains app **89.41%**, all Go **89.16%**. Required gaps
+include default CPython parser approval plus its 62-case native consumer, two
+Unicode-host direct/SSE cases, and full Linux gates in the fixed environment.
+Other finite unaccepted matrix rows remain; this list does not narrow G7.
+Historical checkpoints below keep their original evidence and limits.
+
 ## 2026-10-13 public role profiles and child capability isolation
 
 Branch `codex/go-role-policy-profiles`, review baseline `fabe9bd`. Source capture
@@ -202,7 +234,7 @@ preflight/hash and Files directory primitive; Archify9/9, zero errors/warnings.
 No new rendered-browser acceptance. Provider observed coverage is86.45% versus86.67% previously: unchanged retry-wait/cancellation spans lose five covered statements and gain one. The exact span delta is retained; no threshold change or percentage-raising retry. Other historical temporal failures and original
 full public/default/provider/filesystem/host/platform/performance/release remain open.
 
-## Current evidence — 2026-10-13
+## Historical public-helper evidence — 2026-10-13
 
 Review baseline: local main `3269424`; original P0/P1/G0–G7 scope is preserved.
 The root namespace inventory remains157 exports:52 name candidates and105

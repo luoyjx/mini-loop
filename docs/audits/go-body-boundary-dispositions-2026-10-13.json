@@ -1,0 +1,3550 @@
+{
+  "schema_version": 1,
+  "status": "reviewed_finite_boundary_dispositions",
+  "baseline": {
+    "repository": "/Users/yanjixiong/github/mini-loop",
+    "commit": "82b14bf610d789dc380af48f0c7df525ffa9b8bc",
+    "reviewed_go_sources_unmodified_from_baseline": true,
+    "source_profile": "Existing supported native Darwin compiler profile only; inventory was not regenerated."
+  },
+  "inventory": {
+    "path": "var/go-role-policy-profiles-2026-10-13/resumed/body-inventory.log",
+    "sha256": "c0eef4b6f7d504f042c8d5e2bb5490b079c4860ff0dec179a5e731320095988a",
+    "packages": 51,
+    "declarations": 22288,
+    "observations": 130,
+    "kind_counts": {
+      "function": 11,
+      "variable": 119
+    }
+  },
+  "scope": "Finite disposition review of the 130 existing body-inventory observations. Enclosing source functions and relevant immediate conversion/retention paths were read; original findings remain verbatim in every row. Accepted as finite evidence for repository-owned retained domain/service boundaries on the recorded Darwin profile. Overall migration acceptance remains governed by the original P0/P1/G0-G7 requirements.",
+  "method": [
+    "Read current source via ast-outline structure or exact symbols followed by narrowly scoped source excerpts.",
+    "Partitioned observations into disjoint package groups (40 core, 48 protocol/provider, 42 edge/storage), then reviewed all fragment records.",
+    "Preserved zero-based observation indices and exact original finding objects; checked count, uniqueness, equality, source existence and source hashes with lightweight JSON/file reads.",
+    "No tests, builds, compiler inventory rerun or runtime profiling were performed for this source disposition review; the prior complete role-policy gates remain separate evidence."
+  ],
+  "classification_counts": {
+    "compiler_generated": 3,
+    "json_boundary": 83,
+    "json_serialization_boundary": 7,
+    "json_token_projection": 4,
+    "recover_error_protocol": 2,
+    "recover_rethrow": 1,
+    "recover_type_only": 21,
+    "typed_adapter": 9
+  },
+  "disposition_counts": {
+    "error_protocol_propagation": 2,
+    "no_domain_retention": 125,
+    "propagated_without_domain_assignment": 1,
+    "request_local_wire_retention": 2
+  },
+  "origin_counts": {
+    "go_compiler_generated": 3,
+    "repository_owned": 127
+  },
+  "disposition_meanings": {
+    "no_domain_retention": "The observed open representation is not retained as any/interface{}/RawMessage in repository domain/service fields on the inspected path. Converted concrete strings, structs or closed JSON variants can retain its meaning; this does not mean all input data is discarded.",
+    "error_protocol_propagation": "Recovered value is asserted to error. State-authority errors may propagate as the original wrapper; other panic values are dropped. This standard error protocol is not misreported as type-only text or as a domain dynamic-payload field.",
+    "propagated_without_domain_assignment": "Cleanup immediately rethrows the original panic. The inspected cleanup path does not assign it to a domain/service field; arbitrary outer callers are not analyzed.",
+    "request_local_wire_retention": "Wire input can survive across stream frames in the single-request adapter, is converted into typed input before model reply delivery, and the inspected stop path clears temporary buffers. Source size checks are recorded but no whole-process memory bound is claimed.",
+    "open": "Would identify an unresolved retention path for which local source evidence is insufficient. No such unresolved repo-owned domain/service-field assignment was found in these 130 observations under the stated scope."
+  },
+  "open_observation_indices": [],
+  "explicit_limits": [
+    "No claim of whole-program caller/escape/interprocedural closure, arbitrary injected callback behavior, generic-instantiation closure, foreign implementation internals, or every possible error object graph.",
+    "No Linux, other OS/architecture/build-tag/CGO profile acceptance follows from this native Darwin inventory.",
+    "Three findings are actual cmd/cgo-generated runtime declarations read from the existing Go build cache; Go runtime internals were not audited.",
+    "JSON conversion into a closed recursive value can preserve unknown extension data. This review distinguishes representations and retention boundaries, not semantic schema completeness.",
+    "No total memory/RSS, archive size, total event count, recursive screening or whole-process resource bound is established; row-level unchecked notes preserve observed limitations.",
+    "The two prior resource stops and later completion-cohort validation remain separate existing evidence; this source review does not rerun, replace, combine coverage, or reinterpret them."
+  ],
+  "fragments": [
+    {
+      "path": "var/go-performance-resource-budget-2026-10-13/body-core-disposition-fragment.json",
+      "sha256": "76c4a6714c9394f5fd9785b477cb2ef8a9ef8f6fc9828f502c883ac54e3c85a6"
+    },
+    {
+      "path": "var/go-performance-resource-budget-2026-10-13/body-protocol-disposition-fragment.json",
+      "sha256": "5eca09df29b1c7052f47d7c927daaff15bf8ad902dc010820ae7c583aebfd8c0"
+    },
+    {
+      "path": "var/go-performance-resource-budget-2026-10-13/body-edge-disposition-fragment.json",
+      "sha256": "94abaa978dae3535d630a3eead5faa2acc07e10bb125b266d30395740056a0f0"
+    }
+  ],
+  "findings": [
+    {
+      "observation_index": 0,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/reload",
+        "Name": "_Cgo_use",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/Library/Caches/go-build/ee/ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a-d",
+          "Offset": 534,
+          "Line": 24,
+          "Column": 6
+        },
+        "Type": "func(interface{})"
+      },
+      "source_path": "/Users/yanjixiong/Library/Caches/go-build/ee/ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a-d",
+      "symbol": "_Cgo_use",
+      "line": 24,
+      "classification": "compiler_generated",
+      "disposition": "no_domain_retention",
+      "evidence": "Actual cache source exists and was read: line 7 declares Code generated by cmd/cgo; lines 23-24 link this bodyless interface{} declaration to runtime.cgoUse. Generated C wrappers call it only in _Cgo_always_false branches (lines 100-102, 113-115, 126-129). This observation belongs to the toolchain keep-alive/escape scaffold, not a retained reload domain field or application function.",
+      "unchecked": [
+        "Go runtime implementation and compiler escape semantics were not independently audited."
+      ],
+      "source_sha256": "ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a",
+      "source_origin": "go_compiler_generated"
+    },
+    {
+      "observation_index": 1,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/reload",
+        "Name": "_cgoCheckPointer",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/Library/Caches/go-build/ee/ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a-d",
+          "Offset": 1241,
+          "Line": 56,
+          "Column": 6
+        },
+        "Type": "func(interface{}, interface{})"
+      },
+      "source_path": "/Users/yanjixiong/Library/Caches/go-build/ee/ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a-d",
+      "symbol": "_cgoCheckPointer",
+      "line": 56,
+      "classification": "compiler_generated",
+      "disposition": "no_domain_retention",
+      "evidence": "Actual cache source lines 54-56 contain go:linkname to runtime.cgoCheckPointer, go:noescape, and a bodyless declaration with two interface{} parameters. The file is explicitly cmd/cgo generated at line 7; it contains no application assignment of those parameters to reload state.",
+      "unchecked": [
+        "Go runtime pointer-check implementation was not independently audited."
+      ],
+      "source_sha256": "ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a",
+      "source_origin": "go_compiler_generated"
+    },
+    {
+      "observation_index": 2,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/reload",
+        "Name": "_cgoCheckResult",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/Library/Caches/go-build/ee/ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a-d",
+          "Offset": 1357,
+          "Line": 60,
+          "Column": 6
+        },
+        "Type": "func(interface{})"
+      },
+      "source_path": "/Users/yanjixiong/Library/Caches/go-build/ee/ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a-d",
+      "symbol": "_cgoCheckResult",
+      "line": 60,
+      "classification": "compiler_generated",
+      "disposition": "no_domain_retention",
+      "evidence": "Actual cache source lines 58-60 contain go:linkname to runtime.cgoCheckResult, go:noescape, and a bodyless interface{} declaration. The source is explicitly cmd/cgo generated at line 7; no body or application domain storage is present for this declaration.",
+      "unchecked": [
+        "Go runtime result-check implementation was not independently audited."
+      ],
+      "source_sha256": "ee223b180ee6b2cc070bfeb746406d38f7f926d44249749b44930fe637d6ce1a",
+      "source_origin": "go_compiler_generated"
+    },
+    {
+      "observation_index": 3,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/decision_events.go",
+          "Offset": 1573,
+          "Line": 52,
+          "Column": 7
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/agent/decision_events.go",
+      "symbol": "DecisionUsage.UnmarshalJSON.fields",
+      "line": 52,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "decision_events.go:37-67 first decodes *int64 input/output using DisallowUnknownFields. The local RawMessage map at 52 is consulted only for len(fields) when both counts are absent, rejecting nonempty/null-count shapes. Success assigns either DecisionUsage{} or decisionUsage with typed decisions.TokenUsage; no map/member survives.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Aggregate decoder allocation was not measured."
+      ],
+      "source_sha256": "c52b15cdbd0b9ece84c3ee4a7bd33552cc91f04532c118eddb27ae9e02a0d737",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 4,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/extension_tool.go",
+          "Offset": 1060,
+          "Line": 35,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/extension_tool.go",
+      "symbol": "extensionToolAdapter.ExecuteTool.deferred.fault",
+      "line": 35,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "extension_tool.go:33-62 uses recovered fault only in fmt.Errorf(\"extension callback panic: %T\", fault), replaces output with an empty string, and returns the resulting error. The original panic value is not stored or returned.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Behavior or retention inside caller-provided codec/handler implementation was not audited."
+      ],
+      "source_sha256": "14b456c13ad79ec407e8efa0c2c0feaff8e5843a8f59a999997b43445019b83d",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 5,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "failure",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/gate.go",
+          "Offset": 4702,
+          "Line": 165,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/gate.go",
+      "symbol": "notifyObserver.deferred.failure",
+      "line": 165,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "gate.go:163-170 uses recovered failure only as %T in a newly formatted error; it returns no panic payload to ToolOutcome, authority, or catalog. Observer.OnResult receives concrete ToolAuthority/ToolCall/ToolOutcome independently of this binding.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Caller-provided observer internals were not audited."
+      ],
+      "source_sha256": "8a690830b04c9c7ecdc88edd979488f8c8b6b4c0582ef6f5c09cf24b5e14cff0",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 6,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/managed_session.go",
+          "Offset": 11989,
+          "Line": 326,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/managed_session.go",
+      "symbol": "ManagedSession.runActiveOperation.deferred.fault",
+      "line": 326,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "managed_session.go:320-379 replaces a panic with fmt.Errorf(\"runtime panicked: %T\", fault). The remainder stores typed status and emits boundedError(err) string, or returns error; the panic object itself is never assigned to the active turn or session.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Nested callback behavior was not audited."
+      ],
+      "source_sha256": "21183883a18db5892e95a6adb75c4631a75bc1d5108390bc6d50cc3e0c783a38",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 7,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/manager.go",
+          "Offset": 13946,
+          "Line": 383,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/manager.go",
+      "symbol": "SessionManager.create.deferred.fault",
+      "line": 383,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "manager.go:355-470 constructs a fresh formatted error containing only %T, clears the returned session, and performs typed cleanup when unpublished. The arbitrary panic value is not inserted into manager.sessions, pending session, or cleanup records.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Caller factories may retain their own values; that independent behavior is outside this binding."
+      ],
+      "source_sha256": "ee79e1a474022db9f226a4d9d4a956974aaecb884fb345ceb3b4165457f32c3d",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 8,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/mcp_lifecycle.go",
+          "Offset": 2375,
+          "Line": 91,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/mcp_lifecycle.go",
+      "symbol": "MCPConnection.release.deferred.fault",
+      "line": 91,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "mcp_lifecycle.go:80-100 uses recover solely for a %T error and clears closing/finishes the done channel. The connection retains its typed client and lifecycle state, not fault.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "External ManagedMCPClient.Close implementation was not audited."
+      ],
+      "source_sha256": "98706e73817d907a10990f28321fa0f2db911bb8b958babd5e9a37919e34bfa8",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 9,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "failure",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/memory_extraction.go",
+          "Offset": 5441,
+          "Line": 181,
+          "Column": 5
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/memory_extraction.go",
+      "symbol": "recoverMemoryFailure.failure",
+      "line": 181,
+      "classification": "recover_error_protocol",
+      "disposition": "error_protocol_propagation",
+      "evidence": "memory_extraction.go:180-186 type-asserts the recovered value to error and passes it to memoryExtractionFailure. That helper at 167-175 first propagates stateRunError(ctx); otherwise it returns the ORIGINAL error if errors.Is matches ErrStateTranscript or ErrSessionLeaseLost, and returns nil for other errors. The recovered interface{} is not assigned to a domain field, but an error wrapper may escape as the named error result.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Matched error wrappers may carry caller data; no arbitrary error-internal object-graph closure is claimed. Standard error-protocol propagation is distinguished from retention of any/interface{}/RawMessage in domain/service fields."
+      ],
+      "retained_representation": "Original recovered value may survive as error when it matches a state-authority sentinel; otherwise it is dropped.",
+      "source_sha256": "18033f8538e528f2f995cfe03412776372a409e65f866d5c4564d631cf864094",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 10,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/persistence.go",
+          "Offset": 1828,
+          "Line": 60,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/persistence.go",
+      "symbol": "stateFault.deferred.fault",
+      "line": 60,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "persistence.go:58-65 returns a newly formatted \"state callback panicked (%T)\" error. The action callback receives no recovered value and no state record or persistence field receives fault.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Caller-provided state adapter internals were not audited."
+      ],
+      "source_sha256": "2f89186746cad9e3e04a60134f4baf165803fc23c45bd3fd4691b67a87ef95d5",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 11,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/plan_mode.go",
+          "Offset": 1716,
+          "Line": 52,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/plan_mode.go",
+      "symbol": "reviewPlan.deferred.fault",
+      "line": 52,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "plan_mode.go:50-58 resets PlanReview to its zero value and replaces panic with a fresh %T error. PlanReview carries no recovered interface value.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "PlanApprover internals were not audited."
+      ],
+      "source_sha256": "d99199fc9ececc1cc70f064474c888d9d915c024be009db23f32df2e13873e98",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 12,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "failure",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/public_memory.go",
+          "Offset": 2400,
+          "Line": 63,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/public_memory.go",
+      "symbol": "queryRelevantMemories.deferred.failure",
+      "line": 63,
+      "classification": "recover_error_protocol",
+      "disposition": "error_protocol_propagation",
+      "evidence": "public_memory.go:61-96 type-asserts failure to error and replaces selected/found with nil/false. memoryExtractionFailure at memory_extraction.go:167-175 may return the original error if it matches ErrStateTranscript or ErrSessionLeaseLost; all other recovered errors become nil unless context has a state error. No raw interface enters selected memory records, but the original wrapper can escape through the error result.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Matched error wrappers may carry caller data; no arbitrary error-internal object-graph closure is claimed. Standard error-protocol propagation is distinguished from retention of any/interface{}/RawMessage in domain/service fields."
+      ],
+      "retained_representation": "Original recovered value may survive as error when it matches a state-authority sentinel; otherwise it is dropped.",
+      "source_sha256": "1761d739133f146897b20c9cb32042e0a35a963eeb24ebb85dd062ba588999fc",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 13,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/restore.go",
+          "Offset": 5517,
+          "Line": 183,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/restore.go",
+      "symbol": "SessionManager.restoreSelected.deferred.fault",
+      "line": 183,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "restore.go:152-265 resets returned session, wraps the known ErrStateRestore sentinel plus %T panic type in a fresh error, and releases typed pending state. The %w value is ErrStateRestore, not fault; arbitrary panic contents are not retained.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Nested construction adapter internals were not audited."
+      ],
+      "source_sha256": "dde6b2fa8a19922d73be0721a0fa71b5c6e4a7dd2e2700ed26e61996a434e5ff",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 14,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/scheduling.go",
+          "Offset": 876,
+          "Line": 37,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/scheduling.go",
+      "symbol": "Session.dispatchBatch.deferred.fault",
+      "line": 37,
+      "classification": "recover_rethrow",
+      "disposition": "propagated_without_domain_assignment",
+      "evidence": "scheduling.go:21-97 recovers only to call repairAttempts(attempts), then immediately panic(fault). No assignment retains fault in attempts/history/stuck ledger. This preserves the original panic for the enclosing caller rather than converting it to a string. ManagedSession.runActiveOperation at managed_session.go:326-328 has a separate type-only recovery for managed runs.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Direct Session callers may recover and retain the original panic; this item only proves no domain-field assignment in the inspected cleanup/rethrow path."
+      ],
+      "retained_representation": "Original panic is rethrown, not suppressed or converted at this boundary.",
+      "source_sha256": "8d860082bf2e5310fa55d3172ae25eef9027e40a6e3c96d33c21b4516c006a09",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 15,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/scheduling.go",
+          "Offset": 3578,
+          "Line": 121,
+          "Column": 8
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/scheduling.go",
+      "symbol": "Session.parallelGroup.worker.deferred.fault",
+      "line": 121,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "scheduling.go:99-149 converts fault to a %T-only error assigned to attempt.err and calls cancel(attempt.err). Workers finish and the group returns that error/cause; neither the attempt nor context cause receives the original panic payload.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Tool handler internals were not audited."
+      ],
+      "source_sha256": "8d860082bf2e5310fa55d3172ae25eef9027e40a6e3c96d33c21b4516c006a09",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 16,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "event",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/self_audit.go",
+          "Offset": 9074,
+          "Line": 250,
+          "Column": 7
+        },
+        "Type": "struct{Name github.com/luoyjx/mini-loop/go/protocol.ToolName \"json:\\\"name\\\"\"; Input encoding/json.RawMessage \"json:\\\"input\\\"\"}"
+      },
+      "source_path": "go/agent/self_audit.go",
+      "symbol": "observeAuditEvents.callback.event",
+      "line": 250,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "self_audit.go:233-274 limits observed records to 200 and decrements a byte budget before decoding the local event DTO. Name becomes selfaudit.ToolUse.Name; for ToolLoadSkill only, Input is decoded to a struct containing *string Name, which becomes Skill. The appended uses slice contains selfaudit.ToolUse, not RawMessage; other tool input payloads are discarded.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "TrajectoryReader implementation and overall peak allocation were not audited."
+      ],
+      "source_sha256": "a8b12bd2d9586da4d2082616634f620dbcd40da42273330e57740efcd2db4f96",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 17,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "v",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/stored_event.go",
+          "Offset": 11009,
+          "Line": 312,
+          "Column": 3
+        },
+        "Type": "struct{Hash string \"json:\\\"hash\\\"\"; Text encoding/json.RawMessage \"json:\\\"text\\\"\"}"
+      },
+      "source_path": "go/agent/stored_event.go",
+      "symbol": "decodeStoredEventPayload [EventSystemPrompt].v",
+      "line": 312,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "stored_event.go:310-335 uses Text RawMessage only to select string versus []eventSystemBlock. Null/absent text is rejected; block form requires one text block and cache. The returned SessionEvent receives only System string, cache pointer, and hash, never v.Text.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Stored-event byte/depth limits are not established by this local disposition."
+      ],
+      "source_sha256": "abf49fe58ff1ec3588e3228c070be0ab8cf5c0da30e2d3907023a4d675b6ae42",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 18,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "v",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/stored_event.go",
+          "Offset": 14302,
+          "Line": 391,
+          "Column": 3
+        },
+        "Type": "struct{Span github.com/luoyjx/mini-loop/go/agent.SpanID \"json:\\\"span_id\\\"\"; Purpose github.com/luoyjx/mini-loop/go/protocol.RequestPurpose \"json:\\\"purpose\\\"\"; Status github.com/luoyjx/mini-loop/go/agent.ModelStatus \"json:\\\"status\\\"\"; Duration float64 \"json:\\\"duration_ms\\\"\"; Error *string \"json:\\\"error\\\"\"; Stop *github.com/luoyjx/mini-loop/go/protocol.StopReason \"json:\\\"stop_reason\\\"\"; Usage encoding/json.RawMessage \"json:\\\"usage\\\"\"; Served *string \"json:\\\"served_model\\\"\"; Prompt *int \"json:\\\"prompt_tokens\\\"\"; Catalog *string \"json:\\\"tool_catalog_fingerprint\\\"\"; Meter *github.com/luoyjx/mini-loop/go/agent.TokenMeterSnapshot \"json:\\\"token_meter\\\"\"}"
+      },
+      "source_path": "go/agent/stored_event.go",
+      "symbol": "decodeStoredEventPayload [EventModelEnd].v",
+      "line": 391,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "stored_event.go:390-412 immediately unmarshals local Usage RawMessage into *protocol.TokenUsage when present. The constructed ModelEndEvent contains that typed usage, typed IDs/status/stop/meter and strings/scalars. v and v.Usage are not retained.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Stored-event byte/depth limits are not established by this local disposition."
+      ],
+      "source_sha256": "abf49fe58ff1ec3588e3228c070be0ab8cf5c0da30e2d3907023a4d675b6ae42",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 19,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "v",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/stored_event.go",
+          "Offset": 15425,
+          "Line": 414,
+          "Column": 3
+        },
+        "Type": "struct{Name github.com/luoyjx/mini-loop/go/protocol.ToolName \"json:\\\"name\\\"\"; ID string \"json:\\\"id\\\"\"; Input encoding/json.RawMessage \"json:\\\"input\\\"\"; Span github.com/luoyjx/mini-loop/go/agent.SpanID \"json:\\\"span_id\\\"\"; Parent github.com/luoyjx/mini-loop/go/agent.SpanID \"json:\\\"parent_span_id\\\"\"; Action github.com/luoyjx/mini-loop/go/agent.ActionID \"json:\\\"action_id\\\"\"; Activity github.com/luoyjx/mini-loop/go/agent.ActivityID \"json:\\\"activity_id\\\"\"; Display struct{Verb string \"json:\\\"verb\\\"\"; Object string \"json:\\\"object\\\"\"} \"json:\\\"display\\\"\"}"
+      },
+      "source_path": "go/agent/stored_event.go",
+      "symbol": "decodeStoredEventPayload [EventToolUse].v",
+      "line": 414,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "stored_event.go:413-435 sends local Input RawMessage to protocol.DecodeModelToolInput and assigns only its ToolInput result into ToolUseEvent. Name/ID/span/action/display fields are concrete. The decoder error is returned and no original Input byte slice is stored in the event.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "ToolInput may preserve source JSON meaning in a closed observation/jsonvalue variant, not RawMessage; this is a representation classification, not proof that all original data is discarded."
+      ],
+      "source_sha256": "abf49fe58ff1ec3588e3228c070be0ab8cf5c0da30e2d3907023a4d675b6ae42",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 20,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "value",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/subscriptions.go",
+          "Offset": 2760,
+          "Line": 100,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/subscriptions.go",
+      "symbol": "notifyEventSink.deferred.value",
+      "line": 100,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "subscriptions.go:98-105 uses recovered value solely in fmt.Errorf(\"event sink panicked: %T\", value); the sink receives record.clone independently. No recovered payload enters SessionEventRecord or the returned error beyond its type-name text.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Caller-provided EventSink internals were not audited."
+      ],
+      "source_sha256": "2251092a8eb11d4492b3f1614e7f5ab7a1e623d01e1cf3dc65c76988e4fea68e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 21,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/team_spawn.go",
+          "Offset": 3760,
+          "Line": 119,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/team_spawn.go",
+      "symbol": "SessionManager.SpawnTeammate.deferred.fault",
+      "line": 119,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "team_spawn.go:58-180 turns fault into a %T-only construction error, resets SpawnedTeammate, and runs cleanup. It never assigns the panic payload to pending/session/teamRun or manager state.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Nested factory and persistence implementations were not audited."
+      ],
+      "source_sha256": "63ebe5fbffcd3ad3ea28596ba8d5f09fbcf968a076e9c63cc686504a60c1b36a",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 22,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/team_spawn.go",
+          "Offset": 6243,
+          "Line": 186,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/team_spawn.go",
+      "symbol": "SessionManager.initialTeammateRun.deferred.fault",
+      "line": 186,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "team_spawn.go:182-207 converts fault with fmt.Sprintf(\"teammate runner panicked (%T)\") and places only that string into RunErrorEvent.detail. The emitted event does not contain the recovered interface.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Event delivery internals were not re-audited for this item."
+      ],
+      "source_sha256": "63ebe5fbffcd3ad3ea28596ba8d5f09fbcf968a076e9c63cc686504a60c1b36a",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 23,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "members",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/trajectory.go",
+          "Offset": 5569,
+          "Line": 171,
+          "Column": 6
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/agent/trajectory.go",
+      "symbol": "TrajectoryRecord.MarshalJSON.members",
+      "line": 171,
+      "classification": "json_serialization_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "trajectory.go:156-224 marshals typed SessionEventRecord into payload, locally reparses members to add record_type/model_input/model_output and remove archive-only terminal flags, then serializes the map to []byte. TrajectoryRecord fields at 137-148 remain SessionEventRecord, typed trajectoryDetails and TextMasker; members is not written back into the receiver.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Complete encoded output size and allocations were not measured."
+      ],
+      "source_sha256": "c27d399e7fa57f6b1e168aff17a9bc43648a61686b55331f0ea3395df3cc6916",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 24,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/trajectory.go",
+          "Offset": 6291,
+          "Line": 196,
+          "Column": 8
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/agent/trajectory.go",
+      "symbol": "TrajectoryRecord.MarshalJSON.fields",
+      "line": 196,
+      "classification": "json_serialization_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "trajectory.go:187-205 locally reparses ModelRequest.Wire output solely to delete model before re-marshaling. The resulting bytes become a member of another local serialization map, which is serialized before return at 215-224. Neither map is retained in ModelRequest or TrajectoryRecord.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Complete encoded output size and allocations were not measured."
+      ],
+      "source_sha256": "c27d399e7fa57f6b1e168aff17a9bc43648a61686b55331f0ea3395df3cc6916",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 25,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/agent",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/agent/trajectory.go",
+          "Offset": 7319,
+          "Line": 239,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/agent/trajectory.go",
+      "symbol": "trajectoryFault.deferred.fault",
+      "line": 239,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "trajectory.go:237-244 replaces fault with a newly formatted type-only \"trajectory backend panic: %T\" error. The original panic object is neither returned nor stored in writer state.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Caller-provided trajectory backend internals were not audited."
+      ],
+      "source_sha256": "c27d399e7fa57f6b1e168aff17a9bc43648a61686b55331f0ea3395df3cc6916",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 26,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/background",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/background/manager.go",
+          "Offset": 6762,
+          "Line": 231,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/background/manager.go",
+      "symbol": "Manager.execute.deferred.fault",
+      "line": 231,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "background/manager.go:227-263 turns fault into a %T-only text string, then stores that string in task.record.Result and Notification while setting typed Error status. Retained service state contains the formatted string, not fault.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Background executor internals and total task-state allocation were not measured."
+      ],
+      "source_sha256": "1b9771a1f516507e7e3c0440dae73c15d238c4b80798f2a9a54e1fff0b51062f",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 27,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/benchmark",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/benchmark/runner.go",
+          "Offset": 4101,
+          "Line": 114,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/benchmark/runner.go",
+      "symbol": "prepareTask.deferred.fault",
+      "line": 114,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "benchmark/runner.go:112-119 converts fault into a fresh \"setup panicked (%T)\" error; Prepare receives context/workspace only and no open panic object is retained in Task or its result.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Injected Task.Prepare behavior was not audited."
+      ],
+      "source_sha256": "d6ce919c29b8cf0c3542dcdf4c725b65d597322362205b160fc3744efbd162a4",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 28,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/benchmark",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/benchmark/runner.go",
+          "Offset": 4354,
+          "Line": 122,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/benchmark/runner.go",
+      "symbol": "judgeTask.deferred.fault",
+      "line": 122,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "benchmark/runner.go:120-128 sets passed=false and a fresh \"judge panicked (%T)\" error; only bool/error results leave the function, not the panic object.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Injected Task.Judge behavior was not audited."
+      ],
+      "source_sha256": "d6ce919c29b8cf0c3542dcdf4c725b65d597322362205b160fc3744efbd162a4",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 29,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/cron",
+        "Name": "p",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/cron/scheduler.go",
+          "Offset": 9065,
+          "Line": 363,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/cron/scheduler.go",
+      "symbol": "resolve.deferred.p",
+      "line": 363,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "cron/scheduler.go:361-368 converts p to a %T-only formatted error. Scheduler.fire consumes that error as a formatted problem string; the original recovered value is not retained in runner or job.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Injected Resolver implementation was not audited."
+      ],
+      "source_sha256": "3a77dc195f3db58b51a233e107ddc8778cdb47b414e5bb9636a830602e8ddc45",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 30,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/cron",
+        "Name": "value",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/cron/scheduler.go",
+          "Offset": 10037,
+          "Line": 391,
+          "Column": 7
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/cron/scheduler.go",
+      "symbol": "Scheduler.fire.worker.deferred.value",
+      "line": 391,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "cron/scheduler.go:369-403 uses value only in %T formatting before calling s.problem with a string; execution cleanup removes typed execution state. No arbitrary panic object is stored in scheduler problems or running map.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Injected Runner implementation was not audited."
+      ],
+      "source_sha256": "3a77dc195f3db58b51a233e107ddc8778cdb47b414e5bb9636a830602e8ddc45",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 31,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/cron",
+        "Name": "p",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/cron/store.go",
+          "Offset": 1378,
+          "Line": 57,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/cron/store.go",
+      "symbol": "Scheduler.save.deferred.p",
+      "line": 57,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "cron/store.go:52-109 transforms p to a fresh %T-only persistence error. Serialized jobs are []Job built separately; neither stored bytes nor scheduler fields receive p.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Masker and filesystem callback internals were not audited."
+      ],
+      "source_sha256": "aec7e604e7eed6306d38dee5b75f43464a3b548996f0c101344b2bbf5531e1aa",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 32,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/cron",
+        "Name": "rows",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/cron/store.go",
+          "Offset": 4147,
+          "Line": 160,
+          "Column": 6
+        },
+        "Type": "[]encoding/json.RawMessage"
+      },
+      "source_path": "go/cron/store.go",
+      "symbol": "Scheduler.load.rows",
+      "line": 160,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "cron/store.go:146-190 reads at most maxStoreBytes+1 and rejects over-limit bytes before filling local []RawMessage. Each row goes through decodeJob:124-145 (unknown-field rejection and required pointer checks), then Cron parsing, and only typed Job replaces/appends s.jobs. The raw rows slice is not retained.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Peak decoder allocation was not measured."
+      ],
+      "source_sha256": "aec7e604e7eed6306d38dee5b75f43464a3b548996f0c101344b2bbf5531e1aa",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 33,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/cron",
+        "Name": "row",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/cron/store.go",
+          "Offset": 4505,
+          "Line": 174,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/cron/store.go",
+      "symbol": "Scheduler.load.row",
+      "line": 174,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "cron/store.go:174-188 passes each raw row only to decodeJob; success yields concrete Job and cron-expression validation before storage. Invalid rows produce problem strings and are skipped; no raw element enters s.jobs.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Peak decoder allocation was not measured."
+      ],
+      "source_sha256": "aec7e604e7eed6306d38dee5b75f43464a3b548996f0c101344b2bbf5531e1aa",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 34,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/decisions",
+        "Name": "token",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/decisions/value.go",
+          "Offset": 5106,
+          "Line": 180,
+          "Column": 2
+        },
+        "Type": "encoding/json.Token"
+      },
+      "source_path": "go/decisions/value.go",
+      "symbol": "readValue.token",
+      "line": 180,
+      "classification": "json_token_projection",
+      "disposition": "no_domain_retention",
+      "evidence": "decisions/value.go:176-237 immediately switches on decoder token into nil/string/bool/json.Number/json.Delim. Scalars become closed Value constructors, containers recursively store []Value/map[string]Value, unsupported tokens error. DecodeValue:158-175 enforces byte/UTF-8/trailing-token checks, and readValue enforces depth <=32. The token interface is not a Value field.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "No runtime memory/latency measurement was performed."
+      ],
+      "source_sha256": "7b8d8e53f4c6494a81fd75acafac1947d2a4a464c365adb4f64c416fe6058ab7",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 35,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/decisions",
+        "Name": "t",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/decisions/value.go",
+          "Offset": 5597,
+          "Line": 203,
+          "Column": 7
+        },
+        "Type": "encoding/json.Token"
+      },
+      "source_path": "go/decisions/value.go",
+      "symbol": "readValue [array close].t",
+      "line": 203,
+      "classification": "json_token_projection",
+      "disposition": "no_domain_retention",
+      "evidence": "decisions/value.go:203-206 compares the temporary closing token only to json.Delim(']'); mismatch errors, success returns Value{kind:Array,array:[]Value}. The json.Token value is not returned or stored.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "No runtime memory/latency measurement was performed."
+      ],
+      "source_sha256": "7b8d8e53f4c6494a81fd75acafac1947d2a4a464c365adb4f64c416fe6058ab7",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 36,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/decisions",
+        "Name": "k",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/decisions/value.go",
+          "Offset": 5863,
+          "Line": 212,
+          "Column": 5
+        },
+        "Type": "encoding/json.Token"
+      },
+      "source_path": "go/decisions/value.go",
+      "symbol": "readValue [object key].k",
+      "line": 212,
+      "classification": "json_token_projection",
+      "disposition": "no_domain_retention",
+      "evidence": "decisions/value.go:212-228 requires k to be a string, rejects duplicate keys, and stores that string plus recursively decoded Value. The map is map[string]Value and ordered keys are []string; the token interface never survives into Value.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "No runtime memory/latency measurement was performed."
+      ],
+      "source_sha256": "7b8d8e53f4c6494a81fd75acafac1947d2a4a464c365adb4f64c416fe6058ab7",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 37,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/decisions",
+        "Name": "t",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/decisions/value.go",
+          "Offset": 6336,
+          "Line": 230,
+          "Column": 7
+        },
+        "Type": "encoding/json.Token"
+      },
+      "source_path": "go/decisions/value.go",
+      "symbol": "readValue [object close].t",
+      "line": 230,
+      "classification": "json_token_projection",
+      "disposition": "no_domain_retention",
+      "evidence": "decisions/value.go:230-234 uses t only to validate json.Delim('}'); success returns the already-built concrete object/keys fields. No json.Token/interface is retained in that result.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "No runtime memory/latency measurement was performed."
+      ],
+      "source_sha256": "7b8d8e53f4c6494a81fd75acafac1947d2a4a464c365adb4f64c416fe6058ab7",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 38,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/cron.go",
+          "Offset": 804,
+          "Line": 34,
+          "Column": 6
+        },
+        "Type": "struct{Cron *string \"json:\\\"cron\\\"\"; Prompt *string \"json:\\\"prompt\\\"\"; Recurring encoding/json.RawMessage \"json:\\\"recurring\\\"\"; Durable encoding/json.RawMessage \"json:\\\"durable\\\"\"}"
+      },
+      "source_path": "go/httpapi/cron.go",
+      "symbol": "CronScheduleRequest.UnmarshalJSON.wire",
+      "line": 34,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "go/httpapi/cron.go:33-56 unmarshals into local wire, converts each Recurring/Durable raw value via cronHTTPBool (57-85: finite bool/string/0-or-1 conversion, invalid values return error), then assigns only strings and *bool to CronScheduleRequest. scheduleCron:109-128 constructs agent.ScheduleCronRequest solely from those typed fields.",
+      "unchecked": [
+        "Request-body aggregate allocation and peak RSS were not measured."
+      ],
+      "source_sha256": "a2324812c3725842e90073353a3968d03c76421faece0e9f88406c222cc22d56",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 39,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "personalSkillFields",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_requests.go",
+          "Offset": 716,
+          "Line": 28,
+          "Column": 6
+        },
+        "Type": "func(data []byte, allowed ...string) (map[string]encoding/json.RawMessage, error)"
+      },
+      "source_path": "go/httpapi/personal_skill_requests.go",
+      "symbol": "personalSkillFields",
+      "line": 28,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "This unexported helper (28-49) accepts only a UTF-8 JSON object and rejects every key outside the caller-provided allowlist. Its returned raw map is consumed only by PreviewRequest.UnmarshalJSON at line 60 and CommitRequest.UnmarshalJSON at line 80, verified by repository call-site search. Both callers decode values through personalSkillString and assign concrete request fields; the map does not enter service state.",
+      "unchecked": [
+        "No allocation or request-size benchmark was run."
+      ],
+      "source_sha256": "75091524503919d1f27061d04a2c169a255938e11d04c866de76d0b64a3f985e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 40,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_requests.go",
+          "Offset": 946,
+          "Line": 32,
+          "Column": 6
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/httpapi/personal_skill_requests.go",
+      "symbol": "personalSkillFields.fields",
+      "line": 32,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The local map at line 32 is populated from JSON, checked key-by-key against allowed names, and returned only to the two request UnmarshalJSON methods at lines 60 and 80. Preview consumes name/focus into strings; commit consumes digest into userresources.DraftDigest; neither receiver has a raw field.",
+      "unchecked": [
+        "No allocation or request-size benchmark was run."
+      ],
+      "source_sha256": "75091524503919d1f27061d04a2c169a255938e11d04c866de76d0b64a3f985e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 41,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "personalSkillString",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_requests.go",
+          "Offset": 1297,
+          "Line": 51,
+          "Column": 6
+        },
+        "Type": "func(data encoding/json.RawMessage, limit int) (string, error)"
+      },
+      "source_path": "go/httpapi/personal_skill_requests.go",
+      "symbol": "personalSkillString",
+      "line": 51,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "personalSkillString:51-57 immediately unmarshals its raw argument into *string, rejects null, type errors, and excess rune count, and returns a string/error. Verified callers are the preview name/focus and commit digest decoders in the same boundary file.",
+      "unchecked": [
+        "JSON decoder allocation was not measured."
+      ],
+      "source_sha256": "75091524503919d1f27061d04a2c169a255938e11d04c866de76d0b64a3f985e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 42,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "data",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_requests.go",
+          "Offset": 1317,
+          "Line": 51,
+          "Column": 26
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/httpapi/personal_skill_requests.go",
+      "symbol": "personalSkillString.data",
+      "line": 51,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The RawMessage parameter at line 51 is read only by json.Unmarshal into local *string; the function returns the dereferenced string or errPersonalSkillRequest. The raw bytes are not returned or assigned to a request/service field.",
+      "unchecked": [
+        "JSON decoder allocation was not measured."
+      ],
+      "source_sha256": "75091524503919d1f27061d04a2c169a255938e11d04c866de76d0b64a3f985e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 43,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_requests.go",
+          "Offset": 1636,
+          "Line": 60,
+          "Column": 2
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/httpapi/personal_skill_requests.go",
+      "symbol": "PersonalSkillPreviewRequest.UnmarshalJSON.fields",
+      "line": 60,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "Preview decoder:59-77 receives the allowlisted name/focus raw map, validates name with personalSkillString limit 64 and the name regex, validates optional focus with limit 2000, then assigns PersonalSkillPreviewRequest{Name: name, Focus: focus}. Only concrete strings survive the function.",
+      "unchecked": [
+        "Request-body peak allocation was not measured."
+      ],
+      "source_sha256": "75091524503919d1f27061d04a2c169a255938e11d04c866de76d0b64a3f985e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 44,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_requests.go",
+          "Offset": 1891,
+          "Line": 69,
+          "Column": 5
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/httpapi/personal_skill_requests.go",
+      "symbol": "PersonalSkillPreviewRequest.UnmarshalJSON.raw",
+      "line": 69,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The line-69 raw binding is specifically the optional focus member. Its sole use is personalSkillString(raw, 2000); failure returns before assignment and success retains only focus string in PersonalSkillPreviewRequest at line 75.",
+      "unchecked": [
+        "Request-body peak allocation was not measured."
+      ],
+      "source_sha256": "75091524503919d1f27061d04a2c169a255938e11d04c866de76d0b64a3f985e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 45,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_requests.go",
+          "Offset": 2167,
+          "Line": 80,
+          "Column": 2
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/httpapi/personal_skill_requests.go",
+      "symbol": "PersonalSkillCommitRequest.UnmarshalJSON.fields",
+      "line": 80,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "Commit decoder:79-90 allows only digest, converts its raw member to a non-null string of at most 64 runes, checks the exact 64-lowercase-hex regex, and assigns only userresources.DraftDigest(digest). The raw map remains local.",
+      "unchecked": [
+        "Request-body peak allocation was not measured."
+      ],
+      "source_sha256": "75091524503919d1f27061d04a2c169a255938e11d04c866de76d0b64a3f985e",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 46,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/httpapi",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/httpapi/personal_skill_validation.go",
+          "Offset": 1205,
+          "Line": 56,
+          "Column": 3
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/httpapi/personal_skill_validation.go",
+      "symbol": "ValidationInput.MarshalJSON.fields",
+      "line": 56,
+      "classification": "json_serialization_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "For validationObject, MarshalJSON:55-67 allocates this local raw map solely to encode each already-typed validationMember.value. Each child MarshalJSON result is inserted, then json.Marshal(fields) returns []byte. ValidationInput stores a closed kind plus string/json.Number/bool/typed items/members, and receives no raw map assignment. decodePersonalSkillBody:191-215 uses the bytes to unmarshal a concrete request.",
+      "unchecked": [
+        "Recursive diagnostic serialization allocation/depth were not benchmarked."
+      ],
+      "source_sha256": "fc473b6b00abf6f8f1e4fed4905fdd0c8e84097f5b933defe868527572189bba",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 47,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/improvement",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/improvement/archive.go",
+          "Offset": 3803,
+          "Line": 128,
+          "Column": 6
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/improvement/archive.go",
+      "symbol": "marshalArchiveRow.fields",
+      "line": 128,
+      "classification": "json_serialization_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "improvement/archive.go:115-188 marshals typed archiveRow, reparses a local raw map only when masking is needed, and iterates a fixed list of twelve fields. Values are masked/serialized into a temporary members list and returned as bytes; Archive.Record:80-113 writes those bytes to a file, without retaining the raw map in Archive or ProposalFields.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Complete output-size/depth/peak-allocation bounds were not measured."
+      ],
+      "source_sha256": "6f2fd4d866d56242ae5bc512330cee367bf9ea7c0bf5b68747edd488f1145767",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 48,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/improvement",
+        "Name": "members",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/improvement/archive.go",
+          "Offset": 3918,
+          "Line": 132,
+          "Column": 6
+        },
+        "Type": "[]struct{name string; value encoding/json.RawMessage}"
+      },
+      "source_path": "go/improvement/archive.go",
+      "symbol": "marshalArchiveRow.members",
+      "line": 132,
+      "classification": "json_serialization_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "improvement/archive.go:132-186 keeps the name/RawMessage list local to deterministic masked-key collision handling. Each item is emitted into bytes.Buffer, and only buffer.Bytes() returns; no members slice or RawMessage field is assigned to archiveRow or Archive.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Complete output-size/depth/peak-allocation bounds were not measured."
+      ],
+      "source_sha256": "6f2fd4d866d56242ae5bc512330cee367bf9ea7c0bf5b68747edd488f1145767",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 49,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/improvement",
+        "Name": "value",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/improvement/archive.go",
+          "Offset": 4232,
+          "Line": 139,
+          "Column": 3
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/improvement/archive.go",
+      "symbol": "marshalArchiveRow.field_loop.value",
+      "line": 139,
+      "classification": "json_serialization_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "improvement/archive.go:139-170 reads one known serialized field: string values decode to string then MaskText, string arrays decode to []string then per-item MaskText, other typed-row scalar encodings remain wire bytes. The result only enters local members and the output buffer; the original proposal retains its typed fields.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "The typed archive row determines allowed value kinds; this review did not measure unusually large string/array allocations."
+      ],
+      "source_sha256": "6f2fd4d866d56242ae5bc512330cee367bf9ea7c0bf5b68747edd488f1145767",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 50,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/improvement",
+        "Name": "member",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/improvement/archive.go",
+          "Offset": 5090,
+          "Line": 174,
+          "Column": 13
+        },
+        "Type": "struct{name string; value encoding/json.RawMessage}"
+      },
+      "source_path": "go/improvement/archive.go",
+      "symbol": "marshalArchiveRow.output_loop.member",
+      "line": 174,
+      "classification": "json_serialization_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "improvement/archive.go:174-186 consumes each temporary member by encoding its name and writing member.value to bytes.Buffer. The sole return is []byte; Archive.Record writes it to archive.jsonl and stores neither the member nor an open map in service state.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Complete output-size/depth/peak-allocation bounds were not measured."
+      ],
+      "source_sha256": "6f2fd4d866d56242ae5bc512330cee367bf9ea7c0bf5b68747edd488f1145767",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 51,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/mcp",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/mcp/inprocess.go",
+          "Offset": 1988,
+          "Line": 59,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/mcp/inprocess.go",
+      "symbol": "InProcessClient.CallTool.deferred.fault",
+      "line": 59,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "CallTool:58-63 binds recover() solely inside a deferred closure. The only use of fault is fmt.Sprintf with %T to produce a type-name error string; result is string and err is reset to nil. The recovered value is not returned, logged with its contents, or stored in client.handlers/definitions.",
+      "unchecked": [
+        "Handler behavior and allocation of arbitrary user panic payloads were not measured."
+      ],
+      "source_sha256": "977c001ff7b68f74e205f5c2f6c0232ff194bf34e926755acafc083ef7054451",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 52,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "decodeBashExecutionOutputs",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/bash_execution.go",
+          "Offset": 1140,
+          "Line": 42,
+          "Column": 6
+        },
+        "Type": "func(rows *[]encoding/json.RawMessage, bounded bool) ([]github.com/luoyjx/mini-loop/go/protocol.BashExecutionOutput, error)"
+      },
+      "source_path": "go/protocol/bash_execution.go",
+      "symbol": "protocol.decodeBashExecutionOutputs",
+      "line": 42,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "bash_execution.go:42-55 的私有 helper 接收 RawMessage 数组但仅返回 []BashExecutionOutput。逐项调用 decodeBashExecutionOutput(:21-34)，校验 type/file_id 后返回 FileID 与闭合 extra；唯一调用点 decodeBashExecutionResult:95 仍在解码边界。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "e3cfa26238003fc301d4439f2a052d3d677046108b9b31faa736c2869ead1973",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 53,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "rows",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/bash_execution.go",
+          "Offset": 1167,
+          "Line": 42,
+          "Column": 33
+        },
+        "Type": "*[]encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/bash_execution.go",
+      "symbol": "protocol.decodeBashExecutionOutputs",
+      "line": 42,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "rows 参数只用于 nil 检查和 range；每一项经过 decodeBashExecutionOutput 转为 BashExecutionOutput 后追加至 typed result，rows 指针及原数组未赋入返回值。调用者 decodeBashExecutionResult:95 的 wire.Outputs 也是局部 DTO。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "e3cfa26238003fc301d4439f2a052d3d677046108b9b31faa736c2869ead1973",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 54,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "data",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/bash_execution.go",
+          "Offset": 1375,
+          "Line": 47,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/bash_execution.go",
+      "symbol": "protocol.decodeBashExecutionOutputs",
+      "line": 47,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "data 是 :47 单次遍历项，只传给 decodeBashExecutionOutput；被追加的是该解码器返回的 FileID/闭合 extra，而非 data 字节。:21-34 对 discriminator 与必需字段检查后构造 BashExecutionOutput。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "e3cfa26238003fc301d4439f2a052d3d677046108b9b31faa736c2869ead1973",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 55,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/bash_execution.go",
+          "Offset": 2555,
+          "Line": 82,
+          "Column": 6
+        },
+        "Type": "struct{Type *string; Outputs *[]encoding/json.RawMessage \"json:\\\"content\\\"\"; Code *github.com/luoyjx/mini-loop/go/protocol.ExecutionReturnCode \"json:\\\"return_code\\\"\"; Stdout *string; Stderr *string}"
+      },
+      "source_path": "go/protocol/bash_execution.go",
+      "symbol": "protocol.decodeBashExecutionResult",
+      "line": 82,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "wire.Outputs 在 :95 交给 decodeBashExecutionOutputs；返回 :99 仅包含 []BashExecutionOutput、ExecutionReturnCode、stdout/stderr 和闭合 extra。RawMessage 数组不进入 BashExecutionResult。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "e3cfa26238003fc301d4439f2a052d3d677046108b9b31faa736c2869ead1973",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 56,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/bash_execution.go",
+          "Offset": 10163,
+          "Line": 293,
+          "Column": 6
+        },
+        "Type": "struct{Type *github.com/luoyjx/mini-loop/go/protocol.BlockKind; ToolUseID *string \"json:\\\"tool_use_id\\\"\"; Content encoding/json.RawMessage; Text encoding/json.RawMessage; Citations encoding/json.RawMessage; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"; Cache *github.com/luoyjx/mini-loop/go/protocol.CacheControl \"json:\\\"cache_control\\\"\"}"
+      },
+      "source_path": "go/protocol/bash_execution.go",
+      "symbol": "protocol.decodeBashExecutionBlock",
+      "line": 293,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "wire.Content 在 :308 解码为 BashExecutionContent；:212-236 只选择 success/result 或 failure/error 指针。Text/Citations/ParsedOutput 在 :312-316 仅允许缺省/null并落三个 bool；:317-318 返回 typed block 并 Validate。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "e3cfa26238003fc301d4439f2a052d3d677046108b9b31faa736c2869ead1973",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 57,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/bash_execution.go",
+          "Offset": 11042,
+          "Line": 312,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/bash_execution.go",
+      "symbol": "protocol.decodeBashExecutionBlock",
+      "line": 312,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 只在 :312-316 检查 Text/Citations/ParsedOutput 是否缺省或 literal null；遇其他值返回错误。成功路径 :317 仅记录字段存在性 bool，不保存 raw。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "e3cfa26238003fc301d4439f2a052d3d677046108b9b31faa736c2869ead1973",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 58,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "decodeCodeExecutionOutputs",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/code_execution.go",
+          "Offset": 2167,
+          "Line": 75,
+          "Column": 6
+        },
+        "Type": "func(rows *[]encoding/json.RawMessage, bounded bool) ([]github.com/luoyjx/mini-loop/go/protocol.CodeExecutionOutput, error)"
+      },
+      "source_path": "go/protocol/code_execution.go",
+      "symbol": "protocol.decodeCodeExecutionOutputs",
+      "line": 75,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "code_execution.go:75-88 的私有 helper 逐项调用 decodeCodeExecutionOutput(:54-67)并返回 []CodeExecutionOutput。调用点仅 plain result:128 与 encrypted result:181，均为解码函数；没有把 RawMessage 作为结果返回。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "884d3c178d674c5012ba7c0d228b6b624a3e5694a90d35e29fc960a0c0c122f6",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 59,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "rows",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/code_execution.go",
+          "Offset": 2194,
+          "Line": 75,
+          "Column": 33
+        },
+        "Type": "*[]encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/code_execution.go",
+      "symbol": "protocol.decodeCodeExecutionOutputs",
+      "line": 75,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "rows 只被 nil 检查及 range；每项经 type/file_id 校验转换为 CodeExecutionOutput，typed result 数组才返回。plain/encrypted 两个调用者传入的 wire.Outputs 均为局部 wire DTO。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "884d3c178d674c5012ba7c0d228b6b624a3e5694a90d35e29fc960a0c0c122f6",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 60,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "data",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/code_execution.go",
+          "Offset": 2402,
+          "Line": 80,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/code_execution.go",
+      "symbol": "protocol.decodeCodeExecutionOutputs",
+      "line": 80,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "data 在 :80-86 仅传 decodeCodeExecutionOutput，随后追加的是 output typed 值；单项解码器 :54-67 从原 JSON 取 FileID 并生成闭合 extra，不保存原 bytes。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "884d3c178d674c5012ba7c0d228b6b624a3e5694a90d35e29fc960a0c0c122f6",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 61,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/code_execution.go",
+          "Offset": 3577,
+          "Line": 115,
+          "Column": 6
+        },
+        "Type": "struct{Type *string; Outputs *[]encoding/json.RawMessage \"json:\\\"content\\\"\"; Code *github.com/luoyjx/mini-loop/go/protocol.ExecutionReturnCode \"json:\\\"return_code\\\"\"; Stdout *string; Stderr *string}"
+      },
+      "source_path": "go/protocol/code_execution.go",
+      "symbol": "protocol.decodeCodeExecutionResult",
+      "line": 115,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "wire.Outputs 经 :128 decodeCodeExecutionOutputs 转为 []CodeExecutionOutput；:132 构造 CodeExecutionResult 仅含输出列表、返回码、stdout/stderr及闭合 extra。原 RawMessage 数组没有进入对象。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "884d3c178d674c5012ba7c0d228b6b624a3e5694a90d35e29fc960a0c0c122f6",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 62,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/code_execution.go",
+          "Offset": 5728,
+          "Line": 167,
+          "Column": 6
+        },
+        "Type": "struct{Type *string; Outputs *[]encoding/json.RawMessage \"json:\\\"content\\\"\"; Code *github.com/luoyjx/mini-loop/go/protocol.ExecutionReturnCode \"json:\\\"return_code\\\"\"; Stdout *string \"json:\\\"encrypted_stdout\\\"\"; Stderr *string}"
+      },
+      "source_path": "go/protocol/code_execution.go",
+      "symbol": "protocol.decodeEncryptedCodeExecutionResult",
+      "line": 167,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "wire.Outputs 经 :181 decodeCodeExecutionOutputs 转 typed 输出列表；:185 返回 EncryptedCodeExecutionResult 的 EncryptedStdout/Stderr 字符串、ExecutionReturnCode 和闭合 extra，未保留 RawMessage。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "884d3c178d674c5012ba7c0d228b6b624a3e5694a90d35e29fc960a0c0c122f6",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 63,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/code_execution.go",
+          "Offset": 14434,
+          "Line": 407,
+          "Column": 6
+        },
+        "Type": "struct{Type *github.com/luoyjx/mini-loop/go/protocol.BlockKind; ToolUseID *string \"json:\\\"tool_use_id\\\"\"; Content encoding/json.RawMessage; Text encoding/json.RawMessage; Citations encoding/json.RawMessage; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"; Cache *github.com/luoyjx/mini-loop/go/protocol.CacheControl \"json:\\\"cache_control\\\"\"}"
+      },
+      "source_path": "go/protocol/code_execution.go",
+      "symbol": "protocol.decodeCodeExecutionBlock",
+      "line": 407,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "wire.Content 经 :422 decodeCodeExecutionContent，在 :320-350 选择 plain/encrypted/error 具体分支。Text/Citations/ParsedOutput只检查null并转bool；:431-432构造并验证 CodeExecutionToolResultBlock。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "884d3c178d674c5012ba7c0d228b6b624a3e5694a90d35e29fc960a0c0c122f6",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 64,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/code_execution.go",
+          "Offset": 15313,
+          "Line": 426,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/code_execution.go",
+      "symbol": "protocol.decodeCodeExecutionBlock",
+      "line": 426,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 :426-430 只检查三个 stream metadata 字段的缺省/null，非null立即报错；结果只保存 textNull/citationsNull/parsedOutputNull bool，不保存 raw。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "884d3c178d674c5012ba7c0d228b6b624a3e5694a90d35e29fc960a0c0c122f6",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 65,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/fetched_document.go",
+          "Offset": 4504,
+          "Line": 141,
+          "Column": 6
+        },
+        "Type": "struct{Type *string; Source encoding/json.RawMessage; Title *string; Citations encoding/json.RawMessage}"
+      },
+      "source_path": "go/protocol/fetched_document.go",
+      "symbol": "protocol.decodeFetchedDocument",
+      "line": 141,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "wire.Source 经 :155 decodeDocumentSource 转为含 kind/Data/MediaType 的 DocumentSource；Citations 非null时经 :161 decodeDocumentCitations 转为 Enabled bool 配置；:167 构造 FetchedDocument 的具体字段/null标志与闭合extra。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "39a289cb4e828d2886b20ac5ce4fbaa79dc7b55f3f82a7f63dc74117a3f86942",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 66,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "token",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/masking.go",
+          "Offset": 9702,
+          "Line": 308,
+          "Column": 2
+        },
+        "Type": "encoding/json.Token"
+      },
+      "source_path": "go/protocol/masking.go",
+      "symbol": "protocol.readProjection",
+      "line": 308,
+      "classification": "typed_adapter",
+      "disposition": "no_domain_retention",
+      "evidence": "token 在 masking.go:308-370 立即 type switch；nil/string/json.Number/bool转具体 projectionValue 字段，Delim只控制递归，未知类型报错。caller maskedPythonJSON:388-409 先限制16MiB，再把闭合 projection 编码为字符串；没有 token/interface 进入域对象。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "dc848de76332268df428234491b0103dff7695c5f90ae868eb43cf2ec512d3cd",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 67,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "token",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/masking.go",
+          "Offset": 10550,
+          "Line": 337,
+          "Column": 5
+        },
+        "Type": "encoding/json.Token"
+      },
+      "source_path": "go/protocol/masking.go",
+      "symbol": "protocol.readProjection",
+      "line": 337,
+      "classification": "typed_adapter",
+      "disposition": "no_domain_retention",
+      "evidence": "对象key token在 :337-345 强制断言 string，失败报错；mask 后仅 string key 放入 projectionMember。子值递归转换为 projectionValue；caller maskedPythonJSON:401-409最终只返回编码字符串。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "dc848de76332268df428234491b0103dff7695c5f90ae868eb43cf2ec512d3cd",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 68,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "end",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/masking.go",
+          "Offset": 11191,
+          "Line": 360,
+          "Column": 3
+        },
+        "Type": "encoding/json.Token"
+      },
+      "source_path": "go/protocol/masking.go",
+      "symbol": "protocol.readProjection",
+      "line": 360,
+      "classification": "typed_adapter",
+      "disposition": "no_domain_retention",
+      "evidence": "end 在 :360-367 只与匹配的 json.Delim 比较以验证容器结束；其后返回的是前面构建的 projectionValue。end 未保存进 projection 或域对象。caller maskedPythonJSON 对字节与深度有限制。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "dc848de76332268df428234491b0103dff7695c5f90ae868eb43cf2ec512d3cd",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 69,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 4382,
+          "Line": 141,
+          "Column": 6
+        },
+        "Type": "struct{Text string \"json:\\\"text\\\"\"; Citations encoding/json.RawMessage \"json:\\\"citations\\\"\"; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"}"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.TextBlock.UnmarshalJSON",
+      "line": 141,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "message.go:141-157 的 wire.Citations 经 DecodeCitations(:166-175)立即转 Citations，内部只有具体引用联合及闭合 jsonvalue.Value；ParsedOutput仅接受缺省/null并转bool。最终赋给 *text 的是 TextBlock，不含 RawMessage。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 70,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 19632,
+          "Line": 529,
+          "Column": 7
+        },
+        "Type": "struct{Type github.com/luoyjx/mini-loop/go/protocol.BlockKind \"json:\\\"type\\\"\"; FileID *string \"json:\\\"file_id\\\"\"; Text encoding/json.RawMessage \"json:\\\"text\\\"\"; Citations encoding/json.RawMessage \"json:\\\"citations\\\"\"; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"}"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.decodeBlock [BlockContainerUpload]",
+      "line": 529,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "message.go:529-550 的 wire.FileID 用于构造 ContainerUploadBlock；Text/Citations/ParsedOutput逐个检查缺省/null。最终仅留下 fileID字符串与三个null标志，RawMessage字段全部局部消耗。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 71,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 20142,
+          "Line": 543,
+          "Column": 10
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.decodeBlock [BlockContainerUpload]",
+      "line": 543,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 message.go:543-547 经 TrimSpace 后仅允许 null/缺省，非null返回错误；:548-550只保存原字段是否存在的三个bool。没有将该遍历项赋给 Block。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 72,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 20922,
+          "Line": 564,
+          "Column": 7
+        },
+        "Type": "struct{Type github.com/luoyjx/mini-loop/go/protocol.BlockKind \"json:\\\"type\\\"\"; Text string \"json:\\\"text\\\"\"; Citations encoding/json.RawMessage \"json:\\\"citations\\\"\"; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"}"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.decodeBlock [BlockText]",
+      "line": 564,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "message.go:564-583 的 wire.Citations 交 DecodeCitations 转闭合引用表示；wire.ParsedOutput只允许null并记 parsedOutputNull，Text为string。NewTextBlockWithCitations构造的Block没有RawMessage。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 73,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 21868,
+          "Line": 594,
+          "Column": 7
+        },
+        "Type": "struct{Type github.com/luoyjx/mini-loop/go/protocol.BlockKind \"json:\\\"type\\\"\"; ID string \"json:\\\"id\\\"\"; Name github.com/luoyjx/mini-loop/go/protocol.ToolName \"json:\\\"name\\\"\"; Input encoding/json.RawMessage \"json:\\\"input\\\"\"; Caller encoding/json.RawMessage \"json:\\\"caller\\\"\"}"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.decodeBlock [BlockToolUse]",
+      "line": 594,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "message.go:594-621 的 Input 经 DecodeModelToolInput 转为 ToolInput，Caller 经 decodeToolCaller 转为 ToolCaller，之后构造NewToolUseWithCaller。bash_binding.go:61-143 的已读路径保留typed/闭合观察值；caller.go:82-123选择direct/code execution分支，二者均不保存raw。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 74,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "rows",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 27023,
+          "Line": 805,
+          "Column": 7
+        },
+        "Type": "[]encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.decodeContent",
+      "line": 805,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "message.go:805-818 的 rows 局部数组逐项交decodeBlock，结果追加到 []Block，最终BlockContent(blocks...)。Content:641-643只含plain string指针或[]Block，原RawMessage数组不保存。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 75,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "row",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 27189,
+          "Line": 810,
+          "Column": 10
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.decodeContent",
+      "line": 810,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "row 是 message.go:810-816 的单项RawMessage；仅交decodeBlock完成discriminator选择及Validate，随后append的是typed block。未将row或原数组放入Content。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 76,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/message.go",
+          "Offset": 28788,
+          "Line": 871,
+          "Column": 6
+        },
+        "Type": "struct{Role github.com/luoyjx/mini-loop/go/protocol.Role \"json:\\\"role\\\"\"; Content encoding/json.RawMessage \"json:\\\"content\\\"\"}"
+      },
+      "source_path": "go/protocol/message.go",
+      "symbol": "protocol.decodeMessage",
+      "line": 871,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "wire.Content在 message.go:878 交decodeContent，后者只生成string-or-[]Block闭合Content；:882-886构造并验证Message。RawMessage仅存在于wire局部；DecodeStoredMessage:860-865明确以bounded=false调用。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "dda6fae0938656be92dd90972d0290e1aca27b4e8547cf1356c781bd44968d80",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 77,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/reply.go",
+          "Offset": 2629,
+          "Line": 92,
+          "Column": 6
+        },
+        "Type": "struct{ID *string \"json:\\\"id\\\"\"; Type *github.com/luoyjx/mini-loop/go/protocol.ReplyKind \"json:\\\"type\\\"\"; Role *github.com/luoyjx/mini-loop/go/protocol.Role \"json:\\\"role\\\"\"; Model *string \"json:\\\"model\\\"\"; Content *[]github.com/luoyjx/mini-loop/go/protocol.Block \"json:\\\"content\\\"\"; StopReason *github.com/luoyjx/mini-loop/go/protocol.StopReason \"json:\\\"stop_reason\\\"\"; StopSequence *string \"json:\\\"stop_sequence\\\"\"; Usage encoding/json.RawMessage \"json:\\\"usage\\\"\"; Container github.com/luoyjx/mini-loop/go/protocol.ContainerMetadata \"json:\\\"container\\\"\"; StopDetails github.com/luoyjx/mini-loop/go/protocol.StopDetailsMetadata \"json:\\\"stop_details\\\"\"}"
+      },
+      "source_path": "go/protocol/reply.go",
+      "symbol": "protocol.ModelReply.UnmarshalJSON",
+      "line": 92,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "reply.go:92-124 中只有 Usage 为RawMessage，:111-114立即解码为TokenUsage；Content已经是[]Block。next由typed字段构造并Validate，再Clone赋给receiver，wire.Usage未存入ModelReply。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "62d825af8b2a68426bd02f4bd9faa9fbf0757028a6effb974e2fba02a17dc97f",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 78,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/server_tool.go",
+          "Offset": 3889,
+          "Line": 122,
+          "Column": 6
+        },
+        "Type": "struct{Type *github.com/luoyjx/mini-loop/go/protocol.BlockKind; ID *string; Name *github.com/luoyjx/mini-loop/go/protocol.ServerToolName; Input encoding/json.RawMessage; Caller encoding/json.RawMessage; Cache *github.com/luoyjx/mini-loop/go/protocol.CacheControl \"json:\\\"cache_control\\\"\"}"
+      },
+      "source_path": "go/protocol/server_tool.go",
+      "symbol": "protocol.decodeServerToolUseBlock",
+      "line": 122,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "server_tool.go:122-150 的 Input经decodeServerToolInput:31-43执行jsonvalue.Decode及MarshalJSON验证，返回ServerToolInput{value}；Caller经decodeToolCaller转闭合联合。最后返回ServerToolUseBlock，原Input/Caller字节不保存。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "ab6c36c484b68b69378b829e50ce83d39c3b4b0f5a5a7a88a030a38e8c7962fa",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 79,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/text_editor.go",
+          "Offset": 18423,
+          "Line": 510,
+          "Column": 6
+        },
+        "Type": "struct{Type *github.com/luoyjx/mini-loop/go/protocol.BlockKind; ToolUseID *string \"json:\\\"tool_use_id\\\"\"; Content encoding/json.RawMessage; Text encoding/json.RawMessage; Citations encoding/json.RawMessage; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"; Cache *github.com/luoyjx/mini-loop/go/protocol.CacheControl \"json:\\\"cache_control\\\"\"}"
+      },
+      "source_path": "go/protocol/text_editor.go",
+      "symbol": "protocol.decodeTextEditorBlock",
+      "line": 510,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "text_editor.go:510-535 的Content经decodeTextEditorContent:416-452选择view/create/replace/error四个具体结构；三个stream metadata raw只允许null并转bool。返回typed TextEditorToolResultBlock及闭合extra并Validate。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "bd7419bbba7f95433e07245c3911e5ff7b5912ffdb0d6026528c5561b435fb1f",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 80,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/text_editor.go",
+          "Offset": 19284,
+          "Line": 529,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/text_editor.go",
+      "symbol": "protocol.decodeTextEditorBlock",
+      "line": 529,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 text_editor.go:529-533 仅检查三个stream metadata字段是否缺省/null；非null拒绝，成功路径只把字段存在性写为bool，无raw引用进入返回值。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "bd7419bbba7f95433e07245c3911e5ff7b5912ffdb0d6026528c5561b435fb1f",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 81,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/tool_input.go",
+          "Offset": 31521,
+          "Line": 981,
+          "Column": 7
+        },
+        "Type": "struct{Items *[]encoding/json.RawMessage \"json:\\\"items\\\"\"}"
+      },
+      "source_path": "go/protocol/tool_input.go",
+      "symbol": "protocol.DecodeToolInput [ToolTodoWrite]",
+      "line": 981,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "tool_input.go:981-1007 的 wire.Items 是局部分段解码；每项使用decodeToolObject解到Content/Status/ActiveForm指针，三者必需，然后append TodoItem，构造TodoWriteToolInput。decodeToolObject:703-708要求object并调用有wire大小上限的decodeStrict。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "8a80d03592a56bb06fab2ac781a2aabfd721c7387862ba99ad00ede363534b14",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 82,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/tool_input.go",
+          "Offset": 31814,
+          "Line": 991,
+          "Column": 10
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/tool_input.go",
+      "symbol": "protocol.DecodeToolInput [ToolTodoWrite]",
+      "line": 991,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 tool_input.go:991-1005 仅交decodeToolObject填充单项typed DTO，必需字段检查通过后追加TodoItem{string,TodoStatus,string}。返回ToolInput含[]TodoItem，未保存raw项。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "8a80d03592a56bb06fab2ac781a2aabfd721c7387862ba99ad00ede363534b14",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 83,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/tool_search.go",
+          "Offset": 2036,
+          "Line": 70,
+          "Column": 6
+        },
+        "Type": "struct{Type *string; References *[]encoding/json.RawMessage \"json:\\\"tool_references\\\"\"}"
+      },
+      "source_path": "go/protocol/tool_search.go",
+      "symbol": "protocol.decodeToolSearchResults",
+      "line": 70,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "tool_search.go:70-89 的wire.References逐项经decodeToolReference(:31-44)校验type/tool_name，转为[]ToolReference；最后返回具体References列表及闭合extra，RawMessage数组未返回。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "1f56ee38a4dfc06dbef86db2f2fa468f5e8cf168581a1d609bee33ab16ab1924",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 84,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/tool_search.go",
+          "Offset": 2518,
+          "Line": 82,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/tool_search.go",
+      "symbol": "protocol.decodeToolSearchResults",
+      "line": 82,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 tool_search.go:82-87 只用于decodeToolReference；被追加的是{Name:ToolName,extra:jsonvalue.Value}。父caller decodeToolSearchContent:204-225将返回值放入已选择的results分支。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "1f56ee38a4dfc06dbef86db2f2fa468f5e8cf168581a1d609bee33ab16ab1924",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 85,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/tool_search.go",
+          "Offset": 9359,
+          "Line": 285,
+          "Column": 6
+        },
+        "Type": "struct{Type *github.com/luoyjx/mini-loop/go/protocol.BlockKind; ToolUseID *string \"json:\\\"tool_use_id\\\"\"; Content encoding/json.RawMessage; Text encoding/json.RawMessage; Citations encoding/json.RawMessage; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"; Cache *github.com/luoyjx/mini-loop/go/protocol.CacheControl \"json:\\\"cache_control\\\"\"}"
+      },
+      "source_path": "go/protocol/tool_search.go",
+      "symbol": "protocol.decodeToolSearchBlock",
+      "line": 285,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "tool_search.go:285-310 的Content经decodeToolSearchContent选择results/error联合；Text/Citations/ParsedOutput只允许缺省/null并落bool。最终返回typed block，额外字段经闭合jsonvalue.Value保存。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "1f56ee38a4dfc06dbef86db2f2fa468f5e8cf168581a1d609bee33ab16ab1924",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 86,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/tool_search.go",
+          "Offset": 10220,
+          "Line": 304,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/tool_search.go",
+      "symbol": "protocol.decodeToolSearchBlock",
+      "line": 304,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 tool_search.go:304-308 仅用于三个stream metadata字段的null校验，非null返回错误；:309保存的是字段存在性bool，未保留raw。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "1f56ee38a4dfc06dbef86db2f2fa468f5e8cf168581a1d609bee33ab16ab1924",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 87,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/web_fetch.go",
+          "Offset": 2934,
+          "Line": 89,
+          "Column": 6
+        },
+        "Type": "struct{Type *string; Document encoding/json.RawMessage \"json:\\\"content\\\"\"; URL *string; RetrievedAt *string \"json:\\\"retrieved_at\\\"\"}"
+      },
+      "source_path": "go/protocol/web_fetch.go",
+      "symbol": "protocol.decodeWebFetchResult",
+      "line": 89,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "web_fetch.go:89-107 的wire.Document经decodeFetchedDocument(:140-168)转具体DocumentSource和DocumentCitationsConfig；URL/RetrievedAt为string与指针，retrievedAtNull为bool。返回WebFetchResult及闭合extra，不含原Document raw。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "845f3706cedaa38076a3b555e9368ed1a4b030b20fe7c7ac0e5cc8bbe5836f81",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 88,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/web_fetch.go",
+          "Offset": 9101,
+          "Line": 274,
+          "Column": 6
+        },
+        "Type": "struct{Type *github.com/luoyjx/mini-loop/go/protocol.BlockKind; ToolUseID *string \"json:\\\"tool_use_id\\\"\"; Content encoding/json.RawMessage; Caller encoding/json.RawMessage; Text encoding/json.RawMessage; Citations encoding/json.RawMessage; ParsedOutput encoding/json.RawMessage \"json:\\\"parsed_output\\\"\"; Cache *github.com/luoyjx/mini-loop/go/protocol.CacheControl \"json:\\\"cache_control\\\"\"}"
+      },
+      "source_path": "go/protocol/web_fetch.go",
+      "symbol": "protocol.decodeWebFetchBlock",
+      "line": 274,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "web_fetch.go:274-308 中Content经decodeWebFetchContent:177-201选择result/error；Caller经decodeToolCaller选typed分支。三个metadata raw只容许null并落bool；next及Validate返回具体WebFetchToolResultBlock。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "845f3706cedaa38076a3b555e9368ed1a4b030b20fe7c7ac0e5cc8bbe5836f81",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 89,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/web_fetch.go",
+          "Offset": 10220,
+          "Line": 302,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/web_fetch.go",
+      "symbol": "protocol.decodeWebFetchBlock",
+      "line": 302,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 web_fetch.go:302-306 仅检查Text/Citations/ParsedOutput的缺省/null；:307用len表达存在性bool，不保存这些原始值。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "845f3706cedaa38076a3b555e9368ed1a4b030b20fe7c7ac0e5cc8bbe5836f81",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 90,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "rows",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/web_search.go",
+          "Offset": 5714,
+          "Line": 168,
+          "Column": 7
+        },
+        "Type": "[]encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/web_search.go",
+      "symbol": "protocol.decodeWebSearchContent",
+      "line": 168,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "web_search.go:168-180 的 rows 在已确认Array分支局部反序列化；每项转为WebSearchResult，再调用NewWebSearchResults(results)。error分支另为WebSearchError；WebSearchContent只保存两种typed分支。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "aa0925bd64cda5616b8f969c92fb3c0044e889b4f14fc9c4e39f8e19b14f1f16",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 91,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "row",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/web_search.go",
+          "Offset": 5871,
+          "Line": 173,
+          "Column": 10
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/protocol/web_search.go",
+      "symbol": "protocol.decodeWebSearchContent",
+      "line": 173,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "row 在 web_search.go:173-178仅传给decodeWebSearchResult:44-59，后者提取Title/URL/EncryptedContent/PageAge并校验type；追加的是typed result与闭合extra，不是row。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "aa0925bd64cda5616b8f969c92fb3c0044e889b4f14fc9c4e39f8e19b14f1f16",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 92,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/protocol",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/protocol/web_search.go",
+          "Offset": 8315,
+          "Line": 253,
+          "Column": 6
+        },
+        "Type": "struct{Type *github.com/luoyjx/mini-loop/go/protocol.BlockKind; ToolUseID *string \"json:\\\"tool_use_id\\\"\"; Content encoding/json.RawMessage; Caller encoding/json.RawMessage; Cache *github.com/luoyjx/mini-loop/go/protocol.CacheControl \"json:\\\"cache_control\\\"\"}"
+      },
+      "source_path": "go/protocol/web_search.go",
+      "symbol": "protocol.decodeWebSearchBlock",
+      "line": 253,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "web_search.go:253-280的Content转WebSearchContent，Caller非null时转ToolCaller；结果只保存这两个typed值、ToolUseID、cache、callerPresent及闭合extra。RawMessage不进入返回对象。 metadata_codec.go:43-75 将扩展字段转为闭合 jsonvalue.Value；internal/jsonvalue/value.go:15-38 仅含显式标量和递归 Value/member，不含 RawMessage/any。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "bounded=false 的历史读取不执行 MaxWireBytes；本项仅证明开放表示不进入域对象，不证明所有路径固定字节上限。"
+      ],
+      "source_sha256": "aa0925bd64cda5616b8f969c92fb3c0044e889b4f14fc9c4e39f8e19b14f1f16",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 93,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/provider",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/provider/decode.go",
+          "Offset": 490,
+          "Line": 21,
+          "Column": 6
+        },
+        "Type": "struct{ID *string \"json:\\\"id\\\"\"; Type *github.com/luoyjx/mini-loop/go/protocol.ReplyKind \"json:\\\"type\\\"\"; Role *github.com/luoyjx/mini-loop/go/protocol.Role \"json:\\\"role\\\"\"; Model *string \"json:\\\"model\\\"\"; Content *[]encoding/json.RawMessage \"json:\\\"content\\\"\"; StopReason *github.com/luoyjx/mini-loop/go/protocol.StopReason \"json:\\\"stop_reason\\\"\"; StopSequence *string \"json:\\\"stop_sequence\\\"\"; Usage encoding/json.RawMessage \"json:\\\"usage\\\"\"; Container github.com/luoyjx/mini-loop/go/protocol.ContainerMetadata \"json:\\\"container\\\"\"; StopDetails github.com/luoyjx/mini-loop/go/protocol.StopDetailsMetadata \"json:\\\"stop_details\\\"\"}"
+      },
+      "source_path": "go/provider/decode.go",
+      "symbol": "provider.decodeReply",
+      "line": 21,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "provider/decode.go:21-56 的Usage交DecodeSDKUsage转TokenUsage；Content数组逐项decodeBlock后append []protocol.Block；reply.Validate后返回Clone。已追caller Client.attempt(client.go:295-315)：io.LimitReader及responseLimit检查后才调用decodeReply；原wire DTO不进入会话。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "4e373cf1d547cf6de6d7053dcf10f0b25a4a04a6b8765cbc255fa792fd80386b",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 94,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/provider",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/provider/decode.go",
+          "Offset": 1867,
+          "Line": 46,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/provider/decode.go",
+      "symbol": "provider.decodeReply",
+      "line": 46,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 provider/decode.go:46-52仅作为decodeBlock参数，结果block才被append到reply.Content。decodeBlock:58-230限制MaxWireBytes并按discriminator转具体Block；caller Client.attempt返回ModelReply，无raw字段。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "4e373cf1d547cf6de6d7053dcf10f0b25a4a04a6b8765cbc255fa792fd80386b",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 95,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/provider",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/provider/decode.go",
+          "Offset": 2241,
+          "Line": 59,
+          "Column": 6
+        },
+        "Type": "struct{Type github.com/luoyjx/mini-loop/go/protocol.BlockKind \"json:\\\"type\\\"\"; Text *string \"json:\\\"text\\\"\"; Thinking *string \"json:\\\"thinking\\\"\"; Signature *string \"json:\\\"signature\\\"\"; FileID *string \"json:\\\"file_id\\\"\"; Data *string \"json:\\\"data\\\"\"; ID *string \"json:\\\"id\\\"\"; Name *github.com/luoyjx/mini-loop/go/protocol.ToolName \"json:\\\"name\\\"\"; Input encoding/json.RawMessage \"json:\\\"input\\\"\"; Caller encoding/json.RawMessage \"json:\\\"caller\\\"\"; Citations encoding/json.RawMessage \"json:\\\"citations\\\"\"}"
+      },
+      "source_path": "go/provider/decode.go",
+      "symbol": "provider.decodeBlock",
+      "line": 59,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "provider/decode.go:59-229的wire先受MaxWireBytes限制；Input经DecodeModelToolInput，Caller反序列化为ToolCaller，Citations经providerCitations→DecodeCitations转闭合引用。其他discriminator解具体结果结构或字符串；只返回protocol.Block，未知type拒绝。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "4e373cf1d547cf6de6d7053dcf10f0b25a4a04a6b8765cbc255fa792fd80386b",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 96,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/provider",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/provider/stream_decode.go",
+          "Offset": 5029,
+          "Line": 174,
+          "Column": 6
+        },
+        "Type": "struct{Type string \"json:\\\"type\\\"\"; Index *int \"json:\\\"index\\\"\"; Message encoding/json.RawMessage \"json:\\\"message\\\"\"; Block encoding/json.RawMessage \"json:\\\"content_block\\\"\"; Delta struct{Type string \"json:\\\"type\\\"\"; Text *string \"json:\\\"text\\\"\"; Thinking *string \"json:\\\"thinking\\\"\"; Signature *string \"json:\\\"signature\\\"\"; Citation encoding/json.RawMessage \"json:\\\"citation\\\"\"; PartialJSON *string \"json:\\\"partial_json\\\"\"; StopReason *github.com/luoyjx/mini-loop/go/protocol.StopReason \"json:\\\"stop_reason\\\"\"; StopSequence *string \"json:\\\"stop_sequence\\\"\"; StopDetails github.com/luoyjx/mini-loop/go/protocol.StopDetailsMetadata \"json:\\\"stop_details\\\"\"} \"json:\\\"delta\\\"\"; Usage struct{Input *github.com/luoyjx/mini-loop/go/protocol.UsageCount \"json:\\\"input_tokens\\\"\"; Output *github.com/luoyjx/mini-loop/go/protocol.UsageCount \"json:\\\"output_tokens\\\"\"; Read *github.com/luoyjx/mini-loop/go/protocol.UsageCount \"json:\\\"cache_read_input_tokens\\\"\"; Creation *github.com/luoyjx/mini-loop/go/protocol.UsageCount \"json:\\\"cache_creation_input_tokens\\\"\"; Server *github.com/luoyjx/mini-loop/go/protocol.ServerToolUsage \"json:\\\"server_tool_use\\\"\"} \"json:\\\"usage\\\"\"}"
+      },
+      "source_path": "go/provider/stream_decode.go",
+      "symbol": "provider.Client.consumeStream [event wire]",
+      "line": 174,
+      "classification": "typed_adapter",
+      "disposition": "request_local_wire_retention",
+      "evidence": "stream_decode.go:174-570的Message、Block、Citation分别进入message_start/具体Block/providerCitation解码；event wire本身不保存。工具Input确会复制到request-local streamBlock.input跨帧保留，因此不能归为纯局部：readStream:79-147限制总response及单event字节；input delta:552-565限制累计block；stop:469-490转typed input并清空input/parsedInput；最终返回typed ModelReply。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "This identifies request-local wire-adapter retention and the inspected source checks; it is not a measured RSS cap or a proof of aggregate process allocation bounds."
+      ],
+      "source_sha256": "b1dad2db174467f92835938e6b94e37e0cc56fce90249f52a9a0af433192abb1",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 97,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/provider",
+        "Name": "start",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/provider/stream_decode.go",
+          "Offset": 6567,
+          "Line": 211,
+          "Column": 7
+        },
+        "Type": "struct{ID *string \"json:\\\"id\\\"\"; Type *github.com/luoyjx/mini-loop/go/protocol.ReplyKind \"json:\\\"type\\\"\"; Role *github.com/luoyjx/mini-loop/go/protocol.Role \"json:\\\"role\\\"\"; Model *string \"json:\\\"model\\\"\"; Content *[]encoding/json.RawMessage \"json:\\\"content\\\"\"; Usage encoding/json.RawMessage \"json:\\\"usage\\\"\"; Container github.com/luoyjx/mini-loop/go/protocol.ContainerMetadata \"json:\\\"container\\\"\"; StopDetails github.com/luoyjx/mini-loop/go/protocol.StopDetailsMetadata \"json:\\\"stop_details\\\"\"}"
+      },
+      "source_path": "go/provider/stream_decode.go",
+      "symbol": "provider.Client.consumeStream [message_start]",
+      "line": 211,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "stream_decode.go:211-244的start.Usage经DecodeSDKUsage(true)转typed TokenUsage，Content逐项decodeBlock转具体Block再存streamBlock{stopped:true,block:b}。start DTO及RawMessage数组未进入state；caller readStream限制单event和总response，结束只返回ModelReply.Clone。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "b1dad2db174467f92835938e6b94e37e0cc56fce90249f52a9a0af433192abb1",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 98,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/provider",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/provider/stream_decode.go",
+          "Offset": 7954,
+          "Line": 237,
+          "Column": 10
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/provider/stream_decode.go",
+      "symbol": "provider.Client.consumeStream [message_start]",
+      "line": 237,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "raw 在 stream_decode.go:237-242仅交decodeBlock；state保存的是streamBlock{stopped:true,block:b}。该初始Content分支不复制raw到input，message_stop只把b.block追加到reply.Content。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。"
+      ],
+      "source_sha256": "b1dad2db174467f92835938e6b94e37e0cc56fce90249f52a9a0af433192abb1",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 99,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/provider",
+        "Name": "block",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/provider/stream_decode.go",
+          "Offset": 10475,
+          "Line": 317,
+          "Column": 7
+        },
+        "Type": "struct{Type github.com/luoyjx/mini-loop/go/protocol.BlockKind \"json:\\\"type\\\"\"; Text *string \"json:\\\"text\\\"\"; Thinking *string \"json:\\\"thinking\\\"\"; Signature *string \"json:\\\"signature\\\"\"; FileID *string \"json:\\\"file_id\\\"\"; Data *string \"json:\\\"data\\\"\"; ID *string \"json:\\\"id\\\"\"; Name *github.com/luoyjx/mini-loop/go/protocol.ToolName \"json:\\\"name\\\"\"; Input encoding/json.RawMessage \"json:\\\"input\\\"\"; Caller encoding/json.RawMessage \"json:\\\"caller\\\"\"; Citations encoding/json.RawMessage \"json:\\\"citations\\\"\"}"
+      },
+      "source_path": "go/provider/stream_decode.go",
+      "symbol": "provider.Client.consumeStream [content_block_start]",
+      "line": 317,
+      "classification": "typed_adapter",
+      "disposition": "request_local_wire_retention",
+      "evidence": "stream_decode.go:317-451的block.Input在server_tool/tool_use分支复制到streamBlock.input，属于明确wire adapter保留。readStream提供单event/总response限制；后续delta检查累计MaxWireBytes，content_block_stop:458-490经DecodeSDKServerToolInput或DecodeModelToolInput转typed block并清空input/parsedInput。Caller转ToolCaller，Citations转闭合Citations；state为单readStream局部，ModelReply只收到b.block。",
+      "unchecked": [
+        "未运行测试、编译、审计或性能/RSS测量；结论限于当前源码的数据流。",
+        "This identifies request-local wire-adapter retention and the inspected source checks; it is not a measured RSS cap or a proof of aggregate process allocation bounds."
+      ],
+      "source_sha256": "b1dad2db174467f92835938e6b94e37e0cc56fce90249f52a9a0af433192abb1",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 100,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/shell",
+        "Name": "fault",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/shell/background.go",
+          "Offset": 766,
+          "Line": 37,
+          "Column": 6
+        },
+        "Type": "interface{}"
+      },
+      "source_path": "go/shell/background.go",
+      "symbol": "notifyStarted.deferred.fault",
+      "line": 37,
+      "classification": "recover_type_only",
+      "disposition": "no_domain_retention",
+      "evidence": "shell/background.go:35-43 uses fault solely to create a %T-only \"background start observer panicked\" error. The callback takes concrete ProcessID; no recovered value enters process metadata or BackgroundWait.",
+      "unchecked": [
+        "Source-only inspection; no tests, compiler, audit rerun, or runtime memory measurements.",
+        "Caller-provided start callback internals were not audited."
+      ],
+      "source_sha256": "f87f4a4e66c17897d419637aea1b97c7486d141700c4143ef613d4ffd92c2120",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 101,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+        "Name": "Scan",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/sqlitestate/metadata.go",
+          "Offset": 2879,
+          "Line": 105,
+          "Column": 23
+        },
+        "Type": "func(raw any) error"
+      },
+      "source_path": "go/sqlitestate/metadata.go",
+      "symbol": "sqliteTruth.Scan",
+      "line": 105,
+      "classification": "typed_adapter",
+      "disposition": "no_domain_retention",
+      "evidence": "metadata.go:105-121 switches on raw.(type), supports only nil/int64/float64/string/[]byte, immediately computes sqliteTruth bool, and returns ErrSessionMetadata for all other types. LoadSessions in session.go:95-103 passes a local sqliteTruth to rows.Scan and copies bool(workspaceBound) into agent.SessionRecord.WorkspaceBound; no driver interface value is retained.",
+      "unchecked": [
+        "database/sql driver internals and runtime memory behavior were not audited."
+      ],
+      "source_sha256": "42a04b4408d048e16beccad1d6e77f51459c02a921dbeea10f6ede64377b30eb",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 102,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/sqlitestate/metadata.go",
+          "Offset": 2884,
+          "Line": 105,
+          "Column": 28
+        },
+        "Type": "any"
+      },
+      "source_path": "go/sqlitestate/metadata.go",
+      "symbol": "sqliteTruth.Scan.raw",
+      "line": 105,
+      "classification": "typed_adapter",
+      "disposition": "no_domain_retention",
+      "evidence": "The raw parameter at metadata.go:105 has no path to stored state: every supported switch branch writes only a boolean, and default returns ErrSessionMetadata. Its string/[]byte branches inspect non-emptiness only. The caller LoadSessions:95-103 copies the resulting bool into the typed record.",
+      "unchecked": [
+        "database/sql driver internals and runtime memory behavior were not audited."
+      ],
+      "source_sha256": "42a04b4408d048e16beccad1d6e77f51459c02a921dbeea10f6ede64377b30eb",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 103,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+        "Name": "Scan",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/sqlitestate/version.go",
+          "Offset": 387,
+          "Line": 13,
+          "Column": 23
+        },
+        "Type": "func(raw any) error"
+      },
+      "source_path": "go/sqlitestate/version.go",
+      "symbol": "schemaValue.Scan",
+      "line": 13,
+      "classification": "typed_adapter",
+      "disposition": "no_domain_retention",
+      "evidence": "version.go:13-35 accepts only int64/float64/string/[]byte/nil via a type switch; default returns jsonvalue.ErrIntegerConversion. Supported values are lowered into closed jsonvalue.Value, converted with PythonInteger(), and only the resulting *big.Int is assigned to schemaValue.integer. migrate in migration.go:15-32 consumes the typed integer for version comparison/conversion.",
+      "unchecked": [
+        "PythonInteger big-integer allocation and SQL driver internals were not benchmarked."
+      ],
+      "source_sha256": "1680c51e8da1163269c0b46b7985d191fe46eab22e73e4e967b6043658c99067",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 104,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/sqlitestate",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/sqlitestate/version.go",
+          "Offset": 392,
+          "Line": 13,
+          "Column": 28
+        },
+        "Type": "any"
+      },
+      "source_path": "go/sqlitestate/version.go",
+      "symbol": "schemaValue.Scan.raw",
+      "line": 13,
+      "classification": "typed_adapter",
+      "disposition": "no_domain_retention",
+      "evidence": "The raw parameter at version.go:13 is inspected only by the finite type switch. []byte is converted to string, all accepted cases become closed jsonvalue.Value then *big.Int, unsupported types error, and the incoming interface is never assigned to schemaValue or Store. The one-layer caller is Store.migrate:15-32.",
+      "unchecked": [
+        "PythonInteger big-integer allocation and SQL driver internals were not benchmarked."
+      ],
+      "source_sha256": "1680c51e8da1163269c0b46b7985d191fe46eab22e73e4e967b6043658c99067",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 105,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "wire",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/ledger.go",
+          "Offset": 2801,
+          "Line": 101,
+          "Column": 6
+        },
+        "Type": "struct{TrajectoryID github.com/luoyjx/mini-loop/go/agent.TrajectoryID \"json:\\\"trajectory_id\\\"\"; Session github.com/luoyjx/mini-loop/go/agent.SessionID; RunIndex int \"json:\\\"run_index\\\"\"; Status *github.com/luoyjx/mini-loop/go/agent.TrajectoryStatus; Partial bool; StartedAt *float64 \"json:\\\"started_at\\\"\"; EndedAt *float64 \"json:\\\"ended_at\\\"\"; DurationMS *float64 \"json:\\\"duration_ms\\\"\"; Input *string; Output *string; Error *string; Events []encoding/json.RawMessage}"
+      },
+      "source_path": "go/traceview/ledger.go",
+      "symbol": "Build.wire",
+      "line": 101,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "Build:94-158 keeps wire local: scalar header fields are unmarshaled into named/string/number pointer types; event values are serialized into wire.Events, then processed in the loop at 167-433. The returned Ledger contains named metrics/rows and scalar or display-string fields, never wire.Events or its raw bytes. Rows are finally capped at MaxRows.",
+      "unchecked": [
+        "Build materializes input/events and all rows before applying MaxRows=2000; aggregate/peak allocation is not established by this G0 disposition."
+      ],
+      "source_sha256": "66c4c3e53570920e38d9adfa6043e77e15c39f78954ef50b746a00b2994c61ed",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 106,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/ledger.go",
+          "Offset": 5415,
+          "Line": 167,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/ledger.go",
+      "symbol": "Build.event_loop.raw",
+      "line": 167,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "Each raw event at line 167 is decoded into jsonvalue.Object, projected into local raw fields, and consumed synchronously to construct Row values. Unknown/capability payloads pass through payload and PrettyJSON into string fields. Neither raw nor a closure capturing it is returned in Ledger.",
+      "unchecked": [
+        "Build materializes input/events and all rows before applying MaxRows=2000; aggregate/peak allocation is not established by this G0 disposition."
+      ],
+      "source_sha256": "66c4c3e53570920e38d9adfa6043e77e15c39f78954ef50b746a00b2994c61ed",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 107,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/ledger.go",
+          "Offset": 5448,
+          "Line": 168,
+          "Column": 7
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/ledger.go",
+      "symbol": "Build.event_loop.fields",
+      "line": 168,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The local map declared at 168 is reconstructed from the current event only. text/number/truth/detail closures consume it immediately: text/detail yield strings, number yields *float64, and seq yields *int64. Row/Field definitions at 36-58 contain no raw members; the map is not stored in Ledger.",
+      "unchecked": [
+        "Build materializes input/events and all rows before applying MaxRows=2000; aggregate/peak allocation is not established by this G0 disposition."
+      ],
+      "source_sha256": "66c4c3e53570920e38d9adfa6043e77e15c39f78954ef50b746a00b2994c61ed",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 108,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "v",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/ledger.go",
+          "Offset": 5922,
+          "Line": 183,
+          "Column": 4
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/ledger.go",
+      "symbol": "Build.event_loop.text.v",
+      "line": 183,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The line-183 raw value is local to the text closure. The closure handles null/booleans, decodes text or calls PrettyJSON, and returns only string. Its call sites populate row labels/content/status or transient switch/span strings; no raw value escapes.",
+      "unchecked": [
+        "Build materializes input/events and all rows before applying MaxRows=2000; aggregate/peak allocation is not established by this G0 disposition."
+      ],
+      "source_sha256": "66c4c3e53570920e38d9adfa6043e77e15c39f78954ef50b746a00b2994c61ed",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 109,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "v",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/ledger.go",
+          "Offset": 6594,
+          "Line": 214,
+          "Column": 4
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/ledger.go",
+      "symbol": "Build.event_loop.detail.v",
+      "line": 214,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The line-214 raw value is local to detail. Non-null values are passed to PrettyJSON and appended as Field{name, string}; Field is exactly Name,Text string at line 36. The raw member itself is never appended to Row.Detail.",
+      "unchecked": [
+        "Build materializes input/events and all rows before applying MaxRows=2000; aggregate/peak allocation is not established by this G0 disposition."
+      ],
+      "source_sha256": "66c4c3e53570920e38d9adfa6043e77e15c39f78954ef50b746a00b2994c61ed",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 110,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "value",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/ledger.go",
+          "Offset": 6756,
+          "Line": 220,
+          "Column": 6
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/ledger.go",
+      "symbol": "Build.event_loop.seq.value",
+      "line": 220,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "At line 220, the raw seq member is immediately json.Unmarshal-ed into local *int64; any type/decode failure returns ErrDocument. Subsequent rows receive only that typed sequence pointer.",
+      "unchecked": [
+        "Build materializes input/events and all rows before applying MaxRows=2000; aggregate/peak allocation is not established by this G0 disposition."
+      ],
+      "source_sha256": "66c4c3e53570920e38d9adfa6043e77e15c39f78954ef50b746a00b2994c61ed",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 111,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "schemas",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/ledger.go",
+          "Offset": 11534,
+          "Line": 365,
+          "Column": 9
+        },
+        "Type": "[]encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/ledger.go",
+      "symbol": "Build.tool_catalog.schemas",
+      "line": 365,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The schemas slice at line 365 is used only for json.Unmarshal validation and len(schemas) in the tool-count display string. Schema detail is separately produced by detail -> PrettyJSON -> Field.Text; no []RawMessage is assigned to a row or returned.",
+      "unchecked": [
+        "Build materializes input/events and all rows before applying MaxRows=2000; aggregate/peak allocation is not established by this G0 disposition."
+      ],
+      "source_sha256": "66c4c3e53570920e38d9adfa6043e77e15c39f78954ef50b746a00b2994c61ed",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 112,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "start",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/load.go",
+          "Offset": 708,
+          "Line": 29,
+          "Column": 6
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/load.go",
+      "symbol": "AssembleFile.start",
+      "line": 29,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The start RawMessage at load.go:29 is an owned copy of the first valid trajectory_start line (53-57). It is subsequently decoded into closed jsonvalue.Value, selected fields enter a transient serialized document, and the function returns Build(document), whose result is a typed Ledger. Raw start bytes are not returned or stored.",
+      "unchecked": [
+        "AssembleFile caps each scanner record at trajectory.MaxRecordBytes+1 but accumulates all event records before Build; no aggregate event-count/byte/RSS bound was proven."
+      ],
+      "source_sha256": "568468da8a33cff61fa1835cb0461271d960654a1d17331f2536b06ef0056e14",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 113,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "end",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/load.go",
+          "Offset": 715,
+          "Line": 29,
+          "Column": 13
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/load.go",
+      "symbol": "AssembleFile.end",
+      "line": 29,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The end RawMessage at load.go:29 is replaced by an owned copy of the last trajectory_end line (62-64). It is decoded into endValue and used only to assemble selected terminal fields for Build(document); returned Ledger stores typed/scalar/string projections, not end.",
+      "unchecked": [
+        "AssembleFile caps each scanner record at trajectory.MaxRecordBytes+1 but accumulates all event records before Build; no aggregate event-count/byte/RSS bound was proven."
+      ],
+      "source_sha256": "568468da8a33cff61fa1835cb0461271d960654a1d17331f2536b06ef0056e14",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 114,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "events",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/load.go",
+          "Offset": 736,
+          "Line": 30,
+          "Column": 2
+        },
+        "Type": "[]encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/load.go",
+      "symbol": "AssembleFile.events",
+      "line": 30,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The []RawMessage at load.go:30 gathers event line copies only within AssembleFile. Lines 101-109 decode each element into closed jsonvalue.Value, lines 110-123 serialize the temporary document, and line 127 returns Build(document). It is temporary boundary aggregation, with no raw slice stored in Ledger or a service struct.",
+      "unchecked": [
+        "AssembleFile caps each scanner record at trajectory.MaxRecordBytes+1 but accumulates all event records before Build; no aggregate event-count/byte/RSS bound was proven."
+      ],
+      "source_sha256": "568468da8a33cff61fa1835cb0461271d960654a1d17331f2536b06ef0056e14",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 115,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/traceview",
+        "Name": "event",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/traceview/load.go",
+          "Offset": 2637,
+          "Line": 102,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/traceview/load.go",
+      "symbol": "AssembleFile.event_loop.event",
+      "line": 102,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The loop variable at load.go:102 is passed only to jsonvalue.Decode; invalid decoding returns an error and accepted values are appended as closed jsonvalue.Value to the temporary decodedEvents document. The only returned result is Build(document), a typed Ledger.",
+      "unchecked": [
+        "AssembleFile caps each scanner record at trajectory.MaxRecordBytes+1 but accumulates all event records before Build; no aggregate event-count/byte/RSS bound was proven."
+      ],
+      "source_sha256": "568468da8a33cff61fa1835cb0461271d960654a1d17331f2536b06ef0056e14",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 116,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/trajectory",
+        "Name": "envelope",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/trajectory/store.go",
+          "Offset": 9752,
+          "Line": 308,
+          "Column": 7
+        },
+        "Type": "struct{RecordType string \"json:\\\"record_type\\\"\"; Type string \"json:\\\"type\\\"\"; Error encoding/json.RawMessage \"json:\\\"error\\\"\"; Denied bool \"json:\\\"denied\\\"\"}"
+      },
+      "source_path": "go/trajectory/store.go",
+      "symbol": "Store.scanBounded.envelope",
+      "line": 308,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "store.go:308-315 unmarshals a classification projection into a local envelope with string type tags, bool Denied, and raw Error. Raw Error is used only in truth(envelope.Error) at line 386 to increment typed ToolErrors; truth:411-418 returns bool. visit receives the original scanner []byte plus string record type, not the raw envelope; the returned header/terminal/metrics do not contain this RawMessage.",
+      "unchecked": [
+        "The separate closed jsonvalue archival fields and byte-export callback paths are not a proof of total allocation bounds."
+      ],
+      "source_sha256": "0660ae87f4d7f0a669aafbe4b90583fd92278732e9b96a2bff9029da56d0a87a",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 117,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/trajectory",
+        "Name": "members",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/trajectory/store.go",
+          "Offset": 11229,
+          "Line": 345,
+          "Column": 8
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/trajectory/store.go",
+      "symbol": "Store.scanBounded.members",
+      "line": 345,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The map at store.go:345 is decoded from the already-successful typed header projection solely to test whether owner is absent. A missing key assigns concrete agent.OwnerID(\"anonymous\") to start.Owner. No member value is consumed or retained, and the map does not leave this block.",
+      "unchecked": [
+        "The whole scan/export resource budget was not measured."
+      ],
+      "source_sha256": "0660ae87f4d7f0a669aafbe4b90583fd92278732e9b96a2bff9029da56d0a87a",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 118,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "fields",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 2507,
+          "Line": 70,
+          "Column": 6
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "ParseSkillCandidate.fields",
+      "line": 70,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "candidate.go:70-94 requires exactly five specific fields, screens their decoded strings/keys, validates schema/decision and converts description/body via candidateString. evidence_indexes is separately lowered to []int with range/duplicate checks. The success return at 134 is SkillCandidate containing only decision, strings, and []int; Preview:141-156 transfers those typed accessors into DraftInput.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 119,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "indexes",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 3594,
+          "Line": 95,
+          "Column": 6
+        },
+        "Type": "[]encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "ParseSkillCandidate.indexes",
+      "line": 95,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The RawMessage slice at line 95 is only the evidence_indexes JSON array. First pass rejects non-integer lexemes; skip requires an empty array; create requires non-empty, Atoi converts each member, then indexes are range-checked and deduplicated. Only []int evidence is assigned to SkillCandidate.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 120,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "index",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 3871,
+          "Line": 100,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "ParseSkillCandidate.integer_lexeme_loop.index",
+      "line": 100,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The line-100 index raw binding is converted to trimmed string solely to reject empty, boolean/non-number-leading, float, and exponent lexemes. It is not retained; the later loop at 117 uses Atoi and the successful candidate carries only checked []int.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 121,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "index",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 4576,
+          "Line": 117,
+          "Column": 9
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "ParseSkillCandidate.evidence_conversion_loop.index",
+      "line": 117,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The line-117 raw binding goes directly through strconv.Atoi; conversion errors abort. The result is written to []int evidence, then validated against messageCount and duplicate indexes before SkillCandidate construction. No raw element is copied into candidate/draft.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 122,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "candidateString",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 5303,
+          "Line": 137,
+          "Column": 6
+        },
+        "Type": "func(raw encoding/json.RawMessage) (string, bool)"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateString",
+      "line": 137,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "candidateString:137-145 requires a quoted JSON lexeme and unmarshals it into local string, returning only string/bool. Repository call-site search shows only ParseSkillCandidate schema/decision/description/body conversion and candidateMasked scalar screening; no caller stores RawMessage.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 123,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 5319,
+          "Line": 137,
+          "Column": 22
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateString.raw",
+      "line": 137,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The RawMessage argument at line 137 is converted to trimmed string then json.Unmarshal-ed into a local concrete string. The function exposes string and validity only; ParseSkillCandidate retains validated strings and candidateMasked immediately compares masker output.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 124,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "candidateMasked",
+        "Kind": "function",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 5702,
+          "Line": 149,
+          "Column": 6
+        },
+        "Type": "func(raw encoding/json.RawMessage, masker github.com/luoyjx/mini-loop/go/memory.Masker) bool"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateMasked",
+      "line": 149,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "candidateMasked:149-173 recursively inspects a raw JSON value and returns bool only. String/key branches pass decoded string to MaskText; object/array branches keep maps/slices local and recursively process child values. Its non-recursive caller ParseSkillCandidate:79 uses only the boolean to reject sensitive output before typed conversion.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 125,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "raw",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 5718,
+          "Line": 149,
+          "Column": 22
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateMasked.raw",
+      "line": 149,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The raw parameter at line 149 is used for a first-character type dispatch, string decoding, or local map/slice unmarshal. It is not sent to MaskText (only decoded strings/keys are), and recursive calls return bool; no raw value enters retained SkillCandidate or DraftInput.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 126,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "values",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 5924,
+          "Line": 156,
+          "Column": 7
+        },
+        "Type": "map[string]encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateMasked.object.values",
+      "line": 156,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The object RawMessage map at line 156 exists only in the object screening branch; the loop passes decoded key strings to MaskText and child RawMessage to candidateMasked, whose only output is bool. The map is never returned or assigned to a struct.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 127,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "value",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 6004,
+          "Line": 158,
+          "Column": 12
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateMasked.object_loop.value",
+      "line": 158,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The line-158 object child raw value is used solely by recursive candidateMasked(value, masker) to produce a rejection boolean. Candidate parsing separately converts accepted fields into concrete values; this loop never appends raw children to any retained collection.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 128,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "values",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 6140,
+          "Line": 164,
+          "Column": 7
+        },
+        "Type": "[]encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateMasked.array.values",
+      "line": 164,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The array RawMessage slice at line 164 is local to recursive screening. Every element is consumed only by candidateMasked, returning true on a sensitive child and false otherwise. The function cannot return or store the slice because its only result is bool.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    },
+    {
+      "observation_index": 129,
+      "finding": {
+        "Package": "github.com/luoyjx/mini-loop/go/userresources",
+        "Name": "value",
+        "Kind": "variable",
+        "Position": {
+          "Filename": "/Users/yanjixiong/github/mini-loop/go/userresources/candidate.go",
+          "Offset": 6209,
+          "Line": 166,
+          "Column": 10
+        },
+        "Type": "encoding/json.RawMessage"
+      },
+      "source_path": "go/userresources/candidate.go",
+      "symbol": "candidateMasked.array_loop.value",
+      "line": 166,
+      "classification": "json_boundary",
+      "disposition": "no_domain_retention",
+      "evidence": "The line-166 array child raw value has one use: recursive candidateMasked at line 167. The recursive result is reduced to bool, and no element is assigned to state; ParseSkillCandidate proceeds to its separately typed field validation only after screening succeeds.",
+      "unchecked": [
+        "Total provider-output size, recursive screening depth, and peak allocation were not benchmarked."
+      ],
+      "source_sha256": "8e0ca2def09d85c6a1977790ca41fa35a3c3339b601b7551a4baca52022e6c13",
+      "source_origin": "repository_owned"
+    }
+  ],
+  "owner_review": {
+    "date": "2026-10-13",
+    "checks": [
+      "All 130 original observations match exactly and have unique complete indices; all source hashes match current files.",
+      "Reviewed all row classifications and detailed evidence for 29 representative decoding, serialization, adapter and retention observations.",
+      "Read exact source for original memory error propagation, panic rethrow, request-local SSE input retention and clearing, and both SQLite Scanner conversions.",
+      "Standard error propagation, wire-only state and generated CGO interfaces are distinct from broad dynamic payload fields in domain/service structs."
+    ],
+    "conclusion": "No unresolved broad dynamic domain/service payload retention was identified in these 130 observations under the stated scope. This review does not certify all-platform compiler profiles, arbitrary error object graphs, aggregate memory limits or complete semantic parity."
+  },
+  "supporting_validation": "docs/audits/go-role-policy-profiles-2026-10-13.json"
+}

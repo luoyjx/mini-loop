@@ -1,5 +1,48 @@
 # Go port plan
 
+## 2026-10-13 current acceptance reconciliation and resource-budget evidence
+
+Review baseline: accepted main `82b14bf`. The original P0/P1/G0–G7 work-package
+criteria below are unchanged. **P0 inventory acceptance is satisfied**: the
+public inventory names all 12 README capability/default rows and their Python
+tests, 49 Settings fields, 44 HTTP operations, three SDK producers and the
+captured SQLite schema. All 157 public names have identified candidates: 52
+name matches plus 105 explicit rename/composition mappings, with zero missing
+namespace bindings. Inventory completion does not certify all behavior; the
+required semantic evidence remains assigned to G1–G7.
+
+The accepted role-policy profile records 465 production files / 1473 named
+types, 1206 public roots, 278 private roots and 172 package variables, with zero
+findings in the four type gates. Its body inventory is 51 packages / 22288
+declarations / 130 observations. Those 130 observations have now been classified
+individually in the owner-reviewed [boundary dispositions](docs/audits/go-body-boundary-dispositions-2026-10-13.json).
+No open dynamic representation was found retained in repository-owned
+domain/service fields in the recorded Darwin profile. Conditional propagation
+of original error wrappers, one panic rethrow, two request-local SSE wire
+buffers and three compiler-generated CGO declarations are explicit dispositions.
+This does not prove arbitrary error internals or total memory bounds, and does
+not itself declare all G0 complete. Foreign internals and every platform are
+not added as new requirements to the original G0 contract.
+
+The [resource-budget receipt](docs/audits/go-performance-resource-budget-2026-10-13.json)
+and [matched fake-HTTP measurements](docs/benchmarks/go-port-fake-http-resource-budget-2026-10-13.json)
+record three process pairs, totaling 60 measured turns and 300 health requests
+per runtime, plus six warmup turns. The host was not exclusive; the startup
+outlier is retained. Focused Python tests (4 passed), build, invariants, scans
+and diff checks pass. Full
+Python: **2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 156.68s**.
+Go tests, vet, race and coverage were not rerun for this tooling/documentation
+iteration. The accepted role-policy profile remains the Go gate baseline;
+Darwin statement coverage remains app **89.41%**, all Go **89.16%**.
+
+Explicit required gaps include default CPython parser approval and its
+62-case native consumer, two Unicode-host direct/SSE cases, and full Linux
+validation in the fixed environment. These are not an exhaustive replacement
+for the other finite unaccepted rows in the [current acceptance index](GO_PARITY_MATRIX.md#current-acceptance-index--2026-10-13).
+Captured MCP nonfinite/key profiles already have 116 direct plus 116 journal
+comparisons; all 12 declared SDK discriminators are represented. Historical
+checkpoints below retain their original numbers, failures and limits.
+
 ## 2026-10-13 public role profiles and child capability isolation
 
 Branch `codex/go-role-policy-profiles`, review baseline `fabe9bd`. Source capture
@@ -8490,25 +8533,43 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-Reviewed **2026-10-13**, role-policy implementation based on `fabe9bd`.
-[Current validation](docs/audits/go-role-policy-profiles-2026-10-13.json) records
-252 Source exports, 252 passing consumer candidates of 253 (only default parser
-unreferenced), full Go/vet/race/Python and selected verifiers. The required gates
-were completed in segments with identical recorded program fingerprints, retaining
-two host-pressure stops and explicitly hashed documentation-only corrections.
-Python: 2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 111.61s (0:01:51).
-Darwin statement coverage: app **89.41%**, all Go **89.16%**, Provider **86.67%**.
-[Current coverage](docs/audits/go-coverage-role-policy-profiles-2026-10-13.json)
-uses only the complete successful race profile; partial profiles are excluded.
+Reviewed **2026-10-13**, accepted main `82b14bf`. The
+[accepted role-policy receipt](docs/audits/go-role-policy-profiles-2026-10-13.json)
+records 252 Source exports and 252 passing consumer candidates of 253; only the
+default parser is unreferenced. Its full Go/vet/race gates, including reload,
+remain the accepted Go baseline. They completed in segments with identical
+program fingerprints, retaining two host-pressure stops and explicitly hashed
+documentation-only corrections.
 
-The six earlier missing namespace lookups have explicit public helper/constant
-counterparts. RunContext has 70 actual constructor/live-turn cases; role policy
-has 34 selections, seven child executions and six invalid capability admissions.
-These are bounded semantic proofs, not all 157 public bindings or complete P0/G7
-acceptance. The public/default inventory retains 12 posture rows, s01–s20 labels,
-49 settings, 44 HTTP operations and three SDK producers. Historical checkpoints
-below retain their original scope; full migration, public/default/dependency and
-historical reliability closure remain open.
+The new [performance/tooling receipt](docs/audits/go-performance-resource-budget-2026-10-13.json)
+records 4 focused Python passes, build/invariants/scans/diff passes and full
+Python **2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 156.68s**.
+The matched fake-HTTP report has three process pairs: per runtime, 60 measured
+turns, 300 health requests and six warmup turns. Its nonexclusive host and startup
+outlier remain explicit. Go tests, vet, race and coverage were not rerun for this
+iteration. Accepted Darwin statement coverage remains app **89.41%**, all Go
+**89.16%**, Provider **86.67%**; only the complete successful role-policy race
+profile contributes, and interrupted profiles remain excluded.
+
+**Original P0 inventory acceptance is satisfied**: 12 README capability/default
+rows with Python-test mappings, s01–s20 labels, 49 settings, 44 HTTP operations,
+three SDK producers and the captured SQLite schema. All 157 public names have
+bindings: 52 name candidates + 105 explicit mappings + zero missing. Required
+behavioral acceptance remains in G1–G7; inventory is not full semantic parity.
+The accepted type gates record 465 production files / 1473 named types, 1206
+public roots, 278 private roots and 172 package variables, with zero findings.
+The 51-package / 22288-declaration body inventory has 130 individually classified,
+[owner-reviewed observations](docs/audits/go-body-boundary-dispositions-2026-10-13.json).
+No open dynamic representation was found retained in repo-owned domain/service
+fields under the recorded Darwin profile. Standard error propagation, panic
+rethrow, request-local wire buffers and generated CGO declarations are explicit;
+this does not declare full G0 completion, arbitrary foreign/error-object-graph
+closure or total memory bounds.
+
+Required gaps include default CPython parser approval and its 62-case consumer,
+two Unicode-host direct/SSE cases, full fixed-environment Linux gates and the
+other finite unaccepted rows below. Original Work packages criteria are unchanged;
+historical checkpoints retain their original measurements, failures and limits.
 
 Previous verified implementation checkpoint:
 
@@ -8584,24 +8645,25 @@ Darwin statements only; native C/subprocess interiors, Python, branches and othe
 profiles excluded. Original migration acceptance and historical temporal
 reliability remain open.
 
-The original P0/P1/G0–G7 scope, non-Darwin/default/dependency decisions,
-private/foreign/inactive/runtime data-flow audit, performance and rendered
-architecture acceptance remain open. Python stays available. Original criteria
-remain in [Work packages](#work-packages); current slices do not prove complete
-work-package acceptance.
+Original criteria remain in [Work packages](#work-packages). P0 inventory is
+satisfied; remaining required behavior and final release evidence stay assigned
+to G1–G7. The owner-reviewed G0 body dispositions cover the recorded Darwin
+repo-owned domain/service boundaries without adding arbitrary foreign or
+error-object-graph closure to the original criterion. Python stays available;
+other finite unaccepted rows and recorded platform/reliability limits remain.
 
 | Package | Current implementation and evidence | Remaining acceptance |
 | --- | --- | --- |
-| P0 | Public/default inventory: 157 exports, 12 README rows, 49 settings, 44 HTTP operations, three SDK producers; six helper/constant lookup omissions resolved; bounded RunContext semantics validated | Remaining public bindings/signatures, fields/defaults and inter-feature scope need final review; bounded role-policy semantics now pass required gates; complete public-surface scope remains open |
-| P1 | Python under `python/`, Go under `go/`; original regression, verifiers and server smoke recorded | Refresh final release gates before merge/push |
-| G0 | Four type audits pass with zero findings; current branch body inventory has 51 packages / 22288 declarations / 130 open observations | Caller/escape/generic/foreign/other-profile/runtime data-flow review remains; wire parsing is a separate boundary |
+| P0 | Inventory acceptance satisfied: 157 bindings (52 name + 105 explicit + zero missing), 12 README capability/test rows, 49 settings, 44 HTTP operations, three SDK producers and captured SQLite schema | No remaining item under the original inventory criterion; required behavior, defaults and inter-feature semantics remain tracked in G1–G7 |
+| P1 | Python under `python/`, Go under `go/`; original server smoke plus current full Python 2253 passed / 28 skipped / 24 subtests and invariants/scans pass | Preserve documented commands and perform any remaining final release checks for the eventual integration |
+| G0 | Four accepted type gates: 465 files / 1473 named types / 1206 public roots / 278 private roots / 172 variables, zero findings; body 51 packages / 22288 declarations / 130 individually classified owner-reviewed observations | Recorded Darwin repo-owned domain/service boundaries retain no observed open payload fields. Error propagation, panic rethrow, request-local wire buffers and three generated CGO declarations are explicit; full G0 is not declared here, and arbitrary foreign/error-graph or total-memory closure is not added to its original criterion |
 | G1 | Managed serial turns, fake/HTTP providers, context/compaction/cache/recovery, hooks, steering, limiter/child integration and cancellation repair | Final cross-feature and default-path scope audit |
 | G2 | Ordered risk/permission gate, actual tools/shell, approvals, secret projection and action replay; native SQLite actions/approvals implemented | Final authority/guard scope audit; stored replay never restores prior grants |
 | G3 | Default/optional owned HTTP routes, protected embedded OpenAPI/Swagger/ReDoc/OAuth redirect, SSE, console shells, typed validation, health posture, configuration and both CLI startup paths | Default full-feature CLI diagnostics backend unavailable; CLI native/forced-polling event profiles and workspace ownership delivered; captured method/slash/decoded-path behavior is repaired; audit other public-entry parity |
-| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress | Named citation blocks/deltas, container-upload, server tool-use observations, code/Bash/text-editor execution, web-fetch, web-search and tool-search result blocks, forwarding and automatic credential discovery implemented; named metadata/event and HTTP/SSE decoding implemented with SDK null defaults; usage SQL/recording reopen composition verified; broader usage coercion/field audit and final supported-provider variant/options audit remain; no paid-provider deployment check has been claimed |
+| G4 | Typed HTTP transport/replies/SSE, SDK retries, Agent recovery, isolated decision calls and coalesced progress; all 12 declared SDK discriminators are represented | Named variants, forwarding/auth discovery, metadata/defaults and usage SQL/recording reopen are implemented. Two required Unicode-host direct/SSE cases plus remaining finite field/default/consumer/options reconciliation stay open; no paid-provider deployment check is claimed |
 | G5 | Native schema-v7 SQLite, leases, transcripts/events/actions/approvals, explicit manager/Launcher restore, owner isolation, cron/scheduled restore; killed-generation recovery, compaction restart and 512 KiB decision replay verified | Reconcile G5 required Source recipes in G7; leases/cron claims do not fence external effects or prove power-loss durability |
 | G6 | Tasks/worktrees/background/cron, goals/plan mode, skills/owner resources/memory, decisions, MCP, teams, workflows/verified improvement, diagnostics injection, self-audit and native benchmark arms implemented in explicit slices | Default Python syntax diagnostics dependency decision; final defaults/lifecycle/feature inventory audit |
-| G7 | Source 252, 252 passing consumers of 253; ordinary/vet/race/full Python and selected type/scanner/guard checks pass across retained same-program segments | Default parser, broader public/default, historical timing/platform and release/performance acceptance remain open; two host-pressure stops remain recorded |
+| G7 | Accepted role profile: Source 252 / 252 passing consumers of 253, ordinary/vet/race and selected type/scanner/guard gates; new full Python and three-pair fake-HTTP resource-budget evidence | Default parser approval/62-case consumer, two Unicode-host direct/SSE cases, fixed-environment Linux full gates and other finite unaccepted rows remain. Go/vet/race/coverage were not rerun this iteration; two earlier host-pressure stops and historical reliability limits remain recorded |
 
 ### Confirmed open implementation items
 
@@ -8642,8 +8704,10 @@ still required; no runtime fix, root-cause claim or retry-to-green has been made
    custom extension behavior separately instead of adding unrelated SDK features.
 
 4. Native Darwin reload reliability: current FSEvents dispatch ownership and
-   joined cleanup are implemented. Full ordinary Go still fails native recipe
-   delivery despite readiness acknowledgement. Raw C entry and queue-progress
+   joined cleanup are implemented. Earlier full ordinary Go failed native recipe
+   delivery despite readiness acknowledgement; the accepted `82b14bf` role-policy
+   ordinary/vet/race gates now pass, without a watcher runtime fix or cause claim.
+   Raw C entry and queue-progress
    experiments at `360f844` / `05d675c` locate missing entries before C while the
    private queue continues executing; the root cause remains unknown. Source and
    Go pass all 16 scenarios with and without 32 preceding closes at `5d1c99b`.

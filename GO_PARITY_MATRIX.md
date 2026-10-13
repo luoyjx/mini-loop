@@ -1,5 +1,28 @@
 # Python to Go parity matrix
 
+## 2026-10-13 current inventory and resource-budget reconciliation
+
+Accepted baseline is main `82b14bf`; original P0/P1/G0–G7 criteria are unchanged.
+P0 inventory acceptance is satisfied by the README capability/test, settings,
+HTTP, SDK, storage-schema and 157-name inventories. The namespace count is
+52 name matches + 105 explicit mappings + zero missing bindings; semantic
+acceptance is tracked separately in G1–G7 and the current index below.
+
+[New performance evidence](docs/benchmarks/go-port-fake-http-resource-budget-2026-10-13.json)
+uses three process pairs, 60 measured turns and 300 health requests per runtime
+in total, plus six warmup turns. The nonexclusive host and startup outlier remain
+recorded. The
+[validation receipt](docs/audits/go-performance-resource-budget-2026-10-13.json)
+records 4 focused Python passes, build/invariants/scans/diff passes, and full
+Python **2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 156.68s**.
+Go/vet/race/coverage were not rerun; accepted role-policy coverage remains app
+**89.41%**, all Go **89.16%**. The 130 body observations have individual
+[owner-reviewed dispositions](docs/audits/go-body-boundary-dispositions-2026-10-13.json):
+no open dynamic representation was found retained in repository-owned
+domain/service fields in the recorded Darwin profile. Error propagation,
+request-local SSE buffers, panic rethrow and generated CGO declarations are
+explicitly distinguished. This does not declare all G0 or G7 complete.
+
 ## 2026-10-13 public role profiles and child capability isolation
 
 Branch `codex/go-role-policy-profiles`, review baseline `fabe9bd`. Source capture
@@ -1212,25 +1235,45 @@ plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`
 
 ## Current acceptance index — 2026-10-13
 
-Reviewed **2026-10-13**, role-policy implementation based on `fabe9bd`.
-[Current validation](docs/audits/go-role-policy-profiles-2026-10-13.json) records
-252 Source exports, 252 passing consumer candidates of 253 (only default parser
-unreferenced), full Go/vet/race/Python and selected verifiers. The required gates
-were completed in segments with identical recorded program fingerprints, retaining
-two host-pressure stops and explicitly hashed documentation-only corrections.
-Python: 2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 111.61s (0:01:51).
-Darwin statement coverage: app **89.41%**, all Go **89.16%**, Provider **86.67%**.
-[Current coverage](docs/audits/go-coverage-role-policy-profiles-2026-10-13.json)
-uses only the complete successful race profile; partial profiles are excluded.
+Reviewed **2026-10-13**, accepted main `82b14bf`. The
+[accepted role-policy validation](docs/audits/go-role-policy-profiles-2026-10-13.json)
+records 252 Source exports and 252 passing consumer candidates of 253; only the
+default parser is unreferenced. Its full Go/vet/race gates were completed in
+segments with identical recorded program fingerprints, retaining two
+host-pressure stops and hashed documentation-only corrections. Those accepted
+Go gates, including development reload, remain the current baseline.
 
-The six earlier missing namespace lookups have explicit public helper/constant
-counterparts. RunContext has 70 actual constructor/live-turn cases; role policy
-has 34 selections, seven child executions and six invalid capability admissions.
-These are bounded semantic proofs, not all 157 public bindings or complete P0/G7
-acceptance. The public/default inventory retains 12 posture rows, s01–s20 labels,
-49 settings, 44 HTTP operations and three SDK producers. Historical checkpoints
-below retain their original scope; full migration, public/default/dependency and
-historical reliability closure remain open.
+The new [performance/tooling receipt](docs/audits/go-performance-resource-budget-2026-10-13.json)
+records focused Python 4 passed, build, invariants, scans and diff passes, plus
+full Python **2253 passed, 28 skipped, 96 warnings, 24 subtests passed in 156.68s**.
+Go tests, vet, race and coverage were not rerun in this iteration. Accepted
+Darwin statement coverage remains app **89.41%**, all Go **89.16%**, Provider
+**86.67%**. The [role-policy coverage](docs/audits/go-coverage-role-policy-profiles-2026-10-13.json)
+uses only the complete successful race profile; partial profiles remain excluded.
+
+**P0 inventory acceptance is satisfied** under its original work-package
+criterion: 12 README capability/default rows and Python-test mappings, s01–s20
+labels, 49 settings, 44 HTTP operations, three SDK producers and captured SQLite
+schema. The six former namespace omissions have explicit bindings: all 157
+exports are mapped as 52 name candidates + 105 explicit candidates + zero
+missing. Namespace mapping does not imply complete semantic parity; G1–G7 own
+that evidence. RunContext has 70 constructor/live-turn cases; role policy has
+34 selections, seven child executions and six invalid capability admissions.
+
+The current body inventory's 130 observations are individually classified with
+[owner-reviewed dispositions](docs/audits/go-body-boundary-dispositions-2026-10-13.json).
+No open dynamic representation was found retained in repository-owned
+Darwin-profile domain/service fields. Conditional original-error propagation,
+panic rethrow, request-local wire buffers and compiler-generated CGO declarations
+are separate dispositions. Arbitrary error-object graphs, foreign internals,
+other profiles and total allocation bounds are not proved by this review;
+they are not substituted for the original finite G0 contract.
+
+Explicit required gaps include default CPython parser approval and its 62-case
+native consumer, two Unicode-host direct/SSE cases, and the full fixed-environment
+Linux gates. Other finite unaccepted rows below remain; these three gaps are not
+an exhaustive replacement for G7. Historical checkpoints retain their original
+scope, measurements, failures and limitations.
 
 Previous verified implementation checkpoint:
 
@@ -1272,8 +1315,8 @@ remain open. No connection, risk, authority, default or new dependency changes.
 
 | Scope | Current authoritative evidence | Current conclusion |
 | --- | --- | --- |
-| Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages | Delivered; original scope remains P0/P1/G0–G7 |
-| Source recipe freshness | Current branch full exporter `--check` passes 252 files | Recipe freshness passes; final inventory and required release gates remain open |
+| Directory split / plan | `python/`, `go/`, `GO_PORT_PLAN.md` work packages; current full Python/tooling receipt | Directory split delivered; original P0/P1/G0–G7 criteria remain unchanged. Current Python/tooling checks pass; final cross-runtime acceptance remains separate |
+| Source recipe freshness | Accepted role-policy exporter `--check`: 252 files | Recipe freshness passed in the accepted runtime profile; not rerun by this performance/tooling iteration. Required release gates remain open |
 | Default business routing | All 168 actual Source requests on 40 explicit paths; [native evidence](docs/audits/go-http-routing-native-2026-10-11.json) | Delivered at 4b68574: first-route Allow, known slash redirects and decoded-path semantics match. Required parity assertion replaces diagnostic-only acceptance; broader URL/mount/forwarded-host scope remains |
 | Managed memory HTTP | [64 actual POST/SSE contracts and frozen gates](docs/audits/go-memory-managed-http-2026-10-12.json) | Pinned Source POST/Agent.run+SSE/direct container budgets 970/974/979; trusted selector is ephemeral with unchanged authority. Wire events, owner/foreign records and lifecycle match; other caller/host profiles and full acceptance remain open |
 | Source/native consumer inventory | [Current receipt](docs/audits/go-role-policy-profiles-2026-10-13.json): 252 exports plus separate Linux capture | 252 of 253 candidates observed passing in ordinary tests; only parser unreferenced; required race/Python gates completed in a later segment; Linux runtime not certified on Darwin |
@@ -1291,18 +1334,18 @@ remain open. No connection, risk, authority, default or new dependency changes.
 | Registered custom tool inputs | [Typed codec and actual Source gate proof](docs/audits/go-extension-input-codecs-2026-10-13.json) | Fourteen outcomes/13 exact traces; readonly-write scheduling adaptation retained. Explicit named codec/handler runs after common gate; schema-only observations still refused. Wider coercion/ownership/parallel profiles remain |
 | Complete custom schema metadata | [Actual Source requests and native SQLite reopen](docs/audits/go-extension-schema-preservation-2026-10-13.json) | Sixteen metadata shapes/32 managed owner sessions and16 SQL profiles match snapshots/fingerprints/model tools/current authority. Inert finite values preserve all fields; no validator or ref loading. Non-object server acceptance and other schema profiles remain |
 | Custom child callback scope | [Eighteen actual Source role/capability/risk profiles](docs/audits/go-extension-subagents-2026-10-13.json) | Typed adapters survive capability pruning; current Session stamps fixed label/depth; peer clears human approvals and Explore remains readonly. Scope grants no permission or quota. Arbitrary mutable Agent/state and wider lifecycle/parallel/remote profiles remain |
-| MCP finite model roots | [Actual Source batch/gate and native SQLite reopen](docs/audits/go-mcp-model-roots-2026-10-13.json) |52 profiles compare preparation before effects, original history and external-risk readonly refusal;4 reopen/owner-restore profiles retain current authority without replay. Explicit MCP arguments stay object-only; nonfinite/non-string-key/wider roots remain |
-| MCP ordered scalar keys | [116 direct/116 journal Source profiles and native SQLite](docs/audits/go-mcp-mapping-native-2026-10-13.json) | Native stages/effects/hashes and original roots now match required profiles; seven reopen/owner-restore cases check event persistence/current authority/no replay. Broader comparison/NaN identity/nonfinite callable object/managed/transport profiles remain |
-| Public namespace/default inventory | [157-export/49-setting/44-operation inventory](GO_PUBLIC_SURFACE_INVENTORY.md) |52 name and99 rename/composition candidates;6 namespaces lack identified bindings, including4 helpers. Candidate names/test paths are not semantic proof. Default parser/IDNA and wider P0/G7 remain open |
-| Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal | Open: default Python syntax parser selection depends on the outstanding dependency decision |
-| Development reload | [Current ordinary/race+atomic gates](docs/audits/go-mcp-mapping-native-2026-10-13.json), raw C and same-subscription queue/control receipts | Current ordinary/vet/race/Python pass in the new implementation cohort; prior memory scaling failure remains retained without a runtime/threshold fix. Prior SQLite/background/native temporal failures and broader reliability remain open; no watcher runtime fix/cause claim; cross-platform/temporal G3/G7 remains open |
-| Package-level types and variables | Four type audits plus [full-body inventory](docs/audits/go-mcp-mapping-native-2026-10-13.json) | 463 files/1465 named types;1198 public types/278 private roots/172 variables;zero findings in four established gates. Historical body inventory retains139 observations; current inventory reports129 at51 packages/22207 declarations, with no memory_context RawMessage locals. RawMessage caller/escape, generic use, foreign/other-profile and runtime-flow review remain |
+| MCP finite model roots | [52 initial batch/gate profiles](docs/audits/go-mcp-model-roots-2026-10-13.json) and [later scalar-key/nonfinite proof](docs/audits/go-mcp-mapping-native-2026-10-13.json) | Preparation before effects, original history, external-risk readonly refusal and four initial reopen/owner-restore profiles match. Later 116 direct + 116 journal profiles cover the captured nonfinite roots/values and scalar keys; these are no longer listed as missing. Explicit MCP arguments remain object-only |
+| MCP ordered scalar keys | [116 direct/116 journal Source profiles and native SQLite](docs/audits/go-mcp-mapping-native-2026-10-13.json) | Captured nonfinite roots/values, ordered scalar keys, native stages/effects/hashes and original roots match; seven reopen/owner-restore cases check persisted events/current authority/no replay. Arbitrary callable-object equivalence is not claimed; other finite unaccepted G6/G7 rows remain |
+| Public namespace/default inventory | [12 README rows / 157 exports / 49 settings / 44 HTTP operations / 3 SDK producers](GO_PUBLIC_SURFACE_INVENTORY.md); captured SQLite schema | Original P0 inventory acceptance satisfied: 52 name candidates + 105 explicit mappings + zero missing bindings, with README Python-test mappings and storage/default/optional-feature inventory. Semantic parity remains in G1–G7; default parser and required Unicode-host consumers remain open |
+| Default full-feature CLI | `go/config/server.go` and `go/agent/manager_features.go` refusal; 62-case default-parser Source fixture | Open: explicit approval for the default CPython syntax-parser dependency and its native 62-case consumer remain required; SQLite-driver approval does not approve this backend |
+| Development reload | [Accepted main `82b14bf` role-policy ordinary/vet/race gates](docs/audits/go-role-policy-profiles-2026-10-13.json), raw C and same-subscription queue/control receipts | Latest accepted Go gates include reload; not rerun for this tooling iteration. Prior temporal/resource failures remain retained without a watcher runtime fix or cause claim. Cross-platform and other finite unaccepted G3/G7 reliability rows remain |
+| Package-level types and variables | [Accepted four type gates/body inventory](docs/audits/go-role-policy-profiles-2026-10-13.json); [owner-reviewed body dispositions](docs/audits/go-body-boundary-dispositions-2026-10-13.json) | 465 production files / 1473 named types; 1206 public roots / 278 private roots / 172 variables; zero findings in the four gates. Body: 51 packages / 22288 declarations / 130 individually classified observations. Recorded Darwin repo-owned domain/service boundaries retain no observed open payload fields; standard error propagation, request-local wire state and three generated CGO declarations are explicit. No new compiler rerun or all-profile/error-graph/memory-bound claim; full G0 not declared here |
 | Linux public type closure | [Pinned CGO profile evidence](docs/audits/go-linux-public-types-2026-10-11.json) | Linux amd64/CGO1 compiler closure passes50 packages/1189 exported types/zero findings in existing fixed image through compatibility layer. Local CGO0 and arm64-CGO inventories fail; other profiles/private roots/foreign internals/runtime flow remain open. Full Linux amd64 gates terminal:ordinary/race each8 failed packages,vet passes. Native arm64/context cohort terminal:public types/vet pass,ordinary/race each7 failed packages; not accepted |
 | Linux full runtime gates | [Terminal one-shot receipt](docs/audits/go-linux-full-gates-2026-10-11.json) | amd64 compatibility layer:ordinary1/vet0/race1;readonly HOME error and platform/phase/signal differences retained. No same-environment Source recapture or full Linux acceptance; native arm64 ordinary1/vet0/race1 and public types0;7 failed packages in each test gate |
-| Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered:224 request objects/40 plain HTTP wire/24 proxy-TLS assertions;16 SNI/8 CONNECT checks. Broader IDNA/custom transport inventory remains open |
+| Owned provider literal targets | [Required transport inventory](docs/audits/go-provider-literal-target-2026-10-11.json) | Delivered: 224 request objects / 40 plain HTTP wire / 24 proxy-TLS assertions; 16 SNI / 8 CONNECT checks. Two required Unicode-host direct/SSE cases remain unaccepted; broader IDNA/custom transport evidence is not inferred |
 | Completed reply metadata | `go/testdata/python-provider-reply-metadata.json`: 44 actual SDK 0.107.1 direct/stream captures | Implemented at 3916f71: named finite observations, defaults, normalized timestamps, SDK delta retention, cloning and public JSON match all 44 captures; arbitrary coercion/custom transport and final acceptance remain |
 | Scratch cleanup | Python manager `_remove_workspace` / `_finalize_workspace_cleanup`; Go `reclaimUnusedWorkspace`; README boundary | Both remove scratch directory/link without Git registration cleanup; a Source Git-aware reclaimer is not missing implementation |
-| Matched fake HTTP performance | `python/tools/go_port_performance.py`, raw `docs/benchmarks/go-port-fake-http-2026-10-10.json` | Three process pairs with identical verified Bash effects; startup/health/create/turn/delete latency and sampled RSS measured; broader workloads remain |
+| Matched fake HTTP performance | [Current resource-budget report](docs/benchmarks/go-port-fake-http-resource-budget-2026-10-13.json) and [validation receipt](docs/audits/go-performance-resource-budget-2026-10-13.json) | Three process pairs, totaling 60 measured turns / 300 health requests and six warmup turns per runtime, with verified Bash effects and latency/RSS observations. Nonexclusive host and startup outlier retained; this bounded workload does not establish all-workload performance or platform parity |
 | Provider citation variants | Source SDK 0.107.1: 35 completed/forwarded cases, two streamed/forwarded cases; native provider and protocol tests | Five named variants, SDK normalization, bounded SSE, forwarding and rewrites implemented; native direct/stream HTTP + SQLite close/reopen + masked recordings verified with an explicit registry; final provider inventory remains |
 | Explicit provider authentication | Ten pinned Source recipes, each compared against native direct and SSE request headers; detached configuration, effective-header admission and credential redaction tests | Explicit key/bearer/ordered-header seam and Launcher environment selection implemented; four Settings/provider_for Source captures match managed native turns; 51 actual SDK discovery recipes are captured; Launcher compares 50 and provider tests cover same-client invalidation; defined-empty auth alignment delivered |
 | Dynamic credential cache | Typed callback/token/error seam; provider race tests for SDK windows/backoff, forced exchange retry, cancellation/panic release, direct/SSE auth and concurrent token redaction | Explicit process-local cache implemented; native file-profile/user OAuth implemented; explicit native federation exchange implemented; profile federation disk cache implemented; Launcher automatic discovery delivered |
@@ -1318,10 +1361,10 @@ remain open. No connection, risk, authority, default or new dependency changes.
 | Provider-owned tool-use observations | Thirty-two SDK direct/SSE captures in `go/testdata/python-provider-server-tool.json` | Named ID/name/input/caller, immutable finite observational input and root extensions, SDK null defaults, complete SSE accumulation and empty-delta semantics, mask/clone/historical codec and actual SQLite reopen implemented; inert client authority; all twelve declared SDK kinds represented; complete field/consumer/default audit remains |
 | Server tool-search result replies | Twelve SDK direct/SSE captures in `go/testdata/python-provider-tool-search.json` | Named references/error union, nullable messages, stream defaults, immutable extensions, forwarding/mask/clone/historical codec implemented; metadata does not activate client tools; all twelve declared SDK kinds represented; complete field/consumer/default audit remains |
 | Server web-search result replies | Fourteen SDK direct/SSE captures in `go/testdata/python-provider-web-search.json` | Named results/error union, optional age/caller defaults, immutable extensions, forwarding/mask/clone/historical codec implemented; all twelve declared SDK kinds represented; complete field/consumer/default audit remains |
-| Provider container-upload blocks | Six actual SDK direct/SSE captures in `go/testdata/python-provider-container-upload.json` | Named FileID and stream null defaults in the closed Block union; forwarding, clone/mask/stored codec tests; remaining server-tool/result variants and extension audit open |
+| Provider container-upload blocks | Six actual SDK direct/SSE captures in `go/testdata/python-provider-container-upload.json`; named result-variant rows above | Named FileID and stream-null defaults in the closed Block union, forwarding and clone/mask/stored codec tests are implemented. All 12 declared SDK discriminators are now represented; complete field/default/consumer acceptance remains separate |
 | Provider usage metadata | Nine actual SDK direct/SSE captures in `go/testdata/python-provider-usage.json`; Python `_usage_payload` and SDK Usage/stream accumulator hashes | Named metadata, nullable codec/default selection, immutable extensions, clone/masked event/archival JSON and HTTP/SSE adoption implemented; actual SQL events, reopen/restored writes, raw JSONL and reopened recording readers verified; broader usage coercion/field audit and final scope reconciliation remain; see [scope audit](GO_PROVIDER_SCOPE_AUDIT.md) |
 | Background optional consumers | 48 standalone option profiles and 48 actual SDK/managed captures; runtime `4f56ef8` / `ea35cd3` | Timeout/prefix lowering, SDK admission and exact managed final replies implemented; cleanup/timer/scheduler adaptations and full-state scope remain explicit |
-| Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open; type/public-entry/default/feature scope and final release gates still need reconciliation |
+| Final acceptance | Original G7 contract/differential/performance/docs/audit gates | Open. P0 inventory is satisfied and recorded body observations are classified; default parser approval/62-case consumer, two Unicode-host direct/SSE cases, fixed-environment Linux full gates and other finite unaccepted rows still require closure |
 
 Historical MCP full Python result: **2247 passed, 28 skipped, 96 warnings, 24 subtests passed in 93.36s (0:01:33)**.
 Source247/manifest, focused controls, complete ordinary/vet/race, four type audits,
