@@ -1,6 +1,67 @@
 {
   "invocations": [
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "UnicodeEncodeError",
+        "error_frames": [
+          {
+            "file": "agent.py",
+            "function": "run",
+            "line": 1153
+          },
+          {
+            "file": "agent.py",
+            "function": "_run_one_turn",
+            "line": 1244
+          },
+          {
+            "file": "agent.py",
+            "function": "_loop",
+            "line": 1464
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool_batch",
+            "line": 1645
+          },
+          {
+            "file": "agent.py",
+            "function": "flush_parallel_group",
+            "line": 1623
+          },
+          {
+            "file": "agent.py",
+            "function": "result_for",
+            "line": 1598
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool",
+            "line": 1991
+          },
+          {
+            "file": "stuck.py",
+            "function": "step_hash",
+            "line": 61
+          }
+        ],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "optimization_stage_error",
+          "tool_result"
+        ],
+        "model_starts": 1,
+        "output": "",
+        "provider_calls": 1,
+        "result_text_hex": null,
+        "transcript_messages": 2
+      },
       "calls": [
         {
           "args": [
@@ -28,6 +89,67 @@
       "utf8": false
     },
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "UnicodeEncodeError",
+        "error_frames": [
+          {
+            "file": "agent.py",
+            "function": "run",
+            "line": 1153
+          },
+          {
+            "file": "agent.py",
+            "function": "_run_one_turn",
+            "line": 1244
+          },
+          {
+            "file": "agent.py",
+            "function": "_loop",
+            "line": 1464
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool_batch",
+            "line": 1645
+          },
+          {
+            "file": "agent.py",
+            "function": "flush_parallel_group",
+            "line": 1623
+          },
+          {
+            "file": "agent.py",
+            "function": "result_for",
+            "line": 1598
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool",
+            "line": 1991
+          },
+          {
+            "file": "stuck.py",
+            "function": "step_hash",
+            "line": 61
+          }
+        ],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "optimization_stage_error",
+          "tool_result"
+        ],
+        "model_starts": 1,
+        "output": "",
+        "provider_calls": 1,
+        "result_text_hex": null,
+        "transcript_messages": 2
+      },
       "calls": [
         {
           "args": [
@@ -55,6 +177,67 @@
       "utf8": false
     },
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "UnicodeEncodeError",
+        "error_frames": [
+          {
+            "file": "agent.py",
+            "function": "run",
+            "line": 1153
+          },
+          {
+            "file": "agent.py",
+            "function": "_run_one_turn",
+            "line": 1244
+          },
+          {
+            "file": "agent.py",
+            "function": "_loop",
+            "line": 1464
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool_batch",
+            "line": 1645
+          },
+          {
+            "file": "agent.py",
+            "function": "flush_parallel_group",
+            "line": 1623
+          },
+          {
+            "file": "agent.py",
+            "function": "result_for",
+            "line": 1598
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool",
+            "line": 1991
+          },
+          {
+            "file": "stuck.py",
+            "function": "step_hash",
+            "line": 61
+          }
+        ],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "optimization_stage_error",
+          "tool_result"
+        ],
+        "model_starts": 1,
+        "output": "",
+        "provider_calls": 1,
+        "result_text_hex": null,
+        "transcript_messages": 2
+      },
       "calls": [
         {
           "args": [
@@ -82,6 +265,67 @@
       "utf8": false
     },
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "UnicodeEncodeError",
+        "error_frames": [
+          {
+            "file": "agent.py",
+            "function": "run",
+            "line": 1153
+          },
+          {
+            "file": "agent.py",
+            "function": "_run_one_turn",
+            "line": 1244
+          },
+          {
+            "file": "agent.py",
+            "function": "_loop",
+            "line": 1464
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool_batch",
+            "line": 1645
+          },
+          {
+            "file": "agent.py",
+            "function": "flush_parallel_group",
+            "line": 1623
+          },
+          {
+            "file": "agent.py",
+            "function": "result_for",
+            "line": 1598
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool",
+            "line": 1991
+          },
+          {
+            "file": "stuck.py",
+            "function": "step_hash",
+            "line": 61
+          }
+        ],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "optimization_stage_error",
+          "tool_result"
+        ],
+        "model_starts": 1,
+        "output": "",
+        "provider_calls": 1,
+        "result_text_hex": null,
+        "transcript_messages": 2
+      },
       "calls": [
         {
           "args": [
@@ -109,6 +353,67 @@
       "utf8": false
     },
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "UnicodeEncodeError",
+        "error_frames": [
+          {
+            "file": "agent.py",
+            "function": "run",
+            "line": 1153
+          },
+          {
+            "file": "agent.py",
+            "function": "_run_one_turn",
+            "line": 1244
+          },
+          {
+            "file": "agent.py",
+            "function": "_loop",
+            "line": 1464
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool_batch",
+            "line": 1645
+          },
+          {
+            "file": "agent.py",
+            "function": "flush_parallel_group",
+            "line": 1623
+          },
+          {
+            "file": "agent.py",
+            "function": "result_for",
+            "line": 1598
+          },
+          {
+            "file": "agent.py",
+            "function": "_exec_tool",
+            "line": 1991
+          },
+          {
+            "file": "stuck.py",
+            "function": "step_hash",
+            "line": 61
+          }
+        ],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "optimization_stage_error",
+          "tool_result"
+        ],
+        "model_starts": 1,
+        "output": "",
+        "provider_calls": 1,
+        "result_text_hex": null,
+        "transcript_messages": 2
+      },
       "calls": [
         {
           "args": [
@@ -136,6 +441,28 @@
       "utf8": false
     },
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "",
+        "error_frames": [],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "tool_result",
+          "model_start",
+          "model_end",
+          "assistant_text"
+        ],
+        "model_starts": 2,
+        "output": "done",
+        "provider_calls": 2,
+        "result_text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2274657874223a22f09f9880227d2c226f75747075745f6279746573223a39367d",
+        "transcript_messages": 4
+      },
       "calls": [
         {
           "args": [
@@ -163,6 +490,28 @@
       "utf8": true
     },
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "",
+        "error_frames": [],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "tool_result",
+          "model_start",
+          "model_end",
+          "assistant_text"
+        ],
+        "model_starts": 2,
+        "output": "done",
+        "provider_calls": 2,
+        "result_text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2274657874223a22e7958c3c3e26e280a85c6e5c75303030305c745c225c5c227d2c226f75747075745f6279746573223a3131337d",
+        "transcript_messages": 4
+      },
       "calls": [
         {
           "args": [
@@ -190,6 +539,28 @@
       "utf8": true
     },
     {
+      "agent": {
+        "budget_directory": false,
+        "error": "",
+        "error_frames": [],
+        "events": [
+          "tool_catalog",
+          "capability_plan",
+          "system_prompt",
+          "model_start",
+          "model_end",
+          "tool_use",
+          "tool_result",
+          "model_start",
+          "model_end",
+          "assistant_text"
+        ],
+        "model_starts": 2,
+        "output": "done",
+        "provider_calls": 2,
+        "result_text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2276616c7565223a4e614e2c226e6573746564223a5b496e66696e6974792c2d496e66696e6974795d7d2c226f75747075745f6279746573223a3131367d",
+        "transcript_messages": 4
+      },
       "calls": [
         {
           "args": [

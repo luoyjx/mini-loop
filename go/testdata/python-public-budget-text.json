@@ -1,0 +1,966 @@
+{
+  "cases": [
+    {
+      "after_content_json": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": null,
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 200000,
+      "message_replaced": false,
+      "name": "plain/default",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/id-123456.txt\\\" bytes=\\\"10\\\">\\npl\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "id-123456.txt": "plain text"
+      },
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "plain/spill",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/id-123456.txt\\\" bytes=\\\"10\\\">\\n\\u754c\\ud83d\\ude00e\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "id-123456.txt": "界😀é"
+      },
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "unicode/positive",
+      "older": false,
+      "output_directory": true,
+      "preview": 3,
+      "texts": [
+        [
+          "\"\\u754c\\ud83d\\ude00e\\u0301\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/id-123456.txt\\\" bytes=\\\"10\\\">\\n\\u754c\\ud83d\\ude00e\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "id-123456.txt": "界😀é"
+      },
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "unicode/negative",
+      "older": false,
+      "output_directory": true,
+      "preview": -1,
+      "texts": [
+        [
+          "\"\\u754c\\ud83d\\ude00e\\u0301\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"\\u754c\\ud83d\\ude00e\\u0301\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": null,
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 10,
+      "message_replaced": false,
+      "name": "unicode/budget-exact",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"\\u754c\\ud83d\\ude00e\\u0301\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/tool-result-123456.txt\\\" bytes=\\\"10\\\">\\npl\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "tool-result-123456.txt": "plain text"
+      },
+      "ids": [
+        [
+          "\"\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "id/empty",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/id__tail-123456.txt\\\" bytes=\\\"10\\\">\\npl\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "id__tail-123456.txt": "plain text"
+      },
+      "ids": [
+        [
+          "\"id\\u754c\\ud83d\\ude00tail\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "id/unicode",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/start_end-123456.txt\\\" bytes=\\\"10\\\">\\npl\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "start_end-123456.txt": "plain text"
+      },
+      "ids": [
+        [
+          "\"start\"",
+          "\"\\ud800\"",
+          "\"end\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "id/high-surrogate",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/start__end-123456.txt\\\" bytes=\\\"10\\\">\\npl\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "start__end-123456.txt": "plain text"
+      },
+      "ids": [
+        [
+          "\"start\"",
+          "\"\\ud83d\"",
+          "\"\\ude00\"",
+          "\"end\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "id/surrogate-pair-literal",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"<persisted-output path=\\\"<workspace>/.task_outputs/tool-results/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA__-123456.txt\\\" bytes=\\\"10\\\">\\npl\\n</persisted-output>\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 1,
+      "directory_at_clock": [
+        true
+      ],
+      "error": null,
+      "files": {
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA__-123456.txt": "plain text"
+      },
+      "ids": [
+        [
+          "\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"",
+          "\"\\ud800\"",
+          "\"\\ud83d\\ude00\"",
+          "\"tail\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": true,
+      "name": "id/character-cap",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": null,
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 200000,
+      "message_replaced": false,
+      "name": "older-invalid-ignored",
+      "older": true,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": true,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "FileExistsError",
+        "message": "[Errno 17] File exists: '<workspace>/.task_outputs/tool-results'"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "passthrough",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "directory-blocked",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [
+        true
+      ],
+      "error": {
+        "kind": "RuntimeError",
+        "message": "mask callback fault"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "raise-first",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "mask-fault-first",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"first text\""
+        ],
+        [
+          "\"second text\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [
+        true,
+        true
+      ],
+      "error": {
+        "kind": "RuntimeError",
+        "message": "mask callback fault"
+      },
+      "files": {
+        "second-123456.txt": "second text"
+      },
+      "ids": [
+        [
+          "\"first\""
+        ],
+        [
+          "\"second\""
+        ]
+      ],
+      "mask": "raise-second",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "mask-fault-second",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"first text\""
+        ],
+        [
+          "\"second text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask",
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [
+        true
+      ],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 0: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "invalid-first",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "mask-invalid-first",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"plain text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"first text\""
+        ],
+        [
+          "\"second text\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [
+        true,
+        true
+      ],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 0: surrogates not allowed"
+      },
+      "files": {
+        "second-123456.txt": "second text"
+      },
+      "ids": [
+        [
+          "\"first\""
+        ],
+        [
+          "\"second\""
+        ]
+      ],
+      "mask": "invalid-second",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "mask-invalid-second",
+      "older": false,
+      "output_directory": true,
+      "preview": 2,
+      "texts": [
+        [
+          "\"first text\""
+        ],
+        [
+          "\"second text\""
+        ]
+      ],
+      "trace": [
+        "clock",
+        "mask",
+        "clock",
+        "mask"
+      ]
+    },
+    {
+      "after_content_json": [
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 0: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "text/high/0",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 0: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 200000,
+      "message_replaced": false,
+      "name": "text/high/200000",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"\\udfff\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\udfff' in position 0: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "text/low/0",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"\\udfff\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"\\udfff\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\udfff' in position 0: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 200000,
+      "message_replaced": false,
+      "name": "text/low/200000",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"\\udfff\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"\\ud83d\"",
+          "\"\\ude00\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode characters in position 0-1: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "text/literal-pair/0",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"\\ud83d\"",
+          "\"\\ude00\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"\\ud83d\"",
+          "\"\\ude00\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode characters in position 0-1: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 200000,
+      "message_replaced": false,
+      "name": "text/literal-pair/200000",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"\\ud83d\"",
+          "\"\\ude00\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"safe\""
+        ],
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 0: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"first\""
+        ],
+        [
+          "\"second\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "text/later/0",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"safe\""
+        ],
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"safe\""
+        ],
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 0: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"first\""
+        ],
+        [
+          "\"second\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 200000,
+      "message_replaced": false,
+      "name": "text/later/200000",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"safe\""
+        ],
+        [
+          "\"\\ud800\""
+        ]
+      ],
+      "trace": []
+    },
+    {
+      "after_content_json": [
+        [
+          "\"prefix\"",
+          "\"\\ud800\"",
+          "\"suffix\""
+        ]
+      ],
+      "before_unchanged_on_error": true,
+      "blocked": false,
+      "count": 0,
+      "directory_at_clock": [],
+      "error": {
+        "kind": "UnicodeEncodeError",
+        "message": "'utf-8' codec can't encode character '\\ud800' in position 6: surrogates not allowed"
+      },
+      "files": {},
+      "ids": [
+        [
+          "\"id\""
+        ]
+      ],
+      "mask": "replace",
+      "maximum": 0,
+      "message_replaced": false,
+      "name": "mask-can-not-rescue-raw",
+      "older": false,
+      "output_directory": false,
+      "preview": 2,
+      "texts": [
+        [
+          "\"prefix\"",
+          "\"\\ud800\"",
+          "\"suffix\""
+        ]
+      ],
+      "trace": []
+    }
+  ],
+  "limits": [
+    "Actual public Source tool_result_budget; original Unicode encode check precedes budget, directory, clock and mask.",
+    "Explicit typed native workspace guards precede directory writes; no owner/model authority is granted.",
+    "Surrogate IDs are sanitized by Python code points, then capped at100 characters.",
+    "Adjacent literal surrogate pieces remain separate observations; JSON pair normalization is not substituted.",
+    "Filesystem roots, arbitrary umasks/callbacks and broader public/profile/platform acceptance remain open."
+  ]
+}

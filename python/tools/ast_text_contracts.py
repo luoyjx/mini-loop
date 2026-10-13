@@ -4,11 +4,16 @@ import json
 import sys
 import tempfile
 from pathlib import Path
+import traceback
 
 
 def ast_text_contracts() -> dict:
     from mini_loop.ast_context import AstContextConfig, AstOutlineAdapter, install_ast_context_tools
     from mini_loop.registry import ToolContext, ToolRegistry
+    from mini_loop.agent import Agent
+    from mini_loop.config import Settings
+    from mini_loop.caching import NullCachePolicy
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text as fake_text, tool as fake_tool
     from anthropic import AsyncAnthropic
     import httpx
 
@@ -78,6 +83,37 @@ def ast_text_contracts() -> dict:
                     except Exception as error:
                         row["provider_error"] = type(error).__name__
                 row["provider_calls"] = len(requests)
+                # Actual default compaction runs after the tool result and
+                # before the next model request; direct SDK evidence is separate.
+                agent_calls, agent_events = [], []
+                def agent_respond(kwargs):
+                    agent_calls.append(kwargs)
+                    if len(agent_calls) == 1:
+                        return [fake_tool("file_outline", _id="ast", paths=["code.py"])], "tool_use"
+                    return [fake_text("done")], "end_turn"
+                async def agent_emit(event):
+                    agent_events.append(event)
+                agent = Agent(client=FakeAsyncAnthropic(responder=agent_respond, thinking=False),
+                              workspace=workspace, tools=registry, emit=agent_emit,
+                              cache_policy=NullCachePolicy(), state=dict(permission_mode="readonly"),
+                              settings=Settings(fake_llm=True, spill_dir=None, skills_dir=root/"empty"))
+                agent_error, agent_output, error_frames = "", "", []
+                try:
+                    agent_output = await agent.run("inspect")
+                except Exception as error:
+                    agent_error = type(error).__name__
+                    error_frames = [dict(file=Path(frame.filename).name,function=frame.name,line=frame.lineno) for frame in traceback.extract_tb(error.__traceback__) if "mini_loop" in frame.filename]
+                results = [part for message in agent.messages if isinstance(message.get("content"), list)
+                           for part in message["content"] if part.get("type") == "tool_result" and part.get("tool_use_id") == "ast"]
+                assert all(result["content"] == tool_text for result in results)
+                assert len(results) == (1 if row["utf8"] else 0), (name, agent_error, results, error_frames)
+                row["agent"] = dict(error=agent_error, output=agent_output, provider_calls=len(agent_calls),
+                                    model_starts=sum(e["type"] == "model_start" for e in agent_events),
+                                    result_text_hex=results[0]["content"].encode("utf-8", "surrogatepass").hex() if results else None,
+                                    error_frames=error_frames,
+                                    events=[e["type"] for e in agent_events],
+                                    budget_directory=(workspace/".task_outputs/tool-results").exists(),
+                                    transcript_messages=len(agent.messages))
                 rows.append(row)
         return dict(invocations=rows)
     return asyncio.run(run())
