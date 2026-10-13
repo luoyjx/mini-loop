@@ -1,5 +1,23 @@
 # Go port plan
 
+## 2026-10-14 caller ID finite observations — validation complete
+
+On `codex/go-caller-id-observations` from local main `0b83339`, the shared
+ToolCaller codec now retains finite known-code ID observations in named
+SDKMetadataText. String projection, explicit constructor strictness, network
+bounds and historical decoding remain distinct; outer tool-use identity owns
+execution. Actual fixed SDK capture expands48→160 with the old prefix unchanged;
+nine safe Session/Gate flows preserve trusted authority and readonly refusal.
+
+Complete Go/atomic coverage, vet, full Python, Source255, invariants77,
+scans19 and four zero-finding type gates passed serially under the user-relaxed
+profile. Coverage: app89.4334%, all Go89.1854%, provider86.7882%. Consumer inventory
+retains its two baseline IDNA/default-parser gaps (254/256 candidate passes).
+Full migration acceptance remains open; no new dependency or remote push.
+[Delivery evidence](docs/audits/go-caller-id-observations-2026-10-14.md).
+Local main fast-forwarded `0b83339` → `fa18e5a`; all tested runtime inputs
+remain identical. Final delivery records are docs-only. No remote push.
+
 ## 2026-10-14 relaxed validation profile and local main integration
 
 The user explicitly requested wider limits and faster progress. A serial profile

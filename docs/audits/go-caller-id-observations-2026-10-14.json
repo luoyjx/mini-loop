@@ -1,0 +1,1609 @@
+{
+  "schema_version": 1,
+  "baseline": "0b833392d10a4fabb5e88d4bb90343956381a9b6",
+  "branch": "codex/go-caller-id-observations",
+  "full_port_acceptance": false,
+  "raw_evidence_root": "var/go-caller-id-observations-2026-10-14",
+  "stages": {
+    "before-go-caller": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./provider",
+        "-run",
+        "^TestDeclaredCallerExtensionsMatchSDKDirectAndStream$"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 3.386,
+      "peak_rss_kib": 28608,
+      "peak_cpu_percent": 5.1,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1769,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T16:45:48.430854+00:00",
+      "completed_utc": "2026-10-13T16:45:51.896338+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/freeze.after.json",
+          "bytes": 189059,
+          "sha256": "c2c2e7d2f850035d6d1cfc8026b3d7693f15869bbe5af9e07b5428dbf13e6e68"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/freeze.before.json",
+          "bytes": 189059,
+          "sha256": "c2c2e7d2f850035d6d1cfc8026b3d7693f15869bbe5af9e07b5428dbf13e6e68"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/pid-state.json",
+          "bytes": 56,
+          "sha256": "785e24b2f20ab8bf92687bc0f3ed9b7b826013e36fc3bd140c1574fdcb112083"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/resources.json",
+          "bytes": 2876,
+          "sha256": "8ca0dcf7c7f3d996899dc6a0a82dcd1973c22cbfb18fcb4c44a176c0e2833361"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/samples.jsonl",
+          "bytes": 1572,
+          "sha256": "d1a102eb427ed7dcd81e4404fbfb25a1251fef7ecf6d31387c28f416e83237eb"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/stability.json",
+          "bytes": 537,
+          "sha256": "47e09c8d6b715fea4b034015ea591cb613125d3c323fc05978125641e2006864"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/before-go-caller/stdout.log",
+          "bytes": 223628,
+          "sha256": "2146a3947426a8721d5d6a24eb4048a90d3b222f56c90bc1719efe52d78d87f9"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 1
+        },
+        "top_level_tests": {
+          "fail": 1
+        },
+        "subtests": {
+          "pass": 48,
+          "fail": 112
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "consumers": {
+      "status": "failed",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-manifest",
+        "../var/go-caller-id-observations-2026-10-14/source-manifest.json",
+        "-results",
+        "../var/go-caller-id-observations-2026-10-14/go-full-coverage/stdout.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 2.402,
+      "peak_rss_kib": 53760,
+      "peak_cpu_percent": 40.6,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:18:07.289199+00:00",
+      "completed_utc": "2026-10-13T17:18:09.780776+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/pid-state.json",
+          "bytes": 56,
+          "sha256": "b67209714cd1d8efc46974070b625e2870916a2b5f5da300bc8dd19823fb1cd9"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/resources.json",
+          "bytes": 3162,
+          "sha256": "f9578833f58dca9f243b9d9c3314655c4e3d7ef6800348a655d44d060db197e7"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/samples.jsonl",
+          "bytes": 1375,
+          "sha256": "bd6b0b30dd62ad467b52f9d9691be4dcccc52d272df71c0be33771deba42ef80"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/stability.json",
+          "bytes": 537,
+          "sha256": "94861c304cb139a8e2ded57cac104e388653e697c8ea7d49bc9c9af448a84b64"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/consumers/stdout.log",
+          "bytes": 327609,
+          "sha256": "3f84d034b035af8d2efab8d5cdac935015dec0c824633cb5d1ee047c6207f9e5"
+        }
+      ]
+    },
+    "go-caller-focused": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./protocol",
+        "./provider",
+        "./sqlitestate",
+        "./agent",
+        "-run",
+        "Caller"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 21.916,
+      "peak_rss_kib": 548384,
+      "peak_cpu_percent": 199.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T16:59:16.533329+00:00",
+      "completed_utc": "2026-10-13T16:59:38.658552+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "6f88253130b015f4f4cc13d34ffd97f5278ce27060dd068b278c04d742d8abbe"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "6f88253130b015f4f4cc13d34ffd97f5278ce27060dd068b278c04d742d8abbe"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/pid-state.json",
+          "bytes": 56,
+          "sha256": "bbca847893190557d135e89b4bfcb8a6d0995329738dd83acd5923a7ba30c50d"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/resources.json",
+          "bytes": 3784,
+          "sha256": "1bb94728c908e68377520d375c2ae5dd12f39dfdab7c15c026eefb4f8089c226"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/samples.jsonl",
+          "bytes": 11016,
+          "sha256": "62213c27e15ce5c809509b3262d5b49652cb5ca21455d7a36e74d3640d0b4c2c"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/stability.json",
+          "bytes": 536,
+          "sha256": "349d39f27ffbd5e3f779c80a83c5eace79f7a5bfef0cba264fc82fe94cef3e30"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused/stdout.log",
+          "bytes": 616083,
+          "sha256": "3eadcc46ff5c3f2327fc06992464946ae5711dbddb5f39e3db5b99201eaf96b1"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 2,
+          "pass": 2
+        },
+        "top_level_tests": {
+          "pass": 28,
+          "fail": 2
+        },
+        "subtests": {
+          "pass": 569,
+          "fail": 2
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-caller-focused-fixed": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./protocol",
+        "./provider",
+        "./sqlitestate",
+        "./agent",
+        "-run",
+        "Caller"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 24.01,
+      "peak_rss_kib": 550896,
+      "peak_cpu_percent": 200.5,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:01:35.399663+00:00",
+      "completed_utc": "2026-10-13T17:01:59.631182+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "3aa0f7fe4abd9c78005009b89e4d1e1fd21487b8589bbb308a96986a3d16782a"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "3aa0f7fe4abd9c78005009b89e4d1e1fd21487b8589bbb308a96986a3d16782a"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/pid-state.json",
+          "bytes": 56,
+          "sha256": "593e6b0a1749ea278826933c7270518228caa26dfbb88af65962042011dc9994"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/resources.json",
+          "bytes": 4026,
+          "sha256": "e8a2a57d734eacfabfa9fc1ec0239f4e031c898fc0c7c9cdbea79c2f25f50383"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/samples.jsonl",
+          "bytes": 12383,
+          "sha256": "42c5be006651de438cdc6d8154647953075a534e178532ae36546ebd930eb748"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/stability.json",
+          "bytes": 537,
+          "sha256": "fa5f216e9bb4237441edfb94ac3aa48f8bf384841382baef88788d1919599230"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-caller-focused-fixed/stdout.log",
+          "bytes": 615199,
+          "sha256": "916ba5f2c901168e68a37fdc169979f5608c020c81d5527ea4558bb59472b9bb"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 4
+        },
+        "top_level_tests": {
+          "pass": 30
+        },
+        "subtests": {
+          "pass": 571
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-full-coverage": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-caller-id-observations-2026-10-14/go-full-coverage/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 242.475,
+      "peak_rss_kib": 578640,
+      "peak_cpu_percent": 199.1,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:04:43.687737+00:00",
+      "completed_utc": "2026-10-13T17:08:46.401445+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/coverage.out",
+          "bytes": 91181340,
+          "sha256": "0e2aa578779208a92ba240f7b86307a5c30cfccfb477ec9756833a91680e413b"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/pid-state.json",
+          "bytes": 56,
+          "sha256": "40b7fe542ae61630c4dc9b75b33cc25f24071345b4f0e9bde883708ea48558da"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/resources.json",
+          "bytes": 15578,
+          "sha256": "c3471e6e467884dc85525e47790af58a6dafd53f86b44761e72cf0d0635f22c4"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/samples.jsonl",
+          "bytes": 142399,
+          "sha256": "151ef4909d58684b83fec11f9e2b610bf32c7354d494e1e8e7f4332b892b60a1"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/stability.json",
+          "bytes": 537,
+          "sha256": "67119a86fd1bcc8200735064d8e6f7b888546de90a0743d9934adfd18607df35"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/stdout.log",
+          "bytes": 11760168,
+          "sha256": "bd00cd71f0bd2f370f4bf2f45f81f23b6f8bcb83af32e03a92ad49ad7d236c46"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 51
+        },
+        "top_level_tests": {
+          "pass": 1438,
+          "skip": 6
+        },
+        "subtests": {
+          "pass": 10994,
+          "skip": 1
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-vet": {
+      "status": "passed",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 9.58,
+      "peak_rss_kib": 549936,
+      "peak_cpu_percent": 201.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:08:55.301013+00:00",
+      "completed_utc": "2026-10-13T17:09:04.958726+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/pid-state.json",
+          "bytes": 56,
+          "sha256": "b7777423277d9955dbb7d9f6b0e67980d3e39ea3eb9ebb153170572f520a97f7"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/resources.json",
+          "bytes": 2792,
+          "sha256": "34f669086db73e881cae027499e793a7f11c3e74a888d7348807fa49777594a5"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/samples.jsonl",
+          "bytes": 4503,
+          "sha256": "43d470000551b89d5c8d39715ce7f46b1491d5e178592efae0c35b86332068e0"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/stability.json",
+          "bytes": 537,
+          "sha256": "1359f391cb8f3e4e6e68999c49ac78e7ad820476a3b9964cb46f2ab6ba33236c"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/go-vet/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "invariants": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.367,
+      "peak_rss_kib": 240,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:17:55.428512+00:00",
+      "completed_utc": "2026-10-13T17:17:56.880994+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/pid-state.json",
+          "bytes": 56,
+          "sha256": "c6a07cdad412b342f6ddce326c9cbf54480147c6d93b0fe3a4394ff64515aeba"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/resources.json",
+          "bytes": 2611,
+          "sha256": "02e01bcc61014f7d70dfe8af7bda09f1d51dac462fe3fe77c9a8e5d6cb0ac2a7"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/samples.jsonl",
+          "bytes": 705,
+          "sha256": "7580200c0175a0c177c04fe2424a4b28036111188db09268bc7c6f77d5f2bc95"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/stability.json",
+          "bytes": 535,
+          "sha256": "548be4d078dcbad87421780dca656bf3070c7b6acefd51e0d455f1aed952dc16"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/invariants/stdout.log",
+          "bytes": 62,
+          "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+        }
+      ]
+    },
+    "python-caller-focused": {
+      "status": "failed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_provider_caller_contracts.py"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "seconds": 1.303,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:02:50.292038+00:00",
+      "completed_utc": "2026-10-13T17:02:51.663185+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "3aa0f7fe4abd9c78005009b89e4d1e1fd21487b8589bbb308a96986a3d16782a"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "3aa0f7fe4abd9c78005009b89e4d1e1fd21487b8589bbb308a96986a3d16782a"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/pid-state.json",
+          "bytes": 56,
+          "sha256": "41fa21568dcd5da6b77638f196d25f2fbc2ecf16a6de153e5150af290ac83a7c"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/resources.json",
+          "bytes": 2716,
+          "sha256": "70761bcc7fc7c2447b37542923589cc8b66a588591a5b0cede4f05b5ceaeaf2b"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/samples.jsonl",
+          "bytes": 706,
+          "sha256": "5a6e3bba9615078fb68fae7f5daedebf3b9c16abe83a56b3a18f249017857b8f"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/stability.json",
+          "bytes": 536,
+          "sha256": "b1dd3dea58887fc7fae9b2549af95c92303ebb77a783fff4d1f9081ccaa51403"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused/stdout.log",
+          "bytes": 11561,
+          "sha256": "14e9b2810966e9b67b86bee4992a91edfcd7e35cc92ebb3108ff498c6d6ef33e"
+        }
+      ]
+    },
+    "python-caller-focused-fixed": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_provider_caller_contracts.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.32,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:04:10.642048+00:00",
+      "completed_utc": "2026-10-13T17:04:12.028650+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/pid-state.json",
+          "bytes": 56,
+          "sha256": "a5e920694d6284355ee68c98e4f8e8ceb7b92a43f824bca949936ce7dbb0dd1b"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/resources.json",
+          "bytes": 2720,
+          "sha256": "b551bb47c1ec26ce266ab12d7f03f98efb06b10f65175165f68d821c57c61bfb"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/samples.jsonl",
+          "bytes": 704,
+          "sha256": "fe4ce1f4874d9143d70ffeb7449b17fbf0bb9f0e6041f61eafd9ce0af17fc6c2"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/stability.json",
+          "bytes": 537,
+          "sha256": "999108438ddc13ea071900538491bd25176d58708bcd72c9a46a998dd4d8364f"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-caller-focused-fixed/stdout.log",
+          "bytes": 9011,
+          "sha256": "f5bc95e4269825d074f35ee3877ce0737d98b22b6a1fe5bf129f7d318c30ceb5"
+        }
+      ]
+    },
+    "python-full": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 94.719,
+      "peak_rss_kib": 453920,
+      "peak_cpu_percent": 296.9,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:11:32.509001+00:00",
+      "completed_utc": "2026-10-13T17:13:07.498920+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/pid-state.json",
+          "bytes": 56,
+          "sha256": "d3bdaf7eb0b3efbd1e10e572c572f8364a7185e1fb5fd58e5d7274544125d8b8"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/resources.json",
+          "bytes": 6793,
+          "sha256": "b88aeded2633bffd2243a7753ad7a515e741c478a37cc11fd75b0bc3d1d5edcc"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/samples.jsonl",
+          "bytes": 43031,
+          "sha256": "ad9a459c9f6e5fe7ab1cf4800afa8c079ab103d08ba43937e399bace4767699f"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/stability.json",
+          "bytes": 537,
+          "sha256": "1b6eda865690bf9d56c9ff39e7a32c094c028b4c743937571720bc1ffe04850d"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/python-full/stdout.log",
+          "bytes": 60257,
+          "sha256": "5cab33803e4246382340b16eea87d3391649c83367069552bb97bad2e80ddd73"
+        }
+      ]
+    },
+    "scans": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 9.65,
+      "peak_rss_kib": 86848,
+      "peak_cpu_percent": 141.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:13:47.259419+00:00",
+      "completed_utc": "2026-10-13T17:13:56.996714+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/pid-state.json",
+          "bytes": 56,
+          "sha256": "e576af5790ebac6734e4fec12b7ae9bcd02c5f7b8eec2fd5e130f887adb8c143"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/resources.json",
+          "bytes": 3155,
+          "sha256": "29a4d466651d8302ae87d94a17c3b52f34eb1c3b5c6a062aa1606e33945ed460"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/samples.jsonl",
+          "bytes": 5000,
+          "sha256": "d972d4149c11c49627d60b55552ed2b5a512473c518aa846675559519d25108f"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/stability.json",
+          "bytes": 535,
+          "sha256": "33dc26e8079f1e0422898ac24cdae234e422abafaaa742e0013d476410985762"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/scans/stdout.log",
+          "bytes": 1663,
+          "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+        }
+      ]
+    },
+    "source-capture": {
+      "status": "passed",
+      "command": [
+        "/Users/yanjixiong/github/mini-loop/.venv/bin/python",
+        "var/go-caller-id-observations-2026-10-14/capture.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 1.32,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1769,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T16:44:24.654139+00:00",
+      "completed_utc": "2026-10-13T16:44:26.041263+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/freeze.after.json",
+          "bytes": 189059,
+          "sha256": "9216fd0ea3267b9ead44ec023f2aaf8e68f64333932953812711b73610c4811a"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/freeze.before.json",
+          "bytes": 189059,
+          "sha256": "9216fd0ea3267b9ead44ec023f2aaf8e68f64333932953812711b73610c4811a"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/pid-state.json",
+          "bytes": 55,
+          "sha256": "e619c835ed9f6c4dff72d9112a75c1a218396c85d70ec8215331e8fe632df8ee"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/resources.json",
+          "bytes": 2718,
+          "sha256": "82594aad4338feef44da755b98fddc6a135949935e9b41c01e400d56855d3805"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/samples.jsonl",
+          "bytes": 701,
+          "sha256": "529c3e9041485a55bccbe2ec2b908f0aae6959cf97db642497bbdad5302d6e22"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/stability.json",
+          "bytes": 537,
+          "sha256": "c8b97129ceaf27eb2b1a3b5e977c217e24bb877b6fef16272b76bbb817c2143b"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-capture/stdout.log",
+          "bytes": 8122,
+          "sha256": "3605a9d2a411f7ed898a7a6752a6f03c0884beed2260a19746f0cf5cd323fccf"
+        }
+      ]
+    },
+    "source-export": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "var/go-caller-id-observations-2026-10-14/source-manifest.json",
+        "--diagnostics-dir",
+        "var/go-caller-id-observations-2026-10-14/export-drift"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 101.663,
+      "peak_rss_kib": 412816,
+      "peak_cpu_percent": 94.8,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:09:31.412270+00:00",
+      "completed_utc": "2026-10-13T17:11:13.316251+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/pid-state.json",
+          "bytes": 56,
+          "sha256": "5632da7f86ec6f2484d523af177e2e64a9894fc070eeb2f8ff7785b1988c2dd9"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/resources.json",
+          "bytes": 5294,
+          "sha256": "d7d40894341818533a019cd18dcde2d3185440aa61208f74bae5f45360caa32c"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/samples.jsonl",
+          "bytes": 40612,
+          "sha256": "c17f35803039671a6c99d15b26e746a631344c58588eb97892dbc649538d94d2"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/stability.json",
+          "bytes": 537,
+          "sha256": "432ea225126ea6a8aa3c8d904c0387487e072df278ebcf6e4b16ce8b80b43bc1"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/source-export/stdout.log",
+          "bytes": 86954,
+          "sha256": "3a88086ecbda950bed1ef26554444a05f4fe20f018200aff3df0b8f1b36e2e86"
+        }
+      ]
+    },
+    "type-private": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-private"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 2.419,
+      "peak_rss_kib": 55216,
+      "peak_cpu_percent": 48.3,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:16:21.356164+00:00",
+      "completed_utc": "2026-10-13T17:16:23.860189+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/pid-state.json",
+          "bytes": 56,
+          "sha256": "94ca424456496e8de4f68e67b93f3a3ccab670d38bd45a50a116cc637e3d9c52"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/resources.json",
+          "bytes": 2772,
+          "sha256": "0db5f8a57d43fb223d84d7d1df4acc539b32ab125845b7fcb143cafcee859e34"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/samples.jsonl",
+          "bytes": 1368,
+          "sha256": "3e3a45c841b7684c87113e11b9e69b2c71af2302ad2795714f3cd6bb0ebc48b7"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/stability.json",
+          "bytes": 536,
+          "sha256": "23396c7a1e0e7a6c45aabb15a25f62b06621ad691e76219714c52675adb71bea"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-private/stdout.log",
+          "bytes": 71,
+          "sha256": "713a5bb61689d9f3d93006e6e31864df6bcc5f4359180a5d52bcbb8cb145a3c2"
+        }
+      ]
+    },
+    "type-public": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-public"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 2.412,
+      "peak_rss_kib": 59632,
+      "peak_cpu_percent": 50.1,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:15:16.504906+00:00",
+      "completed_utc": "2026-10-13T17:15:19.002711+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/pid-state.json",
+          "bytes": 56,
+          "sha256": "12978b41e7b7ee11bbf55613b1b2afb79419a595c81d80aba2b5e0fc138b3e58"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/resources.json",
+          "bytes": 2849,
+          "sha256": "481ea9a53e92960adf14878f499e624f2492bd27fa1685432f80ddb11bf6ea08"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/samples.jsonl",
+          "bytes": 1527,
+          "sha256": "8a1cfe5fa800f124cf60d60451d85c6de4d5fafcb2871bcd284b582317e51a55"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/stability.json",
+          "bytes": 537,
+          "sha256": "764fa41d0d33ad3b30a45d73088c9d772c4ee8642e41086dc0124a86f21e481a"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-public/stdout.log",
+          "bytes": 67,
+          "sha256": "d2e8c1831a10c30277975222c3d91ea0ec02707e4f927c0dce03307e3ff2336b"
+        }
+      ]
+    },
+    "type-syntax": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 2.408,
+      "peak_rss_kib": 20352,
+      "peak_cpu_percent": 2.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:14:23.525894+00:00",
+      "completed_utc": "2026-10-13T17:14:26.017514+00:00",
+      "prelaunch_pressure": 1,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/pid-state.json",
+          "bytes": 56,
+          "sha256": "5e8d351875432d94774cd3814487400d415576de48457d7306bf9ac836005b61"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/resources.json",
+          "bytes": 2660,
+          "sha256": "f4c37432c3eb3e070dee0984ca4c7ac110c991ac10b0f025e9fd222a98aa9a20"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/samples.jsonl",
+          "bytes": 1215,
+          "sha256": "1bae656c483bb0a8d10e7164feec49599953fd8507b81d4cf407e086ffa6094c"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/stability.json",
+          "bytes": 537,
+          "sha256": "1b6ae90d18d39000db3aed77c7a3afde0dc404c98feedcd287d44e815ceb41d6"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-syntax/stdout.log",
+          "bytes": 74,
+          "sha256": "e4e68e167f6257d4d31669bfb3778327585913a27021fdd4683b8ed990117afc"
+        }
+      ]
+    },
+    "type-variables": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "seconds": 2.419,
+      "peak_rss_kib": 55792,
+      "peak_cpu_percent": 45.900000000000006,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1770,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T17:17:45.452420+00:00",
+      "completed_utc": "2026-10-13T17:17:47.957801+00:00",
+      "prelaunch_pressure": 2,
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/freeze.after.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/freeze.before.json",
+          "bytes": 189165,
+          "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/pid-state.json",
+          "bytes": 56,
+          "sha256": "8eb3f8998734c8f48896af1fb8f55ac0b36705334ee4454953814016c404857d"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/resources.json",
+          "bytes": 2792,
+          "sha256": "0bab93b82b408dd604a9fa57740bcd2b7dce343db31314b0326a7a35a6c5cff0"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/samples.jsonl",
+          "bytes": 1371,
+          "sha256": "ede141ed287233b0ab6febc43452a008d85779ef8338bdfaa4bb5c6816a19103"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/stability.json",
+          "bytes": 536,
+          "sha256": "d83473dfa2cf4003f357f061c06806cf27721038ad2abfb96d8ecdce5b39a270"
+        },
+        {
+          "path": "var/go-caller-id-observations-2026-10-14/type-variables/stdout.log",
+          "bytes": 66,
+          "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Sampled RSS can miss fast descendants; short-stage values are not actual peaks.",
+    "Atomic statement coverage does not measure branches, Python, C or subprocess interiors.",
+    "Current race was not rerun: the prior full race pass applies to f913d20.",
+    "Consumer candidate links are not a semantic parity certificate."
+  ],
+  "source": {
+    "sdk_version": "0.107.1",
+    "cases": 160,
+    "fixture": {
+      "path": "go/testdata/python-provider-caller.json",
+      "bytes": 417888,
+      "sha256": "5c8e8d0063373ee964582c9f71c38ee0bde4b7a48ddf93b7903286827e38d10f"
+    },
+    "content_payload_sha256": "e83c703836c38096aba8943264443a3ba9c383c6abbe4b5684e391d335901505",
+    "capture": {
+      "path": "var/go-caller-id-observations-2026-10-14/captured-source.json",
+      "bytes": 417888,
+      "sha256": "5c8e8d0063373ee964582c9f71c38ee0bde4b7a48ddf93b7903286827e38d10f"
+    },
+    "manifest": {
+      "path": "var/go-caller-id-observations-2026-10-14/source-manifest.json",
+      "bytes": 36284,
+      "sha256": "3dd8b6b0d100a16830296986eb9e62bd1c6b4196330865de6034c34313c24bde"
+    },
+    "original_prefix_proof": "source-capture/stdout.log: old_prefix_unchanged true"
+  },
+  "consumer_inventory": {
+    "statuses": {
+      "test_pass_observed": 254,
+      "unreferenced": 2
+    },
+    "missing": [
+      "python-provider-idna.json",
+      "python-syntax-parser.json"
+    ],
+    "diagnostics": "2 fixtures lack a candidate caller with an observed passing test result\nexit status 1",
+    "manifest_sha256": "3dd8b6b0d100a16830296986eb9e62bd1c6b4196330865de6034c34313c24bde",
+    "results_sha256": "bd00cd71f0bd2f370f4bf2f45f81f23b6f8bcb83af32e03a92ad49ad7d236c46"
+  },
+  "complete_gate_input_equality": {
+    "go-vet": true,
+    "source-export": true,
+    "python-full": true,
+    "scans": true,
+    "type-syntax": true,
+    "type-public": true,
+    "type-private": true,
+    "type-variables": true,
+    "invariants": true,
+    "consumers": true
+  },
+  "coverage": {
+    "profile": {
+      "path": "var/go-caller-id-observations-2026-10-14/go-full-coverage/coverage.out",
+      "bytes": 91181340,
+      "sha256": "0e2aa578779208a92ba240f7b86307a5c30cfccfb477ec9756833a91680e413b"
+    },
+    "rows": 1305423,
+    "unique_spans": 26640,
+    "all_go": {
+      "covered": 34018,
+      "statements": 38143,
+      "percent": 89.18543376242036
+    },
+    "application": {
+      "covered": 33652,
+      "statements": 37628,
+      "percent": 89.43340065908366
+    },
+    "provider": {
+      "covered": 1524,
+      "statements": 1756,
+      "percent": 86.78815489749431
+    }
+  },
+  "architecture": {
+    "command": [
+      "node",
+      "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+      "deliver",
+      "architecture",
+      "docs/mini-loop-system.architecture.json",
+      "docs/mini-loop-system.architecture.html",
+      "--quality",
+      "showcase",
+      "--json"
+    ],
+    "exit_code": 0,
+    "ok": true,
+    "specification": {
+      "sha256": "8060f7675dde7d8a571d5caed84cbeb933faaaf0695ba850c018643f9175e520",
+      "bytes": 154448
+    },
+    "artifact": {
+      "sha256": "bd65f3a8b2c319c37e2e107621fb843ea0a6d9d568e4c75ed0bf2df3180e7f93",
+      "bytes": 809154
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    },
+    "visual_review": "not performed; previous browser approval refusal remains in force",
+    "priority_note": "nice attempted but sandbox setpriority denied; renderer completed in 0.159s"
+  },
+  "image": [
+    {
+      "path": "docs/audits/go-caller-id-observations-infographic-2026-10-14.png",
+      "bytes": 1783881,
+      "sha256": "a175e8a4300e8ba41778ef0321828b4a913d7460ee3ec8ef38b5a5687add39d0"
+    },
+    {
+      "path": "docs/audits/go-caller-id-observations-infographic-2026-10-14.prompt.txt",
+      "bytes": 1565,
+      "sha256": "725ae34e769a1a6d0376d8a99b2821893dbd36ebdd9022d6984c9a8afe0ccf24"
+    }
+  ],
+  "evidence_tools": [
+    {
+      "path": "var/go-caller-id-observations-2026-10-14/run.py",
+      "bytes": 6806,
+      "sha256": "9922c72aff463517a7afc8ae26598be2e06431847af29bf25f822cb1ff260b0e"
+    },
+    {
+      "path": "var/go-caller-id-observations-2026-10-14/resource_watch.py",
+      "bytes": 16940,
+      "sha256": "76f6c9df8c71c9cde61e2e1ad35bf101f08caab83bf37893d1fd07ade6a56b3a"
+    },
+    {
+      "path": "var/go-caller-id-observations-2026-10-14/capture.py",
+      "bytes": 986,
+      "sha256": "1007fec5a90787e2b1409737da4bc9aa1dbe05ec6e7f42d69ec5a46bc131a035"
+    },
+    {
+      "path": "var/go-caller-id-observations-2026-10-14/summarize.py",
+      "bytes": 6369,
+      "sha256": "06bfb3b6f2abf5b1836da7d8a042bbd66292bbaf8e27f41afb41df17a610f7e2"
+    }
+  ],
+  "delivery": {
+    "implementation_commit": "fa18e5a9585d50013fe8395137c9e45eced112d7",
+    "local_main_integrated": "fa18e5a9585d50013fe8395137c9e45eced112d7",
+    "integration_from": "0b833392d10a4fabb5e88d4bb90343956381a9b6",
+    "integration_method": "fast-forward",
+    "merged_runtime_matches_complete_gate_inputs": true,
+    "merged_snapshot": {
+      "path": "var/go-caller-id-observations-2026-10-14/merged-inputs.json",
+      "sha256": "e91e6c07a7ab97aed9637da9329f25a823243288a9a93e0c5f0cf2425201b7af",
+      "bytes": 189165
+    },
+    "remote_refreshed": false,
+    "pushed": false
+  }
+}

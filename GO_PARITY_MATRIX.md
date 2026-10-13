@@ -1,5 +1,23 @@
 # Python to Go parity matrix
 
+## 2026-10-14 caller ID observations — accepted finite slice
+
+The known code caller ID slice uses fixed SDK0.107.1 capture160 (original48
+unchanged), four block kinds, two tags and seven ID profiles in direct/SSE.
+Missing→null and empty/non-text observations survive forwarding, clones,
+masking, bounded ingress, archival bounds and actual SQLite close/reopen.
+Nine real Session/Gate flows retain the outer use.ID and trusted authority;
+object metadata cannot bypass readonly permission.
+
+Complete Go/atomic, vet, Python2256/28, Source255, invariants77, scans19 and four
+type gates passed. Statement coverage: app89.4334%, all Go89.1854%, provider86.7882%.
+Current race was not rerun; prior full race applies only to f913d20. Consumer
+inventory still fails for two unchanged IDNA/default-parser prerequisites,
+254/256 observed candidate passes. No full P0/P1/G0–G7 acceptance claim.
+[Exact receipt and image](docs/audits/go-caller-id-observations-2026-10-14.md).
+Local main fast-forwarded `0b83339` → `fa18e5a`; all tested runtime inputs
+remain identical. Final delivery records are docs-only. No remote push.
+
 ## 2026-10-14 full checks passed under the relaxed profile
 
 Ordinary Go/vet/full race/Python/invariants/scans and complete all-package

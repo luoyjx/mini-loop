@@ -1,0 +1,18 @@
+Use case: infographic-diagram
+Asset type: mini-loop iteration architecture PNG.
+Edit target: /Users/yanjixiong/github/mini-loop/docs/mini-loop-layered-architecture.png, the existing five-layer base architecture.
+Preserve the full five-layer architecture, layout, components, arrows, typography, dark navy landscape styling, and all boundary semantics. Highlight L3 Model Provider with a cyan/gold outline and its metadata flow to L5 SQLite/history. Do not add or remove architecture components.
+Replace the top subtitle with: "本轮：caller ID 元数据兼容 · 独立 Go 迁移仍在进行"
+Add compact numbered annotations beside the architecture:
+"① 共享 ToolCaller 解码器"
+"SDKMetadataText：有限 JSON 观察值"
+"② 160 例固定 SDK 捕获"
+"4 种 block × 2 个标签 · direct / SSE"
+"保留原有 48 例"
+"③ 元数据不授予执行权限"
+"执行身份始终来自外层 tool-use ID"
+"④ 保持网络边界与历史读取"
+"克隆 / 脱敏不改原值 · SQLite 往返"
+Use the right-hand explanation area for these annotations while retaining a small line "Python / Go 独立实现 · 完整验收未完成".
+Add a small note listing accepted observations: "空字符串 · 缺失/null · 数字 · 布尔 · 列表 · 对象". Missing tool_id normalizes to null. Show no passing test badge or coverage number; this image describes the implemented change scope, not complete migration acceptance.
+No new authority, component, dependency, default or store. Clear legible Chinese text. Save as a new iteration image, preserve original base.
