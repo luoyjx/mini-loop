@@ -2573,5 +2573,14 @@
     "initial_image": "/Users/yanjixiong/.codex/generated_images/01a0fb06-f8fc-7e13-b9ed-450a10fb167c/exec-efd5d202-e30e-4eee-9579-0f4eb3ea97c8.png",
     "selected_image": "/Users/yanjixiong/.codex/generated_images/01a0fb06-f8fc-7e13-b9ed-450a10fb167c/exec-f5c8022d-0deb-45f3-9824-8884f6083619.png",
     "visual_review": "224 count and finite encoder marker corrected; all five base layers retained; final inspected inline"
+  },
+  "integration": {
+    "from": "ac4d603a9d96291dd698aad8f0730df15be3c191",
+    "runtime_commit": "1bce600fb4f4aecbc85e6ebae922a53275671689",
+    "method": "local main fast-forward",
+    "frozen_inputs_after_merge_equal": true,
+    "frozen_inputs": 1779,
+    "remote_refreshed": false,
+    "remote_pushed": false
   }
 }

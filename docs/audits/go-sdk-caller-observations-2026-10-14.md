@@ -113,4 +113,8 @@ validation is claimed. Read-only-intended OrbStack CLI inspection attempted VM
 startup and timed out; it was not repeated. No remote push is included.
 
 [Machine-readable gate, hash and resource receipt](go-sdk-caller-observations-2026-10-14.json).
-Local main integration will be recorded after the implementation commit.
+Local main fast-forwarded `ac4d603` → **`1bce600`**
+(`fix(provider): retain SDK caller roots and construction defaults`). All 1779
+frozen runtime/Source/canonical input hashes still match the successful complete
+gate after the merge. The final delivery commit changes only audit/plan documents.
+No remote refresh or push occurred.

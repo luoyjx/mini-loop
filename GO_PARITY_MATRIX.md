@@ -1,5 +1,28 @@
 # Python to Go parity matrix
 
+## 2026-10-14 SDK caller observations — validation complete
+
+Capture224 compares actual direct/SSE SDK construction for unknown/malformed
+discriminator values, scalar/list roots and nonfinite metadata on four block
+kinds. Eight actual next-request cases and three actual Source Agent runs prove
+safe handler execution before nonfinite request encoding fails. The outer
+tool-use ID and trusted authority remain fixed; no caller metadata grants.
+Native decoders, clones, masks, archives and SQLite reopen pass the focused
+corpus. Nested-list defaults and Unicode byte-bound checks are explicit.
+
+The initial complete gate caught a finite typed-input regression. After fixing
+it, full Go/atomic51, vet, Source256, Python2259/28, invariants77, scans19 and
+four zero-finding type gates pass. Coverage is app89.4159%, all Go89.1694%,
+provider86.2069%; current race was not rerun. Consumer inventory remains
+failed for IDNA/parser (255/257 observed candidate passes). A monitor zombie
+priority false positive was corrected; its stopped gate stays resource-blocked.
+No complete P0/P1/G0–G7 acceptance is claimed. Baseline IDNA/parser prerequisites
+and fresh fixed-image Linux full validation remain open.
+[Current receipt](docs/audits/go-sdk-caller-observations-2026-10-14.md).
+
+Local main fast-forwarded `ac4d603` → `1bce600`; all1779 tested inputs
+remain byte-identical after integration. Final delivery changes are docs-only.
+
 ## 2026-10-14 caller ID observations — accepted finite slice
 
 The known code caller ID slice uses fixed SDK0.107.1 capture160 (original48

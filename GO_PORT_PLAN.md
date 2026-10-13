@@ -1,5 +1,28 @@
 # Go port plan
 
+## 2026-10-14 SDK caller roots and nonfinite metadata — validation complete
+
+From local main `ac4d603`, `codex/go-sdk-caller-observations` adds named immutable
+SDKCallerObservation and provider-only construction defaults. Fixed SDK0.107.1 /
+Pydantic2.13.4 capture224 direct/SSE, eight actual forwarding recipes and three
+Source Agent safe-handler runs. The prior160 fixture remains unchanged.
+Nested lists remain sparse; metadata preserves legacy numbers without granting
+execution identity, tools or owner/permission authority. SQLite reopen and
+actual Agent integration pass. UTF-8 byte-bound regressions pass.
+
+The first full Go gate exposed unconditional finite-input stripping; only
+nonfinite inputs now use the placeholder path. Provider/Launcher full package
+checks pass after that correction. Final full Go/coverage51, vet, Source256, Python2259/28, invariants77,
+scans19 and four zero-finding type gates passed serially under the relaxed
+profile. Coverage: app89.4159%, all Go89.1694%, provider86.2069%. The monitor
+was corrected to distinguish non-runnable zombies; one stopped stage remains
+resource-blocked. Consumer inventory still fails only its two baseline
+IDNA/parser associations (255/257 candidates). Local main fast-forwarded `ac4d603` → `1bce600`; all1779 tested inputs
+remain byte-identical after integration. Final delivery changes are docs-only.
+[Current delivery evidence](docs/audits/go-sdk-caller-observations-2026-10-14.md).
+IDNA approval, default syntax-parser adoption and fresh Linux full validation
+remain open; no new dependency or remote push.
+
 ## 2026-10-14 caller ID finite observations — validation complete
 
 On `codex/go-caller-id-observations` from local main `0b83339`, the shared
