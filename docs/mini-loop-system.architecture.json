@@ -313,7 +313,7 @@
       "id": "goSession",
       "type": "backend",
       "label": "Go Session / managed handle",
-      "sublabel": "Result event → hash → batch admission",
+      "sublabel": "Human / peer context · omitted ≠ empty",
       "pos": [
         850,
         1180
@@ -322,7 +322,7 @@
         330,
         76
       ],
-      "tag": "exclusive stop / parallel group join"
+      "tag": "fresh identity / peer approvals cleared"
     },
     {
       "id": "goGate",
@@ -1655,6 +1655,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Public RunContext constructors, review baseline 2ca0266:70 actual Source Agent.run cases capture14 constructor recipes across five message/peer derivations, real readonly tool contexts/results and event correlation. HumanRunConfig channel/stamp fields are now *string: nil retains defaults, explicit empty text survives; existing callers setting these fields require pointer source migration. PeerAgentRunContext takes a required delegatedBy string, including empty, and optional actor/stamp/parent through PeerRunConfig; authority is fixed peer and no approvals can be supplied. Derivation clears inherited approvals; WithNewMessage and capability membership rules remain. Validate still requires message identity and closed authority. Snapshots cannot restore live authority. The old empty-value failure is retained; final frozen validation/coverage are recorded separately under var/go-public-run-context-2026-10-13/verified. No topology, permission, trust boundary, dependency or default change; broader Python-object/host/platform scope remains open.",
         "Mixed batch step admission, review baseline fbe8ad4:32 actual Source Agent.run profiles compare immediate exclusive/parallel callbacks at capacities one and two. The first native comparison failed22 profiles. Session dispatch emits each tool_result event before output hashing; an ordinary UTF-8 failure stops later exclusive calls/groups while already scheduled parallel peers finish. Only the complete successful batch enters the model-ordered step ledger and result history; failed batches retain earlier events/effects but admit no step prefix or result message and send no second model request. Parent cancellation wins a simultaneous hash error and retains repair, including observer cancellation. Other repair remains. Final frozen gates and coverage are recorded under var/go-batch-step-boundary-2026-10-13; broader delayed/cancellation/host/platform/public/default acceptance remains open. No new component, permission, dependency or default; base unchanged.",
         "Public spill text boundary:25 actual Source profiles pin raw UTF-8 before budget/directory/clock/mask, guarded directory creation before callbacks, retained partial files and unchanged transcript on failure. Existing ErrResultUTF8 and immutable code-point helpers preserve surrogate ID sanitizing/cap. Files.EnsureDirectory is a trusted library primitive, not a new model tool or OS/cross-process confinement. No new component/default/authority; broader public/filesystem/host/platform acceptance remains open. Eight real AST Agent loops now pin result event before UTF-8 step-hash failure, no batch/history append or second call. Raw hashing rejects before JSON replacement; ordinary encoding failure keeps Source unanswered batch while cancellation repair remains.",
         "Typed public helper composition: ToolResultBudget, SelectRelevantMemories, PrepareMemoryContext and ConsolidateMemories use explicit bound workspace/store and closed callbacks.61 Source profiles compare public effects. Zero/negative slicing/thresholds, origins and failure stages remain; no new default, service or authority. Runtime Context and capture share the cores. Exact UnknownResult and existing TrajectorySchema are public. Broader public/host/platform acceptance remains open.",

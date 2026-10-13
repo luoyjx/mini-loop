@@ -4796,3 +4796,46 @@ actual Source events, effects, request/history counts and step hashes; the
 initial native run retained 22 failed profiles. Final frozen validation and
 coverage are recorded under `var/go-batch-step-boundary-2026-10-13`.
 No new service, dependency, registration, permission or default is introduced.
+
+## Go public RunContext constructors
+
+`HumanRunConfig.Channel` and `StampedBy` are `*string`. Nil selects the existing
+`local` and `trusted_local` defaults; nonnil values preserve the supplied text,
+including an empty string. These fields are provenance metadata, not grants.
+The constructor still creates fresh explicit-human context only for a trusted
+caller and detaches optional data from caller-owned pointers.
+
+This changes the Go source API for callers that explicitly set those fields.
+Pass pointers for supplied values; omit a field or use nil for its default.
+For example, `channel := ""` followed by `HumanRunConfig{Channel: &channel}`
+retains an explicit empty channel. A previous `Channel: ""` intended to select
+the native default should become an omitted field or nil. Apply the same rule
+to `StampedBy`; existing nonempty string values also need pointers.
+
+`PeerAgentRunContext(delegatedBy string, config PeerRunConfig)` creates a fresh
+message with fixed peer authority, peer origin and the `agent` channel. The
+required `delegatedBy` argument accepts empty text. Optional `ActorID`,
+`StampedBy` and `ParentMessageID` retain absence versus explicit empty values;
+a nil stamp selects `mini_loop`. The config has no approved-capabilities field
+and does not accept an authority selector. It is a trusted local constructor,
+not a snapshot, HTTP or model-input decoder.
+
+`DerivePeerAgent` uses that constructor, carries the previous message identity
+as its parent and preserves the stamp while clearing inherited approvals.
+`DeriveNamedPeerAgent` additionally records the manager-established actor.
+`WithNewMessage` retains its existing behavior: a fresh identity points to the
+previous message, provenance stays intact and the supplied capability list is
+normalized. Capability membership does not establish explicit-human authority.
+`Validate` still requires a nonempty message identity and one of the three
+closed authority values; channel/stamp may be empty. `RunContextSnapshot`
+continues to expose inert observations and cannot restore live authority.
+
+Seventy actual Source `Agent.run` cases cover 14 constructor recipes and five
+identity/new-message/peer derivations, including real readonly tool contexts,
+result authority and emitted message/parent correlation. Only generated UUID
+identities are normalized. The old native empty-value failure is retained in
+`var/go-public-run-context-2026-10-13/native-before.log`. Final frozen validation
+and fresh coverage are recorded separately under that iteration's `verified` directory.
+Direct Python dataclass overrides, non-text Python inputs and broader host,
+platform or exhaustion behavior are outside this captured slice. No component,
+permission, trust boundary, dependency or feature default changes.

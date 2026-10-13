@@ -252,7 +252,7 @@ func TestFreshChildrenKeepRegistryAndMaskParentEventBacklog(t *testing.T) {
 
 func TestEventRecordingMasksCallerMetadataWithoutChangingAuthority(t *testing.T) {
 	actor := ActorID(runtimeCanary)
-	run, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, Channel: runtimeCanary, StampedBy: runtimeCanary, ApprovedCapabilities: []RunCapability{RunCapability(runtimeCanary)}})
+	run, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, Channel: runContextTextPointer(runtimeCanary), StampedBy: runContextTextPointer(runtimeCanary), ApprovedCapabilities: []RunCapability{RunCapability(runtimeCanary)}})
 	if err != nil {
 		t.Fatal(err)
 	}

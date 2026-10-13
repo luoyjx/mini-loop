@@ -4,7 +4,7 @@ import "testing"
 
 func TestNamedPeerContextRetainsProvenanceWithoutHumanCapabilities(t *testing.T) {
 	actor := ActorID("human")
-	human, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, StampedBy: "operator", Channel: "cli", ApprovedCapabilities: []RunCapability{CapabilityWorkflowLaunch, CapabilityWorkflowManage}})
+	human, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, StampedBy: runContextTextPointer("operator"), Channel: runContextTextPointer("cli"), ApprovedCapabilities: []RunCapability{CapabilityWorkflowLaunch, CapabilityWorkflowManage}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,3 +23,5 @@ func TestNamedPeerContextRetainsProvenanceWithoutHumanCapabilities(t *testing.T)
 		t.Fatal("invalid parent provenance accepted")
 	}
 }
+
+func runContextTextPointer(value string) *string { return &value }

@@ -37,7 +37,7 @@ func TestSpawnTeammatePinsResourcesAndRunsWithPeerProvenance(t *testing.T) {
 	m := makeManager(t, cfg)
 	model, system := "parent-model", "parent system"
 	parent := createManaged(t, m, CreateSessionRequest{Owner: "alice", Model: &model, System: &system, PermissionMode: ModeReadonly})
-	human, err := ExplicitHumanRunContext(HumanRunConfig{StampedBy: "test", Channel: "cli", ApprovedCapabilities: []RunCapability{CapabilityWorkflowLaunch, CapabilityPersonalSkillCaptureSource}})
+	human, err := ExplicitHumanRunContext(HumanRunConfig{StampedBy: runContextTextPointer("test"), Channel: runContextTextPointer("cli"), ApprovedCapabilities: []RunCapability{CapabilityWorkflowLaunch, CapabilityPersonalSkillCaptureSource}})
 	if err != nil {
 		t.Fatal(err)
 	}

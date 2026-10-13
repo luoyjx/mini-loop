@@ -247,7 +247,7 @@ func TestCatchupDetachedMaskedProjectionNeverInstallsHumanAuthority(t *testing.T
 		t.Fatal(err)
 	}
 	actor := ActorID("operator")
-	run, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, Channel: "test", StampedBy: "test", ApprovedCapabilities: []RunCapability{CapabilityWorkflowManage}})
+	run, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, Channel: runContextTextPointer("test"), StampedBy: runContextTextPointer("test"), ApprovedCapabilities: []RunCapability{CapabilityWorkflowManage}})
 	if err != nil {
 		t.Fatal(err)
 	}

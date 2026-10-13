@@ -86,9 +86,10 @@ func AuthenticatedHTTPPostRunContext(actor ActorID) (RunContext, error) {
 }
 
 type HumanRunConfig struct {
-	ActorID              *ActorID
-	Channel              string
-	StampedBy            string
+	ActorID *ActorID
+	// Nil selects the Source default; a pointer to empty text preserves it.
+	Channel              *string
+	StampedBy            *string
 	ApprovedCapabilities []RunCapability
 }
 
@@ -98,15 +99,38 @@ func ExplicitHumanRunContext(config HumanRunConfig) (RunContext, error) {
 		return RunContext{}, err
 	}
 	value.origin, value.authority = "explicit_human", AuthorityExplicitHuman
-	value.channel, value.stampedBy = config.Channel, config.StampedBy
-	if value.channel == "" {
-		value.channel = "local"
+	value.channel, value.stampedBy = "local", "trusted_local"
+	if config.Channel != nil {
+		value.channel = *config.Channel
 	}
-	if value.stampedBy == "" {
-		value.stampedBy = "trusted_local"
+	if config.StampedBy != nil {
+		value.stampedBy = *config.StampedBy
 	}
 	value.actorID = config.ActorID
 	value.approved = normalizeRunCapabilities(config.ApprovedCapabilities)
+	return value.clone(), nil
+}
+
+// PeerRunConfig contains caller-stamped provenance, never human approvals.
+// Nil StampedBy selects "mini_loop"; optional empty actor/parent values survive.
+type PeerRunConfig struct {
+	ActorID         *ActorID
+	StampedBy       *string
+	ParentMessageID *MessageID
+}
+
+// PeerAgentRunContext creates fresh non-human authority for trusted callers.
+// It does not reconstruct authority from a stored snapshot or model input.
+func PeerAgentRunContext(delegatedBy string, config PeerRunConfig) (RunContext, error) {
+	value, err := DefaultRunContext()
+	if err != nil {
+		return RunContext{}, err
+	}
+	value.origin, value.authority, value.channel = "peer_agent", AuthorityPeerAgent, "agent"
+	if config.StampedBy != nil {
+		value.stampedBy = *config.StampedBy
+	}
+	value.actorID, value.parentMessageID, value.delegatedBy = config.ActorID, config.ParentMessageID, &delegatedBy
 	return value.clone(), nil
 }
 
@@ -117,7 +141,8 @@ func WorkflowHTTPRunContext(actor ActorID, action ActionID) (RunContext, error) 
 	if actor == "" || action == "" {
 		return RunContext{}, errors.New("workflow HTTP actor and action must be non-empty")
 	}
-	value, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, Channel: "http", StampedBy: "mini_loop.server", ApprovedCapabilities: []RunCapability{CapabilityWorkflowLaunch}})
+	channel, stamp := "http", "mini_loop.server"
+	value, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, Channel: &channel, StampedBy: &stamp, ApprovedCapabilities: []RunCapability{CapabilityWorkflowLaunch}})
 	if err != nil {
 		return RunContext{}, err
 	}
@@ -140,8 +165,8 @@ func (value RunContext) Allows(capability RunCapability) bool {
 	return slices.Contains(value.approved, capability)
 }
 func (value RunContext) Validate() error {
-	if value.messageID == "" || value.channel == "" || value.stampedBy == "" {
-		return errors.New("run context requires message identity, channel and stamp")
+	if value.messageID == "" {
+		return errors.New("run context requires message identity")
 	}
 	if value.authority != AuthorityUntrusted && value.authority != AuthorityExplicitHuman && value.authority != AuthorityPeerAgent {
 		return errors.New("invalid run authority")
@@ -177,12 +202,8 @@ func (value RunContext) DerivePeerAgent(delegatedBy string) (RunContext, error) 
 	if err := value.Validate(); err != nil {
 		return RunContext{}, err
 	}
-	id, err := newMessageID()
-	if err != nil {
-		return RunContext{}, err
-	}
 	parent := value.messageID
-	return RunContext{messageID: id, origin: "peer_agent", channel: "agent", authority: AuthorityPeerAgent, stampedBy: value.stampedBy, delegatedBy: &delegatedBy, parentMessageID: &parent}, nil
+	return PeerAgentRunContext(delegatedBy, PeerRunConfig{StampedBy: &value.stampedBy, ParentMessageID: &parent})
 }
 
 // DeriveNamedPeerAgent retains provenance while dropping human capabilities.

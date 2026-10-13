@@ -570,8 +570,36 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Runtime review baseline: local main `fbe8ad4`; this iteration reviews output-step
-hashing and admission of a mixed tool batch. Thirty-two actual Source `Agent.run`
+Runtime review baseline: local main `2ca0266`; this iteration reviews the public
+Go RunContext constructors and provenance observed by a real session. Seventy
+actual Source `Agent.run` profiles combine 14 default/human/peer contexts with
+five message/peer derivations. They capture optional versus explicit-empty text,
+capability membership, tool contexts, emitted correlation identities and fresh
+message relationships. The retained native-before probe shows explicit-empty
+human channel/stamp values being replaced by defaults.
+
+`HumanRunConfig.Channel` and `StampedBy` now use `*string`: nil selects the
+existing defaults; a pointer to empty text preserves that explicit value. This
+requires Go callers that set either field to migrate their source to pointers.
+`PeerAgentRunContext(delegatedBy, PeerRunConfig)` creates fresh peer authority;
+its required string argument may be empty, optional actor/stamp/parent values
+remain distinct from absence, and the config accepts no approvals. Peer
+derivation uses this constructor and clears inherited human approvals.
+`WithNewMessage` retains its existing provenance and supplied-capability rules;
+capability membership alone does not promote peer or untrusted authority.
+
+Validation still requires a nonempty message identity and a closed authority
+variant; empty channel/stamp metadata is accepted. Snapshots remain observations
+and cannot restore live authority. The existing Go Session node records this
+public constructor boundary without changing components, connections, defaults
+or trust rules. Final validation and fresh coverage are recorded separately under
+`var/go-public-run-context-2026-10-13/verified`; arbitrary Python objects,
+direct dataclass overrides and broader host/platform acceptance remain separate.
+[Public RunContext seam](EXTENDING.md#go-public-run-context-constructors).
+The architecture base image remains unchanged.
+
+Previous verified review: local main `fbe8ad4`, output-step hashing and admission
+of a mixed tool batch. Thirty-two actual Source `Agent.run`
 profiles combine four exclusive/parallel layouts, three failure positions plus
 valid controls, and semaphore capacities one and two. The initial native
 comparison failed 22 profiles: later exclusive effects could run after a hash
@@ -878,7 +906,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
