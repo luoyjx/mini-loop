@@ -1,0 +1,3384 @@
+{
+  "cases": [
+    {
+      "default": true,
+      "error": "",
+      "failed": false,
+      "name": "default-explore",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [],
+      "role": "Explore",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": true,
+      "error": "",
+      "failed": false,
+      "name": "default-explore-padded",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [],
+      "role": " \tExPlOrE ",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": true,
+      "error": "",
+      "failed": false,
+      "name": "default-worker",
+      "names": [
+        "read_probe",
+        "write_probe",
+        "exec_probe",
+        "mixed_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [],
+      "role": "worker",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "process.exec"
+          ],
+          "description": "Role fixture exec_probe",
+          "name": "exec_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "exec",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read",
+            "workspace.write"
+          ],
+          "description": "Role fixture mixed_probe",
+          "name": "mixed_probe",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": true,
+      "error": "",
+      "failed": false,
+      "name": "default-general",
+      "names": [
+        "read_probe",
+        "write_probe",
+        "exec_probe",
+        "mixed_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [],
+      "role": "general-purpose",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "process.exec"
+          ],
+          "description": "Role fixture exec_probe",
+          "name": "exec_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "exec",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read",
+            "workspace.write"
+          ],
+          "description": "Role fixture mixed_probe",
+          "name": "mixed_probe",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": true,
+      "error": "ValueError: unknown agent role: 'missing'",
+      "failed": true,
+      "name": "default-unknown",
+      "names": [],
+      "profiles": [],
+      "role": "missing",
+      "selected": []
+    },
+    {
+      "default": true,
+      "error": "ValueError: unknown agent role: ''",
+      "failed": true,
+      "name": "default-empty",
+      "names": [],
+      "profiles": [],
+      "role": "",
+      "selected": []
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "dotted-forward-dotted",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        }
+      ],
+      "role": "İ",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "dotted-forward-ascii",
+      "names": [
+        "write_probe"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        }
+      ],
+      "role": "i",
+      "selected": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "dotted-forward-expanded",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        }
+      ],
+      "role": "i̇",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "dotted-reverse-dotted",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        }
+      ],
+      "role": "İ",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "dotted-reverse-ascii",
+      "names": [
+        "write_probe"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        }
+      ],
+      "role": "i",
+      "selected": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "dotted-reverse-expanded",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        }
+      ],
+      "role": "i̇",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "sigma-forward-upper",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "ΟΣ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "οσ"
+        }
+      ],
+      "role": "ΟΣ",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "sigma-forward-final",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "ΟΣ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "οσ"
+        }
+      ],
+      "role": "ος",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "sigma-forward-medial",
+      "names": [
+        "write_probe"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "ΟΣ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "οσ"
+        }
+      ],
+      "role": "οσ",
+      "selected": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "sigma-reverse-upper",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "οσ"
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "ΟΣ"
+        }
+      ],
+      "role": "ΟΣ",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "sigma-reverse-final",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "οσ"
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "ΟΣ"
+        }
+      ],
+      "role": "ος",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "sigma-reverse-medial",
+      "names": [
+        "write_probe"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "οσ"
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "ΟΣ"
+        }
+      ],
+      "role": "οσ",
+      "selected": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "normalized-collision-last-write",
+      "names": [
+        "write_probe"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "Role"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": " role "
+        }
+      ],
+      "role": "role",
+      "selected": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "normalized-collision-last-read",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": " role "
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "Role"
+        }
+      ],
+      "role": "ROLE",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "raw-duplicate-before-normalization",
+      "names": [
+        "write_probe"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "Role"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "role"
+        },
+        {
+          "capabilities": [
+            "process.exec"
+          ],
+          "role": "Role"
+        }
+      ],
+      "role": "role",
+      "selected": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "raw-duplicate-reversed-position",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "role"
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "Role"
+        },
+        {
+          "capabilities": [
+            "process.exec"
+          ],
+          "role": "role"
+        }
+      ],
+      "role": "role",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "empty-role",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": ""
+        }
+      ],
+      "role": "",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "whitespace-role",
+      "names": [
+        "write_probe"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": " \t"
+        }
+      ],
+      "role": " \n",
+      "selected": [
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "empty-capability-set",
+      "names": [],
+      "profiles": [
+        {
+          "capabilities": [],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": []
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "empty-capability-text",
+      "names": [],
+      "profiles": [
+        {
+          "capabilities": [
+            ""
+          ],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": []
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "duplicate-capabilities",
+      "names": [
+        "read_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read",
+            "repo.read"
+          ],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "unicode-capability-dotted",
+      "names": [
+        "dotted_cap"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "İ"
+          ],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": [
+        {
+          "capabilities": [
+            "İ"
+          ],
+          "description": "Role fixture dotted_cap",
+          "name": "dotted_cap",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "unicode-capability-ascii",
+      "names": [
+        "ascii_cap"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "i"
+          ],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": [
+        {
+          "capabilities": [
+            "i"
+          ],
+          "description": "Role fixture ascii_cap",
+          "name": "ascii_cap",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "unicode-capability-sigma",
+      "names": [
+        "sigma_cap"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "ΟΣ"
+          ],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": [
+        {
+          "capabilities": [
+            "ΟΣ"
+          ],
+          "description": "Role fixture sigma_cap",
+          "name": "sigma_cap",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "capability-whitespace-retained",
+      "names": [
+        "spaced_cap"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            " repo.read "
+          ],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": [
+        {
+          "capabilities": [
+            " repo.read "
+          ],
+          "description": "Role fixture spaced_cap",
+          "name": "spaced_cap",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "",
+      "failed": false,
+      "name": "complete-capability-subset",
+      "names": [
+        "read_probe",
+        "write_probe",
+        "exec_probe",
+        "mixed_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read",
+            "workspace.write",
+            "process.exec"
+          ],
+          "role": "custom"
+        }
+      ],
+      "role": "custom",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "process.exec"
+          ],
+          "description": "Role fixture exec_probe",
+          "name": "exec_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "exec",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read",
+            "workspace.write"
+          ],
+          "description": "Role fixture mixed_probe",
+          "name": "mixed_probe",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    },
+    {
+      "default": false,
+      "error": "ValueError: unknown agent role: 'Explore'",
+      "failed": true,
+      "name": "empty-profile-mapping",
+      "names": [],
+      "profiles": [],
+      "role": "Explore",
+      "selected": []
+    },
+    {
+      "default": true,
+      "error": "",
+      "failed": false,
+      "name": "default-unicode-whitespace",
+      "names": [
+        "read_probe",
+        "write_probe",
+        "exec_probe",
+        "mixed_probe",
+        "duplicate_read",
+        "read_cap_write_risk"
+      ],
+      "profiles": [],
+      "role": " worker　",
+      "selected": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_probe",
+          "name": "read_probe",
+          "parallel_safe": true,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "description": "Role fixture write_probe",
+          "name": "write_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "process.exec"
+          ],
+          "description": "Role fixture exec_probe",
+          "name": "exec_probe",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "exec",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read",
+            "workspace.write"
+          ],
+          "description": "Role fixture mixed_probe",
+          "name": "mixed_probe",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture duplicate_read",
+          "name": "duplicate_read",
+          "parallel_safe": false,
+          "readonly": true,
+          "risk": "read",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        },
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "description": "Role fixture read_cap_write_risk",
+          "name": "read_cap_write_risk",
+          "parallel_safe": false,
+          "readonly": false,
+          "risk": "write",
+          "schema": {
+            "properties": {},
+            "type": "object"
+          }
+        }
+      ]
+    }
+  ],
+  "children": [
+    {
+      "attempts": [
+        {
+          "id": "read_attempt",
+          "name": "read_probe"
+        },
+        {
+          "id": "write_attempt",
+          "name": "write_probe"
+        }
+      ],
+      "child_label": "main>i̇",
+      "child_tools": [
+        {
+          "description": "Role fixture read_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_probe"
+        },
+        {
+          "description": "Role fixture duplicate_read",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "duplicate_read"
+        },
+        {
+          "description": "Role fixture read_cap_write_risk",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_cap_write_risk"
+        }
+      ],
+      "default": false,
+      "effects": [
+        "read_probe"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "lineage": {
+        "delegation_depth": 1,
+        "parent": "main"
+      },
+      "name": "dotted-read-isolation",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>i̇",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>i̇",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "id": "read_attempt",
+          "name": "read_probe",
+          "output": "effect:read_probe"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "id": "write_attempt",
+          "name": "write_probe",
+          "output": "Unknown tool: write_probe"
+        }
+      ],
+      "parent_context": {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "workflow.launch",
+          "workflow.manage"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "parent",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "parent_mode": "auto",
+      "peer_context": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "main",
+        "message_id": "child",
+        "origin": "peer_agent",
+        "parent_message_id": "parent",
+        "stamped_by": "trusted_local"
+      },
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        }
+      ],
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>i̇",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "request_count": 2,
+      "role": "İ",
+      "summary": "child done",
+      "tool_results": [
+        {
+          "content": "effect:read_probe",
+          "tool_use_id": "read_attempt",
+          "type": "tool_result"
+        },
+        {
+          "content": "Unknown tool: write_probe",
+          "tool_use_id": "write_attempt",
+          "type": "tool_result"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "id": "read_attempt",
+          "name": "read_probe"
+        },
+        {
+          "id": "write_attempt",
+          "name": "write_probe"
+        }
+      ],
+      "child_label": "main>i",
+      "child_tools": [
+        {
+          "description": "Role fixture write_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "write_probe"
+        }
+      ],
+      "default": false,
+      "effects": [
+        "write_probe"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "lineage": {
+        "delegation_depth": 1,
+        "parent": "main"
+      },
+      "name": "ascii-write-isolation",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>i",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>i",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "id": "read_attempt",
+          "name": "read_probe",
+          "output": "Unknown tool: read_probe"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "id": "write_attempt",
+          "name": "write_probe",
+          "output": "effect:write_probe"
+        }
+      ],
+      "parent_context": {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "workflow.launch",
+          "workflow.manage"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "parent",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "parent_mode": "auto",
+      "peer_context": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "main",
+        "message_id": "child",
+        "origin": "peer_agent",
+        "parent_message_id": "parent",
+        "stamped_by": "trusted_local"
+      },
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "İ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "i"
+        }
+      ],
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>i",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "request_count": 2,
+      "role": "i",
+      "summary": "child done",
+      "tool_results": [
+        {
+          "content": "Unknown tool: read_probe",
+          "tool_use_id": "read_attempt",
+          "type": "tool_result"
+        },
+        {
+          "content": "effect:write_probe",
+          "tool_use_id": "write_attempt",
+          "type": "tool_result"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "id": "read_attempt",
+          "name": "read_probe"
+        },
+        {
+          "id": "write_attempt",
+          "name": "write_probe"
+        }
+      ],
+      "child_label": "main>ος",
+      "child_tools": [
+        {
+          "description": "Role fixture read_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_probe"
+        },
+        {
+          "description": "Role fixture duplicate_read",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "duplicate_read"
+        },
+        {
+          "description": "Role fixture read_cap_write_risk",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_cap_write_risk"
+        }
+      ],
+      "default": false,
+      "effects": [
+        "read_probe"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "lineage": {
+        "delegation_depth": 1,
+        "parent": "main"
+      },
+      "name": "sigma-read-isolation",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>ος",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>ος",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "id": "read_attempt",
+          "name": "read_probe",
+          "output": "effect:read_probe"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "id": "write_attempt",
+          "name": "write_probe",
+          "output": "Unknown tool: write_probe"
+        }
+      ],
+      "parent_context": {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "workflow.launch",
+          "workflow.manage"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "parent",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "parent_mode": "auto",
+      "peer_context": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "main",
+        "message_id": "child",
+        "origin": "peer_agent",
+        "parent_message_id": "parent",
+        "stamped_by": "trusted_local"
+      },
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "ΟΣ"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "οσ"
+        }
+      ],
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>ος",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "request_count": 2,
+      "role": "ΟΣ",
+      "summary": "child done",
+      "tool_results": [
+        {
+          "content": "effect:read_probe",
+          "tool_use_id": "read_attempt",
+          "type": "tool_result"
+        },
+        {
+          "content": "Unknown tool: write_probe",
+          "tool_use_id": "write_attempt",
+          "type": "tool_result"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "id": "read_attempt",
+          "name": "read_probe"
+        },
+        {
+          "id": "write_attempt",
+          "name": "write_probe"
+        }
+      ],
+      "child_label": "main> \texplore ",
+      "child_tools": [
+        {
+          "description": "Role fixture read_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_probe"
+        },
+        {
+          "description": "Role fixture write_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "write_probe"
+        },
+        {
+          "description": "Role fixture mixed_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "mixed_probe"
+        },
+        {
+          "description": "Role fixture duplicate_read",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "duplicate_read"
+        },
+        {
+          "description": "Role fixture read_cap_write_risk",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_cap_write_risk"
+        }
+      ],
+      "default": false,
+      "effects": [
+        "read_probe"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "lineage": {
+        "delegation_depth": 1,
+        "parent": "main"
+      },
+      "name": "explore-alias-readonly",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> \texplore ",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> \texplore ",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "id": "read_attempt",
+          "name": "read_probe",
+          "output": "effect:read_probe"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "id": "write_attempt",
+          "name": "write_probe",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        }
+      ],
+      "parent_context": {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "workflow.launch",
+          "workflow.manage"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "parent",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "parent_mode": "auto",
+      "peer_context": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "main",
+        "message_id": "child",
+        "origin": "peer_agent",
+        "parent_message_id": "parent",
+        "stamped_by": "trusted_local"
+      },
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read",
+            "workspace.write"
+          ],
+          "role": "explore"
+        }
+      ],
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> \texplore ",
+          "mode": "readonly",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "request_count": 2,
+      "role": " \tExPlOrE ",
+      "summary": "child done",
+      "tool_results": [
+        {
+          "content": "effect:read_probe",
+          "tool_use_id": "read_attempt",
+          "type": "tool_result"
+        },
+        {
+          "content": "Permission denied: this session is read-only (tool risk: write)",
+          "tool_use_id": "write_attempt",
+          "type": "tool_result"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "id": "read_attempt",
+          "name": "read_probe"
+        },
+        {
+          "id": "write_attempt",
+          "name": "write_probe"
+        }
+      ],
+      "child_label": "main> worker ",
+      "child_tools": [
+        {
+          "description": "Role fixture read_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_probe"
+        },
+        {
+          "description": "Role fixture write_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "write_probe"
+        },
+        {
+          "description": "Role fixture exec_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "exec_probe"
+        },
+        {
+          "description": "Role fixture mixed_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "mixed_probe"
+        },
+        {
+          "description": "Role fixture duplicate_read",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "duplicate_read"
+        },
+        {
+          "description": "Role fixture read_cap_write_risk",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_cap_write_risk"
+        }
+      ],
+      "default": true,
+      "effects": [
+        "read_probe",
+        "write_probe"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "lineage": {
+        "delegation_depth": 1,
+        "parent": "main"
+      },
+      "name": "worker-whitespace-label",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> worker ",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> worker ",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "id": "read_attempt",
+          "name": "read_probe",
+          "output": "effect:read_probe"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "id": "write_attempt",
+          "name": "write_probe",
+          "output": "effect:write_probe"
+        }
+      ],
+      "parent_context": {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "workflow.launch",
+          "workflow.manage"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "parent",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "parent_mode": "auto",
+      "peer_context": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "main",
+        "message_id": "child",
+        "origin": "peer_agent",
+        "parent_message_id": "parent",
+        "stamped_by": "trusted_local"
+      },
+      "profiles": [],
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> worker ",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> worker ",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "request_count": 2,
+      "role": " Worker ",
+      "summary": "child done",
+      "tool_results": [
+        {
+          "content": "effect:read_probe",
+          "tool_use_id": "read_attempt",
+          "type": "tool_result"
+        },
+        {
+          "content": "effect:write_probe",
+          "tool_use_id": "write_attempt",
+          "type": "tool_result"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "id": "read_attempt",
+          "name": "read_probe"
+        },
+        {
+          "id": "write_attempt",
+          "name": "write_probe"
+        }
+      ],
+      "child_label": "main>role",
+      "child_tools": [
+        {
+          "description": "Role fixture write_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "write_probe"
+        }
+      ],
+      "default": false,
+      "effects": [
+        "write_probe"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "lineage": {
+        "delegation_depth": 1,
+        "parent": "main"
+      },
+      "name": "raw-duplicate-child",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>role",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>role",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": true,
+          "id": "read_attempt",
+          "name": "read_probe",
+          "output": "Unknown tool: read_probe"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "id": "write_attempt",
+          "name": "write_probe",
+          "output": "effect:write_probe"
+        }
+      ],
+      "parent_context": {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "workflow.launch",
+          "workflow.manage"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "parent",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "parent_mode": "auto",
+      "peer_context": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "main",
+        "message_id": "child",
+        "origin": "peer_agent",
+        "parent_message_id": "parent",
+        "stamped_by": "trusted_local"
+      },
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": "Role"
+        },
+        {
+          "capabilities": [
+            "workspace.write"
+          ],
+          "role": "role"
+        },
+        {
+          "capabilities": [
+            "process.exec"
+          ],
+          "role": "Role"
+        }
+      ],
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main>role",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "request_count": 2,
+      "role": "Role",
+      "summary": "child done",
+      "tool_results": [
+        {
+          "content": "Unknown tool: read_probe",
+          "tool_use_id": "read_attempt",
+          "type": "tool_result"
+        },
+        {
+          "content": "effect:write_probe",
+          "tool_use_id": "write_attempt",
+          "type": "tool_result"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "id": "read_attempt",
+          "name": "read_probe"
+        },
+        {
+          "id": "write_attempt",
+          "name": "write_probe"
+        }
+      ],
+      "child_label": "main> ",
+      "child_tools": [
+        {
+          "description": "Role fixture read_probe",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_probe"
+        },
+        {
+          "description": "Role fixture duplicate_read",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "duplicate_read"
+        },
+        {
+          "description": "Role fixture read_cap_write_risk",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "read_cap_write_risk"
+        }
+      ],
+      "default": false,
+      "effects": [
+        "read_probe"
+      ],
+      "first_messages": [
+        {
+          "content": "child",
+          "role": "user"
+        }
+      ],
+      "lineage": {
+        "delegation_depth": 1,
+        "parent": "main"
+      },
+      "name": "empty-role-child",
+      "observations": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> ",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        },
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> ",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "outputs": [
+        {
+          "denied": false,
+          "failed": false,
+          "id": "read_attempt",
+          "name": "read_probe",
+          "output": "effect:read_probe"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "id": "write_attempt",
+          "name": "write_probe",
+          "output": "Unknown tool: write_probe"
+        }
+      ],
+      "parent_context": {
+        "actor_id": "human",
+        "approved_capabilities": [
+          "workflow.launch",
+          "workflow.manage"
+        ],
+        "authority": "explicit_human",
+        "channel": "local",
+        "delegated_by": null,
+        "message_id": "parent",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "trusted_local"
+      },
+      "parent_history_unchanged": true,
+      "parent_marker_unchanged": true,
+      "parent_mode": "auto",
+      "peer_context": {
+        "actor_id": null,
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "channel": "agent",
+        "delegated_by": "main",
+        "message_id": "child",
+        "origin": "peer_agent",
+        "parent_message_id": "parent",
+        "stamped_by": "trusted_local"
+      },
+      "profiles": [
+        {
+          "capabilities": [
+            "repo.read"
+          ],
+          "role": ""
+        }
+      ],
+      "received": [
+        {
+          "context": {
+            "actor_id": null,
+            "approved_capabilities": [],
+            "authority": "peer_agent",
+            "channel": "agent",
+            "delegated_by": "main",
+            "message_id": "child",
+            "origin": "peer_agent",
+            "parent_message_id": "parent",
+            "stamped_by": "trusted_local"
+          },
+          "depth": 1,
+          "label": "main> ",
+          "mode": "interactive",
+          "parent_marker_present": false,
+          "same_workspace": true
+        }
+      ],
+      "request_count": 2,
+      "role": " ",
+      "summary": "child done",
+      "tool_results": [
+        {
+          "content": "effect:read_probe",
+          "tool_use_id": "read_attempt",
+          "type": "tool_result"
+        },
+        {
+          "content": "Unknown tool: write_probe",
+          "tool_use_id": "write_attempt",
+          "type": "tool_result"
+        }
+      ]
+    }
+  ],
+  "invalid_tools": [
+    {
+      "capabilities": [
+        ""
+      ],
+      "error": "ValueError: Tool 'invalid_empty' capabilities must be non-empty strings",
+      "name": "invalid_empty"
+    },
+    {
+      "capabilities": [
+        " "
+      ],
+      "error": "ValueError: Tool 'invalid_space' capabilities must be non-empty strings",
+      "name": "invalid_space"
+    },
+    {
+      "capabilities": [
+        "\u001f"
+      ],
+      "error": "ValueError: Tool 'invalid_control_space' capabilities must be non-empty strings",
+      "name": "invalid_control_space"
+    },
+    {
+      "capabilities": [
+        "\t\n\r"
+      ],
+      "error": "ValueError: Tool 'invalid_tabs' capabilities must be non-empty strings",
+      "name": "invalid_tabs"
+    },
+    {
+      "capabilities": [
+        "repo.read",
+        ""
+      ],
+      "error": "ValueError: Tool 'invalid_mixed_empty' capabilities must be non-empty strings",
+      "name": "invalid_mixed_empty"
+    },
+    {
+      "capabilities": [
+        "repo.read",
+        "repo.read",
+        " 　"
+      ],
+      "error": "ValueError: Tool 'invalid_mixed_unicode_space' capabilities must be non-empty strings",
+      "name": "invalid_mixed_unicode_space"
+    }
+  ],
+  "limits": [
+    "Actual public CapabilityRoleToolPolicy constructor and select; raw duplicate entries become dict before role normalization.",
+    "Roles use Python strip/lower; capability text is exact and not normalized. Empty tool capability sets are not inherited.",
+    "Policy profiles may contain empty capability text, but actual ToolRegistry registration refuses empty or all-Python-whitespace capability names.",
+    "Real _run_subagent and InProcessSubagents with selected schemas, handler effects, readonly refusal and derived peer authority.",
+    "tool_results are copied from the actual second model request, preserving is_error absence independently of observer flags.",
+    "Only generated parent/child message IDs are normalized; child labels retain raw role.lower() whitespace.",
+    "Declared text/list profiles only; arbitrary Python objects, custom mappings, concurrent mutation and all host/resource profiles remain separate."
+  ],
+  "tools": [
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "description": "Role fixture read_probe",
+      "name": "read_probe",
+      "parallel_safe": true,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "workspace.write"
+      ],
+      "description": "Role fixture write_probe",
+      "name": "write_probe",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "process.exec"
+      ],
+      "description": "Role fixture exec_probe",
+      "name": "exec_probe",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.read",
+        "workspace.write"
+      ],
+      "description": "Role fixture mixed_probe",
+      "name": "mixed_probe",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [],
+      "description": "Role fixture unclassified_probe",
+      "name": "unclassified_probe",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.read",
+        "repo.read"
+      ],
+      "description": "Role fixture duplicate_read",
+      "name": "duplicate_read",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "İ"
+      ],
+      "description": "Role fixture dotted_cap",
+      "name": "dotted_cap",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "i"
+      ],
+      "description": "Role fixture ascii_cap",
+      "name": "ascii_cap",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "ΟΣ"
+      ],
+      "description": "Role fixture sigma_cap",
+      "name": "sigma_cap",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "ος"
+      ],
+      "description": "Role fixture final_sigma_cap",
+      "name": "final_sigma_cap",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        " repo.read "
+      ],
+      "description": "Role fixture spaced_cap",
+      "name": "spaced_cap",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    },
+    {
+      "capabilities": [
+        "repo.read"
+      ],
+      "description": "Role fixture read_cap_write_risk",
+      "name": "read_cap_write_risk",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "properties": {},
+        "type": "object"
+      }
+    }
+  ]
+}

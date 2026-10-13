@@ -6743,6 +6743,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.public_budget_text_contracts import public_budget_text_contracts
     from tools.batch_step_boundary_contracts import batch_step_boundary_contracts
     from tools.public_run_context_contracts import public_run_context_contracts
+    from tools.role_policy_contracts import role_policy_contracts
     from tools.extension_subagent_contracts import extension_subagent_contracts
     from tools.mcp_model_root_contracts import mcp_model_root_contracts
     from tools.mcp_mapping_key_contracts import mcp_mapping_key_contracts, mcp_mapping_key_journal_contracts
@@ -7143,6 +7144,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-public-budget-text.json": _json_bytes(public_budget_text_contracts()),
         "python-batch-step-boundary.json": _json_bytes(batch_step_boundary_contracts()),
         "python-public-run-context.json": _json_bytes(public_run_context_contracts()),
+        "python-role-policy.json": _json_bytes(role_policy_contracts()),
         "python-extension-subagents.json": _json_bytes(extension_subagent_contracts()),
         "python-mcp-model-roots.json": _json_bytes(mcp_model_root_contracts()),
         "python-mcp-mapping-keys.json": _json_bytes(mcp_mapping_key_contracts()),
