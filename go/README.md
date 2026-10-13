@@ -1536,6 +1536,20 @@ go vet ./...
 go test -race ./...
 ```
 
+On a memory-constrained development host, run validation through a process-tree
+resource monitor after a stable normal-pressure window. The low-memory
+profile uses `GOMAXPROCS=1`, `GOFLAGS=-p=1`, `go test -parallel=1`,
+`GOMEMLIMIT=256MiB` and `GOGC=50`, with lowered process priority and a 768 MiB
+sampled tree-RSS stop threshold. The Go memory limit is a soft runtime target;
+CGO, race instrumentation and subprocesses still need external monitoring.
+Run the complete race suite and all-package atomic coverage separately to avoid
+stacking their instrumentation; preserve both gates and their real commands.
+Isolated CLI test subprocesses inherit only the four explicit Go budget variables,
+while application settings and credentials remain controlled by each test.
+See the [resource evidence](../docs/audits/go-low-memory-validation-2026-10-13.md)
+for the passing budget/reload checks and blocked full-suite preflight; these
+workloads do not prove a before/after memory reduction.
+
 See [the plan](../GO_PORT_PLAN.md) and [parity matrix](../GO_PARITY_MATRIX.md)
 for remaining work. Do not treat a compiling package as runtime parity.
 

@@ -1,0 +1,462 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-13T15:17:19.685310+00:00",
+  "status": "focused_memory_validation_passed_full_acceptance_resource_blocked",
+  "source_commit": "6dc495614c3a55f18e0a999ec2e0120935beb636",
+  "runtime_commit": "a9b1bf47b00ec8f967ddff896d4a13905694f2f2",
+  "delivery_commit": "7fad16de6f588f282d5015415c33c1ef6dc159fe",
+  "local_main": "69cba4328345aec64dc81933c438d2072287f4b4",
+  "merged": false,
+  "pushed": false,
+  "tests_executed_for_current_optimization": true,
+  "measured_memory_savings": null,
+  "static_checks": [
+    "gofmt on three Go test files",
+    "git diff --check",
+    "runner ast.parse",
+    "independent static review"
+  ],
+  "attempt": {
+    "stage": "cli-budget-regressions",
+    "recorded_utc": "2026-10-13T15:01:49.949342+00:00",
+    "status": "resource_blocked",
+    "launched": false,
+    "reason": "host_memory_pressure_stability_preflight",
+    "runner_exit_code": 75,
+    "frozen_inputs": 1769,
+    "inputs_unchanged": true,
+    "command": [
+      "go",
+      "test",
+      "-count=1",
+      "-json",
+      "./cmd/miniloop",
+      "-run",
+      "^(TestCLIProcessInheritsResourceBudget|TestCLIResourceEnvironmentDefaultsAndDeduplicates)$"
+    ],
+    "preflight_samples": [
+      {
+        "seconds": 0.003,
+        "host_pressure": 2
+      }
+    ]
+  },
+  "runner_live_monitor_exercised": true,
+  "runner_cleanup_exercised": false,
+  "resource_policy": {
+    "gomaxprocs": 1,
+    "gomemlimit": "256MiB soft target",
+    "gogc": 50,
+    "goflags_append": "-p=1",
+    "test_parallel": 1,
+    "nice_minimum": 10,
+    "rss_kib": 786432,
+    "cpu_percent_sustained": 150,
+    "cpu_grace_seconds": 30,
+    "normal_preflight_samples": 30
+  },
+  "unrelated_processes_stopped": false,
+  "gopls_permission": "pending explicit user response; preserve unrelated process",
+  "pending_gates": [
+    "full ordinary Go",
+    "go vet",
+    "full race suite",
+    "separate all-package atomic coverage",
+    "full Python",
+    "invariants",
+    "scans",
+    "consumer inventory",
+    "coverage accounting"
+  ],
+  "prior_evidence": "docs/audits/go-legacy-recovery-2026-10-13.json",
+  "prior_peak_comparison": {
+    "old_full_go_peak_kib": 419424,
+    "old_stop_sample_kib": 53136,
+    "new_peak_kib": 413600,
+    "comparable_run_complete": false,
+    "workloads_equivalent": false,
+    "comparison_limitation": "Old full-Go aggregate vs new focused real-reload workload; different cache/host conditions. No causal or percentage savings claim."
+  },
+  "architecture": {
+    "topology_changed": false,
+    "base_updated": false,
+    "iteration_image_status_time": "2026-10-13T14:48:10Z",
+    "canonical_sources_unchanged": true,
+    "focused_iteration_image_status_time": "2026-10-13T15:10:08Z"
+  },
+  "artifacts": [
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/host-before.json",
+      "sha256": "5b7d5a9a2863f45e4f8cc13b660a7a3efc3dcc43e10d2e32161558acca9dd7e0",
+      "bytes": 99486
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/preflight-after-code-fix.json",
+      "sha256": "08d7094c2f1b99a76415c17355446cf55ff91a1f2b57cc790d9be61425375a6e",
+      "bytes": 220
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/run.py",
+      "sha256": "0896bd848dbf6b4ffdce50d8c81319ec7684e137489a0d060442d579ab4d1ef3",
+      "bytes": 6227
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/resource_watch.py",
+      "sha256": "ff7b356359dd182313f337e4417e0e4635d1c6966b5f7bce018703ea5b1daedc",
+      "bytes": 14122
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions/resources.json",
+      "sha256": "8e55f16562a1f562e309b6fb8d3f8fa5e28321857cdf907f7c6d491284802b1d",
+      "bytes": 1249
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions/stability.json",
+      "sha256": "20d8c22625b163d300b4113dde2b45637aad916c8f89c8f161a4d2288856e71f",
+      "bytes": 241
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions/freeze.before.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions/freeze.after.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "go/cmd/miniloop/process_environment_test.go",
+      "sha256": "5ecb4b6928c9b9ca7f2dbe8ade4d1dcd1f8010a4ed93626386efbaaf65da2382",
+      "bytes": 4441
+    },
+    {
+      "path": "go/cmd/miniloop/reload_process_test.go",
+      "sha256": "2efb7645a2f107d9c27d882bce8e68468676b61ff60b02b54c5ad3d7f34f8e67",
+      "bytes": 9920
+    },
+    {
+      "path": "go/cmd/miniloop/startup_process_test.go",
+      "sha256": "7ed4f44761b19a7d6cfadcbf62bacda25ddb0cecfd98ec2a12700ce65f3e581c",
+      "bytes": 6978
+    },
+    {
+      "path": "docs/audits/go-low-memory-validation-infographic-2026-10-13.png",
+      "sha256": "41b69aec5e5bd84754944893cff6c884302a34de9c3000a05e25a61b602401f6",
+      "bytes": 1814544
+    },
+    {
+      "path": "docs/audits/go-low-memory-validation-infographic-2026-10-13.prompt.txt",
+      "sha256": "4468ab9ddd5ae1b9bf298faae27c90d79d4c26939d2351d695639b0b152e3e49",
+      "bytes": 1891
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions-resume-1/resources.json",
+      "sha256": "e1b3ea069cae859889e657ef12b082d4677b4300e7293213e87487267f7f01fe",
+      "bytes": 2847
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions-resume-1/stability.json",
+      "sha256": "d4b677770a9be89c5b7f3c532dcd017d1afcc1650e31c8017acde60bab672d0a",
+      "bytes": 2057
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions-resume-1/freeze.before.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions-resume-1/freeze.after.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions-resume-1/stdout.log",
+      "sha256": "06714f49b366c4e4e7d64a0d817358ce8a778290e41cb4f0529ad20b630824f4",
+      "bytes": 5881
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions-resume-1/samples.jsonl",
+      "sha256": "df6c14429b9b372a8b46fe0e4e0cc62aed84bc7085686d3c4c84564485e11c0d",
+      "bytes": 1290
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-budget-regressions-resume-1/pid-state.json",
+      "sha256": "6411d5e7035779c76cec83ff1d9728a6050ec29f39ff2f66247dd12930180900",
+      "bytes": 56
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-real-reload/resources.json",
+      "sha256": "697c87b6463366a86e2386c1424e0ca19722ecbfc14a0746f67591b6ef173cc8",
+      "bytes": 6529
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-real-reload/stability.json",
+      "sha256": "61ab8ab06fb03fd0a439e1c6752769333a172aa1a399cdf6af5312ce102446bd",
+      "bytes": 2056
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-real-reload/freeze.before.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-real-reload/freeze.after.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-real-reload/stdout.log",
+      "sha256": "7b3ae5792b7af2d12df60f535c32372383817f7a18c8f60d1cf91bda7bd5c9e4",
+      "bytes": 2426
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-real-reload/samples.jsonl",
+      "sha256": "1463ca6b7df5d72e171b2535857880c6c3542bf7c91d6f60282c4f6dc8231439",
+      "bytes": 31879
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/cli-real-reload/pid-state.json",
+      "sha256": "2b3478ff6b709bb608ab8d3e1f32c8efeff5f17d0120fa4031cfd1720ed35cd9",
+      "bytes": 56
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full/resources.json",
+      "sha256": "fee76de2e2e049c34038c2532cea6dbd6fbdb5982d3c9168a1226d04fff5a6eb",
+      "bytes": 1115
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full/stability.json",
+      "sha256": "7b810e1f7a760ce2935ce88a7745880d5eb7584c2d15c3458b5514ec4e0bb11d",
+      "bytes": 241
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full/freeze.before.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "var/go-low-memory-validation-2026-10-13/go-full/freeze.after.json",
+      "sha256": "9f09a8a3b81e694d0f090e6b350efa4487c9be57972e6041a3abaa67f153139a",
+      "bytes": 189059
+    },
+    {
+      "path": "docs/audits/go-low-memory-focused-infographic-2026-10-13.png",
+      "sha256": "1eac84ca7bf7693ba523a7460933ffeb2a27a6da47a714ac4d8b3519ac656d3a",
+      "bytes": 1798902
+    },
+    {
+      "path": "docs/audits/go-low-memory-focused-infographic-2026-10-13.prompt.txt",
+      "sha256": "dbc8cabfc76ef84d25fdf179ace2b070cd781549ba419c021fdc563b73c8f61a",
+      "bytes": 2015
+    }
+  ],
+  "continuation_attempts": [
+    {
+      "name": "cli-budget-regressions-resume-1",
+      "status": "passed",
+      "launched": true,
+      "command": [
+        "go",
+        "test",
+        "-parallel=1",
+        "-count=1",
+        "-json",
+        "./cmd/miniloop",
+        "-run",
+        "^(TestCLIProcessInheritsResourceBudget|TestCLIResourceEnvironmentDefaultsAndDeduplicates)$"
+      ],
+      "recorded_utc": "2026-10-13T15:07:04.489197+00:00",
+      "completed_utc": "2026-10-13T15:07:38.093590+00:00",
+      "runner_exit_code": 0,
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "peak_rss_kib": 49312,
+      "peak_cpu_percent": 16.9,
+      "seconds": 3.459,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "top_level_tests": [
+        {
+          "Test": "TestCLIProcessInheritsResourceBudget",
+          "Action": "pass",
+          "Elapsed": 0
+        },
+        {
+          "Test": "TestCLIResourceEnvironmentDefaultsAndDeduplicates",
+          "Action": "pass",
+          "Elapsed": 0
+        }
+      ],
+      "peak_sample": {
+        "seconds": 2.115,
+        "rss_kib": 49312,
+        "cpu_percent": 2.6,
+        "host_pressure": 1,
+        "processes": [
+          {
+            "pid": 72649,
+            "parent": 72576,
+            "pgid": 72649,
+            "rss_kib": 27824,
+            "cpu_percent": 2.6,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:07:34 2026",
+            "comm": "go"
+          },
+          {
+            "pid": 72679,
+            "parent": 72649,
+            "pgid": 72649,
+            "rss_kib": 21488,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:07:36 2026",
+            "comm": "(vet)"
+          }
+        ]
+      },
+      "observed_nice_values": [
+        10
+      ],
+      "observed_pressure_values": [
+        1
+      ]
+    },
+    {
+      "name": "cli-real-reload",
+      "status": "passed",
+      "launched": true,
+      "command": [
+        "go",
+        "test",
+        "-parallel=1",
+        "-count=1",
+        "-json",
+        "./cmd/miniloop",
+        "-run",
+        "^(TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv|TestForcedPollingCLIRebuildsSourceRetainsPortAndReloadsDotenv)$"
+      ],
+      "recorded_utc": "2026-10-13T15:08:08.119835+00:00",
+      "completed_utc": "2026-10-13T15:09:22.115526+00:00",
+      "runner_exit_code": 0,
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "peak_rss_kib": 413600,
+      "peak_cpu_percent": 106.1,
+      "seconds": 43.718,
+      "empty_confirmations": true,
+      "remaining_pids": [],
+      "top_level_tests": [
+        {
+          "Test": "TestActualCLIRebuildsSourceRetainsPortAndReloadsDotenv",
+          "Action": "pass",
+          "Elapsed": 20.89
+        },
+        {
+          "Test": "TestForcedPollingCLIRebuildsSourceRetainsPortAndReloadsDotenv",
+          "Action": "pass",
+          "Elapsed": 19.72
+        }
+      ],
+      "peak_sample": {
+        "seconds": 21.697,
+        "rss_kib": 413600,
+        "cpu_percent": 68.0,
+        "host_pressure": 1,
+        "processes": [
+          {
+            "pid": 72825,
+            "parent": 72752,
+            "pgid": 72825,
+            "rss_kib": 26848,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:08:38 2026",
+            "comm": "go"
+          },
+          {
+            "pid": 72851,
+            "parent": 72825,
+            "pgid": 72825,
+            "rss_kib": 16064,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:08:39 2026",
+            "comm": "miniloop.test"
+          },
+          {
+            "pid": 73082,
+            "parent": 72851,
+            "pgid": 72825,
+            "rss_kib": 18416,
+            "cpu_percent": 0.0,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:08:53 2026",
+            "comm": "miniloop"
+          },
+          {
+            "pid": 73147,
+            "parent": 73082,
+            "pgid": 73147,
+            "rss_kib": 26896,
+            "cpu_percent": 1.8,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:08:58 2026",
+            "comm": "go"
+          },
+          {
+            "pid": 73158,
+            "parent": 73147,
+            "pgid": 73147,
+            "rss_kib": 200016,
+            "cpu_percent": 12.5,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:08:58 2026",
+            "comm": "link"
+          },
+          {
+            "pid": 73169,
+            "parent": 73158,
+            "pgid": 73147,
+            "rss_kib": 125360,
+            "cpu_percent": 53.7,
+            "nice": 10,
+            "starttime": "Tue Oct 13 23:08:59 2026",
+            "comm": "dsymutil"
+          }
+        ]
+      },
+      "observed_nice_values": [
+        10
+      ],
+      "observed_pressure_values": [
+        1
+      ]
+    },
+    {
+      "name": "go-full",
+      "status": "resource_blocked",
+      "launched": false,
+      "command": [
+        "go",
+        "test",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "recorded_utc": "2026-10-13T15:10:08.192707+00:00",
+      "completed_utc": "2026-10-13T15:10:08.513667+00:00",
+      "runner_exit_code": 75,
+      "frozen_inputs": 1769,
+      "inputs_unchanged": true,
+      "reason": "host_memory_pressure_stability_preflight",
+      "top_level_tests": []
+    }
+  ],
+  "post_validation_documentation_changes": [
+    "README.md",
+    "go/README.md"
+  ],
+  "current_go_python_test_source_matches_validated_inputs": true
+}

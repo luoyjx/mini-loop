@@ -8,8 +8,23 @@ before memory optimization and continued checks. This overrides the usual
 pre-commit ordering, with the validation limits preserved: focused Go/Python,
 Source and type audits passed; full Go was resource-interrupted; vet/race/full
 Python and remaining gates are pending. Local main remains `69cba43`, unmerged.
-The goal is active again. Investigate the task's nested-build budget propagation
-and separate race from all-package coverage before another bounded attempt.
+Delivery evidence is committed as `7fad16d`. The goal is active again. The
+test-only nested-build budget propagation fix passed two budget regressions
+and the native/polling real CLI reload tests at 15:07–15:09 UTC. Their sampled
+tree peaks were 48.16 and 403.91 MiB; the earlier 15:01 attempt was blocked
+before launch. The subsequent full-Go stage was also intercepted before launch
+at 15:10 UTC by host memory-pressure level 2. The new single-concurrency runner
+separates race from all-package coverage, but neither full workload has run. See the
+[memory optimization record](docs/audits/go-low-memory-validation-2026-10-13.md)
+for the exact controls, immutable attempt and next checks. No measured memory
+savings or refreshed coverage is claimed.
+
+Once validation can continue, the next existing G4/G7 contract candidate is the
+known code-execution caller's `tool_id`: current Go rejects empty/missing/null
+while the captured Source profiles cover only ordinary IDs. Capture actual
+SDK 0.107.1 direct/SSE observations before deciding native behavior. Existing
+`protocol.SDKMetadataText` may represent finite observed values while the public
+constructor remains strict; this is a static candidate, not demonstrated parity.
 
 ## 2026-10-13 legacy recovery construction — resumed, full validation pending
 

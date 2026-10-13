@@ -87,7 +87,7 @@ func cliProcess(t *testing.T, root string, args ...string) *exec.Cmd {
 	t.Helper()
 	command := exec.Command(os.Args[0], append([]string{"-test.run=^TestMiniloopProcessEntry$", "--"}, args...)...)
 	command.Dir = root
-	command.Env = []string{"MINILOOP_CLI_PROBE=1", "PATH=" + os.Getenv("PATH"), "GOMAXPROCS=2", "MODEL_ID=incoming", "MINILOOP_WORKSPACE_ROOT=" + filepath.Join(root, "workspaces")}
+	command.Env = cliTestResourceEnvironment([]string{"MINILOOP_CLI_PROBE=1", "PATH=" + os.Getenv("PATH"), "MODEL_ID=incoming", "MINILOOP_WORKSPACE_ROOT=" + filepath.Join(root, "workspaces")})
 	return command
 }
 

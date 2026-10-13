@@ -7,6 +7,13 @@ follows Source commit `6dc4956` before full validation. This changes delivery
 status, not parity acceptance: full Go/vet/race/Python and integration remain
 pending. Main is still `69cba43`; no merge or push occurred. The active task now
 addresses memory efficiency while preserving the complete validation scope.
+Evidence is committed as `7fad16d`. The test-only budget propagation fix passed
+two constructor regressions and native/polling real reload checks at 15:07–15:09
+UTC, with sampled tree peaks of 48.16/403.91 MiB. The earlier 15:01 narrow attempt
+and later 15:10 full-Go preflight returned pressure level 2 before launch.
+The new resource profile and separate race/coverage gates are recorded in the
+[memory optimization receipt](docs/audits/go-low-memory-validation-2026-10-13.json);
+neither current coverage nor measured savings is available.
 
 ## 2026-10-13 legacy recovery construction — resumed, not accepted
 

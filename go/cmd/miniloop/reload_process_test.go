@@ -128,9 +128,7 @@ func testActualCLIRebuildsSource(t *testing.T, backend reload.ObserverBackend) {
 	if err := os.Mkdir(builds, 0700); err != nil {
 		t.Fatal(err)
 	}
-	command := exec.Command(binary, "--reload-module", module)
-	command.Dir = module
-	command.Env = []string{"PATH=" + os.Getenv("PATH"), "HOME=" + os.Getenv("HOME"), "GOMAXPROCS=2", "TMPDIR=" + builds, "MINILOOP_WORKSPACE_ROOT=" + filepath.Join(module, "workspaces")}
+	command := reloadCLIProcess(binary, module, builds)
 	if backend == reload.PollingBackend {
 		command.Env = append(command.Env, "WATCHFILES_FORCE_POLLING=0", "WATCHFILES_POLL_DELAY_MS=10")
 	}
