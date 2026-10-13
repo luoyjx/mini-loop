@@ -1,5 +1,73 @@
 # Go port plan
 
+## 2026-10-13 mixed batch output-step admission
+
+Branch `codex/go-batch-step-boundary`, review baseline `fbe8ad4`. Original
+P0/P1/G0–G7 scope remains. Thirty-two actual Source `Agent.run` profiles cover
+four three-call exclusive/parallel layouts, valid outputs and each of three
+invalid-output positions, with semaphore capacities one and two. The producer
+and literal `python-batch-step-boundary.json` fixture retain exact event/effect,
+request/history and step-hash observations. The first native comparison failed
+22 profiles: exclusive calls ran beyond a hash fault and valid step prefixes
+survived a later failure. Its log remains in the iteration output directory.
+
+Native session dispatch now computes the named output `StepHash` after the
+call's `tool_result` event and before returning to the scheduler. An ordinary
+UTF-8 hash failure stops later exclusive calls and later groups. Already
+scheduled calls in the same parallel group finish before the error returns.
+The scheduler prepares steps locally and admits the complete model-ordered
+batch only on success; a failed batch contributes no step prefix or tool-result
+history message, and sends no second model request. Earlier events/effects
+remain observable. Existing cancellation/other-error repair, pool release and
+bounded ledger retention remain in place. There is no new service, dependency,
+authority, tool registration or default, and no vague domain payload type.
+
+A deterministic native observer-cancel control exposed an exclusive-call
+cancellation precedence regression during review. The retained failing test
+precedes the fix; exclusive and parallel cancellation controls now pass.
+
+Final cohort: 1711 frozen inputs unchanged across 19 stages; 18 passed and
+consumer inventory exited 1 solely for the unreferenced default Python parser.
+Fresh Source export has 250 files; 251 consumer fixtures include the separate
+Linux capture, with 250 candidate callers observed passing. All four type audits
+report zero findings: 465 production files / 1472 package types, 1205 public
+roots, 278 private roots and 172 package variables. Body inventory retains
+51 packages / 22277 declarations / 130 open observations.
+Full Go tests, vet and race with atomic coverage passed. Python: 2251 passed,
+28 skipped, 96 warnings and 24 subtests in 164.24s. Invariants, 19 scan guards,
+five batch guards, one barrier guard and diff checks passed.
+
+Darwin statement coverage: application 89.39% (33557/37539), all Go 89.14%
+(33923/38054), Provider 86.45% (1518/1756). Provider coverage is unchanged
+from the preceding completed cohort. These are statement observations, not
+Python/native C/subprocess/branch/cross-platform or whole-migration coverage.
+
+Resource evidence: the first Source export was stopped at host memory pressure
+warning; it is preserved as resource-blocked. After 60 seconds of normal host
+pressure, a separate cohort completed with the same limits and no resource stop.
+All heavy stages ran serially with nice 10, GOMAXPROCS=2, build parallelism 1,
+test parallelism 2, and the 512MiB Go soft memory target. Maximum sampled owned
+RSS was 609488 KiB (595.2 MiB); sampled CPU reached 298.3% briefly without the
+sustained 250% / 30-second stop condition. The guard is sampled protection, not
+an OS hard cap. The original failing native profiles and cancellation regression
+remain recorded; no assertion or timeout was relaxed.
+
+[Iteration receipt](docs/audits/go-batch-step-boundary-2026-10-13.json),
+[coverage receipt](docs/audits/go-coverage-batch-step-boundary-2026-10-13.json),
+[resource controls](docs/audits/validation-resource-controls-2026-10-13.json),
+[iteration image](docs/audits/go-batch-step-boundary-infographic-2026-10-13.png)
+and [exact image prompt](docs/audits/go-batch-step-boundary-infographic-2026-10-13.prompt.txt).
+
+The 32 immediate-handler profiles do not establish every delayed-peer,
+cancellation, host/platform or broader public/default/performance/release case.
+Historical timing and platform failures remain open.
+
+README Mermaid and JSON annotate the existing Go Session boundary with event →
+hash → whole-batch admission. Connections and component inventory are unchanged;
+the base image stays unchanged and the iteration image highlights this session
+behavior. The generated HTML receives separate Archify validation; this does
+not imply new rendered-browser acceptance.
+
 ## 2026-10-13 public spill UTF-8 and directory ordering
 
 Branch `codex/go-public-helper-text`, review baseline115f147. Original P0/P1/G0–G7

@@ -1,0 +1,16 @@
+Use case: precise-object-edit / infographic-diagram.
+Edit the provided mini-loop layered architecture base image into an iteration highlight image, preserving its blue navy engineering poster style, all five rows, all cards and existing correct arrows.
+Keep exact layer titles: L1 入口与组合层; L2 会话与控制层; L3 推理与执行层; L4 能力与编排层; L5 状态与证据层.
+Preserve L4 six backend cards including explicitly registered custom tools, seven orchestration cards, and L5 five cards including operator contractaudit.
+Critical arrows: Session Agent ↔ Model Provider; Session Agent → ToolGate is routed ABOVE Model Provider; ToolGate → L4; L4 tool results → Session Agent. There must be NO Provider → ToolGate arrow.
+Only highlight the existing L3 Session Agent 循环 / Context card with bright amber border and a small badge 本轮修改. This is a scheduling and ledger admission fix, not a new component or tool.
+Change subtitle to: "2026-10-13 · 工具批次哈希与整批入账 · 迁移验收仍在进行".
+Keep all architecture cards readable. Replace right explanatory column with title "本轮修改与边界" and these concise numbered notes:
+1 "结果事件之后计算输出哈希"
+2 "独占调用失败，停止后续调用"
+3 "同一并行组完成已调度调用"
+4 "整批成功后才写入步骤记录"
+5 "32 个 Python Source 对照场景"
+6 "测试串行：并发 2 · 内存监测"
+At the bottom of that column add small text "无新增组件；基础图不变。延迟、取消与跨平台完整验收仍有边界。"
+Keep the Python and independent Go framing truthful, all optional/custom tool cards explicitly selected. Do not imply full migration completion or new durable state. Add a small footer "本轮代码：Session 调度与失败边界；资源限制用于测试校验". Do not introduce new arrows, new services or runtime CPU/memory-limit boxes. Preserve the foundation image composition, but this is a new sibling iteration image, not replacing the base.

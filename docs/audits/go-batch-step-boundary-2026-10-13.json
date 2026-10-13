@@ -1,0 +1,824 @@
+{
+  "date": "2026-10-13",
+  "baseline": "fbe8ad4",
+  "branch": "codex/go-batch-step-boundary",
+  "status": "validated_current_slice_with_known_parser_gap",
+  "source_profiles": 32,
+  "initial_native_failed_profiles": 22,
+  "original_failure_log": "var/go-batch-step-boundary-2026-10-13/native-before.log",
+  "review_regression": "Exclusive observer cancellation could be hidden by output UTF-8 hash failure. Deterministic native failure retained before repair. Both exclusive and parallel controls now pass.",
+  "focused_evidence": "var/go-batch-step-boundary-2026-10-13/resource-focused",
+  "resource_policy_receipt": "docs/audits/validation-resource-controls-2026-10-13.json",
+  "remaining": [
+    "Default Python parser approval/adoption",
+    "Full public namespace and semantic parity",
+    "Original P0/P1/G0-G7 and host/platform/performance/release acceptance",
+    "Historical unexplained timing failures remain open; current passing cohort is not a root-cause explanation.",
+    "Delayed peer and broader cancellation interleavings are not certified by the 32 immediate Source profiles."
+  ],
+  "coverage": {
+    "refreshed": true,
+    "receipt": "docs/audits/go-coverage-batch-step-boundary-2026-10-13.json",
+    "app": {
+      "covered": 33557,
+      "statements": 37539,
+      "percent": 89.39236527344895
+    },
+    "all": {
+      "covered": 33923,
+      "statements": 38054,
+      "percent": 89.14437378462185
+    },
+    "provider": {
+      "covered": 1518,
+      "statements": 1756,
+      "percent": 86.44646924829158
+    }
+  },
+  "architecture": {
+    "base": "docs/mini-loop-layered-architecture.png",
+    "base_sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba",
+    "base_changed": false,
+    "component_changes": false,
+    "image": "docs/audits/go-batch-step-boundary-infographic-2026-10-13.png",
+    "image_sha256": "64e4d5aad1268b229cc1bbdf0b46621f6bd84239ab5ca76426a70aae8303157c",
+    "prompt": "docs/audits/go-batch-step-boundary-infographic-2026-10-13.prompt.txt",
+    "prompt_sha256": "0b4c91b3c43ef3bf9eeba0825202810ac187e4ac241762bcd35ead754e7917f4",
+    "generator": "built-in imagegen",
+    "description": "Existing L3 Session loop is highlighted: event before output hash, exclusive early stop, parallel group join, whole-batch ledger admission. The sidebar includes test resource controls. No new runtime resource service.",
+    "visual_review": "Five layer headings, six L4 backend cards, seven orchestration cards, five L5 evidence cards and required arrows preserved.",
+    "archify": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    },
+    "browser_render_verified": false
+  },
+  "remote_push": false,
+  "first_resource_blocked_cohort": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/verified/source-manifest.json"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 410384,
+      "peak_cpu_percent": 94.0,
+      "samples": 30,
+      "status": "resource_blocked",
+      "reason": "host_memory_pressure",
+      "remaining_pids": [],
+      "exit_code": -15,
+      "seconds": 30.991
+    }
+  ],
+  "first_resource_blocked_frozen_inputs": {
+    "count": 1711,
+    "unchanged_at_terminal": true,
+    "manifest": "var/go-batch-step-boundary-2026-10-13/verified/frozen.json",
+    "sha256": "48eafd33582a4b2bd48ff99c93c6307eb024fbd153f09e556f54e608f63417ef"
+  },
+  "gates": [
+    {
+      "name": "source",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/resumed/source-manifest.json"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 334256,
+      "peak_cpu_percent": 94.5,
+      "samples": 109,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 111.013
+    },
+    {
+      "name": "focused-go",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "./agent",
+        "./workspace",
+        "./astcontext",
+        "./provider",
+        "-run",
+        "TestMixedBatch|TestCancelledBatchHashFailure|TestScheduling|TestParallel|TestTypedExtension|TestPublic|TestEnsureDirectory|TestASTModelTool|TestAST.*Text|Test.*StepHash|Test.*Cancellation|TestCancel|TestCompaction|TestFileEffects|TestAtomic|TestCancelledAtomic",
+        "-count=1"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 250368,
+      "peak_cpu_percent": 179.4,
+      "samples": 10,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 9.468
+    },
+    {
+      "name": "focused-python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_go_batch_step_boundary.py",
+        "python/tests/test_go_export_diagnostics.py",
+        "python/tests/test_go_public_helpers.py",
+        "python/tests/test_go_public_budget_text.py",
+        "python/tests/test_extensions.py",
+        "python/tests/test_extension_contracts.py",
+        "python/tests/test_tool_pipeline.py"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 83536,
+      "peak_cpu_percent": 56.300000000000004,
+      "samples": 5,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 4.309
+    },
+    {
+      "name": "types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        "."
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 160,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.227
+    },
+    {
+      "name": "public-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-public"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 137552,
+      "peak_cpu_percent": 45.900000000000006,
+      "samples": 3,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.255
+    },
+    {
+      "name": "private-types",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-private"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 160,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.226
+    },
+    {
+      "name": "variables",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-root",
+        ".",
+        "-variables"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 752,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.226
+    },
+    {
+      "name": "collector-tests",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/resumed/compiler-collector",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "./..."
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 176,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.222
+    },
+    {
+      "name": "body-inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/resumed/compiler-collector",
+      "command": [
+        "go",
+        "run",
+        ".",
+        "/Users/yanjixiong/github/mini-loop/go"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 80720,
+      "peak_cpu_percent": 68.3,
+      "samples": 3,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.252
+    },
+    {
+      "name": "ordinary",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-json",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "./..."
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 560816,
+      "peak_cpu_percent": 200.1,
+      "samples": 204,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 210.228
+    },
+    {
+      "name": "inventory",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-root",
+        ".",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/resumed/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/resumed/ordinary.log",
+        "-require-results"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 720,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 1.239
+    },
+    {
+      "name": "vet",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 63296,
+      "peak_cpu_percent": 12.6,
+      "samples": 4,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 3.306
+    },
+    {
+      "name": "race",
+      "cwd": "/Users/yanjixiong/github/mini-loop/go",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "-timeout=300s",
+        "-covermode=atomic",
+        "-coverpkg=./...",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/resumed/coverage.out",
+        "./..."
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 609488,
+      "peak_cpu_percent": 199.6,
+      "samples": 570,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 586.064
+    },
+    {
+      "name": "python",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 457088,
+      "peak_cpu_percent": 298.3,
+      "samples": 161,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 165.332
+    },
+    {
+      "name": "invariants",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.231
+    },
+    {
+      "name": "scans",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 86944,
+      "peak_cpu_percent": 98.8,
+      "samples": 10,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 9.404
+    },
+    {
+      "name": "guards-batch",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "batch"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 106064,
+      "peak_cpu_percent": 89.3,
+      "samples": 9,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 8.406
+    },
+    {
+      "name": "guards-barrier",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "barrier"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 77968,
+      "peak_cpu_percent": 64.8,
+      "samples": 3,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.25
+    },
+    {
+      "name": "diff",
+      "cwd": "/Users/yanjixiong/github/mini-loop",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "limits": {
+        "rss_kib": 3145728,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "goflags": "-p=1",
+        "cpu_percent_sustained": 250,
+        "cpu_grace_seconds": 30,
+        "sample_seconds": 1.0
+      },
+      "peak_rss_kib": 176,
+      "peak_cpu_percent": 0.0,
+      "samples": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.226
+    }
+  ],
+  "frozen_inputs": {
+    "count": 1711,
+    "unchanged_at_terminal": true,
+    "manifest": "var/go-batch-step-boundary-2026-10-13/resumed/frozen.json",
+    "sha256": "3a6535e028970ba2d5958af39dfade03cc399f1e58e72a72ee17d41133fd7d97"
+  },
+  "resumption": {
+    "reason": "Host pressure returned to normal and stayed normal for 60 seconds; no other test process remained. Original resource limits unchanged.",
+    "evidence": "var/go-batch-step-boundary-2026-10-13/resumed/host-recovery.jsonl",
+    "limits": {
+      "rss_kib": 3145728,
+      "gomaxprocs": 2,
+      "gomemlimit": "512MiB",
+      "goflags": "-p=1",
+      "cpu_percent_sustained": 250,
+      "cpu_grace_seconds": 30,
+      "sample_seconds": 1.0
+    }
+  },
+  "resources": {
+    "peak_rss_kib": 609488,
+    "peak_cpu_percent": 298.3,
+    "all_stages_serial": true,
+    "resource_stops_in_resumed_cohort": 0,
+    "reports": [
+      "var/go-batch-step-boundary-2026-10-13/resumed/source.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/focused-go.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/focused-python.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/types.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/public-types.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/private-types.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/variables.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/collector-tests.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/body-inventory.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/ordinary.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/inventory.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/vet.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/race.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/python.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/invariants.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/scans.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/guards-batch.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/guards-barrier.resources.json",
+      "var/go-batch-step-boundary-2026-10-13/resumed/diff.resources.json"
+    ],
+    "measurement": "Maxima of one-second RSS/CPU samples, not hard OS resource limits; RSS may double-count shared pages. The CPU threshold stops only sustained use above 250% for 30 seconds."
+  },
+  "source_manifest": {
+    "path": "var/go-batch-step-boundary-2026-10-13/resumed/source-manifest.json",
+    "sha256": "78df9da17fe40285844441fc63c27f9f7b0863f4515af31ff70e4c931c85b089",
+    "files": 250
+  },
+  "type_audits": {
+    "types": "Go type audit: 465 production files, 1472 package-level types, 0 findings",
+    "public-types": "Go public type audit: 51 packages, 1205 exported types, 0 findings",
+    "private-types": "Go private type audit: 51 packages, 278 private root types, 0 findings",
+    "variables": "Go variable audit: 51 packages, 172 package variables, 0 findings"
+  },
+  "body_inventory": {
+    "packages": 51,
+    "declarations": 22277,
+    "open_observations": 130,
+    "path": "var/go-batch-step-boundary-2026-10-13/resumed/body-inventory.log",
+    "limitations": "Compiler observations are not caller/escape/interprocedural/runtime/generic/foreign/other-profile closure."
+  },
+  "consumer_inventory": {
+    "files": 251,
+    "counts": {
+      "test_pass_observed": 250,
+      "unreferenced": 1
+    },
+    "batch_fixture": {
+      "name": "python-batch-step-boundary.json",
+      "sha256": "d204910c344fe9fcd1d900d813f041c7074841e926ce64358f6566c27a2a6a99",
+      "references": [
+        {
+          "file": "agent/batch_step_boundary_test.go",
+          "line": 84,
+          "function": "TestMixedBatchStepAdmissionMatchesActualSource"
+        }
+      ],
+      "candidate_callers": [
+        {
+          "package": "github.com/luoyjx/mini-loop/go/agent",
+          "name": "TestMixedBatchStepAdmissionMatchesActualSource",
+          "action": "pass"
+        }
+      ],
+      "status": "test_pass_observed",
+      "producer_scope": "current_export"
+    },
+    "parser": {
+      "name": "python-syntax-parser.json",
+      "sha256": "b41c97198acfb64b0d4dbfb627486bca1d2898f7a7f39a3a1688b612e044dc42",
+      "references": [],
+      "candidate_callers": [],
+      "status": "unreferenced",
+      "producer_scope": "current_export"
+    },
+    "limitations": [
+      "Active go list profile only; Source freshness must be checked independently.",
+      "Literal references and direct named function calls form candidate links, not runtime fixture-read or assertion proof.",
+      "Methods, interface calls, aliases, global constants and dynamically constructed fixture paths require separate review.",
+      "A passed test caller may skip a branch, omit assertions or be diagnostic-only; semantic parity remains a separate requirement."
+    ]
+  },
+  "python_result": "2251 passed, 28 skipped, 96 warnings, 24 subtests passed in 164.24s (0:02:44)",
+  "scans": "  green-blind test_harness.py::test_seams_are_not_passed_alongside_the_harness_by_hand\nall 19 scanning guard(s) across every module are anchored: each module has at least one test that fails when its scan is emptied.",
+  "guards": {
+    "guards-batch": "  caught    background-nonfinite-batch-preparation-lazy  (r0: Go migration Source probe: all background model call inputs are copied before any hook or effect in the batch)\n  caught    model-batch-input-preparation-lazy  (r0: Go migration Source probe: all model call inputs are copied before any hook or effect in the batch)\n  caught    background-notification-batch-unbounded  (r134: the background result batch is capped: a long round finishing many tasks otherwise drains them all into one injection and floods the context)\n  caught    batch-results-follow-completion-order  (r209: transcript result order is call order, not completion order (Pi P0-2); a provider protocol and every replay depend on it)\nall 5 guards are load-bearing (passing baseline, failed test call).",
+    "guards-barrier": "  caught    barrier-runs-before-the-group-settles  (r209: a non-parallel call is an ordering barrier: it starts only after the group before it completes -- reads never move across a write)\nall 1 guards are load-bearing (passing baseline, failed test call)."
+  },
+  "source_files": {
+    "python/mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "python/mini_loop/stuck.py": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+    "python/tools/batch_step_boundary_contracts.py": "1e723bbb174c3557c53af508a630c59a109917970819a867a315d153c0f4fa15",
+    "python/tests/test_go_batch_step_boundary.py": "3ca1d595217e34c443e64f86225cece0fb5ead51126dc3419ebfd56052739e3d",
+    "python/tools/export_go_contracts.py": "f8ac00f357d1472d99642fb1a9e2060edf111a1e16934530f37870002096be7d"
+  },
+  "fixture_hashes": {
+    "go/testdata/python-batch-step-boundary.json": "d204910c344fe9fcd1d900d813f041c7074841e926ce64358f6566c27a2a6a99"
+  },
+  "implementation_hashes": {
+    "go/agent/gate.go": "8a690830b04c9c7ecdc88edd979488f8c8b6b4c0582ef6f5c09cf24b5e14cff0",
+    "go/agent/lifecycle.go": "552bd453cac2d621cde2496e5ca16d627e15b436371b39e1b59c5056f4697195",
+    "go/agent/scheduling.go": "8d860082bf2e5310fa55d3172ae25eef9027e40a6e3c96d33c21b4516c006a09",
+    "go/agent/stuck.go": "512bc7a073abea57d3e70e67f27ea7f546b98212b91c7d21410eb0558942be89",
+    "go/agent/batch_step_boundary_test.go": "efc40926781613a4b9c7ebb7c1b5d038b4abd0f66c71eb51b2c7dd6e3f627a66"
+  },
+  "logs": {
+    "source": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/source.log",
+      "sha256": "325dc40837c7986b414528b4b68ca040c9cb7b78a73c495e221256332690c1e7"
+    },
+    "focused-go": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/focused-go.log",
+      "sha256": "19c9f212321600fcffcdf6a49a157bf3f41340627677903ec9134ab5a92e4eed"
+    },
+    "focused-python": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/focused-python.log",
+      "sha256": "3b8e4f4741ac10683313bfc1a2c70c48a66b18119d3e8937f28e9e65cda533cf"
+    },
+    "types": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/types.log",
+      "sha256": "ba26d7a49c21e58f583205da99e6ead91f235087b2d896e2b4a629a9f75087f2"
+    },
+    "public-types": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/public-types.log",
+      "sha256": "632aca892f5d9dd4eab9a0f05fbaa9c39ad0ddef01e9d03dba825f16f2d82ac4"
+    },
+    "private-types": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/private-types.log",
+      "sha256": "a00eb8192a3c7db75f419be08c3fb1b6597ba1c3c3ab09317924dde27946fd1e"
+    },
+    "variables": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/variables.log",
+      "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0"
+    },
+    "collector-tests": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/collector-tests.log",
+      "sha256": "3ff086feef90310d6a626ee4f0436b6e9e21c034e291e8ed743856817cecf9b9"
+    },
+    "body-inventory": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/body-inventory.log",
+      "sha256": "857a245767b871dcf25f39e10856cb4139d6fffc5e46ddc384791b7e750e064c"
+    },
+    "ordinary": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/ordinary.log",
+      "sha256": "0d9a95a555083877521b84388f83d8fbd22dab0a3be864013069037d94c408c7"
+    },
+    "inventory": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/inventory.log",
+      "sha256": "7fb4010c982c94ee162efa87b93f29ba838f76e4ef30095df1b6d906cb6f381f"
+    },
+    "vet": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "race": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/race.log",
+      "sha256": "9209037a3fa690851318034ccba1aeff5e4ed7c20020ea857edd39024cbfe6e6"
+    },
+    "python": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/python.log",
+      "sha256": "4cfcf5a708744f4ebcaaeb21ca072d828ffffc55c48f2319ca6de023c152c934"
+    },
+    "invariants": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/invariants.log",
+      "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+    },
+    "scans": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/scans.log",
+      "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+    },
+    "guards-batch": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/guards-batch.log",
+      "sha256": "679950df40495c4a593ff4d382ae86810af1e828d028eb7813bec542d2c9de18"
+    },
+    "guards-barrier": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/guards-barrier.log",
+      "sha256": "dd76dd56832a44c7fa8bbe529168bb79508f90eccd1b921e82613696aa2bbdb8"
+    },
+    "diff": {
+      "path": "var/go-batch-step-boundary-2026-10-13/resumed/diff.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "post_gate_updates": [
+    "GO_PORT_PLAN.md",
+    "GO_PARITY_MATRIX.md",
+    "GO_PUBLIC_SURFACE_INVENTORY.md",
+    "docs/audits/go-batch-step-boundary-2026-10-13.json",
+    "docs/audits/go-coverage-batch-step-boundary-2026-10-13.json"
+  ],
+  "implementation_commit": "17a7fb90ae8746aaee377c5a57fa00c8a5d997d6",
+  "source_prerequisite_commit": "c22cf3df4bca4a3ecc2f2c753a63186ca326b3f0",
+  "resource_policy_commit": "1d67f5a145e62bcaf290f06dde05b1a2d4a98a8e"
+}

@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-13",
+  "baseline": "fbe8ad4",
+  "mode": "race+atomic",
+  "profile_sha256": "4a092582adffd76b6dfb045d5e2eb20815a3fbcf54a12c2f43cadda08b72bff7",
+  "raw_rows": 1302434,
+  "unique_blocks": 26579,
+  "method": "Union maximum hits over identical spans; equal statement counts required. App excludes tools/ only; command mains included.",
+  "app": {
+    "covered": 33557,
+    "statements": 37539,
+    "percent": 89.39236527344895
+  },
+  "all": {
+    "covered": 33923,
+    "statements": 38054,
+    "percent": 89.14437378462185
+  },
+  "provider": {
+    "covered": 1518,
+    "statements": 1756,
+    "percent": 86.44646924829158
+  },
+  "gate": {
+    "name": "race",
+    "cwd": "/Users/yanjixiong/github/mini-loop/go",
+    "command": [
+      "go",
+      "test",
+      "-parallel=2",
+      "-race",
+      "-p=1",
+      "-count=1",
+      "-timeout=300s",
+      "-covermode=atomic",
+      "-coverpkg=./...",
+      "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-batch-step-boundary-2026-10-13/resumed/coverage.out",
+      "./..."
+    ],
+    "limits": {
+      "rss_kib": 3145728,
+      "gomaxprocs": 2,
+      "gomemlimit": "512MiB",
+      "goflags": "-p=1",
+      "cpu_percent_sustained": 250,
+      "cpu_grace_seconds": 30,
+      "sample_seconds": 1.0
+    },
+    "peak_rss_kib": 609488,
+    "peak_cpu_percent": 199.6,
+    "samples": 570,
+    "status": "passed",
+    "exit_code": 0,
+    "seconds": 586.064
+  },
+  "retained_profile": "var/go-batch-step-boundary-2026-10-13/resumed/coverage.out",
+  "scope": "Darwin statements only; not Python, native C, child-process interiors, branches, other platforms or full migration acceptance.",
+  "implementation_commit": "17a7fb90ae8746aaee377c5a57fa00c8a5d997d6"
+}

@@ -1,5 +1,48 @@
 # Go public surface inventory
 
+## Batch step admission follow-up — 2026-10-13
+
+Review baseline `fbe8ad4`: 32 actual Source batch profiles now compare per-call
+output hashing and whole-batch step admission. Ordinary UTF-8 faults stop later
+exclusive calls, let scheduled parallel peers finish, and admit no ledger prefix
+or result history. Parent cancellation retains repair. No public namespace or
+default was added. Explicit RunContext constructor/derivation semantics remain
+an open public review candidate; current normal-profile evidence does not prove
+omitted versus explicit-empty provenance or independent peer construction.
+
+Final cohort: 1711 frozen inputs unchanged across 19 stages; 18 passed and
+consumer inventory exited 1 solely for the unreferenced default Python parser.
+Fresh Source export has 250 files; 251 consumer fixtures include the separate
+Linux capture, with 250 candidate callers observed passing. All four type audits
+report zero findings: 465 production files / 1472 package types, 1205 public
+roots, 278 private roots and 172 package variables. Body inventory retains
+51 packages / 22277 declarations / 130 open observations.
+Full Go tests, vet and race with atomic coverage passed. Python: 2251 passed,
+28 skipped, 96 warnings and 24 subtests in 164.24s. Invariants, 19 scan guards,
+five batch guards, one barrier guard and diff checks passed.
+
+Darwin statement coverage: application 89.39% (33557/37539), all Go 89.14%
+(33923/38054), Provider 86.45% (1518/1756). Provider coverage is unchanged
+from the preceding completed cohort. These are statement observations, not
+Python/native C/subprocess/branch/cross-platform or whole-migration coverage.
+
+Resource evidence: the first Source export was stopped at host memory pressure
+warning; it is preserved as resource-blocked. After 60 seconds of normal host
+pressure, a separate cohort completed with the same limits and no resource stop.
+All heavy stages ran serially with nice 10, GOMAXPROCS=2, build parallelism 1,
+test parallelism 2, and the 512MiB Go soft memory target. Maximum sampled owned
+RSS was 609488 KiB (595.2 MiB); sampled CPU reached 298.3% briefly without the
+sustained 250% / 30-second stop condition. The guard is sampled protection, not
+an OS hard cap. The original failing native profiles and cancellation regression
+remain recorded; no assertion or timeout was relaxed.
+
+[Iteration receipt](docs/audits/go-batch-step-boundary-2026-10-13.json),
+[coverage receipt](docs/audits/go-coverage-batch-step-boundary-2026-10-13.json),
+[resource controls](docs/audits/validation-resource-controls-2026-10-13.json),
+[iteration image](docs/audits/go-batch-step-boundary-infographic-2026-10-13.png)
+and [exact image prompt](docs/audits/go-batch-step-boundary-infographic-2026-10-13.prompt.txt).
+
+
 ## Public spill text follow-up — 2026-10-13
 
 Review baseline115f147:25 additional public budget and8 actual AST Agent Source profiles compare
