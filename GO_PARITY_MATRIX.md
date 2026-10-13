@@ -1,5 +1,91 @@
 # Python to Go parity matrix
 
+## 2026-10-14 HTTP scalar query selection
+
+From `7a295d9`, the active G3/G7 corpus contains **99 actual Source cases**:
+15 authentication, 18 session-list, 12 session-trajectory, 11 global-trajectory,
+17 envelope, eight trajectory-session, nine export-format and nine epoch cases.
+Complete `create_app` middleware and FastAPI validation select repeated scalar
+values, including empty-last values, before the appropriate route admission.
+The Go implementation shares named scalar selection/validation helpers; bool
+aliases and bounded integer limits retain captured Source semantics.
+Both Source `urlencode` and Go `QueryEscape` generate valid encoding for this
+99-case corpus; raw malformed percent escapes and bare semicolons are outside
+its measured scope.
+
+The real native SQLite/trajectory consumer uses separately captured seed
+records. SSE scope is explicit durable cursor **1 → sequence 2**, with two
+Source emits per session and actual disconnect cleanup. New missing-cursor or
+live-backlog parity is not claimed; existing real-run default-cursor coverage
+remains required. Error responses, owner isolation and export's store → format
+→ owner order are part of this finite corpus.
+
+**Finite slice validation complete; full migration acceptance remains open.**
+Source capture completed; the first native run
+passed **94/99**. After correcting five error-text differences, the focused
+consumer passes **99/99**; baseline `7a295d9` fails 55 and passes 44 with the same
+consumer. Runtime `7aa79ce089d66b0c183bfa4a5523e8c2c481df34` is committed
+and fast-forwarded into local main after the final gates. Complete Go/atomic coverage passed all 51 packages, with 1,449
+top-level passes / six skips and 11,566 subtest passes / one skip; vet passed.
+The stage took 371.038 seconds, with sampled tree RSS 442,464 KiB
+(432.09375 MiB) and peak CPU 199%.
+
+The first complete attempt retained 50 passing packages and one AST timing
+failure (3.725 seconds versus a two-second assertion). Its identical instrumented
+isolated `-count=2` control passed without code or assertion changes; this does
+not establish the original cause or timing reliability. Coverage uses only the
+successful complete all-package atomic profile: app **89.457409% (33848/37837)**,
+all Go **89.210471% (34214/38352)** and provider **86.206897% (1575/1827)**.
+These are statements, excluding native C/subprocess interiors, Python and branches.
+
+Complete Source export passed **257 files**; full Python passed **2,264 tests**,
+with 28 skips, 104 warnings and 24 subtests (pytest 204.57 seconds; monitored
+stage 206.068 seconds). Invariants 77 and scans 19 passed. Each of the three
+selected Source guards—SSE-only query auth, hidden ownership and trajectory
+export—passed its baseline and caught its intended mutant. Four type audits
+have zero findings: syntax 467 production files / 1,478 types, public
+51 packages / 1,207 types, private 51 / 282 roots and variables 51 / 172 variables.
+All 13 final gates recorded equal before/after hashes for 1,784 frozen inputs.
+
+Consumer inventory remains **failed (exit 1)**: 256/258 associations are
+`test_pass_observed`, with only `python-provider-idna.json` and
+`python-syntax-parser.json` unreferenced. The current race gate was not rerun;
+prior full race evidence applies only to `f913d20`. Archify delivery exited 0
+with 9/9 checks, while its generic read-only freeze wrapper retained a failure
+for the expected generated HTML mutation. That wrapper is not relabeled pass.
+Local main integration is verified; complete P0/P1/G0–G7 acceptance remains open. Exact attempts and
+final results are retained under `var/go-http-query-selection-2026-10-14/`.
+
+IDNA approval/native adoption, default syntax-parser adoption and fresh
+fixed-environment Linux full gates remain required open items. The actual
+fixed-SDK escaped lone-surrogate caller/next-request probe is still uncompleted;
+earlier finite and nonfinite caller receipts do not establish that behavior.
+Original P0/P1/G0–G7 criteria and historical failed attempts are preserved.
+
+### Next candidate: raw query decoding before scalar selection
+
+Static Source `QueryParams` uses Latin-1 for incoming bytes followed by
+`parse_qsl` (`&` separator, UTF-8 errors replaced), retaining malformed percent
+text and bare `;`. Go `URL.Query` ignores `ParseQuery` errors and discards
+affected items before last-value selection. Plan ten actual raw-byte route
+captures: valid-then-`%`/`%GG`, bare `bad;tail` versus `%3B`, valid `%25`, reverse
+order, header precedence, `limit=2` then `%`, and truncated `%E2%82` in token and
+limit. Preserve durable-cursor SSE, owner and disconnect controls. No actual
+capture or implementation is claimed yet. ASGI bytes do not prove Uvicorn/proxy
+admission; this candidate is not a vulnerability or complete wire-parity claim.
+
+### Next finite candidate: public stuck-threshold disable controls
+
+Static review of public `StuckThresholds` construction and Source `inspect`
+shows negative `unproductive_tool` and `alternating` values reach the `<= 0`
+and `< 4` rule-disable branches respectively; Go `NewStuckDetector` rejects
+them. These two values cannot be covered by a blanket invalid-configuration
+adaptation claim. Plan four actual public Source observations—negative disable
+and positive trigger for each rule—along the existing `loop_contract_test`
+consumer, with unchanged default controls and precedence. This candidate is
+not yet captured, implemented or accepted. The escaped lone-surrogate SDK
+caller/next-request probe remains open separately.
+
 ## 2026-10-14 SDK caller observations — validation complete
 
 Capture224 compares actual direct/SSE SDK construction for unknown/malformed
@@ -1460,6 +1546,32 @@ contracts, not a Go parity implementation or refreshed coverage. See the current
 plan's whole-usage tasks and `docs/audits/go-whole-usage-source-2026-10-11.json`.
 
 ## Current acceptance index — 2026-10-13
+
+Current pointer, **2026-10-14**: validated runtime `7aa79ce` is on local main.
+The [HTTP scalar query selection slice](#2026-10-14-http-scalar-query-selection)
+has completed finite slice validation. Its 99 Source cases are captured; the first native comparison
+passed 94/99, the corrected focused consumer passes 99/99, and baseline
+`7a295d9` fails 55/99. Global migration acceptance remains open.
+Runtime `7aa79ce` is committed and integrated; complete Go/atomic (51 packages) and
+vet pass, as do Source export (257 files), full Python (2,264 passes / 28 skips),
+77 invariants, 19 scans, three selected mutation guards and four zero-finding
+type audits. Consumer inventory remains failed at 256/258 observed passing
+associations, with IDNA/parser unreferenced. Current race was not rerun;
+prior full race evidence applies only to `f913d20`.
+Its successful atomic statement coverage is app 89.457409%, all Go 89.210471%,
+provider 86.206897%; the failed first AST timing attempt remains recorded above.
+The latest completed provider caller delivery and its precise gate scope are
+in the [SDK caller receipt](docs/audits/go-sdk-caller-observations-2026-10-14.json).
+Historical coverage numbers below belong to their recorded snapshots.
+IDNA approval/native adoption, default syntax-parser adoption, fresh fixed-image
+Linux full gates and the actual escaped lone-surrogate caller/next-request probe
+remain open; no complete P0/P1/G0–G7 acceptance is claimed.
+
+### Historical acceptance checkpoints — through 2026-10-13
+
+The following index rows retain their original dates and evidence. References
+to “current” below belong to those historical snapshots; use the pointer above
+for this iteration's status.
 
 Current validated runtime: **`9a20803`**, decision-time permission events.
 [Current receipt](docs/audits/go-permission-events-2026-10-13.json) records Source
@@ -6436,7 +6548,7 @@ Unicode casing tables are generated separately by
 | Optional user resources | `user_resources.py`, `memory.py`, `skill_capture.py`; `tests/test_user_resource_lifecycle.py` | Owner snapshots and bounded publication | Canonical fields, exact private directories, layered catalogues, scoped Markdown memory, immutable owner snapshots and operator create-only publication are implemented as typed libraries. Snapshot 63 compares 16 actual Python publication scenarios and 27 calls; explicit trusted manager/runtime snapshot binding is implemented; explicit owner memory tools, automatic selection/extraction/consolidation and contained source-endpoint capture are implemented; snapshots 68/69 compare origins, owner isolation and actual endpoint calls. Shared manager Memory fallback now binds exact admitted owners across create/fork/ordinary and scheduled restoration; native tests reopen Markdown files and preserve resource-resolver precedence. Launcher/configuration roots and individual memory tool/auto selection are now implemented; snapshot 70 compares seven actual source constructor cases. Trusted successful-turn skill capture is now implemented; typed candidate parsing and preview business flow are implemented; standalone native-session model binding is implemented; manager binding and HTTP publication remain pending. |
 | Optional typed decisions | `decisions.py`, `decision_tools.py`, `decision_llm.py`; `tests/test_decisions.py`, `test_decision_tools.py`, `test_decision_llm.py`, `test_decision_replay.py` | Explicit choice/score/noul judgments, actual model/usage, default-off and no execution authority | The go/decisions operator library has closed JSON Value variants and named Request/Question/Answer/Result/TokenUsage/Provider contracts. Snapshots detach every mutable surface. Strict request/result validation preserves IDs, full distributions, maximum choice, weighted score/legend, noul probability and optional whole usage. Fixed-endpoint Jev transport disables redirects, ignores proxies for owned clients, closes response bodies, bounds total deadlines/read bytes/retries and sanitizes transport feedback. Borrowed transports stay caller-owned; concurrent calls are tested. Snapshot 53 compares 28 actual source requests, 22 results, four UTF-8 bounds and 21 offline HTTP cases, including retry-after clamp/fallback, non-retried status, malformed/duplicate payload and transport faults. Native tests additionally cover local TLS, cancellation/read caps and exact large-integer legend equality. Go counts are signed64; nonstandard JSON/duplicate local keys and excessive wire nesting fail closed. Canonical map order is not exact source insertion order. Explicit RuntimeConfig/ManagerServices DecisionTools now installs the closed external-risk tool; backend injection alone leaves it off. State and member names are masked/revalidated before custom/Jev or fresh isolated LLM queries. Shared model limits, complete-response checks before recovery, typed decision/custom-model metadata and private trajectory inputs are implemented. Snapshot 54 compares 31 actual Python LLM recipes and eight gate outcomes. Native tests cover child/manager composition, fallback/parent isolation, timeout/cancellation/panic, recording projections and exact >4 KiB result replay under current guards. Default-off remains. Launcher/environment activation now selects llm/jev, with explicit backend precedence and credential-free offline inspection. Snapshot 55 compares actual source maximum-byte memory/SQLite-reopen replay, aggregate shedding and Unicode bounds/reconciliation; native common-gate replay and recreated stored adapters match result hashes/retention. Snapshot 56 compares cooperative cancellation, journal cancellation and permit release, and pins a source escaped-model negative case. Go masks result structures before escaping; full managed tests inspect decoded live/SSE, sink callbacks, private trajectories, stored events/messages and action results. This deliberately closes the source escaped-output masking gap. Native SQL/restart and live-provider audit remain pending. Native replies require complete model/usage, surrogate refusal occurs earlier, unknown backend failures normalize to RuntimeError and derived floats use 1e-12 tolerance. No paid service or native SQL decision evidence is claimed. |
 | Configuration and standalone startup | `config.py`, `__main__.py`, `server.py`, `skills.py`; configuration/startup tests | Named settings, loud validation, explicit service wiring, bind guard, shutdown and redacted diagnostics | `go/config` has all 49 source fields; 64 real Python outcomes compare accepted values and rejected configurations. Go has explicit int/duration bounds and pure SDK loading without dotenv discovery or Python Settings workspace mkdir. Compiled commands now discover dotenv once from cwd/ancestors using Source frozen-program origin, publish prepared effects for child inheritance, and report disabled/enabled discovery; ordinary Python config-module origin remains an explicit SDK selection. No reload follows. `launcher.New` wires supported services, `App.Serve` owns TCP listener/shutdown, and cmd/miniloop handles SIGINT/SIGTERM. Default trajectory recording is active; its configured root failure refuses startup. Enabled unavailable services still refuse activation. The private spill root is now best-effort constructed by default; an empty path disables it, and root failure retains startup. Builtin skill bytes/descriptions/load match Python. `--dump-config` reports settings-and-availability without runtime/probe, redacts credential fields and URL secrets, and includes Go VCS build info; it is not full effective posture. Local HTTP provider and real shell timeout tests prove option wiring. Positive subnanosecond durations and nonfinite values refuse; fake-delay validation also runs for a real provider. Public console/UI shells are implemented; missing optional services and full posture remain G3/G5/G6. |
-| Audit and extension seams | `config.py`, `harness.py`, `identity.py`, `audit.py`, `EXTENDING.md`; `tests/test_extension_contracts.py`, `test_effective_posture.py` | Explicit constructor dependencies, truthful default posture and credential-free reporting | Typed UserPromptHook and named MessageInjector seams receive detached history/todo/authority views; full injector batches validate before append, before runtime facts and compaction. Optional typed ApprovalReviewer and ApprovalRedactor seams, default CachePolicy/StuckDetector, typed StopHook continuation and optional ordered EventSink are implemented. Sink faults/panics are contained; callbacks may inspect Info/events but cannot recursively emit or block on live Messages. Go constructors reject invalid cache strides and detector thresholds; valid configured cases match Python. Reviewer faults/invalid verdicts abstain; remembered human grants precede review, and readonly/final denial stays authoritative. Guardian implementation, full effective-posture reporting and future provider/SQLite/optional-feature sink masking remain pending. The typed go/secrets Registry preserves named injection APIs, lazy cached values, retry/reporting, ANSI matching, Unicode casing and the default Null posture; 15 mask recipes, four environments and ten typed previews match actual Python. Runtime integration tests cover journal-before-observer order, raw execution arguments, masked model results, scoped shared-broker registries, compaction artifacts and child event isolation. The real shell consumes the selected environment and masks full/split streams before projection. Runtime registries bind independent credential configurations without mutating a shared executor. |
+| Audit and extension seams | `config.py`, `harness.py`, `identity.py`, `audit.py`, `EXTENDING.md`; `tests/test_extension_contracts.py`, `test_effective_posture.py` | Explicit constructor dependencies, truthful default posture and credential-free reporting | Typed UserPromptHook and named MessageInjector seams receive detached history/todo/authority views; full injector batches validate before append, before runtime facts and compaction. Optional typed ApprovalReviewer and ApprovalRedactor seams, default CachePolicy/StuckDetector, typed StopHook continuation and optional ordered EventSink are implemented. Sink faults/panics are contained; callbacks may inspect Info/events but cannot recursively emit or block on live Messages. Historical constructor validation rejects cache strides and detector thresholds; the 2026-10-14 static review identifies negative unproductive_tool/alternating values as Source rule-disable controls requiring actual capture, not established invalid-configuration adaptations. Other captured configured cases match Python. Reviewer faults/invalid verdicts abstain; remembered human grants precede review, and readonly/final denial stays authoritative. Guardian implementation, full effective-posture reporting and future provider/SQLite/optional-feature sink masking remain pending. The typed go/secrets Registry preserves named injection APIs, lazy cached values, retry/reporting, ANSI matching, Unicode casing and the default Null posture; 15 mask recipes, four environments and ten typed previews match actual Python. Runtime integration tests cover journal-before-observer order, raw execution arguments, masked model results, scoped shared-broker registries, compaction artifacts and child event isolation. The real shell consumes the selected environment and masks full/split streams before projection. Runtime registries bind independent credential configurations without mutating a shared executor. |
 
 Snapshot 48 invokes the actual Python events endpoint iterator over SQLite/Null
 for 17 window/header cases, including subscription-before-read and a concurrent

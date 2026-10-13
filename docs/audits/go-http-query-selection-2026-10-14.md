@@ -3,6 +3,9 @@
 Baseline: `7a295d9`; branch: `codex/go-http-query-selection`.
 This is one G3/G7 HTTP compatibility slice. Full Go migration acceptance remains
 open under the original plan and parity matrix.
+Validated runtime `7aa79ce089d66b0c183bfa4a5523e8c2c481df34` was fast-forwarded
+into local main after the final gates. This delivery record follows that runtime
+commit; no remote fetch or push was performed.
 
 ## What changed
 
@@ -31,6 +34,13 @@ TokenAuth, SessionManager, SQLite and TrajectoryStore. It normalizes generated
 IDs, workspace paths and seed timestamps. Routes and query parsers are not
 replaced. The fixture captures complete selected response headers, JSON/text/
 JSONL/SSE observations, and before/after effects.
+
+Both sides encode query values with `urlencode` / `QueryEscape`. These 99 cases
+therefore establish selection for properly encoded query values, not raw
+malformed-percent, bare-semicolon or invalid-UTF-8 decoding equivalence. Static
+review identifies a next slice: Go can discard a malformed raw query item while
+Source retains its value. Actual raw-byte route capture is still required;
+ASGI scope bytes alone would not establish Uvicorn or proxy wire admission.
 
 | Group | Cases |
 | --- | ---: |
@@ -64,12 +74,35 @@ Exact Source hashes and fixture bytes are retained in the JSON receipt.
 
 ## Validation and resource profile
 
-Final complete validation and coverage are pending; this section is finalized
-before commit. The focused Python gate passed five tests, and the focused native
-consumer passed all 99 subcases. The first full Go attempt failed the existing
-AST child cleanup timing assertion (`closed-pipes`: 3.725s against 2s); isolated
-diagnosis and the final gate are pending. Failed baseline and intermediate
-stages are retained as failures.
+Final gates ran on identical **1784 frozen runtime/Source/canonical inputs**:
+
+| Gate | Result |
+| --- | --- |
+| Full Go with all-package atomic coverage | 51 package passes; 1449 top-level passes, 6 skips; 11566 subtest passes, 1 skip |
+| Go vet | Passed |
+| Full Python | 2264 passed, 28 skipped; 104 warnings; 24 subtests passed |
+| Focused Source / native query consumer | 5 Python tests / 99 native cases passed |
+| Source export `--check` | 257 files current |
+| Invariants / scanning guards | 77 modules / 19 guards passed |
+| Selected Source mutation guards | SSE-only URL token, hidden ownership and trajectory export owner guard passed |
+| Syntax/public/private/package-variable type audits | All four passed, zero findings |
+| Consumer inventory with actual Go results | **Failed**: 256/258 passing candidate associations; IDNA/parser unreferenced |
+| Diff check / gofmt / README outline | Passed |
+
+Application statement coverage is **33848/37837 = 89.4574%**, all Go
+**34214/38352 = 89.2105%**, and provider **1575/1827 = 86.2069%**. The 91,772,739
+byte atomic profile was streamed; duplicate spans are merged by reached status.
+This does not measure branches, Python, C or subprocess interiors. Current race
+was not rerun; prior full race evidence applies only to `f913d20`.
+
+The first full Go attempt failed the existing AST child cleanup timing assertion
+(`closed-pipes`: 3.725s against 2s). That test then passed twice with the same
+instrumentation, followed by a complete successful Go run. No AST code or time
+assertion was changed; no root cause or general stability conclusion is claimed.
+Failed baseline and intermediate stages are retained as failures.
+
+The successful complete Go stage took **371.038s**, with sampled task-tree RSS
+**432.09MiB** and CPU **199%**. Full Python took 206.068s (204.57s pytest time).
 
 Heavy stages run serially using the explicitly relaxed profile: GOMAXPROCS=2,
 `-p=1`, `-parallel=2`, `nice 10`, GOGC=75 and soft GOMEMLIMIT=512MiB. Sampled
