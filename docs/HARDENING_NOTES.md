@@ -1,5 +1,24 @@
 # Hardening notes
 
+## Go configured stuck thresholds and fault publication — 2026-10-14
+
+The Source public constructor does not reject integer thresholds. Disable
+controls, immediate monologue/nudge exhaustion and repeat slicing therefore
+cannot be collapsed into an invalid-configuration adaptation. Go keeps an
+explicit configuration bit so supplied all-zero thresholds do not invoke the
+native zero-value default. Slice bounds check emptiness before negating a
+negative count, including the minimum host integer.
+
+A built-in empty selected repeat window returns a named Source `IndexError`.
+Tool effects/events have already occurred, while Source has not published the
+result batch to history. This configured fault path preserves that timing;
+custom detector errors retain the established completed-result repair control.
+The ordinary model-ingress transcript guard remains active. Actual Source
+follow-up attempts and the native earlier refusal require separate caller
+reconciliation; neither a passing direct inspection test nor a contractaudit
+candidate link certifies their equivalence.
+
+
 ## Go raw-query decoding and authentication fault observations — 2026-10-14
 
 The actual Source raw-query corpus includes malformed percent text, semicolons,

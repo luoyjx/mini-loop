@@ -457,7 +457,11 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 		s.publishLive()
 		signal, inspectErr := s.stuckDetector.Inspect(s.stuckState())
 		if inspectErr != nil {
-			s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+			// The built-in Source slice fault precedes history publication. Custom
+			// detector failures retain the existing completed-result repair.
+			if _, sourceFault := inspectErr.(*StuckInspectionError); !sourceFault {
+				s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+			}
 			return "", inspectErr
 		}
 		if signal != nil {

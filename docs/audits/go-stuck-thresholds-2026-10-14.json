@@ -1,0 +1,2378 @@
+{
+  "schema_version": 1,
+  "baseline": "6ea2fd264846697150e3bcc2691a690f9f160a7b",
+  "branch": "codex/go-stuck-thresholds",
+  "status": "finite_integer_threshold_validation_complete",
+  "full_port_acceptance": false,
+  "raw_evidence_root": "var/go-stuck-thresholds-2026-10-14",
+  "stages": {
+    "architecture": {
+      "status": "passed",
+      "command": [
+        "node",
+        "/Users/yanjixiong/.codex/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "docs/mini-loop-system.architecture.json",
+        "docs/mini-loop-system.architecture.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.432,
+      "peak_rss_kib": 176,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 7,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:14:58.817568+00:00",
+      "completed_utc": "2026-10-13T22:15:00.273001+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/freeze.after.json",
+          "bytes": 698,
+          "sha256": "3275f66e4d6586486427a2bfa613894231c6dafb7274cc485b5ad732abe5cd5e"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/freeze.before.json",
+          "bytes": 698,
+          "sha256": "3275f66e4d6586486427a2bfa613894231c6dafb7274cc485b5ad732abe5cd5e"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/pid-state.json",
+          "bytes": 55,
+          "sha256": "d259a6c006750eacf7b3381f73a8ad97995e0f75abcd4fd3360d7c72f2dc05d0"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/resources.json",
+          "bytes": 2909,
+          "sha256": "05ac8e5ac1b0f0831c06dc37c58ef2fb89607bee562e7f86d008472aa3ba4e57"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/samples.jsonl",
+          "bytes": 729,
+          "sha256": "c641c81aa1eb6fa1347ff5d1a4569ef31382aae7fbcb373117ed9629780cc479"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/stability.json",
+          "bytes": 537,
+          "sha256": "89482c80443e3df765257a00c92197933104f86bea168caf7947f40824cb8bfd"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/architecture/stdout.log",
+          "bytes": 692,
+          "sha256": "322f4dac71ed04fd12cc04f631ae6ba582f3e760d51a599b3a27cfd2e2ba7a0f"
+        }
+      ]
+    },
+    "before-decisions": {
+      "status": "resource_blocked",
+      "command": [
+        "go",
+        "run",
+        "/Users/yanjixiong/github/mini-loop/var/go-stuck-thresholds-2026-10-14/decision_probe.go",
+        "/Users/yanjixiong/github/mini-loop/go/testdata/python-stuck-thresholds.json"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 75,
+      "reason": "owned_process_priority_not_lowered",
+      "seconds": 3.641,
+      "peak_rss_kib": 928,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1282,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:19:24.882929+00:00",
+      "completed_utc": "2026-10-13T22:19:28.717593+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/freeze.after.json",
+          "bytes": 210243,
+          "sha256": "9195edd51bcbf1e008892d37ba22b2b4eb8eee639a1ce2da6de0104b392cbd82"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/freeze.before.json",
+          "bytes": 210243,
+          "sha256": "9195edd51bcbf1e008892d37ba22b2b4eb8eee639a1ce2da6de0104b392cbd82"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/pid-state.json",
+          "bytes": 55,
+          "sha256": "21ef0f78986bf87463360fd10c85f8fecf93d42b91fabc53731954ba335e4647"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/resources.json",
+          "bytes": 3484,
+          "sha256": "1fee5049f77205d06ba23a04eb7b09e6539f409372a987cad1fc080bc45cbe66"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/samples.jsonl",
+          "bytes": 361,
+          "sha256": "b34dfd7de21489bd59224b30fc0dd05d663470237197ce9560c13daee65b2159"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/signals.jsonl",
+          "bytes": 674,
+          "sha256": "70f3900b0cef52c36f8a6d53eb0cb9f35143e9f4a55b335a574ab7f224fc5a3a"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/stability.json",
+          "bytes": 535,
+          "sha256": "773932118f6e5fc46b7f2408f20cdb562f946ca80263aff20fc59dd09503824f"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions/stdout.log",
+          "bytes": 107,
+          "sha256": "dfcd5a1da3215b6f502d7265196bb2da5461cb704e3a7a14672ab25b34cb82cf"
+        }
+      ]
+    },
+    "before-decisions-fixed-import": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "/Users/yanjixiong/github/mini-loop/var/go-stuck-thresholds-2026-10-14/decision_probe.go",
+        "/Users/yanjixiong/github/mini-loop/go/testdata/python-stuck-thresholds.json"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 14.841,
+      "peak_rss_kib": 271760,
+      "peak_cpu_percent": 193.3,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1282,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:21:07.792202+00:00",
+      "completed_utc": "2026-10-13T22:21:22.914422+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/freeze.after.json",
+          "bytes": 210243,
+          "sha256": "ce3e75ff50530bc2b0e598059781c17607e5bd2dc583827052409b7bede52f16"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/freeze.before.json",
+          "bytes": 210243,
+          "sha256": "ce3e75ff50530bc2b0e598059781c17607e5bd2dc583827052409b7bede52f16"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/pid-state.json",
+          "bytes": 55,
+          "sha256": "7a2acd8c0aa8953c11dc654f98c37668939e0765886a80a0921db25ca1403f7d"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/resources.json",
+          "bytes": 3273,
+          "sha256": "614da13c24834434ff6b80b0dc038ed4dd28ce31204c0f7b51f0c340c0d36dd0"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/samples.jsonl",
+          "bytes": 7218,
+          "sha256": "9a6565d162fb189959d4f83677fd06ca26afd8c90bf4ff41f87a227ead094b71"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/stability.json",
+          "bytes": 536,
+          "sha256": "821f5885815d6951e2f9045c77d666c7e3c4949a38fca0c7d5105dc94c997a7f"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/stdout.log",
+          "bytes": 14268,
+          "sha256": "6d6c410e6d51c6b65b680168aebf607024975f1dabdafb3a28b6d2bd1904b8f7"
+        }
+      ]
+    },
+    "consumers": {
+      "status": "failed",
+      "command": [
+        "go",
+        "run",
+        "./tools/contractaudit",
+        "-manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-stuck-thresholds-2026-10-14/source-manifest.json",
+        "-results",
+        "/Users/yanjixiong/github/mini-loop/var/go-stuck-thresholds-2026-10-14/go-full-coverage/stdout.log",
+        "-require-results"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "reason": null,
+      "seconds": 2.463,
+      "peak_rss_kib": 34560,
+      "peak_cpu_percent": 21.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:28:08.892121+00:00",
+      "completed_utc": "2026-10-13T23:28:11.437064+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/pid-state.json",
+          "bytes": 56,
+          "sha256": "e9b8073104afc45c4435b31480c3a1972738909480e8387d355c157c3119820c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/resources.json",
+          "bytes": 3187,
+          "sha256": "1b81148131324048386ef5150b789ea89ad67e83b1d6e83d284896b8f17e45b7"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/samples.jsonl",
+          "bytes": 1281,
+          "sha256": "263c8479e3299ce288424c0a7d8de99acdb34788e8f41d9a415ee13cec607b1d"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/stability.json",
+          "bytes": 537,
+          "sha256": "55e9c1562578cbc519fa3392c1cf0048f183b4ad1d1eb205f76b6d0c10cabf06"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/consumers/stdout.log",
+          "bytes": 333075,
+          "sha256": "0d1be6316ce1548606f4f1fa34ccaacbb6b96250ab241c9722b67c6488e286eb"
+        }
+      ]
+    },
+    "go-focused": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./agent",
+        "-run",
+        "TestStuckThreshold|TestStuckDecisionsAndHashesMatchPython|TestActualLoopNudgesAndHaltsMatchPython|TestDefaultCacheAndDetectorZeroValuesAndInvalidConfigs|TestFailedDetectorPreservesAnsweredBatch|TestStuckWindowBoundAndUserTurnReset|TestStuckWindowBoundAndUserTurnReset|TestStuckWindowBoundAndUserTurnReset",
+        "-timeout=5m"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "reason": null,
+      "seconds": 1.406,
+      "peak_rss_kib": 1152,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:22:20.765838+00:00",
+      "completed_utc": "2026-10-13T22:22:22.285718+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "0214d9371fd5becd0736445a81dda4d5cd4bc9a9cd3bf20bf8713263a4e15b26"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "0214d9371fd5becd0736445a81dda4d5cd4bc9a9cd3bf20bf8713263a4e15b26"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/pid-state.json",
+          "bytes": 55,
+          "sha256": "82898424a86c98ff0c2de9eb0421e797763548975a7cfd7707397f2acf430cc9"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/resources.json",
+          "bytes": 3338,
+          "sha256": "5014b66ffc8249de75195f0c0db49ae5128a93a64dc411d9e66e341c51b27ca8"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/samples.jsonl",
+          "bytes": 730,
+          "sha256": "66c9ae09b97622e3f32c518bf7e69e77fee151aa9fa1b7f5b37eb04d8c56b77f"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/stability.json",
+          "bytes": 537,
+          "sha256": "de2a430381fefdb203522a1d281c8ffac28ef5760c1f3328332bbf3318560c18"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused/stdout.log",
+          "bytes": 221,
+          "sha256": "c204a9923325b78f7afe1fe0cc53c7dc5db68b46c537b290286716acc37dc3c4"
+        }
+      ],
+      "test_results": {
+        "packages": {},
+        "top_level_tests": {},
+        "subtests": {},
+        "plain_diagnostics": [
+          "# github.com/luoyjx/mini-loop/go/agent",
+          "agent/stuck_threshold_contract_test.go:14:2: package mini-loop/protocol is not in std (/usr/local/go/src/mini-loop/protocol)",
+          "FAIL\tgithub.com/luoyjx/mini-loop/go/agent [setup failed]"
+        ]
+      }
+    },
+    "go-focused-event-decode": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./agent",
+        "-run",
+        "TestStuck|TestActualLoopNudgesAndHaltsMatchPython|TestDefaultCacheAndDetectorZeroValuesAndInvalidConfigs|TestFailedDetectorPreservesAnsweredBatch",
+        "-timeout=5m"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "reason": null,
+      "seconds": 17.088,
+      "peak_rss_kib": 550480,
+      "peak_cpu_percent": 197.8,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:27:47.735827+00:00",
+      "completed_utc": "2026-10-13T22:28:05.103384+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "2b40ef68b86431ea848818f32a3ed79ad127ba097ba845054e1834084029c1e4"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "2b40ef68b86431ea848818f32a3ed79ad127ba097ba845054e1834084029c1e4"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/pid-state.json",
+          "bytes": 55,
+          "sha256": "b9f8c2d5239a2f1b0ddaa576626a1355998583f663d6141437b04f5caaffc9bd"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/resources.json",
+          "bytes": 3354,
+          "sha256": "95fa0bbd9aa5c165dc491a56f9afd6dbf38f164285d7c103acdc0875feba0f28"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/samples.jsonl",
+          "bytes": 8317,
+          "sha256": "121c3c87f89c83e75c14e8f73d87794af99c3050fded76f3a31d215d5bce1cfb"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/stability.json",
+          "bytes": 535,
+          "sha256": "58c6dfd27dc68acbdd6002ad23cad7340249c676bcb4d1008bf74d15094881ef"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-event-decode/stdout.log",
+          "bytes": 111911,
+          "sha256": "b6a8f59ba2404ae1bc90e1097111c5e67c6a407f433b168e279036af94fc521d"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 1
+        },
+        "top_level_tests": {
+          "pass": 9,
+          "fail": 2
+        },
+        "subtests": {
+          "pass": 94,
+          "fail": 4
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-focused-final": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./agent",
+        "-run",
+        "TestStuck|TestActualLoopNudgesAndHaltsMatchPython|TestDefaultCacheAndDetectorZeroValuesAndInvalidConfigs|TestFailedDetectorPreservesAnsweredBatch",
+        "-timeout=5m"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 18.262,
+      "peak_rss_kib": 543632,
+      "peak_cpu_percent": 199.7,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:29:41.562974+00:00",
+      "completed_utc": "2026-10-13T22:30:00.048479+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/pid-state.json",
+          "bytes": 55,
+          "sha256": "9b5c890451a5a2200116f2973ac1e842a0eea8e4554c60f34ca5b663e113b3f5"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/resources.json",
+          "bytes": 3269,
+          "sha256": "2c282a548b1193ff05c5b841e00599ce462b36733438bbebfaca129c21b73c94"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/samples.jsonl",
+          "bytes": 8689,
+          "sha256": "d0e5930db1fbdce08976e0bf9cdb580fe8234791678f0a2024c667ff3ed298b9"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/stability.json",
+          "bytes": 537,
+          "sha256": "09617b655e41f11c26ff6da706f11b05f2dc20903586bc4d91a79d892c1f4e58"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-final/stdout.log",
+          "bytes": 112707,
+          "sha256": "e310fe06a9619a8c40ea492a5c4bf109cff07e5b7b5b75c7234229b6fea279fb"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 1
+        },
+        "top_level_tests": {
+          "pass": 11
+        },
+        "subtests": {
+          "pass": 98
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-focused-fixed-import": {
+      "status": "failed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "./agent",
+        "-run",
+        "TestStuck|TestActualLoopNudgesAndHaltsMatchPython|TestDefaultCacheAndDetectorZeroValuesAndInvalidConfigs|TestFailedDetectorPreservesAnsweredBatch",
+        "-timeout=5m"
+      ],
+      "exit_code": 1,
+      "runner_exit_code": 1,
+      "reason": null,
+      "seconds": 20.417,
+      "peak_rss_kib": 552640,
+      "peak_cpu_percent": 197.2,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:24:28.941405+00:00",
+      "completed_utc": "2026-10-13T22:24:49.824980+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "19dd2f62d8612f1fc5be560d623114937ca0766b24fc83f879abb4cd62bd2bac"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "19dd2f62d8612f1fc5be560d623114937ca0766b24fc83f879abb4cd62bd2bac"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/pid-state.json",
+          "bytes": 55,
+          "sha256": "77a3ecf91e7900184365b8c449717839fcecacd6c58be9c5db1c4d728bf405ce"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/resources.json",
+          "bytes": 3354,
+          "sha256": "68b8db4e84316e0ab749825eea0983b82ce3bd1f7379262ee78ee87937c40de6"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/samples.jsonl",
+          "bytes": 9938,
+          "sha256": "f850cf07ccc1e64d38efc56db18b51e1e21a60b6bfb5479522543fed675aff4b"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/stability.json",
+          "bytes": 537,
+          "sha256": "c3a6bb093bf4c23feb6365b5fbe7ea975f27ad24a40b3c1c1982f02354b3881a"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-focused-fixed-import/stdout.log",
+          "bytes": 29177,
+          "sha256": "06cbaab3a53d80710911f5a595dc0a81808c44e3aee1f21ccdb98aa9bbb4e298"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "fail": 1
+        },
+        "top_level_tests": {
+          "pass": 7,
+          "fail": 4
+        },
+        "subtests": {
+          "pass": 21
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-full-coverage": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-coverpkg=./...",
+        "-covermode=atomic",
+        "-coverprofile=/Users/yanjixiong/github/mini-loop/var/go-stuck-thresholds-2026-10-14/go-full-coverage/coverage.out",
+        "./..."
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 366.654,
+      "peak_rss_kib": 611952,
+      "peak_cpu_percent": 200.0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:31:08.924491+00:00",
+      "completed_utc": "2026-10-13T22:37:15.960619+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/coverage.out",
+          "bytes": 92035591,
+          "sha256": "612debb5cae204765e437214359d159726c6f2b354e7b1aefa9acbf9cda484b9"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/pid-state.json",
+          "bytes": 55,
+          "sha256": "7dee626531dc43043fdbe830bdc4b96e1702736cfd1b8145c0fcd378cb3eea4b"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/resources.json",
+          "bytes": 21310,
+          "sha256": "3e3c736eac1322ca5c5512c916e8eac2de0648d95670ad1a970d41ed62145318"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/samples.jsonl",
+          "bytes": 233518,
+          "sha256": "707ce1c6cf91959ff529364c0e18ba9cab4aab0970fdaa0bdd6cb8058775d533"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/stability.json",
+          "bytes": 537,
+          "sha256": "d0690b6d6df37d87b65c3a2ec0d99a33e722fc2fcda47f2919c87638fc56fd88"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/stdout.log",
+          "bytes": 12508632,
+          "sha256": "5b4a8b724bf6dd4e09e5f94f5f210dcf954098d41c89bbd4873e7d0c1a1c5ff6"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 51
+        },
+        "top_level_tests": {
+          "pass": 1457,
+          "skip": 6
+        },
+        "subtests": {
+          "pass": 11669,
+          "skip": 1
+        },
+        "plain_diagnostics": []
+      }
+    },
+    "go-full-race": {
+      "status": "passed",
+      "command": [
+        "go",
+        "test",
+        "-parallel=2",
+        "-race",
+        "-count=1",
+        "-json",
+        "./..."
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 536.253,
+      "peak_rss_kib": 557152,
+      "peak_cpu_percent": 178.5,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:37:20.317363+00:00",
+      "completed_utc": "2026-10-13T23:23:17.516959+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/pid-state.json",
+          "bytes": 56,
+          "sha256": "eba16e50b73214eabb383625861134e7c7e0d009585fbfdeb8189766447d0d3b"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/resources.json",
+          "bytes": 21728,
+          "sha256": "e24b3435299856b1de9e10f3a02d2f381b89558c0ad64531f682bda61d1d178f"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/samples.jsonl",
+          "bytes": 313598,
+          "sha256": "d9503a0a93fe2db6d41f68fbdfae2e536d32c471586a08d62a4527feaf8d751c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/stability.json",
+          "bytes": 537,
+          "sha256": "adbe61026bab7645fe487a690bdb50fd6117b4c5fa0611616afb40e7e769f1bc"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-full-race/stdout.log",
+          "bytes": 12505014,
+          "sha256": "7240a199c7e96bb6eedf0a0ee24cf13f6419ed973e3cd59d7f14370cae4dedba"
+        }
+      ],
+      "test_results": {
+        "packages": {
+          "pass": 49,
+          "skip": 2
+        },
+        "top_level_tests": {
+          "pass": 1457,
+          "skip": 6
+        },
+        "subtests": {
+          "pass": 11669,
+          "skip": 1
+        },
+        "plain_diagnostics": [
+          "# github.com/luoyjx/mini-loop/go/audit.test",
+          "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-39136388/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626",
+          "# github.com/luoyjx/mini-loop/go/cmd/miniloop.test",
+          "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-3390887600/000013.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626",
+          "# github.com/luoyjx/mini-loop/go/httpapi.test",
+          "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-553356473/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626",
+          "# github.com/luoyjx/mini-loop/go/launcher.test",
+          "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-4102297873/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626",
+          "# github.com/luoyjx/mini-loop/go/reload.test",
+          "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-1525308887/000013.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626",
+          "# github.com/luoyjx/mini-loop/go/sqlitestate.test",
+          "ld: warning: '/private/var/folders/_m/0dybd23x1wv_m665n47v56bc0000gn/T/go-link-1497861300/000023.o' has malformed LC_DYSYMTAB, expected 98 undefined symbols to start at index 1626, found 95 undefined symbols starting at index 1626"
+        ]
+      }
+    },
+    "go-vet": {
+      "status": "passed",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 5.543,
+      "peak_rss_kib": 81584,
+      "peak_cpu_percent": 25.3,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:23:21.939328+00:00",
+      "completed_utc": "2026-10-13T23:23:27.567951+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/pid-state.json",
+          "bytes": 56,
+          "sha256": "08d994b59c77bb625ace4a0f0b68110f5da8ad64e2b065ffb1bad05dea137e35"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/resources.json",
+          "bytes": 2790,
+          "sha256": "058c89383b82c9608015e65cf222e853e78fe495b8bb1e7ea306e1d585bd77ff"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/samples.jsonl",
+          "bytes": 2725,
+          "sha256": "47681ba87d4d3b32c7a425851f170afef00eb3be63e780a75637fee013be91b1"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/stability.json",
+          "bytes": 536,
+          "sha256": "d2d8fd43df67a04e0bcb8417ca1df127178cdb219f9d9a90a49402641e74edca"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/go-vet/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "guard-stuck": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "stuck-halt-bypasses-the-stop-rule"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.388,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:26.377962+00:00",
+      "completed_utc": "2026-10-13T23:27:27.892359+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/pid-state.json",
+          "bytes": 56,
+          "sha256": "3e89e8f30afb1b99cbb359c9b52adb1e7c478068861139d80838d8733a4f174d"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/resources.json",
+          "bytes": 2706,
+          "sha256": "ca640ecc915d7279971ad45d38f00ab68a94885902651dec9cee69727d022286"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/samples.jsonl",
+          "bytes": 738,
+          "sha256": "e2d5efd8a36998fca3643d194292bebc84b5f8bee9a4df3aa34c4f4975006a52"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/stability.json",
+          "bytes": 536,
+          "sha256": "5ed1e9d9bba5293f715dea74c38c1c0d4a0cd0cd0c817ef58f0ce02b4d1a9fe6"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-stuck/stdout.log",
+          "bytes": 327,
+          "sha256": "3179ee3a5850d9c4d9635cf66b63c6b063aa6b305296a3f27045b5ab1f32d1d6"
+        }
+      ]
+    },
+    "guard-transcript": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "agent-skips-the-transcript-guard"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.39,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:32.156278+00:00",
+      "completed_utc": "2026-10-13T23:27:33.629611+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/pid-state.json",
+          "bytes": 56,
+          "sha256": "fed18360b0b9a90be465d1abda021b97c8608d6f4933b74a3c149a72bf5ecb3a"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/resources.json",
+          "bytes": 2707,
+          "sha256": "691c865329302b2085c673dd0640f4b2d6ee8dea75797d3307ce7d6e012b4138"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/samples.jsonl",
+          "bytes": 735,
+          "sha256": "0dfa65a2b0dfc4e70857c23244d27966b1dedf08b95ff192d0643284d2113411"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/stability.json",
+          "bytes": 537,
+          "sha256": "22f2526c18872d24f47fea312ac5c26965bdd896950f69eca5b4e7bf27bddfe6"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-transcript/stdout.log",
+          "bytes": 304,
+          "sha256": "1e93aa408a793ddf8a4cdf2d41724fa498d3660901e46dc8f3f94f52607651aa"
+        }
+      ]
+    },
+    "guard-validator": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_guards.py",
+        "-k",
+        "double-accepts-any-transcript"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.398,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:37.899021+00:00",
+      "completed_utc": "2026-10-13T23:27:39.377726+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/pid-state.json",
+          "bytes": 56,
+          "sha256": "9af97b17ace7b19a3f8053402011134487ac2a775ec1988f01b2b92fdcca019a"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/resources.json",
+          "bytes": 2702,
+          "sha256": "8f5fe6034bfc8763e46408bd0d71f0fd4e4fc8f073d566491fa30bd5e8b294a9"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/samples.jsonl",
+          "bytes": 738,
+          "sha256": "81d5add1f73b5b5301dfecb6acad24ff058231c76b0d2fa33eba72b66039510b"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/stability.json",
+          "bytes": 537,
+          "sha256": "f4efa1852fb6c717df9796b7092f395969473db7d8af2393fec650b91bd0aa90"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/guard-validator/stdout.log",
+          "bytes": 225,
+          "sha256": "d57e35d482da7e24d949c5dbf329500efd38c5e17542f7c131e00f1f6ed126b6"
+        }
+      ]
+    },
+    "invariants": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_invariants.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.355,
+      "peak_rss_kib": 192,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:06.569169+00:00",
+      "completed_utc": "2026-10-13T23:27:08.002544+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/pid-state.json",
+          "bytes": 56,
+          "sha256": "08e263fe1b286fc689e1c471c0e9922854a2286326b6495c1c9d867eb4829658"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/resources.json",
+          "bytes": 2611,
+          "sha256": "982871354037e318eb9db1150f752dff757c10d33af1e596480e7a943eb06e83"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/samples.jsonl",
+          "bytes": 736,
+          "sha256": "01c6fa84ea365ce4fb51a488a194d764b714418b0406061c0c74ec6946e35faf"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/stability.json",
+          "bytes": 537,
+          "sha256": "70fd19d38b4693ae6057cee2a8faa0c597535bb31424fc770b324c042e7766e4"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/invariants/stdout.log",
+          "bytes": 62,
+          "sha256": "b32de4bc6a1c03f99dc74eeadcee429e5603a94efb4323f138ceda5324416a78"
+        }
+      ]
+    },
+    "python-focused": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "python/tests/test_stuck_threshold_contracts.py",
+        "python/tests/test_stuck.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.43,
+      "peak_rss_kib": 256,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 506,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:17:26.993157+00:00",
+      "completed_utc": "2026-10-13T22:17:28.475299+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/freeze.after.json",
+          "bytes": 56635,
+          "sha256": "afdd2ef28149e47a5396151e1d17bed2ff0c8813d7f91c8d73219639fda642fc"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/freeze.before.json",
+          "bytes": 56635,
+          "sha256": "afdd2ef28149e47a5396151e1d17bed2ff0c8813d7f91c8d73219639fda642fc"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/pid-state.json",
+          "bytes": 55,
+          "sha256": "95d6913e5d3741a88749867e063a02d4019fc106b9fecf87187c56525f6cdd36"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/resources.json",
+          "bytes": 2500,
+          "sha256": "bd7369fdce45cbcba26e54ac61d58c4bf9bab61f42929aa85d606066a92addb4"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/samples.jsonl",
+          "bytes": 732,
+          "sha256": "81e5f0d3563566bfc02a4df9f8b0082cbd7180b507fbb611edb15c4ea15e509d"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/stability.json",
+          "bytes": 535,
+          "sha256": "ec52c289e81cd67d7486e95634680d4cad71a12d1b7e7890a0f90166c68ad8d2"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-focused/stdout.log",
+          "bytes": 99,
+          "sha256": "c6a899d130e0acd336c4ad3062d5b584bbdbd9dcf05ebef88e98c5050848bcf4"
+        }
+      ]
+    },
+    "python-full": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 99.552,
+      "peak_rss_kib": 341104,
+      "peak_cpu_percent": 298.79999999999995,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:25:22.391494+00:00",
+      "completed_utc": "2026-10-13T23:27:02.279622+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/pid-state.json",
+          "bytes": 56,
+          "sha256": "8ae988ee3db3323cc6b6cad74cf5cbba590d40900d945e67d7cd98dcc7106464"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/resources.json",
+          "bytes": 7281,
+          "sha256": "909c32760c0a15ee67071ee496126b8bc084f5540780dc88851f0c054c5f1920"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/samples.jsonl",
+          "bytes": 49059,
+          "sha256": "810dc32278e187056a8a169e781038b3fce5efd4d22806f9cfdeb8a8b75b18b3"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/stability.json",
+          "bytes": 536,
+          "sha256": "3acdea19a852aee1affe19cbd3eb3bbe9d00bb3cd7c377428bac9cde260154e2"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/python-full/stdout.log",
+          "bytes": 60257,
+          "sha256": "cfc173434c03aa771a6eee83166dcd406f0168504eba49c4a2f8acb9982335f5"
+        }
+      ]
+    },
+    "scans": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/verify_scans.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 9.764,
+      "peak_rss_kib": 87120,
+      "peak_cpu_percent": 98.1,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:12.240841+00:00",
+      "completed_utc": "2026-10-13T23:27:22.089014+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/pid-state.json",
+          "bytes": 56,
+          "sha256": "ba40d8118086d4b01968fa86d0600b6bc8cf5dd296ec5eaae0999bc7b883630c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/resources.json",
+          "bytes": 3155,
+          "sha256": "17db72d8a9596adbcb3629a61ba3f02f39bded69c5a2390acfe4776be20755ae"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/samples.jsonl",
+          "bytes": 5291,
+          "sha256": "f06b3e0f9761e443d4328b335915e41517c541521649125e185b873d8c99be21"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/stability.json",
+          "bytes": 535,
+          "sha256": "a16db12f65af8552b334d5a622e8771e5fcd40631c3f50f2bc22655ec8c7659a"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/scans/stdout.log",
+          "bytes": 1663,
+          "sha256": "d3c056ed1fb38c12191b0112ad5f13f8ff90e17afd57962ab65c1f9458d70c9f"
+        }
+      ]
+    },
+    "source-capture": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "var/go-stuck-thresholds-2026-10-14/capture.py"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.434,
+      "peak_rss_kib": 592,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 506,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T22:16:39.962294+00:00",
+      "completed_utc": "2026-10-13T22:16:41.446228+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/freeze.after.json",
+          "bytes": 56635,
+          "sha256": "afdd2ef28149e47a5396151e1d17bed2ff0c8813d7f91c8d73219639fda642fc"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/freeze.before.json",
+          "bytes": 56635,
+          "sha256": "afdd2ef28149e47a5396151e1d17bed2ff0c8813d7f91c8d73219639fda642fc"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/pid-state.json",
+          "bytes": 55,
+          "sha256": "a4476ecc17fe73f6a60251fd10eb61a6ad608de6562e4e064f065a15dd89bcec"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/resources.json",
+          "bytes": 2361,
+          "sha256": "6db710fe44040a61f564f516ead0a32d165bdfb2dc4c212d2749574ae3f19daf"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/samples.jsonl",
+          "bytes": 731,
+          "sha256": "9f694154e7808f76fadb11333d0bd5ff250850a86d1f310b67d43dfbb281ec1b"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/stability.json",
+          "bytes": 537,
+          "sha256": "7fb31d994ff8c5568fa72d0a686ec6766792f53c41954d5e272500ca79aeea05"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-capture/stdout.log",
+          "bytes": 89,
+          "sha256": "01b545b6262dbd28595d6ee8a068d52a5da5fc60c3c33777968fc83cd4d113cb"
+        }
+      ]
+    },
+    "source-export": {
+      "status": "passed",
+      "command": [
+        ".venv/bin/python",
+        "python/tools/export_go_contracts.py",
+        "--check",
+        "--manifest",
+        "/Users/yanjixiong/github/mini-loop/var/go-stuck-thresholds-2026-10-14/source-manifest.json",
+        "--diagnostics-dir",
+        "/Users/yanjixiong/github/mini-loop/var/go-stuck-thresholds-2026-10-14/export-drift"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 106.015,
+      "peak_rss_kib": 404944,
+      "peak_cpu_percent": 93.8,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:23:31.853117+00:00",
+      "completed_utc": "2026-10-13T23:25:18.122478+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/pid-state.json",
+          "bytes": 56,
+          "sha256": "d0877e93aa912d8dab181d5ae03efe37c227384a8dbefea9fe2167079dd8190b"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/resources.json",
+          "bytes": 5648,
+          "sha256": "5c654c3d8117399f0727e1ac0b7dfa552f0c928a267ffe7e64f2c283db357187"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/samples.jsonl",
+          "bytes": 44477,
+          "sha256": "8ba6687fb93d359f441ac12c32f5bf3fa5c9a4fb95dfb6d465aebbae4834526b"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/stability.json",
+          "bytes": 537,
+          "sha256": "c166712f80e9ebcc486d2390304b8b7c40b2f94b97191ec735434d2995fd99a9"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/source-export/stdout.log",
+          "bytes": 86954,
+          "sha256": "947117bd5d1a9b471541354daa44d78ebc396d47abf51bed4079c5894c16632f"
+        }
+      ]
+    },
+    "type-private": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-private"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.405,
+      "peak_rss_kib": 656,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:57.402363+00:00",
+      "completed_utc": "2026-10-13T23:27:58.896350+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/pid-state.json",
+          "bytes": 56,
+          "sha256": "7096404a5ddd23ede178cc45b99b581d4beb69995eead1981988fb2a23d676d6"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/resources.json",
+          "bytes": 2610,
+          "sha256": "05c1b40561bbe426f14f03a7d225d7a9a0d4807739eaf07ca56fa53db7b3e980"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/samples.jsonl",
+          "bytes": 734,
+          "sha256": "85a0d831a1da0e16d69231b53153ff15f71ec79404ff79cb2765a410f66219ec"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/stability.json",
+          "bytes": 537,
+          "sha256": "4652545b8374c5310c563a79394e1f18f53d4429ea9a94f29c5f4d83ba4ba222"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-private/stdout.log",
+          "bytes": 71,
+          "sha256": "3073f083aeaecf2fe25922ee457a18bd67abf505d6267ee63f2a81f401e10ac5"
+        }
+      ]
+    },
+    "type-public": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-public"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 2.463,
+      "peak_rss_kib": 83536,
+      "peak_cpu_percent": 26.5,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:50.596354+00:00",
+      "completed_utc": "2026-10-13T23:27:53.139785+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/pid-state.json",
+          "bytes": 56,
+          "sha256": "2492e05aa40ca60a08cb2f23ede2e64c97cf7f544b450e8bd6b7bdc6b1c29ff3"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/resources.json",
+          "bytes": 2849,
+          "sha256": "45074178d294cd140cb7cdbce2c2945fec61138805f2f62b74b7a925cd2f3d7e"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/samples.jsonl",
+          "bytes": 1620,
+          "sha256": "cced197a6eed4e0aac678295329ae20364d57e52ac3c25bcf80e95517ae901fe"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/stability.json",
+          "bytes": 537,
+          "sha256": "cab0fa3ee9ce154e978ac983bcb56690a567c614a80f4d147bc29527e287e034"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-public/stdout.log",
+          "bytes": 67,
+          "sha256": "03d5c9fc198c99bb3662838da7dbcd67c7e139be329471769aebe077c85d9950"
+        }
+      ]
+    },
+    "type-syntax": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 2.472,
+      "peak_rss_kib": 26800,
+      "peak_cpu_percent": 1.4,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:27:43.777279+00:00",
+      "completed_utc": "2026-10-13T23:27:46.328248+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/pid-state.json",
+          "bytes": 56,
+          "sha256": "9266e4a9bfa77e3214da3d56e6abdbc49941af7df243b1a64af924c4f6aa62e9"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/resources.json",
+          "bytes": 2660,
+          "sha256": "be0fd729bf16f422bef484f0c1964a1d92b9e44bfd72c4c5716b90f619ac0999"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/samples.jsonl",
+          "bytes": 1278,
+          "sha256": "b66caebce532c16f85c147faae90bcc6834e6f212047ceea6891611803521e7d"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/stability.json",
+          "bytes": 537,
+          "sha256": "5e3611edc26f6a4a8f9194edd674ec79b73a4dc34dfd5419f42d46603b41b31f"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-syntax/stdout.log",
+          "bytes": 74,
+          "sha256": "b97ed5180f106e2c01b22b1544538b6ee9b08a4ca3413d23d0a9bc0b14b183c2"
+        }
+      ]
+    },
+    "type-variables": {
+      "status": "passed",
+      "command": [
+        "go",
+        "run",
+        "./tools/typeaudit",
+        "-variables"
+      ],
+      "exit_code": 0,
+      "runner_exit_code": 0,
+      "reason": null,
+      "seconds": 1.368,
+      "peak_rss_kib": 176,
+      "peak_cpu_percent": 0,
+      "inputs_unchanged": true,
+      "frozen_inputs": 1795,
+      "remaining_pids": [],
+      "started_utc": "2026-10-13T23:28:03.161736+00:00",
+      "completed_utc": "2026-10-13T23:28:04.607840+00:00",
+      "limits": {
+        "rss_kib": 1572864,
+        "cpu_percent_sustained": 300,
+        "cpu_grace_seconds": 45,
+        "gomaxprocs": 2,
+        "gomemlimit": "512MiB",
+        "gogc": 75,
+        "goflags": "-p=1",
+        "test_parallel": 2,
+        "nice_minimum": 10,
+        "sample_seconds": 1,
+        "allowed_pressure_levels": [
+          1,
+          2
+        ],
+        "initial_nice_wrapper_grace_seconds": 0.25,
+        "wall_seconds": 1800
+      },
+      "artifacts": [
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/freeze.after.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/freeze.before.json",
+          "bytes": 192069,
+          "sha256": "1c9c1282f611f8fe1013c8a91077fba2ca8f94c527397efd71e834859636268c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/pid-state.json",
+          "bytes": 56,
+          "sha256": "d39121d57d33c220779f3a37dead32c954f1f338e147da4f081ce4581812352c"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/resources.json",
+          "bytes": 2616,
+          "sha256": "63b0e32a4d49473d661e92bb3e9cd39ae6de421f35cad410f416aadda0253167"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/samples.jsonl",
+          "bytes": 734,
+          "sha256": "9c6faa7573c80c1511981c29deaf13cbcdd92870656d56c7e0a1e4c562c88c25"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/signals.jsonl",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/stability.json",
+          "bytes": 536,
+          "sha256": "88a932cc47d995f1646a3c2c6cfd5ad1bb6bbc299265fac80a7a23a6daf31d8f"
+        },
+        {
+          "path": "var/go-stuck-thresholds-2026-10-14/type-variables/stdout.log",
+          "bytes": 66,
+          "sha256": "91d929148fc58cf8844627fa289719675737e8d6b285d3bc10bfb7abb64461b0"
+        }
+      ]
+    }
+  },
+  "source": {
+    "cases": 61,
+    "bare_agent_loops": 12,
+    "managed_fault_loops": 2,
+    "direct_results": {
+      "repeat_action_result": 8,
+      "monologue": 6,
+      "no_signal": 27,
+      "inspect_error": 8,
+      "repeat_action_error": 7,
+      "unproductive_tool": 3,
+      "alternating": 2
+    },
+    "versions": {
+      "python": "3.11.3"
+    },
+    "source_sha256": {
+      "mini_loop/__init__.py": "4bfc9f14a44217fe741fdd55f44b0a3d1fd6ea7cce274c8f29d7fd4f30ec07d9",
+      "mini_loop/agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+      "mini_loop/caching.py": "57b755434559336528fd7a2e23a78044abdd3692d1184bca8680470d26f0601f",
+      "mini_loop/config.py": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4",
+      "mini_loop/fake_llm.py": "69bc93ea2d875c668681b3b219705129f4d4bba5d44ce713820fcc9e597414a9",
+      "mini_loop/recovery.py": "bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca",
+      "mini_loop/registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+      "mini_loop/run_context.py": "4cfaffeeaac5a55d5e02960e19fdc78cdcc623085a645b35d5ac61d4a6ad27d9",
+      "mini_loop/session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+      "mini_loop/stuck.py": "d0047438f03feb31b7e11788f63e0c1ae9abe75b6497fcb8ff547fc59b22f081",
+      "mini_loop/transport.py": "ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873",
+      "tools/stuck_threshold_contracts.py": "75e7f6cfdf3816edd8216a0fa2f623e11ee2708348128d3a7b6a2a5acfd60800"
+    },
+    "scope": [
+      "Actual public StuckThresholds dataclass and DefaultStuckDetector constructor/inspect; six finite integer fields include negative, zero, positive, and signed int64 boundaries. No Python runtime validation is replaced.",
+      "Each direct case separately captures constructor and inspect exceptions with their actual class, message and stage. Signal fields and reminder are actual public observations.",
+      "Actual bare Agent.run with an offline FakeAsyncAnthropic, NullCachePolicy and one readonly tool whose handler only records a command and returns same. No shell or live network is used.",
+      "The pass-through create observer records actual messages before FakeAsyncAnthropic validation, including rejected next-turn requests. Two negative-repeat faults are followed by a real second user turn on the same Agent.",
+      "Events project actual tool_use/tool_result/stuck/error payloads onto declared identity/outcome fields; dynamic span, action, activity and timing fields are excluded. event_types retains all actual Source event names/order as diagnostic evidence, not cross-runtime equality.",
+      "Full actual request and retained message payloads are detached through the existing Agent payload serializer; explicit turn message IDs and scripted tool IDs are stable. No transcript repair or exception synthesis is applied by the capture.",
+      "Two additional actual AgentSession wrappers attach the same Agent through the public agent setter and invoke public run twice. Public status/busy/run_count and status/error/done identity/outcome projections are observed; default NullStateStore makes no SQLite or durable recovery claim.",
+      "This fixture does not replace the pre-existing sixteen default detector decisions or five actual Agent loop controls in python-loops.json, and does not claim arbitrary Python object/type coercion parity."
+    ],
+    "fixture": {
+      "path": "go/testdata/python-stuck-thresholds.json",
+      "bytes": 295781,
+      "sha256": "cc772ae4ac33a34c6bd4368fb2cc3343510f460391bb90cd4be6e67cfcb0c655"
+    },
+    "capture": {
+      "path": "var/go-stuck-thresholds-2026-10-14/captured-source.json",
+      "bytes": 295781,
+      "sha256": "12f7365382a7ff867532f443415192cd930b026861cb6b73d2c6220b0d0b2346"
+    },
+    "canonicalization": {
+      "operation": "canonical exporter JSON formatting only",
+      "source_capture": "captured-source.json",
+      "source_sha256": "12f7365382a7ff867532f443415192cd930b026861cb6b73d2c6220b0d0b2346",
+      "canonical_fixture_sha256": "cc772ae4ac33a34c6bd4368fb2cc3343510f460391bb90cd4be6e67cfcb0c655",
+      "json_values_equal": true
+    },
+    "canonicalization_receipt": {
+      "path": "var/go-stuck-thresholds-2026-10-14/canonicalization.json",
+      "bytes": 319,
+      "sha256": "e8bc0b7d00c064dca28d52a415aa36fbf3b7eec8b71ac35ea2fb38812096748f"
+    }
+  },
+  "before_native": {
+    "baseline": "6ea2fd264846697150e3bcc2691a690f9f160a7b",
+    "scope": "direct constructor and inspection probe only; no before-loop claim",
+    "matched": 29,
+    "mismatched": 32,
+    "observations": {
+      "path": "var/go-stuck-thresholds-2026-10-14/before-decisions-fixed-import/stdout.log",
+      "bytes": 14268,
+      "sha256": "6d6c410e6d51c6b65b680168aebf607024975f1dabdafb3a28b6d2bd1904b8f7"
+    },
+    "probe": {
+      "path": "var/go-stuck-thresholds-2026-10-14/decision_probe.go",
+      "bytes": 3214,
+      "sha256": "a8ec640bfb8d9b7ab094c425118ccad2370426777285efa98d0038cb6c41b687"
+    }
+  },
+  "old_loop_control": {
+    "path": "go/testdata/python-loops.json",
+    "unchanged": true,
+    "sha256": "499424b56be053b09df39226de4d47401ac99a5d6d5f8beb06a75a60467cc7b2"
+  },
+  "consumer_inventory": {
+    "statuses": {
+      "test_pass_observed": 258,
+      "unreferenced": 2
+    },
+    "missing": [
+      "python-provider-idna.json",
+      "python-syntax-parser.json"
+    ],
+    "diagnostics": "2 fixtures lack a candidate caller with an observed passing test result\nexit status 1",
+    "manifest_sha256": "5008ee3801e641ccae282c0dfb0d43be68236489975c54cbb34077ecdc4c7c92",
+    "results_sha256": "5b4a8b724bf6dd4e09e5f94f5f210dcf954098d41c89bbd4873e7d0c1a1c5ff6"
+  },
+  "complete_gate_input_equality": {
+    "go-full-race": true,
+    "go-vet": true,
+    "source-export": true,
+    "python-full": true,
+    "invariants": true,
+    "scans": true,
+    "guard-stuck": true,
+    "guard-transcript": true,
+    "guard-validator": true,
+    "type-syntax": true,
+    "type-public": true,
+    "type-private": true,
+    "type-variables": true,
+    "consumers": true
+  },
+  "coverage": {
+    "profile": {
+      "path": "var/go-stuck-thresholds-2026-10-14/go-full-coverage/coverage.out",
+      "bytes": 92035591,
+      "sha256": "612debb5cae204765e437214359d159726c6f2b354e7b1aefa9acbf9cda484b9"
+    },
+    "rows": 1317134,
+    "unique_spans": 26879,
+    "all_go": {
+      "covered": 34329,
+      "statements": 38468,
+      "percent": 89.24040761152126
+    },
+    "application": {
+      "covered": 33963,
+      "statements": 37953,
+      "percent": 89.48699707533001
+    },
+    "provider": {
+      "covered": 1575,
+      "statements": 1827,
+      "percent": 86.20689655172414
+    }
+  },
+  "architecture": {
+    "schemaVersion": 1,
+    "ok": true,
+    "command": "deliver",
+    "type": "architecture",
+    "input": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.json",
+    "output": "/Users/yanjixiong/github/mini-loop/docs/mini-loop-system.architecture.html",
+    "specification": {
+      "sha256": "f0c9cc2b77541e3eac8d093af2e0b6b18ef3764ab7fc09878dd17345c28326ef",
+      "bytes": 157613
+    },
+    "artifact": {
+      "sha256": "15b42b528d386418c043757f7d2fa08ffa46c8e18b67df996ad660b251b7d669",
+      "bytes": 812376
+    },
+    "validation": {
+      "checksPassed": 9,
+      "checkCount": 9,
+      "compositionProfile": "showcase",
+      "compositionStatus": "pass",
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "image": [
+    {
+      "path": "docs/audits/go-stuck-thresholds-infographic-2026-10-14.png",
+      "bytes": 1846477,
+      "sha256": "da03a97f0b4a813dc5cfe6a52da303c3a63497393252bb9f7e872248c834173c"
+    },
+    {
+      "path": "docs/audits/go-stuck-thresholds-infographic-2026-10-14.prompt.txt",
+      "bytes": 1576,
+      "sha256": "4cf79bf2ce86d103a828594445c0ad94b0f868f785a81c89f362d0b9b4582ca8"
+    }
+  ],
+  "image_generation": {
+    "tool": "built-in imagegen",
+    "edit_target": "docs/mini-loop-layered-architecture.png",
+    "topology_parts_added_or_removed": false,
+    "visual_review": "Five layers and six boundary notes preserved. L3 Agent loop and L5 contract evidence highlighted; no success badge or whole-port claim.",
+    "base": {
+      "path": "docs/mini-loop-layered-architecture.png",
+      "bytes": 1793371,
+      "sha256": "7fd8162ec27e58c6b2ac19f97d6d23916fdf35e0ea3e62a66c73d3092ad240ba"
+    },
+    "base_prompt": {
+      "path": "docs/mini-loop-layered-architecture.prompt.txt",
+      "bytes": 2090,
+      "sha256": "9f3ec85b8c8bc816c824d576200b9d49a189a773f2642e93df6dd56d5e58f123"
+    }
+  },
+  "dispatch_observations": [
+    {
+      "attempt": "archive",
+      "launched_validation": false,
+      "error": "Python3.11 TarFile.extractall lacks filter argument; archive initially not extracted",
+      "resolution": "validated archive member paths/types and extracted without unsupported option"
+    },
+    {
+      "attempt": "before-decision dispatch",
+      "launched_validation": false,
+      "error": "cwd missing because preceding archive extraction failed",
+      "resolution": "archive extraction verified before redispatch"
+    }
+  ],
+  "evidence_tools": [
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/run.py",
+      "bytes": 6806,
+      "sha256": "9922c72aff463517a7afc8ae26598be2e06431847af29bf25f822cb1ff260b0e"
+    },
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/run-source.py",
+      "bytes": 6517,
+      "sha256": "a26075338ee97c1347f5efa10be83a5e8a259dfbe5681de421c184e50d3c2b9f"
+    },
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/run-before.py",
+      "bytes": 6855,
+      "sha256": "8d9c81b5eb7aec77839e1807a47f24bc9543475149e83001a1ebc57eaea46de4"
+    },
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/run-architecture.py",
+      "bytes": 6699,
+      "sha256": "2ba72e08a5ee06ef4cc41362ebbc9e145fcecfa733a77a9db11c4ea282b2e0f3"
+    },
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/resource_watch.py",
+      "bytes": 17037,
+      "sha256": "d2112faf728651ad3de4994ef456d4b65d5058447b3df24c43b6dfb1e58165ed"
+    },
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/capture.py",
+      "bytes": 957,
+      "sha256": "a8cfee6c7e6e13e2a6d90582a6670d4ddec10eda90aa6d567e0fa616fe2c194f"
+    },
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/remaining_gates.py",
+      "bytes": 1963,
+      "sha256": "4cd0112e318625d2f6e55ead8830a360184e348b8cdb1af22fc0109f45fb482d"
+    },
+    {
+      "path": "var/go-stuck-thresholds-2026-10-14/summarize.py",
+      "bytes": 9111,
+      "sha256": "1dd3a747200ca2b600e931dff1a2f4ba30eb35552b9a7cf78ace19ad7a6ee44e"
+    }
+  ],
+  "open_boundaries": [
+    {
+      "scope": "post-fault bare and managed turn",
+      "source": "One rejected Fake.messages.create attempt, zero accepted calls/effects; InvalidTranscript caught into error text, additional retained error message, wrapper idle/done.",
+      "native": "Compactor-output transcript validation refuses before Provider.Complete: zero attempts/effects, returned error, managed status error. Actual Source rejected request and native refused history are separately retained.",
+      "acceptance": "open; passing boundary evidence test is not semantic parity"
+    },
+    {
+      "scope": "managed terminal identity",
+      "source": "Observed error/status/done projection omits identity fields",
+      "native": "Native managed headers retain identity scope",
+      "acceptance": "unclaimed; outcome projection only is matched"
+    },
+    {
+      "scope": "original migration",
+      "acceptance": "Original G0-G7, IDNA approval/adoption, default parser, SDK escaped lone-surrogate callers and fixed-environment Linux gates remain open"
+    }
+  ],
+  "limitations": [
+    "Finite host integer cases do not certify arbitrary Python objects or unbounded integers outside native range.",
+    "Event projections omit dynamic span/action/timing fields; event_types is raw Source diagnostic evidence, not a native equality claim.",
+    "Named fault marker is its error type, not authenticated detector origin; custom callers returning that same marker select its Source timing.",
+    "NullStateStore AgentSession captures do not prove SQL durability or restart behavior.",
+    "Sampled RSS can miss fast descendants and double-count shared pages; short-stage observations are not actual peaks. GOMEMLIMIT is soft and does not cap CGO/children.",
+    "Atomic statement coverage does not measure branches, Python, C or child interiors.",
+    "Consumer candidate links do not certify complete semantic parity."
+  ],
+  "environment_limitations": {
+    "html_visual_review": "Prior browser-rendering denial respected; structural checks only. Static PNG inspected.",
+    "remote": "Cached refs only; no fetch, push or CI refresh."
+  },
+  "validation_summary": {
+    "go_packages_passed": 51,
+    "go_top_level": {
+      "pass": 1457,
+      "skip": 6
+    },
+    "go_subtests": {
+      "pass": 11669,
+      "skip": 1
+    },
+    "race_packages": {
+      "pass": 49,
+      "skip": 2
+    },
+    "race_top_level": {
+      "pass": 1457,
+      "skip": 6
+    },
+    "race_subtests": {
+      "pass": 11669,
+      "skip": 1
+    },
+    "race_linker_warnings": 6,
+    "python": {
+      "pass": 2269,
+      "skip": 28,
+      "warnings": 104,
+      "subtests_passed": 24
+    },
+    "source_fixtures_current": 259,
+    "invariant_modules": 77,
+    "anchored_scans": 19,
+    "selected_mutation_guards_caught": 3,
+    "type_findings": 0,
+    "consumer_audit": "failed_exit_1_258_of_260"
+  },
+  "local_integration": {
+    "status": "pending_runtime_commit",
+    "remote_refreshed": false,
+    "pushed": false
+  },
+  "next_work": "Original required-row closure audit; keep full G0-G7 criteria and observed post-fault caller/identity gaps open."
+}

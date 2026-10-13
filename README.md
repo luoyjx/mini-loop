@@ -570,7 +570,19 @@ and executed diagnostic source remain in the
 No runtime, fixture, timeout, backend, dependency or default changes; full native
 acceptance remains incomplete.
 
-Current runtime review baseline: `51bdcc0`. The raw-query iteration retains
+Current runtime review baseline: `6ea2fd2`. The stuck-detector iteration
+accepts the public Source's six integer threshold fields without blanket
+constructor rejection. An explicit all-zero configuration remains distinct
+from the Go zero-value detector's default policy. Monologue runs first;
+nonpositive unproductive/low alternating values disable those rules, while
+zero/negative repeat counts retain Python slice and empty-window fault behavior.
+A named `StuckInspectionError` propagates before built-in result-history
+publication; custom detector failures retain completed-result pairing.
+Source post-fault follow-up requests and Go's earlier model-ingress refusal are
+recorded separately; this iteration does not certify that caller boundary.
+See [the iteration evidence](docs/audits/go-stuck-thresholds-2026-10-14.md).
+
+Previous runtime review baseline: `51bdcc0`. The raw-query iteration retains
 malformed percent text and semicolons, follows the captured ASGI Latin-1 and
 percent-decoded UTF-8 replacement behavior, and selects last values into six
 named fields. One request admission carries the authenticated principal and
@@ -1021,7 +1033,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>configured coalescing · interrupted text<br/>DefaultRecovery · modern / explicit then captured legacy fallback<br/>live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>Python role strip/lower · raw duplicate order before normalized selection<br/>raw lowercase child label · Explore aliases stay readonly<br/>trusted human / peer context · omitted ≠ empty metadata<br/>snapshots remain observations · peer derivation clears approvals<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>all-call shell / MCP preparation · ordered scalar keys · staged binding/query faults · ordered parallel groups · inherited pools · events<br/>result event → output hash · exclusive stop / parallel group join<br/>whole successful batch → step ledger / result history<br/>integer stuck thresholds / named Source slice faults<br/>configured coalescing · interrupted text<br/>DefaultRecovery · modern / explicit then captured legacy fallback<br/>live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline · typed public helper SDK<br/>fitted schemas · exact custom schema metadata · skills · cache · token meter<br/>pinned layers · optional closed memory selection/index / team inbox<br/>trusted caller parsing profile · no authority grant<br/>original UTF-8 preflight → guarded spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -1917,7 +1929,7 @@ output. Default stuck detection retains the latest 20 final rewritten tool
 input/output hashes per user turn. Five Python rules detect repeated results,
 repeated errors, unproductive tools, alternating calls and continued monologues.
 One reminder clears the window; a repeated signal halts with paired results and
-a stop marker before partial text. Monologue detection applies only when an
+a stop marker before partial text. With default thresholds, monologue detection applies when an
 explicit `StopHook` requests continuation. `RuntimeConfig.StuckDetector` can
 select `NullStuckDetector`; children inherit policies and hooks with fresh
 windows and nudge budgets. Optional input absence and explicit JSON null remain

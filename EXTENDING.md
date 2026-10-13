@@ -901,11 +901,11 @@ The five rules, in the order they are checked:
 
 | Pattern | Fires when | Default |
 |---|---|---|
+| `monologue` | consecutive tool-less turns a `stop` hook keeps resuming | 3 |
 | `repeat_action_error` | N consecutive identical calls, all failed or denied | 3 |
 | `unproductive_tool` | N unproductive uses of one tool in the window, **never** successful — order and arguments irrelevant | 5 |
 | `repeat_action_result` | N consecutive identical calls with identical output | 4 |
 | `alternating` | two calls ping-ponging with stable outputs | 6 |
-| `monologue` | consecutive tool-less turns a `stop` hook keeps resuming | 3 |
 
 `unproductive_tool` is the one rule with no upstream counterpart. Every
 consecutive-and-identical detector (ours, OpenHands, Cline's
@@ -941,8 +941,25 @@ On detection the loop emits a `stuck` event (`pattern`, `detail`, `tool`,
 `halted`, `nudges_used`). While nudges remain, the signal's reminder text is
 spliced into the tool-result block and the loop continues; once they are spent
 the turn ends. `agent.rounds_without_tools` powers the monologue rule, which
-only fires when a `stop` hook keeps resuming a model that stopped calling
-tools.
+with default thresholds fires when a `stop` hook keeps resuming a model that
+stopped calling tools.
+
+The Go public constructor retains all six integer values, including zero and
+negative controls. `unproductive_tool <= 0` and `alternating < 4` disable only
+those rules. Nonpositive monologue thresholds can fire immediately; negative
+nudge budgets halt at the first signal. Repeat counts instead use Python's
+`steps[-n:]`: zero examines the whole history, and a negative count selects a
+suffix beginning at `-n`. Empty selected windows raise a named
+`StuckInspectionError` with Source `IndexError` provenance. An explicitly
+constructed all-zero policy is configured; the native zero-value detector
+still uses defaults.
+
+The built-in slice fault preserves Source timing after tool effects and before
+result-history publication. Custom detector errors retain the existing paired
+completed results. Both are returned as errors, with no extra tool invocation.
+Managed terminal diagnostics use the Source class for the named slice fault.
+Post-fault Source model calls and Go pre-provider transcript refusal remain
+separate observed boundaries; complete caller parity is not claimed here.
 
 Rules and default thresholds are ported from the OpenHands SDK `StuckDetector`
 (`OpenHands/software-agent-sdk`), adapted from one-action-per-step events to

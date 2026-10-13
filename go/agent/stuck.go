@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"unicode/utf8"
 
@@ -112,38 +111,64 @@ type NullStuckDetector struct{}
 func (NullStuckDetector) Inspect(StuckState) (*StuckSignal, error) { return nil, nil }
 func (NullStuckDetector) MaxNudges() int                           { return 0 }
 
-type DefaultStuckDetector struct{ thresholds StuckThresholds }
+type StuckExceptionClass string
+
+const StuckIndexError StuckExceptionClass = "IndexError"
+
+// StuckInspectionError preserves the public Source detector's empty-slice fault.
+// It occurs after tool effects, before the completed batch enters history.
+type StuckInspectionError struct{ Pattern StuckPattern }
+
+func (*StuckInspectionError) ExceptionClass() StuckExceptionClass { return StuckIndexError }
+func (*StuckInspectionError) Error() string                       { return "tuple index out of range" }
+
+type DefaultStuckDetector struct {
+	thresholds StuckThresholds
+	configured bool
+}
 
 func NewDefaultStuckDetector() DefaultStuckDetector {
 	detector, _ := NewStuckDetector(DefaultStuckThresholds())
 	return detector
 }
 func NewStuckDetector(thresholds StuckThresholds) (DefaultStuckDetector, error) {
-	if thresholds.RepeatActionResult < 1 || thresholds.RepeatActionError < 1 || thresholds.Monologue < 1 || thresholds.Alternating < 0 || thresholds.UnproductiveTool < 0 || thresholds.MaxNudges < 0 {
-		return DefaultStuckDetector{}, errors.New("invalid stuck detection thresholds")
+	return DefaultStuckDetector{thresholds: thresholds, configured: true}, nil
+}
+func (detector DefaultStuckDetector) effectiveThresholds() StuckThresholds {
+	if !detector.configured {
+		return DefaultStuckThresholds()
 	}
-	return DefaultStuckDetector{thresholds}, nil
+	return detector.thresholds
 }
 func (detector DefaultStuckDetector) MaxNudges() int {
-	if detector.thresholds == (StuckThresholds{}) {
-		return 1
+	return detector.effectiveThresholds().MaxNudges
+}
+
+// repeatWindow implements Python steps[-count:], including zero and negatives.
+// Check the empty suffix before negating count so MinInt cannot overflow.
+func repeatWindow(steps []ToolStep, count int) []ToolStep {
+	if count > 0 {
+		return steps[len(steps)-count:]
 	}
-	return detector.thresholds.MaxNudges
+	if count <= -len(steps) {
+		return steps[len(steps):]
+	}
+	return steps[-count:]
 }
 func defaultSignal(pattern StuckPattern, detail string, tool *protocol.ToolName) *StuckSignal {
 	return &StuckSignal{pattern, detail, tool, DefaultStuckAdvice}
 }
 func (detector DefaultStuckDetector) Inspect(state StuckState) (*StuckSignal, error) {
-	t := detector.thresholds
-	if t == (StuckThresholds{}) {
-		t = DefaultStuckThresholds()
-	}
+	t := detector.effectiveThresholds()
 	steps := state.Steps
 	if state.RoundsWithoutTools >= t.Monologue {
 		return defaultSignal(StuckMonologue, fmt.Sprintf("The model produced %d consecutive turns with no tool call, and a stop hook keeps resuming it.", state.RoundsWithoutTools), nil), nil
 	}
 	if n := t.RepeatActionError; len(steps) >= n {
-		window := steps[len(steps)-n:]
+		window := repeatWindow(steps, n)
+		if len(window) == 0 {
+			return nil, &StuckInspectionError{Pattern: StuckRepeatError}
+		}
 		same, bad, denied := true, true, true
 		for _, step := range window {
 			same = same && window[0].SameCall(step)
@@ -182,7 +207,10 @@ func (detector DefaultStuckDetector) Inspect(state StuckState) (*StuckSignal, er
 		}
 	}
 	if n := t.RepeatActionResult; len(steps) >= n {
-		window := steps[len(steps)-n:]
+		window := repeatWindow(steps, n)
+		if len(window) == 0 {
+			return nil, &StuckInspectionError{Pattern: StuckRepeatResult}
+		}
 		same := true
 		for _, step := range window {
 			same = same && window[0].SameOutcome(step)

@@ -455,7 +455,12 @@ func (s *Session) completeProjectedModel(ctx context.Context, request protocol.M
 	}
 	return reply, nil
 }
-func boundedError(err error) string { return truncateRunes(fmt.Sprintf("%T: %v", err, err), 500) }
+func boundedError(err error) string {
+	if fault, ok := err.(*StuckInspectionError); ok {
+		return fmt.Sprintf("%s: %s", fault.ExceptionClass(), fault.Error())
+	}
+	return truncateRunes(fmt.Sprintf("%T: %v", err, err), 500)
+}
 func truncateRunes(text string, cap int) string {
 	runes := []rune(text)
 	if len(runes) > cap {
